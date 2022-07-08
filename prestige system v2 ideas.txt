@@ -1,0 +1,145 @@
+Prestige system version 2
+
+Platform
+	- Interactive Directory
+	- Digital Advertising Screens
+	- Website responsive
+
+Content Management System (Prestige CMS)
+	- Admin Dashboard
+	- Subscriber/Client Dashboard
+
+Admin Dashboard
+
+	- Dashboard
+	  * Graphical presentations
+	  * Reports
+
+	- User Management
+	  * Role - can add, edit, delete user role
+	  * Permission - can set permission to role
+	  * User - can add, edit, delte user
+
+	- Client Management (Admin added subscriber or Validated registered user)
+	  * can add, edit, delete client
+	  * can assign single/multiple site
+
+	- Category/Sub-Category Management
+	  * can add, edit, delete category and sub-category
+
+	- Store Management
+	  * can add, edit, delete store
+	  * can assign category/sub-category per store
+	  * can assign multiple sites
+
+	- Site Management
+	  * can add, edit, delete site
+	  * site consist of mall, corporate building, hospitals, etc.
+	  * can add, edit, delete kiosk (interactive directory)
+	  * can add, edit, delete digital advertising screens
+	  * can modify remote settings (ip address, username, and password) (encripted).
+
+	- Maps Management
+	  * can add, edit, delete, publish map
+	  * can assign to a single site
+
+	- Advertisements Management
+	  * can add, edit, delete, publish
+	  * can assign start date and end date or unlimited display (depend on contract or subscription type)
+	  * can assign multiple sites
+	  * can assign multiple kiosk
+	  * can assign multiple digital advertising screens
+	  * Web ad
+	  * Kiosk ad
+	  * Full screen ad
+	  * Pop-up ad
+
+	- Translations Management
+	  * can add, edit, delete
+
+	- Reports Management
+	  * Kiosk status / Insight reports
+
+Client/Subscriber Dashboard
+
+	- Dashboard
+	  * Graphical presentations
+	  * Reports
+	  * Site list (under user account)
+
+	- User Management
+	  * can add, edit, delete user, assign role
+	  * Role (limited only for admin, editor)
+	  * Permissions (for discussion)
+
+	- Advertisements Management
+	  * can edit, delete, publish
+	  * add and publish advertisements (depend on the contract  or subscription type)
+	  * display date from start to end or unlimited display (depend on the contract  or subscription type)
+	  * can assign multiple sites
+	  * Web ad
+	  * Kiosk ad
+	  * Full screen ad
+	  * Pop-up ad
+
+	- Store Management
+	  * view list store
+	  * view store details
+	  * can edit limited info.
+
+	- Insight Reports
+	  * monthly/weekly/daily per clicks
+	  * top malls with highest usage (kiosk)
+	  * Online and Offline Kiosk
+	  * 
+
+Website (prestigeinteractive.com.ph)
+	- Home Page
+	- About Us
+	- Portfolio
+	- Products
+	- Advertising
+	- Services
+	- Contact Us
+	- Advertise With Us (new)
+	  * redirect to online directory
+
+Online Directory Website
+	- User Registration
+	  * email notification for admin to validate user and get other info.
+	  * after validating admin will setup user dashboard using admin portal
+	  * generate username and password
+	  * setup site, building, and other info.
+	  * set payment terms (monthly / yearly / limited time only
+	- Home page
+	  * Category list
+	  * Mall list
+	  * Building and Stablishment list
+	  * Store list
+	  * Events (latest)
+	  * Cinemas
+	  * Ads (latest)
+	- About Us
+	- FAQs
+	- Search
+	- Store Page
+	  * store descriptions, logo, banner, other info.
+	  * list of branches
+	  * when branch is click display
+		- locations, opening and closing hours, and map
+		- if map is available when click, display map
+
+
+
+
+
+
+
+Reporting
+ - clicks search keyboard
+ - click from banner
+ - from category / sub-category /
+ - from search
+ - number of display
+ - buttons click
+
