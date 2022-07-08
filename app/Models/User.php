@@ -18,9 +18,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'fullname',
         'email',
+        'username',
         'password',
+        'salt',
+        'login_attempt',
+        'is_blocked',
+        'is_active',
+        'activation_token',
+        'remember_token'
     ];
 
     /**
@@ -30,7 +37,13 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'salt',
         'remember_token',
+        'login_attempt',
+        'is_blocked',
+        'is_active',
+        'activation_token',
+        'remember_token'
     ];
 
     /**
@@ -41,4 +54,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+    */
+    protected $table = 'users';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
 }
