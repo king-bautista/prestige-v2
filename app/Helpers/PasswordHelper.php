@@ -19,8 +19,8 @@ class PasswordHelper
     *  params $salt, $password
 	*  return $password
     */
-    public static function generate($salt, $password) {		
-		return bcrypt($salt.env("PEPPER_HASH").$password);
+    public static function generatePassword($salt, $password) {		
+		return bcrypt($salt.env('PEPPER_HASH').$password);
     }
 
 }

@@ -14,6 +14,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['prefix' => 'v1'], function () 
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Auth Routes
+    |--------------------------------------------------------------------------
+    */    
+    Route::post('/login', 'Auth\AuthController@login')->name('api.v1.api.auth.login');
+    Route::post('/register', 'Auth\AuthController@register')->name('api.v1.api.auth.register');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auth Password Reset
+    |--------------------------------------------------------------------------
+    */
+    // Route::post('password/create', 'Admin\PasswordResetController@create')->name('api.v1.password.create');
+    // Route::get('password/find/{token}', 'Admin\PasswordResetController@find')->name('api.v1.password.find');
+    // Route::post('password/reset', 'Admin\PasswordResetController@reset')->name('api.v1.password.reset');
+
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
