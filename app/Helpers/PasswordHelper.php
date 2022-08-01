@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+use Hash;
 
 class PasswordHelper 
 {
@@ -20,7 +21,7 @@ class PasswordHelper
 	*  return $password
     */
     public static function generatePassword($salt, $password) {		
-		return bcrypt($salt.env('PEPPER_HASH').$password);
+		return Hash::make($salt.env('PEPPER_HASH').$password);
     }
 
 }
