@@ -13,7 +13,7 @@ class PasswordHelper
 	*	return random string
     */
     public static function generateSalt() {
-    	return substr(str_shuffle(static::$permitedString), 0, 10);
+    	return substr(str_shuffle(static::$permitedString), 0, 20);
     }
 
     /* gen_password
