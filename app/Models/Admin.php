@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Admin extends Authenticatable
 {
@@ -20,7 +21,7 @@ class Admin extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'fullname',
+        'full_name',
         'email',
         'email_verified_at',
         'password',
@@ -76,4 +77,25 @@ class Admin extends Authenticatable
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public static function getSalt($email)
+    {
+        $admin_user = static::where('email', '=', $email)->first();
+        return $admin_user->salt;
+    }
+
+    public function saveMeta($meta_data)
+    {
+        foreach ($meta_data as $key => $data) {
+            AdminMeta::updateOrCreate(
+                [
+                   'admin_id' => $this->id,
+                   'meta_key' => $key
+                ],
+                [
+                   'meta_value' => $data,
+                ],
+            );
+        }
+    }
 }

@@ -5,13 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 /**
- * @OA\Info(title="My First API", version="0.1")
- */
-
- /**
- * @OA\Get(
- *     path="/",
- *     @OA\Response(response="200", description="Display a home page.")
+ * @OA\Info(
+ *    title="API Documentation",
+ *    version="1.0.0",
  * )
  */
 
