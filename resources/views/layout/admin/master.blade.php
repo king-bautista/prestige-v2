@@ -17,7 +17,6 @@
 
     <body class="hold-transition sidebar-mini">
         <div class="wrapper" id="app">
-            <example-component></example-component>
             <!-- Navbar -->
             @include('layout.admin.header-nav')
             <!-- /.navbar -->
@@ -38,9 +37,9 @@
 
         <!-- REQUIRED SCRIPTS -->
         <!-- jQuery -->
-        <script src="{{ URL::to('plugins/jquery/jquery.min.js') }}"></script>
+        <!-- <script src="{{ URL::to('plugins/jquery/jquery.min.js') }}"></script> -->
         <!-- Bootstrap 4 -->
-        <script src="{{ URL::to('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- <script src="{{ URL::to('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
         <!-- AdminLTE App -->
         <script src="{{ URL::to('dist/js/adminlte.min.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}"></script>
