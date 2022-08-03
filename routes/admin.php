@@ -13,3 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "admin" middleware group. Now create something great!
 |
 */
+
+Route::get('/admin', function () {return view('admin.dashboard');});
+Route::get('/admin/users', 'Auth\AuthController@register')->name('admin.users');
+

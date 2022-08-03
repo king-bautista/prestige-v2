@@ -21,8 +21,8 @@ Route::group(['prefix' => 'v1'], function ()
     | Auth Routes
     |--------------------------------------------------------------------------
     */    
-    Route::post('/login', 'Auth\AuthController@login')->name('api.v1.api.auth.login');
-    Route::post('/register', 'Auth\AuthController@register')->name('api.v1.api.auth.register');
+    Route::post('/login', 'Api\AuthController@login')->name('api.v1.api.auth.login');
+    Route::post('/register', 'Api\AuthController@register')->name('api.v1.api.auth.register');
 
     /*
     |--------------------------------------------------------------------------

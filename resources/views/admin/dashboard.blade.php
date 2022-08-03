@@ -85,10 +85,4 @@
 @stop
 
 @push('scripts')
-    <!-- jQuery -->
-    <script src="{{ URL::to('plugins/jquery/jquery.min.js') }}"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{{ URL::to('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ URL::to('dist/js/adminlte.min.js') }}"></script>
 @endpush
