@@ -186,7 +186,7 @@
         methods: {
 
         	fetchData() {
-                var id = this.$route.params.id;
+                //var id = this.$route.params.id;
                 var data_url = this.dataUrl;
                 if(this.dataParams)
                     data_url = this.dataUrl+'/'+id;
@@ -328,4 +328,24 @@
         color: #ffff;
         display:inline-block;
     }
+
+    .row-actions {
+        color: #ddd;
+        font-size: 13px;
+        padding: 2px 0 0;
+        position: relative;
+        left: -9999em;
+    }
+
+	.row-actions span:not(:last-child):after {
+		content: "|";
+		color: #007bff;
+		margin-left: 5px;
+		margin-right: 5px;
+		font-weight: bolder;
+	}
+
+	.has-row-actions:hover .row-actions{
+	    left: 0;
+	}
 </style>

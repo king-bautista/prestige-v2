@@ -15,5 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/admin', function () {return view('admin.dashboard');});
-Route::get('/admin/users', 'Auth\AuthController@register')->name('admin.users');
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/admin/users', 'Admin\UsersController@index')->name('admin.users');
+Route::get('/admin/users/list', 'Admin\UsersController@list')->name('admin.users.list');
+Route::post('/admin/users/store', 'Admin\UsersController@store')->name('admin.users.store');
+Route::get('/admin/users/{id}', 'Admin\UsersController@details')->where('id', '[0-9]+')->name('admin.users.details');
+Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
 

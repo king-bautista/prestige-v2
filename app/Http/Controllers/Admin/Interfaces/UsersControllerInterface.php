@@ -1,19 +1,40 @@
 <?php
 
-namespace App\Http\Controllers\Api\Interfaces;
+namespace App\Http\Controllers\Admin\Interfaces;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegistrationRequest;
-use App\Http\Requests\LoginRequest;
 
-interface AuthControllerInterface
+interface UsersControllerInterface
 {
     /**
+     * @OA\Get(
+     * path="/admin/users/list",
+     * summary="List of admin users",
+     * description="List of admin users",
+     * operationId="admin-users",
+     * tags={"Admin User"},
+     * @OA\Parameter(
+     *      name="search",
+     *      description="Search",
+     *      required=false,
+     *      in="query",
+     *      @OA\Schema(type="string")
+     * ),
+     * @OA\Response(response=200, description="successful operation", @OA\JsonContent()),
+     * @OA\Response(response=400, description="Bad request", @OA\JsonContent()),
+     * @OA\Response(response=401, description="Unauthorized",  @OA\JsonContent()),
+     * @OA\Response(response=422, description="Unauthorized",  @OA\JsonContent()),
+     * )
+     */
+    public function list(Request $request);
+
+    /**
      * @OA\Post(
-     * path="/api/v1/register",
+     * path="/admin/users/store",
      * summary="Register admin user",
      * description="Register admin user",
-     * operationId="register",
-     * tags={"Unauthenticated"},
+     * operationId="registerAdmin",
+     * tags={"Admin User"},
      * @OA\Parameter(
      *      name="first_name",
      *      description="First name",
@@ -61,41 +82,7 @@ interface AuthControllerInterface
      *     )
      * )
      */
-    public function register(RegistrationRequest $request);
+    public function store(RegistrationRequest $request);
 
-    /**
-     * @OA\Post(
-     * path="/api/v1/login",
-     * summary="Sign in",
-     * description="Login by email, password",
-     * operationId="login",
-     * tags={"Unauthenticated"},
-     * @OA\Parameter(
-     *      name="email",
-     *      description="Email address",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password",
-     *      description="Password",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Response(response=200, description="successful operation", @OA\JsonContent()),
-     * @OA\Response(response=400, description="Bad request", @OA\JsonContent()),
-     * @OA\Response(response=401, description="Unauthorized",  @OA\JsonContent()),
-     * @OA\Response(
-     *    response=422,
-     *    description="Wrong credentials response",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
-     *        )
-     *     )
-     * )
-     */
-    public function login(LoginRequest $request);
 
 }
