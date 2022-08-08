@@ -49,8 +49,8 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     {
         try
         {
-            $user = AdminViewModel::find((int)$id);
-            return $this->responsePaginate($user, 'Successfully Retreived!', 200);
+            $user = AdminViewModel::find($id);
+            return $this->response($user, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -95,12 +95,52 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function update(Request $request)
     {
-        # code...
+        try
+    	{
+            $user = Admin::find($request->id);
+            $password = PasswordHelper::generatePassword($user->salt, $request->password);
+            $data = [
+                'full_name' => $request->last_name.', '.$request->first_name,
+                'email' => $request->email,
+                'active' => $request->isActive
+            ];
+
+            if($request->password)
+                $data['password'] = $password;
+
+            $user->update($data);
+
+            $meta_details = ["first_name" => $request->first_name, "last_name" => $request->last_name];
+            $user->saveMeta($meta_details);
+
+            return $this->response($user, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
     }
 
     public function delete($id)
     {
-        # code...
+        try
+    	{
+            $user = Admin::find($id);
+            $user->delete();
+            return $this->response($user, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
     }
 
 }

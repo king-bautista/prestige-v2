@@ -15,7 +15,6 @@ class Role extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'admin_id',
         'name',
         'description',
         'active',
@@ -27,9 +26,9 @@ class Role extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'created_at' => 'datetime:Y-m-d H:i:s A',
+        'updated_at' => 'datetime:Y-m-d H:i:s A',
+        'deleted_at' => 'datetime:Y-m-d H:i:s A',
     ];
 
     /**

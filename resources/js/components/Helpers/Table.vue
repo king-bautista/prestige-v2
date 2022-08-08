@@ -43,6 +43,9 @@
                             <span v-else-if="tHeader.type == 'image'">
                             {{ tHeader.name }}
                             </span>
+                            <span v-else-if="tHeader.type == 'icon'">
+                            {{ tHeader.name }}
+                            </span>
 	                        <span v-else>
 	                        {{ tHeader }}
 	                        </span>
@@ -65,6 +68,9 @@
                 			</span>
                             <span v-else-if="tHeader.type == 'image'">
                                 <img class="cat-icon" :src="data[key]" />
+                            </span>
+                            <span v-else-if="tHeader.type == 'icon'">
+                                <i :class="data[key]" aria-hidden="true"></i>
                             </span>
                 			<span v-else>
                 			{{ data[key] }}

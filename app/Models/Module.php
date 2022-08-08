@@ -15,7 +15,8 @@ class Module extends Model
      */
     protected $fillable = [
         'name',
-        'description',
+        'link',
+        'class_name',
         'active',
     ];
 
@@ -43,4 +44,5 @@ class Module extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+    
 }

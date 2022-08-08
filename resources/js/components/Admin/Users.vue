@@ -32,7 +32,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fas fa-user-plus"></i> Add New User</h5>
-						<h5 class="modal-title" v-show="edit_record">Edit User</h5>
+						<h5 class="modal-title" v-show="edit_record"><i class="fas fa-user-edit"></i> Edit User</h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -71,6 +71,15 @@
 								</div>
 								<div class="col-sm-2">
 									<button type="button" class="btn btn-block btn-outline-secondary btn-sm" v-show="displayPassword" @click="cancelPassword" style="margin-top: 4px;">Cancel</button>
+								</div>
+							</div>
+							<div class="form-group row" v-show="edit_record">
+								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="isActive" v-model="user.isActive">
+										<label class="custom-control-label" for="isActive"></label>
+									</div>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -120,7 +129,7 @@
                     password: '',
                     password_confirmation: '',
                     role: '',
-                    active: false,           
+                    isActive: false,           
                     emailNotification: '',
                 },
                 add_record: true,
@@ -156,7 +165,7 @@
             		delete: {
             			title: 'Delete this user',
             			name: 'Delete',
-            			apiUrl: '/api/v1/user/delete',
+            			apiUrl: '/admin/users/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
@@ -182,13 +191,13 @@
 			AddNewUser: function() {
 				this.add_record = true;
 				this.edit_record = false;
-                this.email = '';
-                this.first_name = '';
-                this.last_name ='';                 
-                this.password = '';
-                this.password_confirmation = '';
-                this.role = '';
-                this.active = false;				
+                this.user.email = '';
+                this.user.first_name = '';
+                this.user.last_name ='';                 
+                this.user.password = '';
+                this.user.password_confirmation = '';
+                this.user.role = '';
+                this.user.isActive = false;				
               	$('#user-form').modal('show');
             },
 
@@ -217,35 +226,27 @@
                 axios.get('/admin/users/'+id)
                 .then(response => {
                     var user = response.data.data;
-                    // this.user.id = id;
-                    // this.user.userName = user.name;
-                    // this.user.email = user.email;
-                    // this.user.firstName = user.details.first_name;
-                    // this.user.lastName = user.details.last_name;
+					console.log(user);
+                    this.user.id = id;
+                    this.user.email = user.email;
+                    this.user.first_name = user.details.first_name;
+                    this.user.last_name = user.details.last_name;
                     // this.user.role = user.roles[0].id;
-                    // this.user.isActive = user.active;
-                    // this.addNewButton = false;
-                    // this.saveButton = true;
-                    // $('#user-form').modal('show');
+                    this.user.isActive = user.active;
+					this.add_record = false;
+					this.edit_record = true;
+                    $('#user-form').modal('show');
                 });
             },
 
             updateUser: function() {
-                // axios.put('/api/v1/user/update', this.user)
-                //     .then(response => {
-                //         toastr.success(response.data.message);
-                //         this.$refs.dataTable.fetchData();
-                //         $('#user-form').modal('hide');
-                //     })
-            },			
-
-
-
-
-
- 
-
-
+                axios.put('/admin/users/update', this.user)
+                    .then(response => {
+                        toastr.success(response.data.message);
+                        this.$refs.dataTable.fetchData();
+                        $('#user-form').modal('hide');
+                    })
+            },
 
         },
 

@@ -17,14 +17,11 @@ class CreateRolesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('admin_id')->nullable()->unsigned();
             $table->string('name')->index();
             $table->string('description');
             $table->boolean('active')->default(false);
             $table->timestamps();
             $table->softDeletes()->index();
-
-            $table->foreign('admin_id')->references('id')->on('admins');
         });
     }
 

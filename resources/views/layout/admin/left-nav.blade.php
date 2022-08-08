@@ -38,15 +38,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="/admin/users" class="nav-link">
                                 <i class="nav-icon fas fa-user-secret"></i>
                                 <p>Users</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="/admin/roles" class="nav-link">
                                 <i class="nav-icon fas fa-user-tag"></i>
                                 <p>Roles</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/modules" class="nav-link">
+                                <i class="nav-icon fas fa-link"></i>
+                                <p>Modules</p>
                             </a>
                         </li>
                     </ul>

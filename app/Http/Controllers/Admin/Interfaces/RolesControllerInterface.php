@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Admin\Interfaces;
 use Illuminate\Http\Request;
-use App\Http\Requests\RegistrationRequest;
 
-interface UsersControllerInterface
+interface RolesControllerInterface
 {
     /**
      * @OA\Get(
-     * path="/admin/users/list",
-     * summary="List of admin users",
-     * description="List of admin users",
-     * operationId="admin-users-list",
-     * tags={"Admin User"},
+     * path="/admin/roles/list",
+     * summary="List of roles",
+     * description="List of roles",
+     * operationId="admin-roles-list",
+     * tags={"Admin Role"},
      * @OA\Parameter(
      *      name="search",
      *      description="Search",
@@ -30,14 +29,14 @@ interface UsersControllerInterface
 
     /**
      * @OA\Get(
-     * path="/admin/users/{id}",
-     * summary="List of admin users",
-     * description="List of admin users",
-     * operationId="admin-users-details",
-     * tags={"Admin User"},
+     * path="/admin/roles/{id}",
+     * summary="Role details",
+     * description="Role details",
+     * operationId="admin-roles-details",
+     * tags={"Admin Role"},
      * @OA\Parameter(
      *      name="id",
-     *      description="User ID",
+     *      description="Role ID",
      *      required=false,
      *      in="path",
      *      @OA\Schema(type="string")
@@ -52,42 +51,21 @@ interface UsersControllerInterface
 
     /**
      * @OA\Post(
-     * path="/admin/users/store",
-     * summary="Register admin user",
-     * description="Register admin user",
-     * operationId="register-admin-users",
-     * tags={"Admin User"},
+     * path="/admin/roles/store",
+     * summary="Store role details",
+     * description="Store role details",
+     * operationId="register-admin-role",
+     * tags={"Admin Role"},
      * @OA\Parameter(
-     *      name="first_name",
-     *      description="First name",
+     *      name="name",
+     *      description="Role name",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
      * ),
      * @OA\Parameter(
-     *      name="last_name",
-     *      description="Last name",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="email",
-     *      description="Email address",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password",
-     *      description="Password",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password_confirmation",
-     *      description="Confirmation password",
+     *      name="description",
+     *      description="Role description",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
@@ -104,54 +82,26 @@ interface UsersControllerInterface
      *     )
      * )
      */
-    public function store(RegistrationRequest $request);
+    public function store(Request $request);
 
     /**
      * @OA\Put(
-     * path="/admin/users/update",
-     * summary="Register admin user",
-     * description="Register admin user",
-     * operationId="admin-users-update",
-     * tags={"Admin User"},
+     * path="/admin/roles/update",
+     * summary="Update admin role",
+     * description="Update admin role",
+     * operationId="admin-roles-update",
+     * tags={"Admin Role"},
      * @OA\Parameter(
-     *      name="id",
-     *      description="ID",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="integer")
-     * ),
-     * @OA\Parameter(
-     *      name="first_name",
-     *      description="First name",
+     *      name="name",
+     *      description="Role name",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
      * ),
      * @OA\Parameter(
-     *      name="last_name",
-     *      description="Last name",
+     *      name="description",
+     *      description="Role description",
      *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="email",
-     *      description="Email address",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password",
-     *      description="Password",
-     *      required=false,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password_confirmation",
-     *      description="Confirmation password",
-     *      required=false,
      *      in="query",
      *      @OA\Schema(type="string")
      * ),
@@ -178,14 +128,14 @@ interface UsersControllerInterface
 
     /**
      * @OA\Get(
-     * path="/admin/users/delete/{id}",
-     * summary="Delete admin user",
-     * description="Delete admin user",
-     * operationId="admin-users-delete",
-     * tags={"Admin User"},
+     * path="/admin/roles/delete/{id}",
+     * summary="Delete admin role",
+     * description="Delete admin role",
+     * operationId="admin-roles-delete",
+     * tags={"Admin Role"},
      * @OA\Parameter(
      *      name="id",
-     *      description="User ID",
+     *      description="Role ID",
      *      required=false,
      *      in="path",
      *      @OA\Schema(type="string")
@@ -197,5 +147,4 @@ interface UsersControllerInterface
      * )
      */
     public function delete($id);
-    
 }

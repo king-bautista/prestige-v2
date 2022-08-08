@@ -2,9 +2,11 @@
 
 namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AdminViewModel extends Model
 {
+    use SoftDeletes;
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -52,20 +54,20 @@ class AdminViewModel extends Model
      *
      * @var string
      */
-	// public $appends = [
-    //     'details',
-    // ];
+	public $appends = [
+        'details',
+    ];
 
-    // public function getUserDetails()
-    // {   
-    //     return $this->hasMany('App\Models\AdminMeta', 'admin_id', 'id');
-    // }
+    public function getUserDetails()
+    {   
+        return $this->hasMany('App\Models\AdminMeta', 'admin_id', 'id');
+    }
 
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    // public function getDetailsAttribute() 
-    // {
-    //     return $this->getUserDetails()->pluck('meta_value','meta_key')->toArray();
-    // }
+    public function getDetailsAttribute() 
+    {
+        return $this->getUserDetails()->pluck('meta_value','meta_key')->toArray();
+    }
 }

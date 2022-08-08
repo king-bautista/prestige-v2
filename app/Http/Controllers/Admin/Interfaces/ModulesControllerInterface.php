@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Admin\Interfaces;
 use Illuminate\Http\Request;
-use App\Http\Requests\RegistrationRequest;
 
-interface UsersControllerInterface
+interface ModulesControllerInterface
 {
     /**
      * @OA\Get(
-     * path="/admin/users/list",
-     * summary="List of admin users",
-     * description="List of admin users",
-     * operationId="admin-users-list",
-     * tags={"Admin User"},
+     * path="/admin/modules/list",
+     * summary="List of modules",
+     * description="List of modules",
+     * operationId="admin-modules-list",
+     * tags={"Admin Module"},
      * @OA\Parameter(
      *      name="search",
      *      description="Search",
@@ -30,14 +29,14 @@ interface UsersControllerInterface
 
     /**
      * @OA\Get(
-     * path="/admin/users/{id}",
-     * summary="List of admin users",
-     * description="List of admin users",
-     * operationId="admin-users-details",
-     * tags={"Admin User"},
+     * path="/admin/modules/{id}",
+     * summary="Module details",
+     * description="Module details",
+     * operationId="admin-modules-details",
+     * tags={"Admin Module"},
      * @OA\Parameter(
      *      name="id",
-     *      description="User ID",
+     *      description="Module ID",
      *      required=false,
      *      in="path",
      *      @OA\Schema(type="string")
@@ -52,42 +51,21 @@ interface UsersControllerInterface
 
     /**
      * @OA\Post(
-     * path="/admin/users/store",
-     * summary="Register admin user",
-     * description="Register admin user",
-     * operationId="register-admin-users",
-     * tags={"Admin User"},
+     * path="/admin/modules/store",
+     * summary="Store module details",
+     * description="Store module details",
+     * operationId="register-admin-module",
+     * tags={"Admin Module"},
      * @OA\Parameter(
-     *      name="first_name",
-     *      description="First name",
+     *      name="name",
+     *      description="Module name",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
      * ),
      * @OA\Parameter(
-     *      name="last_name",
-     *      description="Last name",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="email",
-     *      description="Email address",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password",
-     *      description="Password",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password_confirmation",
-     *      description="Confirmation password",
+     *      name="link",
+     *      description="Module link",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
@@ -104,54 +82,26 @@ interface UsersControllerInterface
      *     )
      * )
      */
-    public function store(RegistrationRequest $request);
+    public function store(Request $request);
 
     /**
      * @OA\Put(
-     * path="/admin/users/update",
-     * summary="Register admin user",
-     * description="Register admin user",
-     * operationId="admin-users-update",
-     * tags={"Admin User"},
+     * path="/admin/modules/update",
+     * summary="Update admin module",
+     * description="Update admin module",
+     * operationId="admin-modules-update",
+     * tags={"Admin Module"},
      * @OA\Parameter(
-     *      name="id",
-     *      description="ID",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="integer")
-     * ),
-     * @OA\Parameter(
-     *      name="first_name",
-     *      description="First name",
+     *      name="name",
+     *      description="Module name",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
      * ),
      * @OA\Parameter(
-     *      name="last_name",
-     *      description="Last name",
+     *      name="link",
+     *      description="Module link",
      *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="email",
-     *      description="Email address",
-     *      required=true,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password",
-     *      description="Password",
-     *      required=false,
-     *      in="query",
-     *      @OA\Schema(type="string")
-     * ),
-     * @OA\Parameter(
-     *      name="password_confirmation",
-     *      description="Confirmation password",
-     *      required=false,
      *      in="query",
      *      @OA\Schema(type="string")
      * ),
@@ -178,14 +128,14 @@ interface UsersControllerInterface
 
     /**
      * @OA\Get(
-     * path="/admin/users/delete/{id}",
-     * summary="Delete admin user",
-     * description="Delete admin user",
-     * operationId="admin-users-delete",
-     * tags={"Admin User"},
+     * path="/admin/modules/delete/{id}",
+     * summary="Delete admin module",
+     * description="Delete admin module",
+     * operationId="admin-modules-delete",
+     * tags={"Admin Module"},
      * @OA\Parameter(
      *      name="id",
-     *      description="User ID",
+     *      description="Module ID",
      *      required=false,
      *      in="path",
      *      @OA\Schema(type="string")
@@ -197,5 +147,4 @@ interface UsersControllerInterface
      * )
      */
     public function delete($id);
-    
 }
