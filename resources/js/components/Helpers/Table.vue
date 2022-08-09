@@ -232,8 +232,12 @@
                         $('#deleteModal').modal('show');
                     break;
 
-            		case "link":
-            			this.$router.push({name: routeName, params: { id: id}});
+            		// case "link": // link for SPA only
+            		// 	this.$router.push({name: routeName, params: { id: id}});
+            		// break;
+
+                    case "link":
+                        window.location.href = apiUrl+'/'+id;
             		break;
 
                     case "view":

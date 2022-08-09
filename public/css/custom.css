@@ -15,3 +15,41 @@
     font-size: 1.5rem;
 }
 
+#resp-table {
+    width: 100%;
+    display: table;
+}
+
+#resp-table-header{
+    display: table-header-group;
+    color: #fff;
+    background-color: #212529;
+}
+
+.table-header-cell{
+    display: table-cell;
+    padding: 10px;
+    text-align: justify;
+    border-bottom: 1px solid black;
+}
+
+#resp-table-body{
+    display: table-row-group;
+}
+
+.resp-table-row{
+    display: table-row;
+}
+
+.resp-table-row:hover{
+    color: #212529;
+    background-color: rgba(0,0,0,.075);
+}
+
+.table-body-cell{
+    display: table-cell;
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+

@@ -13,7 +13,7 @@
                         :actionButtons="actionButtons"
 						:otherButtons="otherButtons"
                         :primaryKey="primaryKey"
-						v-on:AddNewRole="AddNewRole"
+						v-on:addNewRole="addNewRole"
 						v-on:editButton="editRole"
                         ref="dataTable">
 			          	</Table>
@@ -60,6 +60,33 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<label for="lastName" class="col-sm-4 col-form-label">Permissions</label>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<div id="resp-table">
+										<div id="resp-table-header">
+											<div class="table-header-cell">Modules</div>
+											<div class="table-header-cell text-center">Can View</div>
+											<div class="table-header-cell text-center">Can Add</div>
+											<div class="table-header-cell text-center">Can Edit</div>
+											<div class="table-header-cell text-center">Can Delete</div>
+										</div>
+										<div v-for="(module, index) in permissions" id="resp-table-body">
+											<div class="resp-table-row">
+												<div class="table-body-cell" v-bind:class="(module.parent_id) ? 'pl-4':''">
+													<i :class="module.class_name"></i> {{ module.name }}
+												</div>
+												<div class="table-body-cell text-center"><input type="checkbox" v-model="module.can_view"></div>
+												<div class="table-body-cell text-center"><input type="checkbox" v-model="module.can_add"></div>
+												<div class="table-body-cell text-center"><input type="checkbox" v-model="module.can_edit"></div>
+												<div class="table-body-cell text-center"><input type="checkbox" v-model="module.can_delete"></div>
+											</div>	
+										</div>									
+									</div>
+								</div>
+							</div>
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -89,6 +116,7 @@
                 },
                 add_record: true,
                 edit_record: false,
+				permissions: [],
             	dataFields: {
             		name: "Name", 
             		description: "Description", 
@@ -121,11 +149,19 @@
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
             		},
+					permissions: {
+            			title: 'Set Permissions',
+            			name: 'Permissions',
+            			apiUrl: '/admin/permissions',
+            			routeName: '',
+            			button: '<i class="fa fa-check-square" aria-hidden="true"></i> Set Permissions',
+            			method: 'link'
+            		},
             	},
 				otherButtons: {
 					addNew: {
 						title: 'New Role',
-						v_on: 'AddNewRole',
+						v_on: 'addNewRole',
 						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Role',
 						class: 'btn btn-primary btn-sm'
 					},
@@ -133,8 +169,41 @@
             };
         },
 
+		created(){
+            this.setPermissions();
+        },
+
         methods: {
-			AddNewRole: function() {
+			setPermissions: function() {
+				axios.get('/admin/roles/modules')
+                .then(response => {
+					var modules = response.data.data;
+					modules.forEach((key, index) => {
+						this.addPermissions(key);
+
+						if(key.child_modules) {
+							key.child_modules.forEach((key_child, index) => {
+								this.addPermissions(key_child);
+							});
+						}
+					});
+				});
+			},
+
+			addPermissions: function(data) {
+				this.permissions.push({
+					id: data.id, 
+					parent_id: data.parent_id, 
+					name: data.name,
+					class_name: data.class_name,
+					can_view: '',
+					can_add: '',
+					can_edit: '',
+					can_delete: ''
+				});
+			},
+
+			addNewRole: function() {
 				this.add_record = true;
 				this.edit_record = false;
                 this.role.name = '';
@@ -167,6 +236,7 @@
             },
 
             updateRole: function() {
+				console.log(this.permissions);
                 axios.put('/admin/roles/update', this.role)
                     .then(response => {
                         toastr.success(response.data.message);

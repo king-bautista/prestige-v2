@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Interfaces\RolesControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Role;
+use App\Models\ViewModels\ModuleViewModel;
 
 class RolesController extends AppBaseController implements RolesControllerInterface
 {
@@ -114,6 +115,23 @@ class RolesController extends AppBaseController implements RolesControllerInterf
             $role = Role::find($id);
             $role->delete();
             return $this->response($role, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function getModules()
+    {
+        try
+    	{
+            $modules = ModuleViewModel::whereNull('parent_id')->get();
+            return $this->response($modules, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
         {

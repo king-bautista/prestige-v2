@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Interfaces\ModulesControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Module;
+use App\Models\ViewModels\ModuleViewModel;
 
 class ModulesController extends AppBaseController implements ModulesControllerInterface
 {
@@ -22,7 +23,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
     {
         try
         {
-            $modules = Module::when(request('search'), function($query){
+            $modules = ModuleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('link', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('class_name', 'LIKE', '%' . request('search') . '%');
@@ -64,6 +65,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
     	{
             $data = [
                 'name' => $request->name,
+                'parent_id' => $request->parent_id,
                 'link' => $request->link,
                 'class_name' => $request->class_name,
                 'active' => 1
@@ -91,6 +93,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
             $data = [
                 'name' => $request->name,
+                'parent_id' => $request->parent_id,
                 'link' => $request->link,
                 'class_name' => $request->class_name,
                 'active' => $request->isActive

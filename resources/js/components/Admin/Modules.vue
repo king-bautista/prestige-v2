@@ -113,6 +113,7 @@
             			name: "Icon Class Name", 
             			type:"icon", 
             		},            		
+                    parent_link: "Parent Link", 
                     link: "Link", 
             		active: {
             			name: "Status", 
@@ -156,15 +157,21 @@
         },
 
         created(){
-            axios.get('/admin/modules/get-all-links')
-                .then(response => this.parent_links = response.data.data);
+            this.GetParentLinks();
         },
 
         methods: {
+			GetParentLinks: function() {
+				axios.get('/admin/modules/get-all-links')
+                .then(response => this.parent_links = response.data.data);
+			},
+
 			AddNewModule: function() {
 				this.add_record = true;
 				this.edit_record = false;
                 this.module.name = '';
+                this.module.parent_id = '';
+                this.module.class_name = '';
                 this.module.link = '';
                 this.module.isActive = false;				
               	$('#module-form').modal('show');
@@ -175,6 +182,7 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
+					this.GetParentLinks();
 					$('#module-form').modal('hide');
 				})
             },
@@ -185,6 +193,8 @@
                     var module = response.data.data;
                     this.module.id = id;
                     this.module.name = module.name;
+                    this.module.parent_id = module.parent_id;
+                    this.module.class_name = module.class_name;
                     this.module.link = module.link;
                     this.module.isActive = module.active;
 					this.add_record = false;
@@ -198,6 +208,7 @@
                     .then(response => {
                         toastr.success(response.data.message);
                         this.$refs.dataTable.fetchData();
+						this.GetParentLinks();
                         $('#module-form').modal('hide');
                     })
             },

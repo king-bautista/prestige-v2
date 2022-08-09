@@ -64,8 +64,22 @@ interface ModulesControllerInterface
      *      @OA\Schema(type="string")
      * ),
      * @OA\Parameter(
+     *      name="parent_id",
+     *      description="Parent ID",
+     *      required=false,
+     *      in="query",
+     *      @OA\Schema(type="integer")
+     * ),
+     * @OA\Parameter(
      *      name="link",
      *      description="Module link",
+     *      required=true,
+     *      in="query",
+     *      @OA\Schema(type="string")
+     * ),
+     * @OA\Parameter(
+     *      name="class_name",
+     *      description="Class Name",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
@@ -99,8 +113,22 @@ interface ModulesControllerInterface
      *      @OA\Schema(type="string")
      * ),
      * @OA\Parameter(
+     *      name="parent_id",
+     *      description="Parent ID",
+     *      required=false,
+     *      in="query",
+     *      @OA\Schema(type="integer")
+     * ),
+     * @OA\Parameter(
      *      name="link",
      *      description="Module link",
+     *      required=true,
+     *      in="query",
+     *      @OA\Schema(type="string")
+     * ),
+     * @OA\Parameter(
+     *      name="class_name",
+     *      description="Class Name",
      *      required=true,
      *      in="query",
      *      @OA\Schema(type="string")
