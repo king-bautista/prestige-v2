@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Role;
 use App\Models\ViewModels\ModuleViewModel;
+use App\Models\ViewModels\RoleViewModel;
 
 class RolesController extends AppBaseController implements RolesControllerInterface
 {
@@ -45,7 +46,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
         {
-            $role = Role::find($id);
+            $role = RoleViewModel::find($id);
             return $this->response($role, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -84,8 +85,8 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function update(Request $request)
     {
-        try
-    	{
+        // try
+    	// {
             $role = Role::find($request->id);
 
             $data = [
@@ -95,17 +96,18 @@ class RolesController extends AppBaseController implements RolesControllerInterf
             ];
 
             $role->update($data);
+            $role->setPermissions($request->permissions);
 
             return $this->response($role, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 401,
-            ], 401);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 401,
+        //     ], 401);
+        // }
     }
 
     public function delete($id)

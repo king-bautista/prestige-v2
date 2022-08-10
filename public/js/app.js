@@ -5617,11 +5617,11 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         name: '',
         description: '',
-        isActive: false
+        isActive: false,
+        permissions: []
       },
       add_record: true,
       edit_record: false,
-      permissions: [],
       dataFields: {
         name: "Name",
         description: "Description",
@@ -5653,14 +5653,6 @@ __webpack_require__.r(__webpack_exports__);
           routeName: '',
           button: '<i class="fas fa-trash-alt"></i> Delete',
           method: 'delete'
-        },
-        permissions: {
-          title: 'Set Permissions',
-          name: 'Permissions',
-          apiUrl: '/admin/permissions',
-          routeName: '',
-          button: '<i class="fa fa-check-square" aria-hidden="true"></i> Set Permissions',
-          method: 'link'
         }
       },
       otherButtons: {
@@ -5673,36 +5665,59 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  created: function created() {
-    this.setPermissions();
-  },
+  // created(){
+  //     this.setPermissions();
+  // },
   methods: {
+    checkedAll: function checkedAll(action, id) {
+      if ($("." + action + 'all_' + id).is(':checked')) {
+        $("." + action + id).each(function () {
+          if (!$(this).is(":checked")) {
+            $(this).click();
+          }
+        });
+      } else {
+        $("." + action + id).each(function () {
+          if ($(this).is(":checked")) {
+            $(this).click();
+          }
+        });
+      }
+    },
+    uncheckedAll: function uncheckedAll(action, id) {
+      if ($('.' + action + id + ':checked').length == $('.' + action + id + '').length) {
+        $("." + action + 'all_' + id).click();
+      } else {
+        $("." + action + 'all_' + id).prop('checked', false);
+      }
+    },
     setPermissions: function setPermissions() {
       var _this = this;
 
       axios.get('/admin/roles/modules').then(function (response) {
         var modules = response.data.data;
         modules.forEach(function (key, index) {
-          _this.addPermissions(key);
+          _this.addPermissions(key, 'all_' + key.id);
 
           if (key.child_modules) {
             key.child_modules.forEach(function (key_child, index) {
-              _this.addPermissions(key_child);
+              _this.addPermissions(key_child, key_child.parent_id);
             });
           }
         });
       });
     },
-    addPermissions: function addPermissions(data) {
-      this.permissions.push({
-        id: data.id,
+    addPermissions: function addPermissions(data, str_class) {
+      this.role.permissions.push({
+        id: data.module_id ? data.module_id : data.id,
         parent_id: data.parent_id,
         name: data.name,
         class_name: data.class_name,
-        can_view: '',
-        can_add: '',
-        can_edit: '',
-        can_delete: ''
+        str_class: str_class,
+        can_view: data.can_view,
+        can_add: data.can_add,
+        can_edit: data.can_edit,
+        can_delete: data.can_delete
       });
     },
     addNewRole: function addNewRole() {
@@ -5711,6 +5726,8 @@ __webpack_require__.r(__webpack_exports__);
       this.role.name = '';
       this.role.description = '';
       this.role.isActive = false;
+      this.role.permissions = [];
+      this.setPermissions();
       $('#role-form').modal('show');
     },
     storeRole: function storeRole() {
@@ -5734,14 +5751,30 @@ __webpack_require__.r(__webpack_exports__);
         _this3.role.description = role.description;
         _this3.role.isActive = role.active;
         _this3.add_record = false;
-        _this3.edit_record = true;
+        _this3.edit_record = true; // clear initial permissions
+
+        if (role.permissions.length > 0) {
+          _this3.role.permissions = []; // put new permission with data
+
+          role.permissions.forEach(function (key, index) {
+            if (!key.parent_id) {
+              _this3.addPermissions(key, 'all_' + key.id);
+            } else {
+              _this3.addPermissions(key, key.parent_id);
+            }
+          });
+        } else {
+          _this3.role.permissions = [];
+
+          _this3.setPermissions();
+        }
+
         $('#role-form').modal('show');
       });
     },
     updateRole: function updateRole() {
       var _this4 = this;
 
-      console.log(this.permissions);
       axios.put('/admin/roles/update', this.role).then(function (response) {
         toastr.success(response.data.message);
 
@@ -30675,283 +30708,365 @@ var render = function () {
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col-12" }, [
-                      _c(
-                        "div",
-                        { attrs: { id: "resp-table" } },
-                        [
-                          _vm._m(2),
-                          _vm._v(" "),
-                          _vm._l(_vm.permissions, function (module, index) {
-                            return _c(
-                              "div",
-                              { attrs: { id: "resp-table-body" } },
-                              [
-                                _c("div", { staticClass: "resp-table-row" }, [
+                      _c("div", { staticClass: "table-responsive" }, [
+                        _c(
+                          "table",
+                          {
+                            staticClass: "table table-hover",
+                            staticStyle: { width: "100%" },
+                          },
+                          [
+                            _vm._m(2),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              _vm._l(_vm.role.permissions, function (module) {
+                                return _c("tr", [
                                   _c(
-                                    "div",
-                                    {
-                                      staticClass: "table-body-cell",
-                                      class: module.parent_id ? "pl-4" : "",
-                                    },
+                                    "td",
+                                    { class: module.parent_id ? "pl-4" : "" },
                                     [
                                       _c("i", { class: module.class_name }),
-                                      _vm._v(
-                                        " " +
-                                          _vm._s(module.name) +
-                                          "\n\t\t\t\t\t\t\t\t\t\t\t\t"
-                                      ),
+                                      _vm._v(" " + _vm._s(module.name)),
                                     ]
                                   ),
                                   _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "table-body-cell text-center",
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: module.can_view,
-                                            expression: "module.can_view",
+                                  _c("td", { staticClass: "text-center" }, [
+                                    _c(
+                                      "input",
+                                      _vm._g(
+                                        {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: module.can_view,
+                                              expression: "module.can_view",
+                                            },
+                                          ],
+                                          class: "view_" + module.str_class,
+                                          attrs: { type: "checkbox" },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              module.can_view
+                                            )
+                                              ? _vm._i(module.can_view, null) >
+                                                -1
+                                              : module.can_view,
                                           },
-                                        ],
-                                        attrs: { type: "checkbox" },
-                                        domProps: {
-                                          checked: Array.isArray(
-                                            module.can_view
-                                          )
-                                            ? _vm._i(module.can_view, null) > -1
-                                            : module.can_view,
-                                        },
-                                        on: {
-                                          change: function ($event) {
-                                            var $$a = module.can_view,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_view",
-                                                    $$a.concat([$$v])
-                                                  )
+                                          on: {
+                                            change: function ($event) {
+                                              var $$a = module.can_view,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_view",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_view",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
                                               } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_view",
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
+                                                _vm.$set(
+                                                  module,
+                                                  "can_view",
+                                                  $$c
+                                                )
                                               }
-                                            } else {
-                                              _vm.$set(module, "can_view", $$c)
-                                            }
+                                            },
                                           },
                                         },
-                                      }),
-                                    ]
-                                  ),
+                                        !module.parent_id
+                                          ? {
+                                              click: function () {
+                                                return _vm.checkedAll(
+                                                  "view_",
+                                                  module.id
+                                                )
+                                              },
+                                            }
+                                          : {
+                                              click: function () {
+                                                return _vm.uncheckedAll(
+                                                  "view_",
+                                                  module.parent_id
+                                                )
+                                              },
+                                            }
+                                      )
+                                    ),
+                                  ]),
                                   _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "table-body-cell text-center",
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: module.can_add,
-                                            expression: "module.can_add",
+                                  _c("td", { staticClass: "text-center" }, [
+                                    _c(
+                                      "input",
+                                      _vm._g(
+                                        {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: module.can_add,
+                                              expression: "module.can_add",
+                                            },
+                                          ],
+                                          class: "add_" + module.str_class,
+                                          attrs: { type: "checkbox" },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              module.can_add
+                                            )
+                                              ? _vm._i(module.can_add, null) >
+                                                -1
+                                              : module.can_add,
                                           },
-                                        ],
-                                        attrs: { type: "checkbox" },
-                                        domProps: {
-                                          checked: Array.isArray(module.can_add)
-                                            ? _vm._i(module.can_add, null) > -1
-                                            : module.can_add,
-                                        },
-                                        on: {
-                                          change: function ($event) {
-                                            var $$a = module.can_add,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_add",
-                                                    $$a.concat([$$v])
-                                                  )
+                                          on: {
+                                            change: function ($event) {
+                                              var $$a = module.can_add,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_add",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_add",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
                                               } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_add",
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
+                                                _vm.$set(module, "can_add", $$c)
                                               }
-                                            } else {
-                                              _vm.$set(module, "can_add", $$c)
-                                            }
+                                            },
                                           },
                                         },
-                                      }),
-                                    ]
-                                  ),
+                                        !module.parent_id
+                                          ? {
+                                              click: function () {
+                                                return _vm.checkedAll(
+                                                  "add_",
+                                                  module.id
+                                                )
+                                              },
+                                            }
+                                          : {
+                                              click: function () {
+                                                return _vm.uncheckedAll(
+                                                  "add_",
+                                                  module.parent_id
+                                                )
+                                              },
+                                            }
+                                      )
+                                    ),
+                                  ]),
                                   _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "table-body-cell text-center",
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: module.can_edit,
-                                            expression: "module.can_edit",
+                                  _c("td", { staticClass: "text-center" }, [
+                                    _c(
+                                      "input",
+                                      _vm._g(
+                                        {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: module.can_edit,
+                                              expression: "module.can_edit",
+                                            },
+                                          ],
+                                          class: "edit_" + module.str_class,
+                                          attrs: { type: "checkbox" },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              module.can_edit
+                                            )
+                                              ? _vm._i(module.can_edit, null) >
+                                                -1
+                                              : module.can_edit,
                                           },
-                                        ],
-                                        attrs: { type: "checkbox" },
-                                        domProps: {
-                                          checked: Array.isArray(
-                                            module.can_edit
-                                          )
-                                            ? _vm._i(module.can_edit, null) > -1
-                                            : module.can_edit,
-                                        },
-                                        on: {
-                                          change: function ($event) {
-                                            var $$a = module.can_edit,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_edit",
-                                                    $$a.concat([$$v])
-                                                  )
+                                          on: {
+                                            change: function ($event) {
+                                              var $$a = module.can_edit,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_edit",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_edit",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
                                               } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_edit",
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
+                                                _vm.$set(
+                                                  module,
+                                                  "can_edit",
+                                                  $$c
+                                                )
                                               }
-                                            } else {
-                                              _vm.$set(module, "can_edit", $$c)
-                                            }
+                                            },
                                           },
                                         },
-                                      }),
-                                    ]
-                                  ),
+                                        !module.parent_id
+                                          ? {
+                                              click: function () {
+                                                return _vm.checkedAll(
+                                                  "edit_",
+                                                  module.id
+                                                )
+                                              },
+                                            }
+                                          : {
+                                              click: function () {
+                                                return _vm.uncheckedAll(
+                                                  "edit_",
+                                                  module.parent_id
+                                                )
+                                              },
+                                            }
+                                      )
+                                    ),
+                                  ]),
                                   _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "table-body-cell text-center",
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: module.can_delete,
-                                            expression: "module.can_delete",
+                                  _c("td", { staticClass: "text-center" }, [
+                                    _c(
+                                      "input",
+                                      _vm._g(
+                                        {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: module.can_delete,
+                                              expression: "module.can_delete",
+                                            },
+                                          ],
+                                          class: "delete_" + module.str_class,
+                                          attrs: { type: "checkbox" },
+                                          domProps: {
+                                            checked: Array.isArray(
+                                              module.can_delete
+                                            )
+                                              ? _vm._i(
+                                                  module.can_delete,
+                                                  null
+                                                ) > -1
+                                              : module.can_delete,
                                           },
-                                        ],
-                                        attrs: { type: "checkbox" },
-                                        domProps: {
-                                          checked: Array.isArray(
-                                            module.can_delete
-                                          )
-                                            ? _vm._i(module.can_delete, null) >
-                                              -1
-                                            : module.can_delete,
-                                        },
-                                        on: {
-                                          change: function ($event) {
-                                            var $$a = module.can_delete,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_delete",
-                                                    $$a.concat([$$v])
-                                                  )
+                                          on: {
+                                            change: function ($event) {
+                                              var $$a = module.can_delete,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = null,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_delete",
+                                                      $$a.concat([$$v])
+                                                    )
+                                                } else {
+                                                  $$i > -1 &&
+                                                    _vm.$set(
+                                                      module,
+                                                      "can_delete",
+                                                      $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        )
+                                                    )
+                                                }
                                               } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    module,
-                                                    "can_delete",
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
+                                                _vm.$set(
+                                                  module,
+                                                  "can_delete",
+                                                  $$c
+                                                )
                                               }
-                                            } else {
-                                              _vm.$set(
-                                                module,
-                                                "can_delete",
-                                                $$c
-                                              )
-                                            }
+                                            },
                                           },
                                         },
-                                      }),
-                                    ]
-                                  ),
-                                ]),
-                              ]
-                            )
-                          }),
-                        ],
-                        2
-                      ),
+                                        !module.parent_id
+                                          ? {
+                                              click: function () {
+                                                return _vm.checkedAll(
+                                                  "delete_",
+                                                  module.id
+                                                )
+                                              },
+                                            }
+                                          : {
+                                              click: function () {
+                                                return _vm.uncheckedAll(
+                                                  "delete_",
+                                                  module.parent_id
+                                                )
+                                              },
+                                            }
+                                      )
+                                    ),
+                                  ]),
+                                ])
+                              }),
+                              0
+                            ),
+                          ]
+                        ),
+                      ]),
                     ]),
                   ]),
                 ]),
@@ -31044,24 +31159,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "resp-table-header" } }, [
-      _c("div", { staticClass: "table-header-cell" }, [_vm._v("Modules")]),
+    return _c("thead", [
+      _c("th", [_vm._v("Modules")]),
       _vm._v(" "),
-      _c("div", { staticClass: "table-header-cell text-center" }, [
-        _vm._v("Can View"),
-      ]),
+      _c("th", { staticClass: "text-center" }, [_vm._v("Can View")]),
       _vm._v(" "),
-      _c("div", { staticClass: "table-header-cell text-center" }, [
-        _vm._v("Can Add"),
-      ]),
+      _c("th", { staticClass: "text-center" }, [_vm._v("Can Add")]),
       _vm._v(" "),
-      _c("div", { staticClass: "table-header-cell text-center" }, [
-        _vm._v("Can Edit"),
-      ]),
+      _c("th", { staticClass: "text-center" }, [_vm._v("Can Edit")]),
       _vm._v(" "),
-      _c("div", { staticClass: "table-header-cell text-center" }, [
-        _vm._v("Can Delete"),
-      ]),
+      _c("th", { staticClass: "text-center" }, [_vm._v("Can Delete")]),
     ])
   },
 ]

@@ -45,4 +45,22 @@ class Role extends Model
      */
     protected $primaryKey = 'id';
 
+    public function setPermissions($permissions)
+    {
+        foreach ($permissions as $key => $permission) {
+            Permission::updateOrCreate(
+                [
+                   'role_id' => $this->id,
+                   'module_id' => $permission['id']
+                ],
+                [
+                   'can_view' => (isset($permission['can_view'])) ? $permission['can_view'] : 0,
+                   'can_add' => (isset($permission['can_add'])) ? $permission['can_add'] : 0,
+                   'can_edit' => (isset($permission['can_edit'])) ? $permission['can_edit'] : 0,
+                   'can_delete' => (isset($permission['can_delete'])) ? $permission['can_delete'] : 0,
+                ],
+            );
+        }
+    }
+
 }

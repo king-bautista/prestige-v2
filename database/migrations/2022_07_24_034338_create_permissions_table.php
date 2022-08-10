@@ -16,6 +16,7 @@ class CreatePermissionsTable extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
+            $table->bigIncrements('id');
             $table->bigInteger('role_id')->unsigned();
             $table->bigInteger('module_id')->unsigned();
             $table->boolean('can_view')->default(false);
