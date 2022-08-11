@@ -53,3 +53,6 @@
     border-top: 1px solid #dee2e6;
 }
 
+.login-page {
+    background-image: url('../images/login-bg.jpg') !important;
+}
