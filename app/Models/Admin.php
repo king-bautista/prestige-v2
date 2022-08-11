@@ -97,4 +97,17 @@ class Admin extends Authenticatable
             );
         }
     }
+
+    public function saveRoles($roles)
+    {
+        AdminRoles::where('admin_id', $this->id)->delete();
+        foreach ($roles as $key => $role) {
+            AdminRoles::updateOrCreate(
+                [
+                   'admin_id' => $this->id,
+                   'role_id' => $role['id']
+                ]
+            );
+        }
+    }
 }

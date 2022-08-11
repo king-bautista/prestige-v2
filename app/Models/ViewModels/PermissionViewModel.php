@@ -34,7 +34,7 @@ class PermissionViewModel extends Model
      */
     protected $primaryKey = 'id';
 
-    public $module = '';
+    protected $module = '';
 
     /**
      * Append additiona info to the return data

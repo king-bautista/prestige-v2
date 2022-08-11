@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Starter</title>
+        <title>PRESTIGE INTERACTIVE</title>
         <link rel="shortcut icon" href="{{ URL::to('images/prestige-favicon.png') }}">
 
         <!-- Google Font: Source Sans Pro -->

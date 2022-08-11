@@ -80,6 +80,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
             $meta_details = ["first_name" => $request->first_name, "last_name" => $request->last_name];
             $admin_user->saveMeta($meta_details);
+            $admin_user->saveRoles($request->roles);
 
             return $this->response($admin_user, 'Successfully Created!', 200);
         }
@@ -112,6 +113,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
             $meta_details = ["first_name" => $request->first_name, "last_name" => $request->last_name];
             $user->saveMeta($meta_details);
+            $user->saveRoles($request->roles);
 
             return $this->response($user, 'Successfully Created!', 200);
         }

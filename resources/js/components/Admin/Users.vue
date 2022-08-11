@@ -73,6 +73,19 @@
 									<button type="button" class="btn btn-block btn-outline-secondary btn-sm" v-show="displayPassword" @click="cancelPassword" style="margin-top: 4px;">Cancel</button>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Roles</label>
+								<div class="col-sm-8">
+									<multiselect v-model="user.roles"
+										:options="role_list"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="Select Roles"
+										label="name"
+										track-by="name">
+									</multiselect> 
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -91,14 +104,7 @@
 									</div>
 								</div>
 							</div>
-							<!-- <div class="form-group row">
-							<label for="inputPassword3" class="col-sm-4 col-form-label">Role</label>
-							<div class="col-sm-8">
-								<select class="custom-select" v-model="user.role">
-									<option v-for="role in roles" :value="role.id">{{ role.name }}</option>
-								</select>
-							</div>
-							</div> -->
+							
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -115,6 +121,7 @@
 </template>
 <script> 
 	import Table from '../Helpers/Table';
+	import Multiselect from 'vue-multiselect';
     import { generatePassword } from '../Helpers/GeneratePassword';
 
 	export default {
@@ -128,7 +135,7 @@
                     last_name: '',                   
                     password: '',
                     password_confirmation: '',
-                    role: '',
+                    roles: [],
                     isActive: false,           
                     emailNotification: '',
                 },
@@ -136,8 +143,7 @@
                 edit_record: false,
                 displayPassword: false,
                 displayButton: true,
-                // error: null,
-                // roles: [],                
+                role_list: [],                
             	dataFields: {
             		full_name: "Full Name", 
             		email: "Email", 
@@ -183,8 +189,8 @@
         },
 
         created(){
-            // axios.get('/api/v1/role/get-all')
-            //     .then(response => this.roles = response.data.data);
+            axios.get('/admin/roles/get-all')
+                .then(response => this.role_list = response.data.data);
         },
 
         methods: {
@@ -226,12 +232,11 @@
                 axios.get('/admin/users/'+id)
                 .then(response => {
                     var user = response.data.data;
-					console.log(user);
                     this.user.id = id;
                     this.user.email = user.email;
                     this.user.first_name = user.details.first_name;
                     this.user.last_name = user.details.last_name;
-                    // this.user.role = user.roles[0].id;
+                    this.user.roles = user.roles;
                     this.user.isActive = user.active;
 					this.add_record = false;
 					this.edit_record = true;
@@ -251,7 +256,9 @@
         },
 
         components: {
-        	Table
+        	Table, 
+			Multiselect
  	   }
     };
 </script> 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

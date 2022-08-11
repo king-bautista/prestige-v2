@@ -3,6 +3,7 @@
 namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Role;
 
 class AdminViewModel extends Model
 {
@@ -56,11 +57,17 @@ class AdminViewModel extends Model
      */
 	public $appends = [
         'details',
+        'roles',
     ];
 
     public function getUserDetails()
     {   
         return $this->hasMany('App\Models\AdminMeta', 'admin_id', 'id');
+    }
+
+    public function getRoles()
+    {
+        return $this->hasMany('App\Models\AdminRoles', 'admin_id', 'id');
     }
 
     /****************************************
@@ -69,5 +76,11 @@ class AdminViewModel extends Model
     public function getDetailsAttribute() 
     {
         return $this->getUserDetails()->pluck('meta_value','meta_key')->toArray();
+    }
+
+    public function getRolesAttribute() 
+    {
+        $role_ids = $this->getRoles()->pluck('role_id')->toArray();
+        return Role::whereIn('id', $role_ids)->get();
     }
 }

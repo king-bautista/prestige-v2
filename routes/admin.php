@@ -40,6 +40,7 @@ Route::get('/admin/roles/{id}', 'Admin\RolesController@details')->where('id', '[
 Route::put('/admin/roles/update', 'Admin\RolesController@update')->name('admin.roles.update');
 Route::get('/admin/roles/delete/{id}', 'Admin\RolesController@delete')->where('id', '[0-9]+')->name('admin.roles.delete');
 Route::get('/admin/roles/modules', 'Admin\RolesController@getModules')->name('admin.roles.modules');
+Route::get('/admin/roles/get-all', 'Admin\RolesController@getAll')->name('admin.roles.get-all');
 /*
 |--------------------------------------------------------------------------
 | Modules Routes

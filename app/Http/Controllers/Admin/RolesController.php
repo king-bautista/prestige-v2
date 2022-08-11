@@ -85,8 +85,8 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function update(Request $request)
     {
-        // try
-    	// {
+        try
+    	{
             $role = Role::find($request->id);
 
             $data = [
@@ -99,15 +99,15 @@ class RolesController extends AppBaseController implements RolesControllerInterf
             $role->setPermissions($request->permissions);
 
             return $this->response($role, 'Successfully Created!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 401,
-        //     ], 401);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
     }
 
     public function delete($id)
@@ -134,6 +134,23 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     	{
             $modules = ModuleViewModel::whereNull('parent_id')->get();
             return $this->response($modules, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function getAll()
+    {
+        try
+    	{
+            $roles = Role::get();
+            return $this->response($roles, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
         {
