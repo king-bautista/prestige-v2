@@ -27,15 +27,14 @@ class RedirectIfAuthenticated
         //     }
         // }
 
-        // return $next($request);
-
-        if ($guard == "admin" && Auth::guard($guard)->check()) {
+        if ($guard == "admin" && Auth::guard($guard)->check() && $request->getRequestUri() != "/admin/logout") {
             return redirect('/admin');
         }
 
-        if (Auth::guard($guard)->check()) {
-            return redirect('/');
-        }
+        dd($guard);
+        // if (Auth::guard($guard)->check() && $request->getRequestUri() != "/logout") {
+        //     return redirect('/');
+        // }
 
         return $next($request);
     }

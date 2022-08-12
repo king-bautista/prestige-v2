@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class DashboardController extends AppBaseController
@@ -12,6 +13,7 @@ class DashboardController extends AppBaseController
     ************************************/    
     public function index()
     {
+        //return $user = Auth::user();
         return view('admin.dashboard');
     }
 }

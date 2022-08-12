@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\AdminAuth\Interfaces;
 use Illuminate\Http\Request;
 
-interface LoginControllerInterface
+interface AuthControllerInterface
 {
     //
 }

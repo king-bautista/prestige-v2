@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\AdminAuth;
 
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth; 
-use App\Http\Controllers\AdminAuth\Interfaces\LoginControllerInterface;
+use App\Http\Controllers\AdminAuth\Interfaces\AuthControllerInterface;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ use App\Models\Admin;
 use Session;
 use Hash;
 
-class AuthController extends AppBaseController implements LoginControllerInterface
+class AuthController extends AppBaseController implements AuthControllerInterface
 {
     /*
     |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ class AuthController extends AppBaseController implements LoginControllerInterfa
     | to conveniently provide its functionality to your applications.
     |
     */
+    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -50,27 +52,34 @@ class AuthController extends AppBaseController implements LoginControllerInterfa
 
     public function adminLogin(LoginRequest $request)
     {
-        try
-        {
+        // try
+        // {
             $admin_user = Admin::where('email', '=', $request->email)->where('active', true)->first();
             if ($admin_user && Hash::check($admin_user->salt.env("PEPPER_HASH").$request->password, $admin_user->password)) {
-                Auth::login($admin_user);
+                Auth::guard('admin')->login($admin_user);
                 return redirect()->intended(url('/admin'));
             }
 
             return back()->withError('Invalid email or password.');            
-        }
-        catch (\Exception $e)
-        {
-            return back()->withError('Error has occurred, please try again later.');
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return back()->withError('Error has occurred, please try again later.');
+        // }
     }
 
-    public function adminLogout()
+    public function adminLogout(Request $request)
     {
-        Session::flush();
-        Auth::logout();
-        return redirect()->intended(url('/admin/login'));
+        if(Auth::guard('admin')->check()) // this means that the admin was logged in.
+        {
+            Auth::guard('admin')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('admin.login');
+        }
+        
+        //return redirect()->intended(url('/admin/login'));
     }
 
 }

@@ -20,7 +20,6 @@ Route::post('/admin/login', 'AdminAuth\AuthController@adminLogin')->name('admin.
 Route::group(['middleware' => 'auth:admin'], function () {
     
     Route::get('/admin', 'Admin\DashboardController@index')->name('admin.dashboard');
-    Route::get('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
     /*
     |--------------------------------------------------------------------------
     | Admin Users Routes
@@ -59,4 +58,5 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/modules/delete/{id}', 'Admin\ModulesController@delete')->where('id', '[0-9]+')->name('admin.modules.delete');
     Route::get('/admin/modules/get-all-links', 'Admin\ModulesController@getAllLinks')->where('id', '[0-9]+')->name('admin.modules.get-all-links');
     
+    Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
