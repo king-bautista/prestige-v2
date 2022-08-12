@@ -208,7 +208,8 @@
 
 			addPermissions: function(data, str_class) {
 				this.role.permissions.push({
-					id: (data.module_id) ? data.module_id : data.id, 
+					//id: (data.module_id) ? data.module_id : data.id, 
+					id: data.id, 
 					parent_id: data.parent_id, 
 					name: data.name,
 					class_name: data.class_name,

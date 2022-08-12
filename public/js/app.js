@@ -5709,7 +5709,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     addPermissions: function addPermissions(data, str_class) {
       this.role.permissions.push({
-        id: data.module_id ? data.module_id : data.id,
+        //id: (data.module_id) ? data.module_id : data.id, 
+        id: data.id,
         parent_id: data.parent_id,
         name: data.name,
         class_name: data.class_name,
@@ -6009,7 +6010,7 @@ __webpack_require__.r(__webpack_exports__);
       this.user.last_name = '';
       this.user.password = '';
       this.user.password_confirmation = '';
-      this.user.role = '';
+      this.user.roles = [];
       this.user.isActive = false;
       $('#user-form').modal('show');
     },

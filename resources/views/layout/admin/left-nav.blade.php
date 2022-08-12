@@ -4,7 +4,6 @@
         <img src="{{ URL::to('images/prestige-interactive-logo.png') }}" alt="Prestige Logo" class="brand-image" style="opacity: .8">
         <span class="brand-text font-weight-light">CMS</span>
     </a>
-
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
@@ -13,7 +12,7 @@
                 <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Admin User</a>
+                <a href="#" class="d-block">{{$user->full_name}}</a>
             </div>
         </div>
 
@@ -28,211 +27,35 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users-cog"></i>
-                        <p>
-                            Admin Management
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/admin/users" class="nav-link">
-                                <i class="nav-icon fas fa-user-secret"></i>
-                                <p>Users</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/roles" class="nav-link">
-                                <i class="nav-icon fas fa-user-tag"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/modules" class="nav-link">
-                                <i class="nav-icon fas fa-link"></i>
-                                <p>Modules</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Users Management
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-user-friends"></i>
-                                <p>Users</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-clipboard-list"></i>
-                        <p>
-                            Category Management
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-th-list"></i>
-                                <p>Category</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-list-ul"></i>
-                                <p>Supplementals</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-list-ol"></i>
-                                <p>Classifications</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copyright"></i>
-                        <p>Brand Management</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-store-alt"></i>
-                        <p>Tenant Management</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-city"></i>
-                        <p>Sites Management</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-photo-video"></i>
-                        <p>
-                            Ads Management
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-images"></i>
-                                <p>Web banners</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-images"></i>
-                                <p>Kiosk banner</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-images"></i>
-                                <p>Fullscreen banner</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-image"></i>
-                                <p>Pop-Ups</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
-                                <p>Events</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-area"></i>
-                        <p>
-                            Reports Management
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Merchant Population</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Top Tenant Searches</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Most Searched Keywords</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Merchant Usage</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Monthly Usage</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Malls with Highest Usage</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Kiosk Uptime History</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>System activity logs</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Sales and Revenue</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Earnings overview</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+
+                @foreach($user->permissions as $permission)
+                    @if($permission->can_view)
+                    <li class="nav-item">
+                        <a href="{{ $permission->link }}" class="nav-link">
+                            <i class="{{ $permission->class_name }}"></i>
+                            <p>{{ $permission->name }}
+                                @if(count($permission->sub_permissions) > 0)
+                                <i class="fas fa-angle-left right"></i>
+                                @endif
+                            </p>
+                        </a>
+                        @if(count($permission->sub_permissions) > 0)
+                        <ul class="nav nav-treeview">
+                            @foreach($permission->sub_permissions as $sub_menu)
+                                @if($sub_menu->can_view)
+                                <li class="nav-item">
+                                    <a href="{{ $sub_menu->link }}" class="nav-link">
+                                        <i class="{{ $sub_menu->class_name }}"></i>
+                                        <p>{{ $sub_menu->name }}</p>
+                                    </a>
+                                </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                        @endif
+                    </li>
+                    @endif
+                @endforeach
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-cog"></i>

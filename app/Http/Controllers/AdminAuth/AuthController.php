@@ -52,8 +52,8 @@ class AuthController extends AppBaseController implements AuthControllerInterfac
 
     public function adminLogin(LoginRequest $request)
     {
-        // try
-        // {
+        try
+        {
             $admin_user = Admin::where('email', '=', $request->email)->where('active', true)->first();
             if ($admin_user && Hash::check($admin_user->salt.env("PEPPER_HASH").$request->password, $admin_user->password)) {
                 Auth::guard('admin')->login($admin_user);
@@ -61,11 +61,11 @@ class AuthController extends AppBaseController implements AuthControllerInterfac
             }
 
             return back()->withError('Invalid email or password.');            
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return back()->withError('Error has occurred, please try again later.');
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return back()->withError('Error has occurred, please try again later.');
+        }
     }
 
     public function adminLogout(Request $request)
@@ -79,7 +79,10 @@ class AuthController extends AppBaseController implements AuthControllerInterfac
             return redirect()->route('admin.login');
         }
         
-        //return redirect()->intended(url('/admin/login'));
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->intended(url('/admin/login'));
     }
 
 }

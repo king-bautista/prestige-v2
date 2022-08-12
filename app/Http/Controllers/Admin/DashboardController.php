@@ -6,6 +6,8 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Models\ViewModels\AdminViewModel;
+
 class DashboardController extends AppBaseController
 {
     /************************************
@@ -13,7 +15,7 @@ class DashboardController extends AppBaseController
     ************************************/    
     public function index()
     {
-        //return $user = Auth::user();
+        //return $user = AdminViewModel::find(Auth::user()->id);
         return view('admin.dashboard');
     }
 }

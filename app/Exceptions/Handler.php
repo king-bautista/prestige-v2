@@ -36,7 +36,8 @@ class Handler extends ExceptionHandler
         if ($request->is('admin') || $request->is('admin/*')) {
             return redirect()->guest(route('admin.login'));
         }
-        return redirect()->guest(route('admin/login'));
+        // guard login for client, partners and subscriber here
+        //return redirect()->guest(route('admin/login'));
     }
 
     /**

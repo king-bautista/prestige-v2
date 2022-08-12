@@ -31,7 +31,7 @@ class RedirectIfAuthenticated
             return redirect('/admin');
         }
 
-        dd($guard);
+        // guard login for client, partners and subscriber here
         // if (Auth::guard($guard)->check() && $request->getRequestUri() != "/logout") {
         //     return redirect('/');
         // }

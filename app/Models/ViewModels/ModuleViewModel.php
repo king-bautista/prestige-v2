@@ -63,7 +63,6 @@ class ModuleViewModel extends Model
 
     public function getChildModulesAttribute() 
     {
-
         $child_modules = $this->getChildModules()->get();
         if($child_modules)
             return $child_modules;

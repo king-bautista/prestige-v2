@@ -202,7 +202,7 @@
                 this.user.last_name ='';                 
                 this.user.password = '';
                 this.user.password_confirmation = '';
-                this.user.role = '';
+                this.user.roles = [];
                 this.user.isActive = false;				
               	$('#user-form').modal('show');
             },
