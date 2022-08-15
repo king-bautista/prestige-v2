@@ -40,21 +40,21 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Module Name</label>
+								<label for="firstName" class="col-sm-4 col-form-label">Module Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="module.name" placeholder="Module Name">
+									<input type="text" class="form-control" v-model="module.name" placeholder="Module Name" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Link</label>
+								<label for="lastName" class="col-sm-4 col-form-label">Link <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="module.link" placeholder="Link">
+                                    <input type="text" class="form-control" v-model="module.link" placeholder="Link" required>
 								</div>
 							</div>
                             <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Icon Class Name</label>
+								<label for="lastName" class="col-sm-4 col-form-label">Icon Class Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="module.class_name" placeholder="CSS Class Name">
+                                    <input type="text" class="form-control" v-model="module.class_name" placeholder="CSS Class Name" required>
 								</div>
 							</div>
                             <div class="form-group row">
@@ -62,7 +62,7 @@
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="module.parent_id">
 									    <option value="">Select Parent Link</option>
-									    <option v-for="link in parent_links" :value="link.id">{{ link.name }}</option>
+									    <option v-for="link in parent_links" :value="link.id"> {{ link.name }}</option>
 								    </select>
 								</div>
 							</div>

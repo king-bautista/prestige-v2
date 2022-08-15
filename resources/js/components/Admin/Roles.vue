@@ -40,13 +40,13 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Role Name</label>
+								<label for="firstName" class="col-sm-4 col-form-label">Role Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="role.name" placeholder="Role Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions</label>
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <textarea class="form-control" v-model="role.description" placeholder="Descriptions"></textarea>
 								</div>

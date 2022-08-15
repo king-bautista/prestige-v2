@@ -145,7 +145,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
     {
         try
         {
-            $modules = Module::get();
+            $modules = Module::whereNull('parent_id')->get();
             return $this->response($modules, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

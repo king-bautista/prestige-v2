@@ -40,25 +40,25 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="email" class="col-sm-4 col-form-label">Email<span class="font-italic"> (required)</span></label>
+								<label for="email" class="col-sm-4 col-form-label">Email <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="email" class="form-control" v-model="user.email" placeholder="Email">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">First Name</label>
+								<label for="firstName" class="col-sm-4 col-form-label">First Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="user.first_name" placeholder="First Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Last Name</label>
+								<label for="lastName" class="col-sm-4 col-form-label">Last Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="user.last_name" placeholder="Last Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Password</label>
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Password <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-6">
 									<button type="button" class="btn btn-block btn-outline-info btn-sm" v-show="displayButton" @click="showPassword">Show password</button>
 									
@@ -74,7 +74,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Roles</label>
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Roles <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="user.roles"
 										:options="role_list"

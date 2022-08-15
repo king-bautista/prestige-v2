@@ -191,8 +191,6 @@
 
         methods: {
             condition(action, permission) {
-                console.log(action);
-                console.log(permission);
                 if(!permission)
                     return false;
 

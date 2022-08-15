@@ -6311,8 +6311,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     condition: function condition(action, permission) {
-      console.log(action);
-      console.log(permission);
       if (!permission) return false;
 
       switch (action) {
@@ -30198,14 +30196,7 @@ var render = function () {
               _c("div", { staticClass: "modal-body" }, [
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "firstName" },
-                      },
-                      [_vm._v("Module Name")]
-                    ),
+                    _vm._m(1),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -30218,7 +30209,11 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control",
-                        attrs: { type: "text", placeholder: "Module Name" },
+                        attrs: {
+                          type: "text",
+                          placeholder: "Module Name",
+                          required: "",
+                        },
                         domProps: { value: _vm.module.name },
                         on: {
                           input: function ($event) {
@@ -30233,14 +30228,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "lastName" },
-                      },
-                      [_vm._v("Link")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -30253,7 +30241,11 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control",
-                        attrs: { type: "text", placeholder: "Link" },
+                        attrs: {
+                          type: "text",
+                          placeholder: "Link",
+                          required: "",
+                        },
                         domProps: { value: _vm.module.link },
                         on: {
                           input: function ($event) {
@@ -30268,14 +30260,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "lastName" },
-                      },
-                      [_vm._v("Icon Class Name")]
-                    ),
+                    _vm._m(3),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -30288,7 +30273,11 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control",
-                        attrs: { type: "text", placeholder: "CSS Class Name" },
+                        attrs: {
+                          type: "text",
+                          placeholder: "CSS Class Name",
+                          required: "",
+                        },
                         domProps: { value: _vm.module.class_name },
                         on: {
                           input: function ($event) {
@@ -30358,7 +30347,7 @@ var render = function () {
                             return _c(
                               "option",
                               { domProps: { value: link.id } },
-                              [_vm._v(_vm._s(link.name))]
+                              [_vm._v(" " + _vm._s(link.name))]
                             )
                           }),
                         ],
@@ -30526,6 +30515,45 @@ var staticRenderFns = [
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
   },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Module Name "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "lastName" } },
+      [
+        _vm._v("Link "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "lastName" } },
+      [
+        _vm._v("Icon Class Name "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
 ]
 render._withStripped = true
 
@@ -30653,14 +30681,7 @@ var render = function () {
               _c("div", { staticClass: "modal-body" }, [
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "firstName" },
-                      },
-                      [_vm._v("Role Name")]
-                    ),
+                    _vm._m(1),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -30688,14 +30709,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "lastName" },
-                      },
-                      [_vm._v("Descriptions")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("textarea", {
@@ -30812,7 +30826,7 @@ var render = function () {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm._m(1),
+                  _vm._m(3),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col-12" }, [
@@ -30824,7 +30838,7 @@ var render = function () {
                             staticStyle: { width: "100%" },
                           },
                           [
-                            _vm._m(2),
+                            _vm._m(4),
                             _vm._v(" "),
                             _c(
                               "tbody",
@@ -31255,6 +31269,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Role Name "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "lastName" } },
+      [
+        _vm._v("Descriptions "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
       _c(
         "label",
@@ -31428,14 +31468,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "firstName" },
-                      },
-                      [_vm._v("First Name")]
-                    ),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -31467,14 +31500,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "lastName" },
-                      },
-                      [_vm._v("Last Name")]
-                    ),
+                    _vm._m(3),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -31502,14 +31528,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "inputPassword3" },
-                      },
-                      [_vm._v("Password")]
-                    ),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-6" }, [
                       _c(
@@ -31613,14 +31632,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "inputPassword3" },
-                      },
-                      [_vm._v("Roles")]
-                    ),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -31895,8 +31907,66 @@ var staticRenderFns = [
       "label",
       { staticClass: "col-sm-4 col-form-label", attrs: { for: "email" } },
       [
-        _vm._v("Email"),
-        _c("span", { staticClass: "font-italic" }, [_vm._v(" (required)")]),
+        _vm._v("Email "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("First Name "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "lastName" } },
+      [
+        _vm._v("Last Name "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-sm-4 col-form-label",
+        attrs: { for: "inputPassword3" },
+      },
+      [
+        _vm._v("Password "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-sm-4 col-form-label",
+        attrs: { for: "inputPassword3" },
+      },
+      [
+        _vm._v("Roles "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
       ]
     )
   },
