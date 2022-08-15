@@ -150,7 +150,8 @@
 						title: 'New Module',
 						v_on: 'AddNewModule',
 						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Module',
-						class: 'btn btn-primary btn-sm'
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
 					},
 				}
             };

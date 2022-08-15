@@ -3,17 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ModulesControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Module;
 use App\Models\ViewModels\ModuleViewModel;
+use App\Models\ViewModels\AdminViewModel;
 
 class ModulesController extends AppBaseController implements ModulesControllerInterface
 {
     /************************************
     * 			MODULE MANAGEMENT		*
     ************************************/
+    public function __construct()
+    {
+        $this->module_id = 4; 
+        $this->module_name = 'Modules';
+    }
+
     public function index()
     {
         return view('admin.modules');
@@ -23,6 +31,8 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
     {
         try
         {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
             $modules = ModuleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('link', 'LIKE', '%' . request('search') . '%')

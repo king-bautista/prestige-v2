@@ -182,7 +182,8 @@
 						title: 'New User',
 						v_on: 'AddNewUser',
 						icon: '<i class="fas fa-user-plus"></i> New User',
-						class: 'btn btn-primary btn-sm'
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
 					},
 				}
             };

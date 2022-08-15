@@ -155,7 +155,8 @@
 						title: 'New Role',
 						v_on: 'addNewRole',
 						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Role',
-						class: 'btn btn-primary btn-sm'
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
 					},
 				}
             };
@@ -251,18 +252,19 @@
                     this.role.isActive = role.active;
 					this.add_record = false;
 					this.edit_record = true;
-
 					// clear initial permissions
 					if(role.permissions.length > 0) {
 						this.role.permissions = [];
 						// put new permission with data
 						role.permissions.forEach((key, index) => {
-							if(!key.parent_id) {
-								this.addPermissions(key, 'all_'+key.id);
-							} 
-							else {
-								this.addPermissions(key, key.parent_id);
+							this.addPermissions(key, 'all_'+key.id);
+
+							if(key.child_modules) {
+								key.child_modules.forEach((key_child, index) => {
+									this.addPermissions(key_child, key_child.parent_id);
+								});
 							}
+
 						});
 					} 
 					else {

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\ViewModels\AdminViewModel;
 
 use Illuminate\Http\Request;
 
@@ -13,6 +14,8 @@ use Illuminate\Http\Request;
 
 class AppBaseController extends Controller
 {
+    public $permissions; 
+
     public function response($data = [], $message = '', $code = 200)
     {
         $response = array(
@@ -27,7 +30,7 @@ class AppBaseController extends Controller
     }
 
     public function responsePaginate($data = [], $message = '', $code = 200)
-    {
+    {       
         $response = [
             'meta' => [
                 'total' => $data->total(),
@@ -41,6 +44,7 @@ class AppBaseController extends Controller
                 'path' => $data->url(request('page')),
                 'from' => $data->currentPage(),
                 'to' => $data->count(),
+                'permissions' => $this->permissions,
             ],
             'data' => $data->items(),         
             'message' => $message,
@@ -51,4 +55,5 @@ class AppBaseController extends Controller
 
         return response($response, $code);
     }
+
 }

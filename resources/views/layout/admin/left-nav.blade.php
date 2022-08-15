@@ -5,6 +5,7 @@
         <span class="brand-text font-weight-light">CMS</span>
     </a>
     <!-- Sidebar -->
+    @if($user)
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -27,7 +28,6 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-
                 @foreach($user->permissions as $permission)
                     @if($permission->can_view)
                     <li class="nav-item">
@@ -86,5 +86,6 @@
         </nav>
         <!-- /.sidebar-menu -->
     </div>
+    @endif
 <!-- /.sidebar -->
 </aside>

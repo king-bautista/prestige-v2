@@ -45,20 +45,44 @@ class RoleViewModel extends Model
         'permissions',
     ];
 
+    public function getModules()
+    {
+        $role_id = $this->id;
+
+        return Module::select('modules.*', 'permissions.role_id', 'permissions.module_id', 'permissions.can_view', 'permissions.can_add', 'permissions.can_edit', 'permissions.can_delete')
+        ->leftJoin('permissions', function($join) use ($role_id) {
+            $join->on('modules.id', '=', 'permissions.module_id');
+            $join->where('permissions.role_id','=', $role_id);
+        });
+    }
+
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
     public function getPermissionsAttribute() 
     {
+        $n_modules = [];
         $role_id = $this->id;
-        $modules = Module::select('modules.*', 'permissions.role_id', 'permissions.module_id', 'permissions.can_view', 'permissions.can_add', 'permissions.can_edit', 'permissions.can_delete')
-        ->leftJoin('permissions', function($join) use ($role_id) {
-            $join->on('modules.id', '=', 'permissions.module_id');
-            $join->where('permissions.role_id','=', $role_id);
-        })->get();
 
-        if($modules)
-            return $modules;
+        $modules = $this->getModules()->whereNull('modules.parent_id')->get();
+        foreach($modules as $index => $module) {
+            $n_modules[] = [
+                'id' => $module->id,
+                'name' => $module->name,
+                'parent_id' => $module->parent_id,
+                'module_id' => $module->module_id,
+                'link' => $module->link,
+                'class_name' => $module->class_name,
+                'can_view' => $module->can_view,
+                'can_edit' => $module->can_edit,
+                'can_delete' => $module->can_delete,
+                'can_add' => $module->can_add,
+                'child_modules' => $this->getModules()->where('modules.parent_id', $module->id)->get()
+            ];
+        }
+
+        if($n_modules)
+            return $n_modules;
         return null;
     }
 }

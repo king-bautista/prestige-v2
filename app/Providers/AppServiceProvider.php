@@ -32,8 +32,12 @@ class AppServiceProvider extends ServiceProvider
         view()->composer(
             'layout.admin.left-nav', 
             function ($view) {
-                $user = AdminViewModel::find(Auth::user()->id);
-                $view->with('user', $user);
+                if(Auth::user()) {
+                    $user = AdminViewModel::find(Auth::user()->id);
+                    $view->with('user', $user);
+                }else {
+                    $view->with('user', null);
+                }
             }
         );
 

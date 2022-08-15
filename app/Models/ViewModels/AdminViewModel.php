@@ -103,7 +103,7 @@ class AdminViewModel extends Model
       
         foreach($permissions_parent as $index => $permission) {
             $permissions_group[$permission->id] = $permission;
-            $permissions_group[$permission->id]['sub_permissions'] = $this->getPermissions()->where('modules.parent_id', $permission->id)->get();;
+            $permissions_group[$permission->id]['sub_permissions'] = $this->getPermissions()->where('modules.parent_id', $permission->id)->get();
         }
 
         return $permissions_group;

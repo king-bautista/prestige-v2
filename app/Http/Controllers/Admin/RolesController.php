@@ -3,18 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\RolesControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Role;
 use App\Models\ViewModels\ModuleViewModel;
 use App\Models\ViewModels\RoleViewModel;
+use App\Models\ViewModels\AdminViewModel;
 
 class RolesController extends AppBaseController implements RolesControllerInterface
 {
     /************************************
     * 			ROLES MANAGEMENT		*
     ************************************/
+    public function __construct()
+    {
+        $this->module_id = 3; 
+        $this->module_name = 'Roles';
+    }
+
     public function index()
     {
         return view('admin.roles');
@@ -24,6 +32,8 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
         {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
             $roles = Role::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('description', 'LIKE', '%' . request('search') . '%');
@@ -133,7 +143,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         try
     	{
             $modules = ModuleViewModel::whereNull('parent_id')->get();
-            return $this->response($modules, 'Successfully Deleted!', 200);
+            return $this->response($modules, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
         {

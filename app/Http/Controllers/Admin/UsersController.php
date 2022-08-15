@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\UsersControllerInterface;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,12 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     /************************************
     * 			USERS MANAGEMENT		*
     ************************************/
+    public function __construct()
+    {
+        $this->module_id = 11; 
+        $this->module_name = 'User';
+    }
+
     public function index()
     {
         return view('admin.users');
@@ -26,6 +33,8 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     {
         try
         {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
             $user = AdminViewModel::when(request('search'), function($query){
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('email', 'LIKE', '%' . request('search') . '%');

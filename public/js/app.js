@@ -5417,7 +5417,8 @@ __webpack_require__.r(__webpack_exports__);
           title: 'New Module',
           v_on: 'AddNewModule',
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Module',
-          "class": 'btn btn-primary btn-sm'
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
         }
       }
     };
@@ -5660,7 +5661,8 @@ __webpack_require__.r(__webpack_exports__);
           title: 'New Role',
           v_on: 'addNewRole',
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Role',
-          "class": 'btn btn-primary btn-sm'
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
         }
       }
     };
@@ -5758,10 +5760,12 @@ __webpack_require__.r(__webpack_exports__);
           _this3.role.permissions = []; // put new permission with data
 
           role.permissions.forEach(function (key, index) {
-            if (!key.parent_id) {
-              _this3.addPermissions(key, 'all_' + key.id);
-            } else {
-              _this3.addPermissions(key, key.parent_id);
+            _this3.addPermissions(key, 'all_' + key.id);
+
+            if (key.child_modules) {
+              key.child_modules.forEach(function (key_child, index) {
+                _this3.addPermissions(key_child, key_child.parent_id);
+              });
             }
           });
         } else {
@@ -5989,7 +5993,8 @@ __webpack_require__.r(__webpack_exports__);
           title: 'New User',
           v_on: 'AddNewUser',
           icon: '<i class="fas fa-user-plus"></i> New User',
-          "class": 'btn btn-primary btn-sm'
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
         }
       }
     };
@@ -6305,6 +6310,27 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchData();
   },
   methods: {
+    condition: function condition(action, permission) {
+      console.log(action);
+      console.log(permission);
+      if (!permission) return false;
+
+      switch (action) {
+        case 'edit':
+          if (permission.can_edit > 0) return true;
+          break;
+
+        case 'delete':
+          if (permission.can_delete > 0) return true;
+          break;
+
+        case 'add':
+          if (permission.can_add > 0) return true;
+          break;
+      }
+
+      return false;
+    },
     fetchData: function fetchData() {
       var _this = this;
 
@@ -32009,18 +32035,35 @@ var render = function () {
                 "div",
                 { staticClass: "other-button" },
                 _vm._l(_vm.otherButtons, function (action, index) {
-                  return _c("div", [
-                    _c("a", {
-                      class: action.class,
-                      attrs: { type: "button", title: action.title },
-                      domProps: { innerHTML: _vm._s(action.icon) },
-                      on: {
-                        click: function ($event) {
-                          return _vm.buttonAction(action)
+                  return _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.condition(
+                            action.method,
+                            _vm.meta.permissions
+                          ),
+                          expression:
+                            "condition(action.method, meta.permissions)",
                         },
-                      },
-                    }),
-                  ])
+                      ],
+                    },
+                    [
+                      _c("a", {
+                        class: action.class,
+                        attrs: { type: "button", title: action.title },
+                        domProps: { innerHTML: _vm._s(action.icon) },
+                        on: {
+                          click: function ($event) {
+                            return _vm.buttonAction(action)
+                          },
+                        },
+                      }),
+                    ]
+                  )
                 }),
                 0
               )
@@ -32213,33 +32256,51 @@ var render = function () {
                               staticStyle: { "min-width": "150px" },
                             },
                             _vm._l(_vm.actionButtons, function (action, index) {
-                              return _c("span", { key: index }, [
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: { href: "#" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.doAction(
-                                          action.method,
-                                          action.routeName,
-                                          action.apiUrl,
-                                          data[_vm.primaryKey],
-                                          data,
-                                          action
-                                        )
+                              return _c(
+                                "span",
+                                {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.condition(
+                                        action.method,
+                                        _vm.meta.permissions
+                                      ),
+                                      expression:
+                                        "condition(action.method, meta.permissions)",
+                                    },
+                                  ],
+                                  key: index,
+                                },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.doAction(
+                                            action.method,
+                                            action.routeName,
+                                            action.apiUrl,
+                                            data[_vm.primaryKey],
+                                            data,
+                                            action
+                                          )
+                                        },
                                       },
                                     },
-                                  },
-                                  [
-                                    _c("span", {
-                                      domProps: {
-                                        innerHTML: _vm._s(action.button),
-                                      },
-                                    }),
-                                  ]
-                                ),
-                              ])
+                                    [
+                                      _c("span", {
+                                        domProps: {
+                                          innerHTML: _vm._s(action.button),
+                                        },
+                                      }),
+                                    ]
+                                  ),
+                                ]
+                              )
                             }),
                             0
                           )

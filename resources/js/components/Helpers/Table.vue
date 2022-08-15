@@ -13,7 +13,7 @@
 	        </div>
             <div class="col-md-5 mb-2" style="text-align: right;">
                 <div v-if="otherButtons" class="other-button">
-                    <div v-for="(action, index) in otherButtons">
+                    <div v-for="(action, index) in otherButtons" v-show="condition(action.method, meta.permissions)">
                         <a type="button" :class="action.class" :title="action.title" v-html="action.icon" @click="buttonAction(action)"></a>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                 			{{ data[key] }}
                 			</span>
                 			<div class="row-actions" v-if="index==0" style="min-width: 150px;">
-	                      		<span v-for="(action, index) in actionButtons" v-bind:key="index">
+	                      		<span v-for="(action, index) in actionButtons" v-bind:key="index" v-show="condition(action.method, meta.permissions)">
 	                      			<a href="#" @click="doAction(action.method, action.routeName, action.apiUrl, data[primaryKey], data, action)">
 	                      				<span v-html="action.button"></span>
 	                      			</a>
@@ -190,6 +190,29 @@
         },
 
         methods: {
+            condition(action, permission) {
+                console.log(action);
+                console.log(permission);
+                if(!permission)
+                    return false;
+
+                switch(action) {
+                    case 'edit':
+                        if(permission.can_edit > 0)
+                            return true;
+                        break;
+                    case 'delete':
+                        if(permission.can_delete > 0)
+                            return true;
+                        break;
+                    case 'add':
+                        if(permission.can_add > 0)
+                            return true;
+                        break;
+                }
+
+                return false;
+            },
 
         	fetchData() {
                 //var id = this.$route.params.id;
