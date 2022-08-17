@@ -67,7 +67,7 @@
                 				<span v-html="tHeader.status[data[key]]"></span>
                 			</span>
                             <span v-else-if="tHeader.type == 'image'">
-                                <img class="cat-icon" :src="data[key]" />
+                                <img class="img-fluid" :src="data[key]" />
                             </span>
                             <span v-else-if="tHeader.type == 'icon'">
                                 <i :class="data[key]" aria-hidden="true"></i>
@@ -376,7 +376,8 @@
 		font-weight: bolder;
 	}
 
-	.has-row-actions:hover .row-actions{
+	.has-row-actions:hover .row-actions {
 	    left: 0;
 	}
+
 </style>

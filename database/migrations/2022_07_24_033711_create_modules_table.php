@@ -23,8 +23,7 @@ class CreateModulesTable extends Migration
             $table->string('class_name')->nullable();
             $table->boolean('active')->default(false);
             $table->timestamps();
-            $table->softDeletes()->index();
-    
+            $table->softDeletes()->index();    
         });
     }
 

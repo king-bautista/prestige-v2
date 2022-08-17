@@ -20,6 +20,7 @@ Route::post('/admin/login', 'AdminAuth\AuthController@adminLogin')->name('admin.
 Route::group(['middleware' => 'auth:admin'], function () {
     
     Route::get('/admin', 'Admin\DashboardController@index')->name('admin.dashboard');
+    
     /*
     |--------------------------------------------------------------------------
     | Admin Users Routes
@@ -45,6 +46,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/roles/delete/{id}', 'Admin\RolesController@delete')->where('id', '[0-9]+')->name('admin.roles.delete');
     Route::get('/admin/roles/modules', 'Admin\RolesController@getModules')->name('admin.roles.modules');
     Route::get('/admin/roles/get-all', 'Admin\RolesController@getAll')->name('admin.roles.get-all');
+
     /*
     |--------------------------------------------------------------------------
     | Modules Routes
@@ -57,6 +59,20 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/modules/update', 'Admin\ModulesController@update')->name('admin.modules.update');
     Route::get('/admin/modules/delete/{id}', 'Admin\ModulesController@delete')->where('id', '[0-9]+')->name('admin.modules.delete');
     Route::get('/admin/modules/get-all-links', 'Admin\ModulesController@getAllLinks')->where('id', '[0-9]+')->name('admin.modules.get-all-links');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Categories Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/categories', 'Admin\CategoriesController@index')->name('admin.category');
+    Route::get('/admin/category/list', 'Admin\CategoriesController@list')->name('admin.category.list');
+    Route::post('/admin/category/store', 'Admin\CategoriesController@store')->name('admin.category.store');
+    Route::get('/admin/category/{id}', 'Admin\CategoriesController@details')->where('id', '[0-9]+')->name('admin.category.details');
+    Route::post('/admin/category/update', 'Admin\CategoriesController@update')->name('admin.category.update');
+    Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('admin.category.delete');
+    Route::get('/admin/category/get-all-categories', 'Admin\CategoriesController@getAllCategories')->where('id', '[0-9]+')->name('admin.category.get-all-categories');
+    Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('admin.category.delete-image');
     
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

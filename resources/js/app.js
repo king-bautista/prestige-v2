@@ -23,6 +23,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('admin-users', require('./components/Admin/Users.vue').default);
 Vue.component('admin-roles', require('./components/Admin/Roles.vue').default);
 Vue.component('admin-modules', require('./components/Admin/Modules.vue').default);
+Vue.component('admin-categories', require('./components/Admin/Categories.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

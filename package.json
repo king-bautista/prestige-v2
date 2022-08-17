@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@riophae/vue-treeselect": "^0.4.0",
         "vue-multiselect": "^2.1.6"
     }
 }
