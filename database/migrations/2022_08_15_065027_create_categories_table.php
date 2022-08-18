@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('parent_id')->unsigned()->default(0);
+            $table->bigInteger('parent_id')->unsigned()->nullable();
             $table->string('name');
             $table->mediumText('descriptions')->nullable();            
             $table->mediumText('kiosk_image_primary')->nullable();      

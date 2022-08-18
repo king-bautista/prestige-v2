@@ -54,10 +54,15 @@
                             <div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Parent Category</label>
 								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="category.parent_id">
+									<treeselect v-model="category.parent_id"
+										:options="parent_category"
+										:normalizer="normalizer"
+										placeholder="Select Parent Category"
+										/>
+                                    <!-- <select class="custom-select" v-model="category.parent_id">
 									    <option value="0">Select Parent Category</option>
 									    <option v-for="category in parent_category" :value="category.id"> {{ category.name }}</option>
-								    </select>
+								    </select> -->
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -89,7 +94,7 @@
                                 </div>
 							</div>
                             <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Kios Top Image <span class="font-italic text-danger"> *</span></label>
+								<label for="lastName" class="col-sm-4 col-form-label">Kiosk Top Image <span class="font-italic text-danger"> *</span></label>
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-6">
@@ -161,6 +166,10 @@
 </template>
 <script> 
 	import Table from '../Helpers/Table';
+	// import the component
+	import Treeselect from '@riophae/vue-treeselect'
+	// import the styles
+	import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 	export default {
         name: "Categories",
@@ -168,7 +177,7 @@
             return {
                 category: {
                     id: '',
-                    parent_id: '',
+                    parent_id: null,
                     name: '',
                     descriptions: '',                   
                     kiosk_image_primary: '',                   
@@ -187,20 +196,20 @@
             	dataFields: {
             		name: "Name", 
             		descriptions: "Descriptions",          		
-                    parent_name: "Parent Category", 
-                    kiosk_image_primary: {
+                    parent_category: "Parent Category", 
+                    kiosk_image_primary_path: {
             			name: "Kiosk Primary Image", 
             			type:"image", 
             		}, 
-                    kiosk_image_top: {
+                    kiosk_image_top_path: {
             			name: "Kiosk Top Image", 
             			type:"image", 
             		}, 
-                    online_image_primary: {
+                    online_image_primary_path: {
             			name: "Online Primary Image", 
             			type:"image", 
             		}, 
-                    online_image_top: {
+                    online_image_top_path: {
             			name: "Online Top Image", 
             			type:"image", 
             		}, 
@@ -283,7 +292,7 @@
 			AddNewCategory: function() {
 				this.add_record = true;
 				this.edit_record = false;
-                this.category.parent_id = '';
+                this.category.parent_id = null;
                 this.category.name = '';
                 this.category.descriptions = '';
                 this.category.kiosk_image_primary = '';
@@ -295,6 +304,10 @@
 				this.kiosk_top_url = '';
 				this.online_primary_url = '';
 				this.online_top_url = '';
+				this.$refs.kiosk_image_primary.value = null;
+				this.$refs.kiosk_image_top.value = null;
+				this.$refs.online_image_primary.value = null;
+				this.$refs.online_image_top.value = null;
               	$('#category-form').modal('show');
             },
 
@@ -326,15 +339,18 @@
                 .then(response => {
                     var category = response.data.data;
                     this.category.id = category.id;
-                    this.category.parent_id = category.parent_id;
+                    this.category.parent_id = (category.parent_id) ? category.parent_id : null;
                     this.category.name = category.name;
                     this.category.descriptions = category.descriptions;
-                    this.kiosk_primary_url = category.kiosk_image_primary;
-                    this.kiosk_top_url = category.kiosk_image_top;
-                    this.online_primary_url = category.online_image_primary;
-                    this.online_top_url = category.online_image_top;
+                    this.kiosk_primary_url = category.kiosk_image_primary_path;
+                    this.kiosk_top_url = category.kiosk_image_top_path;
+                    this.online_primary_url = category.online_image_primary_path;
+                    this.online_top_url = category.online_image_top_path;
                     this.category.active = category.active;
-
+					this.category.kiosk_image_primary = '';
+					this.category.kiosk_image_top = '';
+					this.category.online_image_primary = '';
+					this.category.online_image_top = '';
 					this.$refs.kiosk_image_primary.value = null;
 					this.$refs.kiosk_image_top.value = null;
 					this.$refs.online_image_primary.value = null;
@@ -356,6 +372,7 @@
 				formDataUpdate.append("kiosk_image_top", this.category.kiosk_image_top);
 				formDataUpdate.append("online_image_primary", this.category.online_image_primary);
 				formDataUpdate.append("online_image_top", this.category.online_image_top);
+				formDataUpdate.append("active", this.category.active);
 
                 axios.post('/admin/category/update', formDataUpdate, {
 					headers: {
@@ -386,7 +403,8 @@
         },
 
         components: {
-        	Table
+        	Table,
+			Treeselect
  	   }
     };
 </script>
@@ -394,28 +412,5 @@
     #preview img {
 		max-width: 100%;
 		max-height: 500px;
-	}
-
-	div.show-image {
-		position: relative;
-		float:left;
-	}
-	div.show-image:hover img{
-		opacity:0.5;
-	}
-	div.show-image:hover input {
-		display: block;
-	}
-	div.show-image input {
-		position:absolute;
-		display:none;
-	}
-	div.show-image input.update {
-		top:0;
-		left:0;
-	}
-	div.show-image input.delete {
-		top:0;
-		left:79%;
 	}
 </style>

@@ -22,6 +22,7 @@ class Category extends Model
         'kiosk_image_top',
         'online_image_primary',
         'online_image_top',
+        'active',
     ];
 
     /**
@@ -48,33 +49,5 @@ class Category extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    public function getKioskImagePrimaryAttribute($value)
-    {
-        if($value)
-            return asset($value);
-        return null;
-    }  
-
-    public function getKioskImageTopAttribute($value)
-    {
-        if($value)
-            return asset($value);
-        return null;
-    }  
-
-    public function getOnlineImagePrimaryAttribute($value)
-    {
-        if($value)
-            return asset($value);
-        return null;
-    }  
-
-    public function getOnlineImageTopAttribute($value)
-    {
-        if($value)
-            return asset($value);
-        return null;
-    } 
 
 }

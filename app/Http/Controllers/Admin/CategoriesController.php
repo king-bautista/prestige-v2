@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Category;
 use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\CategoryViewModel;
 
 class CategoriesController extends AppBaseController implements CategoriesControllerInterface
 {
@@ -32,7 +33,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $categories = Category::when(request('search'), function($query){
+            $categories = CategoryViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
@@ -54,7 +55,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try
         {
-            $category = Category::find($id);
+            $category = CategoryViewModel::find($id);
             return $this->response($category, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -101,7 +102,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             }
 
             $data = [
-                'parent_id' => ($request->parent_id) ? $request->parent_id : 0,
+                'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'kiosk_image_primary' => str_replace('\\', '/', $kiosk_image_primary_path),
@@ -161,14 +162,14 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             }
 
             $data = [
-                'parent_id' => ($request->parent_id) ? $request->parent_id : 0,
+                'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'kiosk_image_primary' => ($kiosk_image_primary_path) ? str_replace('\\', '/', $kiosk_image_primary_path) : $category->kiosk_image_primary,
                 'kiosk_image_top' => ($kiosk_image_top_path) ? str_replace('\\', '/', $kiosk_image_top_path) : $category->kiosk_image_top,
                 'online_image_primary' => ($online_image_primary_path) ? str_replace('\\', '/', $online_image_primary_path) : $category->online_image_primary,
                 'online_image_top' => ($online_image_top_path) ? str_replace('\\', '/', $online_image_top_path) : $category->online_image_top,
-                'active' => $request->active
+                'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
             $category->update($data);
@@ -207,7 +208,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try
         {
-            $categories = Category::where('parent_id', 0)->get();
+            $categories = CategoryViewModel::where('parent_id', 0)->get();
             return $this->response($categories, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
