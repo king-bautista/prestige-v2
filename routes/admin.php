@@ -73,6 +73,43 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('admin.category.delete');
     Route::get('/admin/category/get-all-categories', 'Admin\CategoriesController@getAllCategories')->where('id', '[0-9]+')->name('admin.category.get-all-categories');
     Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('admin.category.delete-image');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Supplemental Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/supplementals', 'Admin\SupplementalController@index')->name('admin.supplemental');
+    Route::get('/admin/supplemental/list', 'Admin\SupplementalController@list')->name('admin.supplemental.list');
+    Route::post('/admin/supplemental/store', 'Admin\SupplementalController@store')->name('admin.supplemental.store');
+    Route::get('/admin/supplemental/{id}', 'Admin\SupplementalController@details')->where('id', '[0-9]+')->name('admin.supplemental.details');
+    Route::post('/admin/supplemental/update', 'Admin\SupplementalController@update')->name('admin.supplemental.update');
+    Route::get('/admin/supplemental/delete/{id}', 'Admin\SupplementalController@delete')->where('id', '[0-9]+')->name('admin.supplemental.delete');
+    Route::post('/admin/supplemental/delete-image', 'Admin\SupplementalController@deleteImage')->name('admin.supplemental.delete-image');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Classifications Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/classifications', 'Admin\ClassificationController@index')->name('admin.classifications');
+    Route::get('/admin/classification/list', 'Admin\ClassificationController@list')->name('admin.classification.list');
+    Route::post('/admin/classification/store', 'Admin\ClassificationController@store')->name('admin.classification.store');
+    Route::get('/admin/classification/{id}', 'Admin\ClassificationController@details')->where('id', '[0-9]+')->name('admin.classification.details');
+    Route::put('/admin/classification/update', 'Admin\ClassificationController@update')->name('admin.classification.update');
+    Route::get('/admin/classification/delete/{id}', 'Admin\ClassificationController@delete')->where('id', '[0-9]+')->name('admin.classification.delete');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Amenities Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/amenities', 'Admin\AmenitiesController@index')->name('admin.amenities');
+    Route::get('/admin/amenity/list', 'Admin\AmenitiesController@list')->name('admin.amenity.list');
+    Route::post('/admin/amenity/store', 'Admin\AmenitiesController@store')->name('admin.amenity.store');
+    Route::get('/admin/amenity/{id}', 'Admin\AmenitiesController@details')->where('id', '[0-9]+')->name('admin.amenity.details');
+    Route::put('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
+    Route::get('/admin/amenity/delete/{id}', 'Admin\AmenitiesController@delete')->where('id', '[0-9]+')->name('admin.amenity.delete');
     
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

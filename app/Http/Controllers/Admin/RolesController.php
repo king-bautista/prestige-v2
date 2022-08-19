@@ -108,7 +108,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
             $role->update($data);
             $role->setPermissions($request->permissions);
 
-            return $this->response($role, 'Successfully Created!', 200);
+            return $this->response($role, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {

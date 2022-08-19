@@ -124,7 +124,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             $user->saveMeta($meta_details);
             $user->saveRoles($request->roles);
 
-            return $this->response($user, 'Successfully Created!', 200);
+            return $this->response($user, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
