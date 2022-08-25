@@ -4,26 +4,29 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\Interfaces\AmenitiesControllerInterface;
+use App\Http\Controllers\Admin\Interfaces\BrandControllerInterface;
 use Illuminate\Http\Request;
 
-use App\Models\Amenity;
+use App\Models\Brand;
+use App\Models\Tag;
+use App\Models\Supplemental;
 use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\BrandViewModel;
 
-class AmenitiesController extends AppBaseController implements AmenitiesControllerInterface
+class BrandController extends AppBaseController implements BrandControllerInterface
 {
-    /****************************************
-    * 			AMENITIES MANAGEMENT		*
-    ****************************************/
+    /************************************
+    * 			BRANDS MANAGEMENT	 	*
+    ************************************/
     public function __construct()
     {
-        $this->module_id = 31; 
-        $this->module_name = 'Amenities';
+        $this->module_id = 10; 
+        $this->module_name = 'Brand Management';
     }
 
     public function index()
     {
-        return view('admin.amenities');
+        return view('admin.brands');
     }
 
     public function list(Request $request)
@@ -32,12 +35,13 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $amenitiess = Amenity::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            $brands = BrandViewModel::when(request('search'), function($query){
+                return $query->where('name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
             ->latest()
             ->paginate(request('perPage'));
-            return $this->responsePaginate($amenitiess, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -53,8 +57,8 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
         {
-            $amenities = Amenity::find($id);
-            return $this->response($amenities, 'Successfully Retreived!', 200);
+            $brand = BrandViewModel::find($id);
+            return $this->response($brand, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -75,9 +79,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 'active' => 1
             ];
 
-            $amenities = Amenity::create($data);
+            $brand = Brand::create($data);
 
-            return $this->response($amenities, 'Successfully Created!', 200);
+            return $this->response($brand, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
         {
@@ -93,16 +97,16 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
     	{
-            $amenities = Amenity::find($request->id);
+            $brand = Brand::find($request->id);
 
             $data = [
                 'name' => $request->name,
                 'active' => $request->active
             ];
 
-            $amenities->update($data);
+            $brand->update($data);
 
-            return $this->response($amenities, 'Successfully Modified!', 200);
+            return $this->response($brand, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
@@ -118,9 +122,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
     	{
-            $amenities = Amenity::find($id);
-            $amenities->delete();
-            return $this->response($amenities, 'Successfully Deleted!', 200);
+            $brand = Brand::find($id);
+            $brand->delete();
+            return $this->response($brand, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
         {
@@ -131,4 +135,39 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             ], 401);
         }
     }
+
+    public function getSupplementals()
+    {
+        try
+    	{
+            $supplemental = Supplemental::get();
+            return $this->response($supplemental, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function getTags()
+    {
+        try
+    	{
+            $tags = Tag::get();
+            return $this->response($tags, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
 }

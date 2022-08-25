@@ -27,6 +27,8 @@ Vue.component('admin-categories', require('./components/Admin/Categories.vue').d
 Vue.component('admin-supplementals', require('./components/Admin/Supplementals.vue').default);
 Vue.component('admin-classifications', require('./components/Admin/Classifications.vue').default);
 Vue.component('admin-amenities', require('./components/Admin/Amenities.vue').default);
+Vue.component('admin-tags', require('./components/Admin/Tags.vue').default);
+Vue.component('admin-brands', require('./components/Admin/Brands.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

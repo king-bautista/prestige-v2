@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Amenities extends Model
+class Tag extends Model
 {
     use SoftDeletes;
 
@@ -35,7 +35,7 @@ class Amenities extends Model
      *
      * @var string
     */
-    protected $table = 'amenities';
+    protected $table = 'tags';
 
     /**
      * The primary key associated with the table.

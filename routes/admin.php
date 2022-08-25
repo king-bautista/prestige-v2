@@ -111,5 +111,34 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
     Route::get('/admin/amenity/delete/{id}', 'Admin\AmenitiesController@delete')->where('id', '[0-9]+')->name('admin.amenity.delete');
     
+    /*
+    |--------------------------------------------------------------------------
+    | Tags Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/tags', 'Admin\TagsController@index')->name('admin.tags');
+    Route::get('/admin/tag/list', 'Admin\TagsController@list')->name('admin.tag.list');
+    Route::post('/admin/tag/store', 'Admin\TagsController@store')->name('admin.tag.store');
+    Route::get('/admin/tag/{id}', 'Admin\TagsController@details')->where('id', '[0-9]+')->name('admin.tag.details');
+    Route::put('/admin/tag/update', 'Admin\TagsController@update')->name('admin.tag.update');
+    Route::get('/admin/tag/delete/{id}', 'Admin\TagsController@delete')->where('id', '[0-9]+')->name('admin.tag.delete');
+    Route::post('/admin/tag/batch-upload', 'Admin\TagsController@batchUpload')->name('admin.tag.batch-upload');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Brands Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/brands', 'Admin\BrandController@index')->name('admin.brands');
+    Route::get('/admin/brand/list', 'Admin\BrandController@list')->name('admin.brand.list');
+    Route::post('/admin/brand/store', 'Admin\BrandController@store')->name('admin.brand.store');
+    Route::get('/admin/brand/{id}', 'Admin\BrandController@details')->where('id', '[0-9]+')->name('admin.brand.details');
+    Route::put('/admin/brand/update', 'Admin\BrandController@update')->name('admin.brand.update');
+    Route::get('/admin/brand/delete/{id}', 'Admin\BrandController@delete')->where('id', '[0-9]+')->name('admin.brand.delete');
+    Route::post('/admin/brand/batch-upload', 'Admin\BrandController@batchUpload')->name('admin.brand.batch-upload');
+    Route::get('/admin/brand/get-supplementals', 'Admin\BrandController@getSupplementals')->where('id', '[0-9]+')->name('admin.brand.get-supplementals');
+    Route::get('/admin/brand/get-tags', 'Admin\BrandController@getTags')->where('id', '[0-9]+')->name('admin.brand.get-tags');
+    Route::get('/admin/brand/product/list', 'Admin\BrandController@list')->name('admin.brand.product.list');
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

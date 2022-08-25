@@ -6,6 +6,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
 use Auth;
 use Throwable;
+use Cache;
 
 class Handler extends ExceptionHandler
 {
@@ -34,6 +35,7 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
         if ($request->is('admin') || $request->is('admin/*')) {
+            Cache::flush();
             return redirect()->guest(route('admin.login'));
         }
         // guard login for client, partners and subscriber here

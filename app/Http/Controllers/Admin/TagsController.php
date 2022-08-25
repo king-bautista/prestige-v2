@@ -4,26 +4,25 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\Interfaces\AmenitiesControllerInterface;
+use App\Http\Controllers\Admin\Interfaces\TagsControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
-use App\Models\Amenity;
+use App\Models\Tag;
 use App\Models\ViewModels\AdminViewModel;
+use App\Imports\TagsImport;
 
-class AmenitiesController extends AppBaseController implements AmenitiesControllerInterface
+class TagsController extends AppBaseController implements TagsControllerInterface
 {
-    /****************************************
-    * 			AMENITIES MANAGEMENT		*
-    ****************************************/
     public function __construct()
     {
-        $this->module_id = 31; 
-        $this->module_name = 'Amenities';
+        $this->module_id = 32; 
+        $this->module_name = 'Tags';
     }
 
     public function index()
     {
-        return view('admin.amenities');
+        return view('admin.tags');
     }
 
     public function list(Request $request)
@@ -32,12 +31,12 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $amenitiess = Amenity::when(request('search'), function($query){
+            $tags = Tag::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
             ->latest()
             ->paginate(request('perPage'));
-            return $this->responsePaginate($amenitiess, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($tags, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -53,8 +52,8 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
         {
-            $amenities = Amenity::find($id);
-            return $this->response($amenities, 'Successfully Retreived!', 200);
+            $tag = Tag::find($id);
+            return $this->response($tag, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -72,12 +71,12 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     	{
             $data = [
                 'name' => $request->name,
-                'active' => 1
+                'active' => 1,
             ];
 
-            $amenities = Amenity::create($data);
+            $tag = Tag::create($data);
 
-            return $this->response($amenities, 'Successfully Created!', 200);
+            return $this->response($tag, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
         {
@@ -93,16 +92,16 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
     	{
-            $amenities = Amenity::find($request->id);
+            $tag = Tag::find($request->id);
 
             $data = [
                 'name' => $request->name,
-                'active' => $request->active
+                'active' => (!$request->active) ? 0 : 1,
             ];
 
-            $amenities->update($data);
+            $tag->update($data);
 
-            return $this->response($amenities, 'Successfully Modified!', 200);
+            return $this->response($tag, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
@@ -118,11 +117,28 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
     	{
-            $amenities = Amenity::find($id);
-            $amenities->delete();
-            return $this->response($amenities, 'Successfully Deleted!', 200);
+            $tag = Tag::find($id);
+            $tag->delete();
+            return $this->response($tag, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new TagsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),
