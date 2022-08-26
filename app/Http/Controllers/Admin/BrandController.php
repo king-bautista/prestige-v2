@@ -72,25 +72,36 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function store(Request $request)
     {
-        try
-    	{
+        // try
+    	// {
+            $logo = $request->file('logo');
+            $logo_path = '';
+            if($logo) {
+                $originalname = $logo->getClientOriginalName();
+                $logo_path = $logo->move('uploads/media/brand/', str_replace(' ','-', $originalname)); 
+            }
+
             $data = [
+                'category_id' => $request->category_id,
                 'name' => $request->name,
+                'descriptions' => $request->descriptions,
+                'logo' => str_replace('\\', '/', $logo_path),
                 'active' => 1
             ];
 
             $brand = Brand::create($data);
+            return $brand->saveSupplementals($request->supplementals);
 
             return $this->response($brand, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 401,
-            ], 401);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 401,
+        //     ], 401);
+        // }
     }
 
     public function update(Request $request)

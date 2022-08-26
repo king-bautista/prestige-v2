@@ -27,7 +27,7 @@
 	    <!-- /.content -->
 
 		<!-- Modal Add New / Edit User -->
-		<div class="modal fade" id="brand-form" tabindex="-1" aria-labelledby="brand-form" aria-hidden="true">
+		<div class="modal fade" id="brand-form" data-backdrop="static" tabindex="-1" aria-labelledby="brand-form" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-xl">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -46,13 +46,19 @@
 									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
-                                    <img v-if="brand.logo" :src="brand.logo" />
+                                    <img v-if="brand.logo" :src="brand.logo" class="img-thumbnail" />
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="brand.name" placeholder="Brand Name" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <textarea class="form-control" v-model="brand.descriptions" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -72,7 +78,8 @@
 										:close-on-select="true"
 										placeholder="Select Supplementals"
 										label="name"
-										track-by="name">
+										track-by="name"
+										@select="toggleSelected">
 									</multiselect> 
 								</div>
 							</div>
@@ -149,6 +156,7 @@
                     id: '',
 					category_id: null,
                     name: '',
+					descriptions: '',
 					logo: '/images/no-image-available.png',
 					supplementals: [],
 					tags: [],
@@ -157,6 +165,7 @@
 				logo: '',
 				categories: [],
 				supplementals: [],
+				supplemental_ids: [],
 				tags: [],
                 add_record: true,
                 edit_record: false,
@@ -265,7 +274,7 @@
 			logoChange: function(e) {
 				const file = e.target.files[0];
       			this.logo = URL.createObjectURL(file);
-				this.brand.logo = file;
+				this.brand.logo = this.logo;
 			},
 
 			GetCategories: function() {
@@ -283,25 +292,46 @@
                 .then(response => this.tags = response.data.data);
 			},
 
+			toggleSelected: function(value, id) {
+				this.supplemental_ids.push(value.id);
+				console.log(this.supplemental_ids);
+
+			},
+
 			AddNewBrand: function() {
 				this.add_record = true;
 				this.edit_record = false;
                 this.brand.name = '';
+				this.brand.description = '';
                 this.brand.category_id = null;
                 this.brand.logo = '/images/no-image-available.png';
                 this.brand.supplementals = [];
                 this.brand.tags = [];
                 this.brand.active = false;				
+				this.$refs.logo.value = null;
+
               	$('#brand-form').modal('show');
             },
 
             storeBrand: function() {
-                axios.post('/admin/brand/store', this.brand)
+				let formData = new FormData();
+				formData.append("name", this.brand.name);
+				formData.append("category_id", this.brand.category_id);
+				formData.append("descriptions", this.brand.descriptions);
+				formData.append("logo", this.brand.logo);
+				formData.append("supplementals", this.brand.supplementals);
+				formData.append("tags", this.brand.tags);
+
+                axios.post('/admin/brand/store', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-					$('#brand-form').modal('hide');
 				})
+				
             },
 
 			editBrand: function(id) {

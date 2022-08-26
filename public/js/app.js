@@ -9570,6 +9570,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
  // import the component
 
 
@@ -9584,6 +9591,7 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         category_id: null,
         name: '',
+        descriptions: '',
         logo: '/images/no-image-available.png',
         supplementals: [],
         tags: [],
@@ -9592,6 +9600,7 @@ __webpack_require__.r(__webpack_exports__);
       logo: '',
       categories: [],
       supplementals: [],
+      supplemental_ids: [],
       tags: [],
       add_record: true,
       edit_record: false,
@@ -9697,7 +9706,7 @@ __webpack_require__.r(__webpack_exports__);
     logoChange: function logoChange(e) {
       var file = e.target.files[0];
       this.logo = URL.createObjectURL(file);
-      this.brand.logo = file;
+      this.brand.logo = this.logo;
     },
     GetCategories: function GetCategories() {
       var _this = this;
@@ -9720,26 +9729,41 @@ __webpack_require__.r(__webpack_exports__);
         return _this3.tags = response.data.data;
       });
     },
+    toggleSelected: function toggleSelected(value, id) {
+      this.supplemental_ids.push(value.id);
+      console.log(this.supplemental_ids);
+    },
     AddNewBrand: function AddNewBrand() {
       this.add_record = true;
       this.edit_record = false;
       this.brand.name = '';
+      this.brand.description = '';
       this.brand.category_id = null;
       this.brand.logo = '/images/no-image-available.png';
       this.brand.supplementals = [];
       this.brand.tags = [];
       this.brand.active = false;
+      this.$refs.logo.value = null;
       $('#brand-form').modal('show');
     },
     storeBrand: function storeBrand() {
       var _this4 = this;
 
-      axios.post('/admin/brand/store', this.brand).then(function (response) {
+      var formData = new FormData();
+      formData.append("name", this.brand.name);
+      formData.append("category_id", this.brand.category_id);
+      formData.append("descriptions", this.brand.descriptions);
+      formData.append("logo", this.brand.logo);
+      formData.append("supplementals", this.brand.supplementals);
+      formData.append("tags", this.brand.tags);
+      axios.post('/admin/brand/store', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         toastr.success(response.data.message);
 
         _this4.$refs.dataTable.fetchData();
-
-        $('#brand-form').modal('hide');
       });
     },
     editBrand: function editBrand(id) {
@@ -37982,6 +38006,7 @@ var render = function () {
         staticClass: "modal fade",
         attrs: {
           id: "brand-form",
+          "data-backdrop": "static",
           tabindex: "-1",
           "aria-labelledby": "brand-form",
           "aria-hidden": "true",
@@ -38067,7 +38092,10 @@ var render = function () {
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-3 text-center" }, [
                       _vm.brand.logo
-                        ? _c("img", { attrs: { src: _vm.brand.logo } })
+                        ? _c("img", {
+                            staticClass: "img-thumbnail",
+                            attrs: { src: _vm.brand.logo },
+                          })
                         : _vm._e(),
                     ]),
                   ]),
@@ -38106,6 +38134,38 @@ var render = function () {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
                     _vm._m(2),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.brand.descriptions,
+                            expression: "brand.descriptions",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { placeholder: "Descriptions" },
+                        domProps: { value: _vm.brand.descriptions },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.brand,
+                              "descriptions",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(3),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -38152,6 +38212,7 @@ var render = function () {
                             label: "name",
                             "track-by": "name",
                           },
+                          on: { select: _vm.toggleSelected },
                           model: {
                             value: _vm.brand.supplementals,
                             callback: function ($$v) {
@@ -38447,6 +38508,19 @@ var staticRenderFns = [
       { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
       [
         _vm._v("Name "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "lastName" } },
+      [
+        _vm._v("Descriptions "),
         _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
       ]
     )

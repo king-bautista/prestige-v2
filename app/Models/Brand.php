@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+
 class Brand extends Model
 {
     use SoftDeletes;
@@ -46,4 +48,24 @@ class Brand extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveSupplementals($supplementals)
+    {
+        return $supplenmetals[0] =  (array)json_encode($supplementals, true);
+        foreach ($supplementals[0] as $data) {
+            return $data;
+            BrandSupplemental::updateOrCreate(
+                [
+                   'brand_id' => $this->id,
+                   'supplemental_id' => $data->id,
+                ],
+            );
+        }
+    }
+
+    public function saveTags($tags)
+    {
+        # code...
+    }
+
 }
