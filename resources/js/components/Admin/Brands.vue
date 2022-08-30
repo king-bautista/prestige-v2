@@ -46,7 +46,7 @@
 									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
-                                    <img v-if="brand.logo" :src="brand.logo" class="img-thumbnail" />
+                                    <img v-if="logo" :src="logo" class="img-thumbnail" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -79,7 +79,8 @@
 										placeholder="Select Supplementals"
 										label="name"
 										track-by="name"
-										@select="toggleSelected">
+										@select="toggleSelected"
+										@remove="toggleUnSelected">
 									</multiselect> 
 								</div>
 							</div>
@@ -92,7 +93,9 @@
 										:close-on-select="true"
 										placeholder="Select Tags"
 										label="name"
-										track-by="name">
+										track-by="name"
+										@select="toggleSelectedTags"
+										@remove="toggleUnSelectedTags">
 									</multiselect> 
 								</div>
 							</div>
@@ -113,24 +116,6 @@
 									<button type="button" class="btn btn-primary pull-right" v-show="edit_record" @click="updateBrand">Save Changes</button>
 								</div>
 							</div>
-							<hr v-show="product_view"/>
-							<div class="form-group row" v-show="product_view">
-								<label for="inputPassword3" class="col-sm-12 col-form-label">Products and Promos</label>
-							</div>
-							<div class="form-group row" v-show="product_view">
-								<div class="col-sm-12">
-									<Table 
-									:dataFields="productFields"
-									:dataUrl="productUrl"
-									:actionButtons="productButtons"
-									:otherButtons="productOtherButtons"
-									:primaryKey="productKey"
-									v-on:AddNewBrand="AddNewProduct"
-									v-on:editButton="editProduct"
-									ref="dataTable">
-									</Table>
-								</div>
-							</div>
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -138,6 +123,7 @@
 			</div>
 		</div>
       <!-- End Modal Add New User -->
+		
     </div>
 </template>
 <script> 
@@ -166,12 +152,17 @@
 				categories: [],
 				supplementals: [],
 				supplemental_ids: [],
+				tags_ids: [],
 				tags: [],
                 add_record: true,
                 edit_record: false,
-				product_view: false,
             	dataFields: {
             		name: "Name", 
+            		descriptions: "Descriptions", 
+					logo_image_path: {
+            			name: "Logo", 
+            			type:"image", 
+            		},
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -201,6 +192,14 @@
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
             		},
+					link: {
+            			title: 'Manage Products and Promos',
+            			name: 'Manage Products and Promos',
+            			apiUrl: '/admin/brand/products',
+            			routeName: '',
+            			button: '<i class="fa fa-link"></i> Manage Products',
+            			method: 'link'
+            		},
             	},
 				otherButtons: {
 					addNew: {
@@ -211,56 +210,6 @@
 						method: 'add'
 					},
 				},
-				// product and promos
-				productFields: {
-            		name: "Name", 
-            		descriptions: "Descriptions", 
-            		type: "Type", 
-            		thumbnail: "Thumbnail", 
-            		image_url: "Product Image", 
-            		date_from: "Date From", 
-            		date_to: "Date To", 
-					sequence: "Sequence",
-            		active: {
-            			name: "Status", 
-            			type:"Boolean", 
-            			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
-            			}
-            		},
-                    created_at: "Date Created"
-            	},
-            	productKey: "id",
-            	productUrl: "/admin/brand/product/list",
-				productButtons: {
-            		edit: {
-            			title: 'Edit this Product',
-            			name: 'Edit',
-            			apiUrl: '',
-            			routeName: 'brand.edit',
-            			button: '<i class="fas fa-edit"></i> Edit',
-            			method: 'edit'
-            		},
-            		delete: {
-            			title: 'Delete this Product',
-            			name: 'Delete',
-            			apiUrl: '/admin/brand/delete',
-            			routeName: '',
-            			button: '<i class="fas fa-trash-alt"></i> Delete',
-            			method: 'delete'
-            		},
-            	},
-				productOtherButtons: {
-					addNew: {
-						title: 'New Product',
-						v_on: 'AddNewProduct',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Product',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-				},
-
             };
         },
 
@@ -274,7 +223,7 @@
 			logoChange: function(e) {
 				const file = e.target.files[0];
       			this.logo = URL.createObjectURL(file);
-				this.brand.logo = this.logo;
+				this.brand.logo = file;
 			},
 
 			GetCategories: function() {
@@ -294,8 +243,24 @@
 
 			toggleSelected: function(value, id) {
 				this.supplemental_ids.push(value.id);
-				console.log(this.supplemental_ids);
+			},
 
+			toggleUnSelected: function(value, id) {
+				const index = this.supplemental_ids.indexOf(value.id);
+				if (index > -1) { // only splice array when item is found
+					this.supplemental_ids.splice(index, 1); // 2nd parameter means remove one item only
+				}
+			},
+
+			toggleSelectedTags: function(value, id) {
+				this.tags_ids.push(value.id);
+			},
+
+			toggleUnSelectedTags: function(value, id) {
+				const index = this.tags_ids.indexOf(value.id);
+				if (index > -1) { // only splice array when item is found
+					this.tags_ids.splice(index, 1); // 2nd parameter means remove one item only
+				}
 			},
 
 			AddNewBrand: function() {
@@ -319,8 +284,8 @@
 				formData.append("category_id", this.brand.category_id);
 				formData.append("descriptions", this.brand.descriptions);
 				formData.append("logo", this.brand.logo);
-				formData.append("supplementals", this.brand.supplementals);
-				formData.append("tags", this.brand.tags);
+				formData.append("supplementals", this.supplemental_ids);
+				formData.append("tags", this.tags_ids);
 
                 axios.post('/admin/brand/store', formData, {
 					headers: {
@@ -330,6 +295,7 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
+	              	$('#brand-form').modal('hide');
 				})
 				
             },
@@ -339,27 +305,56 @@
                 .then(response => {
                     var brand = response.data.data;
                     this.brand.id = id;
+                    this.brand.category_id = brand.category_id;
                     this.brand.name = brand.name;
+                    this.brand.descriptions = brand.descriptions;
+					this.brand.supplementals = brand.supplementals;
+					this.brand.tags = brand.tags;
                     this.brand.active = brand.active;
 					this.add_record = false;
 					this.edit_record = true;
+					if(brand.logo) {
+						this.logo = brand.logo_image_path;
+					}
+					else {
+						this.logo = this.brand.logo;
+					}
+
+					this.$refs.logo.value = null;
+					this.product_view = true;
+					
+					brand.supplementals.forEach((value) => {
+						this.supplemental_ids.push(value.id);
+                	});
+
+					brand.tags.forEach((value) => {
+						this.tags_ids.push(value.id);
+                	});		
+
                     $('#brand-form').modal('show');
                 });
             },
 
             updateBrand: function() {
-                axios.put('/admin/brand/update', this.brand)
-                    .then(response => {
-                        toastr.success(response.data.message);
-                        this.$refs.dataTable.fetchData();
-                        $('#brand-form').modal('hide');
-                    })
-            },
+				let formData = new FormData();
+				formData.append("id", this.brand.id);
+				formData.append("name", this.brand.name);
+				formData.append("category_id", this.brand.category_id);
+				formData.append("descriptions", this.brand.descriptions);
+				formData.append("logo", this.brand.logo);
+				formData.append("supplementals", this.supplemental_ids);
+				formData.append("tags", this.tags_ids);
 
-			AddNewProduct: function() {
-            },
-
-			editProduct: function() {
+                axios.post('/admin/brand/update', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+	              	$('#brand-form').modal('hide');
+				})
             },
 
         },

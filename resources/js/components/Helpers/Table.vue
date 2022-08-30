@@ -67,7 +67,7 @@
                 				<span v-html="tHeader.status[data[key]]"></span>
                 			</span>
                             <span v-else-if="tHeader.type == 'image'">
-                                <img class="img-fluid" :src="data[key]" />
+                                <img class="img-thumbnail" :src="data[key]" />
                             </span>
                             <span v-else-if="tHeader.type == 'icon'">
                                 <i :class="data[key]" aria-hidden="true"></i>
@@ -204,6 +204,10 @@
                             return true;
                         break;
                     case 'add':
+                        if(permission.can_add > 0)
+                            return true;
+                        break;
+                    case 'link':
                         if(permission.can_add > 0)
                             return true;
                         break;
@@ -379,5 +383,9 @@
 	.has-row-actions:hover .row-actions {
 	    left: 0;
 	}
+
+    .img-thumbnail {
+        max-width: 25%;
+    }
 
 </style>

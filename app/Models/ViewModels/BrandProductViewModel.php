@@ -4,10 +4,8 @@ namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Supplemental;
-use App\Models\Tag;
 
-class BrandViewModel extends Model
+class BrandProductViewModel extends Model
 {
     use SoftDeletes;
 
@@ -27,7 +25,7 @@ class BrandViewModel extends Model
      *
      * @var string
     */
-    protected $table = 'brands';
+    protected $table = 'brand_products_promos';
 
     /**
      * The primary key associated with the table.
@@ -42,40 +40,24 @@ class BrandViewModel extends Model
      * @var string
      */
 	public $appends = [
-        'supplementals',
-        'tags',
-        'logo_image_path',
+        'thumbnail_path',
+        'image_url_path',
     ]; 
-
-    public function getSupplementals()
-    {   
-        return $this->hasMany('App\Models\BrandSupplemental', 'brand_id', 'id');
-    }
-
-    public function getTags()
-    {   
-        return $this->hasMany('App\Models\BrandTag', 'brand_id', 'id');
-    }
 
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    public function getSupplementalsAttribute()
+    public function getThumbnailPathAttribute()
     {
-        $ids = $this->getSupplementals()->pluck('supplemental_id');
-        return Supplemental::whereIn('id', $ids)->get();
+        if($this->thumbnail)
+            return asset($this->thumbnail);
+        return null;
     }  
 
-    public function getTagsAttribute()
+    public function getImageUrlPathAttribute()
     {
-        $ids = $this->getTags()->pluck('tag_id');
-        return Tag::whereIn('id', $ids)->get();
-    }  
-
-    public function getLogoImagePathAttribute()
-    {
-        if($this->logo)
-            return asset($this->logo);
+        if($this->image_url)
+            return asset($this->image_url);
         return null;
     }  
 
