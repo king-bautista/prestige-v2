@@ -31,8 +31,8 @@ class CreateBrandsTable extends Migration
         Schema::create('brand_supplementals', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
-            $table->bigInteger('brand_id')->unsigned()->nullable();
-            $table->bigInteger('supplemental_id')->unsigned()->nullable();
+            $table->bigInteger('brand_id')->unsigned();
+            $table->bigInteger('supplemental_id')->unsigned();
 
             $table->foreign('brand_id')->references('id')->on('brands');
             $table->foreign('supplemental_id')->references('id')->on('supplementals');

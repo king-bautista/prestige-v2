@@ -146,5 +146,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/brand/product/update', 'Admin\ProductsController@update')->name('admin.brand.product.update');
     Route::get('/admin/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('admin.brand.product.delete');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Sites Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/sites', 'Admin\SiteController@index')->name('admin.sites');
+    Route::get('/admin/site/list', 'Admin\SiteController@list')->name('admin.site.list');
+    Route::post('/admin/site/store', 'Admin\SiteController@store')->name('admin.site.store');
+    Route::get('/admin/site/{id}', 'Admin\SiteController@details')->where('id', '[0-9]+')->name('admin.site.details');
+    Route::post('/admin/site/update', 'Admin\SiteController@update')->name('admin.site.update');
+    Route::get('/admin/site/delete/{id}', 'Admin\SiteController@delete')->where('id', '[0-9]+')->name('admin.site.delete');
+
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

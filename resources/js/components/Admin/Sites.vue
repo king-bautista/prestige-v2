@@ -1,0 +1,278 @@
+<template>
+	<div>
+        <!-- Main content -->
+	    <section class="content">
+	      <div class="container-fluid">
+	        <div class="row">
+	          <div class="col-md-12">
+	          	<div class="card">
+	    			<div class="card-body">
+			          	<Table 
+                        :dataFields="dataFields"
+                        :dataUrl="dataUrl"
+                        :actionButtons="actionButtons"
+						:otherButtons="otherButtons"
+                        :primaryKey="primaryKey"
+						v-on:AddNewSite="AddNewSite"
+						v-on:editButton="editSite"
+                        ref="dataTable">
+			          	</Table>
+		          	</div>
+		        </div>
+	          </div>
+	        </div>
+	        <!-- /.row -->
+	      </div><!-- /.container-fluid -->
+	    </section>
+	    <!-- /.content -->
+
+		<div class="modal fade" id="site-form" tabindex="-1" aria-labelledby="site-form" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Site</h5>
+						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Site</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="card-body">
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site Name <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site.name" placeholder="Site Name">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <textarea class="form-control" v-model="site.descriptions" placeholder="Descriptions"></textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Logo</label>
+								<div class="col-sm-5">
+                                    <input type="file" accept="image/*" ref="site_logo" @change="siteLogoChange">
+									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+                                    <img v-if="site_logo" :src="site_logo" class="img-thumbnail" />
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Banner Image</label>
+								<div class="col-sm-5">
+                                    <input type="file" accept="image/*" ref="site_banner" @change="siteBannerChange">
+									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+                                    <img v-if="site_banner" :src="site_banner" class="img-thumbnail" />
+								</div>
+							</div>                            
+							<div class="form-group row" v-show="edit_record">
+								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="isActive" v-model="site.active">
+										<label class="custom-control-label" for="isActive"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					<!-- /.card-body -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeSite">Add New Site</button>
+						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateSite">Save Changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+    </div>
+</template>
+<script> 
+	import Table from '../Helpers/Table';
+	
+	export default {
+        name: "Sites",
+        data() {
+            return {
+				site: {
+					id: '',
+                    name: '',
+					descriptions: '',
+                    site_logo: '',
+                    site_banner: '',
+				},
+                site_logo: '/images/no-image-available.png',
+                site_banner: '/images/no-image-available.png',
+				add_record: true,
+                edit_record: false,
+            	dataFields: {
+            		name: "Name", 
+            		descriptions: "Descriptions", 
+                    site_logo_path: {
+            			name: "Logo", 
+            			type:"image", 
+            		},
+                    site_banner_path: {
+            			name: "Banner", 
+            			type:"image", 
+            		},
+            		active: {
+            			name: "Status", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">Deactivated</span>', 
+            				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+                    created_at: "Date Created"
+            	},
+            	primaryKey: "id",
+            	dataUrl: "/admin/site/list",
+            	actionButtons: {
+            		edit: {
+            			title: 'Edit this Site',
+            			name: 'Edit',
+            			apiUrl: '',
+            			routeName: 'brand.edit',
+            			button: '<i class="fas fa-edit"></i> Edit',
+            			method: 'edit'
+            		},
+            		delete: {
+            			title: 'Delete this Site',
+            			name: 'Delete',
+            			apiUrl: '/admin/brand/site/delete',
+            			routeName: '',
+            			button: '<i class="fas fa-trash-alt"></i> Delete',
+            			method: 'delete'
+            		},
+            	},
+				otherButtons: {
+					addNew: {
+						title: 'New Site',
+						v_on: 'AddNewSite',
+						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Site',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+				},
+            };
+        },
+
+        created(){
+
+        },
+
+        methods: {
+			siteLogoChange: function(e) {
+				const file = e.target.files[0];
+      			this.site_logo = URL.createObjectURL(file);
+				this.site.site_logo = file;
+			},
+
+            siteBannerChange: function(e) {
+				const file = e.target.files[0];
+      			this.site_banner = URL.createObjectURL(file);
+				this.site.site_banner = file;
+			},
+
+			AddNewSite: function() {
+				this.add_record = true;
+				this.edit_record = false;
+                this.site.name = '';
+				this.site.descriptions = '';
+                this.site.site_logo = '/images/no-image-available.png';
+                this.site.site_banner = '/images/no-image-available.png';
+                this.site.active = false;				
+				this.$refs.site_logo.value = null;
+				this.$refs.site_banner.value = null;
+
+              	$('#site-form').modal('show');
+            },
+
+            storeSite: function() {
+				let formData = new FormData();
+				formData.append("name", this.site.name);
+				formData.append("descriptions", this.site.descriptions);
+				formData.append("site_logo", this.site.site_logo);
+				formData.append("site_banner", this.site.site_banner);
+
+                axios.post('/admin/site/store', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+                    $('#site-form').modal('hide');
+				})
+				
+            },
+
+			editSite: function(id) {
+                axios.get('/admin/brand/site/'+id)
+                .then(response => {
+                    var site = response.data.data;
+                    this.site.id = id;
+                    this.site.name = site.name;
+                    this.site.descriptions = site.descriptions;
+                    this.site.site_logo = site.site_logo;
+                    this.site.site_banner = site.site_banner;
+                    this.site.active = site.active;
+					this.add_record = false;
+					this.edit_record = true;
+					if(site.site_logo) {
+						this.site_logo = site.site_logo_path;
+					}
+					else {
+						this.site_logo = this.site.site_logo;
+					}
+
+                    if(site.site_banner) {
+						this.site_banner = site.site_banner_path;
+					}
+					else {
+						this.site_banner = this.site.site_banner;
+					}
+
+                    this.$refs.site_logo.value = null;
+                    this.$refs.site_logo.value = null;
+					
+                    $('#site-form').modal('show');
+                });
+            },
+
+            updateSite: function() {
+				let formData = new FormData();
+				formData.append("id", this.site.id);
+				formData.append("name", this.site.name);
+				formData.append("descriptions", this.site.descriptions);
+				formData.append("site_logo", this.site.site_logo);
+				formData.append("site_banner", this.site.site_banner);
+				formData.append("active", this.site.active);
+
+                axios.post('/admin/site/update', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+                    $('#site-form').modal('hide');
+				})
+            },
+
+        },
+
+        components: {
+        	Table,
+ 	   }
+    };
+</script> 

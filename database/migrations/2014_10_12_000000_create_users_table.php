@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->nullable()->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->string('meta_key')->nullable()->index();
             $table->longText('meta_value')->nullable();
             $table->timestamps();
