@@ -46,4 +46,19 @@ class Site extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveMeta($meta_data)
+    {
+        foreach ($meta_data as $key => $data) {
+            SiteMeta::updateOrCreate(
+                [
+                   'site_id' => $this->id,
+                   'meta_key' => $key
+                ],
+                [
+                   'meta_value' => $data,
+                ],
+            );
+        }
+    }
 }

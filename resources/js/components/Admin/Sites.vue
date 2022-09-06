@@ -47,14 +47,14 @@
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="site.descriptions" placeholder="Descriptions"></textarea>
+                                    <textarea class="form-control" v-model="site.descriptions" placeholder="Descriptions" rows="5"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Logo</label>
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="site_logo" @change="siteLogoChange">
-									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
+									<footer class="blockquote-footer">image max size is 155 x 155 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
                                     <img v-if="site_logo" :src="site_logo" class="img-thumbnail" />
@@ -64,12 +64,12 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Banner Image</label>
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="site_banner" @change="siteBannerChange">
-									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
+									<footer class="blockquote-footer">image max size is 1451 x 440 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
                                     <img v-if="site_banner" :src="site_banner" class="img-thumbnail" />
 								</div>
-							</div>                            
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -79,6 +79,49 @@
 									</div>
 								</div>
 							</div>
+							<hr/> 
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-12 col-form-label"><strong>Social Media:</strong></label>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Facebook</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site.facebook" placeholder="Facebook link">
+								</div>
+							</div>       
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Instagram</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site.instagram" placeholder="Instagram link">
+								</div>
+							</div>   
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Twitter</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site.twitter" placeholder="Twitter link">
+								</div>
+							</div>            
+							<hr/>      
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-12 col-form-label"><strong>Mall Information:</strong></label>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Mall Hours</label>
+								<label class="col-sm-1 col-form-label text-center">From:</label>
+								<div class="col-sm-3">
+									<date-picker v-model="site.time_from" placeholder="HH:MM" :config="options" autocomplete="off"></date-picker>
+								</div>
+								<label class="col-sm-1 col-form-label text-center">To:</label>
+								<div class="col-sm-3">
+									<date-picker v-model="site.time_to" placeholder="HH:MM" :config="options" autocomplete="off"></date-picker>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Website</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site.website" placeholder="Website">
+								</div>
+							</div> 
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -95,6 +138,10 @@
 </template>
 <script> 
 	import Table from '../Helpers/Table';
+	// Import this component
+    import datePicker from 'vue-bootstrap-datetimepicker';    
+    // Import date picker css
+    import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';;
 	
 	export default {
         name: "Sites",
@@ -106,14 +153,24 @@
 					descriptions: '',
                     site_logo: '',
                     site_banner: '',
+					facebook: '',
+					instagram: '',
+					twitter: '',
+					time_from: '',
+					time_to: '',
+					website: '',
 				},
                 site_logo: '/images/no-image-available.png',
                 site_banner: '/images/no-image-available.png',
 				add_record: true,
                 edit_record: false,
+				options: {
+                    format: 'hh:mm A',
+                    useCurrent: false,
+                },
             	dataFields: {
             		name: "Name", 
-            		descriptions: "Descriptions", 
+            		descriptions_ellipsis: "Descriptions", 
                     site_logo_path: {
             			name: "Logo", 
             			type:"image", 
@@ -146,10 +203,18 @@
             		delete: {
             			title: 'Delete this Site',
             			name: 'Delete',
-            			apiUrl: '/admin/brand/site/delete',
+            			apiUrl: '/admin/site/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
+            		},
+					link: {
+            			title: 'Manage Site',
+            			name: 'Link',
+            			apiUrl: '/admin/site/buildings',
+            			routeName: '',
+            			button: '<i class="fa fa-link"></i> Manage Site',
+            			method: 'link'
             		},
             	},
 				otherButtons: {
@@ -189,6 +254,8 @@
                 this.site.site_logo = '/images/no-image-available.png';
                 this.site.site_banner = '/images/no-image-available.png';
                 this.site.active = false;				
+                this.site_logo = '/images/no-image-available.png';		
+                this.site_banner = '/images/no-image-available.png';				
 				this.$refs.site_logo.value = null;
 				this.$refs.site_banner.value = null;
 
@@ -201,6 +268,12 @@
 				formData.append("descriptions", this.site.descriptions);
 				formData.append("site_logo", this.site.site_logo);
 				formData.append("site_banner", this.site.site_banner);
+				formData.append("facebook", this.site.facebook);
+				formData.append("instagram", this.site.instagram);
+				formData.append("twitter", this.site.twitter);
+				formData.append("time_from", this.site.time_from);
+				formData.append("time_to", this.site.time_to);
+				formData.append("website", this.site.website);
 
                 axios.post('/admin/site/store', formData, {
 					headers: {
@@ -216,7 +289,7 @@
             },
 
 			editSite: function(id) {
-                axios.get('/admin/brand/site/'+id)
+                axios.get('/admin/site/'+id)
                 .then(response => {
                     var site = response.data.data;
                     this.site.id = id;
@@ -224,7 +297,13 @@
                     this.site.descriptions = site.descriptions;
                     this.site.site_logo = site.site_logo;
                     this.site.site_banner = site.site_banner;
-                    this.site.active = site.active;
+                    this.site.facebook = site.details.facebook;
+                    this.site.instagram = site.details.instagram;
+                    this.site.twitter = site.details.twitter;
+                    this.site.time_from = site.details.time_from;
+                    this.site.time_to = site.details.time_to;
+                    this.site.website = site.details.website;
+					this.site.active = site.active;
 					this.add_record = false;
 					this.edit_record = true;
 					if(site.site_logo) {
@@ -255,6 +334,12 @@
 				formData.append("descriptions", this.site.descriptions);
 				formData.append("site_logo", this.site.site_logo);
 				formData.append("site_banner", this.site.site_banner);
+				formData.append("facebook", this.site.facebook);
+				formData.append("instagram", this.site.instagram);
+				formData.append("twitter", this.site.twitter);
+				formData.append("time_from", this.site.time_from);
+				formData.append("time_to", this.site.time_to);
+				formData.append("website", this.site.website);
 				formData.append("active", this.site.active);
 
                 axios.post('/admin/site/update', formData, {
@@ -273,6 +358,7 @@
 
         components: {
         	Table,
+			datePicker
  	   }
     };
 </script> 
