@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Admin extends Authenticatable
 {
     use HasApiTokens, Notifiable, SoftDeletes;
 
-    protected $guard = 'admins';
+    protected $guard = 'admin';
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +20,7 @@ class Admin extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'fullname',
+        'full_name',
         'email',
         'email_verified_at',
         'password',
@@ -35,7 +35,7 @@ class Admin extends Authenticatable
         'remember_token'
     ];
 
-        /**
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -57,10 +57,10 @@ class Admin extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'email_verified_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'deleted_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     /**
@@ -76,4 +76,38 @@ class Admin extends Authenticatable
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public static function getSalt($email)
+    {
+        $admin_user = static::where('email', '=', $email)->first();
+        return $admin_user->salt;
+    }
+
+    public function saveMeta($meta_data)
+    {
+        foreach ($meta_data as $key => $data) {
+            AdminMeta::updateOrCreate(
+                [
+                   'admin_id' => $this->id,
+                   'meta_key' => $key
+                ],
+                [
+                   'meta_value' => $data,
+                ],
+            );
+        }
+    }
+
+    public function saveRoles($roles)
+    {
+        AdminRoles::where('admin_id', $this->id)->delete();
+        foreach ($roles as $key => $role) {
+            AdminRoles::updateOrCreate(
+                [
+                   'admin_id' => $this->id,
+                   'role_id' => $role['id']
+                ]
+            );
+        }
+    }
 }

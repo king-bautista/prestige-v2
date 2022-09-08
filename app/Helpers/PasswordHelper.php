@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+use Hash;
 
 class PasswordHelper 
 {
@@ -12,15 +13,15 @@ class PasswordHelper
 	*	return random string
     */
     public static function generateSalt() {
-    	return substr(str_shuffle(static::$permitedString), 0, 10);
+    	return substr(str_shuffle(static::$permitedString), 0, 20);
     }
 
     /* gen_password
     *  params $salt, $password
 	*  return $password
     */
-    public static function generate($salt, $password) {		
-		return bcrypt($salt.env("PEPPER_HASH").$password);
+    public static function generatePassword($salt, $password) {		
+		return Hash::make($salt.env('PEPPER_HASH').$password);
     }
 
 }

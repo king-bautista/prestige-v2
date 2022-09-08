@@ -17,7 +17,7 @@ class CreateAdminsTable extends Migration
             $table->engine = "InnoDB";
 
             $table->bigIncrements('id');
-            $table->string('fullname')->index();
+            $table->string('full_name')->index();
             $table->string('email')->unique()->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

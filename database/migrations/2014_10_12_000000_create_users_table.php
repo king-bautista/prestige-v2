@@ -17,14 +17,14 @@ class CreateUsersTable extends Migration
             $table->engine = "InnoDB";
 
             $table->id();
-            $table->string('fullname');
+            $table->string('full_name');
             $table->string('email')->unique();
-            $table->string('username')->unique();
+            $table->string('user_name')->unique();
             $table->string('password');
             $table->string('salt')->nullable();
             $table->integer('login_attempt')->default(0);
             $table->integer('is_blocked')->default(0);
-            $table->boolean('is_active')->default(0);
+            $table->boolean('status')->default(0);
             $table->string('activation_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->nullable()->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->string('meta_key')->nullable()->index();
             $table->longText('meta_value')->nullable();
             $table->timestamps();

@@ -1,22 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\ViewModels\AdminViewModel;
 
 use Illuminate\Http\Request;
 
 /**
- * @OA\Info(title="My First API", version="0.1")
- */
-
- /**
- * @OA\Get(
- *     path="/",
- *     @OA\Response(response="200", description="Display a home page.")
+ * @OA\Info(
+ *    title="API Documentation",
+ *    version="1.0.0",
  * )
  */
 
 class AppBaseController extends Controller
 {
+    public $permissions; 
+
     public function response($data = [], $message = '', $code = 200)
     {
         $response = array(
@@ -31,7 +30,7 @@ class AppBaseController extends Controller
     }
 
     public function responsePaginate($data = [], $message = '', $code = 200)
-    {
+    {       
         $response = [
             'meta' => [
                 'total' => $data->total(),
@@ -45,6 +44,7 @@ class AppBaseController extends Controller
                 'path' => $data->url(request('page')),
                 'from' => $data->currentPage(),
                 'to' => $data->count(),
+                'permissions' => $this->permissions,
             ],
             'data' => $data->items(),         
             'message' => $message,
@@ -55,4 +55,5 @@ class AppBaseController extends Controller
 
         return response($response, $code);
     }
+
 }
