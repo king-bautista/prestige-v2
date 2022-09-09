@@ -158,6 +158,12 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/update', 'Admin\SiteController@update')->name('admin.site.update');
     Route::get('/admin/site/delete/{id}', 'Admin\SiteController@delete')->where('id', '[0-9]+')->name('admin.site.delete');
 
+    Route::get('/admin/site/buildings/{id}', 'Admin\BuildingsController@index')->name('admin.site.buildings');
+    Route::get('/admin/site/building/list', 'Admin\BuildingsController@list')->name('admin.site.building.list');
+    Route::post('/admin/site/building/store', 'Admin\BuildingsController@store')->name('admin.site.building.store');
+    Route::get('/admin/site/building/{id}', 'Admin\BuildingsController@details')->where('id', '[0-9]+')->name('admin.site.building.details');
+    Route::put('/admin/site/building/update', 'Admin\BuildingsController@update')->name('admin.site.building.update');
+    Route::get('/admin/site/building/delete/{id}', 'Admin\BuildingsController@delete')->where('id', '[0-9]+')->name('admin.site.building.delete');
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

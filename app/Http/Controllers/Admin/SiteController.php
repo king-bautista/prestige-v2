@@ -8,15 +8,8 @@ use App\Http\Controllers\Admin\Interfaces\SiteControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Site;
-use App\Models\SiteMeta;
-use App\Models\SiteBuilding;
-use App\Models\SiteBuildingLevel;
-use App\Models\SiteMap;
-use App\Models\SitePoint;
-use App\Models\SitePointLink;
-use App\Models\SiteScreen;
-use App\Models\SiteTenant;
 use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\SiteViewModel;
 
 class SiteController extends AppBaseController implements SiteControllerInterface
 {
@@ -40,7 +33,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $sites = Site::when(request('search'), function($query){
+            $sites = SiteViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
@@ -62,7 +55,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     {
         try
         {
-            $site = Site::find($id);
+            $site = SiteViewModel::find($id);
             return $this->response($site, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -101,7 +94,17 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'active' => 1
             ];
 
+            $meta_value = [
+                'facebook' => $request->facebook,
+                'instagram' => $request->instagram,
+                'twitter' => $request->twitter,
+                'time_from' => $request->time_from,
+                'time_to' => $request->time_to,
+                'website' => $request->website,
+            ];
+
             $site = Site::create($data);
+            $site->saveMeta($meta_value);
 
             return $this->response($site, 'Successfully Created!', 200);
         }
@@ -143,9 +146,19 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
-            $site->update($data);
+            $meta_value = [
+                'facebook' => $request->facebook,
+                'instagram' => $request->instagram,
+                'twitter' => $request->twitter,
+                'time_from' => $request->time_from,
+                'time_to' => $request->time_to,
+                'website' => $request->website,
+            ];
 
-            return $this->response($product, 'Successfully Modified!', 200);
+            $site->update($data);
+            $site->saveMeta($meta_value);
+
+            return $this->response($site, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {

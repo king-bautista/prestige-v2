@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\Interfaces\BuildingsControllerInterface;
+use Illuminate\Http\Request;
+
+use App\Models\SiteBuilding;
+use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\SiteViewModel;
+
+class BuildingsController extends AppBaseController implements BuildingsControllerInterface
+{
+    /********************************************
+    * 			SITES BUILDING MANAGEMENT	 	*
+    ********************************************/
+    public function __construct()
+    {
+        $this->module_id = 13; 
+        $this->module_name = 'Sites Management';
+    }
+
+    public function index($id)
+    {
+        session()->forget('site_id');
+        session()->put('site_id', $id);
+        $site_details = SiteViewModel::find($id);
+        return view('admin.site_details', compact("site_details"));
+    }
+
+    public function list(Request $request)
+    {
+        try
+        {
+            $site_id = session()->get('site_id');
+
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
+            $buildings = SiteBuilding::when(request('search'), function($query){
+                return $query->where('name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+            })
+            ->where('site_id', $site_id)
+            ->latest()
+            ->paginate(request('perPage'));
+            return $this->responsePaginate($buildings, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function details($id)
+    {
+        try
+        {
+            $building = SiteBuilding::find($id);
+            return $this->response($building, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try
+    	{
+            $site_id = session()->get('site_id');
+            $data = [
+                'site_id' => $site_id,
+                'name' => $request->name,
+                'active' => 1
+            ];
+
+            $building = SiteBuilding::create($data);
+
+            return $this->response($building, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        try
+    	{
+            $building = SiteBuilding::find($request->id);
+
+            $data = [
+                'name' => $request->name,
+                'active' => $request->active
+            ];
+
+            $building->update($data);
+
+            return $this->response($building, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
+    public function delete($id)
+    {
+        try
+    	{
+            $building = SiteBuilding::find($id);
+            $building->delete();
+            return $this->response($building, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+}
