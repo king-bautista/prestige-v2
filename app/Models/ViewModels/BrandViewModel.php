@@ -45,6 +45,8 @@ class BrandViewModel extends Model
         'supplementals',
         'tags',
         'logo_image_path',
+        'category_name',
+        'supplemental_names',
     ]; 
 
     public function getSupplementals()
@@ -55,6 +57,11 @@ class BrandViewModel extends Model
     public function getTags()
     {   
         return $this->hasMany('App\Models\BrandTag', 'brand_id', 'id');
+    }
+
+    public function getCategory()
+    {   
+        return $this->hasMany('App\Models\Category', 'id', 'category_id');
     }
 
     /****************************************
@@ -76,7 +83,24 @@ class BrandViewModel extends Model
     {
         if($this->logo)
             return asset($this->logo);
+        return asset('/images/no-image-available.png');
+    } 
+
+    public function getCategoryNameAttribute()
+    {
+        $name = $this->getCategory()->first()->name;
+        if($name)
+            return $name;
         return null;
-    }  
+    } 
+
+    public function getSupplementalNamesAttribute()
+    {
+        $ids = $this->getSupplementals()->pluck('supplemental_id');
+        if($ids) {
+            return Supplemental::whereIn('id', $ids)->pluck('name');
+        }
+        return null;
+    } 
 
 }

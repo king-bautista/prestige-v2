@@ -385,7 +385,7 @@
 	}
 
     .img-thumbnail {
-        max-width: 45%;
+        max-width: 15rem;
     }
 
 </style>

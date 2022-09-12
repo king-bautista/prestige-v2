@@ -159,6 +159,8 @@
             	dataFields: {
             		name: "Name", 
             		descriptions: "Descriptions", 
+					category_name: "Category Name",
+					supplemental_names: "Supplementals",
 					logo_image_path: {
             			name: "Logo", 
             			type:"image", 
