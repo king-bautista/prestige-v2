@@ -58,28 +58,28 @@ class SupplementalViewModel extends Model
     {
         if($this->kiosk_image_primary)
             return asset($this->kiosk_image_primary);
-        return null;
+        return asset('/images/no-image-available.png');
     }  
 
     public function getKioskImageTopPathAttribute()
     {
         if($this->kiosk_image_top)
             return asset($this->kiosk_image_top);
-        return null;
+        return asset('/images/no-image-available.png');
     }  
 
     public function getOnlineImagePrimaryPathAttribute()
     {
         if($this->online_image_primary)
             return asset($this->online_image_primary);
-        return null;
+        return asset('/images/no-image-available.png');
     }  
 
     public function getOnlineImageTopPathAttribute()
     {
         if($this->online_image_top)
             return asset($this->online_image_top);
-        return null;
+        return asset('/images/no-image-available.png');
     }
 
     public function getCategoryAttribute() 
