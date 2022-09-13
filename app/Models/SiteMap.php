@@ -29,6 +29,7 @@ class SiteMap extends Model
         'default_zoom_mobile',
         'map_preview',
         'active',
+        'is_default',
     ];
 
     /**

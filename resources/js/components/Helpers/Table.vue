@@ -211,6 +211,10 @@
                         if(permission.can_add > 0)
                             return true;
                         break;
+                    case 'custom_delete':
+                        if(permission.can_delete > 0)
+                            return true;
+                        break;
                 }
 
                 return false;
@@ -255,6 +259,10 @@
                         this.deleteUrl = apiUrl;
                         this.tobeDeleted = id;
                         $('#deleteModal').modal('show');
+                    break;
+
+                    case "custom_delete":
+                        this.$emit(object.v_on, data);
                     break;
 
             		// case "link": // link for SPA only

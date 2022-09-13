@@ -86,6 +86,7 @@ class CreateSitesTable extends Migration
             $table->decimal('default_zoom_mobile', 10, 2);
             $table->mediumText('map_preview')->nullable();
             $table->boolean('active')->default(true);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
             $table->softDeletes();
 
@@ -159,6 +160,7 @@ class CreateSitesTable extends Migration
             $table->bigInteger('site_point_id')->unsigned();
             $table->enum('screen_type', ['Directory', 'LED', 'LFD', 'LED funnel']);
             $table->string('name');
+            $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
 

@@ -4,30 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\Interfaces\BuildingsControllerInterface;
+use App\Http\Controllers\Admin\Interfaces\ScreensControllerInterface;
 use Illuminate\Http\Request;
 
-use App\Models\SiteBuilding;
+use App\Models\SiteScreen;
 use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteViewModel;
+use App\Models\ViewModels\SiteScreenViewModel;
 
-class BuildingsController extends AppBaseController implements BuildingsControllerInterface
+class ScreensController extends AppBaseController implements ScreensControllerInterface
 {
     /********************************************
-    * 			SITES BUILDING MANAGEMENT	 	*
+    * 			SITES SCREENS MANAGEMENT	 	*
     ********************************************/
     public function __construct()
     {
         $this->module_id = 13; 
         $this->module_name = 'Sites Management';
-    }
-
-    public function index($id)
-    {
-        session()->forget('site_id');
-        session()->put('site_id', $id);
-        $site_details = SiteViewModel::find($id);
-        return view('admin.site_details', compact("site_details"));
     }
 
     public function list(Request $request)
@@ -38,14 +30,13 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $buildings = SiteBuilding::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+            $site_screens = SiteScreenViewModel::when(request('search'), function($query){
+                return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
             ->where('site_id', $site_id)
             ->latest()
             ->paginate(request('perPage'));
-            return $this->responsePaginate($buildings, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -61,8 +52,8 @@ class BuildingsController extends AppBaseController implements BuildingsControll
     {
         try
         {
-            $building = SiteBuilding::find($id);
-            return $this->response($building, 'Successfully Retreived!', 200);
+            $site_screen = SiteScreenViewModel::find($id);
+            return $this->response($site_screen, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -81,13 +72,17 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             $site_id = session()->get('site_id');
             $data = [
                 'site_id' => $site_id,
+                'site_building_id' => $request->site_building_id,
+                'site_building_level_id' => $request->site_building_level_id,
+                'site_point_id' => $request->site_point_id,
+                'screen_type' => $request->screen_type,
                 'name' => $request->name,
-                'active' => 1
+                'active' => 1,
             ];
 
-            $building = SiteBuilding::create($data);
+            $site_screen = SiteScreen::create($data);
 
-            return $this->response($building, 'Successfully Created!', 200);
+            return $this->response($site_screen, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
         {
@@ -103,16 +98,20 @@ class BuildingsController extends AppBaseController implements BuildingsControll
     {
         try
     	{
-            $building = SiteBuilding::find($request->id);
+            $site_screen = SiteScreen::find($request->id);
 
             $data = [
+                'site_building_id' => $request->site_building_id,
+                'site_building_level_id' => $request->site_building_level_id,
+                'site_point_id' => $request->site_point_id,
+                'screen_type' => $request->screen_type,
                 'name' => $request->name,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
-            $building->update($data);
+            $site_screen->update($data);
 
-            return $this->response($building, 'Successfully Modified!', 200);
+            return $this->response($site_screen, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
@@ -128,9 +127,9 @@ class BuildingsController extends AppBaseController implements BuildingsControll
     {
         try
     	{
-            $building = SiteBuilding::find($id);
-            $building->delete();
-            return $this->response($building, 'Successfully Deleted!', 200);
+            $site_screen = SiteScreen::find($id);
+            $site_screen->delete();
+            return $this->response($site_screen, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
         {
@@ -141,23 +140,4 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             ], 401);
         }
     }
-
-    public function getAll()
-    {
-        try
-    	{
-            $site_id = session()->get('site_id');
-            $buildings = SiteBuilding::where('site_id', $site_id)->get();
-            return $this->response($buildings, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 401,
-            ], 401);
-        }
-    }
-    
 }
