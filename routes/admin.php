@@ -164,6 +164,20 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/building/{id}', 'Admin\BuildingsController@details')->where('id', '[0-9]+')->name('admin.site.building.details');
     Route::put('/admin/site/building/update', 'Admin\BuildingsController@update')->name('admin.site.building.update');
     Route::get('/admin/site/building/delete/{id}', 'Admin\BuildingsController@delete')->where('id', '[0-9]+')->name('admin.site.building.delete');
+    Route::get('/admin/site/buildings', 'Admin\BuildingsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
+
+    Route::get('/admin/site/floor/list', 'Admin\FloorsController@list')->name('admin.site.floor.list');
+    Route::post('/admin/site/floor/store', 'Admin\FloorsController@store')->name('admin.site.floor.store');
+    Route::get('/admin/site/floor/{id}', 'Admin\FloorsController@details')->where('id', '[0-9]+')->name('admin.site.floor.details');
+    Route::post('/admin/site/floor/update', 'Admin\FloorsController@update')->name('admin.site.floor.update');
+    Route::get('/admin/site/floor/delete/{id}', 'Admin\FloorsController@delete')->where('id', '[0-9]+')->name('admin.site.floor.delete');
+    Route::get('/admin/site/floors/{id}', 'Admin\FloorsController@getFloors')->where('id', '[0-9]+')->name('admin.site.floors');
+
+    Route::get('/admin/site/screen/list', 'Admin\ScreensController@list')->name('admin.site.screen.list');
+    Route::post('/admin/site/screen/store', 'Admin\ScreensController@store')->name('admin.site.screen.store');
+    Route::get('/admin/site/screen/{id}', 'Admin\ScreensController@details')->where('id', '[0-9]+')->name('admin.site.screen.details');
+    Route::put('/admin/site/screen/update', 'Admin\ScreensController@update')->name('admin.site.screen.update');
+    Route::get('/admin/site/screen/delete/{id}', 'Admin\ScreensController@delete')->where('id', '[0-9]+')->name('admin.site.screen.delete');
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

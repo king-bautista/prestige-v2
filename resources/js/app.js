@@ -31,7 +31,9 @@ Vue.component('admin-tags', require('./components/Admin/Tags.vue').default);
 Vue.component('admin-brands', require('./components/Admin/Brands.vue').default);
 Vue.component('admin-products', require('./components/Admin/Products.vue').default);
 Vue.component('admin-sites', require('./components/Admin/Sites.vue').default);
-Vue.component('admin-building', require('./components/Admin/Building.vue').default);
+Vue.component('admin-buildings', require('./components/Admin/Building.vue').default);
+Vue.component('admin-building-floors', require('./components/Admin/Floors.vue').default);
+Vue.component('admin-building-screens', require('./components/Admin/Screens.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

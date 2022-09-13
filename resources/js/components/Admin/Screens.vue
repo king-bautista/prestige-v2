@@ -1,0 +1,237 @@
+<template>
+	<div>
+        <!-- Main content -->
+	    <section class="content">
+	      <div class="container-fluid">
+	        <div class="row">
+	          <div class="col-md-12">
+	          	<div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Screens</h3>
+                    </div>
+	    			<div class="card-body">
+			          	<Table 
+                        :dataFields="dataFields"
+                        :dataUrl="dataUrl"
+                        :actionButtons="actionButtons"
+						:otherButtons="otherButtons"
+                        :primaryKey="primaryKey"
+						v-on:AddNewScreen="AddNewScreen"
+						v-on:editButton="editScreen"
+                        ref="screensDataTable">
+			          	</Table>
+		          	</div>
+		        </div>
+	          </div>
+	        </div>
+	        <!-- /.row -->
+	      </div><!-- /.container-fluid -->
+	    </section>
+	    <!-- /.content -->
+
+		<!-- Modal Add New / Edit User -->
+		<div class="modal fade" id="screen-form" tabindex="-1" aria-labelledby="screen-form" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Screen</h5>
+						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Screen</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="card-body">
+                            <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="screen.site_building_id" @change="getFloorLevel($event.target.value)">
+									    <option value="">Select Building</option>
+									    <option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
+								    </select>
+								</div>
+							</div>
+                            <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="screen.site_building_level_id">
+									    <option value="">Select Floor</option>
+									    <option v-for="floor in floors" :value="floor.id"> {{ floor.name }}</option>
+								    </select>
+								</div>
+							</div>
+                            <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="screen.screen_type">
+									    <option value="">Select Screen Type</option>
+									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
+								    </select>
+								</div>
+							</div>
+                            <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Map Point ID <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.site_point_id" placeholder="Map Point ID" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
+								</div>
+							</div>
+						</div>
+					<!-- /.card-body -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeScreen">Add New Screen</button>
+						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateScreen">Save Changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+      <!-- End Modal Add New User -->
+    </div>
+</template>
+<script> 
+	import Table from '../Helpers/Table';
+
+	export default {
+        name: "Screen",
+        data() {
+            return {
+                screen: {
+                    id: '',
+                    site_building_id: '',
+                    site_building_level_id: '',
+                    site_point_id: '',
+                    screen_type: '',
+                    name: '',
+                },
+                add_record: true,
+                edit_record: false,
+                buildings: [],
+                floors: [],
+                screen_types: ['Directory','LED','LFD','LED funnel'],
+            	dataFields: {
+                    building_name: "Building Name",
+                    floor_name: "Floor Name",
+            		site_point_id: "Site Point ID", 
+            		screen_type: "Screen Type", 
+            		name: "Name", 
+            		active: {
+            			name: "Status", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">Deactivated</span>', 
+            				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+                    created_at: "Date Created"
+            	},
+            	primaryKey: "id",
+            	dataUrl: "/admin/site/screen/list",
+            	actionButtons: {
+            		edit: {
+            			title: 'Edit this Screen',
+            			name: 'Edit',
+            			apiUrl: '',
+            			routeName: 'building.edit',
+            			button: '<i class="fas fa-edit"></i> Edit',
+            			method: 'edit'
+            		},
+            		delete: {
+            			title: 'Delete this Screen',
+            			name: 'Delete',
+            			apiUrl: '/admin/site/screen/delete',
+            			routeName: '',
+            			button: '<i class="fas fa-trash-alt"></i> Delete',
+            			method: 'delete'
+            		},
+            	},
+				otherButtons: {
+					addNew: {
+						title: 'New Screen',
+						v_on: 'AddNewScreen',
+						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+				}
+            };
+        },
+
+        created(){
+        },
+
+        methods: {
+            GetBuildings: function() {
+				axios.get('/admin/site/buildings')
+                .then(response => this.buildings = response.data.data);
+                this.screen.site_building_level_id = '';
+			},
+
+            getFloorLevel: function(id) {
+				axios.get('/admin/site/floors/'+id)
+                .then(response => this.floors = response.data.data);
+            },
+
+			AddNewScreen: function() {
+                this.GetBuildings();
+				this.add_record = true;
+				this.edit_record = false;
+                this.screen.site_building_id = '';
+                this.screen.site_building_level_id = '';
+                this.screen.site_point_id = '';
+                this.screen.screen_type = '';
+                this.screen.name = '';         
+              	$('#screen-form').modal('show');
+            },
+
+            storeScreen: function() {
+                axios.post('/admin/site/screen/store', this.screen)
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.screensDataTable.fetchData();
+					$('#screen-form').modal('hide');
+				})
+            },
+
+			editScreen: function(id) {
+                this.GetBuildings();
+                axios.get('/admin/site/screen/'+id)
+                .then(response => {
+                    var screen = response.data.data;
+                    this.screen.id = screen.id;
+                    this.screen.site_building_id = screen.site_building_id;
+
+                    this.getFloorLevel(screen.site_building_id);
+
+                    this.screen.site_building_level_id = screen.site_building_level_id;
+                    this.screen.site_point_id = screen.site_point_id;
+                    this.screen.screen_type = screen.screen_type;
+                    this.screen.name = screen.name;
+					this.add_record = false;
+					this.edit_record = true;
+                    $('#screen-form').modal('show');
+                });
+            },
+
+            updateScreen: function() {
+                axios.put('/admin/site/screen/update', this.screen)
+                    .then(response => {
+                        toastr.success(response.data.message);
+                        this.$refs.screensDataTable.fetchData();
+                        $('#screen-form').modal('hide');
+                    })
+            },
+
+        },
+
+        components: {
+        	Table
+ 	    }
+    };
+</script> 

@@ -4,30 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\Interfaces\BuildingsControllerInterface;
+use App\Http\Controllers\Admin\Interfaces\FloorsControllerInterface;
 use Illuminate\Http\Request;
 
-use App\Models\SiteBuilding;
+use App\Models\SiteBuildingLevel;
+use App\Models\SiteMap;
 use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteViewModel;
+use App\Models\ViewModels\SiteBuildingLevelViewModel;
 
-class BuildingsController extends AppBaseController implements BuildingsControllerInterface
+class FloorsController extends AppBaseController implements FloorsControllerInterface
 {
     /********************************************
-    * 			SITES BUILDING MANAGEMENT	 	*
+    * 			BUILDING FLOORS MANAGEMENT	 	*
     ********************************************/
     public function __construct()
     {
         $this->module_id = 13; 
         $this->module_name = 'Sites Management';
-    }
-
-    public function index($id)
-    {
-        session()->forget('site_id');
-        session()->put('site_id', $id);
-        $site_details = SiteViewModel::find($id);
-        return view('admin.site_details', compact("site_details"));
     }
 
     public function list(Request $request)
@@ -38,7 +31,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $buildings = SiteBuilding::when(request('search'), function($query){
+            $buildings = SiteBuildingLevelViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
@@ -61,8 +54,8 @@ class BuildingsController extends AppBaseController implements BuildingsControll
     {
         try
         {
-            $building = SiteBuilding::find($id);
-            return $this->response($building, 'Successfully Retreived!', 200);
+            $building_level = SiteBuildingLevelViewModel::find($id);
+            return $this->response($building_level, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -81,11 +74,13 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             $site_id = session()->get('site_id');
             $data = [
                 'site_id' => $site_id,
+                'site_building_id' => $request->site_building_id,
                 'name' => $request->name,
                 'active' => 1
             ];
 
-            $building = SiteBuilding::create($data);
+            $building = SiteBuildingLevel::create($data);
+            $building->saveMap($request);
 
             return $this->response($building, 'Successfully Created!', 200);
         }
@@ -103,16 +98,17 @@ class BuildingsController extends AppBaseController implements BuildingsControll
     {
         try
     	{
-            $building = SiteBuilding::find($request->id);
-
+            $building_level = SiteBuildingLevel::find($request->id);
             $data = [
+                'site_building_id' => $request->site_building_id,
                 'name' => $request->name,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
-            $building->update($data);
+            $building_level->update($data);
+            $building_level->saveMap($request);
 
-            return $this->response($building, 'Successfully Modified!', 200);
+            return $this->response($building_level, 'Successfully Created!', 200);            
         }
         catch (\Exception $e) 
         {
@@ -128,8 +124,10 @@ class BuildingsController extends AppBaseController implements BuildingsControll
     {
         try
     	{
-            $building = SiteBuilding::find($id);
+            $building = SiteBuildingLevel::find($id);
+            $site_map = SiteMap::where('site_building_level_id', $id);
             $building->delete();
+            $site_map->delete();
             return $this->response($building, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
@@ -142,13 +140,13 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         }
     }
 
-    public function getAll()
+    public function getFloors($id)
     {
         try
     	{
             $site_id = session()->get('site_id');
-            $buildings = SiteBuilding::where('site_id', $site_id)->get();
-            return $this->response($buildings, 'Successfully Deleted!', 200);
+            $building_levels = SiteBuildingLevel::where('site_id', $site_id)->where('site_building_id', $id)->get();
+            return $this->response($building_levels, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
         {
@@ -159,5 +157,5 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             ], 401);
         }
     }
-    
+
 }

@@ -20,15 +20,19 @@
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-<!-- Main content -->
-<div class="container-fluid">
+
+<!-- <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-md-3">
-              <img src="{{ URL::to($site_details->site_logo) }}" style="width:100%" />
+            <div class="col-md-3 text-center">
+              @if($site_details->site_logo)
+                <img src="{{ URL::to($site_details->site_logo) }}" style="width:100%" />
+              @else
+                <img src="{{ URL::to('/images/no-image-available.png') }}" style="width:50%" />
+              @endif
             </div>
             <div class="col-md-9">
               <img src="{{ URL::to($site_details->site_banner) }}" style="width:100%" />
@@ -38,12 +42,12 @@
       </div>
     </div>
   </div>
-  <!-- /.row -->
-</div><!-- /.container-fluid -->
+</div> -->
 
-<!-- Main content -->
-<admin-building></admin-building>
-<!-- /.content -->
+<admin-buildings></admin-buildings>
+<admin-building-floors></admin-building-floors>
+<admin-building-screens></admin-building-screens>
+
 @stop
 
 @push('scripts')    
