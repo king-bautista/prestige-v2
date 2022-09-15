@@ -158,6 +158,7 @@
             		descriptions: "Descriptions", 
 					category_name: "Category Name",
 					supplemental_names: "Supplementals",
+					tag_names: "Tags",
 					logo_image_path: {
             			name: "Logo", 
             			type:"image", 

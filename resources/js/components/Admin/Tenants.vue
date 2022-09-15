@@ -233,7 +233,7 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.tenantsDataTable.fetchData();
-					//$('#tenant-form').modal('hide');
+					$('#tenant-form').modal('hide');
 				})
             },
 

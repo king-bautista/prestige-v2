@@ -31,8 +31,11 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $categories = SupplementalViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('supplementals.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
             })
+            ->leftJoin('categories', 'supplementals.category_id', '=', 'categories.id')
+            ->select('supplementals.*')
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);
