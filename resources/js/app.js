@@ -34,6 +34,7 @@ Vue.component('admin-sites', require('./components/Admin/Sites.vue').default);
 Vue.component('admin-buildings', require('./components/Admin/Building.vue').default);
 Vue.component('admin-building-floors', require('./components/Admin/Floors.vue').default);
 Vue.component('admin-building-screens', require('./components/Admin/Screens.vue').default);
+Vue.component('admin-building-tenants', require('./components/Admin/Tenants.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

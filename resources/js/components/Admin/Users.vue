@@ -99,7 +99,7 @@
 								<label for="inputPassword3" class="col-sm-4 col-form-label"></label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-checkbox">
-										<input class="custom-control-input" type="checkbox" id="emailNotification" v-model="user.emailNotification" checked="">
+										<input class="custom-control-input" type="checkbox" id="emailNotification" v-model="user.emailNotification">
 										<label for="emailNotification" class="custom-control-label font-normal">Send the new user an email about their account.</label>
 									</div>
 								</div>

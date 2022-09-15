@@ -106,6 +106,7 @@ class CreateSitesTable extends Migration
             $table->integer('view_count')->default(0);    
             $table->integer('like_count')->default(0);    
             $table->boolean('active')->default(true);
+            $table->boolean('is_subscriber')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

@@ -21,32 +21,10 @@
 </div>
 <!-- /.content-header -->
 
-<!-- <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-3 text-center">
-              @if($site_details->site_logo)
-                <img src="{{ URL::to($site_details->site_logo) }}" style="width:100%" />
-              @else
-                <img src="{{ URL::to('/images/no-image-available.png') }}" style="width:50%" />
-              @endif
-            </div>
-            <div class="col-md-9">
-              <img src="{{ URL::to($site_details->site_banner) }}" style="width:100%" />
-            </div>
-          </div>        
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <admin-buildings></admin-buildings>
 <admin-building-floors></admin-building-floors>
 <admin-building-screens></admin-building-screens>
+<admin-building-tenants></admin-building-tenants>
 
 @stop
 

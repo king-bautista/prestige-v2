@@ -196,8 +196,8 @@
                 edit_record: false,
 				id_to_deleted: 0,
             	dataFields: {
-					building_name: "Building Name",
             		name: "Floor Name", 
+					building_name: "Building Name",
 					map_file: "Map File",
 					map_preview_path: {
             			name: "Map Preview", 
@@ -240,6 +240,14 @@
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'custom_delete',
 						v_on: 'DeleteFloor',
+            		},
+					link: {
+            			title: 'Manage Map',
+            			name: 'Delete',
+            			apiUrl: '/admin/site/floor/map',
+            			routeName: '',
+            			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Map',
+            			method: 'link',
             		},
             	},
 				otherButtons: {

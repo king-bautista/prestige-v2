@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\Interfaces\ScreensControllerInterface;
+use App\Http\Controllers\Admin\Interfaces\SiteTenantsControllerInterface;
 use Illuminate\Http\Request;
 
-use App\Models\SiteScreen;
+use App\Models\SiteTenant;
 use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteScreenViewModel;
+use App\Models\ViewModels\SiteTenantViewModel;
 
-class ScreensController extends AppBaseController implements ScreensControllerInterface
+class SiteTenantsController extends AppBaseController implements SiteTenantsControllerInterface
 {
     /********************************************
-    * 			SITES SCREENS MANAGEMENT	 	*
+    * 			SITES TENANTS MANAGEMENT	 	*
     ********************************************/
     public function __construct()
     {
@@ -30,13 +30,13 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $site_screens = SiteScreenViewModel::when(request('search'), function($query){
+            $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
             ->where('site_id', $site_id)
             ->latest()
             ->paginate(request('perPage'));
-            return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($site_tenants, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -52,8 +52,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try
         {
-            $site_screen = SiteScreenViewModel::find($id);
-            return $this->response($site_screen, 'Successfully Retreived!', 200);
+            $site_tenant = SiteTenantViewModel::find($id);
+            return $this->response($site_tenant, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -71,18 +71,17 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     	{
             $site_id = session()->get('site_id');
             $data = [
+                'brand_id' => $request->brand_id['id'],
                 'site_id' => $site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_point_id' => $request->site_point_id,
-                'screen_type' => $request->screen_type,
-                'name' => $request->name,
-                'active' => 1,
+                'active' => ($request->active) ? 1 : 0,
+                'is_subscriber' => ($request->is_subscriber) ? 1 : 0,
             ];
 
-            $site_screen = SiteScreen::create($data);
+            $site_tenant = SiteTenant::create($data);
 
-            return $this->response($site_screen, 'Successfully Created!', 200);
+            return $this->response($site_tenant, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
         {
@@ -98,20 +97,21 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try
     	{
-            $site_screen = SiteScreen::find($request->id);
+            $site_id = session()->get('site_id');
+            $site_tenant = SiteTenant::find($request->id);
 
             $data = [
+                'brand_id' => $request->brand_id['id'],
+                'site_id' => $site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_point_id' => $request->site_point_id,
-                'screen_type' => $request->screen_type,
-                'name' => $request->name,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => ($request->active) ? 1 : 0,
+                'is_subscriber' => ($request->is_subscriber) ? 1 : 0,
             ];
 
-            $site_screen->update($data);
+            $site_tenant->update($data);
 
-            return $this->response($site_screen, 'Successfully Modified!', 200);
+            return $this->response($site_tenant, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
@@ -127,9 +127,9 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try
     	{
-            $site_screen = SiteScreen::find($id);
-            $site_screen->delete();
-            return $this->response($site_screen, 'Successfully Deleted!', 200);
+            $site_tenant = SiteTenant::find($id);
+            $site_tenant->delete();
+            return $this->response($site_tenant, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
         {
@@ -140,5 +140,4 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ], 401);
         }
     }
-    
 }

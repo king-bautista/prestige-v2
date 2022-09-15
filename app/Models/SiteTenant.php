@@ -22,6 +22,7 @@ class SiteTenant extends Model
         'view_count',
         'like_count',
         'active',
+        'is_subscriber',
     ];
 
     /**

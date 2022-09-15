@@ -218,4 +218,21 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         }
     }
 
+    public function allBrands()
+    {
+        try
+    	{
+            $brands = Brand::get();
+            return $this->response($brands, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 401,
+            ], 401);
+        }
+    }
+
 }
