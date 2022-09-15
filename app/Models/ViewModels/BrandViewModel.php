@@ -47,6 +47,7 @@ class BrandViewModel extends Model
         'logo_image_path',
         'category_name',
         'supplemental_names',
+        'tag_names',
     ]; 
 
     public function getSupplementals()
@@ -99,6 +100,15 @@ class BrandViewModel extends Model
         $ids = $this->getSupplementals()->pluck('supplemental_id');
         if($ids) {
             return Supplemental::whereIn('id', $ids)->pluck('name');
+        }
+        return null;
+    } 
+
+    public function getTagNamesAttribute()
+    {
+        $ids = $this->getTags()->pluck('tag_id');
+        if($ids) {
+            return Tag::whereIn('id', $ids)->pluck('name');
         }
         return null;
     } 

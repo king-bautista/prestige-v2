@@ -31,9 +31,15 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('site_id', $site_id)
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->leftJoin('site_buildings', 'site_tenants.site_building_id', '=', 'site_buildings.id')
+            ->leftJoin('site_building_levels', 'site_tenants.site_building_level_id', '=', 'site_building_levels.id')
+            ->select('site_tenants.*')
+            ->where('site_tenants.site_id', $site_id)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_tenants, 'Successfully Retreived!', 200);

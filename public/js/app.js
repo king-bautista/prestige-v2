@@ -9593,6 +9593,7 @@ __webpack_require__.r(__webpack_exports__);
         descriptions: "Descriptions",
         category_name: "Category Name",
         supplemental_names: "Supplementals",
+        tag_names: "Tags",
         logo_image_path: {
           name: "Logo",
           type: "image"
@@ -13475,8 +13476,9 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/admin/site/tenant/store', this.tenant).then(function (response) {
         toastr.success(response.data.message);
 
-        _this4.$refs.tenantsDataTable.fetchData(); //$('#tenant-form').modal('hide');
+        _this4.$refs.tenantsDataTable.fetchData();
 
+        $('#tenant-form').modal('hide');
       });
     },
     editTenant: function editTenant(id) {

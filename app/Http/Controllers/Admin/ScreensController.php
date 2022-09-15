@@ -31,9 +31,16 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_screens = SiteScreenViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('site_id', $site_id)
+            ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+            ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+            ->select('site_screens.*')
+            ->where('site_screens.site_id', $site_id)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);

@@ -32,10 +32,13 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $buildings = SiteBuildingLevelViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                return $query->where('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('site_buildings.descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('site_id', $site_id)
+            ->leftJoin('site_buildings', 'site_building_levels.site_building_id', '=', 'site_buildings.id')
+            ->where('site_building_levels.site_id', $site_id)
+            ->select('site_building_levels.*')
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($buildings, 'Successfully Retreived!', 200);

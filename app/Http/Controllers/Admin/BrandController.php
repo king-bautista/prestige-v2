@@ -38,9 +38,12 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $brands = BrandViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
             })
+            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->select('brands.*')
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
