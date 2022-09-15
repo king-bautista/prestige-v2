@@ -108,14 +108,11 @@
 									</div>
 								</div>
 							</div>
-							<hr/>
-							<div class="row">
-								<div class="col-12 text-right">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary pull-right" v-show="add_record" @click="storeBrand">Add New Brand</button>
-									<button type="button" class="btn btn-primary pull-right" v-show="edit_record" @click="updateBrand">Save Changes</button>
-								</div>
-							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary pull-right" v-show="add_record" @click="storeBrand">Add New Brand</button>
+							<button type="button" class="btn btn-primary pull-right" v-show="edit_record" @click="updateBrand">Save Changes</button>
 						</div>
 					<!-- /.card-body -->
 					</div>

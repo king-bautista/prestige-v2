@@ -7,7 +7,7 @@
 	          <div class="col-md-12">
 	          	<div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Screens</h3>
+                        <h3 class="card-title">Tenants</h3>
                     </div>
 	    			<div class="card-body">
 			          	<Table 
@@ -16,10 +16,10 @@
                         :actionButtons="actionButtons"
 						:otherButtons="otherButtons"
                         :primaryKey="primaryKey"
-						v-on:AddNewScreen="AddNewScreen"
-						v-on:editButton="editScreen"
-						v-on:DeleteScreen="DeleteScreen"
-                        ref="screensDataTable">
+						v-on:AddNewTenant="AddNewTenant"
+						v-on:editButton="editTenant"
+						v-on:DeleteTenant="DeleteTenant"
+                        ref="tenantsDataTable">
 			          	</Table>
 		          	</div>
 		        </div>
@@ -31,12 +31,12 @@
 	    <!-- /.content -->
 
 		<!-- Modal Add New / Edit User -->
-		<div class="modal fade" id="screen-form" tabindex="-1" aria-labelledby="screen-form" aria-hidden="true">
+		<div class="modal fade" id="tenant-form" tabindex="-1" aria-labelledby="tenant-form" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Screen</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Screen</h5>
+						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Tenant</h5>
+						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Tenant</h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -44,9 +44,16 @@
 					<div class="modal-body">
 						<div class="card-body">
                             <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <multiselect v-model="tenant.brand_id" track-by="name" label="name" placeholder="Select Brand" :options="brands" :searchable="true" :allow-empty="false">
+                                    </multiselect> 
+								</div>
+							</div>
+                            <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.site_building_id" @change="getFloorLevel($event.target.value)">
+                                    <select class="custom-select" v-model="tenant.site_building_id" @change="getFloorLevel($event.target.value)">
 									    <option value="">Select Building</option>
 									    <option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
 								    </select>
@@ -55,31 +62,28 @@
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.site_building_level_id">
+                                    <select class="custom-select" v-model="tenant.site_building_level_id">
 									    <option value="">Select Floor</option>
 									    <option v-for="floor in floors" :value="floor.id"> {{ floor.name }}</option>
 								    </select>
 								</div>
-							</div>
+							</div>						
                             <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Type <span class="font-italic text-danger"> *</span></label>
+								<label for="is_subscriber" class="col-sm-4 col-form-label">Is Subscriber</label>
 								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.screen_type">
-									    <option value="">Select Screen Type</option>
-									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
-								    </select>
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_subscriber" v-model="tenant.is_subscriber">
+										<label class="custom-control-label" for="is_subscriber"></label>
+									</div>
 								</div>
 							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Map Point ID <span class="font-italic text-danger"> *</span></label>
+                            <div class="form-group row" >
+								<label for="tennat_active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.site_point_id" placeholder="Map Point ID" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="tennat_active" v-model="tenant.active">
+										<label class="custom-control-label" for="tennat_active"></label>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -87,14 +91,14 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeScreen">Add New Screen</button>
-						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateScreen">Save Changes</button>
+						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeTenant">Add New Tenant</button>
+						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateTenant">Save Changes</button>
 					</div>
 				</div>
 			</div>
 		</div>
       	<!-- End Modal Add New User -->
-	  	<div class="modal fade" id="screenDeleteModal" tabindex="-1" aria-labelledby="screenDeleteModal" aria-hidden="true">
+	  	<div class="modal fade" id="tenantDeleteModal" tabindex="-1" aria-labelledby="tenantDeleteModal" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header bg-danger">
@@ -105,7 +109,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary" @click="removeScreen">OK</button>
+						<button type="button" class="btn btn-primary" @click="removeTenant">OK</button>
 					</div>
 				</div>
 			</div>
@@ -115,31 +119,34 @@
 </template>
 <script> 
 	import Table from '../Helpers/Table';
+    import Multiselect from 'vue-multiselect';
 
 	export default {
-        name: "Screen",
+        name: "Tenant",
         data() {
             return {
-                screen: {
+                tenant: {
                     id: '',
+                    brand_id: '',
                     site_building_id: '',
                     site_building_level_id: '',
-                    site_point_id: '',
-                    screen_type: '',
-                    name: '',
+                    active: true,
+                    is_subscriber: '',
                 },
 				id_to_deleted: 0,
                 add_record: true,
                 edit_record: false,
+                brands: [],
                 buildings: [],
                 floors: [],
-                screen_types: ['Directory','LED','LFD','LED funnel'],
             	dataFields: {
-            		name: "Name", 
+            		brand_name: "Brand Name", 
+					brand_logo: {
+            			name: "Brand Logo", 
+            			type:"image", 
+            		},
                     floor_name: "Floor Name",
                     building_name: "Building Name",
-            		site_point_id: "Site Point ID", 
-            		screen_type: "Screen Type", 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -148,13 +155,20 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    created_at: "Date Created"
+            		is_subscriber: {
+            			name: "Is Subscriber", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
+            			}
+            		},                    created_at: "Date Created"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/site/screen/list",
+            	dataUrl: "/admin/site/tenant/list",
             	actionButtons: {
             		edit: {
-            			title: 'Edit this Screen',
+            			title: 'Edit this Tenant',
             			name: 'Edit',
             			apiUrl: '',
             			routeName: 'building.edit',
@@ -162,20 +176,20 @@
             			method: 'edit'
             		},
             		delete: {
-            			title: 'Delete this Screen',
+            			title: 'Delete this Tenant',
             			name: 'Delete',
-            			apiUrl: '/admin/site/screen/delete',
+            			apiUrl: '/admin/site/tenant/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'custom_delete',
-						v_on: 'DeleteScreen',
+						v_on: 'DeleteTenant',
             		},
             	},
 				otherButtons: {
 					addNew: {
-						title: 'New Screen',
-						v_on: 'AddNewScreen',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
+						title: 'New Tenant',
+						v_on: 'AddNewTenant',
+						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Tenant',
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
@@ -184,13 +198,19 @@
         },
 
         created(){
+            this.GetBrands();
         },
 
         methods: {
+            GetBrands: function() {
+				axios.get('/admin/brand/get-all')
+                .then(response => this.brands = response.data.data);
+			},
+
             GetBuildings: function() {
 				axios.get('/admin/site/buildings')
                 .then(response => this.buildings = response.data.data);
-                this.screen.site_building_level_id = '';
+                this.tenant.site_building_level_id = '';
 			},
 
             getFloorLevel: function(id) {
@@ -198,74 +218,71 @@
                 .then(response => this.floors = response.data.data);
             },
 
-			AddNewScreen: function() {
+			AddNewTenant: function() {
                 this.GetBuildings();
 				this.add_record = true;
 				this.edit_record = false;
-                this.screen.site_building_id = '';
-                this.screen.site_building_level_id = '';
-                this.screen.site_point_id = '';
-                this.screen.screen_type = '';
-                this.screen.name = '';         
-              	$('#screen-form').modal('show');
+                this.tenant.brand_id = '';
+                this.tenant.site_building_id = '';
+                this.tenant.site_building_level_id = '';
+              	$('#tenant-form').modal('show');
             },
 
-            storeScreen: function() {
-                axios.post('/admin/site/screen/store', this.screen)
+            storeTenant: function() {
+                axios.post('/admin/site/tenant/store', this.tenant)
 				.then(response => {
 					toastr.success(response.data.message);
-					this.$refs.screensDataTable.fetchData();
-					$('#screen-form').modal('hide');
+					this.$refs.tenantsDataTable.fetchData();
+					//$('#tenant-form').modal('hide');
 				})
             },
 
-			editScreen: function(id) {
+			editTenant: function(id) {
                 this.GetBuildings();
-                axios.get('/admin/site/screen/'+id)
+                axios.get('/admin/site/tenant/'+id)
                 .then(response => {
-                    var screen = response.data.data;
-                    this.screen.id = screen.id;
-                    this.screen.site_building_id = screen.site_building_id;
+                    var tenant = response.data.data;
+                    this.tenant.id = tenant.id;
+                    this.tenant.brand_id = tenant.brand_details;
+                    this.tenant.site_building_id = tenant.site_building_id;
 
-                    this.getFloorLevel(screen.site_building_id);
+                    this.getFloorLevel(tenant.site_building_id);
 
-                    this.screen.site_building_level_id = screen.site_building_level_id;
-                    this.screen.site_point_id = screen.site_point_id;
-                    this.screen.screen_type = screen.screen_type;
-                    this.screen.name = screen.name;
+                    this.tenant.site_building_level_id = tenant.site_building_level_id;
 					this.add_record = false;
 					this.edit_record = true;
-                    $('#screen-form').modal('show');
+                    $('#tenant-form').modal('show');
                 });
             },
 
-            updateScreen: function() {
-                axios.put('/admin/site/screen/update', this.screen)
+            updateTenant: function() {
+                axios.put('/admin/site/tenant/update', this.tenant)
                     .then(response => {
                         toastr.success(response.data.message);
-                        this.$refs.screensDataTable.fetchData();
-                        $('#screen-form').modal('hide');
+                        this.$refs.tenantsDataTable.fetchData();
+                        $('#tenant-form').modal('hide');
                     })
             },
 
-			DeleteScreen: function(data) {
+			DeleteTenant: function(data) {
 				this.id_to_deleted = data.id;
-				$('#screenDeleteModal').modal('show');
+				$('#tenantDeleteModal').modal('show');
 			},
 
-			removeScreen: function() {
-				axios.get('/admin/site/screen/delete/'+this.id_to_deleted)
+			removeTenant: function() {
+				axios.get('/admin/site/tenant/delete/'+this.id_to_deleted)
                 .then(response => {
-                    this.$refs.screensDataTable.fetchData();
+                    this.$refs.tenantsDataTable.fetchData();
                     this.id_to_deleted = 0;
-                    $('#screenDeleteModal').modal('hide');
+                    $('#tenantDeleteModal').modal('hide');
                 });
 			}
 
         },
 
         components: {
-        	Table
+        	Table,
+            Multiselect
  	    }
     };
 </script> 
