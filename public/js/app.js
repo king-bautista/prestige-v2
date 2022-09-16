@@ -10174,6 +10174,69 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // import the component
 
  // import the styles
@@ -10195,7 +10258,15 @@ __webpack_require__.r(__webpack_exports__);
         active: false
       },
       parent_category: [],
-      site_labels: [],
+      site_list: [],
+      category_label: {
+        id: '',
+        category_id: '',
+        site_id: '',
+        label: ''
+      },
+      category_labels: [],
+      category_label_for: '',
       add_record: true,
       edit_record: false,
       kiosk_primary_url: '',
@@ -10250,12 +10321,21 @@ __webpack_require__.r(__webpack_exports__);
           routeName: '',
           button: '<i class="fas fa-trash-alt"></i> Delete',
           method: 'delete'
+        },
+        modal: {
+          title: 'Site Labels',
+          name: 'Site Labels',
+          apiUrl: '',
+          routeName: '',
+          button: '<i class="fa fa-tags" aria-hidden="true"></i> Site Label',
+          method: 'view',
+          v_on: 'modalLabels'
         }
       },
       otherButtons: {
         addNew: {
           title: 'New Category',
-          v_on: 'AddNewCategory',
+          v_on: 'addNewCategory',
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Category',
           "class": 'btn btn-primary btn-sm',
           method: 'add'
@@ -10264,7 +10344,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.GetParentCategory();
+    this.getParentCategory();
+    this.getSites();
   },
   methods: {
     kioskPrimaryChange: function kioskPrimaryChange(e) {
@@ -10287,14 +10368,14 @@ __webpack_require__.r(__webpack_exports__);
       this.category.online_image_top = file;
       this.online_top_url = URL.createObjectURL(file);
     },
-    GetParentCategory: function GetParentCategory() {
+    getParentCategory: function getParentCategory() {
       var _this = this;
 
       axios.get('/admin/category/get-all-categories').then(function (response) {
         return _this.parent_category = response.data.data;
       });
     },
-    AddNewCategory: function AddNewCategory() {
+    addNewCategory: function addNewCategory() {
       this.add_record = true;
       this.edit_record = false;
       this.category.parent_id = null;
@@ -10335,7 +10416,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.$refs.dataTable.fetchData();
 
-        _this2.GetParentCategory();
+        _this2.getParentCategory();
 
         $('#category-form').modal('hide');
       });
@@ -10389,7 +10470,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this4.$refs.dataTable.fetchData();
 
-        _this4.GetParentCategory();
+        _this4.getParentCategory();
 
         $('#category-form').modal('hide');
       });
@@ -10406,6 +10487,50 @@ __webpack_require__.r(__webpack_exports__);
         _this5.editCategory(_this5.category.id);
 
         _this5.$refs.dataTable.fetchData();
+      });
+    },
+    getSites: function getSites() {
+      var _this6 = this;
+
+      axios.get('/admin/site/get-all').then(function (response) {
+        return _this6.site_list = response.data.data;
+      });
+    },
+    deleteLabel: function deleteLabel(id, category_id) {
+      var _this7 = this;
+
+      if (id) {
+        if (confirm("Do you really want to delete?")) {
+          axios.get('/admin/category/label/delete/' + id).then(function (response) {
+            _this7.getLabels(category_id);
+          });
+        }
+      }
+    },
+    getLabels: function getLabels(id) {
+      var _this8 = this;
+
+      axios.get('/admin/category/labels/' + id).then(function (response) {
+        _this8.category_labels = response.data.data;
+      });
+    },
+    modalLabels: function modalLabels(data) {
+      this.category_label.category_id = data.id;
+      this.category_label.site_id = '';
+      this.category_label.label = '';
+      this.category_label_for = data.name;
+      this.getLabels(data.id);
+      $('#label-form').modal('show');
+    },
+    saveLabels: function saveLabels() {
+      var _this9 = this;
+
+      axios.post('/admin/category/label/store', this.category_label).then(function (response) {
+        toastr.success(response.data.message);
+        _this9.category_label.site_id = '';
+        _this9.category_label.label = '';
+
+        _this9.getLabels(response.data.data.category_id);
       });
     }
   },
@@ -14105,6 +14230,10 @@ __webpack_require__.r(__webpack_exports__);
 
         case 'custom_delete':
           if (permission.can_delete > 0) return true;
+          break;
+
+        case 'view':
+          if (permission.can_add > 0) return true;
           break;
       }
 
@@ -77076,8 +77205,9 @@ var render = function () {
                       primaryKey: _vm.primaryKey,
                     },
                     on: {
-                      AddNewCategory: _vm.AddNewCategory,
+                      addNewCategory: _vm.addNewCategory,
                       editButton: _vm.editCategory,
+                      modalLabels: _vm.modalLabels,
                     },
                   }),
                 ],
@@ -77236,7 +77366,6 @@ var render = function () {
                         _c("treeselect", {
                           attrs: {
                             options: _vm.parent_category,
-                            normalizer: _vm.normalizer,
                             placeholder: "Select Parent Category",
                           },
                           model: {
@@ -77555,10 +77684,6 @@ var render = function () {
                       ]),
                     ]),
                   ]),
-                  _vm._v(" "),
-                  _c("hr"),
-                  _vm._v(" "),
-                  _vm._m(7),
                 ]),
               ]),
               _vm._v(" "),
@@ -77608,6 +77733,204 @@ var render = function () {
                   [_vm._v("Save Changes")]
                 ),
               ]),
+            ]),
+          ]
+        ),
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "label-form",
+          tabindex: "-1",
+          "aria-labelledby": "label-form",
+          "aria-hidden": "true",
+        },
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg",
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(7),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-4 col-form-label",
+                          attrs: { for: "firstName" },
+                        },
+                        [_vm._v(_vm._s(_vm.category_label_for) + " ")]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(9),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.category_label.site_id,
+                              expression: "category_label.site_id",
+                            },
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.category_label,
+                                "site_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Select Site"),
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.site_list, function (site) {
+                            return _c(
+                              "option",
+                              { domProps: { value: site.id } },
+                              [_vm._v(" " + _vm._s(site.name))]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(10),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.category_label.label,
+                            expression: "category_label.label",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "Label" },
+                        domProps: { value: _vm.category_label.label },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.category_label,
+                              "label",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-sm-12 text-right" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-sm",
+                          attrs: { type: "button" },
+                          on: { click: _vm.saveLabels },
+                        },
+                        [_vm._v("+ Add Label")]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-hover",
+                      staticStyle: { width: "100%" },
+                    },
+                    [
+                      _vm._m(11),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.category_labels, function (label) {
+                          return _c("tr", [
+                            _c("td", [_vm._v(_vm._s(label.site_name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(label.category_name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(label.name))]),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              { staticStyle: { "text-align": "right" } },
+                              [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-danger",
+                                    attrs: { type: "button", title: "Delete" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.deleteLabel(
+                                          label.id,
+                                          label.category_id
+                                        )
+                                      },
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fas fa-trash-alt" })]
+                                ),
+                              ]
+                            ),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
+                ]),
+              ]),
+              _vm._v(" "),
+              _vm._m(12),
             ]),
           ]
         ),
@@ -77721,11 +78044,92 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Site Labels")]),
+      _vm._v(" "),
       _c(
-        "label",
-        { staticClass: "col-sm-4 col-form-label", attrs: { for: "lastName" } },
-        [_c("h5", [_vm._v("Site Labels")])]
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-bs-dismiss": "modal",
+            "aria-label": "Close",
+          },
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Category "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Site "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Label "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "table-dark" }, [
+      _c("tr", [
+        _c("th", [_vm._v("Site Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Category Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Label")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { "text-align": "center" } }, [
+          _vm._v("Action"),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-bs-dismiss": "modal" },
+        },
+        [_vm._v("Close")]
       ),
     ])
   },

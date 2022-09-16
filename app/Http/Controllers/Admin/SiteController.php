@@ -188,4 +188,21 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
         }
     }
 
+    public function getAll()
+    {
+        try
+    	{
+            $sites = Site::get();
+            return $this->response($sites, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
 }

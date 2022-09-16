@@ -71,7 +71,6 @@ const app = new Vue({
                 return response
             }, error => {
                 self.isLoading = false
-
                 switch(error.response.status) {
                   case 422:
                         var errors = error.response.data.errors

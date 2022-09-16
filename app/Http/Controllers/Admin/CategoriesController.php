@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\CategoriesControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Category;
+use App\Models\CategoryLabel;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\CategoryViewModel;
 
@@ -230,6 +231,67 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             return $this->response($category, 'Successfully modified!', 200);
         }
         catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getLabels($id)
+    {
+        try
+        {
+            $labels = CategoryLabel::where('category_id', $id)->get();
+            return $this->response($labels, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function saveLabels(Request $request)
+    {
+        try
+        {
+            $category_label = CategoryLabel::updateOrCreate(
+                [
+                   'category_id' => $request->category_id,
+                   'site_id' => $request->site_id
+                ],
+                [
+                   'name' => $request->label
+                ],
+            );
+
+            return $this->response($category_label, 'Successfully saved!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function deleteLabel($id)
+    {
+        try
+    	{
+            $label = CategoryLabel::find($id);
+            $label->delete();
+            return $this->response($label, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
         {
             return response([
                 'message' => $e->getMessage(),
