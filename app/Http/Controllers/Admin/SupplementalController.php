@@ -45,8 +45,8 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -62,8 +62,8 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -120,8 +120,8 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -180,8 +180,8 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -198,8 +198,8 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -216,8 +216,8 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 }

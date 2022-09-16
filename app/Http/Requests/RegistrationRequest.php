@@ -30,14 +30,14 @@ class RegistrationRequest extends FormRequest
             "password" => [
                 'required',
                 'string',
-                'confirmed',   
+                //'confirmed',   
                 'min:6',              // must be at least 6 characters in length
                 'regex:/[a-z]/',      // must contain at least one lowercase letter
                 'regex:/[A-Z]/',      // must contain at least one uppercase letter
                 'regex:/[0-9]/',      // must contain at least one digit
                 'regex:/[@$!%*#?&]/', // must contain a special character
             ],
-            "password_confirmation" => "required|min:6",
+            //"password_confirmation" => "required|min:6",
         ];
     }
 

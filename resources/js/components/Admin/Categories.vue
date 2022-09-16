@@ -59,10 +59,6 @@
 										:normalizer="normalizer"
 										placeholder="Select Parent Category"
 										/>
-                                    <!-- <select class="custom-select" v-model="category.parent_id">
-									    <option value="0">Select Parent Category</option>
-									    <option v-for="category in parent_category" :value="category.id"> {{ category.name }}</option>
-								    </select> -->
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -150,6 +146,10 @@
 									</div>
 								</div>
 							</div>
+							<hr/>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label"><h5>Site Labels</h5></label>
+							</div>
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -187,6 +187,7 @@
                     active: false,           
                 },
                 parent_category: [],
+				site_labels: [],
                 add_record: true,
                 edit_record: false,
 				kiosk_primary_url: '',

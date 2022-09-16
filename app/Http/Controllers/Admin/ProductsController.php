@@ -53,8 +53,8 @@ class ProductsController extends AppBaseController implements ProductsController
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -70,8 +70,8 @@ class ProductsController extends AppBaseController implements ProductsController
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -116,8 +116,8 @@ class ProductsController extends AppBaseController implements ProductsController
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -163,8 +163,8 @@ class ProductsController extends AppBaseController implements ProductsController
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -181,8 +181,8 @@ class ProductsController extends AppBaseController implements ProductsController
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
     
