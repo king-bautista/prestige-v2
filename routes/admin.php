@@ -73,6 +73,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('admin.category.delete');
     Route::get('/admin/category/get-all-categories', 'Admin\CategoriesController@getAllCategories')->where('id', '[0-9]+')->name('admin.category.get-all-categories');
     Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('admin.category.delete-image');
+    Route::get('/admin/category/labels/{id}', 'Admin\CategoriesController@getLabels')->where('id', '[0-9]+')->name('admin.category.labels');
+    Route::post('/admin/category/label/store', 'Admin\CategoriesController@saveLabels')->name('admin.category.label.store');
+    Route::get('/admin/category/label/delete/{id}', 'Admin\CategoriesController@deleteLabel')->where('id', '[0-9]+')->name('admin.category.label.delete');
 
     /*
     |--------------------------------------------------------------------------
@@ -158,6 +161,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/{id}', 'Admin\SiteController@details')->where('id', '[0-9]+')->name('admin.site.details');
     Route::post('/admin/site/update', 'Admin\SiteController@update')->name('admin.site.update');
     Route::get('/admin/site/delete/{id}', 'Admin\SiteController@delete')->where('id', '[0-9]+')->name('admin.site.delete');
+    Route::get('/admin/site/get-all', 'Admin\SiteController@getAll')->where('id', '[0-9]+')->name('admin.site.get-all');
 
     Route::get('/admin/site/buildings/{id}', 'Admin\BuildingsController@index')->name('admin.site.buildings');
     Route::get('/admin/site/building/list', 'Admin\BuildingsController@list')->name('admin.site.building.list');

@@ -215,6 +215,10 @@
                         if(permission.can_delete > 0)
                             return true;
                         break;
+                    case 'view':
+                        if(permission.can_add > 0)
+                            return true;
+                        break;
                 }
 
                 return false;
