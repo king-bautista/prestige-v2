@@ -46,8 +46,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -63,8 +63,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -113,8 +113,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -165,8 +165,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -183,8 +183,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 

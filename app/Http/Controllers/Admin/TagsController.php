@@ -43,8 +43,8 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -60,8 +60,8 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -83,8 +83,8 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -108,8 +108,8 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -126,8 +126,8 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -143,8 +143,8 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 }

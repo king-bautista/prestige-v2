@@ -53,8 +53,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -70,8 +70,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -105,8 +105,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -142,8 +142,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -160,8 +160,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -177,8 +177,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -194,8 +194,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -216,8 +216,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 
@@ -233,8 +233,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
-                'status_code' => 401,
-            ], 401);
+                'status_code' => 422,
+            ], 422);
         }
     }
 

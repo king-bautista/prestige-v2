@@ -35,6 +35,8 @@
 
             <!-- Main Footer -->
             @include('layout.admin.footer')
+
+            <loader :is-visible="isLoading"></loader>
         </div>
         <!-- ./wrapper -->
 

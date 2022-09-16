@@ -19,6 +19,8 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+Vue.component('loader', require('./components/Helpers/Preloader.vue').default);
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('admin-users', require('./components/Admin/Users.vue').default);
 Vue.component('admin-roles', require('./components/Admin/Roles.vue').default);
@@ -44,4 +46,60 @@ Vue.component('admin-building-tenants', require('./components/Admin/Tenants.vue'
 
 const app = new Vue({
     el: '#app',
+    data: {
+        isLoading: false,
+        axiosInterceptor: null,        
+    },
+
+    mounted() {
+        this.enableInterceptor()
+    },
+
+    methods: {
+        enableInterceptor() {
+            var self = this
+            this.axiosInterceptor = axios.interceptors.request.use((config) => {
+                self.isLoading = true
+                return config
+            }, (error) => {
+                self.isLoading = false
+                return Promise.reject(error);
+            })
+            
+            window.axios.interceptors.response.use((response) => {
+                self.isLoading = false
+                return response
+            }, error => {
+                self.isLoading = false
+
+                switch(error.response.status) {
+                  case 422:
+                        var errors = error.response.data.errors
+                        if(errors)
+                            $.each(errors, function(key,value) {
+                                toastr.error(value)
+                            }); 
+                    break;
+                  case 405:
+                        toastr.error(error.response.statusText)
+                    break;
+                  case 401:
+                        toastr.error(error.response.data.message)
+                    break;
+                  case 404:
+                        toastr.error(error.response.data.message)
+                    break;                    
+                  case 408:
+                        toastr.error(error.response.statusText)
+                    break;
+                }
+                return Promise.reject(error);
+            })
+
+        },
+        
+        disableInterceptor() {
+            axios.interceptors.request.eject(this.axiosInterceptor)
+        },     
+    }
 });
