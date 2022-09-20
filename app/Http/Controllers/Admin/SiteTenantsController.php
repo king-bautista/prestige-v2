@@ -146,4 +146,23 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             ], 422);
         }
     }
+
+    public function getTenants($ids)
+    {
+        try
+    	{
+            $ids = explode(",", substr($ids, 0, -1));
+            $site_tenants = SiteTenantViewModel::whereIn('site_id', $ids)->get();
+            return $this->response($site_tenants, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
 }

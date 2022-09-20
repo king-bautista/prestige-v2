@@ -17,23 +17,39 @@ class CreateSiteAdsTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->enum('ad_type', ['Events', 'Web Banner', 'Kiosk Banner', 'full screen', 'pop-up']);
             $table->string('name');
-            
+            $table->enum('ad_type', ['Events', 'Online', 'Banners', 'Fullscreen', 'Pop-Up']);
+            $table->mediumText('file_path')->nullable();
+            $table->string('file_type')->nullable();
+            $table->integer('display_order');
+            $table->integer('display_duration');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->boolean('active')->default(true);            
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('site_id')->references('id')->on('sites');
         });
+
+        Schema::create('tenant_ads', function (Blueprint $table) {
+            $table->engine = "InnoDB";
+            
+            $table->bigInteger('site_ad_id')->unsigned()->nullable();
+            $table->bigInteger('site_tenant_id')->unsigned()->nullable();
+
+            $table->foreign('site_ad_id')->references('id')->on('site_ads');
+            $table->foreign('site_tenant_id')->references('id')->on('site_tenants');
+        });        
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations. 
      *
      * @return void
      */
     public function down()
     {
+        Schema::dropIfExists('tenant_ads');
         Schema::dropIfExists('site_ads');
     }
 }
