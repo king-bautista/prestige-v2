@@ -189,6 +189,23 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/tenant/{id}', 'Admin\SiteTenantsController@details')->where('id', '[0-9]+')->name('admin.site.tenant.details');
     Route::put('/admin/site/tenant/update', 'Admin\SiteTenantsController@update')->name('admin.site.tenant.update');
     Route::get('/admin/site/tenant/delete/{id}', 'Admin\SiteTenantsController@delete')->where('id', '[0-9]+')->name('admin.site.tenant.delete');
+    Route::get('/admin/site/tenant/get-tenants/{ids}', 'Admin\SiteTenantsController@getTenants')->name('admin.site.tenant.get-tenants');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Advertisements Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/advertisements/online', 'Admin\SiteAdsController@index')->name('admin.advertisement.online');
+    Route::get('/admin/advertisements/banner', 'Admin\SiteAdsController@banner')->name('admin.advertisement.banner');
+    Route::get('/admin/advertisements/fullscreen', 'Admin\SiteAdsController@fullscreen')->name('admin.advertisement.fullscreen');
+    Route::get('/admin/advertisements/popups', 'Admin\SiteAdsController@popups')->name('admin.advertisement.popups');
+    Route::get('/admin/advertisements/events', 'Admin\SiteAdsController@events')->name('admin.advertisement.events');
+    Route::get('/admin/advertisement/list', 'Admin\SiteAdsController@list')->name('admin.advertisement.list');
+    Route::post('/admin/advertisement/store', 'Admin\SiteAdsController@store')->name('admin.advertisement.store');
+    Route::get('/admin/advertisement/{id}', 'Admin\SiteAdsController@details')->where('id', '[0-9]+')->name('admin.advertisement.details');
+    Route::post('/admin/advertisement/update', 'Admin\SiteAdsController@update')->name('admin.advertisement.update');
+    Route::get('/admin/advertisement/delete/{id}', 'Admin\SiteAdsController@delete')->where('id', '[0-9]+')->name('admin.advertisement.delete');
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

@@ -5,6 +5,7 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Site;
 use App\Models\SiteBuilding;
 use App\Models\SiteBuildingLevel;
 use App\Models\Brand;
@@ -49,6 +50,8 @@ class SiteTenantViewModel extends Model
         'brand_name',
         'building_name',
         'floor_name',
+        'site_name',
+        'brand_site_name',
     ];
 
     /****************************************
@@ -80,6 +83,18 @@ class SiteTenantViewModel extends Model
     public function getFloorNameAttribute() 
     {
         return SiteBuildingLevel::find($this->site_building_level_id)->name;
+    }
+
+    public function getSiteNameAttribute() 
+    {
+        return Site::find($this->site_id)->name;
+    }
+
+    public function getBrandSiteNameAttribute() 
+    {
+        $brand_name = Brand::find($this->brand_id)->name;
+        $site_name = Site::find($this->site_id)->name;
+        return $brand_name.' - '.$site_name;
     }
 
 }
