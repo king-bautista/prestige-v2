@@ -99,7 +99,8 @@ class BrandViewModel extends Model
     {
         $ids = $this->getSupplementals()->pluck('supplemental_id');
         if($ids) {
-            return Supplemental::whereIn('id', $ids)->pluck('name');
+            $supplementals = Supplemental::whereIn('id', $ids)->pluck('name')->toArray();
+            return implode(', ', $supplementals);
         }
         return null;
     } 
@@ -108,7 +109,8 @@ class BrandViewModel extends Model
     {
         $ids = $this->getTags()->pluck('tag_id');
         if($ids) {
-            return Tag::whereIn('id', $ids)->pluck('name');
+            $tags = Tag::whereIn('id', $ids)->pluck('name')->toArray();
+            return implode(', ', $tags);
         }
         return null;
     } 

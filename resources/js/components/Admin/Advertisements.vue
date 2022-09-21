@@ -50,6 +50,11 @@
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="material" @change="materialChange">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Online'">image max size is 1140 x 140 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Banners'">image max size is 470 x 1060 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Fullscreen'">image max size is 1920 x 1080 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Pop-Up'">image max size is 470 x 1060 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Events'">image max size is 286 x 286 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
                                     <img v-if="material" :src="material" class="img-thumbnail" />

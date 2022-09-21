@@ -9372,6 +9372,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
  // Import this component
 
 
@@ -76614,6 +76619,36 @@ var render = function () {
                       _c("footer", { staticClass: "blockquote-footer" }, [
                         _vm._v("Max file size is 15MB"),
                       ]),
+                      _vm._v(" "),
+                      _vm.ad_type == "Online"
+                        ? _c("footer", { staticClass: "blockquote-footer" }, [
+                            _vm._v("image max size is 1140 x 140 pixels"),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.ad_type == "Banners"
+                        ? _c("footer", { staticClass: "blockquote-footer" }, [
+                            _vm._v("image max size is 470 x 1060 pixels"),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.ad_type == "Fullscreen"
+                        ? _c("footer", { staticClass: "blockquote-footer" }, [
+                            _vm._v("image max size is 1920 x 1080 pixels"),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.ad_type == "Pop-Up"
+                        ? _c("footer", { staticClass: "blockquote-footer" }, [
+                            _vm._v("image max size is 470 x 1060 pixels"),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.ad_type == "Events"
+                        ? _c("footer", { staticClass: "blockquote-footer" }, [
+                            _vm._v("image max size is 286 x 286 pixels"),
+                          ])
+                        : _vm._e(),
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-3 text-center" }, [
