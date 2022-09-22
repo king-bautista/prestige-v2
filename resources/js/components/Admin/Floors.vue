@@ -244,7 +244,7 @@
 					link: {
             			title: 'Manage Map',
             			name: 'Delete',
-            			apiUrl: '/admin/site/floor/map',
+            			apiUrl: '/admin/site/map',
             			routeName: '',
             			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Map',
             			method: 'link',
@@ -354,6 +354,11 @@
 					this.floor.default_zoom_mobile = floor.map_details.default_zoom_mobile;
 					this.floor.is_default = floor.map_details.is_default;
 					this.floor.active = floor.active;
+
+					this.map_preview = floor.map_preview_path;
+					this.$refs.mapFile.value = null;
+					this.$refs.mapPreview.value = null;
+
 					this.add_record = false;
 					this.edit_record = true;
                     $('#floor-form').modal('show');

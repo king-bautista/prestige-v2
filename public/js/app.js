@@ -10285,6 +10285,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Building",
@@ -10293,12 +10299,14 @@ __webpack_require__.r(__webpack_exports__);
       building: {
         id: '',
         name: '',
+        descriptions: '',
         active: false
       },
       add_record: true,
       edit_record: false,
       dataFields: {
-        name: "Name",
+        name: "Building Name",
+        descriptions: "Descriptions",
         active: {
           name: "Status",
           type: "Boolean",
@@ -10346,6 +10354,7 @@ __webpack_require__.r(__webpack_exports__);
       this.add_record = true;
       this.edit_record = false;
       this.building.name = '';
+      this.building.descriptions = '';
       this.building.active = false;
       $('#building-form').modal('show');
     },
@@ -10367,6 +10376,7 @@ __webpack_require__.r(__webpack_exports__);
         var building = response.data.data;
         _this2.building.id = id;
         _this2.building.name = building.name;
+        _this2.building.descriptions = building.descriptions;
         _this2.building.active = building.active;
         _this2.add_record = false;
         _this2.edit_record = true;
@@ -11398,7 +11408,7 @@ __webpack_require__.r(__webpack_exports__);
         link: {
           title: 'Manage Map',
           name: 'Delete',
-          apiUrl: '/admin/site/floor/map',
+          apiUrl: '/admin/site/map',
           routeName: '',
           button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Map',
           method: 'link'
@@ -11504,6 +11514,9 @@ __webpack_require__.r(__webpack_exports__);
         _this3.floor.default_zoom_mobile = floor.map_details.default_zoom_mobile;
         _this3.floor.is_default = floor.map_details.is_default;
         _this3.floor.active = floor.active;
+        _this3.map_preview = floor.map_preview_path;
+        _this3.$refs.mapFile.value = null;
+        _this3.$refs.mapPreview.value = null;
         _this3.add_record = false;
         _this3.edit_record = true;
         $('#floor-form').modal('show');
@@ -78071,6 +78084,42 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.building.descriptions,
+                            expression: "building.descriptions",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Building Name",
+                          required: "",
+                        },
+                        domProps: { value: _vm.building.descriptions },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.building,
+                              "descriptions",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "div",
                     {
@@ -78247,6 +78296,19 @@ var staticRenderFns = [
       { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
       [
         _vm._v("Name "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Descriptions "),
         _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
       ]
     )
