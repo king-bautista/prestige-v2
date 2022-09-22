@@ -83,7 +83,7 @@ class SiteBuildingLevel extends Model
                'default_zoom' => $request->default_zoom,
                'default_zoom_desktop' => $request->default_zoom_desktop,
                'default_zoom_mobile' => $request->default_zoom_mobile,
-               'name' => ($map_file_path) ? str_replace('\\', '/', $map_file_path) : $site_map->name,
+               'map_file' => ($map_file_path) ? str_replace('\\', '/', $map_file_path) : $site_map->map_file,
                'map_preview' => ($map_preview_path) ? str_replace('\\', '/', $map_preview_path) : $site_map->map_preview,
                'active' => ($request->active == 'false') ? 0 : 1,
                'is_default' => ($request->is_default == 'false') ? 0 : 1,

@@ -48,6 +48,12 @@
 									<input type="text" class="form-control" v-model="building.name" placeholder="Building Name" required>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="building.descriptions" placeholder="Building Name" required>
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -81,12 +87,14 @@
                 building: {
                     id: '',
                     name: '',
+                    descriptions: '',
                     active: false,           
                 },
                 add_record: true,
                 edit_record: false,
             	dataFields: {
-            		name: "Name", 
+            		name: "Building Name", 
+            		descriptions: "Descriptions", 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -137,6 +145,7 @@
 				this.add_record = true;
 				this.edit_record = false;
                 this.building.name = '';
+                this.building.descriptions = '';
                 this.building.active = false;				
               	$('#building-form').modal('show');
             },
@@ -156,6 +165,7 @@
                     var building = response.data.data;
                     this.building.id = id;
                     this.building.name = building.name;
+					this.building.descriptions = building.descriptions;
                     this.building.active = building.active;
 					this.add_record = false;
 					this.edit_record = true;

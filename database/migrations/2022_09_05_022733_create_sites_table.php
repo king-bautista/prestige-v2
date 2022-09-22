@@ -75,7 +75,8 @@ class CreateSitesTable extends Migration
             $table->bigInteger('site_id')->unsigned();
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();
-            $table->string('name');
+            $table->string('map_file');
+            $table->mediumText('map_preview')->nullable();
             $table->mediumText('descriptions')->nullable();      
             $table->decimal('position_x', 10, 2);
             $table->decimal('position_y', 10, 2);
@@ -84,7 +85,6 @@ class CreateSitesTable extends Migration
             $table->decimal('default_zoom', 10, 2);
             $table->decimal('default_zoom_desktop', 10, 2);
             $table->decimal('default_zoom_mobile', 10, 2);
-            $table->mediumText('map_preview')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('is_default')->default(false);
             $table->timestamps();

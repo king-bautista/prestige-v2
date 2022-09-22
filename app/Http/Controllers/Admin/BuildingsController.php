@@ -82,6 +82,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             $data = [
                 'site_id' => $site_id,
                 'name' => $request->name,
+                'descriptions' => $request->descriptions,
                 'active' => 1
             ];
 
@@ -107,6 +108,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
             $data = [
                 'name' => $request->name,
+                'descriptions' => $request->descriptions,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 

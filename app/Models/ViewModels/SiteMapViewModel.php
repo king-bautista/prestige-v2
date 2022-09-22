@@ -4,11 +4,11 @@ namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-use App\Models\SiteMap;
+use App\Models\Site;
 use App\Models\SiteBuilding;
+use App\Models\SiteBuildingLevel;
 
-class SiteBuildingLevelViewModel extends Model
+class SiteMapViewModel extends Model
 {
     use SoftDeletes;
 
@@ -28,7 +28,7 @@ class SiteBuildingLevelViewModel extends Model
      *
      * @var string
     */
-    protected $table = 'site_building_levels';
+    protected $table = 'site_maps';
 
     /**
      * The primary key associated with the table.
@@ -43,32 +43,17 @@ class SiteBuildingLevelViewModel extends Model
      * @var string
      */
 	public $appends = [
-        'map_details',
-        'map_file',
-        'map_preview_path',
-        'is_default',
+        'site_name',
         'building_name',
+        'floor_name',
     ];
 
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    public function getMapDetailsAttribute() 
+    public function getSiteNameAttribute() 
     {
-        return SiteMap::where('site_building_level_id', $this->id)->first();
-    }
-
-    public function getMapPreviewPathAttribute()
-    {
-        $site_map = SiteMap::where('site_building_level_id', $this->id)->first();
-        if($site_map->map_preview)
-            return asset($site_map->map_preview);
-        return asset('/images/no-image-available.png');
-    }
-
-    public function getIsDefaultAttribute() 
-    {
-        return SiteMap::where('site_building_level_id', $this->id)->first()->is_default;
+        return Site::find($this->site_id)->name;
     }
 
     public function getBuildingNameAttribute() 
@@ -76,8 +61,9 @@ class SiteBuildingLevelViewModel extends Model
         return SiteBuilding::find($this->site_building_id)->name;
     }
 
-    public function getMapFileAttribute() 
+    public function getFloorNameAttribute() 
     {
-        return SiteMap::where('site_building_level_id', $this->id)->first()->map_file;
-    }    
+        return SiteBuildingLevel::find($this->site_building_level_id)->name;
+    }
+
 }
