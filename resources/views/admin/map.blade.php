@@ -27,11 +27,28 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Manage Map</h3>
+                      <div class="row">
+                        <div class="col-md-1">
+                          <h3 class="card-title">Manage Map</h3>
+                        </div>
+                      </div>
                     </div>
-                    <div class="card-body map-holder">
-                        <canvas id="my-point" width="7500" height="6000"></canvas>
-				        <!-- <canvas id="my-map"></canvas> -->
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-10 map-holder">
+                          <canvas id="my-point" width="7500" height="6000"></canvas>
+                          <!-- <canvas id="my-map"></canvas> -->
+                        </div>
+                        <div class="col-md-2 map-list-holder">
+                          <div class="btn-group-vertical btn-group-toggle w-100" data-toggle="buttons">
+                            @foreach ($site_maps as $site_map)
+                            <label class="btn btn-primary w-100 mb-1 btn-floor d-block" data-floor="13">
+                              <input type="radio" name="optionsfloor" data-floor_id="14" id="option13" autocomplete="off">{{ $site_map->building_name }} ({{ $site_map->descriptions }})
+                            </label>
+                            @endforeach                        
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -42,5 +59,6 @@
 <!-- /.content -->
 @stop
 
-@push('scripts')    
+@push('scripts')
+<script src="{{ URL::to('js/jcanvas.min.js') }}"></script>
 @endpush
