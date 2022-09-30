@@ -20,6 +20,8 @@ class SiteMap extends Model
         'site_building_level_id',
         'map_file',
         'descriptions',
+        'image_size_width',
+        'image_size_height',
         'position_x',
         'position_y',
         'position_z',

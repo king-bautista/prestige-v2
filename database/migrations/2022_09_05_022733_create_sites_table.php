@@ -78,6 +78,8 @@ class CreateSitesTable extends Migration
             $table->string('map_file');
             $table->mediumText('map_preview')->nullable();
             $table->mediumText('descriptions')->nullable();      
+            $table->integer('image_size_width')->default(0);
+            $table->integer('image_size_height')->default(0);
             $table->decimal('position_x', 10, 2);
             $table->decimal('position_y', 10, 2);
             $table->decimal('position_z', 10, 2);
