@@ -78,6 +78,8 @@ class CreateSitesTable extends Migration
             $table->string('map_file');
             $table->mediumText('map_preview')->nullable();
             $table->mediumText('descriptions')->nullable();      
+            $table->integer('image_size_width')->default(0);
+            $table->integer('image_size_height')->default(0);
             $table->decimal('position_x', 10, 2);
             $table->decimal('position_y', 10, 2);
             $table->decimal('position_z', 10, 2);
@@ -122,20 +124,19 @@ class CreateSitesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('site_map_id')->unsigned();
             $table->bigInteger('tenant_id')->unsigned();
+            $table->bigInteger('point_type')->unsigned();
             $table->decimal('point_x', 10, 2);
             $table->decimal('point_y', 10, 2);
             $table->decimal('point_z', 10, 2);
             $table->decimal('rotation_z', 10, 2);
             $table->decimal('text_size', 10, 2);
             $table->decimal('is_pwd', 10, 2);
-            $table->decimal('point_type', 10, 2);
             $table->string('point_label')->nullable();
             $table->boolean('wrap_at')->default(true);
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('site_map_id')->references('id')->on('site_maps');
-            $table->foreign('tenant_id')->references('id')->on('site_tenants');
         });
 
         Schema::create('site_point_links', function (Blueprint $table) {

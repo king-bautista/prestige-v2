@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}">
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ URL::to('dist/css/adminlte.min.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('js/jquery-ui/jquery-ui.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/custom.css') }}">
     </head>
 
