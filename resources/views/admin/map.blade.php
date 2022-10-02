@@ -52,31 +52,30 @@
                             @endforeach
                           </select>
                           </label>
-                          <label class="ml-3 mouseaction">
+                          <label class="ml-3 mouseaction" title="Press Key 1">
                             <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                            <input type="radio" name="action" id="mouseDrag" class="d-none"> Drag Point
+                            <input type="radio" name="action" id="mouseDrag" value="drag_point" class="d-none"> Drag Point
                           </label>
-                          <label class="ml-3 mouseaction mouseaction-selected">
+                          <label class="ml-3 mouseaction mouseaction-selected" title="Press Key 2">
                             <i class="fa fa-plus" aria-hidden="true"></i>
-                            <input type="radio" name="action" id="mouseAdd" class="d-none"> Add Points
+                            <input type="radio" name="action" id="mouseAdd" value="add_point" class="d-none"> Add Points
                           </label>
-                          <label class="ml-3 mouseaction">
+                          <label class="ml-3 mouseaction" title="Press Key 3">
                             <i class="fa fa-minus" aria-hidden="true"></i>
-                            <input type="radio" name="action" id="mouseDelete" class="d-none"> Delete Point
+                            <input type="radio" name="action" id="mouseDelete" value="delete_point" class="d-none"> Delete Point
                           </label>
-                          <label class="ml-3 mouseaction">
+                          <label class="ml-3 mouseaction" title="Press Key 4">
                             <i class="fa fa-info-circle" aria-hidden="true"></i>
-                            <input type="radio" name="action" id="mouseInfo" class="d-none">Point Info
+                            <input type="radio" name="action" id="mouseInfo" value="point_info" class="d-none">Point Info
                           </label>
-                          <label class="ml-3 mouseaction">
+                          <label class="ml-3 mouseaction" title="Press Key 5">
                             <i class="fa fa-link" aria-hidden="true"></i>
-                            <input type="radio" name="action" id="mouseLink2" class="d-none">Single Link
+                            <input type="radio" name="action" id="mouseLink" value="single_link" class="d-none">Single Link
                           </label>
-                          <label class="ml-3 mouseaction">
+                          <label class="ml-3 mouseaction" title="Press Key 6">
                             <i class="fa fa-link" aria-hidden="true"></i>
-                            <input type="radio" name="action" id="mouseLink" class="d-none">Continous Link
+                            <input type="radio" name="action" id="mouseLink2" value="continous_link" class="d-none">Continous Link
                           </label>                          
-                          
                         </div>
                       </div>
                     </div>
@@ -192,6 +191,8 @@
 <script src="{{ URL::to('js/jquery-ui/jquery-ui.min.js') }}"></script>
 
 <script>
+
+  // SLIDER
   const slider = document.querySelector('.map-holder');
   let isDown = false;
   let startX;
@@ -203,14 +204,17 @@
     startX = e.pageX - slider.offsetLeft;
     scrollLeft = slider.scrollLeft;
   });
+
   slider.addEventListener('mouseleave', () => {
     isDown = false;
     slider.classList.remove('active');
   });
+
   slider.addEventListener('mouseup', () => {
     isDown = false;
     slider.classList.remove('active');
   });
+
   slider.addEventListener('mousemove', (e) => {
     if(!isDown) return;
     e.preventDefault();
@@ -218,9 +222,11 @@
     const walk = (x - startX) * 2; //scroll-fast
     slider.scrollLeft = scrollLeft - walk;
   });
+  // END SLIDER
 
   $(document).ready(function() {
 
+    // LOAD SELECTED MAP
     var floor_map = $(this).find(':selected').data('floor_map');
     var map_width = $(this).find(':selected').data('map_width');
     var map_height = $(this).find(':selected').data('map_height');
@@ -228,11 +234,16 @@
     $("#map_path").attr('src', floor_map);
 		
     $('.floor-data').on('change', function() {
+
+      // SET SELECT FROM MAP DROPDOWN 
       var floor_id = $(this).val();
       floor_map = $(this).find(':selected').data('floor_map');
       map_width = $(this).find(':selected').data('map_width');
       map_height = $(this).find(':selected').data('map_height');
+      $("#map_path").attr('width', map_width);
+      $("#map_path").attr('src', floor_map);
 
+      // GET TENANTS ASSIGN FROM FLOOR
       $.get("/admin/site/tenant/get-tenants-per-floor/"+floor_id, function(data) { 
 
         $('#tenant_list').empty();
@@ -242,13 +253,12 @@
         });
       });
 
-      $("#map_path").attr('width', map_width);
-      $("#map_path").attr('src', floor_map);
     });
 
     $(".mouseaction").on('click',function(){
 			$(this).addClass('mouseaction-selected');
 			$(".mouseaction").not(this).removeClass('mouseaction-selected');
+      $(this).find('input[type="radio"]').prop("checked", true);
 		});
 
     $( "#map_path" ).mousemove(function( event ) {
@@ -264,9 +274,66 @@
 
   function doAction() {
     var action = $('input[name="action"]:checked').val();
-    console.log(action);
-    console.log(event.pageX,event.pageY);
+    switch(action) {
+      case 'drag_point':
+        // code block
+        break;
+      case 'add_point':
+          console.log(event.pageX,event.pageY);
+        break;
+      case 'delete_point':
+        // code block
+        break;
+      case 'point_info':
+        // code block
+        break;
+      case 'single_link':
+        // code block
+        break;
+      case 'continous_link':
+        // code block
+        break;
+      default:
+        // code block
+    }
   }
+
+  function doc_keyUp(e) {
+    $(".mouseaction").removeClass('mouseaction-selected');
+
+    if (e.key === '1') {
+      $("#mouseDrag").prop("checked", true);
+      $("#mouseDrag").parent().addClass('mouseaction-selected');
+    }
+
+    if (e.key === '2') {
+      $("#mouseAdd").prop("checked", true);
+      $("#mouseAdd").parent().addClass('mouseaction-selected');
+    }
+
+    if (e.key === '3') {
+      $("#mouseDelete").prop("checked", true);
+      $("#mouseDelete").parent().addClass('mouseaction-selected');
+    }
+
+    if (e.key === '4') {
+      $("#mouseInfo").prop("checked", true);
+      $("#mouseInfo").parent().addClass('mouseaction-selected');
+    }
+
+    if (e.key === '5') {
+      $("#mouseLink").prop("checked", true);
+      $("#mouseLink").parent().addClass('mouseaction-selected');
+    }
+
+    if (e.key === '6') {
+      $("#mouseLink2").prop("checked", true);
+      $("#mouseLink2").parent().addClass('mouseaction-selected');
+    }
+  }
+
+  // register the handler 
+document.addEventListener('keyup', doc_keyUp, false);
 
 </script>
 @endpush
