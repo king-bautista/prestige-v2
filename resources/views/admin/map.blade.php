@@ -82,7 +82,7 @@
                     <div class="card-body">
                       <div class="row">
                         <div class="col-md-12 map-holder">
-                          <div id="selectable"></div>
+                          <div id="selectable" class="ui-selectable"></div>
                           <img id="map_path">
                         </div>
                       </div>
@@ -232,6 +232,7 @@
     var map_height = $(this).find(':selected').data('map_height');
     $("#map_path").attr('width', map_width);
     $("#map_path").attr('src', floor_map);
+    $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
 		
     $('.floor-data').on('change', function() {
 
@@ -242,6 +243,7 @@
       map_height = $(this).find(':selected').data('map_height');
       $("#map_path").attr('width', map_width);
       $("#map_path").attr('src', floor_map);
+      $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
 
       // GET TENANTS ASSIGN FROM FLOOR
       $.get("/admin/site/tenant/get-tenants-per-floor/"+floor_id, function(data) { 
@@ -261,25 +263,27 @@
       $(this).find('input[type="radio"]').prop("checked", true);
 		});
 
-    $( "#map_path" ).mousemove(function( event ) {
+    $("#map_path").mousemove(function( event ) {
       var msg = "Handler for .mousemove() called at ";
       msg += event.pageX + ", " + event.pageY;
+      console.log(msg);
     });
 
-    $("#map_path").click(function(){
-      doAction();
+    $("#selectable").click(function(){
+      var offset = $(this).offset();
+      doAction(offset);
 		});
 
   });
 
-  function doAction() {
+  function doAction(offset) {
     var action = $('input[name="action"]:checked').val();
     switch(action) {
       case 'drag_point':
         // code block
         break;
       case 'add_point':
-          console.log(event.pageX,event.pageY);
+          create_point(offset);
         break;
       case 'delete_point':
         // code block
@@ -330,6 +334,14 @@
       $("#mouseLink2").prop("checked", true);
       $("#mouseLink2").parent().addClass('mouseaction-selected');
     }
+  }
+
+  function create_point(offset) {
+    console.log(offset);
+    var x = (event.pageX-offset.left);
+    var y = (event.pageY-offset.top);
+    console.log(x+'-'+y);
+    $("#selectable").append('<div class="point ui-draggable" style="left: ' + x +'px; top: ' + y + 'px;"></div>');
   }
 
   // register the handler 
