@@ -179,6 +179,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/floors/{id}', 'Admin\FloorsController@getFloors')->where('id', '[0-9]+')->name('admin.site.floors');
 
     Route::get('/admin/site/map/{id}', 'Admin\MapsController@getMapDetails')->where('id', '[0-9]+')->name('admin.site.map');
+    Route::post('/admin/site/map/create-point', 'Admin\MapsController@createPoint')->name('admin.site.map.create-point');
 
     Route::get('/admin/site/screen/list', 'Admin\ScreensController@list')->name('admin.site.screen.list');
     Route::post('/admin/site/screen/store', 'Admin\ScreensController@store')->name('admin.site.screen.store');

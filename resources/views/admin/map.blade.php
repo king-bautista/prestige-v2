@@ -48,7 +48,7 @@
                                   $active = ''
                                   @endphp
                                 @endif
-                            <option data-floor_map="{{ asset($site_map->map_file) }}" data-map_width="{{ $site_map->image_size_width }}" data-map_height="{{ $site_map->image_size_height }}" value="{{ $site_map->site_building_level_id }}" {{$active}}>{{ $site_map->building_name }} ({{ $site_map->descriptions }})</option>
+                            <option data-map_id="{{ $site_map->id }}" data-floor_map="{{ asset($site_map->map_file) }}" data-map_width="{{ $site_map->image_size_width }}" data-map_height="{{ $site_map->image_size_height }}" value="{{ $site_map->site_building_level_id }}" {{$active}}>{{ $site_map->building_name }} ({{ $site_map->descriptions }})</option>
                             @endforeach
                           </select>
                           </label>
@@ -197,6 +197,7 @@
   let isDown = false;
   let startX;
   let scrollLeft;
+  var map_id;
 
   slider.addEventListener('mousedown', (e) => {
     isDown = true;
@@ -230,6 +231,8 @@
     var floor_map = $(this).find(':selected').data('floor_map');
     var map_width = $(this).find(':selected').data('map_width');
     var map_height = $(this).find(':selected').data('map_height');
+    map_id = $(this).find(':selected').data('map_id');
+
     $("#map_path").attr('width', map_width);
     $("#map_path").attr('src', floor_map);
     $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
@@ -241,6 +244,8 @@
       floor_map = $(this).find(':selected').data('floor_map');
       map_width = $(this).find(':selected').data('map_width');
       map_height = $(this).find(':selected').data('map_height');
+      map_id = $(this).find(':selected').data('map_id');
+
       $("#map_path").attr('width', map_width);
       $("#map_path").attr('src', floor_map);
       $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
@@ -337,11 +342,15 @@
   }
 
   function create_point(offset) {
-    console.log(offset);
     var x = (event.pageX-offset.left);
     var y = (event.pageY-offset.top);
-    console.log(x+'-'+y);
-    $("#selectable").append('<div class="point ui-draggable" style="left: ' + x +'px; top: ' + y + 'px;"></div>');
+    $.post('/admin/site/map/create-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_x: x, point_y: y }, function( data ) {
+      console.log( data.data.id ); // John
+      console.log( data.data.point_x ); // John
+      console.log( data.data.point_y ); // 2pm
+      $("#selectable").append('<div class="point ui-draggable" style="left: ' + data.data.point_x +'px; top: ' + data.data.point_y + 'px;"></div>');
+    }, "json");
+
   }
 
   // register the handler 
