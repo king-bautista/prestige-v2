@@ -76,9 +76,9 @@
 
 .map-form-holder {
     position:fixed;
-    top:13rem;
+    top: 13rem;
     right: 2rem;
-    width: 350px;
+    width: 300px;
     min-height: 600px;
     padding: 15px;
     background-color: #343a40;
@@ -94,4 +94,28 @@
 .mouseaction-selected {
     background-color: #bfcaff;
     color: #2b3b88;
+}
+
+#map_path {
+    z-index: 2;
+}
+
+#selectable {
+    width: 7500px;
+    height: 6000px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.point {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    padding: 0px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50px;
+    border: 1px solid rgb(0, 137, 255);
+    cursor: pointer;
 }
