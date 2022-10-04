@@ -99,9 +99,7 @@
           <form name="frmCoordinates" id="frmCoordinates">
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Point ID:</label>
-            <div class="col-sm-6">
-              11111
-            </div>
+            <label class="col-sm-6 col-form-label" id="point_id">Position Y:</label>
           </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Position X:</label>
@@ -165,7 +163,7 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-12 col-form-label">Amenity:</label>
             <div class="col-sm-12">
-              <select class="custom-select" id="tenant_list" name="tenant_list">
+              <select class="custom-select" id="amenities" name="amenities">
                 <option value="">Select Amenity</option>
                 @foreach ($amenities as $amenity)
                 <option value="{{$amenity->id}}">{{$amenity->name}}</option>
@@ -176,7 +174,7 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-12 col-form-label">Label (optional):</label>
             <div class="col-sm-12">
-              <input type="text" class="form-control form-control-sm" placeholder="Label" required>
+              <input type="text" id="point_label" name="point_label" class="form-control form-control-sm" placeholder="Label">
             </div>
           </div>
           </form>
@@ -191,39 +189,18 @@
 <script src="{{ URL::to('js/jquery-ui/jquery-ui.min.js') }}"></script>
 
 <script>
-
-  // SLIDER
   const slider = document.querySelector('.map-holder');
+  var action;
   let isDown = false;
   let startX;
   let scrollLeft;
   var map_id;
 
-  slider.addEventListener('mousedown', (e) => {
-    isDown = true;
-    slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-  });
-
-  slider.addEventListener('mouseleave', () => {
-    isDown = false;
-    slider.classList.remove('active');
-  });
-
-  slider.addEventListener('mouseup', () => {
-    isDown = false;
-    slider.classList.remove('active');
-  });
-
-  slider.addEventListener('mousemove', (e) => {
-    if(!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; //scroll-fast
-    slider.scrollLeft = scrollLeft - walk;
-  });
-  // END SLIDER
+  document.addEventListener('keyup', doc_keyUp, false);
+  slider.addEventListener('mousedown', onMouseDown);
+  slider.addEventListener('mouseleave', onMouseLeave);
+  slider.addEventListener('mouseup', onMouseUp);
+  slider.addEventListener('mousemove', onMouseMove);
 
   $(document).ready(function() {
 
@@ -276,35 +253,49 @@
 
     $("#selectable").click(function(){
       var offset = $(this).offset();
-      doAction(offset);
+
+      switch(action) {
+        case 'add_point':
+            create_point(offset);
+          break;
+        case 'single_link':
+          // code block
+          break;
+        case 'continous_link':
+          // code block
+          break;
+      }
 		});
 
   });
 
-  function doAction(offset) {
-    var action = $('input[name="action"]:checked').val();
-    switch(action) {
-      case 'drag_point':
-        // code block
-        break;
-      case 'add_point':
-          create_point(offset);
-        break;
-      case 'delete_point':
-        // code block
-        break;
-      case 'point_info':
-        // code block
-        break;
-      case 'single_link':
-        // code block
-        break;
-      case 'continous_link':
-        // code block
-        break;
-      default:
-        // code block
-    }
+  function onMouseDown(e) {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+    
+  }
+
+  function onMouseLeave() {
+    isDown = false;
+    slider.classList.remove('active');
+
+  }
+
+  function onMouseUp() {
+    isDown = false;
+    slider.classList.remove('active');
+
+  }
+
+  function onMouseMove(e) {
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2; //scroll-fast
+    slider.scrollLeft = scrollLeft - walk;
+
   }
 
   function doc_keyUp(e) {
@@ -313,6 +304,10 @@
     if (e.key === '1') {
       $("#mouseDrag").prop("checked", true);
       $("#mouseDrag").parent().addClass('mouseaction-selected');
+      slider.removeEventListener('mousedown', onMouseDown);
+      slider.removeEventListener('mouseleave', onMouseLeave);
+      slider.removeEventListener('mouseup', onMouseUp);
+      slider.removeEventListener('mousemove', onMouseMove);
     }
 
     if (e.key === '2') {
@@ -339,22 +334,73 @@
       $("#mouseLink2").prop("checked", true);
       $("#mouseLink2").parent().addClass('mouseaction-selected');
     }
+
+    action = $('input[name="action"]:checked').val();
+
   }
 
   function create_point(offset) {
+    
     var x = (event.pageX-offset.left);
     var y = (event.pageY-offset.top);
+
     $.post('/admin/site/map/create-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_x: x, point_y: y }, function( data ) {
-      console.log( data.data.id ); // John
-      console.log( data.data.point_x ); // John
-      console.log( data.data.point_y ); // 2pm
-      $("#selectable").append('<div class="point ui-draggable" style="left: ' + data.data.point_x +'px; top: ' + data.data.point_y + 'px;"></div>');
+      $("#selectable").append('<div id="'+data.data.id+'" class="point ui-draggable" style="left: ' + data.data.point_x +'px; top: ' + data.data.point_y + 'px;"></div>');
+
+      $("#" +  data.data.id).click(function() {
+
+        switch(action) {
+          case 'delete_point':
+              delete_point(data.data.id)
+            break;
+          case 'point_info':
+              point_info(data.data.id);
+            break;
+        }
+
+       })
+      .draggable( {
+				stop: function(event,ui) 
+        {
+					update_point(data.data.id, $(this).position().left, $(this).position().top);
+				}
+			});
     }, "json");
 
   }
 
-  // register the handler 
-document.addEventListener('keyup', doc_keyUp, false);
+  function update_point(id, x, y) {
+    $.post('/admin/site/map/update-point', { _token:"{{ csrf_token() }}", id: id, point_x: x, point_y: y }, function( data ) {
+      console.log('coordinates updated');
+    }, "json");
+
+  }
+
+  function delete_point(id) {
+    $.get('/admin/site/map/delete-point/'+id, function( data ) {
+      if(data.status_code == 200) {
+        $('#'+id).remove();
+      }
+    }, "json");
+  }
+
+  function point_info(id) {
+    $.get('/admin/site/map/point-info/'+id, function( data ) {
+      if(data.status_code == 200) {
+        var info = data.data;
+        $('#point_id').html(info.id);
+        $('#position_x').val(info.point_x);
+        $('#position_y').val(info.point_y);
+        $('#text_y_position').val(info.rotation_z);
+        $('#text_size').val(info.text_size);
+        $('#is_pwd').val(info.is_pwd);
+        $('#wrap_at').val(info.wrap_at);
+        $('#tenant_list').val(info.tenant_id);
+        $('#amenities').val(info.point_type);
+        $('#point_label').val(info.point_label);               
+      }
+    }, "json");
+  }
 
 </script>
 @endpush

@@ -12583,8 +12583,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       screen: {
         id: '',
-        site_building_id: '',
-        site_building_level_id: '',
+        // site_building_id: '',
+        // site_building_level_id: '',
         site_point_id: '',
         screen_type: '',
         name: ''
@@ -12597,8 +12597,8 @@ __webpack_require__.r(__webpack_exports__);
       screen_types: ['Directory', 'LED', 'LFD', 'LED funnel'],
       dataFields: {
         name: "Name",
-        floor_name: "Floor Name",
-        building_name: "Building Name",
+        // floor_name: "Floor Name",
+        // building_name: "Building Name",
         site_point_id: "Site Point ID",
         screen_type: "Screen Type",
         active: {
@@ -12645,70 +12645,62 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {},
   methods: {
-    GetBuildings: function GetBuildings() {
-      var _this = this;
-
-      axios.get('/admin/site/buildings').then(function (response) {
-        return _this.buildings = response.data.data;
-      });
-      this.screen.site_building_level_id = '';
-    },
-    getFloorLevel: function getFloorLevel(id) {
-      var _this2 = this;
-
-      axios.get('/admin/site/floors/' + id).then(function (response) {
-        return _this2.floors = response.data.data;
-      });
-    },
+    // GetBuildings: function() {
+    // 	axios.get('/admin/site/buildings')
+    //     .then(response => this.buildings = response.data.data);
+    //     this.screen.site_building_level_id = '';
+    // },
+    // getFloorLevel: function(id) {
+    // 	axios.get('/admin/site/floors/'+id)
+    //     .then(response => this.floors = response.data.data);
+    // },
     AddNewScreen: function AddNewScreen() {
-      this.GetBuildings();
+      // this.GetBuildings();
       this.add_record = true;
-      this.edit_record = false;
-      this.screen.site_building_id = '';
-      this.screen.site_building_level_id = '';
+      this.edit_record = false; // this.screen.site_building_id = '';
+      // this.screen.site_building_level_id = '';
+
       this.screen.site_point_id = '';
       this.screen.screen_type = '';
       this.screen.name = '';
       $('#screen-form').modal('show');
     },
     storeScreen: function storeScreen() {
-      var _this3 = this;
+      var _this = this;
 
       axios.post('/admin/site/screen/store', this.screen).then(function (response) {
         toastr.success(response.data.message);
 
-        _this3.$refs.screensDataTable.fetchData();
+        _this.$refs.screensDataTable.fetchData();
 
         $('#screen-form').modal('hide');
       });
     },
     editScreen: function editScreen(id) {
-      var _this4 = this;
+      var _this2 = this;
 
-      this.GetBuildings();
+      // this.GetBuildings();
       axios.get('/admin/site/screen/' + id).then(function (response) {
         var screen = response.data.data;
-        _this4.screen.id = screen.id;
-        _this4.screen.site_building_id = screen.site_building_id;
+        _this2.screen.id = screen.id; // this.screen.site_building_id = screen.site_building_id;
+        // this.getFloorLevel(screen.site_building_id);
+        // this.screen.site_building_level_id = screen.site_building_level_id;
 
-        _this4.getFloorLevel(screen.site_building_id);
-
-        _this4.screen.site_building_level_id = screen.site_building_level_id;
-        _this4.screen.site_point_id = screen.site_point_id;
-        _this4.screen.screen_type = screen.screen_type;
-        _this4.screen.name = screen.name;
-        _this4.add_record = false;
-        _this4.edit_record = true;
+        _this2.screen.site_point_id = screen.site_point_id;
+        _this2.screen.screen_type = screen.screen_type;
+        _this2.screen.name = screen.name;
+        _this2.add_record = false;
+        _this2.edit_record = true;
         $('#screen-form').modal('show');
       });
     },
     updateScreen: function updateScreen() {
-      var _this5 = this;
+      var _this3 = this;
 
       axios.put('/admin/site/screen/update', this.screen).then(function (response) {
         toastr.success(response.data.message);
 
-        _this5.$refs.screensDataTable.fetchData();
+        _this3.$refs.screensDataTable.fetchData();
 
         $('#screen-form').modal('hide');
       });
@@ -12718,12 +12710,12 @@ __webpack_require__.r(__webpack_exports__);
       $('#screenDeleteModal').modal('show');
     },
     removeScreen: function removeScreen() {
-      var _this6 = this;
+      var _this4 = this;
 
       axios.get('/admin/site/screen/delete/' + this.id_to_deleted).then(function (response) {
-        _this6.$refs.screensDataTable.fetchData();
+        _this4.$refs.screensDataTable.fetchData();
 
-        _this6.id_to_deleted = 0;
+        _this4.id_to_deleted = 0;
         $('#screenDeleteModal').modal('hide');
       });
     }
@@ -82542,119 +82534,6 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.screen.site_building_id,
-                              expression: "screen.site_building_id",
-                            },
-                          ],
-                          staticClass: "custom-select",
-                          on: {
-                            change: [
-                              function ($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function (o) {
-                                    return o.selected
-                                  })
-                                  .map(function (o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.screen,
-                                  "site_building_id",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              },
-                              function ($event) {
-                                return _vm.getFloorLevel($event.target.value)
-                              },
-                            ],
-                          },
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Select Building"),
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.buildings, function (building) {
-                            return _c(
-                              "option",
-                              { domProps: { value: building.id } },
-                              [_vm._v(" " + _vm._s(building.name))]
-                            )
-                          }),
-                        ],
-                        2
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(3),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.screen.site_building_level_id,
-                              expression: "screen.site_building_level_id",
-                            },
-                          ],
-                          staticClass: "custom-select",
-                          on: {
-                            change: function ($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function (o) {
-                                  return o.selected
-                                })
-                                .map(function (o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.screen,
-                                "site_building_level_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            },
-                          },
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Select Floor"),
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.floors, function (floor) {
-                            return _c(
-                              "option",
-                              { domProps: { value: floor.id } },
-                              [_vm._v(" " + _vm._s(floor.name))]
-                            )
-                          }),
-                        ],
-                        2
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
                               value: _vm.screen.screen_type,
                               expression: "screen.screen_type",
                             },
@@ -82699,7 +82578,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(5),
+                    _vm._m(3),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -82735,7 +82614,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(6),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -82834,9 +82713,9 @@ var render = function () {
       [
         _c("div", { staticClass: "modal-dialog" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(7),
+            _vm._m(5),
             _vm._v(" "),
-            _vm._m(8),
+            _vm._m(6),
             _vm._v(" "),
             _c("div", { staticClass: "modal-footer" }, [
               _c(
@@ -82888,32 +82767,6 @@ var staticRenderFns = [
         },
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
-      [
-        _vm._v("Building "),
-        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
-      [
-        _vm._v("Floor "),
-        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
-      ]
     )
   },
   function () {

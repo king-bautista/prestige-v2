@@ -21,10 +21,10 @@
 </div>
 <!-- /.content-header -->
 
-<admin-building-tenants></admin-building-tenants>
+<admin-building-screens></admin-building-screens>
 <admin-buildings></admin-buildings>
 <admin-building-floors></admin-building-floors>
-<admin-building-screens></admin-building-screens>
+<admin-building-tenants></admin-building-tenants>
 
 @stop
 
