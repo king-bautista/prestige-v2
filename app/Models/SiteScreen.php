@@ -16,8 +16,6 @@ class SiteScreen extends Model
      */
     protected $fillable = [
         'site_id',
-        'site_building_id',
-        'site_building_level_id',
         'site_point_id',
         'screen_type',
         'name',

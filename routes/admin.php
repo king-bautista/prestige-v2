@@ -180,12 +180,16 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     Route::get('/admin/site/map/{id}', 'Admin\MapsController@getMapDetails')->where('id', '[0-9]+')->name('admin.site.map');
     Route::post('/admin/site/map/create-point', 'Admin\MapsController@createPoint')->name('admin.site.map.create-point');
+    Route::post('/admin/site/map/update-point', 'Admin\MapsController@updatePoint')->name('admin.site.map.update-point');
+    Route::get('/admin/site/map/delete-point/{id}', 'Admin\MapsController@deletePoint')->where('id', '[0-9]+')->name('admin.site.map.delete-point');
+    Route::get('/admin/site/map/point-info/{id}', 'Admin\MapsController@pointInfo')->where('id', '[0-9]+')->name('admin.site.map.point-info');
 
     Route::get('/admin/site/screen/list', 'Admin\ScreensController@list')->name('admin.site.screen.list');
     Route::post('/admin/site/screen/store', 'Admin\ScreensController@store')->name('admin.site.screen.store');
     Route::get('/admin/site/screen/{id}', 'Admin\ScreensController@details')->where('id', '[0-9]+')->name('admin.site.screen.details');
     Route::put('/admin/site/screen/update', 'Admin\ScreensController@update')->name('admin.site.screen.update');
     Route::get('/admin/site/screen/delete/{id}', 'Admin\ScreensController@delete')->where('id', '[0-9]+')->name('admin.site.screen.delete');
+    Route::get('/admin/site/screen/get-screens/{id}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens');
 
     Route::get('/admin/site/tenant/list', 'Admin\SiteTenantsController@list')->name('admin.site.tenant.list');
     Route::post('/admin/site/tenant/store', 'Admin\SiteTenantsController@store')->name('admin.site.tenant.store');

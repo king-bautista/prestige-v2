@@ -33,12 +33,12 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_screens = SiteScreenViewModel::when(request('search'), function($query){
                 return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
+                             ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%');
+                            //  ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                            //  ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-            ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+            // ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+            // ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_screens.*')
             ->where('site_screens.site_id', $site_id)
             ->latest()
@@ -79,8 +79,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_id = session()->get('site_id');
             $data = [
                 'site_id' => $site_id,
-                'site_building_id' => $request->site_building_id,
-                'site_building_level_id' => $request->site_building_level_id,
+                // 'site_building_id' => $request->site_building_id,
+                // 'site_building_level_id' => $request->site_building_level_id,
                 'site_point_id' => $request->site_point_id,
                 'screen_type' => $request->screen_type,
                 'name' => $request->name,
@@ -108,8 +108,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_screen = SiteScreen::find($request->id);
 
             $data = [
-                'site_building_id' => $request->site_building_id,
-                'site_building_level_id' => $request->site_building_level_id,
+                // 'site_building_id' => $request->site_building_id,
+                // 'site_building_level_id' => $request->site_building_level_id,
                 'site_point_id' => $request->site_point_id,
                 'screen_type' => $request->screen_type,
                 'name' => $request->name,
@@ -137,6 +137,24 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_screen = SiteScreen::find($id);
             $site_screen->delete();
             return $this->response($site_screen, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getScreens($id)
+    {
+        try
+    	{
+            $site_id = session()->get('site_id');
+            $site_screen = SiteScreenViewModel::where('site_id', $site_id)->get();
+            return $this->response($site_screen, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
         {

@@ -42,22 +42,22 @@ class SiteScreenViewModel extends Model
      *
      * @var string
      */
-	public $appends = [
-        'building_name',
-        'floor_name',
-    ];
+	// public $appends = [
+    //     'building_name',
+    //     'floor_name',
+    // ];
 
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    public function getBuildingNameAttribute() 
-    {
-        return SiteBuilding::find($this->site_building_id)->name;
-    }
+    // public function getBuildingNameAttribute() 
+    // {
+    //     return SiteBuilding::find($this->site_building_id)->name;
+    // }
 
-    public function getFloorNameAttribute() 
-    {
-        return SiteBuildingLevel::find($this->site_building_level_id)->name;
-    }
+    // public function getFloorNameAttribute() 
+    // {
+    //     return SiteBuildingLevel::find($this->site_building_level_id)->name;
+    // }
 
 }

@@ -60,4 +60,64 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         }
     }
 
+    public function updatePoint(Request $request)
+    {
+        try
+    	{
+            $site_point = SitePoint::find($request->id);
+            $data = [
+                'point_x' => $request->point_x,
+                'point_y' => $request->point_y,
+            ];
+
+            $site_point->update($data);
+
+            return $this->response($site_point, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function deletePoint(Request $request)
+    {
+        try
+    	{
+            $site_point = SitePoint::find($request->id);
+            $site_point->delete();
+
+            return $this->response($site_point, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function pointInfo($id)
+    {
+        try
+    	{
+            $site_point = SitePoint::find($id);
+            return $this->response($site_point, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
 }
