@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\MapsControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Amenity;
+use App\Models\SitePoint;
 use App\Models\ViewModels\SiteViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
@@ -33,6 +34,30 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $floor_id)->get();
         
         return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));
+    }
+
+    public function createPoint(Request $request)
+    {
+        try
+    	{
+            $data = [
+                'site_map_id' => $request->map_id,
+                'point_x' => $request->point_x,
+                'point_y' => $request->point_y,
+            ];
+
+            $site_point = SitePoint::create($data);
+
+            return $this->response($site_point, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
 }
