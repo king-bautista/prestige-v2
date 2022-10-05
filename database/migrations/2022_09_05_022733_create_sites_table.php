@@ -73,6 +73,8 @@ class CreateSitesTable extends Migration
             
             $table->bigIncrements('id');
             $table->bigInteger('site_id')->unsigned();
+            $table->bigInteger('site_building_id')->unsigned();
+            $table->bigInteger('site_building_level_id')->unsigned();
             $table->bigInteger('site_point_id')->unsigned();
             $table->enum('screen_type', ['Directory', 'LED', 'LFD', 'LED funnel']);
             $table->string('name');
@@ -81,6 +83,8 @@ class CreateSitesTable extends Migration
             $table->softDeletes();
 
             $table->foreign('site_id')->references('id')->on('sites');
+            $table->foreign('site_building_id')->references('id')->on('site_buildings');
+            $table->foreign('site_building_level_id')->references('id')->on('site_building_levels');
         });
 
         Schema::create('site_maps', function (Blueprint $table) {

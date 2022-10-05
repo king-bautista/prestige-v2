@@ -11265,6 +11265,219 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Floor",
+  data: function data() {
+    return {
+      floor: {
+        id: '',
+        site_building_id: '',
+        name: '',
+        active: false
+      },
+      buildings: [],
+      map_preview: '',
+      map_file: '',
+      add_record: true,
+      edit_record: false,
+      id_to_deleted: 0,
+      dataFields: {
+        name: "Floor Name",
+        building_name: "Building Name",
+        active: {
+          name: "Status",
+          type: "Boolean",
+          status: {
+            0: '<span class="badge badge-danger">Deactivated</span>',
+            1: '<span class="badge badge-info">Active</span>'
+          }
+        },
+        created_at: "Date Created"
+      },
+      primaryKey: "id",
+      dataUrl: "/admin/site/floor/list",
+      flooractionButtons: {
+        edit: {
+          title: 'Edit this Floor',
+          name: 'Edit',
+          apiUrl: '',
+          routeName: 'floor.edit',
+          button: '<i class="fas fa-edit"></i> Edit',
+          method: 'edit'
+        },
+        "delete": {
+          title: 'Delete this Floor',
+          name: 'Delete',
+          apiUrl: '/admin/site/floor/delete',
+          routeName: '',
+          button: '<i class="fas fa-trash-alt"></i> Delete',
+          method: 'custom_delete',
+          v_on: 'DeleteFloor'
+        }
+      },
+      otherButtons: {
+        addNew: {
+          title: 'New Floor',
+          v_on: 'AddNewFloor',
+          icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Floor',
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
+        }
+      }
+    };
+  },
+  created: function created() {},
+  methods: {
+    GetBuildings: function GetBuildings() {
+      var _this = this;
+
+      axios.get('/admin/site/buildings').then(function (response) {
+        return _this.buildings = response.data.data;
+      });
+    },
+    AddNewFloor: function AddNewFloor() {
+      this.GetBuildings();
+      this.add_record = true;
+      this.edit_record = false;
+      this.floor.site_building_id = '';
+      this.floor.name = '';
+      this.floor.active = true;
+      $('#floor-form').modal('show');
+    },
+    storeFloor: function storeFloor() {
+      var _this2 = this;
+
+      axios.post('/admin/site/floor/store', this.floor).then(function (response) {
+        toastr.success(response.data.message);
+
+        _this2.$refs.floorsDataTable.fetchData();
+
+        $('#floor-form').modal('hide');
+      });
+    },
+    editFloor: function editFloor(id) {
+      var _this3 = this;
+
+      this.GetBuildings();
+      axios.get('/admin/site/floor/' + id).then(function (response) {
+        var floor = response.data.data;
+        _this3.floor.id = floor.id;
+        _this3.floor.site_building_id = floor.site_building_id;
+        _this3.floor.name = floor.name;
+        _this3.floor.active = floor.active;
+        _this3.add_record = false;
+        _this3.edit_record = true;
+        $('#floor-form').modal('show');
+      });
+    },
+    updateFloor: function updateFloor() {
+      var _this4 = this;
+
+      axios.post('/admin/site/floor/update', this.floor).then(function (response) {
+        toastr.success(response.data.message);
+
+        _this4.$refs.floorsDataTable.fetchData();
+
+        $('#floor-form').modal('hide');
+      });
+    },
+    DeleteFloor: function DeleteFloor(data) {
+      this.id_to_deleted = data.id;
+      $('#levelDeleteModal').modal('show');
+    },
+    removeFloor: function removeFloor() {
+      var _this5 = this;
+
+      axios.get('/admin/site/floor/delete/' + this.id_to_deleted).then(function (response) {
+        _this5.$refs.floorsDataTable.fetchData();
+
+        _this5.id_to_deleted = 0;
+        $('#levelDeleteModal').modal('hide');
+      });
+    }
+  },
+  components: {
+    Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Admin/ManageMaps.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Admin/ManageMaps.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Table */ "./resources/js/components/Helpers/Table.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11334,13 +11547,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Floor",
+  name: "Maps",
   data: function data() {
     return {
-      floor: {
+      map_form: {
         id: '',
-        site_building_id: '',
-        name: '',
         map_file: '',
         map_preview: '',
         position_x: '10.00',
@@ -11350,20 +11561,13 @@ __webpack_require__.r(__webpack_exports__);
         default_zoom: '0.40',
         default_zoom_desktop: '0.40',
         default_zoom_mobile: '0.40',
-        is_default: '',
-        active: false
+        is_default: ''
       },
-      buildings: [],
       map_preview: '',
-      map_file: '',
       add_record: true,
       edit_record: false,
-      id_to_deleted: 0,
       dataFields: {
-        name: "Floor Name",
-        building_name: "Building Name",
-        map_file: "Map File",
-        map_preview_path: {
+        map_file: {
           name: "Map Preview",
           type: "image"
         },
@@ -11386,39 +11590,39 @@ __webpack_require__.r(__webpack_exports__);
         created_at: "Date Created"
       },
       primaryKey: "id",
-      dataUrl: "/admin/site/floor/list",
-      flooractionButtons: {
+      dataUrl: "/admin/site/manage-map/list",
+      actionButtons: {
         edit: {
-          title: 'Edit this Floor',
+          title: 'Edit this Map',
           name: 'Edit',
           apiUrl: '',
-          routeName: 'floor.edit',
+          routeName: 'building.edit',
           button: '<i class="fas fa-edit"></i> Edit',
           method: 'edit'
         },
         "delete": {
-          title: 'Delete this Floor',
+          title: 'Delete this Map',
           name: 'Delete',
-          apiUrl: '/admin/site/floor/delete',
+          apiUrl: '/admin/site/screen/delete',
           routeName: '',
           button: '<i class="fas fa-trash-alt"></i> Delete',
           method: 'custom_delete',
-          v_on: 'DeleteFloor'
+          v_on: 'DeleteMap'
         },
         link: {
-          title: 'Manage Map',
-          name: 'Delete',
-          apiUrl: '/admin/site/map',
+          title: 'Manage Maps',
+          name: 'Manage Maps',
+          apiUrl: '/admin/site/manage/map',
           routeName: '',
-          button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Map',
+          button: '<i class="fa fa-map-marker" aria-hidden="true"></i> Manage',
           method: 'link'
         }
       },
       otherButtons: {
         addNew: {
-          title: 'New Floor',
-          v_on: 'AddNewFloor',
-          icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Floor',
+          title: 'New Map',
+          v_on: 'AddNewMap',
+          icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Map',
           "class": 'btn btn-primary btn-sm',
           method: 'add'
         }
@@ -11427,143 +11631,103 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {},
   methods: {
-    GetBuildings: function GetBuildings() {
-      var _this = this;
-
-      axios.get('/admin/site/buildings').then(function (response) {
-        return _this.buildings = response.data.data;
-      });
-    },
     mapFile: function mapFile(e) {
       var file = e.target.files[0];
-      this.floor.map_file = file;
+      this.map_form.map_file = file;
     },
     mapChange: function mapChange(e) {
       var file = e.target.files[0];
       this.map_preview = URL.createObjectURL(file);
-      this.floor.map_preview = file;
+      this.map_form.map_preview = file;
     },
-    AddNewFloor: function AddNewFloor() {
-      this.GetBuildings();
+    AddNewMap: function AddNewMap() {
       this.add_record = true;
       this.edit_record = false;
-      this.floor.site_building_id = '';
-      this.floor.name = '';
-      this.floor.map_file = '';
-      this.floor.map_preview = '';
-      this.floor.position_x = '10.00';
-      this.floor.position_y = '0.20';
-      this.floor.position_z = '5.00';
-      this.floor.text_y_position = '4.00';
-      this.floor.default_zoom = '0.40';
-      this.floor.default_zoom_desktop = '0.40';
-      this.floor.default_zoom_mobile = '0.40';
-      this.floor.is_default = false;
-      this.floor.active = true;
+      this.map_form.map_file = '';
+      this.map_form.map_preview = '';
+      this.map_form.position_x = '10.00';
+      this.map_form.position_y = '0.20';
+      this.map_form.position_z = '5.00';
+      this.map_form.text_y_position = '4.00';
+      this.map_form.default_zoom = '0.40';
+      this.map_form.default_zoom_desktop = '0.40';
+      this.map_form.default_zoom_mobile = '0.40';
+      this.map_form.is_default = false;
       this.map_preview = '';
       this.$refs.mapFile.value = null;
       this.$refs.mapPreview.value = null;
-      $('#floor-form').modal('show');
+      $('#map-form').modal('show');
     },
-    storeFloor: function storeFloor() {
+    storeMap: function storeMap() {
+      var _this = this;
+
+      var formData = new FormData();
+      formData.append("map_file", this.map_form.map_file);
+      formData.append("map_preview", this.map_form.map_preview);
+      formData.append("position_x", this.map_form.position_x);
+      formData.append("position_y", this.map_form.position_y);
+      formData.append("position_z", this.map_form.position_z);
+      formData.append("text_y_position", this.map_form.text_y_position);
+      formData.append("default_zoom", this.map_form.default_zoom);
+      formData.append("default_zoom_desktop", this.map_form.default_zoom_desktop);
+      formData.append("default_zoom_mobile", this.map_form.default_zoom_mobile);
+      formData.append("is_default", this.map_form.is_default);
+      axios.post('/admin/brand/product/store', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        toastr.success(response.data.message);
+
+        _this.$refs.dataTable.fetchData();
+
+        $('#product-form').modal('hide');
+      });
+    },
+    editMap: function editMap(id) {
       var _this2 = this;
 
-      var formData = new FormData();
-      formData.append("site_building_id", this.floor.site_building_id);
-      formData.append("name", this.floor.name);
-      formData.append("map_file", this.floor.map_file);
-      formData.append("map_preview", this.floor.map_preview);
-      formData.append("position_x", this.floor.position_x);
-      formData.append("position_y", this.floor.position_y);
-      formData.append("position_z", this.floor.position_z);
-      formData.append("text_y_position", this.floor.text_y_position);
-      formData.append("default_zoom", this.floor.default_zoom);
-      formData.append("default_zoom_desktop", this.floor.default_zoom_desktop);
-      formData.append("default_zoom_mobile", this.floor.default_zoom_mobile);
-      formData.append("is_default", this.floor.is_default);
-      formData.append("active", this.floor.active);
-      axios.post('/admin/site/floor/store', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (response) {
-        toastr.success(response.data.message);
+      this.GetBuildings();
+      axios.get('/admin/site/screen/' + id).then(function (response) {
+        var screen = response.data.data;
+        _this2.screen.id = screen.id;
+        _this2.screen.site_building_id = screen.site_building_id;
 
-        _this2.$refs.floorsDataTable.fetchData();
+        _this2.getFloorLevel(screen.site_building_id);
 
-        $('#floor-form').modal('hide');
+        _this2.screen.site_building_level_id = screen.site_building_level_id;
+        _this2.screen.site_point_id = screen.site_point_id;
+        _this2.screen.screen_type = screen.screen_type;
+        _this2.screen.name = screen.name;
+        _this2.add_record = false;
+        _this2.edit_record = true;
+        $('#map-form').modal('show');
       });
     },
-    editFloor: function editFloor(id) {
+    updateScreen: function updateScreen() {
       var _this3 = this;
 
-      this.GetBuildings();
-      axios.get('/admin/site/floor/' + id).then(function (response) {
-        var floor = response.data.data;
-        _this3.floor.id = floor.id;
-        _this3.floor.site_building_id = floor.site_building_id;
-        _this3.floor.name = floor.name;
-        _this3.floor.map_file = floor.map_details.map_file;
-        _this3.floor.map_preview = floor.map_details.map_preview;
-        _this3.floor.position_x = floor.map_details.position_x;
-        _this3.floor.position_y = floor.map_details.position_y;
-        _this3.floor.position_z = floor.map_details.position_z;
-        _this3.floor.text_y_position = floor.map_details.text_y_position;
-        _this3.floor.default_zoom = floor.map_details.default_zoom;
-        _this3.floor.default_zoom_desktop = floor.map_details.default_zoom_desktop;
-        _this3.floor.default_zoom_mobile = floor.map_details.default_zoom_mobile;
-        _this3.floor.is_default = floor.map_details.is_default;
-        _this3.floor.active = floor.active;
-        _this3.map_preview = floor.map_preview_path;
-        _this3.$refs.mapFile.value = null;
-        _this3.$refs.mapPreview.value = null;
-        _this3.add_record = false;
-        _this3.edit_record = true;
-        $('#floor-form').modal('show');
-      });
-    },
-    updateFloor: function updateFloor() {
-      var _this4 = this;
-
       var formData = new FormData();
-      formData.append("id", this.floor.id);
-      formData.append("site_building_id", this.floor.site_building_id);
-      formData.append("name", this.floor.name);
-      formData.append("map_file", this.floor.map_file);
-      formData.append("map_preview", this.floor.map_preview);
-      formData.append("position_x", this.floor.position_x);
-      formData.append("position_y", this.floor.position_y);
-      formData.append("position_z", this.floor.position_z);
-      formData.append("text_y_position", this.floor.text_y_position);
-      formData.append("default_zoom", this.floor.default_zoom);
-      formData.append("default_zoom_desktop", this.floor.default_zoom_desktop);
-      formData.append("default_zoom_mobile", this.floor.default_zoom_mobile);
-      formData.append("is_default", this.floor.is_default);
-      formData.append("active", this.floor.active);
-      axios.post('/admin/site/floor/update', formData, {
+      this.map_form.map_file = map_form.map_details.map_file;
+      this.map_form.map_preview = map_form.map_details.map_preview;
+      this.map_form.position_x = map_form.map_details.position_x;
+      this.map_form.position_y = map_form.map_details.position_y;
+      this.map_form.position_z = map_form.map_details.position_z;
+      this.map_form.text_y_position = map_form.map_details.text_y_position;
+      this.map_form.default_zoom = map_form.map_details.default_zoom;
+      this.map_form.default_zoom_desktop = map_form.map_details.default_zoom_desktop;
+      this.map_form.default_zoom_mobile = map_form.map_details.default_zoom_mobile;
+      this.map_form.is_default = map_form.map_details.is_default;
+      axios.post('/admin/brand/product/store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
         toastr.success(response.data.message);
 
-        _this4.$refs.floorsDataTable.fetchData();
+        _this3.$refs.dataTable.fetchData();
 
-        $('#floor-form').modal('hide');
-      });
-    },
-    DeleteFloor: function DeleteFloor(data) {
-      this.id_to_deleted = data.id;
-      $('#levelDeleteModal').modal('show');
-    },
-    removeFloor: function removeFloor() {
-      var _this5 = this;
-
-      axios.get('/admin/site/floor/delete/' + this.id_to_deleted).then(function (response) {
-        _this5.$refs.floorsDataTable.fetchData();
-
-        _this5.id_to_deleted = 0;
-        $('#levelDeleteModal').modal('hide');
+        $('#product-form').modal('hide');
       });
     }
   },
@@ -12576,6 +12740,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Screen",
@@ -12583,8 +12749,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       screen: {
         id: '',
-        // site_building_id: '',
-        // site_building_level_id: '',
+        site_building_id: '',
+        site_building_level_id: '',
         site_point_id: '',
         screen_type: '',
         name: ''
@@ -12597,8 +12763,8 @@ __webpack_require__.r(__webpack_exports__);
       screen_types: ['Directory', 'LED', 'LFD', 'LED funnel'],
       dataFields: {
         name: "Name",
-        // floor_name: "Floor Name",
-        // building_name: "Building Name",
+        floor_name: "Floor Name",
+        building_name: "Building Name",
         site_point_id: "Site Point ID",
         screen_type: "Screen Type",
         active: {
@@ -12630,6 +12796,14 @@ __webpack_require__.r(__webpack_exports__);
           button: '<i class="fas fa-trash-alt"></i> Delete',
           method: 'custom_delete',
           v_on: 'DeleteScreen'
+        },
+        link: {
+          title: 'Manage Maps',
+          name: 'Manage Maps',
+          apiUrl: '/admin/site/manage-map/',
+          routeName: '',
+          button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
+          method: 'link'
         }
       },
       otherButtons: {
@@ -12645,62 +12819,70 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {},
   methods: {
-    // GetBuildings: function() {
-    // 	axios.get('/admin/site/buildings')
-    //     .then(response => this.buildings = response.data.data);
-    //     this.screen.site_building_level_id = '';
-    // },
-    // getFloorLevel: function(id) {
-    // 	axios.get('/admin/site/floors/'+id)
-    //     .then(response => this.floors = response.data.data);
-    // },
-    AddNewScreen: function AddNewScreen() {
-      // this.GetBuildings();
-      this.add_record = true;
-      this.edit_record = false; // this.screen.site_building_id = '';
-      // this.screen.site_building_level_id = '';
+    GetBuildings: function GetBuildings() {
+      var _this = this;
 
+      axios.get('/admin/site/buildings').then(function (response) {
+        return _this.buildings = response.data.data;
+      });
+      this.screen.site_building_level_id = '';
+    },
+    getFloorLevel: function getFloorLevel(id) {
+      var _this2 = this;
+
+      axios.get('/admin/site/floors/' + id).then(function (response) {
+        return _this2.floors = response.data.data;
+      });
+    },
+    AddNewScreen: function AddNewScreen() {
+      this.GetBuildings();
+      this.add_record = true;
+      this.edit_record = false;
+      this.screen.site_building_id = '';
+      this.screen.site_building_level_id = '';
       this.screen.site_point_id = '';
       this.screen.screen_type = '';
       this.screen.name = '';
       $('#screen-form').modal('show');
     },
     storeScreen: function storeScreen() {
-      var _this = this;
+      var _this3 = this;
 
       axios.post('/admin/site/screen/store', this.screen).then(function (response) {
         toastr.success(response.data.message);
 
-        _this.$refs.screensDataTable.fetchData();
+        _this3.$refs.screensDataTable.fetchData();
 
         $('#screen-form').modal('hide');
       });
     },
     editScreen: function editScreen(id) {
-      var _this2 = this;
+      var _this4 = this;
 
-      // this.GetBuildings();
+      this.GetBuildings();
       axios.get('/admin/site/screen/' + id).then(function (response) {
         var screen = response.data.data;
-        _this2.screen.id = screen.id; // this.screen.site_building_id = screen.site_building_id;
-        // this.getFloorLevel(screen.site_building_id);
-        // this.screen.site_building_level_id = screen.site_building_level_id;
+        _this4.screen.id = screen.id;
+        _this4.screen.site_building_id = screen.site_building_id;
 
-        _this2.screen.site_point_id = screen.site_point_id;
-        _this2.screen.screen_type = screen.screen_type;
-        _this2.screen.name = screen.name;
-        _this2.add_record = false;
-        _this2.edit_record = true;
+        _this4.getFloorLevel(screen.site_building_id);
+
+        _this4.screen.site_building_level_id = screen.site_building_level_id;
+        _this4.screen.site_point_id = screen.site_point_id;
+        _this4.screen.screen_type = screen.screen_type;
+        _this4.screen.name = screen.name;
+        _this4.add_record = false;
+        _this4.edit_record = true;
         $('#screen-form').modal('show');
       });
     },
     updateScreen: function updateScreen() {
-      var _this3 = this;
+      var _this5 = this;
 
       axios.put('/admin/site/screen/update', this.screen).then(function (response) {
         toastr.success(response.data.message);
 
-        _this3.$refs.screensDataTable.fetchData();
+        _this5.$refs.screensDataTable.fetchData();
 
         $('#screen-form').modal('hide');
       });
@@ -12710,12 +12892,12 @@ __webpack_require__.r(__webpack_exports__);
       $('#screenDeleteModal').modal('show');
     },
     removeScreen: function removeScreen() {
-      var _this4 = this;
+      var _this6 = this;
 
       axios.get('/admin/site/screen/delete/' + this.id_to_deleted).then(function (response) {
-        _this4.$refs.screensDataTable.fetchData();
+        _this6.$refs.screensDataTable.fetchData();
 
-        _this4.id_to_deleted = 0;
+        _this6.id_to_deleted = 0;
         $('#screenDeleteModal').modal('hide');
       });
     }
@@ -14820,6 +15002,7 @@ Vue.component('admin-building-floors', (__webpack_require__(/*! ./components/Adm
 Vue.component('admin-building-screens', (__webpack_require__(/*! ./components/Admin/Screens.vue */ "./resources/js/components/Admin/Screens.vue")["default"]));
 Vue.component('admin-building-tenants', (__webpack_require__(/*! ./components/Admin/Tenants.vue */ "./resources/js/components/Admin/Tenants.vue")["default"]));
 Vue.component('admin-advertisements', (__webpack_require__(/*! ./components/Admin/Advertisements.vue */ "./resources/js/components/Admin/Advertisements.vue")["default"]));
+Vue.component('admin-manage-maps', (__webpack_require__(/*! ./components/Admin/ManageMaps.vue */ "./resources/js/components/Admin/ManageMaps.vue")["default"]));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -75275,6 +75458,45 @@ component.options.__file = "resources/js/components/Admin/Floors.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Admin/ManageMaps.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/Admin/ManageMaps.vue ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ManageMaps_vue_vue_type_template_id_702aa4e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ManageMaps.vue?vue&type=template&id=702aa4e7& */ "./resources/js/components/Admin/ManageMaps.vue?vue&type=template&id=702aa4e7&");
+/* harmony import */ var _ManageMaps_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ManageMaps.vue?vue&type=script&lang=js& */ "./resources/js/components/Admin/ManageMaps.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ManageMaps_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ManageMaps_vue_vue_type_template_id_702aa4e7___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ManageMaps_vue_vue_type_template_id_702aa4e7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Admin/ManageMaps.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Admin/Modules.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/Admin/Modules.vue ***!
@@ -75865,6 +76087,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Admin/ManageMaps.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/Admin/ManageMaps.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ManageMaps_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ManageMaps.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Admin/ManageMaps.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ManageMaps_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Admin/Modules.vue?vue&type=script&lang=js&":
 /*!****************************************************************************!*\
   !*** ./resources/js/components/Admin/Modules.vue?vue&type=script&lang=js& ***!
@@ -76250,6 +76488,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Floors_vue_vue_type_template_id_86994d9c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Floors_vue_vue_type_template_id_86994d9c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Floors.vue?vue&type=template&id=86994d9c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Admin/Floors.vue?vue&type=template&id=86994d9c&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/ManageMaps.vue?vue&type=template&id=702aa4e7&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/Admin/ManageMaps.vue?vue&type=template&id=702aa4e7& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ManageMaps_vue_vue_type_template_id_702aa4e7___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ManageMaps_vue_vue_type_template_id_702aa4e7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ManageMaps_vue_vue_type_template_id_702aa4e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ManageMaps.vue?vue&type=template&id=702aa4e7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Admin/ManageMaps.vue?vue&type=template&id=702aa4e7&");
 
 
 /***/ }),
@@ -79827,367 +80082,6 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        ref: "mapFile",
-                        attrs: { type: "file" },
-                        on: { change: _vm.mapFile },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(5),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-5" }, [
-                      _c("input", {
-                        ref: "mapPreview",
-                        attrs: { type: "file", accept: "image/*" },
-                        on: { change: _vm.mapChange },
-                      }),
-                      _vm._v(" "),
-                      _c("footer", { staticClass: "blockquote-footer" }, [
-                        _vm._v("image max size is 1250 x 600 pixels"),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-3 text-center" }, [
-                      _vm.map_preview
-                        ? _c("img", {
-                            staticClass: "img-thumbnail",
-                            attrs: { src: _vm.map_preview },
-                          })
-                        : _vm._e(),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(6),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.floor.position_x,
-                            expression: "floor.position_x",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "0.00",
-                          required: "",
-                        },
-                        domProps: { value: _vm.floor.position_x },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.floor,
-                              "position_x",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(7),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.floor.position_y,
-                            expression: "floor.position_y",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "0.00",
-                          required: "",
-                        },
-                        domProps: { value: _vm.floor.position_y },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.floor,
-                              "position_y",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(8),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.floor.position_z,
-                            expression: "floor.position_z",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "0.00",
-                          required: "",
-                        },
-                        domProps: { value: _vm.floor.position_z },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.floor,
-                              "position_z",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(9),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.floor.text_y_position,
-                            expression: "floor.text_y_position",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "0.00",
-                          required: "",
-                        },
-                        domProps: { value: _vm.floor.text_y_position },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.floor,
-                              "text_y_position",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(10),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.floor.default_zoom,
-                            expression: "floor.default_zoom",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "0.00",
-                          required: "",
-                        },
-                        domProps: { value: _vm.floor.default_zoom },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.floor,
-                              "default_zoom",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(11),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.floor.default_zoom_desktop,
-                            expression: "floor.default_zoom_desktop",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "0.00",
-                          required: "",
-                        },
-                        domProps: { value: _vm.floor.default_zoom_desktop },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.floor,
-                              "default_zoom_desktop",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(12),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.floor.default_zoom_mobile,
-                            expression: "floor.default_zoom_mobile",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          placeholder: "0.00",
-                          required: "",
-                        },
-                        domProps: { value: _vm.floor.default_zoom_mobile },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.floor,
-                              "default_zoom_mobile",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-4 col-form-label",
-                        attrs: { for: "is_default" },
-                      },
-                      [_vm._v("Is Default")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-8" }, [
-                      _c(
-                        "div",
-                        { staticClass: "custom-control custom-switch" },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.floor.is_default,
-                                expression: "floor.is_default",
-                              },
-                            ],
-                            staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "is_default" },
-                            domProps: {
-                              checked: Array.isArray(_vm.floor.is_default)
-                                ? _vm._i(_vm.floor.is_default, null) > -1
-                                : _vm.floor.is_default,
-                            },
-                            on: {
-                              change: function ($event) {
-                                var $$a = _vm.floor.is_default,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      _vm.$set(
-                                        _vm.floor,
-                                        "is_default",
-                                        $$a.concat([$$v])
-                                      )
-                                  } else {
-                                    $$i > -1 &&
-                                      _vm.$set(
-                                        _vm.floor,
-                                        "is_default",
-                                        $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1))
-                                      )
-                                  }
-                                } else {
-                                  _vm.$set(_vm.floor, "is_default", $$c)
-                                }
-                              },
-                            },
-                          }),
-                          _vm._v(" "),
-                          _c("label", {
-                            staticClass: "custom-control-label",
-                            attrs: { for: "is_default" },
-                          }),
-                        ]
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
                   _c(
                     "div",
                     {
@@ -80342,9 +80236,9 @@ var render = function () {
       [
         _c("div", { staticClass: "modal-dialog" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(13),
+            _vm._m(4),
             _vm._v(" "),
-            _vm._m(14),
+            _vm._m(5),
             _vm._v(" "),
             _c("div", { staticClass: "modal-footer" }, [
               _c(
@@ -80422,6 +80316,643 @@ var staticRenderFns = [
         _vm._v("Name "),
         _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
       ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header bg-danger" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Confirm")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("h6", [_vm._v("Do you really want to delete?")]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Admin/ManageMaps.vue?vue&type=template&id=702aa4e7&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Admin/ManageMaps.vue?vue&type=template&id=702aa4e7& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("section", { staticClass: "content" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _c(
+                "div",
+                { staticClass: "card-body" },
+                [
+                  _c("Table", {
+                    ref: "screensDataTable",
+                    attrs: {
+                      dataFields: _vm.dataFields,
+                      dataUrl: _vm.dataUrl,
+                      actionButtons: _vm.actionButtons,
+                      otherButtons: _vm.otherButtons,
+                      primaryKey: _vm.primaryKey,
+                    },
+                    on: { AddNewMap: _vm.AddNewMap, editButton: _vm.editMap },
+                  }),
+                ],
+                1
+              ),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "map-form",
+          tabindex: "-1",
+          "aria-labelledby": "map-form",
+          "aria-hidden": "true",
+        },
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg",
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.add_record,
+                        expression: "add_record",
+                      },
+                    ],
+                    staticClass: "modal-title",
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-plus",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" Add New Map"),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.edit_record,
+                        expression: "edit_record",
+                      },
+                    ],
+                    staticClass: "modal-title",
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-pencil-square-o",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" Edit Map"),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(0),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        ref: "mapFile",
+                        attrs: { type: "file" },
+                        on: { change: _vm.mapFile },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-5" }, [
+                      _c("input", {
+                        ref: "mapPreview",
+                        attrs: { type: "file", accept: "image/*" },
+                        on: { change: _vm.mapChange },
+                      }),
+                      _vm._v(" "),
+                      _c("footer", { staticClass: "blockquote-footer" }, [
+                        _vm._v("image max size is 1250 x 600 pixels"),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-3 text-center" }, [
+                      _vm.map_preview
+                        ? _c("img", {
+                            staticClass: "img-thumbnail",
+                            attrs: { src: _vm.map_preview },
+                          })
+                        : _vm._e(),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map_form.position_x,
+                            expression: "map_form.position_x",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "0.00",
+                          required: "",
+                        },
+                        domProps: { value: _vm.map_form.position_x },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.map_form,
+                              "position_x",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map_form.position_y,
+                            expression: "map_form.position_y",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "0.00",
+                          required: "",
+                        },
+                        domProps: { value: _vm.map_form.position_y },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.map_form,
+                              "position_y",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map_form.position_z,
+                            expression: "map_form.position_z",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "0.00",
+                          required: "",
+                        },
+                        domProps: { value: _vm.map_form.position_z },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.map_form,
+                              "position_z",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map_form.text_y_position,
+                            expression: "map_form.text_y_position",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "0.00",
+                          required: "",
+                        },
+                        domProps: { value: _vm.map_form.text_y_position },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.map_form,
+                              "text_y_position",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map_form.default_zoom,
+                            expression: "map_form.default_zoom",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "0.00",
+                          required: "",
+                        },
+                        domProps: { value: _vm.map_form.default_zoom },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.map_form,
+                              "default_zoom",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map_form.default_zoom_desktop,
+                            expression: "map_form.default_zoom_desktop",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "0.00",
+                          required: "",
+                        },
+                        domProps: { value: _vm.map_form.default_zoom_desktop },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.map_form,
+                              "default_zoom_desktop",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(9),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.map_form.default_zoom_mobile,
+                            expression: "map_form.default_zoom_mobile",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "0.00",
+                          required: "",
+                        },
+                        domProps: { value: _vm.map_form.default_zoom_mobile },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.map_form,
+                              "default_zoom_mobile",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-sm-4 col-form-label",
+                        attrs: { for: "is_default" },
+                      },
+                      [_vm._v("Is Default")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-switch" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.map_form.is_default,
+                                expression: "map_form.is_default",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "is_default" },
+                            domProps: {
+                              checked: Array.isArray(_vm.map_form.is_default)
+                                ? _vm._i(_vm.map_form.is_default, null) > -1
+                                : _vm.map_form.is_default,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.map_form.is_default,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.map_form,
+                                        "is_default",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.map_form,
+                                        "is_default",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.map_form, "is_default", $$c)
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c("label", {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "is_default" },
+                          }),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.edit_record,
+                          expression: "edit_record",
+                        },
+                      ],
+                      staticClass: "form-group row",
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-4 col-form-label",
+                          attrs: { for: "active" },
+                        },
+                        [_vm._v("Active")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-8" }, [
+                        _c(
+                          "div",
+                          { staticClass: "custom-control custom-switch" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.map_form.active,
+                                  expression: "map_form.active",
+                                },
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "is_active" },
+                              domProps: {
+                                checked: Array.isArray(_vm.map_form.active)
+                                  ? _vm._i(_vm.map_form.active, null) > -1
+                                  : _vm.map_form.active,
+                              },
+                              on: {
+                                change: function ($event) {
+                                  var $$a = _vm.map_form.active,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.map_form,
+                                          "active",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.map_form,
+                                          "active",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.map_form, "active", $$c)
+                                  }
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "is_active" },
+                            }),
+                          ]
+                        ),
+                      ]),
+                    ]
+                  ),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-bs-dismiss": "modal" },
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: { click: _vm.updateScreen },
+                  },
+                  [_vm._v("Save Changes")]
+                ),
+              ]),
+            ]),
+          ]
+        ),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
   },
   function () {
@@ -80540,26 +81071,6 @@ var staticRenderFns = [
         _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
       ]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header bg-danger" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Confirm")]
-      ),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-body" }, [
-      _c("h6", [_vm._v("Do you really want to delete?")]),
-    ])
   },
 ]
 render._withStripped = true
@@ -82534,6 +83045,119 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
+                              value: _vm.screen.site_building_id,
+                              expression: "screen.site_building_id",
+                            },
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: [
+                              function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.screen,
+                                  "site_building_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                              function ($event) {
+                                return _vm.getFloorLevel($event.target.value)
+                              },
+                            ],
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Select Building"),
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.buildings, function (building) {
+                            return _c(
+                              "option",
+                              { domProps: { value: building.id } },
+                              [_vm._v(" " + _vm._s(building.name))]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.screen.site_building_level_id,
+                              expression: "screen.site_building_level_id",
+                            },
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.screen,
+                                "site_building_level_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Select Floor"),
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.floors, function (floor) {
+                            return _c(
+                              "option",
+                              { domProps: { value: floor.id } },
+                              [_vm._v(" " + _vm._s(floor.name))]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
                               value: _vm.screen.screen_type,
                               expression: "screen.screen_type",
                             },
@@ -82578,7 +83202,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(3),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -82614,7 +83238,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(4),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -82713,9 +83337,9 @@ var render = function () {
       [
         _c("div", { staticClass: "modal-dialog" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(5),
+            _vm._m(7),
             _vm._v(" "),
-            _vm._m(6),
+            _vm._m(8),
             _vm._v(" "),
             _c("div", { staticClass: "modal-footer" }, [
               _c(
@@ -82767,6 +83391,32 @@ var staticRenderFns = [
         },
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Building "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Floor "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
     )
   },
   function () {
