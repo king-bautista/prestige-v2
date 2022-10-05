@@ -43,7 +43,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-                            <!-- <div class="form-group row">
+                            <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="screen.site_building_id" @change="getFloorLevel($event.target.value)">
@@ -51,8 +51,8 @@
 									    <option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
 								    </select>
 								</div>
-							</div> -->
-                            <!-- <div class="form-group row">
+							</div>
+                            <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="screen.site_building_level_id">
@@ -60,7 +60,7 @@
 									    <option v-for="floor in floors" :value="floor.id"> {{ floor.name }}</option>
 								    </select>
 								</div>
-							</div> -->
+							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Type <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -94,6 +94,8 @@
 			</div>
 		</div>
       	<!-- End Modal Add New User -->
+
+		<!-- Delete modal -->
 	  	<div class="modal fade" id="screenDeleteModal" tabindex="-1" aria-labelledby="screenDeleteModal" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -110,7 +112,7 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- End Delete modal -->
     </div>
 </template>
 <script> 
@@ -122,8 +124,8 @@
             return {
                 screen: {
                     id: '',
-                    // site_building_id: '',
-                    // site_building_level_id: '',
+                    site_building_id: '',
+                    site_building_level_id: '',
                     site_point_id: '',
                     screen_type: '',
                     name: '',
@@ -136,8 +138,8 @@
                 screen_types: ['Directory','LED','LFD','LED funnel'],
             	dataFields: {
             		name: "Name", 
-                    // floor_name: "Floor Name",
-                    // building_name: "Building Name",
+                    floor_name: "Floor Name",
+                    building_name: "Building Name",
             		site_point_id: "Site Point ID", 
             		screen_type: "Screen Type", 
             		active: {
@@ -170,6 +172,14 @@
             			method: 'custom_delete',
 						v_on: 'DeleteScreen',
             		},
+					link: {
+            			title: 'Manage Maps',
+            			name: 'Manage Maps',
+            			apiUrl: '/admin/site/manage-map/',
+            			routeName: '',
+            			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
+            			method: 'link',
+            		},
             	},
 				otherButtons: {
 					addNew: {
@@ -187,23 +197,23 @@
         },
 
         methods: {
-            // GetBuildings: function() {
-			// 	axios.get('/admin/site/buildings')
-            //     .then(response => this.buildings = response.data.data);
-            //     this.screen.site_building_level_id = '';
-			// },
+            GetBuildings: function() {
+				axios.get('/admin/site/buildings')
+                .then(response => this.buildings = response.data.data);
+                this.screen.site_building_level_id = '';
+			},
 
-            // getFloorLevel: function(id) {
-			// 	axios.get('/admin/site/floors/'+id)
-            //     .then(response => this.floors = response.data.data);
-            // },
+            getFloorLevel: function(id) {
+				axios.get('/admin/site/floors/'+id)
+                .then(response => this.floors = response.data.data);
+            },
 
 			AddNewScreen: function() {
-                // this.GetBuildings();
+                this.GetBuildings();
 				this.add_record = true;
 				this.edit_record = false;
-                // this.screen.site_building_id = '';
-                // this.screen.site_building_level_id = '';
+                this.screen.site_building_id = '';
+                this.screen.site_building_level_id = '';
                 this.screen.site_point_id = '';
                 this.screen.screen_type = '';
                 this.screen.name = '';         
@@ -220,16 +230,16 @@
             },
 
 			editScreen: function(id) {
-                // this.GetBuildings();
+                this.GetBuildings();
                 axios.get('/admin/site/screen/'+id)
                 .then(response => {
                     var screen = response.data.data;
                     this.screen.id = screen.id;
-                    // this.screen.site_building_id = screen.site_building_id;
+                    this.screen.site_building_id = screen.site_building_id;
 
-                    // this.getFloorLevel(screen.site_building_id);
+                    this.getFloorLevel(screen.site_building_id);
 
-                    // this.screen.site_building_level_id = screen.site_building_level_id;
+                    this.screen.site_building_level_id = screen.site_building_level_id;
                     this.screen.site_point_id = screen.site_point_id;
                     this.screen.screen_type = screen.screen_type;
                     this.screen.name = screen.name;

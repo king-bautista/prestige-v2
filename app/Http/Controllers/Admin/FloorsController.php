@@ -83,7 +83,6 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
             ];
 
             $building = SiteBuildingLevel::create($data);
-            $building->saveMap($request);
 
             return $this->response($building, 'Successfully Created!', 200);
         }
@@ -109,7 +108,6 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
             ];
 
             $building_level->update($data);
-            $building_level->saveMap($request);
 
             return $this->response($building_level, 'Successfully Created!', 200);            
         }
@@ -128,9 +126,7 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
         try
     	{
             $building = SiteBuildingLevel::find($id);
-            $site_map = SiteMap::where('site_building_level_id', $id);
             $building->delete();
-            $site_map->delete();
             return $this->response($building, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
