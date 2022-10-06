@@ -15,7 +15,7 @@
                         :primaryKey="primaryKey"
 						v-on:AddNewMap="AddNewMap"
 						v-on:editButton="editMap"
-                        ref="screensDataTable">
+                        ref="dataTable">
 			          	</Table>
 		          	</div>
 		        </div>
@@ -39,6 +39,24 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="map_form.site_building_id" @change="getFloorLevel($event.target.value)">
+									    <option value="">Select Building</option>
+									    <option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
+								    </select>
+								</div>
+							</div>
+                            <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="map_form.site_building_level_id">
+									    <option value="">Select Floor</option>
+									    <option v-for="floor in floors" :value="floor.id"> {{ floor.name }}</option>
+								    </select>
+								</div>
+							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Map File <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -119,7 +137,8 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" @click="updateScreen">Save Changes</button>
+						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeMap">Add New Map</button>
+						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateMap">Save Changes</button>
 					</div>
 				</div>
 			</div>
@@ -136,6 +155,8 @@
             return {
 				map_form: {
                     id: '',
+                    site_building_id: '',
+                    site_building_level_id: '',
 					map_file: '',
 					map_preview: '',
 					position_x: '10.00',
@@ -145,16 +166,21 @@
 					default_zoom: '0.40',
 					default_zoom_desktop: '0.40',
 					default_zoom_mobile: '0.40',
+					active: '',
 					is_default: '',
 				},
                 map_preview: '',
                 add_record: true,
                 edit_record: false,
+				buildings: [],
+                floors: [],
             	dataFields: {
-            		map_file: {
+            		map_file_path: {
             			name: "Map Preview", 
             			type:"image", 
             		},
+					building_name: "Building Name",
+					floor_name: "Floor Name",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -187,16 +213,15 @@
             		delete: {
             			title: 'Delete this Map',
             			name: 'Delete',
-            			apiUrl: '/admin/site/screen/delete',
+            			apiUrl: '/admin/site/manage-map/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
-            			method: 'custom_delete',
-						v_on: 'DeleteMap',
+            			method: 'delete',
             		},
 					link: {
             			title: 'Manage Maps',
             			name: 'Manage Maps',
-            			apiUrl: '/admin/site/manage/map',
+            			apiUrl: '/admin/site/map',
             			routeName: '',
             			button: '<i class="fa fa-map-marker" aria-hidden="true"></i> Manage',
             			method: 'link',
@@ -218,6 +243,16 @@
         },
 
         methods: {
+			GetBuildings: function() {
+				axios.get('/admin/site/buildings')
+                .then(response => this.buildings = response.data.data);
+			},
+
+            getFloorLevel: function(id) {
+				axios.get('/admin/site/floors/'+id)
+                .then(response => this.floors = response.data.data);
+            },
+
             mapFile: function(e) {
 				const file = e.target.files[0];
 				this.map_form.map_file = file;
@@ -230,9 +265,12 @@
 			},
 
 			AddNewMap: function() {
+				this.GetBuildings();
 				this.add_record = true;
 				this.edit_record = false;
-                this.map_form.map_file = '';
+                this.map_form.site_building_id = '';
+                this.map_form.site_building_level_id = '';
+				this.map_form.map_file = '';
                 this.map_form.map_preview = '';
                 this.map_form.position_x = '10.00';
                 this.map_form.position_y = '0.20';
@@ -250,7 +288,9 @@
 
             storeMap: function() {
                 let formData = new FormData();
-                formData.append("map_file", this.map_form.map_file);
+                formData.append("site_building_id", this.map_form.site_building_id);
+                formData.append("site_building_level_id", this.map_form.site_building_level_id);
+				formData.append("map_file", this.map_form.map_file);
 				formData.append("map_preview", this.map_form.map_preview);
 				formData.append("position_x", this.map_form.position_x);
 				formData.append("position_y", this.map_form.position_y);
@@ -259,9 +299,10 @@
 				formData.append("default_zoom", this.map_form.default_zoom);
 				formData.append("default_zoom_desktop", this.map_form.default_zoom_desktop);
 				formData.append("default_zoom_mobile", this.map_form.default_zoom_mobile);
+				formData.append("active", this.map_form.active);
 				formData.append("is_default", this.map_form.is_default);
 
-                axios.post('/admin/brand/product/store', formData, {
+                axios.post('/admin/site/manage-map/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -269,45 +310,57 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-                    $('#product-form').modal('hide');
+                    $('#map-form').modal('hide');
 				});
 
             },
 
 			editMap: function(id) {
                 this.GetBuildings();
-                axios.get('/admin/site/screen/'+id)
+                axios.get('/admin/site/manage-map/details/'+id)
                 .then(response => {
-                    var screen = response.data.data;
-                    this.screen.id = screen.id;
-                    this.screen.site_building_id = screen.site_building_id;
+                    var site_map = response.data.data;
+                    this.map_form.id = site_map.id;
+                    this.map_form.site_building_id = site_map.site_building_id;
+                    this.getFloorLevel(site_map.site_building_id);
 
-                    this.getFloorLevel(screen.site_building_id);
-
-                    this.screen.site_building_level_id = screen.site_building_level_id;
-                    this.screen.site_point_id = screen.site_point_id;
-                    this.screen.screen_type = screen.screen_type;
-                    this.screen.name = screen.name;
+                    this.map_form.site_building_level_id = site_map.site_building_level_id;
+					this.map_form.position_x = site_map.position_x;
+					this.map_form.position_y = site_map.position_y;
+					this.map_form.position_z = site_map.position_z;
+					this.map_form.text_y_position = site_map.text_y_position;
+					this.map_form.default_zoom = site_map.default_zoom;
+					this.map_form.default_zoom_desktop = site_map.default_zoom_desktop;
+					this.map_form.default_zoom_mobile = site_map.default_zoom_mobile;
+					this.map_form.active = site_map.active;  
+					this.map_form.is_default = site_map.is_default;  
+					this.map_preview = site_map.map_preview_path; 
+					this.$refs.mapFile.value = null;
+					this.$refs.mapPreview.value = null;
 					this.add_record = false;
 					this.edit_record = true;
                     $('#map-form').modal('show');
                 });
             },
 
-            updateScreen: function() {
-                let formData = new FormData();
-                this.map_form.map_file = map_form.map_details.map_file;
-                this.map_form.map_preview = map_form.map_details.map_preview;
-                this.map_form.position_x = map_form.map_details.position_x;
-                this.map_form.position_y = map_form.map_details.position_y;
-                this.map_form.position_z = map_form.map_details.position_z;
-                this.map_form.text_y_position = map_form.map_details.text_y_position;
-                this.map_form.default_zoom = map_form.map_details.default_zoom;
-                this.map_form.default_zoom_desktop = map_form.map_details.default_zoom_desktop;
-                this.map_form.default_zoom_mobile = map_form.map_details.default_zoom_mobile;
-                this.map_form.is_default = map_form.map_details.is_default;
+			updateMap: function() {
+				let formData = new FormData();
+                formData.append("id", this.map_form.id);
+                formData.append("site_building_id", this.map_form.site_building_id);
+                formData.append("site_building_level_id", this.map_form.site_building_level_id);
+				formData.append("map_file", this.map_form.map_file);
+				formData.append("map_preview", this.map_form.map_preview);
+				formData.append("position_x", this.map_form.position_x);
+				formData.append("position_y", this.map_form.position_y);
+				formData.append("position_z", this.map_form.position_z);
+				formData.append("text_y_position", this.map_form.text_y_position);
+				formData.append("default_zoom", this.map_form.default_zoom);
+				formData.append("default_zoom_desktop", this.map_form.default_zoom_desktop);
+				formData.append("default_zoom_mobile", this.map_form.default_zoom_mobile);
+				formData.append("active", this.map_form.active);
+				formData.append("is_default", this.map_form.is_default);
 
-                axios.post('/admin/brand/product/store', formData, {
+                axios.post('/admin/site/manage-map/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -315,9 +368,9 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-                    $('#product-form').modal('hide');
-				});
-
+                    $('#map-form').modal('hide');
+				})
+                    
             },
 
         },

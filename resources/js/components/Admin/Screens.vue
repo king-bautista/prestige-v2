@@ -175,7 +175,7 @@
 					link: {
             			title: 'Manage Maps',
             			name: 'Manage Maps',
-            			apiUrl: '/admin/site/manage-map/',
+            			apiUrl: '/admin/site/manage-map',
             			routeName: '',
             			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
             			method: 'link',
