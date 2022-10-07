@@ -196,6 +196,9 @@
   let scrollLeft;
   var map_id;
 
+  var current_point = -1;
+	var previous_point = -2;
+
   document.addEventListener('keyup', doc_keyUp, false);
   slider.addEventListener('mousedown', onMouseDown);
   slider.addEventListener('mouseleave', onMouseLeave);
@@ -209,7 +212,11 @@
     var map_width = $(this).find(':selected').data('map_width');
     var map_height = $(this).find(':selected').data('map_height');
     map_id = $(this).find(':selected').data('map_id');
+    
+    // GET MAP POINTS
+    get_map_points(map_id);
 
+    // SET WIDTH, HEIGHT, AND IMAGE PATH
     $("#map_path").attr('width', map_width);
     $("#map_path").attr('src', floor_map);
     $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
@@ -223,6 +230,10 @@
       map_height = $(this).find(':selected').data('map_height');
       map_id = $(this).find(':selected').data('map_id');
 
+      // GET MAP POINTS
+      get_map_points(map_id);
+
+      // SET WIDTH, HEIGHT, AND IMAGE PATH
       $("#map_path").attr('width', map_width);
       $("#map_path").attr('src', floor_map);
       $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
@@ -243,6 +254,7 @@
 			$(this).addClass('mouseaction-selected');
 			$(".mouseaction").not(this).removeClass('mouseaction-selected');
       $(this).find('input[type="radio"]').prop("checked", true);
+      action = $('input[name="action"]:checked').val();
 		});
 
     $("#map_path").mousemove(function( event ) {
@@ -258,12 +270,6 @@
         case 'add_point':
             create_point(offset);
           break;
-        case 'single_link':
-          // code block
-          break;
-        case 'continous_link':
-          // code block
-          break;
       }
 		});
 
@@ -274,19 +280,16 @@
     slider.classList.add('active');
     startX = e.pageX - slider.offsetLeft;
     scrollLeft = slider.scrollLeft;
-    
   }
 
   function onMouseLeave() {
     isDown = false;
     slider.classList.remove('active');
-
   }
 
   function onMouseUp() {
     isDown = false;
     slider.classList.remove('active');
-
   }
 
   function onMouseMove(e) {
@@ -295,7 +298,6 @@
     const x = e.pageX - slider.offsetLeft;
     const walk = (x - startX) * 2; //scroll-fast
     slider.scrollLeft = scrollLeft - walk;
-
   }
 
   function doc_keyUp(e) {
@@ -339,33 +341,90 @@
 
   }
 
+  function get_map_points(id) {
+    $.get('/admin/site/map/get-points/'+id, function( data ) {
+      if(data.status_code == 200) {
+        $(".point").remove();
+        $.each(data.data,function(i,item) {
+          add_point(item);
+        });					
+      }
+    }, "json");
+  }
+
   function create_point(offset) {
     
     var x = (event.pageX-offset.left);
     var y = (event.pageY-offset.top);
 
     $.post('/admin/site/map/create-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_x: x, point_y: y }, function( data ) {
-      $("#selectable").append('<div id="'+data.data.id+'" class="point ui-draggable" style="left: ' + data.data.point_x +'px; top: ' + data.data.point_y + 'px;"></div>');
-
-      $("#" +  data.data.id).click(function() {
-
-        switch(action) {
-          case 'delete_point':
-              delete_point(data.data.id)
-            break;
-          case 'point_info':
-              point_info(data.data.id);
-            break;
-        }
-
-       })
-      .draggable( {
-				stop: function(event,ui) 
-        {
-					update_point(data.data.id, $(this).position().left, $(this).position().top);
-				}
-			});
+      add_point(data.data);
     }, "json");
+
+  }
+
+  function add_point(data) {
+    $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + data.point_x +'px; top: ' + data.point_y + 'px;" lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
+    $("#" +  data.id).click(function() {
+      $(this).css('background-color', 'red');
+      switch(action) {
+
+        case 'delete_point':
+            delete_point(data.id)
+          break;
+
+        case 'point_info':
+            $(".point").each(function(){
+              $(this).css('background-color', 'red');
+            });
+            $(this).css('background-color', '#0f0');
+            point_info(data.id);
+          break;
+
+        case 'single_link':
+            current_point = data.id;
+            if(previous_point == -2)
+            {
+              previous_point = current_point;
+            }else {
+              if(previous_point == current_point){
+                alert("Warning: Do not connect a point to itself");
+              }else{
+                $.post('/admin/site/map/connect-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_a: previous_point, point_b: current_point }, function( data ) {
+                  draw_line("#"+data.data.point_a, "#" + data.data.point_b, data.data.id);
+                }, "json");
+                previous_point = -2;
+                current_point = -1;
+              }
+            }
+          break;
+
+        case 'continous_link':
+            current_point = data.id;
+            if(previous_point == -2)
+            {
+              previous_point = current_point;
+            }else {
+              if(previous_point == current_point){
+                alert("Warning: Do not connect a point to itself");
+              }else{
+                $.post('/admin/site/map/connect-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_a: previous_point, point_b: current_point }, function( data ) {
+                  draw_line("#"+data.data.point_a, "#" + data.data.point_b, data.data.id);
+                }, "json");
+                previous_point = current_point;
+              }
+            }
+          break;
+
+      }
+
+    })
+    .draggable( {
+      stop: function(event,ui) 
+      {
+        update_point(data.id, $(this).position().left, $(this).position().top);
+      }
+    });
 
   }
 
@@ -400,6 +459,29 @@
         $('#point_label').val(info.point_label);               
       }
     }, "json");
+  }
+
+  function lineDistance(x, y, x0, y0){
+    return Math.sqrt((x -= x0) * x + (y -= y0) * y);
+  };
+
+  function draw_line(point1, point2, line) {
+    var pointA = $(point1).offset();
+    var pointB = $(point2).offset();
+    var pointAcenterX = $(point1).width() / 2;
+    var pointAcenterY = $(point1).height() / 2;
+    var pointBcenterX = $(point2).width() / 2;
+    var pointBcenterY = $(point2).height() / 2;
+    var angle = Math.atan2(pointB.top - pointA.top, pointB.left - pointA.left) * 180 / Math.PI;
+    var distance = lineDistance(pointA.left, pointA.top, pointB.left, pointB.top);
+
+    $("#selectable").append('<div id="line_'+line+'" class="line" style="transform:rotate(' + angle + 'deg); width:'+distance+'px; position:absolute;"></div>');
+
+    if(pointB.left < pointA.left) {
+      $('#line_'+line).offset({top: pointA.top + pointAcenterY, left: pointB.left + pointBcenterX});
+    } else {
+      $('#line_'+line).offset({top: pointA.top + pointAcenterY, left: pointA.left + pointAcenterX});
+    }
   }
 
 </script>

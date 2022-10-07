@@ -11,6 +11,7 @@ use App\Models\Amenity;
 use App\Models\SitePoint;
 use App\Models\SiteScreen;
 use App\Models\SiteMap;
+use App\Models\SitePointLink;
 use App\Models\ViewModels\SiteViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
@@ -229,6 +230,23 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));
     }
 
+    public function getSitePoints($id)
+    {
+        try
+    	{
+            $site_points = SitePoint::where('site_map_id', $id)->get();
+            return $this->response($site_points, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function createPoint(Request $request)
     {
         try
@@ -302,6 +320,28 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     	{
             $site_point = SitePoint::find($id);
             return $this->response($site_point, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function connectPoints(Request $request)
+    {
+        try
+    	{
+            $data = [
+                'site_map_id' => $request->map_id,
+                'point_a' => $request->point_a,
+                'point_b' => $request->point_b
+            ];
+            $site_point_link = SitePointLink::create($data);
+            return $this->response($site_point_link, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
         {
