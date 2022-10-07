@@ -215,6 +215,7 @@
     
     // GET MAP POINTS
     get_map_points(map_id);
+    get_map_links(map_id);
 
     // SET WIDTH, HEIGHT, AND IMAGE PATH
     $("#map_path").attr('width', map_width);
@@ -232,6 +233,7 @@
 
       // GET MAP POINTS
       get_map_points(map_id);
+      get_map_links(map_id);
 
       // SET WIDTH, HEIGHT, AND IMAGE PATH
       $("#map_path").attr('width', map_width);
@@ -347,6 +349,17 @@
         $(".point").remove();
         $.each(data.data,function(i,item) {
           add_point(item);
+        });					
+      }
+    }, "json");
+  }
+
+  function get_map_links(id) {
+    $.get('/admin/site/map/get-links/'+id, function( data ) {
+      if(data.status_code == 200) {
+        $(".line").remove();
+        $.each(data.data,function(i,item) {
+          draw_line(item.point_a, item.point_b, item.id);
         });					
       }
     }, "json");

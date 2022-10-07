@@ -235,7 +235,24 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         try
     	{
             $site_points = SitePoint::where('site_map_id', $id)->get();
-            return $this->response($site_points, 'Successfully Created!', 200);
+            return $this->response($site_points, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getSiteLinks($id)
+    {
+        try
+    	{
+            $site_links = SitePointLink::where('site_map_id', $id)->get();
+            return $this->response($site_links, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
         {
