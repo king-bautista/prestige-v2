@@ -52,27 +52,27 @@
                             @endforeach
                           </select>
                           </label>
-                          <label class="ml-3 mouseaction" title="Press Key 1">
+                          <label class="ml-3 mouseaction mouseaction-selected" title="Press Key Alt + 1">
                             <i class="fa fa-arrows-alt" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseDrag" value="drag_point" class="d-none"> Drag Point
                           </label>
-                          <label class="ml-3 mouseaction mouseaction-selected" title="Press Key 2">
+                          <label class="ml-3 mouseaction" title="Press Key Alt + 2">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseAdd" value="add_point" class="d-none"> Add Points
                           </label>
-                          <label class="ml-3 mouseaction" title="Press Key 3">
+                          <label class="ml-3 mouseaction" title="Press Key Alt + 3">
                             <i class="fa fa-minus" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseDelete" value="delete_point" class="d-none"> Delete Point
                           </label>
-                          <label class="ml-3 mouseaction" title="Press Key 4">
+                          <label class="ml-3 mouseaction" title="Press Key Alt + 4">
                             <i class="fa fa-info-circle" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseInfo" value="point_info" class="d-none">Point Info
                           </label>
-                          <label class="ml-3 mouseaction" title="Press Key 5">
+                          <label class="ml-3 mouseaction" title="Press Key Alt + 5">
                             <i class="fa fa-link" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseLink" value="single_link" class="d-none">Single Link
                           </label>
-                          <label class="ml-3 mouseaction" title="Press Key 6">
+                          <label class="ml-3 mouseaction" title="Press Key Alt + 6">
                             <i class="fa fa-link" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseLink2" value="continous_link" class="d-none">Continous Link
                           </label>                          
@@ -97,20 +97,22 @@
       <div class="card">
         <div class="card-body">
           <form name="frmCoordinates" id="frmCoordinates">
+          {{ csrf_field() }}
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Point ID:</label>
-            <label class="col-sm-6 col-form-label" id="point_id">Position Y:</label>
+            <label class="col-sm-6 col-form-label" id="point_id"></label>
+            <input type="hidden" id="pid" name="pid" readonly="readonly">
           </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Position X:</label>
             <div class="col-sm-6">
-              <input type="text" id="position_x" name="position_x" class="form-control form-control-sm " placeholder="0.0" required>
+              <input type="text" id="position_x" name="position_x" class="form-control form-control-sm " placeholder="0.0" readonly="readonly">
             </div>
           </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Position Y:</label>
             <div class="col-sm-6">
-              <input type="text" id="position_y" name="position_y" class="form-control form-control-sm" placeholder="0.0" required>
+              <input type="text" id="position_y" name="position_y" class="form-control form-control-sm" placeholder="0.0" readonly="readonly">
             </div>
           </div>
           <!-- <div class="form-group row mb-0">
@@ -122,20 +124,20 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Text Rotation:</label>
             <div class="col-sm-6">
-              <input type="text" id="text_y_position" name="text_y_position" class="form-control form-control-sm" placeholder="0.0" required>
+              <input type="text" id="text_y_position" name="text_y_position" class="frm_info form-control form-control-sm" placeholder="0.0" required>
             </div>
           </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Text Size:</label>
             <div class="col-sm-6">
-              <input type="text" id="text_size" name="text_size" class="form-control form-control-sm" placeholder="0.0" required>
+              <input type="text" id="text_size" name="text_size" class="frm_info form-control form-control-sm" placeholder="0.0" required>
             </div>
           </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Wrap Text:</label>
             <div class="col-sm-6">
               <div class="custom-control custom-switch">
-                <input type="checkbox" id="wrap_at" name="wrap_at" class="custom-control-input">
+                <input type="checkbox" id="wrap_at" name="wrap_at" class="frm_info custom-control-input">
                 <label class="custom-control-label" for="wrap_at"></label>
               </div>
             </div>
@@ -144,7 +146,7 @@
             <label for="firstName" class="col-sm-6 col-form-label">PWD:</label>
             <div class="col-sm-6">
               <div class="custom-control custom-switch">
-                <input type="checkbox" id="is_pwd" name="is_pwd" class="custom-control-input">
+                <input type="checkbox" id="is_pwd" name="is_pwd" class="frm_info custom-control-input" value="1">
                 <label class="custom-control-label" for="is_pwd"></label>
               </div>
             </div>
@@ -152,7 +154,7 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-12 col-form-label">Tenant:</label>
             <div class="col-sm-12">
-              <select class="custom-select" id="tenant_list" name="tenant_list">
+              <select class="frm_info custom-select" id="tenant_id" name="tenant_id">
                 <option value="">Select Tenant</option>
                 @foreach ($site_tenants as $tenant)
                 <option value="{{$tenant->id}}">{{$tenant->brand_name}}</option>
@@ -163,7 +165,7 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-12 col-form-label">Amenity:</label>
             <div class="col-sm-12">
-              <select class="custom-select" id="amenities" name="amenities">
+              <select class="frm_info custom-select" id="point_type" name="point_type">
                 <option value="">Select Amenity</option>
                 @foreach ($amenities as $amenity)
                 <option value="{{$amenity->id}}">{{$amenity->name}}</option>
@@ -174,7 +176,7 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-12 col-form-label">Label (optional):</label>
             <div class="col-sm-12">
-              <input type="text" id="point_label" name="point_label" class="form-control form-control-sm" placeholder="Label">
+              <input type="text" id="point_label" name="point_label" class="frm_info form-control form-control-sm" placeholder="Label">
             </div>
           </div>
           </form>
@@ -267,13 +269,25 @@
 
     $("#selectable").click(function(){
       var offset = $(this).offset();
-
-      switch(action) {
-        case 'add_point':
-            create_point(offset);
-          break;
+      if(action === 'add_point' ) {
+        create_point(offset);
       }
 		});
+
+    $('#frmCoordinates').on('submit', function(e){
+      e.preventDefault();
+      $.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
+        if(response.status_code == 200) {
+          toastr.success(response.data.message);
+        }
+      });
+    });
+
+    $('.frm_info').on('change', function() {
+      if($("#pid").val() > 0) {
+        $('#frmCoordinates').submit();
+      }
+    });
 
   });
 
@@ -303,9 +317,9 @@
   }
 
   function doc_keyUp(e) {
-    $(".mouseaction").removeClass('mouseaction-selected');
 
-    if (e.key === '1') {
+    $(".mouseaction").removeClass('mouseaction-selected');
+    if (e.altKey && e.key === '1') {
       $("#mouseDrag").prop("checked", true);
       $("#mouseDrag").parent().addClass('mouseaction-selected');
       slider.removeEventListener('mousedown', onMouseDown);
@@ -314,27 +328,27 @@
       slider.removeEventListener('mousemove', onMouseMove);
     }
 
-    if (e.key === '2') {
+    if (e.altKey && e.key === '2') {
       $("#mouseAdd").prop("checked", true);
       $("#mouseAdd").parent().addClass('mouseaction-selected');
     }
 
-    if (e.key === '3') {
+    if (e.altKey && e.key === '3') {
       $("#mouseDelete").prop("checked", true);
       $("#mouseDelete").parent().addClass('mouseaction-selected');
     }
 
-    if (e.key === '4') {
+    if (e.altKey && e.key === '4') {
       $("#mouseInfo").prop("checked", true);
       $("#mouseInfo").parent().addClass('mouseaction-selected');
     }
 
-    if (e.key === '5') {
+    if (e.altKey && e.key === '5') {
       $("#mouseLink").prop("checked", true);
       $("#mouseLink").parent().addClass('mouseaction-selected');
     }
 
-    if (e.key === '6') {
+    if (e.altKey && e.key === '6') {
       $("#mouseLink2").prop("checked", true);
       $("#mouseLink2").parent().addClass('mouseaction-selected');
     }
@@ -359,7 +373,7 @@
       if(data.status_code == 200) {
         $(".line").remove();
         $.each(data.data,function(i,item) {
-          draw_line(item.point_a, item.point_b, item.id);
+          draw_line('#'+item.point_a, '#'+item.point_b, item.id);
         });					
       }
     }, "json");
@@ -376,10 +390,42 @@
 
   }
 
+  function longest(str) {
+    var words = str.split(' ');
+    var longest = ''; // changed
+
+    for (var i = 0; i < words.length; i++) {
+      if (words[i].length > longest.length) { // changed
+        longest = words[i]; // changed
+      }
+    }
+    return longest;
+  }
+
   function add_point(data) {
     $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + data.point_x +'px; top: ' + data.point_y + 'px;" lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
+    var point_label = 'Test';
+ 
+    $("#" +  data.id).html('<p style="color:#000; font-weight: bold; text-transform: uppercase;">'+point_label+'</p>');
+    
+    // var mtop='-10';
+    // var string_width = 0;
+    // var fontSize = (data.text_size == 0) ? 10 : data.text_size;
+
+    // point_label_w = longest(point_label);
+
+    // if(data.wrap_at == 1) {
+    //   string_width = point_label_w.width();
+    // }
+    // else {
+    //   string_width = point_label.width();
+    // }
+
+    // var center=((string_width/2)-5)*-1;
+
     $("#" +  data.id).click(function() {
       $(this).css('background-color', 'red');
+      $('#pid').val(data.id);
       switch(action) {
 
         case 'delete_point':
@@ -428,7 +474,6 @@
               }
             }
           break;
-
       }
 
     })
@@ -465,10 +510,21 @@
         $('#position_y').val(info.point_y);
         $('#text_y_position').val(info.rotation_z);
         $('#text_size').val(info.text_size);
-        $('#is_pwd').val(info.is_pwd);
-        $('#wrap_at').val(info.wrap_at);
-        $('#tenant_list').val(info.tenant_id);
-        $('#amenities').val(info.point_type);
+        if(info.is_pwd == 1) {
+          $('#is_pwd').prop( "checked", true);
+        }
+        else {
+          $('#is_pwd').prop( "checked", false);
+        }
+        if(info.wrap_at == 1) {
+          $('#wrap_at').prop( "checked", true);
+        }
+        else {
+          $('#wrap_at').prop( "checked", false);
+        }
+
+        $('#tenant_id').val(info.tenant_id);
+        $('#point_type').val(info.point_type);
         $('#point_label').val(info.point_label);               
       }
     }, "json");

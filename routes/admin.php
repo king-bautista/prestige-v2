@@ -235,6 +235,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/map/get-links/{id}', 'Admin\MapsController@getSiteLinks')->where('id', '[0-9]+')->name('admin.site.map.get-links');
     Route::post('/admin/site/map/create-point', 'Admin\MapsController@createPoint')->name('admin.site.map.create-point');
     Route::post('/admin/site/map/update-point', 'Admin\MapsController@updatePoint')->name('admin.site.map.update-point');
+    Route::post('/admin/site/map/update-details', 'Admin\MapsController@updatePointDetails')->name('admin.site.map.update-details');
     Route::get('/admin/site/map/delete-point/{id}', 'Admin\MapsController@deletePoint')->where('id', '[0-9]+')->name('admin.site.map.delete-point');
     Route::get('/admin/site/map/point-info/{id}', 'Admin\MapsController@pointInfo')->where('id', '[0-9]+')->name('admin.site.map.point-info');
     Route::post('/admin/site/map/connect-point', 'Admin\MapsController@connectPoints')->name('admin.site.map.connect-point');

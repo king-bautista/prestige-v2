@@ -69,6 +69,9 @@
                             <span v-else-if="tHeader.type == 'image'">
                                 <img class="img-thumbnail" :src="data[key]" />
                             </span>
+                            <span v-else-if="tHeader.type == 'logo'">
+                                <img class="img-logo" :src="data[key]" />
+                            </span>
                             <span v-else-if="tHeader.type == 'icon'">
                                 <i :class="data[key]" aria-hidden="true"></i>
                             </span>
@@ -398,6 +401,10 @@
 
     .img-thumbnail {
         max-width: 15rem;
+    }
+
+    .img-logo {
+        max-width: 5rem;
     }
 
 </style>

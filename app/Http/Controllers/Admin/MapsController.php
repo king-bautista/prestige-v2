@@ -17,6 +17,7 @@ use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
 use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\SitePointViewModel;
 
 class MapsController extends AppBaseController implements MapsControllerInterface
 {
@@ -234,7 +235,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
-            $site_points = SitePoint::where('site_map_id', $id)->get();
+            $site_points = SitePointViewModel::where('site_map_id', $id)->get();
             return $this->response($site_points, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
@@ -335,7 +336,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
-            $site_point = SitePoint::find($id);
+            $site_point = SitePointViewModel::find($id);
             return $this->response($site_point, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
@@ -359,6 +360,36 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             ];
             $site_point_link = SitePointLink::create($data);
             return $this->response($site_point_link, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function updatePointDetails(Request $request)
+    {
+        try
+    	{
+            //return $request->all();
+            $site_point = SitePoint::find($request->pid);
+            $data = [
+                'tenant_id' => ($request->tenant_id) ? $request->tenant_id : 0,
+                'point_type' => ($request->point_type) ? $request->point_type : 0,
+                'rotation_z' => ($request->text_y_position) ? $request->text_y_position : 0,
+                'text_size' => ($request->text_size) ? $request->text_size : 0,
+                'is_pwd' => ($request->is_pwd) ? $request->is_pwd : 0,
+                'point_label' => ($request->point_label) ? $request->point_label : null,
+                'wrap_at' => ($request->wrap_at == "on") ? 1 : 0,
+            ];
+
+            $site_point->update($data);
+
+            return $this->response($site_point, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {

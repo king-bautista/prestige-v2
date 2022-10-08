@@ -143,7 +143,7 @@
             		brand_name: "Brand Name", 
 					brand_logo: {
             			name: "Brand Logo", 
-            			type:"image", 
+            			type:"logo", 
             		},
                     floor_name: "Floor Name",
                     building_name: "Building Name",
@@ -162,7 +162,8 @@
             				0: '<span class="badge badge-danger">No</span>', 
             				1: '<span class="badge badge-info">Yes</span>'
             			}
-            		},                    created_at: "Date Created"
+            		},                    
+					created_at: "Date Created"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/site/tenant/list",
