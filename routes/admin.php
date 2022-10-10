@@ -225,14 +225,20 @@ Route::group(['middleware' => 'auth:admin'], function () {
     */
     Route::get('/admin/site/manage-map/{id}', 'Admin\MapsController@index')->where('id', '[0-9]+')->name('admin.site.manage.map');
     Route::get('/admin/site/manage-map/list', 'Admin\MapsController@list')->name('admin.site.manage.map.list');
+    Route::get('/admin/site/manage-map/details/{id}', 'Admin\MapsController@details')->where('id', '[0-9]+')->name('admin.site.manage.map.details');
     Route::post('/admin/site/manage-map/store', 'Admin\MapsController@store')->name('admin.site.manage.map.store');
-
+    Route::post('/admin/site/manage-map/update', 'Admin\MapsController@update')->name('admin.site.manage.map.update');
+    Route::get('/admin/site/manage-map/delete/{id}', 'Admin\MapsController@delete')->where('id', '[0-9]+')->name('admin.site.manage.map.delete');
 
     Route::get('/admin/site/map/{id}', 'Admin\MapsController@getMapDetails')->where('id', '[0-9]+')->name('admin.site.map');
+    Route::get('/admin/site/map/get-points/{id}', 'Admin\MapsController@getSitePoints')->where('id', '[0-9]+')->name('admin.site.map.get-points');
+    Route::get('/admin/site/map/get-links/{id}', 'Admin\MapsController@getSiteLinks')->where('id', '[0-9]+')->name('admin.site.map.get-links');
     Route::post('/admin/site/map/create-point', 'Admin\MapsController@createPoint')->name('admin.site.map.create-point');
     Route::post('/admin/site/map/update-point', 'Admin\MapsController@updatePoint')->name('admin.site.map.update-point');
+    Route::post('/admin/site/map/update-details', 'Admin\MapsController@updatePointDetails')->name('admin.site.map.update-details');
     Route::get('/admin/site/map/delete-point/{id}', 'Admin\MapsController@deletePoint')->where('id', '[0-9]+')->name('admin.site.map.delete-point');
     Route::get('/admin/site/map/point-info/{id}', 'Admin\MapsController@pointInfo')->where('id', '[0-9]+')->name('admin.site.map.point-info');
+    Route::post('/admin/site/map/connect-point', 'Admin\MapsController@connectPoints')->name('admin.site.map.connect-point');
 
     /*
     |--------------------------------------------------------------------------

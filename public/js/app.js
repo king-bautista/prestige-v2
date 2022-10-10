@@ -11545,6 +11545,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Maps",
@@ -11552,6 +11571,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       map_form: {
         id: '',
+        site_building_id: '',
+        site_building_level_id: '',
         map_file: '',
         map_preview: '',
         position_x: '10.00',
@@ -11561,16 +11582,21 @@ __webpack_require__.r(__webpack_exports__);
         default_zoom: '0.40',
         default_zoom_desktop: '0.40',
         default_zoom_mobile: '0.40',
+        active: '',
         is_default: ''
       },
       map_preview: '',
       add_record: true,
       edit_record: false,
+      buildings: [],
+      floors: [],
       dataFields: {
-        map_file: {
+        map_file_path: {
           name: "Map Preview",
           type: "image"
         },
+        building_name: "Building Name",
+        floor_name: "Floor Name",
         active: {
           name: "Status",
           type: "Boolean",
@@ -11603,16 +11629,15 @@ __webpack_require__.r(__webpack_exports__);
         "delete": {
           title: 'Delete this Map',
           name: 'Delete',
-          apiUrl: '/admin/site/screen/delete',
+          apiUrl: '/admin/site/manage-map/delete',
           routeName: '',
           button: '<i class="fas fa-trash-alt"></i> Delete',
-          method: 'custom_delete',
-          v_on: 'DeleteMap'
+          method: 'delete'
         },
         link: {
           title: 'Manage Maps',
           name: 'Manage Maps',
-          apiUrl: '/admin/site/manage/map',
+          apiUrl: '/admin/site/map',
           routeName: '',
           button: '<i class="fa fa-map-marker" aria-hidden="true"></i> Manage',
           method: 'link'
@@ -11631,6 +11656,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {},
   methods: {
+    GetBuildings: function GetBuildings() {
+      var _this = this;
+
+      axios.get('/admin/site/buildings').then(function (response) {
+        return _this.buildings = response.data.data;
+      });
+    },
+    getFloorLevel: function getFloorLevel(id) {
+      var _this2 = this;
+
+      axios.get('/admin/site/floors/' + id).then(function (response) {
+        return _this2.floors = response.data.data;
+      });
+    },
     mapFile: function mapFile(e) {
       var file = e.target.files[0];
       this.map_form.map_file = file;
@@ -11641,8 +11680,11 @@ __webpack_require__.r(__webpack_exports__);
       this.map_form.map_preview = file;
     },
     AddNewMap: function AddNewMap() {
+      this.GetBuildings();
       this.add_record = true;
       this.edit_record = false;
+      this.map_form.site_building_id = '';
+      this.map_form.site_building_level_id = '';
       this.map_form.map_file = '';
       this.map_form.map_preview = '';
       this.map_form.position_x = '10.00';
@@ -11659,9 +11701,11 @@ __webpack_require__.r(__webpack_exports__);
       $('#map-form').modal('show');
     },
     storeMap: function storeMap() {
-      var _this = this;
+      var _this3 = this;
 
       var formData = new FormData();
+      formData.append("site_building_id", this.map_form.site_building_id);
+      formData.append("site_building_level_id", this.map_form.site_building_level_id);
       formData.append("map_file", this.map_form.map_file);
       formData.append("map_preview", this.map_form.map_preview);
       formData.append("position_x", this.map_form.position_x);
@@ -11671,54 +11715,9 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("default_zoom", this.map_form.default_zoom);
       formData.append("default_zoom_desktop", this.map_form.default_zoom_desktop);
       formData.append("default_zoom_mobile", this.map_form.default_zoom_mobile);
+      formData.append("active", this.map_form.active);
       formData.append("is_default", this.map_form.is_default);
-      axios.post('/admin/brand/product/store', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (response) {
-        toastr.success(response.data.message);
-
-        _this.$refs.dataTable.fetchData();
-
-        $('#product-form').modal('hide');
-      });
-    },
-    editMap: function editMap(id) {
-      var _this2 = this;
-
-      this.GetBuildings();
-      axios.get('/admin/site/screen/' + id).then(function (response) {
-        var screen = response.data.data;
-        _this2.screen.id = screen.id;
-        _this2.screen.site_building_id = screen.site_building_id;
-
-        _this2.getFloorLevel(screen.site_building_id);
-
-        _this2.screen.site_building_level_id = screen.site_building_level_id;
-        _this2.screen.site_point_id = screen.site_point_id;
-        _this2.screen.screen_type = screen.screen_type;
-        _this2.screen.name = screen.name;
-        _this2.add_record = false;
-        _this2.edit_record = true;
-        $('#map-form').modal('show');
-      });
-    },
-    updateScreen: function updateScreen() {
-      var _this3 = this;
-
-      var formData = new FormData();
-      this.map_form.map_file = map_form.map_details.map_file;
-      this.map_form.map_preview = map_form.map_details.map_preview;
-      this.map_form.position_x = map_form.map_details.position_x;
-      this.map_form.position_y = map_form.map_details.position_y;
-      this.map_form.position_z = map_form.map_details.position_z;
-      this.map_form.text_y_position = map_form.map_details.text_y_position;
-      this.map_form.default_zoom = map_form.map_details.default_zoom;
-      this.map_form.default_zoom_desktop = map_form.map_details.default_zoom_desktop;
-      this.map_form.default_zoom_mobile = map_form.map_details.default_zoom_mobile;
-      this.map_form.is_default = map_form.map_details.is_default;
-      axios.post('/admin/brand/product/store', formData, {
+      axios.post('/admin/site/manage-map/store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -11727,7 +11726,66 @@ __webpack_require__.r(__webpack_exports__);
 
         _this3.$refs.dataTable.fetchData();
 
-        $('#product-form').modal('hide');
+        $('#map-form').modal('hide');
+      });
+    },
+    editMap: function editMap(id) {
+      var _this4 = this;
+
+      this.GetBuildings();
+      axios.get('/admin/site/manage-map/details/' + id).then(function (response) {
+        var site_map = response.data.data;
+        _this4.map_form.id = site_map.id;
+        _this4.map_form.site_building_id = site_map.site_building_id;
+
+        _this4.getFloorLevel(site_map.site_building_id);
+
+        _this4.map_form.site_building_level_id = site_map.site_building_level_id;
+        _this4.map_form.position_x = site_map.position_x;
+        _this4.map_form.position_y = site_map.position_y;
+        _this4.map_form.position_z = site_map.position_z;
+        _this4.map_form.text_y_position = site_map.text_y_position;
+        _this4.map_form.default_zoom = site_map.default_zoom;
+        _this4.map_form.default_zoom_desktop = site_map.default_zoom_desktop;
+        _this4.map_form.default_zoom_mobile = site_map.default_zoom_mobile;
+        _this4.map_form.active = site_map.active;
+        _this4.map_form.is_default = site_map.is_default;
+        _this4.map_preview = site_map.map_preview_path;
+        _this4.$refs.mapFile.value = null;
+        _this4.$refs.mapPreview.value = null;
+        _this4.add_record = false;
+        _this4.edit_record = true;
+        $('#map-form').modal('show');
+      });
+    },
+    updateMap: function updateMap() {
+      var _this5 = this;
+
+      var formData = new FormData();
+      formData.append("id", this.map_form.id);
+      formData.append("site_building_id", this.map_form.site_building_id);
+      formData.append("site_building_level_id", this.map_form.site_building_level_id);
+      formData.append("map_file", this.map_form.map_file);
+      formData.append("map_preview", this.map_form.map_preview);
+      formData.append("position_x", this.map_form.position_x);
+      formData.append("position_y", this.map_form.position_y);
+      formData.append("position_z", this.map_form.position_z);
+      formData.append("text_y_position", this.map_form.text_y_position);
+      formData.append("default_zoom", this.map_form.default_zoom);
+      formData.append("default_zoom_desktop", this.map_form.default_zoom_desktop);
+      formData.append("default_zoom_mobile", this.map_form.default_zoom_mobile);
+      formData.append("active", this.map_form.active);
+      formData.append("is_default", this.map_form.is_default);
+      axios.post('/admin/site/manage-map/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        toastr.success(response.data.message);
+
+        _this5.$refs.dataTable.fetchData();
+
+        $('#map-form').modal('hide');
       });
     }
   },
@@ -12800,7 +12858,7 @@ __webpack_require__.r(__webpack_exports__);
         link: {
           title: 'Manage Maps',
           name: 'Manage Maps',
-          apiUrl: '/admin/site/manage-map/',
+          apiUrl: '/admin/site/manage-map',
           routeName: '',
           button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
           method: 'link'
@@ -14092,7 +14150,7 @@ __webpack_require__.r(__webpack_exports__);
         brand_name: "Brand Name",
         brand_logo: {
           name: "Brand Logo",
-          type: "image"
+          type: "logo"
         },
         floor_name: "Floor Name",
         building_name: "Building Name",
@@ -14611,6 +14669,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
 //
 //
 //
@@ -20492,7 +20553,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".form-check-select[data-v-9c7a2d6e] {\n  margin-top: 0.3rem;\n  margin-left: 0;\n}\n.other-button div[data-v-9c7a2d6e] {\n  margin-right: 5px;\n  color: white;\n  display: inline-block;\n}\n.row-actions[data-v-9c7a2d6e] {\n  color: #ddd;\n  font-size: 13px;\n  padding: 2px 0 0;\n  position: relative;\n  left: -9999em;\n}\n.row-actions span[data-v-9c7a2d6e]:not(:last-child):after {\n  content: \"|\";\n  color: #007bff;\n  margin-left: 5px;\n  margin-right: 5px;\n  font-weight: bolder;\n}\n.has-row-actions:hover .row-actions[data-v-9c7a2d6e] {\n  left: 0;\n}\n.img-thumbnail[data-v-9c7a2d6e] {\n  max-width: 15rem;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".form-check-select[data-v-9c7a2d6e] {\n  margin-top: 0.3rem;\n  margin-left: 0;\n}\n.other-button div[data-v-9c7a2d6e] {\n  margin-right: 5px;\n  color: white;\n  display: inline-block;\n}\n.row-actions[data-v-9c7a2d6e] {\n  color: #ddd;\n  font-size: 13px;\n  padding: 2px 0 0;\n  position: relative;\n  left: -9999em;\n}\n.row-actions span[data-v-9c7a2d6e]:not(:last-child):after {\n  content: \"|\";\n  color: #007bff;\n  margin-left: 5px;\n  margin-right: 5px;\n  font-weight: bolder;\n}\n.has-row-actions:hover .row-actions[data-v-9c7a2d6e] {\n  left: 0;\n}\n.img-thumbnail[data-v-9c7a2d6e] {\n  max-width: 15rem;\n}\n.img-logo[data-v-9c7a2d6e] {\n  max-width: 5rem;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -80372,7 +80433,7 @@ var render = function () {
                 { staticClass: "card-body" },
                 [
                   _c("Table", {
-                    ref: "screensDataTable",
+                    ref: "dataTable",
                     attrs: {
                       dataFields: _vm.dataFields,
                       dataUrl: _vm.dataUrl,
@@ -80465,6 +80526,119 @@ var render = function () {
                     _vm._m(1),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.map_form.site_building_id,
+                              expression: "map_form.site_building_id",
+                            },
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: [
+                              function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.map_form,
+                                  "site_building_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                              function ($event) {
+                                return _vm.getFloorLevel($event.target.value)
+                              },
+                            ],
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Select Building"),
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.buildings, function (building) {
+                            return _c(
+                              "option",
+                              { domProps: { value: building.id } },
+                              [_vm._v(" " + _vm._s(building.name))]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.map_form.site_building_level_id,
+                              expression: "map_form.site_building_level_id",
+                            },
+                          ],
+                          staticClass: "custom-select",
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.map_form,
+                                "site_building_level_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Select Floor"),
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.floors, function (floor) {
+                            return _c(
+                              "option",
+                              { domProps: { value: floor.id } },
+                              [_vm._v(" " + _vm._s(floor.name))]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
                         ref: "mapFile",
                         attrs: { type: "file" },
@@ -80474,7 +80648,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(2),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-5" }, [
                       _c("input", {
@@ -80499,7 +80673,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(3),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -80535,7 +80709,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(4),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -80571,7 +80745,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(5),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -80607,7 +80781,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(6),
+                    _vm._m(8),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -80643,7 +80817,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(7),
+                    _vm._m(9),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -80679,7 +80853,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(8),
+                    _vm._m(10),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -80715,7 +80889,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _vm._m(9),
+                    _vm._m(11),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-8" }, [
                       _c("input", {
@@ -80923,9 +81097,35 @@ var render = function () {
                 _c(
                   "button",
                   {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.add_record,
+                        expression: "add_record",
+                      },
+                    ],
                     staticClass: "btn btn-primary",
                     attrs: { type: "button" },
-                    on: { click: _vm.updateScreen },
+                    on: { click: _vm.storeMap },
+                  },
+                  [_vm._v("Add New Map")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.edit_record,
+                        expression: "edit_record",
+                      },
+                    ],
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: { click: _vm.updateMap },
                   },
                   [_vm._v("Save Changes")]
                 ),
@@ -80953,6 +81153,32 @@ var staticRenderFns = [
         },
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Building "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-sm-4 col-form-label", attrs: { for: "firstName" } },
+      [
+        _vm._v("Floor "),
+        _c("span", { staticClass: "font-italic text-danger" }, [_vm._v(" *")]),
+      ]
     )
   },
   function () {
@@ -86900,6 +87126,13 @@ var render = function () {
                         ? _c("span", [
                             _c("img", {
                               staticClass: "img-thumbnail",
+                              attrs: { src: data[key] },
+                            }),
+                          ])
+                        : tHeader.type == "logo"
+                        ? _c("span", [
+                            _c("img", {
+                              staticClass: "img-logo",
                               attrs: { src: data[key] },
                             }),
                           ])
