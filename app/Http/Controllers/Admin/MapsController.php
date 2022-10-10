@@ -382,6 +382,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'point_type' => ($request->point_type) ? $request->point_type : 0,
                 'rotation_z' => ($request->text_y_position) ? $request->text_y_position : 0,
                 'text_size' => ($request->text_size) ? $request->text_size : 0,
+                'text_width' => ($request->text_width) ? $request->text_width : 0,
                 'is_pwd' => ($request->is_pwd) ? $request->is_pwd : 0,
                 'point_label' => ($request->point_label) ? $request->point_label : null,
                 'wrap_at' => ($request->wrap_at == "on") ? 1 : 0,

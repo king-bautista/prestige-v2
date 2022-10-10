@@ -22,6 +22,7 @@ class SitePoint extends Model
         'point_z',
         'rotation_z',
         'text_size',
+        'text_width',
         'is_pwd',
         'point_type',
         'point_label',

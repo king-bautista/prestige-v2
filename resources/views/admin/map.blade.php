@@ -134,6 +134,12 @@
             </div>
           </div>
           <div class="form-group row mb-0">
+            <label for="firstName" class="col-sm-6 col-form-label">Text Width:</label>
+            <div class="col-sm-6">
+              <input type="text" id="text_width" name="text_width" class="frm_info form-control form-control-sm" placeholder="0.0" required>
+            </div>
+          </div>
+          <!-- <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Wrap Text:</label>
             <div class="col-sm-6">
               <div class="custom-control custom-switch">
@@ -141,7 +147,7 @@
                 <label class="custom-control-label" for="wrap_at"></label>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">PWD:</label>
             <div class="col-sm-6">
@@ -259,6 +265,13 @@
 			$(".mouseaction").not(this).removeClass('mouseaction-selected');
       $(this).find('input[type="radio"]').prop("checked", true);
       action = $('input[name="action"]:checked').val();
+
+      if(action == 'drag_point') {
+        slider.removeEventListener('mousedown', onMouseDown);
+        slider.removeEventListener('mouseleave', onMouseLeave);
+        slider.removeEventListener('mouseup', onMouseUp);
+        slider.removeEventListener('mousemove', onMouseMove);
+      }
 		});
 
     $("#map_path").mousemove(function( event ) {
@@ -278,7 +291,9 @@
       e.preventDefault();
       $.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
         if(response.status_code == 200) {
-          toastr.success(response.data.message);
+          get_map_points(map_id);
+          get_map_links(map_id);
+          toastr.success(response.message);
         }
       });
     });
@@ -390,38 +405,27 @@
 
   }
 
-  function longest(str) {
-    var words = str.split(' ');
-    var longest = ''; // changed
-
-    for (var i = 0; i < words.length; i++) {
-      if (words[i].length > longest.length) { // changed
-        longest = words[i]; // changed
-      }
-    }
-    return longest;
-  }
-
   function add_point(data) {
-    $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + data.point_x +'px; top: ' + data.point_y + 'px;" lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
-    var point_label = 'Test';
+    $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + data.point_x +'px; top: ' + data.point_y + 'px;" war lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
+
+    var stitle_w = '';
+    var point_label = '';
+    if(data.brand_name) {
+      point_label = data.brand_name;
+    }
+    else if(data.amenity_name) {
+      point_label = data.amenity_name;
+    }
+    else if(data.point_label) {
+      point_label = data.point_label;
+    }
  
-    $("#" +  data.id).html('<p style="color:#000; font-weight: bold; text-transform: uppercase;">'+point_label+'</p>');
-    
-    // var mtop='-10';
-    // var string_width = 0;
-    // var fontSize = (data.text_size == 0) ? 10 : data.text_size;
+    var mtop='-45';
+    var fontSize = (data.text_size == 0) ? 1 : data.text_size;
+    var text_width = (data.text_width == 0) ? '' : 'width:'+data.text_width+'px;';
+    var rotation = (data.rotation_z == 0) ? '' : 'transform: rotate(' + data.rotation_z + 'deg);';
 
-    // point_label_w = longest(point_label);
-
-    // if(data.wrap_at == 1) {
-    //   string_width = point_label_w.width();
-    // }
-    // else {
-    //   string_width = point_label.width();
-    // }
-
-    // var center=((string_width/2)-5)*-1;
+    $("#" +  data.id).html('<p style="color:#000; font-size:'+fontSize+'rem; '+text_width+' display: inline-block; font-weight: bold; text-transform: uppercase; text-align: center; margin:'+mtop + 'px 0 0 0; '+rotation+'" >'+point_label+'</p>');
 
     $("#" +  data.id).click(function() {
       $(this).css('background-color', 'red');
@@ -488,7 +492,9 @@
 
   function update_point(id, x, y) {
     $.post('/admin/site/map/update-point', { _token:"{{ csrf_token() }}", id: id, point_x: x, point_y: y }, function( data ) {
-      console.log('coordinates updated');
+      get_map_points(map_id);
+      get_map_links(map_id);
+      toastr.success(data.message);
     }, "json");
 
   }
@@ -510,6 +516,7 @@
         $('#position_y').val(info.point_y);
         $('#text_y_position').val(info.rotation_z);
         $('#text_size').val(info.text_size);
+        $('#text_width').val(info.text_width);
         if(info.is_pwd == 1) {
           $('#is_pwd').prop( "checked", true);
         }
