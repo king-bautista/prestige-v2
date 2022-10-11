@@ -225,7 +225,12 @@
     $("#map_path").attr('width', map_width);
     $("#map_path").attr('src', floor_map);
     $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
-		
+
+    // GET MAP POINTS
+    if(get_map_points() == true){
+      get_map_links();
+    }
+
     $('.floor-data').on('change', function() {
 
       // SET SELECT FROM MAP DROPDOWN 
@@ -236,8 +241,9 @@
       map_id = $(this).find(':selected').data('map_id');
 
       // GET MAP POINTS
-      get_map_points(map_id);
-      setTimeout(get_map_links(map_id), 5000);
+      if(get_map_points() == true){
+        get_map_links();
+      }
 
       // SET WIDTH, HEIGHT, AND IMAGE PATH
       $("#map_path").attr('width', map_width);
@@ -287,8 +293,9 @@
       e.preventDefault();
       $.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
         if(response.status_code == 200) {
-          get_map_points(map_id);
-          setTimeout(get_map_links(map_id), 5000);
+          if(get_map_points() == true){
+            get_map_links();
+          }
           toastr.success(response.message);
         }
       });
@@ -300,9 +307,6 @@
       }
     });
 
-    // GET MAP POINTS
-    get_map_points(map_id);
-    setTimeout(get_map_links(map_id), 5000);
   });
 
   function onMouseDown(e) {
@@ -371,19 +375,22 @@
 
   }
 
-  function get_map_points(id) {
-    $.get('/admin/site/map/get-points/'+id, function( data ) {
+  function get_map_points() {
+
+    $.get('/admin/site/map/get-points/'+map_id, function( data ) {
       if(data.status_code == 200) {
         $(".point").remove();
         $.each(data.data,function(i,item) {
           add_point(item);
         });					
       }
-    }, "json");
+    },
+    "json");
+    return true;
   }
 
-  function get_map_links(id) {
-    $.get('/admin/site/map/get-links/'+id, function( data ) {
+  function get_map_links() {
+    $.get('/admin/site/map/get-links/'+map_id, function( data ) {
       if(data.status_code == 200) {
         $(".line").remove();
         $.each(data.data,function(i,item) {
@@ -491,8 +498,9 @@
 
   function update_point(id, x, y) {
     $.post('/admin/site/map/update-point', { _token:"{{ csrf_token() }}", id: id, point_x: x, point_y: y }, function( data ) {
-      get_map_points(map_id);
-      get_map_links(map_id);
+      if(get_map_points() == true){
+        get_map_links();
+      }
       toastr.success(data.message);
     }, "json");
 
