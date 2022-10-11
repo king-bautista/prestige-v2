@@ -406,7 +406,7 @@
   }
 
   function add_point(data) {
-    $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + data.point_x +'px; top: ' + data.point_y + 'px;" war lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
+    $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + data.point_x +'px; top: ' + data.point_y + 'px;" lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
 
     var stitle_w = '';
     var point_label = '';
