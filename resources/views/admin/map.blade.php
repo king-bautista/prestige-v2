@@ -221,10 +221,6 @@
     var map_height = $(this).find(':selected').data('map_height');
     map_id = $(this).find(':selected').data('map_id');
     
-    // GET MAP POINTS
-    get_map_points(map_id);
-    setTimeout(get_map_links(map_id), 5000);
-
     // SET WIDTH, HEIGHT, AND IMAGE PATH
     $("#map_path").attr('width', map_width);
     $("#map_path").attr('src', floor_map);
@@ -304,6 +300,9 @@
       }
     });
 
+    // GET MAP POINTS
+    get_map_points(map_id);
+    setTimeout(get_map_links(map_id), 5000);
   });
 
   function onMouseDown(e) {
