@@ -239,9 +239,7 @@
       map_id = $(this).find(':selected').data('map_id');
 
       // GET MAP POINTS
-      if(get_map_points() == true){
-        get_map_links();
-      }
+      get_map_points();
 
       // SET WIDTH, HEIGHT, AND IMAGE PATH
       $("#map_path").attr('width', map_width);
@@ -291,9 +289,7 @@
       e.preventDefault();
       $.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
         if(response.status_code == 200) {
-          if(get_map_points() == true){
-            get_map_links();
-          }
+          get_map_points();
           toastr.success(response.message);
         }
       });
@@ -497,9 +493,7 @@
 
   function update_point(id, x, y) {
     $.post('/admin/site/map/update-point', { _token:"{{ csrf_token() }}", id: id, point_x: x, point_y: y }, function( data ) {
-      if(get_map_points() == true){
-        get_map_links();
-      }
+      get_map_points();
       toastr.success(data.message);
     }, "json");
 
