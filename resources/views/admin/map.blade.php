@@ -227,9 +227,7 @@
     $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
 
     // GET MAP POINTS
-    if(get_map_points() == true){
-      get_map_links();
-    }
+    get_map_points();
 
     $('.floor-data').on('change', function() {
 
@@ -382,7 +380,8 @@
         $(".point").remove();
         $.each(data.data,function(i,item) {
           add_point(item);
-        });					
+        });
+        get_map_links();
       }
     },
     "json");
