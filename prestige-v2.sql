@@ -20,6 +20,7 @@ CREATE DATABASE IF NOT EXISTS `prestige` /*!40100 DEFAULT CHARACTER SET latin1 *
 USE `prestige`;
 
 -- Dumping structure for table prestige.admins
+DROP TABLE IF EXISTS `admins`;
 CREATE TABLE IF NOT EXISTS `admins` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -49,6 +50,7 @@ INSERT INTO `admins` (`id`, `full_name`, `email`, `email_verified_at`, `password
 	(4, 'Admin, Admin', 'admin@gmail.com', NULL, '$2y$10$QEY0OLI9HdHbfMsc9igWFuvg17iBIBK9hZ6RzyPzz29SV8Cp77RqK', NULL, 'aTVOhYWuUpIxmrn4cv1G', 0, 0, 1, NULL, 0, 0, NULL, '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
 
 -- Dumping structure for table prestige.admins_meta
+DROP TABLE IF EXISTS `admins_meta`;
 CREATE TABLE IF NOT EXISTS `admins_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `admin_id` bigint(20) unsigned DEFAULT NULL,
@@ -71,6 +73,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
 
 -- Dumping structure for table prestige.admin_roles
+DROP TABLE IF EXISTS `admin_roles`;
 CREATE TABLE IF NOT EXISTS `admin_roles` (
   `admin_id` bigint(20) unsigned NOT NULL,
   `role_id` bigint(20) unsigned NOT NULL,
@@ -87,6 +90,7 @@ INSERT INTO `admin_roles` (`admin_id`, `role_id`) VALUES
 	(4, 2);
 
 -- Dumping structure for table prestige.amenities
+DROP TABLE IF EXISTS `amenities`;
 CREATE TABLE IF NOT EXISTS `amenities` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -123,6 +127,7 @@ INSERT INTO `amenities` (`id`, `name`, `active`, `created_at`, `updated_at`, `de
 	(21, 'Transport Terminal', 1, '2022-08-18 23:23:32', '2022-08-18 23:26:29', NULL);
 
 -- Dumping structure for table prestige.brands
+DROP TABLE IF EXISTS `brands`;
 CREATE TABLE IF NOT EXISTS `brands` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned DEFAULT NULL,
@@ -145,6 +150,7 @@ INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `acti
 	(2, 17, 'Max', 'this is a test', 'uploads/media/brand/7f000001-94b7-f905.jpg', 1, '2022-08-30 01:08:54', '2022-08-30 01:08:54', NULL);
 
 -- Dumping structure for table prestige.brand_products_promos
+DROP TABLE IF EXISTS `brand_products_promos`;
 CREATE TABLE IF NOT EXISTS `brand_products_promos` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `brand_id` bigint(20) unsigned DEFAULT NULL,
@@ -174,6 +180,7 @@ INSERT INTO `brand_products_promos` (`id`, `brand_id`, `name`, `descriptions`, `
 	(4, 2, 'ADmin test', 'this is atest test', 'product', 'uploads/media/brand/products/70c97a81-b63f-a156.jpg', 'uploads/media/brand/products/70c97a81-b6f7-1b9c.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-08-30 02:11:10', '2022-08-30 02:25:39', NULL);
 
 -- Dumping structure for table prestige.brand_supplementals
+DROP TABLE IF EXISTS `brand_supplementals`;
 CREATE TABLE IF NOT EXISTS `brand_supplementals` (
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `supplemental_id` bigint(20) unsigned DEFAULT NULL,
@@ -193,6 +200,7 @@ INSERT INTO `brand_supplementals` (`brand_id`, `supplemental_id`) VALUES
 	(2, 9);
 
 -- Dumping structure for table prestige.brand_tags
+DROP TABLE IF EXISTS `brand_tags`;
 CREATE TABLE IF NOT EXISTS `brand_tags` (
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `tag_id` bigint(20) unsigned DEFAULT NULL,
@@ -211,6 +219,7 @@ INSERT INTO `brand_tags` (`brand_id`, `tag_id`) VALUES
 	(2, 349);
 
 -- Dumping structure for table prestige.categories
+DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` bigint(20) unsigned DEFAULT NULL,
@@ -268,6 +277,7 @@ INSERT INTO `categories` (`id`, `parent_id`, `name`, `descriptions`, `kiosk_imag
 	(36, 5, 'Sporting Goods', 'Sporting Goods', 'uploads/media/category/Sporting-Goods.png', 'uploads/media/category/strips/Sporting-Goods.png', NULL, NULL, 1, '2022-08-17 23:56:41', '2022-09-15 23:44:44', NULL);
 
 -- Dumping structure for table prestige.category_labels
+DROP TABLE IF EXISTS `category_labels`;
 CREATE TABLE IF NOT EXISTS `category_labels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned NOT NULL,
@@ -290,6 +300,7 @@ INSERT INTO `category_labels` (`id`, `category_id`, `site_id`, `name`, `created_
 	(7, 36, 1, 'Active Lifestyle', '2022-09-18 18:47:57', '2022-09-18 18:47:57', NULL);
 
 -- Dumping structure for table prestige.classifications
+DROP TABLE IF EXISTS `classifications`;
 CREATE TABLE IF NOT EXISTS `classifications` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -311,6 +322,7 @@ INSERT INTO `classifications` (`id`, `name`, `active`, `created_at`, `updated_at
 	(6, 'Advertiser Agency', 1, '2022-08-18 22:43:14', '2022-08-18 22:43:14', NULL);
 
 -- Dumping structure for table prestige.failed_jobs
+DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -328,6 +340,7 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.migrations
+DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -359,6 +372,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.modules
+DROP TABLE IF EXISTS `modules`;
 CREATE TABLE IF NOT EXISTS `modules` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` bigint(20) unsigned DEFAULT NULL,
@@ -409,6 +423,7 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`
 	(32, 6, 'Tags', '/admin/tags', 'nav-icon fa fa-tags', 1, '2022-08-22 17:03:10', '2022-08-22 17:03:22', NULL);
 
 -- Dumping structure for table prestige.password_resets
+DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -421,6 +436,7 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.permissions
+DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` bigint(20) unsigned NOT NULL,
@@ -504,6 +520,7 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2022-08-22 17:03:54', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
+DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -524,6 +541,7 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.roles
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -543,6 +561,7 @@ INSERT INTO `roles` (`id`, `name`, `description`, `active`, `created_at`, `updat
 	(2, 'Admin', 'Corporate access', 1, '2022-08-08 19:13:57', '2022-08-08 19:13:57', NULL);
 
 -- Dumping structure for table prestige.sites
+DROP TABLE IF EXISTS `sites`;
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -562,6 +581,7 @@ INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `
 	(1, 'SM Mega Mall', 'SM Mega Mall', 'uploads/media/sites/logos/70cc00f9-51c4-fe37.png', 'uploads/media/sites/banners/about-us-smrx.jpg', 1, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL);
 
 -- Dumping structure for table prestige.sites_meta
+DROP TABLE IF EXISTS `sites_meta`;
 CREATE TABLE IF NOT EXISTS `sites_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -586,6 +606,7 @@ INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at
 	(6, 1, 'website', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL);
 
 -- Dumping structure for table prestige.site_ads
+DROP TABLE IF EXISTS `site_ads`;
 CREATE TABLE IF NOT EXISTS `site_ads` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -609,6 +630,7 @@ INSERT INTO `site_ads` (`id`, `name`, `ad_type`, `file_path`, `file_type`, `disp
 	(3, 'Sample Banner', 'Banners', 'uploads/media/advertisements/banners/7f000001-2d20-097e.jpg', 'jpg', 0, 5, '2022-09-01', '2022-09-30', 1, '2022-09-20 00:06:07', '2022-09-20 00:06:07', NULL);
 
 -- Dumping structure for table prestige.site_buildings
+DROP TABLE IF EXISTS `site_buildings`;
 CREATE TABLE IF NOT EXISTS `site_buildings` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -631,6 +653,7 @@ INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`,
 	(4, 1, 'BLDG D', 'Building D', 1, '2022-10-04 18:52:24', '2022-10-04 18:52:24', NULL);
 
 -- Dumping structure for table prestige.site_building_levels
+DROP TABLE IF EXISTS `site_building_levels`;
 CREATE TABLE IF NOT EXISTS `site_building_levels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -658,6 +681,7 @@ INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`,
 	(7, 1, 1, 'L5', 1, '2022-10-04 18:53:28', '2022-10-04 19:32:31', '2022-10-04 19:32:31');
 
 -- Dumping structure for table prestige.site_maps
+DROP TABLE IF EXISTS `site_maps`;
 CREATE TABLE IF NOT EXISTS `site_maps` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -699,6 +723,7 @@ INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_lev
 	(5, 1, 1, 3, 6, 'uploads/map/files/cam6-ug.png', 'uploads/map/preview/cam6-ug.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:18:31', '2022-10-06 00:50:38', NULL);
 
 -- Dumping structure for table prestige.site_points
+DROP TABLE IF EXISTS `site_points`;
 CREATE TABLE IF NOT EXISTS `site_points` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
@@ -838,6 +863,7 @@ INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `poin
 	(150, 3, 0, 0, 1389.00, 346.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:09', '2022-10-06 21:50:09', NULL);
 
 -- Dumping structure for table prestige.site_point_links
+DROP TABLE IF EXISTS `site_point_links`;
 CREATE TABLE IF NOT EXISTS `site_point_links` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
@@ -871,6 +897,7 @@ INSERT INTO `site_point_links` (`id`, `site_map_id`, `point_a`, `point_b`, `crea
 	(85, 4, 101, 102, '2022-10-07 17:54:59', '2022-10-07 17:54:59', NULL);
 
 -- Dumping structure for table prestige.site_screens
+DROP TABLE IF EXISTS `site_screens`;
 CREATE TABLE IF NOT EXISTS `site_screens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -899,6 +926,7 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(6, 1, 1, 2, 0, 'Directory', 'Kenny Rogers', 1, '2022-10-04 19:33:31', '2022-10-04 19:33:31', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
+DROP TABLE IF EXISTS `site_screen_uptime`;
 CREATE TABLE IF NOT EXISTS `site_screen_uptime` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_screen_id` bigint(20) unsigned NOT NULL,
@@ -912,6 +940,7 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptime` (
 -- Dumping data for table prestige.site_screen_uptime: ~0 rows (approximately)
 
 -- Dumping structure for table prestige.site_tenants
+DROP TABLE IF EXISTS `site_tenants`;
 CREATE TABLE IF NOT EXISTS `site_tenants` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `brand_id` bigint(20) unsigned NOT NULL,
@@ -942,6 +971,7 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(2, 2, 1, 1, 2, 0, 0, 1, 0, '2022-10-04 19:00:08', '2022-10-07 23:12:01', NULL);
 
 -- Dumping structure for table prestige.supplementals
+DROP TABLE IF EXISTS `supplementals`;
 CREATE TABLE IF NOT EXISTS `supplementals` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned DEFAULT NULL,
@@ -1023,6 +1053,7 @@ INSERT INTO `supplementals` (`id`, `category_id`, `name`, `kiosk_image_primary`,
 	(59, 1, 'Flats', 'uploads/media/supplemental/Flats.png', 'uploads/media/supplemental/strips/Flats.png', '', '', 1, '2022-08-18 21:48:16', '2022-08-18 21:49:55', NULL);
 
 -- Dumping structure for table prestige.tags
+DROP TABLE IF EXISTS `tags`;
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1984,6 +2015,7 @@ INSERT INTO `tags` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted
 	(946, 'Zenscreen', 1, '2022-08-22 18:35:38', '2022-08-22 18:35:38', NULL);
 
 -- Dumping structure for table prestige.tenant_ads
+DROP TABLE IF EXISTS `tenant_ads`;
 CREATE TABLE IF NOT EXISTS `tenant_ads` (
   `site_ad_id` bigint(20) unsigned DEFAULT NULL,
   `site_tenant_id` bigint(20) unsigned DEFAULT NULL,
@@ -1999,6 +2031,7 @@ INSERT INTO `tenant_ads` (`site_ad_id`, `site_tenant_id`) VALUES
 	(3, 9);
 
 -- Dumping structure for table prestige.users
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2022,6 +2055,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table prestige.users: ~0 rows (approximately)
 
 -- Dumping structure for table prestige.users_meta
+DROP TABLE IF EXISTS `users_meta`;
 CREATE TABLE IF NOT EXISTS `users_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) unsigned DEFAULT NULL,
