@@ -223,7 +223,7 @@
     
     // GET MAP POINTS
     get_map_points(map_id);
-    get_map_links(map_id);
+    setTimeout(get_map_links(map_id), 5000);
 
     // SET WIDTH, HEIGHT, AND IMAGE PATH
     $("#map_path").attr('width', map_width);
