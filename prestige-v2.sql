@@ -333,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.migrations: 18 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
@@ -353,7 +353,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(106, '2022_08_19_065434_create_amenities_table', 7),
 	(108, '2022_08_22_074123_create_tags_table', 8),
 	(110, '2022_08_22_084625_create_brands_table', 9),
-	(116, '2022_09_05_022733_create_sites_table', 10),
+	(121, '2022_09_05_022733_create_sites_table', 13),
 	(117, '2022_09_15_072641_create_category_labels_table', 11),
 	(118, '2022_09_15_090444_create_site_ads_table', 12);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
@@ -555,12 +555,11 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sites_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites: ~0 rows (approximately)
+-- Dumping data for table prestige.sites: ~1 rows (approximately)
 INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'SM Megamall', 'SM Megamall', 'uploads/media/sites/logos/sm-logo.png', 'uploads/media/sites/banners/About-Page.png', 1, '2022-09-13 01:01:44', '2022-09-13 01:01:55', NULL),
-	(2, 'SM North Edsa', 'SM North Edsa', 'uploads/media/sites/logos/logo-smne.png', 'uploads/media/sites/banners/about-us-smne.jpg', 1, '2022-09-15 21:57:15', '2022-09-15 21:57:15', NULL);
+	(1, 'SM Mega Mall', 'SM Mega Mall', 'uploads/media/sites/logos/70cc00f9-51c4-fe37.png', 'uploads/media/sites/banners/about-us-smrx.jpg', 1, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL);
 
 -- Dumping structure for table prestige.sites_meta
 CREATE TABLE IF NOT EXISTS `sites_meta` (
@@ -575,22 +574,16 @@ CREATE TABLE IF NOT EXISTS `sites_meta` (
   KEY `sites_meta_site_id_foreign` (`site_id`),
   KEY `sites_meta_meta_key_index` (`meta_key`),
   CONSTRAINT `sites_meta_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites_meta: ~12 rows (approximately)
+-- Dumping data for table prestige.sites_meta: ~6 rows (approximately)
 INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 'facebook', 'null', '2022-09-13 01:01:44', '2022-09-13 01:01:51', NULL),
-	(2, 1, 'instagram', 'null', '2022-09-13 01:01:44', '2022-09-13 01:01:51', NULL),
-	(3, 1, 'twitter', 'null', '2022-09-13 01:01:44', '2022-09-13 01:01:51', NULL),
-	(4, 1, 'time_from', 'null', '2022-09-13 01:01:45', '2022-09-13 01:01:52', NULL),
-	(5, 1, 'time_to', 'null', '2022-09-13 01:01:45', '2022-09-13 01:01:52', NULL),
-	(6, 1, 'website', 'null', '2022-09-13 01:01:45', '2022-09-13 01:01:52', NULL),
-	(7, 2, 'facebook', NULL, '2022-09-15 21:57:15', '2022-09-15 21:57:15', NULL),
-	(8, 2, 'instagram', NULL, '2022-09-15 21:57:15', '2022-09-15 21:57:15', NULL),
-	(9, 2, 'twitter', NULL, '2022-09-15 21:57:15', '2022-09-15 21:57:15', NULL),
-	(10, 2, 'time_from', NULL, '2022-09-15 21:57:15', '2022-09-15 21:57:15', NULL),
-	(11, 2, 'time_to', NULL, '2022-09-15 21:57:15', '2022-09-15 21:57:15', NULL),
-	(12, 2, 'website', NULL, '2022-09-15 21:57:15', '2022-09-15 21:57:15', NULL);
+	(1, 1, 'facebook', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
+	(2, 1, 'instagram', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
+	(3, 1, 'twitter', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
+	(4, 1, 'time_from', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
+	(5, 1, 'time_to', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
+	(6, 1, 'website', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL);
 
 -- Dumping structure for table prestige.site_ads
 CREATE TABLE IF NOT EXISTS `site_ads` (
@@ -628,12 +621,14 @@ CREATE TABLE IF NOT EXISTS `site_buildings` (
   PRIMARY KEY (`id`),
   KEY `site_buildings_site_id_foreign` (`site_id`),
   CONSTRAINT `site_buildings_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_buildings: ~2 rows (approximately)
+-- Dumping data for table prestige.site_buildings: ~4 rows (approximately)
 INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 'Building A', 'Building A', 1, '2022-09-13 01:02:06', '2022-09-26 21:52:00', NULL),
-	(2, 1, 'Building B', 'Building B', 1, '2022-09-13 01:02:13', '2022-09-26 21:51:55', NULL);
+	(1, 1, 'BLDG A', 'Building A', 1, '2022-10-04 18:49:19', '2022-10-04 18:49:19', NULL),
+	(2, 1, 'ATRIUM', 'ATRIUM', 1, '2022-10-04 18:51:51', '2022-10-04 18:51:51', NULL),
+	(3, 1, 'BLDG B', 'Building B', 1, '2022-10-04 18:52:11', '2022-10-04 18:52:11', NULL),
+	(4, 1, 'BLDG D', 'Building D', 1, '2022-10-04 18:52:24', '2022-10-04 18:52:24', NULL);
 
 -- Dumping structure for table prestige.site_building_levels
 CREATE TABLE IF NOT EXISTS `site_building_levels` (
@@ -650,15 +645,17 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   KEY `site_building_levels_site_building_id_foreign` (`site_building_id`),
   CONSTRAINT `site_building_levels_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~4 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~7 rows (approximately)
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 1, 'F1', 1, '2022-09-13 01:02:34', '2022-09-22 00:10:11', NULL),
-	(2, 1, 1, 'F2', 1, '2022-09-13 01:06:54', '2022-09-22 00:10:03', NULL),
-	(3, 1, 1, 'F3', 1, '2022-09-13 01:07:47', '2022-09-22 00:09:55', NULL),
-	(4, 1, 1, 'F4', 1, '2022-09-13 01:08:10', '2022-09-22 00:09:46', NULL),
-	(5, 1, 2, 'F5', 1, '2022-09-13 01:18:51', '2022-09-22 00:09:39', NULL);
+	(1, 1, 1, 'LG Floor', 1, '2022-10-04 18:52:52', '2022-10-04 19:31:20', NULL),
+	(2, 1, 1, 'UG Floor', 1, '2022-10-04 18:52:58', '2022-10-04 19:31:10', NULL),
+	(3, 1, 1, '2nd Floor', 1, '2022-10-04 18:53:04', '2022-10-04 19:31:44', NULL),
+	(4, 1, 1, '3rd Floor', 1, '2022-10-04 18:53:10', '2022-10-04 19:31:53', NULL),
+	(5, 1, 1, '4th Floor', 1, '2022-10-04 18:53:17', '2022-10-04 19:32:04', NULL),
+	(6, 1, 1, '5ft Floor', 1, '2022-10-04 18:53:23', '2022-10-04 19:32:26', NULL),
+	(7, 1, 1, 'L5', 1, '2022-10-04 18:53:28', '2022-10-04 19:32:31', '2022-10-04 19:32:31');
 
 -- Dumping structure for table prestige.site_maps
 CREATE TABLE IF NOT EXISTS `site_maps` (
@@ -666,7 +663,9 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   `site_id` bigint(20) unsigned NOT NULL,
   `site_building_id` bigint(20) unsigned NOT NULL,
   `site_building_level_id` bigint(20) unsigned NOT NULL,
+  `site_screen_id` bigint(20) unsigned NOT NULL,
   `map_file` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `map_preview` mediumtext COLLATE utf8mb4_unicode_ci,
   `descriptions` mediumtext COLLATE utf8mb4_unicode_ci,
   `image_size_width` int(11) NOT NULL DEFAULT '0',
   `image_size_height` int(11) NOT NULL DEFAULT '0',
@@ -677,7 +676,6 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   `default_zoom` decimal(10,2) NOT NULL,
   `default_zoom_desktop` decimal(10,2) NOT NULL,
   `default_zoom_mobile` decimal(10,2) NOT NULL,
-  `map_preview` mediumtext COLLATE utf8mb4_unicode_ci,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `is_default` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -687,58 +685,190 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   KEY `site_maps_site_id_foreign` (`site_id`),
   KEY `site_maps_site_building_id_foreign` (`site_building_id`),
   KEY `site_maps_site_building_level_id_foreign` (`site_building_level_id`),
+  KEY `site_maps_site_screen_id_foreign` (`site_screen_id`),
   CONSTRAINT `site_maps_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_maps_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
-  CONSTRAINT `site_maps_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
+  CONSTRAINT `site_maps_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`),
+  CONSTRAINT `site_maps_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_maps: ~5 rows (approximately)
-INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `map_file`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `map_preview`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 1, 1, 'uploads/map/files/cam2_smau_b1.png', 'F1', 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 'uploads/map/preview/cam2_smau_b1.png', 1, 1, '2022-09-13 01:02:34', '2022-09-30 21:40:42', NULL),
-	(2, 1, 1, 2, 'uploads/map/files/cam2_smau_4f.png', 'F2', 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 'uploads/map/preview/cam2_smau_4f.png', 1, 1, '2022-09-13 01:06:54', '2022-09-30 21:40:26', NULL),
-	(3, 1, 1, 3, 'uploads/map/files/cam1-9-16-18.png', 'F3', 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 'uploads/map/preview/cam1-9-16-18.png', 1, 1, '2022-09-13 01:07:47', '2022-09-30 21:40:12', NULL),
-	(4, 1, 1, 4, 'uploads/map/files/cam1_smau_2f.png', 'F4', 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 'uploads/map/preview/cam1_smau_2f.png', 1, 1, '2022-09-13 01:08:10', '2022-09-30 21:39:54', NULL),
-	(5, 1, 2, 5, 'uploads/map/files/cam4-5.png', 'F5', 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 'uploads/map/preview/cam4-5.png', 1, 1, '2022-09-13 01:18:51', '2022-09-29 23:30:18', NULL);
+-- Dumping data for table prestige.site_maps: ~3 rows (approximately)
+INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(3, 1, 1, 1, 6, 'uploads/map/files/cam1_smau_2f.png', 'uploads/map/preview/cam1_smau_2f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-05 19:42:45', '2022-10-06 00:50:09', NULL),
+	(4, 1, 1, 2, 6, 'uploads/map/files/cam1_smau_3f.png', 'uploads/map/preview/cam1_smau_3f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:16:41', '2022-10-06 00:50:26', NULL),
+	(5, 1, 1, 3, 6, 'uploads/map/files/cam6-ug.png', 'uploads/map/preview/cam6-ug.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:18:31', '2022-10-06 00:50:38', NULL);
 
 -- Dumping structure for table prestige.site_points
 CREATE TABLE IF NOT EXISTS `site_points` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
   `tenant_id` bigint(20) unsigned NOT NULL,
+  `point_type` bigint(20) unsigned NOT NULL,
   `point_x` decimal(10,2) NOT NULL,
   `point_y` decimal(10,2) NOT NULL,
   `point_z` decimal(10,2) NOT NULL,
   `rotation_z` decimal(10,2) NOT NULL,
   `text_size` decimal(10,2) NOT NULL,
-  `is_pwd` decimal(10,2) NOT NULL,
-  `point_type` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `text_width` decimal(10,2) NOT NULL,
+  `is_pwd` tinyint(4) NOT NULL DEFAULT '0',
   `point_label` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `wrap_at` tinyint(1) NOT NULL DEFAULT '1',
+  `wrap_at` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `site_points_site_map_id_foreign` (`site_map_id`),
   CONSTRAINT `site_points_site_map_id_foreign` FOREIGN KEY (`site_map_id`) REFERENCES `site_maps` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_points: ~0 rows (approximately)
+-- Dumping data for table prestige.site_points: ~113 rows (approximately)
+INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `point_x`, `point_y`, `point_z`, `rotation_z`, `text_size`, `text_width`, `is_pwd`, `point_label`, `wrap_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(19, 4, 0, 0, 1679.00, 901.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:16:40', '2022-10-06 21:04:11', NULL),
+	(23, 4, 0, 0, 1698.00, 1179.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:01', '2022-10-06 21:04:26', NULL),
+	(24, 4, 0, 0, 1704.00, 1343.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:02', '2022-10-07 01:12:48', NULL),
+	(25, 4, 0, 0, 1703.00, 1485.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:04', '2022-10-06 21:04:32', NULL),
+	(26, 4, 0, 0, 1699.00, 1566.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:06', '2022-10-06 21:04:35', NULL),
+	(27, 4, 0, 0, 1693.00, 1675.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:08', '2022-10-06 21:04:39', NULL),
+	(29, 4, 1, 0, 1487.00, 274.50, 0.00, 4.00, 1.00, 70.00, 0, NULL, 0, '2022-10-06 19:20:32', '2022-10-10 00:45:54', NULL),
+	(40, 4, 0, 0, 1571.00, 544.50, 0.00, 65.00, 1.00, 90.00, 0, 'this is a test', 0, '2022-10-06 19:22:57', '2022-10-10 00:33:24', NULL),
+	(45, 4, 0, 2, 1715.00, 747.50, 0.00, 3.00, 1.00, 0.00, 0, NULL, 0, '2022-10-06 19:40:58', '2022-10-10 00:38:06', NULL),
+	(46, 4, 0, 0, 1692.00, 995.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:41:00', '2022-10-06 19:41:09', NULL),
+	(47, 4, 0, 0, 1699.00, 1044.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:41:00', '2022-10-06 21:04:21', NULL),
+	(48, 4, 0, 0, 1701.00, 1093.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:41:01', '2022-10-06 21:04:24', NULL),
+	(50, 4, 0, 0, 1691.00, 1793.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:04:42', '2022-10-06 21:04:45', NULL),
+	(51, 4, 0, 0, 1690.00, 1875.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:04:46', '2022-10-06 21:04:48', NULL),
+	(52, 4, 0, 0, 1688.00, 1973.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:04:49', '2022-10-06 21:04:52', NULL),
+	(53, 4, 0, 0, 1168.00, 403.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:06', '2022-10-06 21:05:08', NULL),
+	(54, 4, 0, 0, 1250.00, 513.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:09', '2022-10-06 21:05:10', NULL),
+	(55, 4, 0, 0, 1331.00, 680.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:13', '2022-10-06 21:05:16', NULL),
+	(56, 4, 0, 0, 1369.00, 780.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:19', '2022-10-06 21:05:21', NULL),
+	(57, 4, 0, 0, 1398.00, 867.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:22', '2022-10-06 21:05:24', NULL),
+	(58, 4, 0, 0, 1423.00, 923.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:25', '2022-10-06 21:05:27', NULL),
+	(59, 4, 0, 0, 1446.00, 1022.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:29', '2022-10-06 21:05:31', NULL),
+	(60, 4, 0, 0, 1460.00, 1094.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:33', '2022-10-06 21:05:34', NULL),
+	(61, 4, 0, 0, 1462.00, 1142.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:36', '2022-10-06 21:05:38', NULL),
+	(62, 4, 0, 0, 1471.00, 1279.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:40', '2022-10-06 21:05:43', NULL),
+	(63, 4, 0, 0, 1475.00, 1403.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:44', '2022-10-06 21:05:46', NULL),
+	(64, 4, 0, 0, 1475.00, 1456.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:48', '2022-10-06 21:05:54', NULL),
+	(65, 4, 0, 0, 1472.00, 1511.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:50', '2022-10-06 21:05:57', NULL),
+	(66, 4, 0, 0, 1468.00, 1568.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:05:59', '2022-10-06 21:06:09', NULL),
+	(67, 4, 0, 0, 1461.00, 1622.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:06:00', '2022-10-06 21:06:11', NULL),
+	(68, 4, 0, 0, 1457.00, 1678.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:06:01', '2022-10-06 21:06:14', NULL),
+	(69, 4, 0, 0, 1447.00, 1737.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:06:02', '2022-10-06 21:06:17', NULL),
+	(70, 4, 0, 0, 1440.00, 1796.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:06:03', '2022-10-06 21:06:19', NULL),
+	(71, 4, 0, 0, 1432.00, 1876.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:06:04', '2022-10-06 21:06:22', NULL),
+	(72, 4, 0, 0, 1422.00, 1975.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:06:05', '2022-10-06 21:06:25', NULL),
+	(73, 4, 0, 0, 1396.00, 395.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:13', '2022-10-07 00:57:00', NULL),
+	(74, 4, 0, 0, 1298.00, 445.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:14', '2022-10-06 21:13:14', NULL),
+	(75, 4, 0, 0, 1399.00, 665.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:17', '2022-10-06 21:13:17', NULL),
+	(76, 4, 0, 0, 1506.00, 584.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:19', '2022-10-06 21:13:19', NULL),
+	(77, 4, 0, 0, 1447.00, 764.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:21', '2022-10-06 21:13:21', NULL),
+	(78, 4, 0, 0, 1563.00, 763.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:29', '2022-10-06 21:13:29', NULL),
+	(79, 4, 0, 0, 1616.00, 905.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:34', '2022-10-06 21:13:34', NULL),
+	(80, 4, 0, 0, 1460.00, 841.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:35', '2022-10-06 21:13:41', NULL),
+	(81, 4, 0, 0, 1479.00, 914.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:37', '2022-10-06 21:13:37', NULL),
+	(82, 4, 0, 0, 1508.00, 1019.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:45', '2022-10-06 21:13:45', NULL),
+	(83, 4, 0, 0, 1524.00, 1090.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:46', '2022-10-06 21:13:46', NULL),
+	(84, 4, 0, 0, 1529.00, 1146.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:47', '2022-10-06 21:13:47', NULL),
+	(85, 4, 0, 0, 1539.00, 1282.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:49', '2022-10-06 21:13:49', NULL),
+	(86, 4, 0, 0, 1634.00, 1002.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:52', '2022-10-06 21:13:52', NULL),
+	(87, 4, 0, 0, 1636.00, 1045.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:53', '2022-10-06 21:13:53', NULL),
+	(88, 4, 0, 0, 1641.00, 1097.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:55', '2022-10-07 01:12:44', NULL),
+	(89, 4, 0, 0, 1648.00, 1181.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:13:57', '2022-10-07 01:12:49', NULL),
+	(90, 4, 0, 0, 1647.00, 1345.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:01', '2022-10-07 01:12:49', NULL),
+	(91, 4, 0, 0, 1544.00, 1408.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:14', '2022-10-06 21:14:14', NULL),
+	(92, 4, 0, 0, 1541.00, 1463.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:15', '2022-10-06 21:14:15', NULL),
+	(93, 4, 0, 0, 1538.00, 1519.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:16', '2022-10-06 21:14:16', NULL),
+	(94, 4, 0, 0, 1533.00, 1574.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:18', '2022-10-06 21:14:18', NULL),
+	(95, 4, 0, 0, 1525.00, 1630.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:19', '2022-10-06 21:14:19', NULL),
+	(96, 4, 0, 0, 1516.00, 1689.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:20', '2022-10-06 21:14:20', NULL),
+	(97, 4, 0, 0, 1509.00, 1746.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:23', '2022-10-06 21:14:23', NULL),
+	(98, 4, 0, 0, 1500.00, 1795.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:24', '2022-10-06 21:14:24', NULL),
+	(99, 4, 0, 0, 1493.00, 1878.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:25', '2022-10-06 21:14:25', NULL),
+	(100, 4, 0, 0, 1495.00, 1974.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:27', '2022-10-06 21:14:27', NULL),
+	(101, 4, 0, 0, 1584.00, 1917.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:29', '2022-10-06 21:14:29', NULL),
+	(102, 4, 0, 0, 1618.00, 1976.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:31', '2022-10-06 21:14:31', NULL),
+	(103, 4, 0, 0, 1625.00, 1875.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:33', '2022-10-06 21:14:33', NULL),
+	(104, 4, 0, 0, 1625.00, 1801.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:35', '2022-10-06 21:14:35', NULL),
+	(105, 4, 0, 0, 1629.00, 1678.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:37', '2022-10-06 21:14:37', NULL),
+	(106, 4, 0, 0, 1636.00, 1568.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:40', '2022-10-06 21:14:40', NULL),
+	(107, 4, 0, 0, 1644.00, 1483.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:14:42', '2022-10-06 21:14:42', NULL),
+	(108, 3, 0, 0, 1452.00, 303.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:35', '2022-10-06 21:48:35', NULL),
+	(109, 3, 0, 0, 1514.00, 417.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:38', '2022-10-06 21:48:38', NULL),
+	(110, 3, 0, 0, 1588.00, 578.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:42', '2022-10-06 21:48:42', NULL),
+	(111, 3, 0, 0, 1649.00, 739.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:45', '2022-10-06 21:48:45', NULL),
+	(112, 3, 0, 0, 1670.00, 808.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:46', '2022-10-06 21:48:46', NULL),
+	(113, 3, 0, 0, 1684.00, 863.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:47', '2022-10-06 21:48:47', NULL),
+	(114, 3, 0, 0, 1702.00, 945.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:48', '2022-10-06 21:48:48', NULL),
+	(115, 3, 0, 0, 1708.00, 1027.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:50', '2022-10-06 21:48:50', NULL),
+	(116, 3, 0, 0, 1711.00, 1099.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:52', '2022-10-06 21:48:52', NULL),
+	(117, 3, 0, 0, 1715.00, 1147.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:53', '2022-10-06 21:48:53', NULL),
+	(118, 3, 0, 0, 1705.00, 1210.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:55', '2022-10-06 21:48:55', NULL),
+	(119, 3, 0, 0, 1711.00, 1304.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:48:57', '2022-10-06 21:48:57', NULL),
+	(120, 3, 0, 0, 1719.00, 1359.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:00', '2022-10-06 21:49:00', NULL),
+	(121, 3, 0, 0, 1719.00, 1404.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:01', '2022-10-06 21:49:05', NULL),
+	(122, 3, 0, 0, 1719.00, 1462.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:13', '2022-10-06 21:49:13', NULL),
+	(123, 3, 0, 0, 1718.00, 1520.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:15', '2022-10-06 21:49:15', NULL),
+	(124, 3, 0, 0, 1717.00, 1571.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:17', '2022-10-06 21:49:17', NULL),
+	(125, 3, 0, 0, 1712.00, 1662.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:19', '2022-10-06 21:49:19', NULL),
+	(126, 3, 0, 0, 1712.00, 1789.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:21', '2022-10-06 21:49:21', NULL),
+	(127, 3, 0, 0, 1713.00, 1980.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:24', '2022-10-06 21:49:24', NULL),
+	(128, 3, 0, 0, 1602.00, 1973.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:25', '2022-10-06 21:49:25', NULL),
+	(129, 3, 0, 0, 1497.00, 1973.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:26', '2022-10-06 21:49:26', NULL),
+	(130, 3, 0, 0, 1586.00, 1903.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:28', '2022-10-06 21:49:28', NULL),
+	(131, 3, 0, 0, 1624.00, 1796.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:30', '2022-10-06 21:49:30', NULL),
+	(132, 3, 0, 0, 1625.00, 1655.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:34', '2022-10-06 21:49:34', NULL),
+	(133, 3, 0, 0, 1635.00, 1571.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:36', '2022-10-06 21:49:36', NULL),
+	(134, 3, 0, 0, 1640.00, 1512.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:37', '2022-10-06 21:49:37', NULL),
+	(135, 3, 0, 0, 1643.00, 1458.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:39', '2022-10-06 21:49:39', NULL),
+	(136, 3, 0, 0, 1646.00, 1406.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:40', '2022-10-06 21:49:40', NULL),
+	(137, 3, 0, 0, 1650.00, 1354.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:43', '2022-10-06 21:49:43', NULL),
+	(138, 3, 0, 0, 1652.00, 1300.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:44', '2022-10-06 21:49:44', NULL),
+	(139, 3, 0, 0, 1649.00, 1212.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:46', '2022-10-06 21:49:46', NULL),
+	(140, 3, 0, 0, 1645.00, 1151.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:47', '2022-10-06 21:49:47', NULL),
+	(141, 3, 0, 0, 1643.00, 1096.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:49', '2022-10-06 21:49:49', NULL),
+	(142, 3, 0, 0, 1638.00, 1033.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:52', '2022-10-06 21:49:52', NULL),
+	(143, 3, 0, 0, 1623.00, 946.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:53', '2022-10-06 21:49:53', NULL),
+	(144, 3, 0, 0, 1605.00, 869.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:55', '2022-10-06 21:49:55', NULL),
+	(145, 3, 0, 0, 1595.00, 817.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:49:58', '2022-10-06 21:49:58', NULL),
+	(146, 3, 0, 0, 1563.00, 775.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:00', '2022-10-06 21:50:00', NULL),
+	(147, 3, 0, 0, 1587.00, 762.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:02', '2022-10-06 21:50:02', NULL),
+	(148, 3, 0, 0, 1530.00, 613.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:05', '2022-10-06 21:50:05', NULL),
+	(149, 3, 0, 0, 1455.00, 458.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:07', '2022-10-06 21:50:07', NULL),
+	(150, 3, 0, 0, 1389.00, 346.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:09', '2022-10-06 21:50:09', NULL);
 
 -- Dumping structure for table prestige.site_point_links
 CREATE TABLE IF NOT EXISTS `site_point_links` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
-  `point_a` decimal(10,2) NOT NULL,
-  `point_b` decimal(10,2) NOT NULL,
+  `point_a` bigint(20) NOT NULL DEFAULT '0',
+  `point_b` bigint(20) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `site_point_links_site_map_id_foreign` (`site_map_id`),
   CONSTRAINT `site_point_links_site_map_id_foreign` FOREIGN KEY (`site_map_id`) REFERENCES `site_maps` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_point_links: ~0 rows (approximately)
+-- Dumping data for table prestige.site_point_links: ~16 rows (approximately)
+INSERT INTO `site_point_links` (`id`, `site_map_id`, `point_a`, `point_b`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(70, 4, 29, 73, '2022-10-07 17:26:26', '2022-10-07 17:26:26', NULL),
+	(71, 4, 73, 76, '2022-10-07 17:54:42', '2022-10-07 17:54:42', NULL),
+	(72, 4, 76, 78, '2022-10-07 17:54:44', '2022-10-07 17:54:44', NULL),
+	(73, 4, 78, 79, '2022-10-07 17:54:45', '2022-10-07 17:54:45', NULL),
+	(74, 4, 79, 86, '2022-10-07 17:54:46', '2022-10-07 17:54:46', NULL),
+	(75, 4, 86, 87, '2022-10-07 17:54:47', '2022-10-07 17:54:47', NULL),
+	(76, 4, 87, 88, '2022-10-07 17:54:49', '2022-10-07 17:54:49', NULL),
+	(77, 4, 88, 89, '2022-10-07 17:54:49', '2022-10-07 17:54:49', NULL),
+	(78, 4, 89, 90, '2022-10-07 17:54:51', '2022-10-07 17:54:51', NULL),
+	(79, 4, 90, 107, '2022-10-07 17:54:52', '2022-10-07 17:54:52', NULL),
+	(80, 4, 107, 106, '2022-10-07 17:54:54', '2022-10-07 17:54:54', NULL),
+	(81, 4, 106, 105, '2022-10-07 17:54:55', '2022-10-07 17:54:55', NULL),
+	(82, 4, 105, 104, '2022-10-07 17:54:57', '2022-10-07 17:54:57', NULL),
+	(83, 4, 104, 103, '2022-10-07 17:54:58', '2022-10-07 17:54:58', NULL),
+	(84, 4, 103, 101, '2022-10-07 17:54:59', '2022-10-07 17:54:59', NULL),
+	(85, 4, 101, 102, '2022-10-07 17:54:59', '2022-10-07 17:54:59', NULL);
 
 -- Dumping structure for table prestige.site_screens
 CREATE TABLE IF NOT EXISTS `site_screens` (
@@ -760,13 +890,13 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_screens_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screens: ~2 rows (approximately)
+-- Dumping data for table prestige.site_screens: ~3 rows (approximately)
 INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 1, 1, 456987, 'Directory', 'Jollibee', 1, '2022-09-13 01:11:05', '2022-09-13 22:28:24', NULL),
-	(2, 1, 1, 2, 123654789, 'Directory', 'Chatime', 1, '2022-09-13 01:17:17', '2022-09-13 01:17:17', NULL),
-	(3, 1, 2, 5, 987654, 'Directory', 'Coco', 1, '2022-09-13 01:19:07', '2022-09-13 22:13:59', NULL);
+	(4, 1, 1, 1, 0, 'Directory', 'Food Court', 1, '2022-10-04 19:09:04', '2022-10-04 19:09:04', NULL),
+	(5, 1, 1, 2, 0, 'Directory', 'National Book Store', 1, '2022-10-04 19:30:15', '2022-10-04 19:30:15', NULL),
+	(6, 1, 1, 2, 0, 'Directory', 'Kenny Rogers', 1, '2022-10-04 19:33:31', '2022-10-04 19:33:31', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
 CREATE TABLE IF NOT EXISTS `site_screen_uptime` (
@@ -804,13 +934,12 @@ CREATE TABLE IF NOT EXISTS `site_tenants` (
   CONSTRAINT `site_tenants_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_tenants_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
   CONSTRAINT `site_tenants_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_tenants: ~2 rows (approximately)
 INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `site_building_level_id`, `view_count`, `like_count`, `active`, `is_subscriber`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(7, 2, 1, 1, 1, 0, 0, 1, 1, '2022-09-14 01:10:59', '2022-09-14 18:09:07', NULL),
-	(8, 2, 1, 1, 3, 0, 0, 1, 1, '2022-09-14 01:11:06', '2022-09-14 18:03:11', NULL),
-	(9, 1, 1, 2, 5, 0, 0, 1, 1, '2022-09-14 18:44:16', '2022-09-14 18:44:16', NULL);
+	(1, 1, 1, 1, 2, 0, 0, 1, 0, '2022-10-04 18:59:56', '2022-10-07 23:11:52', NULL),
+	(2, 2, 1, 1, 2, 0, 0, 1, 0, '2022-10-04 19:00:08', '2022-10-07 23:12:01', NULL);
 
 -- Dumping structure for table prestige.supplementals
 CREATE TABLE IF NOT EXISTS `supplementals` (
