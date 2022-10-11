@@ -75,7 +75,11 @@
                           <label class="ml-3 mouseaction" title="Press Key Alt + 6">
                             <i class="fa fa-link" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseLink2" value="continous_link" class="d-none">Continous Link
-                          </label>                          
+                          </label>    
+                          <label class="ml-3 mouseaction" title="Press Key Alt + 7">
+                            <i class="fa fa-minus" aria-hidden="true"></i>
+                            <input type="radio" name="action" id="deleteLink" value="delete_link" class="d-none">Delete Link
+                          </label>                       
                         </div>
                       </div>
                     </div>
@@ -365,6 +369,11 @@
       $("#mouseLink2").parent().addClass('mouseaction-selected');
     }
 
+    if (e.altKey && e.key === '7') {
+      $("#deleteLink").prop("checked", true);
+      $("#deleteLink").parent().addClass('mouseaction-selected');
+    }
+
     action = $('input[name="action"]:checked').val();
 
   }
@@ -558,6 +567,22 @@
     } else {
       $('#line_'+line).offset({top: pointA.top + pointAcenterY, left: pointA.left + pointAcenterX});
     }
+
+    $('#line_'+line).click(function() {
+      if(action == 'delete_link') {
+        delete_line(line);
+      }
+    }).draggable();
+
+  }
+
+  function delete_line(id) {
+    $.get('/admin/site/map/delete-line/'+id, function( data ) {
+      if(data.status_code == 200) {
+        $('#line_'+id).remove();
+        get_map_points();
+      }
+    }, "json");
   }
 
 </script>

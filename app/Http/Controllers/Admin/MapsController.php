@@ -313,11 +313,11 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         }
     }
 
-    public function deletePoint(Request $request)
+    public function deletePoint($id)
     {
         try
     	{
-            $site_point = SitePoint::find($request->id);
+            $site_point = SitePoint::find($id);
             $site_point->delete();
 
             return $this->response($site_point, 'Successfully Deleted!', 200);
@@ -391,6 +391,25 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point->update($data);
 
             return $this->response($site_point, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function deleteLine($id)
+    {
+        try
+    	{
+            $site_point_link = SitePointLink::find($id);
+            $site_point_link->delete();
+
+            return $this->response($site_point_link, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
         {
