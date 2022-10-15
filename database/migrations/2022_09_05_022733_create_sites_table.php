@@ -22,6 +22,7 @@ class CreateSitesTable extends Migration
             $table->mediumText('site_logo')->nullable();      
             $table->mediumText('site_banner')->nullable();      
             $table->boolean('active')->default(true);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
             $table->softDeletes()->index();
         });
@@ -79,6 +80,7 @@ class CreateSitesTable extends Migration
             $table->enum('screen_type', ['Directory', 'LED', 'LFD', 'LED funnel']);
             $table->string('name');
             $table->boolean('active')->default(true);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

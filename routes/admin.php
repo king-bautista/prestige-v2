@@ -167,6 +167,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/update', 'Admin\SiteController@update')->name('admin.site.update');
     Route::get('/admin/site/delete/{id}', 'Admin\SiteController@delete')->where('id', '[0-9]+')->name('admin.site.delete');
     Route::get('/admin/site/get-all', 'Admin\SiteController@getAll')->where('id', '[0-9]+')->name('admin.site.get-all');
+    Route::get('/admin/site/set-default/{id}', 'Admin\SiteController@setDefault')->where('id', '[0-9]+')->name('admin.site.set-default');
 
     /*
     |--------------------------------------------------------------------------
@@ -204,6 +205,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/site/screen/update', 'Admin\ScreensController@update')->name('admin.site.screen.update');
     Route::get('/admin/site/screen/delete/{id}', 'Admin\ScreensController@delete')->where('id', '[0-9]+')->name('admin.site.screen.delete');
     Route::get('/admin/site/screen/get-screens/{id}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens');
+    Route::get('/admin/site/screen/set-default/{id}', 'Admin\ScreensController@setDefault')->where('id', '[0-9]+')->name('admin.site.screen.set-default');
 
     /*
     |--------------------------------------------------------------------------

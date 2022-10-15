@@ -20,6 +20,7 @@ class Site extends Model
         'site_logo',
         'site_banner',
         'active',
+        'is_default',
     ];
 
     /**

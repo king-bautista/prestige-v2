@@ -1,0 +1,152 @@
+@font-face {
+    font-family: "Open Sans";
+    src: url("../assets/fonts/Open_Sans/OpenSans-SemiBold.ttf")
+}
+
+body,html {
+    height: 100%;
+    background-color: #f9f9f9;
+    color: #888888;
+    font-family: 'Henry Sans Regular';
+    font-size: 1em; 
+    scroll-behavior: smooth;
+    overflow: hidden;
+}
+
+body{
+    background-image: url('../assets/images/SMMG-BG.jpg');
+}
+
+.banner-ads {
+    height: 1080px;
+    display: block;
+    z-index: 1000;
+}
+
+.logo-holder {
+    height: 60px;
+    margin: 20px 20px 0 0;
+}
+
+.main-content-holder {
+    height: 790px;
+    border: solid 1px;
+}
+
+.button-holder {
+    width: 225px;
+    height: 71px;
+    padding: 0px;
+    display: block;
+    z-index: 999;
+    border: solid;
+}
+
+.h-button {
+    position: relative;
+    display: inline-flex;
+    width: 190px;
+    height: 80px;
+}
+
+.button-text-align {
+    font-family: 'Henry Sans Regular';
+    position: absolute;
+    text-align: center;
+    width: 94px;
+    top: 18px;
+    left: 68px;
+    font-size: 22px;
+}
+
+.widget-button {
+    background-size: 190px auto;
+    background-repeat: no-repeat;
+    font-family: 'Henry Sans Medium';
+}
+
+.widget-button:hover {
+    text-transform: uppercase;
+}
+
+.widget-button.active {
+    text-transform: uppercase;
+}
+
+.home-button {
+    background-image: url('../assets/images/Home.png');
+    color: black;
+}
+
+.home-button:hover {
+    background-image: url('../assets/images/Home-active.png') !important;
+}
+
+.home-button.active {
+    background-image: url('../assets/images/Home-active.png') !important;
+}
+
+.search-button {
+    background-image: url('../assets/images/Search.png');
+    color: black;
+}
+
+.search-button:hover {
+    background-image: url('../assets/images/Search-active.png') !important;
+}
+
+.search-button.active {
+    background-image: url('../assets/images/Search-active.png') !important;
+}
+
+.map-button {
+    background-image: url('../assets/images/Map.png');
+    color: black;
+}
+
+.map-button:hover {
+    background-image: url('../assets/images/Map-active.png') !important;
+}
+
+.map-button.active {
+    background-image: url('../assets/images/Map-active.png') !important;
+}
+
+.promos-button {
+    background-image: url('../assets/images/Promos.png');
+    color: black;
+}
+
+.promos-button:hover {
+    background-image: url('../assets/images/Promos-active.png') !important;
+}
+
+.promos-button.active {
+    background-image: url('../assets/images/Promos-active.png') !important;
+}
+
+.cinema-button {
+    background-image: url('../assets/images/Cinema.png');
+    color: black;
+}
+
+.cinema-button:hover {
+    background-image: url('../assets/images/Cinema-active.png') !important;
+}
+
+.cinema-button.active {
+    background-image: url('../assets/images/Cinema-active.png') !important;
+}
+
+.event-button {
+    background-image: url('../assets/images/Cinemav4.png');
+    color: black;
+}
+
+.event-button:hover {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+}
+
+.event-button.active {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+}

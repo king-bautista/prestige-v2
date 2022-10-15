@@ -20,7 +20,6 @@ CREATE DATABASE IF NOT EXISTS `prestige` /*!40100 DEFAULT CHARACTER SET latin1 *
 USE `prestige`;
 
 -- Dumping structure for table prestige.admins
-DROP TABLE IF EXISTS `admins`;
 CREATE TABLE IF NOT EXISTS `admins` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -45,12 +44,12 @@ CREATE TABLE IF NOT EXISTS `admins` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.admins: ~0 rows (approximately)
+DELETE FROM `admins`;
 INSERT INTO `admins` (`id`, `full_name`, `email`, `email_verified_at`, `password`, `api_token`, `salt`, `login_attempt`, `is_blocked`, `active`, `activation_token`, `created_by`, `updated_by`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 'Bautista, King', 'superadmin@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2022-08-10 18:52:17', '2022-08-10 21:24:30', NULL),
 	(4, 'Admin, Admin', 'admin@gmail.com', NULL, '$2y$10$QEY0OLI9HdHbfMsc9igWFuvg17iBIBK9hZ6RzyPzz29SV8Cp77RqK', NULL, 'aTVOhYWuUpIxmrn4cv1G', 0, 0, 1, NULL, 0, 0, NULL, '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
 
 -- Dumping structure for table prestige.admins_meta
-DROP TABLE IF EXISTS `admins_meta`;
 CREATE TABLE IF NOT EXISTS `admins_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `admin_id` bigint(20) unsigned DEFAULT NULL,
@@ -66,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `admins_meta` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.admins_meta: ~4 rows (approximately)
+DELETE FROM `admins_meta`;
 INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(5, 3, 'first_name', 'King', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
@@ -73,7 +73,6 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
 
 -- Dumping structure for table prestige.admin_roles
-DROP TABLE IF EXISTS `admin_roles`;
 CREATE TABLE IF NOT EXISTS `admin_roles` (
   `admin_id` bigint(20) unsigned NOT NULL,
   `role_id` bigint(20) unsigned NOT NULL,
@@ -84,13 +83,13 @@ CREATE TABLE IF NOT EXISTS `admin_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.admin_roles: ~2 rows (approximately)
+DELETE FROM `admin_roles`;
 INSERT INTO `admin_roles` (`admin_id`, `role_id`) VALUES
 	(3, 1),
 	(3, 2),
 	(4, 2);
 
 -- Dumping structure for table prestige.amenities
-DROP TABLE IF EXISTS `amenities`;
 CREATE TABLE IF NOT EXISTS `amenities` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -103,6 +102,7 @@ CREATE TABLE IF NOT EXISTS `amenities` (
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.amenities: ~21 rows (approximately)
+DELETE FROM `amenities`;
 INSERT INTO `amenities` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Activity Center', 1, '2022-08-18 23:21:01', '2022-08-18 23:21:01', NULL),
 	(2, 'ATM', 1, '2022-08-18 23:21:57', '2022-08-18 23:21:57', NULL),
@@ -127,7 +127,6 @@ INSERT INTO `amenities` (`id`, `name`, `active`, `created_at`, `updated_at`, `de
 	(21, 'Transport Terminal', 1, '2022-08-18 23:23:32', '2022-08-18 23:26:29', NULL);
 
 -- Dumping structure for table prestige.brands
-DROP TABLE IF EXISTS `brands`;
 CREATE TABLE IF NOT EXISTS `brands` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned DEFAULT NULL,
@@ -145,12 +144,12 @@ CREATE TABLE IF NOT EXISTS `brands` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brands: ~2 rows (approximately)
+DELETE FROM `brands`;
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 18, 'Batchoy House', 'Your bowl of happiness', 'uploads/media/brand/2-Hands-Massage.jpg', 1, '2022-08-25 18:59:55', '2022-08-30 02:24:11', NULL),
 	(2, 17, 'Max', 'this is a test', 'uploads/media/brand/7f000001-94b7-f905.jpg', 1, '2022-08-30 01:08:54', '2022-08-30 01:08:54', NULL);
 
 -- Dumping structure for table prestige.brand_products_promos
-DROP TABLE IF EXISTS `brand_products_promos`;
 CREATE TABLE IF NOT EXISTS `brand_products_promos` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `brand_id` bigint(20) unsigned DEFAULT NULL,
@@ -173,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `brand_products_promos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brand_products_promos: ~4 rows (approximately)
+DELETE FROM `brand_products_promos`;
 INSERT INTO `brand_products_promos` (`id`, `brand_id`, `name`, `descriptions`, `type`, `thumbnail`, `image_url`, `date_from`, `date_to`, `sequence`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'Product 1', 'this is a test', 'product', 'uploads/media/brand/products/3D2GO.jpg', 'uploads/media/brand/products/7f000001-8db6-ce0f.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-08-30 00:17:43', '2022-08-30 01:02:06', NULL),
 	(2, 1, 'Product 2', 'this is a test', 'product', 'uploads/media/brand/products/7f000001-8c12-101b.jpg', 'uploads/media/brand/products/7f000001-8fe7-e03f.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-08-30 01:03:57', '2022-08-30 01:04:19', NULL),
@@ -180,7 +180,6 @@ INSERT INTO `brand_products_promos` (`id`, `brand_id`, `name`, `descriptions`, `
 	(4, 2, 'ADmin test', 'this is atest test', 'product', 'uploads/media/brand/products/70c97a81-b63f-a156.jpg', 'uploads/media/brand/products/70c97a81-b6f7-1b9c.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-08-30 02:11:10', '2022-08-30 02:25:39', NULL);
 
 -- Dumping structure for table prestige.brand_supplementals
-DROP TABLE IF EXISTS `brand_supplementals`;
 CREATE TABLE IF NOT EXISTS `brand_supplementals` (
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `supplemental_id` bigint(20) unsigned DEFAULT NULL,
@@ -191,6 +190,7 @@ CREATE TABLE IF NOT EXISTS `brand_supplementals` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brand_supplementals: ~6 rows (approximately)
+DELETE FROM `brand_supplementals`;
 INSERT INTO `brand_supplementals` (`brand_id`, `supplemental_id`) VALUES
 	(1, 3),
 	(1, 4),
@@ -200,7 +200,6 @@ INSERT INTO `brand_supplementals` (`brand_id`, `supplemental_id`) VALUES
 	(2, 9);
 
 -- Dumping structure for table prestige.brand_tags
-DROP TABLE IF EXISTS `brand_tags`;
 CREATE TABLE IF NOT EXISTS `brand_tags` (
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `tag_id` bigint(20) unsigned DEFAULT NULL,
@@ -211,6 +210,7 @@ CREATE TABLE IF NOT EXISTS `brand_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brand_tags: ~5 rows (approximately)
+DELETE FROM `brand_tags`;
 INSERT INTO `brand_tags` (`brand_id`, `tag_id`) VALUES
 	(1, 3),
 	(1, 44),
@@ -219,7 +219,6 @@ INSERT INTO `brand_tags` (`brand_id`, `tag_id`) VALUES
 	(2, 349);
 
 -- Dumping structure for table prestige.categories
-DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` bigint(20) unsigned DEFAULT NULL,
@@ -238,6 +237,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.categories: ~36 rows (approximately)
+DELETE FROM `categories`;
 INSERT INTO `categories` (`id`, `parent_id`, `name`, `descriptions`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 0, 'Fashion', 'Fashion', 'uploads/media/category/Fashion.png', NULL, NULL, NULL, 1, '2022-08-17 22:58:17', '2022-08-17 23:03:05', NULL),
 	(2, 0, 'Food', 'Food', 'uploads/media/category/Food.png', NULL, NULL, NULL, 1, '2022-08-17 22:58:23', '2022-08-17 23:03:11', NULL),
@@ -277,7 +277,6 @@ INSERT INTO `categories` (`id`, `parent_id`, `name`, `descriptions`, `kiosk_imag
 	(36, 5, 'Sporting Goods', 'Sporting Goods', 'uploads/media/category/Sporting-Goods.png', 'uploads/media/category/strips/Sporting-Goods.png', NULL, NULL, 1, '2022-08-17 23:56:41', '2022-09-15 23:44:44', NULL);
 
 -- Dumping structure for table prestige.category_labels
-DROP TABLE IF EXISTS `category_labels`;
 CREATE TABLE IF NOT EXISTS `category_labels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned NOT NULL,
@@ -294,13 +293,13 @@ CREATE TABLE IF NOT EXISTS `category_labels` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.category_labels: ~2 rows (approximately)
+DELETE FROM `category_labels`;
 INSERT INTO `category_labels` (`id`, `category_id`, `site_id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(5, 36, 1, 'Sporting test', '2022-09-16 00:56:03', '2022-09-18 18:47:37', '2022-09-18 18:47:37'),
 	(6, 36, 2, 'Sporting Item', '2022-09-16 00:57:01', '2022-09-16 00:57:01', NULL),
 	(7, 36, 1, 'Active Lifestyle', '2022-09-18 18:47:57', '2022-09-18 18:47:57', NULL);
 
 -- Dumping structure for table prestige.classifications
-DROP TABLE IF EXISTS `classifications`;
 CREATE TABLE IF NOT EXISTS `classifications` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -313,6 +312,7 @@ CREATE TABLE IF NOT EXISTS `classifications` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.classifications: ~6 rows (approximately)
+DELETE FROM `classifications`;
 INSERT INTO `classifications` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Site - Head Office', 1, '2022-08-18 22:41:16', '2022-08-18 22:42:31', NULL),
 	(2, 'Site - Local', 1, '2022-08-18 22:42:43', '2022-08-18 22:42:43', NULL),
@@ -322,7 +322,6 @@ INSERT INTO `classifications` (`id`, `name`, `active`, `created_at`, `updated_at
 	(6, 'Advertiser Agency', 1, '2022-08-18 22:43:14', '2022-08-18 22:43:14', NULL);
 
 -- Dumping structure for table prestige.failed_jobs
-DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -336,11 +335,11 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.failed_jobs: 0 rows
+DELETE FROM `failed_jobs`;
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.migrations
-DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -349,6 +348,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 ) ENGINE=MyISAM AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.migrations: 18 rows
+DELETE FROM `migrations`;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(86, '2014_10_12_000000_create_users_table', 1),
@@ -372,7 +372,6 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.modules
-DROP TABLE IF EXISTS `modules`;
 CREATE TABLE IF NOT EXISTS `modules` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` bigint(20) unsigned DEFAULT NULL,
@@ -389,6 +388,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.modules: ~31 rows (approximately)
+DELETE FROM `modules`;
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin Management', '#', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2022-08-08 01:26:43', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -423,7 +423,6 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`
 	(32, 6, 'Tags', '/admin/tags', 'nav-icon fa fa-tags', 1, '2022-08-22 17:03:10', '2022-08-22 17:03:22', NULL);
 
 -- Dumping structure for table prestige.password_resets
-DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -432,11 +431,11 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.password_resets: 0 rows
+DELETE FROM `password_resets`;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.permissions
-DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` bigint(20) unsigned NOT NULL,
@@ -457,6 +456,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
 ) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.permissions: ~58 rows (approximately)
+DELETE FROM `permissions`;
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -520,7 +520,6 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2022-08-22 17:03:54', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
-DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -537,11 +536,11 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.personal_access_tokens: 0 rows
+DELETE FROM `personal_access_tokens`;
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.roles
-DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -556,12 +555,12 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.roles: ~2 rows (approximately)
+DELETE FROM `roles`;
 INSERT INTO `roles` (`id`, `name`, `description`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Super Admin', 'Mga Alien lang ang may access dito', 1, '2022-08-08 19:13:33', '2022-08-08 19:13:33', NULL),
 	(2, 'Admin', 'Corporate access', 1, '2022-08-08 19:13:57', '2022-08-08 19:13:57', NULL);
 
 -- Dumping structure for table prestige.sites
-DROP TABLE IF EXISTS `sites`;
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -569,19 +568,21 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `site_logo` mediumtext COLLATE utf8mb4_unicode_ci,
   `site_banner` mediumtext COLLATE utf8mb4_unicode_ci,
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sites_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites: ~1 rows (approximately)
-INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'SM Mega Mall', 'SM Mega Mall', 'uploads/media/sites/logos/70cc00f9-51c4-fe37.png', 'uploads/media/sites/banners/about-us-smrx.jpg', 1, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL);
+-- Dumping data for table prestige.sites: ~2 rows (approximately)
+DELETE FROM `sites`;
+INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'SM Mega Mall', 'SM Mega Mall', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smrx.jpg', 1, 1, '2022-10-04 18:48:12', '2022-10-13 19:12:16', NULL),
+	(2, 'SM North Edsa', 'this is a test', '', '', 1, 0, '2022-10-12 18:27:02', '2022-10-12 19:06:25', NULL);
 
 -- Dumping structure for table prestige.sites_meta
-DROP TABLE IF EXISTS `sites_meta`;
 CREATE TABLE IF NOT EXISTS `sites_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -594,19 +595,25 @@ CREATE TABLE IF NOT EXISTS `sites_meta` (
   KEY `sites_meta_site_id_foreign` (`site_id`),
   KEY `sites_meta_meta_key_index` (`meta_key`),
   CONSTRAINT `sites_meta_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites_meta: ~6 rows (approximately)
+-- Dumping data for table prestige.sites_meta: ~12 rows (approximately)
+DELETE FROM `sites_meta`;
 INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 'facebook', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
-	(2, 1, 'instagram', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
-	(3, 1, 'twitter', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
-	(4, 1, 'time_from', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
-	(5, 1, 'time_to', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL),
-	(6, 1, 'website', NULL, '2022-10-04 18:48:12', '2022-10-04 18:48:12', NULL);
+	(1, 1, 'facebook', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
+	(2, 1, 'instagram', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
+	(3, 1, 'twitter', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
+	(4, 1, 'time_from', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
+	(5, 1, 'time_to', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
+	(6, 1, 'website', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
+	(7, 2, 'facebook', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
+	(8, 2, 'instagram', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
+	(9, 2, 'twitter', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
+	(10, 2, 'time_from', 'null', '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
+	(11, 2, 'time_to', 'null', '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
+	(12, 2, 'website', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL);
 
 -- Dumping structure for table prestige.site_ads
-DROP TABLE IF EXISTS `site_ads`;
 CREATE TABLE IF NOT EXISTS `site_ads` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -625,12 +632,12 @@ CREATE TABLE IF NOT EXISTS `site_ads` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_ads: ~2 rows (approximately)
+DELETE FROM `site_ads`;
 INSERT INTO `site_ads` (`id`, `name`, `ad_type`, `file_path`, `file_type`, `display_order`, `display_duration`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(2, 'Admin test', 'Online', 'uploads/media/advertisements/Online/7f000001-8fd3-f779.jpg', 'jpg', 0, 5, '2022-09-01', '2022-09-30', 1, '2022-09-19 19:35:52', '2022-09-19 23:22:36', NULL),
 	(3, 'Sample Banner', 'Banners', 'uploads/media/advertisements/banners/7f000001-2d20-097e.jpg', 'jpg', 0, 5, '2022-09-01', '2022-09-30', 1, '2022-09-20 00:06:07', '2022-09-20 00:06:07', NULL);
 
 -- Dumping structure for table prestige.site_buildings
-DROP TABLE IF EXISTS `site_buildings`;
 CREATE TABLE IF NOT EXISTS `site_buildings` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -646,6 +653,7 @@ CREATE TABLE IF NOT EXISTS `site_buildings` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_buildings: ~4 rows (approximately)
+DELETE FROM `site_buildings`;
 INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'BLDG A', 'Building A', 1, '2022-10-04 18:49:19', '2022-10-04 18:49:19', NULL),
 	(2, 1, 'ATRIUM', 'ATRIUM', 1, '2022-10-04 18:51:51', '2022-10-04 18:51:51', NULL),
@@ -653,7 +661,6 @@ INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`,
 	(4, 1, 'BLDG D', 'Building D', 1, '2022-10-04 18:52:24', '2022-10-04 18:52:24', NULL);
 
 -- Dumping structure for table prestige.site_building_levels
-DROP TABLE IF EXISTS `site_building_levels`;
 CREATE TABLE IF NOT EXISTS `site_building_levels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -670,7 +677,8 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~7 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~6 rows (approximately)
+DELETE FROM `site_building_levels`;
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LG Floor', 1, '2022-10-04 18:52:52', '2022-10-04 19:31:20', NULL),
 	(2, 1, 1, 'UG Floor', 1, '2022-10-04 18:52:58', '2022-10-04 19:31:10', NULL),
@@ -681,7 +689,6 @@ INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`,
 	(7, 1, 1, 'L5', 1, '2022-10-04 18:53:28', '2022-10-04 19:32:31', '2022-10-04 19:32:31');
 
 -- Dumping structure for table prestige.site_maps
-DROP TABLE IF EXISTS `site_maps`;
 CREATE TABLE IF NOT EXISTS `site_maps` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -716,14 +723,14 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   CONSTRAINT `site_maps_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_maps: ~3 rows (approximately)
+-- Dumping data for table prestige.site_maps: ~2 rows (approximately)
+DELETE FROM `site_maps`;
 INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 1, 1, 1, 6, 'uploads/map/files/cam1_smau_2f.png', 'uploads/map/preview/cam1_smau_2f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-05 19:42:45', '2022-10-06 00:50:09', NULL),
 	(4, 1, 1, 2, 6, 'uploads/map/files/cam1_smau_3f.png', 'uploads/map/preview/cam1_smau_3f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:16:41', '2022-10-06 00:50:26', NULL),
 	(5, 1, 1, 3, 6, 'uploads/map/files/cam6-ug.png', 'uploads/map/preview/cam6-ug.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:18:31', '2022-10-06 00:50:38', NULL);
 
 -- Dumping structure for table prestige.site_points
-DROP TABLE IF EXISTS `site_points`;
 CREATE TABLE IF NOT EXISTS `site_points` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
@@ -744,9 +751,10 @@ CREATE TABLE IF NOT EXISTS `site_points` (
   PRIMARY KEY (`id`),
   KEY `site_points_site_map_id_foreign` (`site_map_id`),
   CONSTRAINT `site_points_site_map_id_foreign` FOREIGN KEY (`site_map_id`) REFERENCES `site_maps` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_points: ~113 rows (approximately)
+DELETE FROM `site_points`;
 INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `point_x`, `point_y`, `point_z`, `rotation_z`, `text_size`, `text_width`, `is_pwd`, `point_label`, `wrap_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(19, 4, 0, 0, 1679.00, 901.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:16:40', '2022-10-06 21:04:11', NULL),
 	(23, 4, 0, 0, 1698.00, 1179.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:01', '2022-10-06 21:04:26', NULL),
@@ -754,7 +762,7 @@ INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `poin
 	(25, 4, 0, 0, 1703.00, 1485.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:04', '2022-10-06 21:04:32', NULL),
 	(26, 4, 0, 0, 1699.00, 1566.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:06', '2022-10-06 21:04:35', NULL),
 	(27, 4, 0, 0, 1693.00, 1675.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:08', '2022-10-06 21:04:39', NULL),
-	(29, 4, 1, 0, 1487.00, 274.50, 0.00, 4.00, 1.00, 70.00, 0, NULL, 0, '2022-10-06 19:20:32', '2022-10-10 00:45:54', NULL),
+	(29, 4, 1, 0, 1563.00, 252.50, 0.00, 4.00, 1.00, 70.00, 0, NULL, 0, '2022-10-06 19:20:32', '2022-10-10 21:20:39', NULL),
 	(40, 4, 0, 0, 1571.00, 544.50, 0.00, 65.00, 1.00, 90.00, 0, 'this is a test', 0, '2022-10-06 19:22:57', '2022-10-10 00:33:24', NULL),
 	(45, 4, 0, 2, 1715.00, 747.50, 0.00, 3.00, 1.00, 0.00, 0, NULL, 0, '2022-10-06 19:40:58', '2022-10-10 00:38:06', NULL),
 	(46, 4, 0, 0, 1692.00, 995.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:41:00', '2022-10-06 19:41:09', NULL),
@@ -863,7 +871,6 @@ INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `poin
 	(150, 3, 0, 0, 1389.00, 346.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:09', '2022-10-06 21:50:09', NULL);
 
 -- Dumping structure for table prestige.site_point_links
-DROP TABLE IF EXISTS `site_point_links`;
 CREATE TABLE IF NOT EXISTS `site_point_links` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
@@ -877,27 +884,24 @@ CREATE TABLE IF NOT EXISTS `site_point_links` (
   CONSTRAINT `site_point_links_site_map_id_foreign` FOREIGN KEY (`site_map_id`) REFERENCES `site_maps` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_point_links: ~16 rows (approximately)
+-- Dumping data for table prestige.site_point_links: ~13 rows (approximately)
+DELETE FROM `site_point_links`;
 INSERT INTO `site_point_links` (`id`, `site_map_id`, `point_a`, `point_b`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(70, 4, 29, 73, '2022-10-07 17:26:26', '2022-10-07 17:26:26', NULL),
-	(71, 4, 73, 76, '2022-10-07 17:54:42', '2022-10-07 17:54:42', NULL),
-	(72, 4, 76, 78, '2022-10-07 17:54:44', '2022-10-07 17:54:44', NULL),
-	(73, 4, 78, 79, '2022-10-07 17:54:45', '2022-10-07 17:54:45', NULL),
-	(74, 4, 79, 86, '2022-10-07 17:54:46', '2022-10-07 17:54:46', NULL),
-	(75, 4, 86, 87, '2022-10-07 17:54:47', '2022-10-07 17:54:47', NULL),
+	(73, 4, 78, 79, '2022-10-07 17:54:45', '2022-10-10 22:10:42', NULL),
+	(74, 4, 79, 86, '2022-10-07 17:54:46', '2022-10-10 22:12:02', NULL),
+	(75, 4, 86, 87, '2022-10-07 17:54:47', '2022-10-10 22:13:16', NULL),
 	(76, 4, 87, 88, '2022-10-07 17:54:49', '2022-10-07 17:54:49', NULL),
 	(77, 4, 88, 89, '2022-10-07 17:54:49', '2022-10-07 17:54:49', NULL),
-	(78, 4, 89, 90, '2022-10-07 17:54:51', '2022-10-07 17:54:51', NULL),
-	(79, 4, 90, 107, '2022-10-07 17:54:52', '2022-10-07 17:54:52', NULL),
+	(78, 4, 89, 90, '2022-10-07 17:54:51', '2022-10-10 22:14:29', NULL),
+	(79, 4, 90, 107, '2022-10-07 17:54:52', '2022-10-10 22:14:32', NULL),
 	(80, 4, 107, 106, '2022-10-07 17:54:54', '2022-10-07 17:54:54', NULL),
 	(81, 4, 106, 105, '2022-10-07 17:54:55', '2022-10-07 17:54:55', NULL),
-	(82, 4, 105, 104, '2022-10-07 17:54:57', '2022-10-07 17:54:57', NULL),
+	(82, 4, 105, 104, '2022-10-07 17:54:57', '2022-10-10 22:14:34', NULL),
 	(83, 4, 104, 103, '2022-10-07 17:54:58', '2022-10-07 17:54:58', NULL),
 	(84, 4, 103, 101, '2022-10-07 17:54:59', '2022-10-07 17:54:59', NULL),
-	(85, 4, 101, 102, '2022-10-07 17:54:59', '2022-10-07 17:54:59', NULL);
+	(85, 4, 101, 102, '2022-10-07 17:54:59', '2022-10-10 22:14:52', NULL);
 
 -- Dumping structure for table prestige.site_screens
-DROP TABLE IF EXISTS `site_screens`;
 CREATE TABLE IF NOT EXISTS `site_screens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -907,6 +911,7 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   `screen_type` enum('Directory','LED','LFD','LED funnel') COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -920,13 +925,13 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_screens: ~3 rows (approximately)
-INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(4, 1, 1, 1, 0, 'Directory', 'Food Court', 1, '2022-10-04 19:09:04', '2022-10-04 19:09:04', NULL),
-	(5, 1, 1, 2, 0, 'Directory', 'National Book Store', 1, '2022-10-04 19:30:15', '2022-10-04 19:30:15', NULL),
-	(6, 1, 1, 2, 0, 'Directory', 'Kenny Rogers', 1, '2022-10-04 19:33:31', '2022-10-04 19:33:31', NULL);
+DELETE FROM `site_screens`;
+INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `name`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(4, 1, 1, 1, 0, 'Directory', 'Food Court', 1, 0, '2022-10-04 19:09:04', '2022-10-12 21:53:18', NULL),
+	(5, 1, 1, 2, 0, 'Directory', 'National Book Store', 1, 0, '2022-10-04 19:30:15', '2022-10-12 20:23:35', NULL),
+	(6, 1, 1, 2, 0, 'Directory', 'Kenny Rogers', 1, 1, '2022-10-04 19:33:31', '2022-10-12 21:53:18', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
-DROP TABLE IF EXISTS `site_screen_uptime`;
 CREATE TABLE IF NOT EXISTS `site_screen_uptime` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_screen_id` bigint(20) unsigned NOT NULL,
@@ -938,9 +943,9 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptime` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_screen_uptime: ~0 rows (approximately)
+DELETE FROM `site_screen_uptime`;
 
 -- Dumping structure for table prestige.site_tenants
-DROP TABLE IF EXISTS `site_tenants`;
 CREATE TABLE IF NOT EXISTS `site_tenants` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `brand_id` bigint(20) unsigned NOT NULL,
@@ -966,12 +971,12 @@ CREATE TABLE IF NOT EXISTS `site_tenants` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_tenants: ~2 rows (approximately)
+DELETE FROM `site_tenants`;
 INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `site_building_level_id`, `view_count`, `like_count`, `active`, `is_subscriber`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 1, 2, 0, 0, 1, 0, '2022-10-04 18:59:56', '2022-10-07 23:11:52', NULL),
 	(2, 2, 1, 1, 2, 0, 0, 1, 0, '2022-10-04 19:00:08', '2022-10-07 23:12:01', NULL);
 
 -- Dumping structure for table prestige.supplementals
-DROP TABLE IF EXISTS `supplementals`;
 CREATE TABLE IF NOT EXISTS `supplementals` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned DEFAULT NULL,
@@ -991,6 +996,7 @@ CREATE TABLE IF NOT EXISTS `supplementals` (
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.supplementals: ~55 rows (approximately)
+DELETE FROM `supplementals`;
 INSERT INTO `supplementals` (`id`, `category_id`, `name`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 'American', 'uploads/media/supplemental/American.png', 'uploads/media/supplemental/strips/American.png', '', '', 1, '2022-08-18 19:17:23', '2022-08-18 19:35:05', NULL),
 	(2, 2, 'Asian', 'uploads/media/supplemental/Asian.png', 'uploads/media/supplemental/strips/Asian.png', '', '', 1, '2022-08-18 19:37:41', '2022-08-18 19:38:57', NULL),
@@ -1053,7 +1059,6 @@ INSERT INTO `supplementals` (`id`, `category_id`, `name`, `kiosk_image_primary`,
 	(59, 1, 'Flats', 'uploads/media/supplemental/Flats.png', 'uploads/media/supplemental/strips/Flats.png', '', '', 1, '2022-08-18 21:48:16', '2022-08-18 21:49:55', NULL);
 
 -- Dumping structure for table prestige.tags
-DROP TABLE IF EXISTS `tags`;
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1066,6 +1071,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
 ) ENGINE=InnoDB AUTO_INCREMENT=947 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.tags: ~946 rows (approximately)
+DELETE FROM `tags`;
 INSERT INTO `tags` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'A&w', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),
 	(2, 'A4tech', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),
@@ -2015,7 +2021,6 @@ INSERT INTO `tags` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted
 	(946, 'Zenscreen', 1, '2022-08-22 18:35:38', '2022-08-22 18:35:38', NULL);
 
 -- Dumping structure for table prestige.tenant_ads
-DROP TABLE IF EXISTS `tenant_ads`;
 CREATE TABLE IF NOT EXISTS `tenant_ads` (
   `site_ad_id` bigint(20) unsigned DEFAULT NULL,
   `site_tenant_id` bigint(20) unsigned DEFAULT NULL,
@@ -2026,12 +2031,12 @@ CREATE TABLE IF NOT EXISTS `tenant_ads` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.tenant_ads: ~2 rows (approximately)
+DELETE FROM `tenant_ads`;
 INSERT INTO `tenant_ads` (`site_ad_id`, `site_tenant_id`) VALUES
 	(2, 8),
 	(3, 9);
 
 -- Dumping structure for table prestige.users
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2053,9 +2058,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.users: ~0 rows (approximately)
+DELETE FROM `users`;
 
 -- Dumping structure for table prestige.users_meta
-DROP TABLE IF EXISTS `users_meta`;
 CREATE TABLE IF NOT EXISTS `users_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) unsigned DEFAULT NULL,
@@ -2071,6 +2076,7 @@ CREATE TABLE IF NOT EXISTS `users_meta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.users_meta: ~0 rows (approximately)
+DELETE FROM `users_meta`;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

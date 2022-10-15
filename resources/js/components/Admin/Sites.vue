@@ -15,6 +15,7 @@
                         :primaryKey="primaryKey"
 						v-on:AddNewSite="AddNewSite"
 						v-on:editButton="editSite"
+						v-on:DefaultScreen="DefaultScreen"
                         ref="dataTable">
 			          	</Table>
 		          	</div>
@@ -79,6 +80,15 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_default" v-model="site.is_default">
+										<label class="custom-control-label" for="is_default"></label>
+									</div>
+								</div>
+							</div>
 							<hr/> 
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-12 col-form-label"><strong>Social Media:</strong></label>
@@ -133,6 +143,25 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Confirm modal -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header bg-primary">
+						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+					</div>
+					<div class="modal-body">
+						<h6>Do you really want to set this site as default?</h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" @click="setDefault">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Confirm modal -->
 		
     </div>
 </template>
@@ -159,11 +188,14 @@
 					time_from: '',
 					time_to: '',
 					website: '',
+					active: false,
+					is_default: false,
 				},
                 site_logo: '/images/no-image-available.png',
                 site_banner: '/images/no-image-available.png',
 				add_record: true,
                 edit_record: false,
+				is_default: '',
 				options: {
                     format: 'hh:mm A',
                     useCurrent: false,
@@ -185,6 +217,14 @@
             			status: { 
             				0: '<span class="badge badge-danger">Deactivated</span>', 
             				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+					is_default: {
+            			name: "Is Default", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
             			}
             		},
                     created_at: "Date Created"
@@ -215,6 +255,15 @@
             			routeName: '',
             			button: '<i class="fa fa-link"></i> Manage Site',
             			method: 'link'
+            		},
+					view: {
+            			title: 'Set as Default',
+            			name: 'Link',
+            			apiUrl: '/admin/site/buildings',
+            			routeName: '',
+            			button: '<i class="fa fa-tag"></i> Set as Default',
+            			method: 'view',
+						v_on: 'DefaultScreen',
             		},
             	},
 				otherButtons: {
@@ -274,6 +323,7 @@
 				formData.append("time_from", this.site.time_from);
 				formData.append("time_to", this.site.time_to);
 				formData.append("website", this.site.website);
+				formData.append("is_default", this.site.is_default);
 
                 axios.post('/admin/site/store', formData, {
 					headers: {
@@ -304,6 +354,7 @@
                     this.site.time_to = site.details.time_to;
                     this.site.website = site.details.website;
 					this.site.active = site.active;
+					this.site.is_default = site.is_default;
 					this.add_record = false;
 					this.edit_record = true;
 					if(site.site_logo) {
@@ -341,6 +392,7 @@
 				formData.append("time_to", this.site.time_to);
 				formData.append("website", this.site.website);
 				formData.append("active", this.site.active);
+				formData.append("is_default", this.site.is_default);				
 
                 axios.post('/admin/site/update', formData, {
 					headers: {
@@ -353,6 +405,20 @@
                     $('#site-form').modal('hide');
 				})
             },
+
+			DefaultScreen: function(data) {
+				this.is_default = data.id;
+				$('#confirmModal').modal('show');
+			},
+
+			setDefault: function() {
+				axios.get('/admin/site/set-default/'+this.is_default)
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+                    $('#confirmModal').modal('hide');
+				})
+			}
 
         },
 

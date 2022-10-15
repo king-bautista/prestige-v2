@@ -12800,6 +12800,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Screen",
@@ -12811,9 +12850,12 @@ __webpack_require__.r(__webpack_exports__);
         site_building_level_id: '',
         site_point_id: '',
         screen_type: '',
-        name: ''
+        name: '',
+        active: false,
+        is_default: false
       },
       id_to_deleted: 0,
+      is_default: '',
       add_record: true,
       edit_record: false,
       buildings: [],
@@ -12831,6 +12873,14 @@ __webpack_require__.r(__webpack_exports__);
           status: {
             0: '<span class="badge badge-danger">Deactivated</span>',
             1: '<span class="badge badge-info">Active</span>'
+          }
+        },
+        is_default: {
+          name: "Is Default",
+          type: "Boolean",
+          status: {
+            0: '<span class="badge badge-danger">No</span>',
+            1: '<span class="badge badge-info">Yes</span>'
           }
         },
         created_at: "Date Created"
@@ -12862,6 +12912,15 @@ __webpack_require__.r(__webpack_exports__);
           routeName: '',
           button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
           method: 'link'
+        },
+        view: {
+          title: 'Set as Default',
+          name: 'Set as Default',
+          apiUrl: '',
+          routeName: '',
+          button: '<i class="fa fa-tag"></i> Set as Default',
+          method: 'view',
+          v_on: 'DefaultScreen'
         }
       },
       otherButtons: {
@@ -12901,6 +12960,7 @@ __webpack_require__.r(__webpack_exports__);
       this.screen.site_point_id = '';
       this.screen.screen_type = '';
       this.screen.name = '';
+      this.screen.is_default = false;
       $('#screen-form').modal('show');
     },
     storeScreen: function storeScreen() {
@@ -12929,6 +12989,8 @@ __webpack_require__.r(__webpack_exports__);
         _this4.screen.site_point_id = screen.site_point_id;
         _this4.screen.screen_type = screen.screen_type;
         _this4.screen.name = screen.name;
+        _this4.screen.active = screen.active;
+        _this4.screen.is_default = screen.is_default;
         _this4.add_record = false;
         _this4.edit_record = true;
         $('#screen-form').modal('show');
@@ -12957,6 +13019,21 @@ __webpack_require__.r(__webpack_exports__);
 
         _this6.id_to_deleted = 0;
         $('#screenDeleteModal').modal('hide');
+      });
+    },
+    DefaultScreen: function DefaultScreen(data) {
+      this.is_default = data.id;
+      $('#confirmModal').modal('show');
+    },
+    setDefault: function setDefault() {
+      var _this7 = this;
+
+      axios.get('/admin/site/screen/set-default/' + this.is_default).then(function (response) {
+        toastr.success(response.data.message);
+
+        _this7.$refs.screensDataTable.fetchData();
+
+        $('#confirmModal').modal('hide');
       });
     }
   },
@@ -13120,6 +13197,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // Import this component
 
  // Import date picker css
@@ -13140,12 +13246,15 @@ __webpack_require__.r(__webpack_exports__);
         twitter: '',
         time_from: '',
         time_to: '',
-        website: ''
+        website: '',
+        active: false,
+        is_default: false
       },
       site_logo: '/images/no-image-available.png',
       site_banner: '/images/no-image-available.png',
       add_record: true,
       edit_record: false,
+      is_default: '',
       options: {
         format: 'hh:mm A',
         useCurrent: false
@@ -13167,6 +13276,14 @@ __webpack_require__.r(__webpack_exports__);
           status: {
             0: '<span class="badge badge-danger">Deactivated</span>',
             1: '<span class="badge badge-info">Active</span>'
+          }
+        },
+        is_default: {
+          name: "Is Default",
+          type: "Boolean",
+          status: {
+            0: '<span class="badge badge-danger">No</span>',
+            1: '<span class="badge badge-info">Yes</span>'
           }
         },
         created_at: "Date Created"
@@ -13197,6 +13314,15 @@ __webpack_require__.r(__webpack_exports__);
           routeName: '',
           button: '<i class="fa fa-link"></i> Manage Site',
           method: 'link'
+        },
+        view: {
+          title: 'Set as Default',
+          name: 'Link',
+          apiUrl: '/admin/site/buildings',
+          routeName: '',
+          button: '<i class="fa fa-tag"></i> Set as Default',
+          method: 'view',
+          v_on: 'DefaultScreen'
         }
       },
       otherButtons: {
@@ -13250,6 +13376,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("time_from", this.site.time_from);
       formData.append("time_to", this.site.time_to);
       formData.append("website", this.site.website);
+      formData.append("is_default", this.site.is_default);
       axios.post('/admin/site/store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -13279,6 +13406,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.site.time_to = site.details.time_to;
         _this2.site.website = site.details.website;
         _this2.site.active = site.active;
+        _this2.site.is_default = site.is_default;
         _this2.add_record = false;
         _this2.edit_record = true;
 
@@ -13315,6 +13443,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("time_to", this.site.time_to);
       formData.append("website", this.site.website);
       formData.append("active", this.site.active);
+      formData.append("is_default", this.site.is_default);
       axios.post('/admin/site/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -13325,6 +13454,21 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$refs.dataTable.fetchData();
 
         $('#site-form').modal('hide');
+      });
+    },
+    DefaultScreen: function DefaultScreen(data) {
+      this.is_default = data.id;
+      $('#confirmModal').modal('show');
+    },
+    setDefault: function setDefault() {
+      var _this4 = this;
+
+      axios.get('/admin/site/set-default/' + this.is_default).then(function (response) {
+        toastr.success(response.data.message);
+
+        _this4.$refs.dataTable.fetchData();
+
+        $('#confirmModal').modal('hide');
       });
     }
   },
@@ -83179,6 +83323,7 @@ var render = function () {
                       AddNewScreen: _vm.AddNewScreen,
                       editButton: _vm.editScreen,
                       DeleteScreen: _vm.DeleteScreen,
+                      DefaultScreen: _vm.DefaultScreen,
                     },
                   }),
                 ],
@@ -83494,6 +83639,164 @@ var render = function () {
                       }),
                     ]),
                   ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.edit_record,
+                          expression: "edit_record",
+                        },
+                      ],
+                      staticClass: "form-group row",
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-4 col-form-label",
+                          attrs: { for: "isActive" },
+                        },
+                        [_vm._v("Active")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-8" }, [
+                        _c(
+                          "div",
+                          { staticClass: "custom-control custom-switch" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.screen.active,
+                                  expression: "screen.active",
+                                },
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: { type: "checkbox", id: "isActive" },
+                              domProps: {
+                                checked: Array.isArray(_vm.screen.active)
+                                  ? _vm._i(_vm.screen.active, null) > -1
+                                  : _vm.screen.active,
+                              },
+                              on: {
+                                change: function ($event) {
+                                  var $$a = _vm.screen.active,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.screen,
+                                          "active",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.screen,
+                                          "active",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.screen, "active", $$c)
+                                  }
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("label", {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "isActive" },
+                            }),
+                          ]
+                        ),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-sm-4 col-form-label",
+                        attrs: { for: "isActive" },
+                      },
+                      [_vm._v("Is Default")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-switch" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.screen.is_default,
+                                expression: "screen.is_default",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "is_default" },
+                            domProps: {
+                              checked: Array.isArray(_vm.screen.is_default)
+                                ? _vm._i(_vm.screen.is_default, null) > -1
+                                : _vm.screen.is_default,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.screen.is_default,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.screen,
+                                        "is_default",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.screen,
+                                        "is_default",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.screen, "is_default", $$c)
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c("label", {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "is_default" },
+                          }),
+                        ]
+                      ),
+                    ]),
+                  ]),
                 ]),
               ]),
               _vm._v(" "),
@@ -83583,6 +83886,49 @@ var render = function () {
                   staticClass: "btn btn-primary",
                   attrs: { type: "button" },
                   on: { click: _vm.removeScreen },
+                },
+                [_vm._v("OK")]
+              ),
+            ]),
+          ]),
+        ]),
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "confirmModal",
+          tabindex: "-1",
+          "aria-labelledby": "confirmModal",
+          "aria-hidden": "true",
+        },
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(9),
+            _vm._v(" "),
+            _vm._m(10),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-bs-dismiss": "modal" },
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.setDefault },
                 },
                 [_vm._v("OK")]
               ),
@@ -83704,6 +84050,26 @@ var staticRenderFns = [
       _c("h6", [_vm._v("Do you really want to delete?")]),
     ])
   },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header bg-primary" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Confirm")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("h6", [_vm._v("Do you really want to set this screen as default?")]),
+    ])
+  },
 ]
 render._withStripped = true
 
@@ -83749,6 +84115,7 @@ var render = function () {
                     on: {
                       AddNewSite: _vm.AddNewSite,
                       editButton: _vm.editSite,
+                      DefaultScreen: _vm.DefaultScreen,
                     },
                   }),
                 ],
@@ -84037,6 +84404,78 @@ var render = function () {
                     ]
                   ),
                   _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-sm-4 col-form-label",
+                        attrs: { for: "isActive" },
+                      },
+                      [_vm._v("Is Default")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-8" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-switch" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.site.is_default,
+                                expression: "site.is_default",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "is_default" },
+                            domProps: {
+                              checked: Array.isArray(_vm.site.is_default)
+                                ? _vm._i(_vm.site.is_default, null) > -1
+                                : _vm.site.is_default,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.site.is_default,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.site,
+                                        "is_default",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.site,
+                                        "is_default",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.site, "is_default", $$c)
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c("label", {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "is_default" },
+                          }),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
                   _vm._m(3),
@@ -84305,6 +84744,49 @@ var render = function () {
         ),
       ]
     ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "confirmModal",
+          tabindex: "-1",
+          "aria-labelledby": "confirmModal",
+          "aria-hidden": "true",
+        },
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _vm._m(6),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-bs-dismiss": "modal" },
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.setDefault },
+                },
+                [_vm._v("OK")]
+              ),
+            ]),
+          ]),
+        ]),
+      ]
+    ),
   ])
 }
 var staticRenderFns = [
@@ -84379,6 +84861,26 @@ var staticRenderFns = [
         },
         [_c("strong", [_vm._v("Mall Information:")])]
       ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header bg-primary" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Confirm")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("h6", [_vm._v("Do you really want to set this site as default?")]),
     ])
   },
 ]
