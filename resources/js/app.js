@@ -46,8 +46,29 @@ Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+/**
+ * Vuejs Router part
+ */
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+
+import home from './components/Kiosk/Home.vue';
+
+const routes = [
+    {   path: '',
+        component: home,
+        name: 'home'
+     },
+];
+
+const router = new VueRouter({
+    mode: 'history',
+    routes 
+});
+
 const app = new Vue({
     el: '#app',
+    router,
     data: {
         isLoading: false,
         axiosInterceptor: null,        

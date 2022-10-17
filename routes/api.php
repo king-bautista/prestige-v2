@@ -33,6 +33,13 @@ Route::group(['prefix' => 'v1'], function ()
     // Route::get('password/find/{token}', 'Admin\PasswordResetController@find')->name('api.v1.password.find');
     // Route::post('password/reset', 'Admin\PasswordResetController@reset')->name('api.v1.password.reset');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Main Kiosk Routes
+    |--------------------------------------------------------------------------
+    */  
+    Route::get('/categories', 'Kiosk\MainController@getCategories')->name('kiosk.categories');
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

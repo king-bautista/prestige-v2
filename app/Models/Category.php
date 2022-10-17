@@ -18,6 +18,7 @@ class Category extends Model
         'parent_id',
         'name',
         'descriptions',
+        'css_class',
         'kiosk_image_primary',
         'kiosk_image_top',
         'online_image_primary',

@@ -30,7 +30,6 @@ body{
 
 .main-content-holder {
     height: 790px;
-    border: solid 1px;
 }
 
 .button-holder {
@@ -149,4 +148,59 @@ body{
 
 .event-button.active {
     background-image: url('../assets/images/Cinemav4s.png') !important;
+}
+
+.home-title {
+    font-family: Henry Sans Medium;
+    font-size: 40px;
+    padding: 26px 0 26px 0;
+    color: #2a2a2a;
+}
+
+.hc-button {
+    position: relative;
+    float:left;
+    cursor: pointer;
+}
+
+.food {
+    margin-top:15px;
+    margin-left:82px;
+    width:350px;
+}
+
+.fashion {
+    margin-top:15px;
+    margin-left:44px;
+    width:350px;
+}
+
+.electronics {
+    margin-top:15px;
+    margin-left:46px;
+    width:228px;   
+}
+
+.function {
+    margin-top:15px;
+    margin-left:48px;
+    width:228px;
+}
+
+.finds {
+    margin-top:24px;
+    margin-left:44px;
+    width:509px;    
+}
+
+#hc-button1 {
+    top: 46px;
+    left: 35px;
+    color: #246c63;
+}
+
+.hc-button-align {
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Henry Sans Medium';
 }
