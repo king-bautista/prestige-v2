@@ -29,7 +29,7 @@ body{
 }
 
 .main-content-holder {
-    height: 790px;
+    height: 890px;
 }
 
 .button-holder {
@@ -203,4 +203,13 @@ body{
     position: absolute;
     font-size: 24px;
     font-family: 'Henry Sans Medium';
+}
+
+#page-title {
+    font-family: 'Henry Sans Medium';
+    font-weight: bold;
+    font-size: 30px;
+    color: #2a2a2a;
+    height: 60px;
+    margin: 25px;
 }

@@ -40,6 +40,24 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Category / Supplemental <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="illustration.category_id" @change="getSubCategories($event.target.value)">
+									    <option value="">Select Category / Supplemental</option>
+									    <option v-for="category in categories" :value="category.id"> {{ category.type_category_name }}</option>
+								    </select>
+								</div>
+							</div>
+                            <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Sub Category / Supplemental</label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="illustration.sub_category_id">
+									    <option value="">Select Sub Category / Supplemental</option>
+									    <option v-for="sub_category in sub_categories" :value="sub_category.id"> {{ sub_category.name }}</option>
+								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Company</label>
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="illustration.company_id">
@@ -55,24 +73,6 @@
 										<option value="">Select Site</option>
 										<option v-for="site in site_list" :value="site.id"> {{ site.name }}</option>
 									</select>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Category / Supplemental</label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="illustration.category_id" @change="getSubCategories($event.target.value)">
-									    <option value="">Select Category / Supplemental</option>
-									    <option v-for="category in categories" :value="category.id"> {{ category.type_category_name }}</option>
-								    </select>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Sub Category / Supplemental</label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="illustration.sub_category_id">
-									    <option value="">Select Sub Category / Supplemental</option>
-									    <option v-for="sub_category in sub_categories" :value="sub_category.id"> {{ sub_category.name }}</option>
-								    </select>
 								</div>
 							</div>
 							<div class="form-group row">

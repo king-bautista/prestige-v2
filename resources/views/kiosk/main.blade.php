@@ -8,16 +8,9 @@
             </div>
         </div>
         <div class="col-md-9 m-0 p-0">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <img src="{{ $site->site_logo_path }}" class="logo-holder">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 main-content-holder">
-                    <router-view></router-view>
-                </div>            
-            </div>
+            <div class="row main-content-holder">
+                <router-view></router-view>
+            </div>            
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="h-button widget-button home-button active">

@@ -4,7 +4,9 @@ namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 use App\Models\Category;
+use App\Models\CompanyCategory;
 
 class CategoryViewModel extends Model
 {
@@ -43,14 +45,26 @@ class CategoryViewModel extends Model
 	public $appends = [
         'parent_category',
         'supplemental_category_name',
+        'type_category_name',
         'children',
         'label',
-        'type_category_name',
-    ];    
+        'kiosk_image_primary_path',  
+    ];
+
+    public static $site_id = '';
+    public static $company_id = '';
 
     public function getChildCategories()
     {   
         return $this->hasMany('App\Models\ViewModels\CategoryViewModel', 'parent_id', 'id');
+    }
+
+    public static function getMainCategory($site_id = 0, $company_id = 0)
+    {
+        self::$site_id = $site_id;
+        self::$company_id = $company_id;
+
+        return self::whereNull('parent_id')->where('category_type', 1)->where('active', 1)->get();
     }
 
     /****************************************
@@ -100,5 +114,28 @@ class CategoryViewModel extends Model
     public function getLabelAttribute() 
     {
         return $this->name;
+    }
+
+    public function getKioskImagePrimaryPathAttribute() 
+    {
+        // SITE PRIMARY IMAGE
+        if(self::$site_id) {
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)->where('site_id', self::$site_id)->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_primary']);
+        }
+
+        // COMPANY PRIMARY IMAGE
+        if(self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)->where('company_id', self::$company_id)->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_primary']);
+        }
+
+        // DEFAULT PRIMARY IMAGE
+        $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)->whereNull('site_id')->whereNull('company_id')->first();
+        if($company_categories) 
+            return asset($company_categories['kiosk_image_primary']);
+        return asset('/images/no-image-available.png');
     }
 }

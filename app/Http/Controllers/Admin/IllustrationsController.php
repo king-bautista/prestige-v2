@@ -75,17 +75,18 @@ class IllustrationsController extends AppBaseController implements Illustrations
     	{
             $kiosk_image_primary_path = null;
             $kiosk_image_top_path = null;
+            $date = date('YmdHis');
 
             $kiosk_image_primary = $request->file('kiosk_image_primary');
             if($kiosk_image_primary) {
                 $originalname = $kiosk_image_primary->getClientOriginalName();
-                $kiosk_image_primary_path = $kiosk_image_primary->move('uploads/media/category/', str_replace(' ','-', $originalname)); 
+                $kiosk_image_primary_path = $kiosk_image_primary->move('uploads/media/category/', $date.str_replace(' ','-', $originalname)); 
             }
 
             $kiosk_image_top = $request->file('kiosk_image_top');
             if($kiosk_image_top) {
                 $originalname = $kiosk_image_top->getClientOriginalName();
-                $kiosk_image_top_path = $kiosk_image_top->move('uploads/media/category/strips/', str_replace(' ','-', $originalname)); 
+                $kiosk_image_top_path = $kiosk_image_top->move('uploads/media/category/strips/', $date.str_replace(' ','-', $originalname)); 
             }
 
             $data = [
@@ -120,17 +121,18 @@ class IllustrationsController extends AppBaseController implements Illustrations
 
             $kiosk_image_primary_path = '';
             $kiosk_image_top_path = '';
+            $date = date('YmdHis');
 
             $kiosk_image_primary = $request->file('kiosk_image_primary');
             if($kiosk_image_primary) {
                 $originalname = $kiosk_image_primary->getClientOriginalName();
-                $kiosk_image_primary_path = $kiosk_image_primary->move('uploads/media/category/', str_replace(' ','-', $originalname)); 
+                $kiosk_image_primary_path = $kiosk_image_primary->move('uploads/media/category/', $date.str_replace(' ','-', $originalname)); 
             }
 
             $kiosk_image_top = $request->file('kiosk_image_top');
             if($kiosk_image_top) {
                 $originalname = $kiosk_image_top->getClientOriginalName();
-                $kiosk_image_top_path = $kiosk_image_top->move('uploads/media/category/strips/', str_replace(' ','-', $originalname)); 
+                $kiosk_image_top_path = $kiosk_image_top->move('uploads/media/category/strips/', $date.str_replace(' ','-', $originalname)); 
             }
 
             $data = [

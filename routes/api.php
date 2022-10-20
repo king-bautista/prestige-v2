@@ -38,6 +38,7 @@ Route::group(['prefix' => 'v1'], function ()
     | Main Kiosk Routes
     |--------------------------------------------------------------------------
     */  
+    Route::get('/site', 'Kiosk\MainController@getSite')->name('kiosk.site');
     Route::get('/categories', 'Kiosk\MainController@getCategories')->name('kiosk.categories');
 
 });

@@ -12962,17 +12962,25 @@ __webpack_require__.r(__webpack_exports__);
   name: "MainCategories",
   data: function data() {
     return {
-      main_category: []
+      main_category: [],
+      site_logo: ''
     };
   },
   created: function created() {
     this.getCategories();
+    this.getSite();
   },
   methods: {
-    getCategories: function getCategories() {
+    getSite: function getSite() {
       var _this = this;
+      axios.get('/api/v1/site').then(function (response) {
+        return _this.site_logo = response.data.data.site_logo;
+      });
+    },
+    getCategories: function getCategories() {
+      var _this2 = this;
       axios.get('/api/v1/categories').then(function (response) {
-        return _this.main_category = response.data.data;
+        return _this2.main_category = response.data.data;
       });
     }
   },
@@ -15821,6 +15829,79 @@ var render = function render() {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "form-group row"
+  }, [_vm._m(1), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.illustration.category_id,
+      expression: "illustration.category_id"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.illustration, "category_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.getSubCategories($event.target.value);
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Category / Supplemental")]), _vm._v(" "), _vm._l(_vm.categories, function (category) {
+    return _c("option", {
+      domProps: {
+        value: category.id
+      }
+    }, [_vm._v(" " + _vm._s(category.type_category_name))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Sub Category / Supplemental")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.illustration.sub_category_id,
+      expression: "illustration.sub_category_id"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.illustration, "sub_category_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Sub Category / Supplemental")]), _vm._v(" "), _vm._l(_vm.sub_categories, function (sub_category) {
+    return _c("option", {
+      domProps: {
+        value: sub_category.id
+      }
+    }, [_vm._v(" " + _vm._s(sub_category.name))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
   }, [_c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
@@ -15897,85 +15978,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(site.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Category / Supplemental")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.illustration.category_id,
-      expression: "illustration.category_id"
-    }],
-    staticClass: "custom-select",
-    on: {
-      change: [function ($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.illustration, "category_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }, function ($event) {
-        return _vm.getSubCategories($event.target.value);
-      }]
-    }
-  }, [_c("option", {
-    attrs: {
-      value: ""
-    }
-  }, [_vm._v("Select Category / Supplemental")]), _vm._v(" "), _vm._l(_vm.categories, function (category) {
-    return _c("option", {
-      domProps: {
-        value: category.id
-      }
-    }, [_vm._v(" " + _vm._s(category.type_category_name))]);
-  })], 2)])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Sub Category / Supplemental")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.illustration.sub_category_id,
-      expression: "illustration.sub_category_id"
-    }],
-    staticClass: "custom-select",
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.illustration, "sub_category_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: ""
-    }
-  }, [_vm._v("Select Sub Category / Supplemental")]), _vm._v(" "), _vm._l(_vm.sub_categories, function (sub_category) {
-    return _c("option", {
-      domProps: {
-        value: sub_category.id
-      }
-    }, [_vm._v(" " + _vm._s(sub_category.name))]);
-  })], 2)])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(1), _vm._v(" "), _c("div", {
+  }, [_vm._m(2), _vm._v(" "), _c("div", {
     staticClass: "col-sm-5"
   }, [_c("input", {
     ref: "kiosk_image_primary",
@@ -16141,6 +16144,17 @@ var staticRenderFns = [function () {
       "aria-hidden": "true"
     }
   }, [_vm._v("×")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Category / Supplemental "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -21214,13 +21228,26 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_vm._m(0), _vm._v(" "), _c("div", {
+  return _c("div", [_c("div", {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 text-right"
+  }, [_c("img", {
+    staticClass: "logo-holder",
+    attrs: {
+      src: _vm.site_logo
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_vm._m(1), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
   }, _vm._l(_vm.main_category, function (category, index) {
     return _c("div", {
-      "class": [category.css_class, "hc-button"]
+      "class": [category.class_name, "hc-button"]
     }, [_c("img", {
       attrs: {
         src: category.kiosk_image_primary_path
@@ -21231,16 +21258,26 @@ var render = function render() {
         id: "hc-button1"
       }
     }, [_vm._v(_vm._s(category.name))])]);
-  }), 0)])]);
+  }), 0)])])])]);
 };
 var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("div", {
+    attrs: {
+      id: "page-title"
+    }
+  }, [_vm._v("Home")])]);
+}, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
-  }, [_vm._v("\n            Search your favorite stores\n        ")])]);
+  }, [_vm._v("\n                    Search your favorite stores\n                ")])]);
 }];
 render._withStripped = true;
 

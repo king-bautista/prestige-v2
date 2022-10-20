@@ -12,15 +12,32 @@ class MainController extends AppBaseController
 {
     public function index()
     {
-        $site = SiteViewModel::where('is_default', 1)->first();
-        return view('kiosk.main', compact('site'));
+        return view('kiosk.main');
+    }
+
+    public function getSite()
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->first();
+            return $this->response($site, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Site to display!',
+                'status_code' => 200,
+            ], 422);
+        }
     }
 
     public function getCategories()
     {
         try
         {
-            $categories = CategoryViewModel::where('parent_id', 0)->where('active', 1)->get();
+            $site = SiteViewModel::where('is_default', 1)->first();
+            $categories = CategoryViewModel::getMainCategory($site->id);
+            
             return $this->response($categories, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
