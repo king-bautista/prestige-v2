@@ -39,6 +39,9 @@ Vue.component('admin-building-screens', require('./components/Admin/Screens.vue'
 Vue.component('admin-building-tenants', require('./components/Admin/Tenants.vue').default);
 Vue.component('admin-advertisements', require('./components/Admin/Advertisements.vue').default);
 Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').default);
+Vue.component('admin-companies', require('./components/Admin/Company.vue').default);
+Vue.component('admin-illustrations', require('./components/Admin/Illustrations.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

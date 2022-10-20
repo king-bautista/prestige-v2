@@ -38,6 +38,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
+            ->where('category_type', 1)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);
@@ -73,43 +74,12 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try
     	{
-            $kiosk_image_primary_path = null;
-            $kiosk_image_top_path = null;
-            $online_image_primary_path = null;
-            $online_image_top_path = null;
-
-            $kiosk_image_primary = $request->file('kiosk_image_primary');
-            if($kiosk_image_primary) {
-                $originalname = $kiosk_image_primary->getClientOriginalName();
-                $kiosk_image_primary_path = $kiosk_image_primary->move('uploads/media/category/', str_replace(' ','-', $originalname)); 
-            }
-
-            $kiosk_image_top = $request->file('kiosk_image_top');
-            if($kiosk_image_top) {
-                $originalname = $kiosk_image_top->getClientOriginalName();
-                $kiosk_image_top_path = $kiosk_image_top->move('uploads/media/category/strips/', str_replace(' ','-', $originalname)); 
-            }
-
-            $online_image_primary = $request->file('online_image_primary');
-            if($online_image_primary) {
-                $originalname = $online_image_primary->getClientOriginalName();
-                $online_image_primary_path = $online_image_primary->move('uploads/media/category/', str_replace(' ','-', $originalname)); 
-            }
-
-            $online_image_top = $request->file('online_image_top');
-            if($online_image_top) {
-                $originalname = $online_image_top->getClientOriginalName();
-                $online_image_top_path = $online_image_top->move('uploads/media/category/strips/', str_replace(' ','-', $originalname)); 
-            }
-
             $data = [
                 'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
-                'kiosk_image_primary' => str_replace('\\', '/', $kiosk_image_primary_path),
-                'kiosk_image_top' => str_replace('\\', '/', $kiosk_image_top_path),
-                'online_image_primary' => str_replace('\\', '/', $online_image_primary_path),
-                'online_image_top' => str_replace('\\', '/', $online_image_top_path),
+                'class_name' => $request->class_name,
+                'category_type' => $request->category_type,
                 'active' => 1,
             ];
 
@@ -133,43 +103,12 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     	{
             $category = Category::find($request->id);
 
-            $kiosk_image_primary_path = '';
-            $kiosk_image_top_path = '';
-            $online_image_primary_path = '';
-            $online_image_top_path = '';
-
-            $kiosk_image_primary = $request->file('kiosk_image_primary');
-            if($kiosk_image_primary) {
-                $originalname = $kiosk_image_primary->getClientOriginalName();
-                $kiosk_image_primary_path = $kiosk_image_primary->move('uploads/media/category/', str_replace(' ','-', $originalname)); 
-            }
-
-            $kiosk_image_top = $request->file('kiosk_image_top');
-            if($kiosk_image_top) {
-                $originalname = $kiosk_image_top->getClientOriginalName();
-                $kiosk_image_top_path = $kiosk_image_top->move('uploads/media/category/strips/', str_replace(' ','-', $originalname)); 
-            }
-
-            $online_image_primary = $request->file('online_image_primary');
-            if($online_image_primary) {
-                $originalname = $online_image_primary->getClientOriginalName();
-                $online_image_primary_path = $online_image_primary->move('uploads/media/category/', str_replace(' ','-', $originalname)); 
-            }
-
-            $online_image_top = $request->file('online_image_top');
-            if($online_image_top) {
-                $originalname = $online_image_top->getClientOriginalName();
-                $online_image_top_path = $online_image_top->move('uploads/media/category/strips/', str_replace(' ','-', $originalname)); 
-            }
-
             $data = [
                 'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
-                'kiosk_image_primary' => ($kiosk_image_primary_path) ? str_replace('\\', '/', $kiosk_image_primary_path) : $category->kiosk_image_primary,
-                'kiosk_image_top' => ($kiosk_image_top_path) ? str_replace('\\', '/', $kiosk_image_top_path) : $category->kiosk_image_top,
-                'online_image_primary' => ($online_image_primary_path) ? str_replace('\\', '/', $online_image_primary_path) : $category->online_image_primary,
-                'online_image_top' => ($online_image_top_path) ? str_replace('\\', '/', $online_image_top_path) : $category->online_image_top,
+                'class_name' => $request->class_name,
+                'category_type' => $request->category_type,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
@@ -209,7 +148,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try
         {
-            $categories = CategoryViewModel::where('parent_id', 0)->get();
+            $categories = CategoryViewModel::whereNull('parent_id')->where('category_type', 1)->get();
             return $this->response($categories, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -222,13 +161,18 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         }
     }
 
-    public function deleteImage(Request $request)
+    public function getAll($id = 0)
     {
         try
         {
-            $category = Category::find($request->id);
-            $category->update([$request->column => null]);
-            return $this->response($category, 'Successfully modified!', 200);
+            $categories = CategoryViewModel::when($id, function($query) use ($id){
+                return $query->where('parent_id', $id);
+            })
+            ->when(!$id, function($query){
+                return $query->whereNull('parent_id');
+            })
+            ->get();
+            return $this->response($categories, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {

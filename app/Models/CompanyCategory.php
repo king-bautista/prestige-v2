@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class CompanyCategory extends Model
 {
     use SoftDeletes;
 
@@ -15,13 +15,17 @@ class Category extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'parent_id',
-        'supplemental_category_id',
-        'name',
-        'descriptions',
-        'class_name',
-        'category_type',
+        'company_id',
+        'category_id',
+        'sub_category_id',
+        'site_id',
         'active',
+        'kiosk_image_primary',
+        'kiosk_image_top',
+        'online_image_primary',
+        'online_image_top',
+        'mobile_image_primary',
+        'mobile_image_top',
     ];
 
     /**
@@ -40,7 +44,7 @@ class Category extends Model
      *
      * @var string
     */
-    protected $table = 'categories';
+    protected $table = 'company_categories';
 
     /**
      * The primary key associated with the table.
@@ -48,5 +52,4 @@ class Category extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
 }

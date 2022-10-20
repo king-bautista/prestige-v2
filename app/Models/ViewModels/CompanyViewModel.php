@@ -1,28 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+use App\Models\Classification;
+
+class CompanyViewModel extends Model
 {
     use SoftDeletes;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'parent_id',
-        'supplemental_category_id',
-        'name',
-        'descriptions',
-        'class_name',
-        'category_type',
-        'active',
-    ];
 
     /**
      * The attributes that should be cast.
@@ -40,7 +27,7 @@ class Category extends Model
      *
      * @var string
     */
-    protected $table = 'categories';
+    protected $table = 'companies';
 
     /**
      * The primary key associated with the table.
@@ -49,4 +36,21 @@ class Category extends Model
      */
     protected $primaryKey = 'id';
 
+    /**
+     * Append additiona info to the return data
+     *
+     * @var string
+     */
+	public $appends = [
+        'classification_name',
+    ]; 
+
+    public function getClassificationNameAttribute() 
+    {
+
+        $classification = Classification::find($this->classification_id);
+        if($classification)
+            return $classification['name'];
+        return null;
+    }
 }

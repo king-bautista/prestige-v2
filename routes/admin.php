@@ -72,7 +72,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/category/update', 'Admin\CategoriesController@update')->name('admin.category.update');
     Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('admin.category.delete');
     Route::get('/admin/category/get-all-categories', 'Admin\CategoriesController@getAllCategories')->where('id', '[0-9]+')->name('admin.category.get-all-categories');
-    Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('admin.category.delete-image');
+    Route::get('/admin/category/get-all', 'Admin\CategoriesController@getAll')->name('admin.category.get-all');
+    Route::get('/admin/category/get-all/{id}', 'Admin\CategoriesController@getAll')->where('id', '[0-9]+')->name('admin.category.get-sub-category');
+    // Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('admin.category.delete-image');
     Route::get('/admin/category/labels/{id}', 'Admin\CategoriesController@getLabels')->where('id', '[0-9]+')->name('admin.category.labels');
     Route::post('/admin/category/label/store', 'Admin\CategoriesController@saveLabels')->name('admin.category.label.store');
     Route::get('/admin/category/label/delete/{id}', 'Admin\CategoriesController@deleteLabel')->where('id', '[0-9]+')->name('admin.category.label.delete');
@@ -88,7 +90,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/supplemental/{id}', 'Admin\SupplementalController@details')->where('id', '[0-9]+')->name('admin.supplemental.details');
     Route::post('/admin/supplemental/update', 'Admin\SupplementalController@update')->name('admin.supplemental.update');
     Route::get('/admin/supplemental/delete/{id}', 'Admin\SupplementalController@delete')->where('id', '[0-9]+')->name('admin.supplemental.delete');
-    Route::post('/admin/supplemental/delete-image', 'Admin\SupplementalController@deleteImage')->name('admin.supplemental.delete-image');
+    Route::get('/admin/supplemental/get-all', 'Admin\SupplementalController@getAllSupplementals')->where('id', '[0-9]+')->name('admin.supplemental.get-all');
 
     /*
     |--------------------------------------------------------------------------
@@ -101,6 +103,20 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/classification/{id}', 'Admin\ClassificationController@details')->where('id', '[0-9]+')->name('admin.classification.details');
     Route::put('/admin/classification/update', 'Admin\ClassificationController@update')->name('admin.classification.update');
     Route::get('/admin/classification/delete/{id}', 'Admin\ClassificationController@delete')->where('id', '[0-9]+')->name('admin.classification.delete');
+    Route::get('/admin/classification/get-all', 'Admin\ClassificationController@getAll')->where('id', '[0-9]+')->name('admin.classification.get-all');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Companies Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/companies', 'Admin\CompaniesController@index')->name('admin.companies');
+    Route::get('/admin/company/list', 'Admin\CompaniesController@list')->name('admin.company.list');
+    Route::post('/admin/company/store', 'Admin\CompaniesController@store')->name('admin.company.store');
+    Route::get('/admin/company/{id}', 'Admin\CompaniesController@details')->where('id', '[0-9]+')->name('admin.company.details');
+    Route::put('/admin/company/update', 'Admin\CompaniesController@update')->name('admin.company.update');
+    Route::get('/admin/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('admin.company.delete');
+    Route::get('/admin/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('admin.company.get-all');
 
     /*
     |--------------------------------------------------------------------------
@@ -126,6 +142,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/tag/update', 'Admin\TagsController@update')->name('admin.tag.update');
     Route::get('/admin/tag/delete/{id}', 'Admin\TagsController@delete')->where('id', '[0-9]+')->name('admin.tag.delete');
     Route::post('/admin/tag/batch-upload', 'Admin\TagsController@batchUpload')->name('admin.tag.batch-upload');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Illustration Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/Illustrations', 'Admin\IllustrationsController@index')->name('admin.Illustrations');
+    Route::get('/admin/Illustration/list', 'Admin\IllustrationsController@list')->name('admin.Illustration.list');
+    Route::post('/admin/Illustration/store', 'Admin\IllustrationsController@store')->name('admin.Illustration.store');
+    Route::get('/admin/Illustration/{id}', 'Admin\IllustrationsController@details')->where('id', '[0-9]+')->name('admin.Illustration.details');
+    Route::post('/admin/Illustration/update', 'Admin\IllustrationsController@update')->name('admin.Illustration.update');
+    Route::get('/admin/Illustration/delete/{id}', 'Admin\IllustrationsController@delete')->where('id', '[0-9]+')->name('admin.Illustration.delete');
 
     /*
     |--------------------------------------------------------------------------

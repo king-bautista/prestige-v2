@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoryLabelsTable extends Migration
+class CreateCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,19 @@ class CreateCategoryLabelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_labels', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('category_id')->unsigned();
-            $table->bigInteger('site_id')->unsigned();
+            $table->bigInteger('classification_id')->unsigned();
             $table->string('name');
+            $table->mediumText('address')->nullable();            
+            $table->string('tin')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('site_id')->references('id')->on('sites');
+            $table->foreign('classification_id')->references('id')->on('classifications');
         });
     }
 
@@ -35,6 +36,6 @@ class CreateCategoryLabelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_labels');
+        Schema::dropIfExists('companies');
     }
 }

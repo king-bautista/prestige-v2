@@ -131,4 +131,21 @@ class ClassificationController extends AppBaseController implements Classificati
             ], 422);
         }
     }
+
+    public function getAll()
+    {
+        try
+    	{
+            $classifications = Classification::get();
+            return $this->response($classifications, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

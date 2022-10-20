@@ -41,13 +41,11 @@ class CategoryViewModel extends Model
      * @var string
      */
 	public $appends = [
-        'kiosk_image_primary_path',
-        'kiosk_image_top_path',
-        'online_image_primary_path',
-        'online_image_top_path',
         'parent_category',
+        'supplemental_category_name',
         'children',
         'label',
+        'type_category_name',
     ];    
 
     public function getChildCategories()
@@ -57,42 +55,37 @@ class CategoryViewModel extends Model
 
     /****************************************
     *           ATTRIBUTES PARTS            *
-    ****************************************/
-    public function getKioskImagePrimaryPathAttribute()
-    {
-        if($this->kiosk_image_primary)
-            return asset($this->kiosk_image_primary);
-        return asset('/images/no-image-available.png');
-    }  
-
-    public function getKioskImageTopPathAttribute()
-    {
-        if($this->kiosk_image_top)
-            return asset($this->kiosk_image_top);
-        return asset('/images/no-image-available.png');
-    }  
-
-    public function getOnlineImagePrimaryPathAttribute()
-    {
-        if($this->online_image_primary)
-            return asset($this->online_image_primary);
-        return asset('/images/no-image-available.png');
-    }  
-
-    public function getOnlineImageTopPathAttribute()
-    {
-        if($this->online_image_top)
-            return asset($this->online_image_top);
-        return asset('/images/no-image-available.png');
-    }  
-    
+    ****************************************/    
     public function getParentCategoryAttribute() 
     {
-
         $parent_category = Category::find($this->parent_id);
         if($parent_category)
             return $parent_category['name'];
         return null;
+    }
+
+    public function getSupplementalCategoryNameAttribute() 
+    {
+
+        $supplemental_category = Category::find($this->supplemental_category_id);
+        if($supplemental_category)
+            return $supplemental_category['name'];
+
+        $parent_supplimental = Category::find($this->parent_id);
+        if($parent_supplimental) {
+            $supplemental_category = Category::find($parent_supplimental->supplemental_category_id);
+            if($supplemental_category)
+                return $supplemental_category['name'];
+        }
+        
+        return null;
+    }
+
+    public function getTypeCategoryNameAttribute() 
+    {
+        if($this->category_type === 1)
+            return 'Category - '.$this->name;
+        return 'Supplemental - '.$this->name;        
     }
 
     public function getChildrenAttribute() 

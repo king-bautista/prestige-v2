@@ -20,6 +20,7 @@ CREATE DATABASE IF NOT EXISTS `prestige` /*!40100 DEFAULT CHARACTER SET latin1 *
 USE `prestige`;
 
 -- Dumping structure for table prestige.admins
+DROP TABLE IF EXISTS `admins`;
 CREATE TABLE IF NOT EXISTS `admins` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -44,12 +45,12 @@ CREATE TABLE IF NOT EXISTS `admins` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.admins: ~0 rows (approximately)
-DELETE FROM `admins`;
 INSERT INTO `admins` (`id`, `full_name`, `email`, `email_verified_at`, `password`, `api_token`, `salt`, `login_attempt`, `is_blocked`, `active`, `activation_token`, `created_by`, `updated_by`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 'Bautista, King', 'superadmin@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2022-08-10 18:52:17', '2022-08-10 21:24:30', NULL),
 	(4, 'Admin, Admin', 'admin@gmail.com', NULL, '$2y$10$QEY0OLI9HdHbfMsc9igWFuvg17iBIBK9hZ6RzyPzz29SV8Cp77RqK', NULL, 'aTVOhYWuUpIxmrn4cv1G', 0, 0, 1, NULL, 0, 0, NULL, '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
 
 -- Dumping structure for table prestige.admins_meta
+DROP TABLE IF EXISTS `admins_meta`;
 CREATE TABLE IF NOT EXISTS `admins_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `admin_id` bigint(20) unsigned DEFAULT NULL,
@@ -65,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `admins_meta` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.admins_meta: ~4 rows (approximately)
-DELETE FROM `admins_meta`;
 INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(5, 3, 'first_name', 'King', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
@@ -73,6 +73,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
 
 -- Dumping structure for table prestige.admin_roles
+DROP TABLE IF EXISTS `admin_roles`;
 CREATE TABLE IF NOT EXISTS `admin_roles` (
   `admin_id` bigint(20) unsigned NOT NULL,
   `role_id` bigint(20) unsigned NOT NULL,
@@ -83,13 +84,13 @@ CREATE TABLE IF NOT EXISTS `admin_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.admin_roles: ~2 rows (approximately)
-DELETE FROM `admin_roles`;
 INSERT INTO `admin_roles` (`admin_id`, `role_id`) VALUES
 	(3, 1),
 	(3, 2),
 	(4, 2);
 
 -- Dumping structure for table prestige.amenities
+DROP TABLE IF EXISTS `amenities`;
 CREATE TABLE IF NOT EXISTS `amenities` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -102,7 +103,6 @@ CREATE TABLE IF NOT EXISTS `amenities` (
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.amenities: ~21 rows (approximately)
-DELETE FROM `amenities`;
 INSERT INTO `amenities` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Activity Center', 1, '2022-08-18 23:21:01', '2022-08-18 23:21:01', NULL),
 	(2, 'ATM', 1, '2022-08-18 23:21:57', '2022-08-18 23:21:57', NULL),
@@ -127,6 +127,7 @@ INSERT INTO `amenities` (`id`, `name`, `active`, `created_at`, `updated_at`, `de
 	(21, 'Transport Terminal', 1, '2022-08-18 23:23:32', '2022-08-18 23:26:29', NULL);
 
 -- Dumping structure for table prestige.brands
+DROP TABLE IF EXISTS `brands`;
 CREATE TABLE IF NOT EXISTS `brands` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned DEFAULT NULL,
@@ -144,12 +145,12 @@ CREATE TABLE IF NOT EXISTS `brands` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brands: ~2 rows (approximately)
-DELETE FROM `brands`;
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 18, 'Batchoy House', 'Your bowl of happiness', 'uploads/media/brand/2-Hands-Massage.jpg', 1, '2022-08-25 18:59:55', '2022-08-30 02:24:11', NULL),
 	(2, 17, 'Max', 'this is a test', 'uploads/media/brand/7f000001-94b7-f905.jpg', 1, '2022-08-30 01:08:54', '2022-08-30 01:08:54', NULL);
 
 -- Dumping structure for table prestige.brand_products_promos
+DROP TABLE IF EXISTS `brand_products_promos`;
 CREATE TABLE IF NOT EXISTS `brand_products_promos` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `brand_id` bigint(20) unsigned DEFAULT NULL,
@@ -172,7 +173,6 @@ CREATE TABLE IF NOT EXISTS `brand_products_promos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brand_products_promos: ~4 rows (approximately)
-DELETE FROM `brand_products_promos`;
 INSERT INTO `brand_products_promos` (`id`, `brand_id`, `name`, `descriptions`, `type`, `thumbnail`, `image_url`, `date_from`, `date_to`, `sequence`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'Product 1', 'this is a test', 'product', 'uploads/media/brand/products/3D2GO.jpg', 'uploads/media/brand/products/7f000001-8db6-ce0f.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-08-30 00:17:43', '2022-08-30 01:02:06', NULL),
 	(2, 1, 'Product 2', 'this is a test', 'product', 'uploads/media/brand/products/7f000001-8c12-101b.jpg', 'uploads/media/brand/products/7f000001-8fe7-e03f.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-08-30 01:03:57', '2022-08-30 01:04:19', NULL),
@@ -180,6 +180,7 @@ INSERT INTO `brand_products_promos` (`id`, `brand_id`, `name`, `descriptions`, `
 	(4, 2, 'ADmin test', 'this is atest test', 'product', 'uploads/media/brand/products/70c97a81-b63f-a156.jpg', 'uploads/media/brand/products/70c97a81-b6f7-1b9c.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-08-30 02:11:10', '2022-08-30 02:25:39', NULL);
 
 -- Dumping structure for table prestige.brand_supplementals
+DROP TABLE IF EXISTS `brand_supplementals`;
 CREATE TABLE IF NOT EXISTS `brand_supplementals` (
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `supplemental_id` bigint(20) unsigned DEFAULT NULL,
@@ -190,7 +191,6 @@ CREATE TABLE IF NOT EXISTS `brand_supplementals` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brand_supplementals: ~6 rows (approximately)
-DELETE FROM `brand_supplementals`;
 INSERT INTO `brand_supplementals` (`brand_id`, `supplemental_id`) VALUES
 	(1, 3),
 	(1, 4),
@@ -200,6 +200,7 @@ INSERT INTO `brand_supplementals` (`brand_id`, `supplemental_id`) VALUES
 	(2, 9);
 
 -- Dumping structure for table prestige.brand_tags
+DROP TABLE IF EXISTS `brand_tags`;
 CREATE TABLE IF NOT EXISTS `brand_tags` (
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `tag_id` bigint(20) unsigned DEFAULT NULL,
@@ -210,7 +211,6 @@ CREATE TABLE IF NOT EXISTS `brand_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.brand_tags: ~5 rows (approximately)
-DELETE FROM `brand_tags`;
 INSERT INTO `brand_tags` (`brand_id`, `tag_id`) VALUES
 	(1, 3),
 	(1, 44),
@@ -219,67 +219,246 @@ INSERT INTO `brand_tags` (`brand_id`, `tag_id`) VALUES
 	(2, 349);
 
 -- Dumping structure for table prestige.categories
+DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` bigint(20) unsigned DEFAULT NULL,
+  `supplemental_category_id` bigint(20) unsigned DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descriptions` mediumtext COLLATE utf8mb4_unicode_ci,
-  `kiosk_image_primary` mediumtext COLLATE utf8mb4_unicode_ci,
-  `kiosk_image_top` mediumtext COLLATE utf8mb4_unicode_ci,
-  `online_image_primary` mediumtext COLLATE utf8mb4_unicode_ci,
-  `online_image_top` mediumtext COLLATE utf8mb4_unicode_ci,
+  `class_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category_type` smallint(6) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `categories_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.categories: ~36 rows (approximately)
-DELETE FROM `categories`;
-INSERT INTO `categories` (`id`, `parent_id`, `name`, `descriptions`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 0, 'Fashion', 'Fashion', 'uploads/media/category/Fashion.png', NULL, NULL, NULL, 1, '2022-08-17 22:58:17', '2022-08-17 23:03:05', NULL),
-	(2, 0, 'Food', 'Food', 'uploads/media/category/Food.png', NULL, NULL, NULL, 1, '2022-08-17 22:58:23', '2022-08-17 23:03:11', NULL),
-	(3, 0, 'Function', 'Function', 'uploads/media/category/Function.png', NULL, NULL, NULL, 1, '2022-08-17 22:58:30', '2022-08-17 23:03:18', NULL),
-	(4, 0, 'Consumer Electronics', 'Consumer Electronics', 'uploads/media/category/Consumer-Electronics.png', NULL, NULL, NULL, 1, '2022-08-17 22:58:36', '2022-08-17 23:03:26', NULL),
-	(5, 0, 'Essentials & Novelties', 'Essentials & Novelties', 'uploads/media/category/Finds.png', NULL, NULL, NULL, 1, '2022-08-17 22:58:42', '2022-08-17 23:05:43', NULL),
-	(6, 0, 'Industries', 'Industries', NULL, NULL, NULL, NULL, 0, '2022-08-17 22:58:47', '2022-08-17 23:23:15', NULL),
-	(7, 0, 'Amenities', 'Amenities', NULL, NULL, NULL, NULL, 0, '2022-08-17 22:58:53', '2022-08-17 23:23:22', NULL),
-	(8, 1, 'Clothing', 'Clothing', 'uploads/media/category/Clothing.png', 'uploads/media/category/strips/Clothing.png', NULL, NULL, 1, '2022-08-17 23:27:20', '2022-08-18 00:06:57', NULL),
-	(9, 1, 'Accessories', 'Accessories', 'uploads/media/category/Accessories.png', 'uploads/media/category/strips/Accessories.png', NULL, NULL, 1, '2022-08-17 23:27:32', '2022-08-18 00:06:20', NULL),
-	(10, 1, 'Active Lifestyle', 'Active Lifestyle', 'uploads/media/category/Active-Lifestyle.png', 'uploads/media/category/strips/Active-Lifestyle.png', NULL, NULL, 1, '2022-08-17 23:27:49', '2022-08-18 00:06:34', NULL),
-	(11, 1, 'Bags & Footwear', 'Bags & Footwear', 'uploads/media/category/Bags-&-Footwear.png', 'uploads/media/category/strips/Bags-and-Footwear.png', NULL, NULL, 1, '2022-08-17 23:28:36', '2022-08-18 00:06:42', NULL),
-	(12, 1, 'Children\'s Wear', 'Children\'s Wear', 'uploads/media/category/Childrens-Wear.png', 'uploads/media/category/strips/Childrens-Wear.png', NULL, NULL, 1, '2022-08-17 23:28:47', '2022-08-18 00:06:51', NULL),
-	(13, 2, 'Pastries, Desserts and Beverages', 'Pastries, Desserts and Beverages', 'uploads/media/category/Pastries.png', 'uploads/media/category/strips/Pastries.png', NULL, NULL, 1, '2022-08-17 23:32:03', '2022-08-18 00:07:57', NULL),
-	(14, 2, 'Quick Serve', 'Quick Serve', 'uploads/media/category/Quick-Serve.png', 'uploads/media/category/strips/Quick-Serve.png', NULL, NULL, 1, '2022-08-17 23:32:15', '2022-08-18 00:07:16', NULL),
-	(15, 2, 'Food Court', 'Food Court', 'uploads/media/category/Food-Court.png', 'uploads/media/category/strips/Food-Court.png', NULL, NULL, 1, '2022-08-17 23:32:24', '2022-08-18 00:07:24', NULL),
-	(16, 2, 'Novelty Food & Drinks', 'Novelty Food & Drinks', 'uploads/media/category/Novelty.png', 'uploads/media/category/strips/Novelty.png', NULL, NULL, 1, '2022-08-17 23:32:37', '2022-08-18 00:07:32', NULL),
-	(17, 2, 'Casual Dining', 'Casual Dining', 'uploads/media/category/Casual-Dining.png', 'uploads/media/category/strips/Casual-Dining.png', NULL, NULL, 1, '2022-08-17 23:32:48', '2022-08-18 00:07:39', NULL),
-	(18, 2, 'Food Hall', 'Food Hall', 'uploads/media/category/Food-Hall.png', 'uploads/media/category/strips/Food-Hall.png', NULL, NULL, 1, '2022-08-17 23:32:57', '2022-08-18 00:07:47', NULL),
-	(19, 3, 'Banks', 'Banks', 'uploads/media/category/Banks.png', 'uploads/media/category/strips/Banks.png', NULL, NULL, 1, '2022-08-17 23:39:43', '2022-08-18 00:08:20', NULL),
-	(20, 3, 'Business, Supplies & Service Centers', 'Business, Supplies & Service Centers', 'uploads/media/category/Business.png', 'uploads/media/category/strips/Business.png', NULL, NULL, 1, '2022-08-17 23:39:51', '2022-08-18 00:08:27', NULL),
-	(21, 3, 'Government Services', 'Government Services', 'uploads/media/category/Government.png', 'uploads/media/category/strips/Government.png', NULL, NULL, 1, '2022-08-17 23:39:58', '2022-08-18 00:08:33', NULL),
-	(22, 3, 'Health & Beauty Services', 'Health & Beauty Services', 'uploads/media/category/Health.png', 'uploads/media/category/strips/Health.png', NULL, NULL, 1, '2022-08-17 23:40:04', '2022-08-18 00:08:44', NULL),
-	(23, 3, 'Wellness Centers', 'Wellness Centers', 'uploads/media/category/Wellness.png', 'uploads/media/category/strips/Wellness.png', NULL, NULL, 1, '2022-08-17 23:40:13', '2022-08-18 00:08:53', NULL),
-	(24, 3, 'Pet Services', 'Pet Services', 'uploads/media/category/Pet.png', 'uploads/media/category/strips/Pet.png', NULL, NULL, 1, '2022-08-17 23:40:20', '2022-08-18 00:09:00', NULL),
-	(25, 4, 'Computers & Telecommunications', 'Computers & Telecommunications', 'uploads/media/category/Computers-&-Telecommunications.png', 'uploads/media/category/strips/Computers-&-Telecommunications.png', NULL, NULL, 1, '2022-08-17 23:48:50', '2022-08-18 00:09:26', NULL),
-	(26, 4, 'Photography, Print & Photo Services', 'Photography, Print & Photo Services', 'uploads/media/category/Photography,-Print-&-Photo-Services.png', 'uploads/media/category/strips/Photography,-Print-&-Photo-Services.png', NULL, NULL, 1, '2022-08-17 23:49:01', '2022-08-18 00:09:35', NULL),
-	(27, 4, 'Appliance Stores', 'Appliance Stores', 'uploads/media/category/Appliance-Stores.png', 'uploads/media/category/strips/Appliance-Stores.png', NULL, NULL, 1, '2022-08-17 23:49:10', '2022-08-18 00:09:43', NULL),
-	(28, 5, 'Amusement & Exhibitions', 'Amusement & Exhibitions', 'uploads/media/category/Amusement-&-Exhibitions.png', 'uploads/media/category/strips/Amusement-&-Exhibitions.png', NULL, NULL, 1, '2022-08-17 23:55:16', '2022-08-18 00:09:59', NULL),
-	(29, 5, 'Auto Supplies & Accessories', 'Auto Supplies & Accessories', 'uploads/media/category/Auto-Supplies-&-Accessories.png', 'uploads/media/category/strips/Auto-Supplies-&-Accessories.png', NULL, NULL, 1, '2022-08-17 23:55:27', '2022-08-18 00:10:06', NULL),
-	(30, 5, 'Department Stores and Supermarkets', 'Department Stores and Supermarkets', 'uploads/media/category/Department-Stores-&-Supermarket.png', 'uploads/media/category/strips/Department-Stores-&-Supermarket.png', NULL, NULL, 1, '2022-08-17 23:55:37', '2022-08-18 00:10:11', NULL),
-	(31, 5, 'Hobbies & Novelties', 'Hobbies & Novelties', 'uploads/media/category/Hobbies-&-Novelties.png', 'uploads/media/category/strips/Hobbies-&-Novelties.png', NULL, NULL, 1, '2022-08-17 23:55:46', '2022-08-18 00:10:18', NULL),
-	(32, 5, 'Home & Gardening', 'Home & Gardening', 'uploads/media/category/Home-&-Gardening.png', 'uploads/media/category/strips/Home-&-Gardening.png', NULL, NULL, 1, '2022-08-17 23:56:00', '2022-08-18 00:10:24', NULL),
-	(33, 5, 'Media & Music', 'Media & Music', 'uploads/media/category/Media-&-Music.png', 'uploads/media/category/strips/Media-&-Music.png', NULL, NULL, 1, '2022-08-17 23:56:10', '2022-08-18 00:10:31', NULL),
-	(34, 5, 'Personal Care & Drug', 'Personal Care & Drug', 'uploads/media/category/Personal-Care-&-Drug.png', 'uploads/media/category/strips/Personal-Care-&-Drug.png', NULL, NULL, 1, '2022-08-17 23:56:20', '2022-08-18 00:10:37', NULL),
-	(35, 5, 'School & Office Supplies', 'School & Office Supplies', 'uploads/media/category/School-&-Office-Supplies.png', 'uploads/media/category/strips/School-&-Office-Supplies.png', NULL, NULL, 1, '2022-08-17 23:56:31', '2022-08-18 00:26:16', NULL),
-	(36, 5, 'Sporting Goods', 'Sporting Goods', 'uploads/media/category/Sporting-Goods.png', 'uploads/media/category/strips/Sporting-Goods.png', NULL, NULL, 1, '2022-08-17 23:56:41', '2022-09-15 23:44:44', NULL);
+-- Dumping data for table prestige.categories: ~214 rows (approximately)
+INSERT INTO `categories` (`id`, `parent_id`, `supplemental_category_id`, `name`, `descriptions`, `class_name`, `category_type`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, NULL, NULL, 'Food', 'Food', 'food', 1, 1, '2022-10-18 00:09:09', '2022-10-18 00:09:09', NULL),
+	(2, NULL, NULL, 'Fashion', 'Fashion', 'fashion', 1, 1, '2022-10-18 00:09:54', '2022-10-18 00:09:54', NULL),
+	(3, NULL, NULL, 'Consumer Electronics', 'Consumer Electronics', 'electronics', 1, 1, '2022-10-18 00:20:47', '2022-10-18 00:20:47', NULL),
+	(4, NULL, NULL, 'Function', 'Function', 'function', 1, 1, '2022-10-18 00:21:24', '2022-10-18 00:21:24', NULL),
+	(5, NULL, NULL, 'Finds', 'Finds', 'finds', 1, 1, '2022-10-18 00:22:25', '2022-10-18 00:22:25', NULL),
+	(6, 1, NULL, 'Casual Dining', 'Casual Dining', NULL, 1, 1, '2022-10-18 00:29:35', '2022-10-18 00:29:35', NULL),
+	(7, 1, NULL, 'Food Court', 'Food Court', NULL, 1, 1, '2022-10-18 00:29:58', '2022-10-18 00:29:58', NULL),
+	(8, 1, NULL, 'Food Hall', 'Food Hall', NULL, 1, 1, '2022-10-18 00:30:14', '2022-10-18 00:30:14', NULL),
+	(9, 1, NULL, 'Novelty Food & Drinks', 'Novelty Food & Drinks', NULL, 1, 1, '2022-10-18 00:30:41', '2022-10-18 00:30:41', NULL),
+	(10, 1, NULL, 'Pastries, Desserts and Beverages', 'Pastries, Desserts and Beverages', NULL, 1, 1, '2022-10-18 00:30:56', '2022-10-18 00:30:56', NULL),
+	(11, 1, NULL, 'Quick Serve', 'Quick Serve', NULL, 1, 1, '2022-10-18 00:31:13', '2022-10-18 00:31:13', NULL),
+	(12, 2, NULL, 'Accessories', 'Accessories', NULL, 1, 1, '2022-10-18 00:31:51', '2022-10-18 00:31:51', NULL),
+	(13, 2, NULL, 'Active Lifestyle', 'Active Lifestyle', NULL, 1, 1, '2022-10-18 00:32:05', '2022-10-18 00:32:05', NULL),
+	(14, 2, NULL, 'Bags & Footwear', 'Bags & Footwear', NULL, 1, 1, '2022-10-18 00:32:20', '2022-10-18 00:32:20', NULL),
+	(15, 2, NULL, 'Children\'s Wear', 'Children\'s Wear', NULL, 1, 1, '2022-10-18 00:32:37', '2022-10-18 00:32:37', NULL),
+	(16, 2, NULL, 'Clothing', 'Clothing', NULL, 1, 1, '2022-10-18 00:32:50', '2022-10-18 00:32:50', NULL),
+	(17, 3, NULL, 'Appliance Stores', 'Appliance Stores', NULL, 1, 1, '2022-10-18 00:33:28', '2022-10-18 00:33:28', NULL),
+	(18, 3, NULL, 'Computers & Telecommunications', 'Computers & Telecommunications', NULL, 1, 1, '2022-10-18 00:33:37', '2022-10-18 00:33:37', NULL),
+	(19, 3, NULL, 'Photography, Print & Photo Services', 'Photography, Print & Photo Services', NULL, 1, 1, '2022-10-18 00:33:50', '2022-10-18 00:33:50', NULL),
+	(20, 4, NULL, 'Banks', 'Banks', NULL, 1, 1, '2022-10-18 00:35:39', '2022-10-18 00:35:39', NULL),
+	(21, 4, NULL, 'Business, Supplies & Service Centers', 'Business, Supplies & Service Centers', NULL, 1, 1, '2022-10-18 00:35:50', '2022-10-18 00:35:50', NULL),
+	(22, 4, NULL, 'Government Services', 'Government Services', NULL, 1, 1, '2022-10-18 00:36:00', '2022-10-18 00:36:00', NULL),
+	(23, 4, NULL, 'Health & Beauty Services', 'Health & Beauty Services', NULL, 1, 1, '2022-10-18 00:36:09', '2022-10-18 00:36:09', NULL),
+	(24, 4, NULL, 'Pet Services', 'Pet Services', NULL, 1, 1, '2022-10-18 00:36:24', '2022-10-18 00:36:24', NULL),
+	(25, 4, NULL, 'Wellness Centers', 'Wellness Centers', NULL, 1, 1, '2022-10-18 00:36:37', '2022-10-18 00:36:37', NULL),
+	(26, 5, NULL, 'Amusement & Exhibitions', 'Amusement & Exhibitions', NULL, 1, 1, '2022-10-18 00:37:01', '2022-10-18 00:37:01', NULL),
+	(27, 5, NULL, 'Auto Supplies & Accessories', 'Auto Supplies & Accessories', NULL, 1, 1, '2022-10-18 00:37:11', '2022-10-18 00:37:11', NULL),
+	(28, 5, NULL, 'Department Stores and Supermarkets', 'Department Stores and Supermarkets', NULL, 1, 1, '2022-10-18 00:37:21', '2022-10-18 00:37:21', NULL),
+	(29, 5, NULL, 'Hobbies & Novelties', 'Hobbies & Novelties', NULL, 1, 1, '2022-10-18 00:37:30', '2022-10-18 00:37:30', NULL),
+	(30, 5, NULL, 'Home & Gardening', 'Home & Gardening', NULL, 1, 1, '2022-10-18 00:37:41', '2022-10-18 00:37:41', NULL),
+	(31, 5, NULL, 'Media & Music', 'Media & Music', NULL, 1, 1, '2022-10-18 00:37:55', '2022-10-18 00:37:55', NULL),
+	(32, 5, NULL, 'Personal Care & Drug', 'Personal Care & Drug', NULL, 1, 1, '2022-10-18 00:38:06', '2022-10-18 00:38:06', NULL),
+	(33, 5, NULL, 'School & Office Supplies', 'School & Office Supplies', NULL, 1, 1, '2022-10-18 00:38:16', '2022-10-18 00:38:16', NULL),
+	(34, 5, NULL, 'Sporting Goods', 'Sporting Goods', NULL, 1, 1, '2022-10-18 00:38:30', '2022-10-18 00:38:30', NULL),
+	(35, NULL, 1, 'Cravings', 'Cravings', NULL, 2, 1, '2022-10-18 17:45:28', '2022-10-18 17:45:28', NULL),
+	(36, NULL, 2, 'Trends', 'Trends', NULL, 2, 1, '2022-10-18 17:48:19', '2022-10-18 17:48:19', NULL),
+	(37, NULL, 3, 'Latest', 'Latest', NULL, 2, 1, '2022-10-18 17:48:41', '2022-10-18 17:48:41', NULL),
+	(38, NULL, 4, 'Services', 'Services', NULL, 2, 1, '2022-10-18 17:48:58', '2022-10-18 17:48:58', NULL),
+	(39, NULL, 5, 'Goodies', 'Goodies', NULL, 2, 1, '2022-10-18 17:49:15', '2022-10-18 17:49:15', NULL),
+	(40, 35, NULL, 'American', 'American', NULL, 2, 1, '2022-10-18 17:50:25', '2022-10-18 17:50:25', NULL),
+	(41, 35, NULL, 'Asian', 'Asian', NULL, 2, 1, '2022-10-18 17:50:55', '2022-10-18 17:50:55', NULL),
+	(42, 35, NULL, 'Baby Back Ribs', 'Baby Back Ribs', NULL, 2, 1, '2022-10-18 17:51:06', '2022-10-18 17:51:06', NULL),
+	(43, 35, NULL, 'Barbecue', 'Barbecue', NULL, 2, 1, '2022-10-18 17:51:16', '2022-10-18 17:51:16', NULL),
+	(44, 35, NULL, 'Beef', 'Beef', NULL, 2, 1, '2022-10-18 17:51:28', '2022-10-18 17:51:28', NULL),
+	(45, 35, NULL, 'Bread', 'Bread', NULL, 2, 1, '2022-10-18 17:51:39', '2022-10-18 17:51:39', NULL),
+	(46, 35, NULL, 'Burger', 'Burger', NULL, 2, 1, '2022-10-18 17:52:01', '2022-10-18 17:52:01', NULL),
+	(47, 35, NULL, 'Cake', 'Cake', NULL, 2, 1, '2022-10-18 17:52:25', '2022-10-18 17:52:25', NULL),
+	(48, 35, NULL, 'Chicken', 'Chicken', NULL, 2, 1, '2022-10-18 17:52:34', '2022-10-18 17:52:34', NULL),
+	(49, 35, NULL, 'Chinese', 'Chinese', NULL, 2, 1, '2022-10-18 17:52:45', '2022-10-18 17:52:45', NULL),
+	(50, 35, NULL, 'Coffee', 'Coffee', NULL, 2, 1, '2022-10-18 17:53:06', '2022-10-18 17:53:06', NULL),
+	(51, 35, NULL, 'Dim Sum', 'Dim Sum', NULL, 2, 1, '2022-10-18 17:53:24', '2022-10-18 17:53:24', NULL),
+	(52, 35, NULL, 'Donut', 'Donut', NULL, 2, 1, '2022-10-18 17:53:39', '2022-10-18 17:53:39', NULL),
+	(53, 35, NULL, 'European', 'European', NULL, 2, 1, '2022-10-18 17:58:29', '2022-10-18 17:58:29', NULL),
+	(54, 35, NULL, 'Filipino', 'Filipino', NULL, 2, 1, '2022-10-18 17:58:41', '2022-10-18 17:58:41', NULL),
+	(55, 35, NULL, 'French', 'French', NULL, 2, 1, '2022-10-18 18:13:35', '2022-10-18 18:13:35', NULL),
+	(56, 35, NULL, 'Grilled', 'Grilled', NULL, 2, 1, '2022-10-18 18:13:46', '2022-10-18 18:13:46', NULL),
+	(57, 35, NULL, 'Halal', 'Halal', NULL, 2, 1, '2022-10-18 18:13:57', '2022-10-18 18:13:57', NULL),
+	(58, 35, NULL, 'Ice Cream', 'Ice Cream', NULL, 2, 1, '2022-10-18 18:14:10', '2022-10-18 18:14:10', NULL),
+	(59, 35, NULL, 'Indian', 'Indian', NULL, 2, 1, '2022-10-18 18:16:02', '2022-10-18 18:16:02', NULL),
+	(60, 35, NULL, 'Italian', 'Italian', NULL, 2, 1, '2022-10-18 18:16:12', '2022-10-18 18:16:12', NULL),
+	(61, 35, NULL, 'Japanese', 'Japanese', NULL, 2, 1, '2022-10-18 18:19:43', '2022-10-18 18:19:43', NULL),
+	(62, 35, NULL, 'Juices & Shakes', 'Juices & Shakes', NULL, 2, 1, '2022-10-18 18:19:53', '2022-10-18 18:19:53', NULL),
+	(63, 35, NULL, 'Korean', 'Korean', NULL, 2, 1, '2022-10-18 18:20:02', '2022-10-18 18:20:02', NULL),
+	(64, 35, NULL, 'Lechon', 'Lechon', NULL, 2, 1, '2022-10-18 18:20:13', '2022-10-18 18:20:13', NULL),
+	(65, 35, NULL, 'Liquor', 'Liquor', NULL, 2, 1, '2022-10-18 18:20:23', '2022-10-18 18:20:23', NULL),
+	(66, 35, NULL, 'Mediterranean', 'Mediterranean', NULL, 2, 1, '2022-10-18 18:20:33', '2022-10-18 18:20:33', NULL),
+	(67, 35, NULL, 'Merienda', 'Merienda', NULL, 2, 1, '2022-10-18 18:27:17', '2022-10-18 18:27:17', NULL),
+	(68, 35, NULL, 'Mexican', 'Mexican', NULL, 2, 1, '2022-10-18 18:27:26', '2022-10-18 18:27:26', NULL),
+	(69, 35, NULL, 'Milktea', 'Milktea', NULL, 2, 1, '2022-10-18 18:27:36', '2022-10-18 18:27:36', NULL),
+	(70, 35, NULL, 'Noodles', 'Noodles', NULL, 2, 1, '2022-10-18 18:27:54', '2022-10-18 18:27:54', NULL),
+	(71, 35, NULL, 'Pasta', 'Pasta', NULL, 2, 1, '2022-10-18 18:28:02', '2022-10-18 18:28:02', NULL),
+	(72, 35, NULL, 'Pizza', 'Pizza', NULL, 2, 1, '2022-10-18 18:28:13', '2022-10-18 18:28:13', NULL),
+	(73, 35, NULL, 'Pork', 'Pork', NULL, 2, 1, '2022-10-18 18:28:23', '2022-10-18 18:28:23', NULL),
+	(74, 35, NULL, 'Roasted', 'Roasted', NULL, 2, 1, '2022-10-18 18:28:32', '2022-10-18 18:28:32', NULL),
+	(75, 35, NULL, 'Sandwich', 'Sandwich', NULL, 2, 1, '2022-10-18 18:28:41', '2022-10-18 18:28:41', NULL),
+	(76, 35, NULL, 'Seafood', 'Seafood', NULL, 2, 1, '2022-10-18 18:28:56', '2022-10-18 18:28:56', NULL),
+	(77, 35, NULL, 'Singaporean', 'Singaporean', NULL, 2, 1, '2022-10-18 18:29:04', '2022-10-18 18:29:04', NULL),
+	(78, 35, NULL, 'Sisig', 'Sisig', NULL, 2, 1, '2022-10-18 18:29:14', '2022-10-18 18:29:14', NULL),
+	(79, 35, NULL, 'Soup', 'Soup', NULL, 2, 1, '2022-10-18 18:29:24', '2022-10-18 18:29:24', NULL),
+	(80, 35, NULL, 'Spanish', 'Spanish', NULL, 2, 1, '2022-10-18 18:42:08', '2022-10-18 18:42:08', NULL),
+	(81, 35, NULL, 'Steak', 'Steak', NULL, 2, 1, '2022-10-18 18:42:20', '2022-10-18 18:42:20', NULL),
+	(82, 35, NULL, 'Sushi', 'Sushi', NULL, 2, 1, '2022-10-18 18:42:31', '2022-10-18 18:42:31', NULL),
+	(83, 35, NULL, 'Thai', 'Thai', NULL, 2, 1, '2022-10-18 18:42:40', '2022-10-18 18:42:40', NULL),
+	(84, 35, NULL, 'Vegetarian', 'Vegetarian', NULL, 2, 1, '2022-10-18 18:42:49', '2022-10-18 18:42:49', NULL),
+	(85, 35, NULL, 'Vietnamese', 'Vietnamese', NULL, 2, 1, '2022-10-18 18:42:59', '2022-10-18 18:42:59', NULL),
+	(86, 36, NULL, 'Activewear', 'Activewear', NULL, 2, 1, '2022-10-18 18:53:57', '2022-10-18 18:53:57', NULL),
+	(87, 36, NULL, 'Backpack', 'Backpack', NULL, 2, 1, '2022-10-18 18:54:06', '2022-10-18 18:54:06', NULL),
+	(88, 36, NULL, 'Bags', 'Bags', NULL, 2, 1, '2022-10-18 18:54:24', '2022-10-18 18:54:24', NULL),
+	(89, 36, NULL, 'Belt', 'Belt', NULL, 2, 1, '2022-10-18 18:54:34', '2022-10-18 18:54:34', NULL),
+	(90, 36, NULL, 'Boots', 'Boots', NULL, 2, 1, '2022-10-18 18:54:42', '2022-10-18 18:54:42', NULL),
+	(91, 36, NULL, 'Business Attire', 'Business Attire', NULL, 2, 1, '2022-10-18 18:54:51', '2022-10-18 18:54:51', NULL),
+	(92, 36, NULL, 'Casual', 'Casual', NULL, 2, 1, '2022-10-18 18:55:05', '2022-10-18 18:55:05', NULL),
+	(93, 36, NULL, 'Coat & Tie', 'Coat & Tie', NULL, 2, 1, '2022-10-18 18:55:14', '2022-10-18 18:55:14', NULL),
+	(94, 36, NULL, 'Denim', 'Denim', NULL, 2, 1, '2022-10-18 18:55:24', '2022-10-18 18:55:24', NULL),
+	(95, 36, NULL, 'Designer', 'Designer', NULL, 2, 1, '2022-10-18 18:55:34', '2022-10-18 18:55:34', NULL),
+	(96, 36, NULL, 'Dress', 'Dress', NULL, 2, 1, '2022-10-18 18:55:45', '2022-10-18 18:55:45', NULL),
+	(97, 36, NULL, 'Eyewear', 'Eyewear', NULL, 2, 1, '2022-10-18 18:56:00', '2022-10-18 18:56:00', NULL),
+	(98, 36, NULL, 'Flats', 'Flats', NULL, 2, 1, '2022-10-18 18:56:13', '2022-10-18 18:56:13', NULL),
+	(99, 36, NULL, 'Flip Flops', 'Flip Flops', NULL, 2, 1, '2022-10-18 18:56:22', '2022-10-18 18:56:22', NULL),
+	(100, 36, NULL, 'Formal', 'Formal', NULL, 2, 1, '2022-10-18 18:56:33', '2022-10-18 18:56:33', NULL),
+	(101, 36, NULL, 'Gown', 'Gown', NULL, 2, 1, '2022-10-18 18:56:49', '2022-10-18 18:56:49', NULL),
+	(102, 36, NULL, 'Headwear', 'Headwear', NULL, 2, 1, '2022-10-18 18:56:58', '2022-10-18 18:56:58', NULL),
+	(103, 36, NULL, 'Heels', 'Heels', NULL, 2, 1, '2022-10-18 18:57:07', '2022-10-18 18:57:07', NULL),
+	(104, 36, NULL, 'Jackets & Coats', 'Jackets & Coats', NULL, 2, 1, '2022-10-18 18:57:17', '2022-10-18 18:57:17', NULL),
+	(105, 36, NULL, 'Jewelry', 'Jewelry', NULL, 2, 1, '2022-10-18 18:57:34', '2022-10-18 18:57:34', NULL),
+	(106, 36, NULL, 'Laptop Bags', 'Laptop Bags', NULL, 2, 1, '2022-10-18 18:57:44', '2022-10-18 18:57:44', NULL),
+	(107, 36, NULL, 'Maternity', 'Maternity', NULL, 2, 1, '2022-10-18 18:57:54', '2022-10-18 18:57:54', NULL),
+	(108, 36, NULL, 'Pants', 'Pants', NULL, 2, 1, '2022-10-18 18:58:06', '2022-10-18 18:58:06', NULL),
+	(109, 36, NULL, 'Rubber Shoes', 'Rubber Shoes', NULL, 2, 1, '2022-10-18 18:58:16', '2022-10-18 18:58:16', NULL),
+	(110, 36, NULL, 'School Shoes', 'School Shoes', NULL, 2, 1, '2022-10-18 18:58:27', '2022-10-18 18:58:27', NULL),
+	(111, 36, NULL, 'Shoes', 'Shoes', NULL, 2, 1, '2022-10-18 18:58:35', '2022-10-18 18:58:35', NULL),
+	(112, 36, NULL, 'Sleepwear', 'Sleepwear', NULL, 2, 1, '2022-10-18 18:58:43', '2022-10-18 18:58:43', NULL),
+	(113, 36, NULL, 'Swimwear', 'Swimwear', NULL, 2, 1, '2022-10-18 18:59:03', '2022-10-18 18:59:03', NULL),
+	(114, 36, NULL, 'Top', 'Top', NULL, 2, 1, '2022-10-18 18:59:13', '2022-10-18 18:59:13', NULL),
+	(115, 36, NULL, 'Tote Bags', 'Tote Bags', NULL, 2, 1, '2022-10-18 18:59:24', '2022-10-18 18:59:24', NULL),
+	(116, 36, NULL, 'Travel Bags', 'Travel Bags', NULL, 2, 1, '2022-10-18 18:59:34', '2022-10-18 18:59:34', NULL),
+	(117, 36, NULL, 'Underwear', 'Underwear', NULL, 2, 1, '2022-10-18 18:59:43', '2022-10-18 18:59:43', NULL),
+	(118, 36, NULL, 'Watch', 'Watch', NULL, 2, 1, '2022-10-18 18:59:53', '2022-10-18 18:59:53', NULL),
+	(119, 37, NULL, 'AI Technology', 'AI Technology', NULL, 2, 1, '2022-10-18 19:02:12', '2022-10-18 19:02:12', NULL),
+	(120, 37, NULL, 'Appliances', 'Appliances', NULL, 2, 1, '2022-10-18 19:02:21', '2022-10-18 19:02:21', NULL),
+	(121, 37, NULL, 'Battery & Charger', 'Battery & Charger', NULL, 2, 1, '2022-10-18 19:02:31', '2022-10-18 19:02:31', NULL),
+	(122, 37, NULL, 'Cable Services', 'Cable Services', NULL, 2, 1, '2022-10-18 19:02:43', '2022-10-18 19:02:43', NULL),
+	(123, 37, NULL, 'Cables & Cords', 'Cables & Cords', NULL, 2, 1, '2022-10-18 19:02:51', '2022-10-18 19:02:51', NULL),
+	(124, 37, NULL, 'Camera & Webcam', 'Camera & Webcam', NULL, 2, 1, '2022-10-18 19:03:07', '2022-10-18 19:03:07', NULL),
+	(125, 37, NULL, 'Camera Accessories', 'Camera Accessories', NULL, 2, 1, '2022-10-18 19:03:19', '2022-10-18 19:03:19', NULL),
+	(126, 37, NULL, 'Computer', 'Computer', NULL, 2, 1, '2022-10-18 19:03:29', '2022-10-18 19:03:29', NULL),
+	(127, 37, NULL, 'Computer Accessories', 'Computer Accessories', NULL, 2, 1, '2022-10-18 19:03:38', '2022-10-18 19:03:38', NULL),
+	(128, 37, NULL, 'Cyberzone', 'Cyberzone', NULL, 2, 1, '2022-10-18 19:03:49', '2022-10-18 19:03:49', NULL),
+	(129, 37, NULL, 'Gadgets', 'Gadgets', NULL, 2, 1, '2022-10-18 19:03:58', '2022-10-18 19:03:58', NULL),
+	(130, 37, NULL, 'Games', 'Games', NULL, 2, 1, '2022-10-18 19:04:07', '2022-10-18 19:04:07', NULL),
+	(131, 37, NULL, 'Headsets', 'Headsets', NULL, 2, 1, '2022-10-18 19:04:17', '2022-10-18 19:04:17', NULL),
+	(132, 37, NULL, 'Household Appliances', 'Household Appliances', NULL, 2, 1, '2022-10-18 19:04:29', '2022-10-18 19:04:29', NULL),
+	(133, 37, NULL, 'Internet Café', 'Internet Café', NULL, 2, 1, '2022-10-18 19:04:40', '2022-10-18 19:04:40', NULL),
+	(134, 37, NULL, 'Internet Services', 'Internet Services', NULL, 2, 1, '2022-10-18 19:07:44', '2022-10-18 19:07:44', NULL),
+	(135, 37, NULL, 'Kitchen Appliances', 'Kitchen Appliances', NULL, 2, 1, '2022-10-18 19:07:52', '2022-10-18 19:07:52', NULL),
+	(136, 37, NULL, 'Large Appliances', 'Large Appliances', NULL, 2, 1, '2022-10-18 19:08:01', '2022-10-18 19:08:01', NULL),
+	(137, 37, NULL, 'Monopods & Tripods', 'Monopods & Tripods', NULL, 2, 1, '2022-10-18 19:08:14', '2022-10-18 19:08:14', NULL),
+	(138, 37, NULL, 'Office Appliances', 'Office Appliances', NULL, 2, 1, '2022-10-18 19:08:25', '2022-10-18 19:08:25', NULL),
+	(139, 37, NULL, 'Phone Accessories', 'Phone Accessories', NULL, 2, 1, '2022-10-18 19:08:35', '2022-10-18 19:08:35', NULL),
+	(140, 37, NULL, 'Photo Studio', 'Photo Studio', NULL, 2, 1, '2022-10-18 19:08:51', '2022-10-18 19:08:51', NULL),
+	(141, 37, NULL, 'Power Bank', 'Power Bank', NULL, 2, 1, '2022-10-18 19:08:59', '2022-10-18 19:08:59', NULL),
+	(142, 37, NULL, 'Printer & Scanner', 'Printer & Scanner', NULL, 2, 1, '2022-10-18 19:09:10', '2022-10-18 19:09:10', NULL),
+	(143, 37, NULL, 'Printing Services', 'Printing Services', NULL, 2, 1, '2022-10-18 19:09:26', '2022-10-18 19:09:26', NULL),
+	(144, 37, NULL, 'Rush ID', 'Rush ID', NULL, 2, 1, '2022-10-18 19:09:38', '2022-10-18 19:09:38', NULL),
+	(145, 37, NULL, 'Screen Protector & Cases', 'Screen Protector & Cases', NULL, 2, 1, '2022-10-18 19:10:21', '2022-10-18 19:10:21', NULL),
+	(146, 37, NULL, 'Service & Repair', 'Service & Repair', NULL, 2, 1, '2022-10-18 19:10:32', '2022-10-18 19:10:32', NULL),
+	(147, 37, NULL, 'Smartphone', 'Smartphone', NULL, 2, 1, '2022-10-18 19:10:41', '2022-10-18 19:10:41', NULL),
+	(148, 37, NULL, 'Smartwatch', 'Smartwatch', NULL, 2, 1, '2022-10-18 19:10:53', '2022-10-18 19:10:53', NULL),
+	(149, 37, NULL, 'Software', 'Software', NULL, 2, 1, '2022-10-18 19:11:06', '2022-10-18 19:11:06', NULL),
+	(150, 37, NULL, 'Speakers', 'Speakers', NULL, 2, 1, '2022-10-18 19:11:16', '2022-10-18 19:11:16', NULL),
+	(151, 37, NULL, 'Storage', 'Storage', NULL, 2, 1, '2022-10-18 19:11:25', '2022-10-18 19:11:25', NULL),
+	(152, 37, NULL, 'Tablet', 'Tablet', NULL, 2, 1, '2022-10-18 19:11:35', '2022-10-18 19:11:35', NULL),
+	(153, 37, NULL, 'Tablet Accessories', 'Tablet Accessories', NULL, 2, 1, '2022-10-18 19:11:45', '2022-10-18 19:11:45', NULL),
+	(154, 37, NULL, 'Telecommunication', 'Telecommunication', NULL, 2, 1, '2022-10-18 19:11:54', '2022-10-18 19:11:54', NULL),
+	(155, 37, NULL, 'Television', 'Television', NULL, 2, 1, '2022-10-18 19:12:04', '2022-10-18 19:12:04', NULL),
+	(156, 38, NULL, 'ATM', 'ATM', NULL, 2, 1, '2022-10-18 19:18:19', '2022-10-18 19:18:19', NULL),
+	(157, 38, NULL, 'Bag & Shoe Repair', 'Bag & Shoe Repair', NULL, 2, 1, '2022-10-18 19:18:30', '2022-10-18 19:18:30', NULL),
+	(158, 38, NULL, 'Banks', 'Banks', NULL, 2, 1, '2022-10-18 19:18:39', '2022-10-18 19:18:39', NULL),
+	(159, 38, NULL, 'Barbershop', 'Barbershop', NULL, 2, 1, '2022-10-18 19:18:48', '2022-10-18 19:18:48', NULL),
+	(160, 38, NULL, 'Bills Payment', 'Bills Payment', NULL, 2, 1, '2022-10-18 19:19:02', '2022-10-18 19:19:02', NULL),
+	(161, 38, NULL, 'Body Pamper', 'Body Pamper', NULL, 2, 1, '2022-10-18 19:20:39', '2022-10-18 19:20:39', NULL),
+	(162, 38, NULL, 'Courier & Freight', 'Courier & Freight', NULL, 2, 1, '2022-10-18 19:20:49', '2022-10-18 19:20:49', NULL),
+	(163, 38, NULL, 'Dental Clinics', 'Dental Clinics', NULL, 2, 1, '2022-10-18 19:21:01', '2022-10-18 19:21:01', NULL),
+	(164, 38, NULL, 'Dermatology Clinics', 'Dermatology Clinics', NULL, 2, 1, '2022-10-18 19:21:17', '2022-10-18 19:21:17', NULL),
+	(165, 38, NULL, 'Detoxify', 'Detoxify', NULL, 2, 1, '2022-10-18 19:21:31', '2022-10-18 19:21:31', NULL),
+	(166, 38, NULL, 'Facial Care', 'Facial Care', NULL, 2, 1, '2022-10-18 19:21:41', '2022-10-18 19:21:41', NULL),
+	(167, 38, NULL, 'Foreign Exchange', 'Foreign Exchange', NULL, 2, 1, '2022-10-18 19:21:50', '2022-10-18 19:21:50', NULL),
+	(168, 38, NULL, 'Gym & Fitness', 'Gym & Fitness', NULL, 2, 1, '2022-10-18 19:22:00', '2022-10-18 19:22:00', NULL),
+	(169, 38, NULL, 'Hair Removal', 'Hair Removal', NULL, 2, 1, '2022-10-18 19:22:09', '2022-10-18 19:22:09', NULL),
+	(170, 38, NULL, 'Hair Salon', 'Hair Salon', NULL, 2, 1, '2022-10-18 19:22:18', '2022-10-18 19:22:18', NULL),
+	(171, 38, NULL, 'Makeup', 'Makeup', NULL, 2, 1, '2022-10-18 19:22:29', '2022-10-18 19:22:29', NULL),
+	(172, 38, NULL, 'Medical Clinics', 'Medical Clinics', NULL, 2, 1, '2022-10-18 19:22:38', '2022-10-18 19:22:38', NULL),
+	(173, 38, NULL, 'Money Transfer', 'Money Transfer', NULL, 2, 1, '2022-10-18 19:22:47', '2022-10-18 19:22:47', NULL),
+	(174, 38, NULL, 'Nail Services', 'Nail Services', NULL, 2, 1, '2022-10-18 19:22:56', '2022-10-18 19:22:56', NULL),
+	(175, 38, NULL, 'Optical Clinics', 'Optical Clinics', NULL, 2, 1, '2022-10-18 19:23:08', '2022-10-18 19:23:08', NULL),
+	(176, 38, NULL, 'Pet Shop & Grooming', 'Pet Shop & Grooming', NULL, 2, 1, '2022-10-18 19:23:22', '2022-10-18 19:23:22', NULL),
+	(177, 38, NULL, 'Prescription Lens', 'Prescription Lens', NULL, 2, 1, '2022-10-18 19:23:31', '2022-10-18 19:23:31', NULL),
+	(178, 38, NULL, 'Real Estate', 'Real Estate', NULL, 2, 1, '2022-10-18 19:23:40', '2022-10-18 19:23:40', NULL),
+	(179, 38, NULL, 'School Services', 'School Services', NULL, 2, 1, '2022-10-18 19:23:49', '2022-10-18 19:23:49', NULL),
+	(180, 38, NULL, 'Slimming', 'Slimming', NULL, 2, 1, '2022-10-18 19:24:00', '2022-10-18 19:24:00', NULL),
+	(181, 38, NULL, 'Spa & Sauna', 'Spa & Sauna', NULL, 2, 1, '2022-10-18 19:24:10', '2022-10-18 19:24:10', NULL),
+	(182, 38, NULL, 'Tailoring Services', 'Tailoring Services', NULL, 2, 1, '2022-10-18 19:24:18', '2022-10-18 19:24:18', NULL),
+	(183, 38, NULL, 'Tattoo & Inking Services', 'Tattoo & Inking Services', NULL, 2, 1, '2022-10-18 19:24:39', '2022-10-18 19:24:39', NULL),
+	(184, 38, NULL, 'Travel Services', 'Travel Services', NULL, 2, 1, '2022-10-18 19:24:48', '2022-10-18 19:24:48', NULL),
+	(185, 38, NULL, 'Waxing Services', 'Waxing Services', NULL, 2, 1, '2022-10-18 19:24:57', '2022-10-18 19:24:57', NULL),
+	(186, 38, NULL, 'Wellness', 'Wellness', NULL, 2, 1, '2022-10-18 19:25:07', '2022-10-18 19:25:07', NULL),
+	(187, 38, NULL, 'Whitening', 'Whitening', NULL, 2, 1, '2022-10-18 19:25:15', '2022-10-18 19:25:15', NULL),
+	(188, 39, NULL, 'Art Gallery', 'Art Gallery', NULL, 2, 1, '2022-10-18 19:26:40', '2022-10-18 19:28:14', NULL),
+	(189, 39, NULL, 'Arts & Crafts', 'Arts & Crafts', NULL, 2, 1, '2022-10-18 19:26:49', '2022-10-18 19:28:26', NULL),
+	(190, 39, NULL, 'Bikes & Motorcycles', 'Bikes & Motorcycles', NULL, 2, 1, '2022-10-18 19:26:57', '2022-10-18 19:28:37', NULL),
+	(191, 39, NULL, 'Books & Learning Tools', 'Books & Learning Tools', NULL, 2, 1, '2022-10-18 19:27:05', '2022-10-18 19:28:51', NULL),
+	(192, 39, NULL, 'Car Accessories', 'Car Accessories', NULL, 2, 1, '2022-10-18 19:27:17', '2022-10-18 19:29:09', NULL),
+	(193, 39, NULL, 'Cars', 'Cars', NULL, 2, 1, '2022-10-18 19:27:26', '2022-10-18 19:29:20', NULL),
+	(194, 39, NULL, 'Cooking & Baking Needs', 'Cooking & Baking Needs', NULL, 2, 1, '2022-10-18 19:29:29', '2022-10-18 19:29:29', NULL),
+	(195, 39, NULL, 'Cosmetics', 'Cosmetics', NULL, 2, 1, '2022-10-18 19:29:38', '2022-10-18 19:29:38', NULL),
+	(196, 39, NULL, 'Entertainment', 'Entertainment', NULL, 2, 1, '2022-10-18 19:29:46', '2022-10-18 19:29:46', NULL),
+	(197, 39, NULL, 'Fashion Items', 'Fashion Items', NULL, 2, 1, '2022-10-18 19:33:11', '2022-10-18 19:33:11', NULL),
+	(198, 39, NULL, 'Gardening', 'Gardening', NULL, 2, 1, '2022-10-18 19:33:20', '2022-10-18 19:33:20', NULL),
+	(199, 39, NULL, 'Groceries', 'Groceries', NULL, 2, 1, '2022-10-18 19:33:28', '2022-10-18 19:33:28', NULL),
+	(200, 39, NULL, 'Hardware', 'Hardware', NULL, 2, 1, '2022-10-18 19:33:41', '2022-10-18 19:33:41', NULL),
+	(201, 39, NULL, 'Home Décor & Accessories', 'Home Décor & Accessories', NULL, 2, 1, '2022-10-18 19:33:50', '2022-10-18 19:33:50', NULL),
+	(202, 39, NULL, 'Home Furniture', 'Home Furniture', NULL, 2, 1, '2022-10-18 19:33:59', '2022-10-18 19:33:59', NULL),
+	(203, 39, NULL, 'Household Supplies', 'Household Supplies', NULL, 2, 1, '2022-10-18 19:34:09', '2022-10-18 19:34:09', NULL),
+	(204, 39, NULL, 'Medicine & Supplements', 'Medicine & Supplements', NULL, 2, 1, '2022-10-18 19:34:19', '2022-10-18 19:34:19', NULL),
+	(205, 39, NULL, 'Music & Video', 'Music & Video', NULL, 2, 1, '2022-10-18 19:34:27', '2022-10-18 19:34:27', NULL),
+	(206, 39, NULL, 'Novelty Items', 'Novelty Items', NULL, 2, 1, '2022-10-18 19:34:36', '2022-10-18 19:34:36', NULL),
+	(207, 39, NULL, 'Outdoor Activities', 'Outdoor Activities', NULL, 2, 1, '2022-10-18 19:34:49', '2022-10-18 19:34:49', NULL),
+	(208, 39, NULL, 'Playzone', 'Playzone', NULL, 2, 1, '2022-10-18 19:34:59', '2022-10-18 19:34:59', NULL),
+	(209, 39, NULL, 'Raw Foods', 'Raw Foods', NULL, 2, 1, '2022-10-18 19:35:09', '2022-10-18 19:35:09', NULL),
+	(210, 39, NULL, 'Religious Items', 'Religious Items', NULL, 2, 1, '2022-10-18 19:35:19', '2022-10-18 19:35:19', NULL),
+	(211, 39, NULL, 'School & Office Supplies', 'School & Office Supplies', NULL, 2, 1, '2022-10-18 19:35:28', '2022-10-18 19:35:28', NULL),
+	(212, 39, NULL, 'Showroom', 'Showroom', NULL, 2, 1, '2022-10-18 19:35:38', '2022-10-18 19:35:38', NULL),
+	(213, 39, NULL, 'Sporting Goods & Equipment', 'Sporting Goods & Equipment', NULL, 2, 1, '2022-10-18 19:35:47', '2022-10-18 19:35:47', NULL),
+	(214, 39, NULL, 'Toys & Games', 'Toys & Games', NULL, 2, 1, '2022-10-18 19:35:56', '2022-10-18 19:35:56', NULL);
 
 -- Dumping structure for table prestige.category_labels
+DROP TABLE IF EXISTS `category_labels`;
 CREATE TABLE IF NOT EXISTS `category_labels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned NOT NULL,
+  `company_id` bigint(20) unsigned NOT NULL,
   `site_id` bigint(20) unsigned NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -287,19 +466,17 @@ CREATE TABLE IF NOT EXISTS `category_labels` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `category_labels_category_id_foreign` (`category_id`),
+  KEY `category_labels_company_id_foreign` (`company_id`),
   KEY `category_labels_site_id_foreign` (`site_id`),
   CONSTRAINT `category_labels_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `category_labels_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `category_labels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.category_labels: ~2 rows (approximately)
-DELETE FROM `category_labels`;
-INSERT INTO `category_labels` (`id`, `category_id`, `site_id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(5, 36, 1, 'Sporting test', '2022-09-16 00:56:03', '2022-09-18 18:47:37', '2022-09-18 18:47:37'),
-	(6, 36, 2, 'Sporting Item', '2022-09-16 00:57:01', '2022-09-16 00:57:01', NULL),
-	(7, 36, 1, 'Active Lifestyle', '2022-09-18 18:47:57', '2022-09-18 18:47:57', NULL);
+-- Dumping data for table prestige.category_labels: ~0 rows (approximately)
 
 -- Dumping structure for table prestige.classifications
+DROP TABLE IF EXISTS `classifications`;
 CREATE TABLE IF NOT EXISTS `classifications` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -312,7 +489,6 @@ CREATE TABLE IF NOT EXISTS `classifications` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.classifications: ~6 rows (approximately)
-DELETE FROM `classifications`;
 INSERT INTO `classifications` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Site - Head Office', 1, '2022-08-18 22:41:16', '2022-08-18 22:42:31', NULL),
 	(2, 'Site - Local', 1, '2022-08-18 22:42:43', '2022-08-18 22:42:43', NULL),
@@ -321,7 +497,66 @@ INSERT INTO `classifications` (`id`, `name`, `active`, `created_at`, `updated_at
 	(5, 'Advertiser Franchisee', 1, '2022-08-18 22:43:06', '2022-08-18 22:43:06', NULL),
 	(6, 'Advertiser Agency', 1, '2022-08-18 22:43:14', '2022-08-18 22:43:14', NULL);
 
+-- Dumping structure for table prestige.companies
+DROP TABLE IF EXISTS `companies`;
+CREATE TABLE IF NOT EXISTS `companies` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `classification_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` mediumtext COLLATE utf8mb4_unicode_ci,
+  `tin` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `companies_classification_id_foreign` (`classification_id`),
+  CONSTRAINT `companies_classification_id_foreign` FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.companies: ~1 rows (approximately)
+INSERT INTO `companies` (`id`, `classification_id`, `name`, `address`, `tin`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 3, 'Jollibee Corp', 'this is a test', '32532453252345', 1, '2022-10-17 22:43:16', '2022-10-17 22:49:00', NULL);
+
+-- Dumping structure for table prestige.company_categories
+DROP TABLE IF EXISTS `company_categories`;
+CREATE TABLE IF NOT EXISTS `company_categories` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` bigint(20) unsigned DEFAULT NULL,
+  `category_id` bigint(20) unsigned DEFAULT NULL,
+  `sub_category_id` bigint(20) unsigned DEFAULT NULL,
+  `site_id` bigint(20) unsigned DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `kiosk_image_primary` mediumtext COLLATE utf8mb4_unicode_ci,
+  `kiosk_image_top` mediumtext COLLATE utf8mb4_unicode_ci,
+  `online_image_primary` mediumtext COLLATE utf8mb4_unicode_ci,
+  `online_image_top` mediumtext COLLATE utf8mb4_unicode_ci,
+  `mobile_image_primary` mediumtext COLLATE utf8mb4_unicode_ci,
+  `mobile_image_top` mediumtext COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `company_categories_company_id_foreign` (`company_id`),
+  KEY `company_categories_category_id_foreign` (`category_id`),
+  KEY `company_categories_sub_category_id_foreign` (`sub_category_id`),
+  KEY `company_categories_site_id_foreign` (`site_id`),
+  CONSTRAINT `company_categories_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `company_categories_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
+  CONSTRAINT `company_categories_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`),
+  CONSTRAINT `company_categories_sub_category_id_foreign` FOREIGN KEY (`sub_category_id`) REFERENCES `categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.company_categories: ~1 rows (approximately)
+INSERT INTO `company_categories` (`id`, `company_id`, `category_id`, `sub_category_id`, `site_id`, `active`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `mobile_image_primary`, `mobile_image_top`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, NULL, 1, NULL, NULL, 1, 'uploads/media/category/Food.png', '', NULL, NULL, NULL, NULL, '2022-10-19 01:42:09', '2022-10-19 17:45:32', NULL),
+	(2, NULL, 2, NULL, NULL, 1, 'uploads/media/category/Fashion.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:18:25', '2022-10-19 17:18:25', NULL),
+	(3, NULL, 3, NULL, NULL, 1, 'uploads/media/category/Consumer-Electronics.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:19:25', '2022-10-19 17:19:25', NULL),
+	(4, NULL, 4, NULL, NULL, 1, 'uploads/media/category/Function.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:19:46', '2022-10-19 17:19:46', NULL),
+	(5, NULL, 5, NULL, NULL, 1, 'uploads/media/category/Finds.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:20:06', '2022-10-19 17:20:06', NULL);
+
 -- Dumping structure for table prestige.failed_jobs
+DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -335,20 +570,19 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.failed_jobs: 0 rows
-DELETE FROM `failed_jobs`;
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.migrations
+DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.migrations: 18 rows
-DELETE FROM `migrations`;
+-- Dumping data for table prestige.migrations: 21 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(86, '2014_10_12_000000_create_users_table', 1),
@@ -360,7 +594,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(92, '2022_07_24_033711_create_modules_table', 1),
 	(94, '2022_07_24_034338_create_permissions_table', 2),
 	(96, '2022_08_11_021826_create_admin_roles_table', 3),
-	(103, '2022_08_15_065027_create_categories_table', 4),
+	(126, '2022_08_15_065027_create_categories_table', 18),
 	(104, '2022_08_19_015141_create_supplementals_table', 5),
 	(105, '2022_08_19_060557_create_classifications_table', 6),
 	(106, '2022_08_19_065434_create_amenities_table', 7),
@@ -368,10 +602,14 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(110, '2022_08_22_084625_create_brands_table', 9),
 	(121, '2022_09_05_022733_create_sites_table', 13),
 	(117, '2022_09_15_072641_create_category_labels_table', 11),
-	(118, '2022_09_15_090444_create_site_ads_table', 12);
+	(118, '2022_09_15_090444_create_site_ads_table', 12),
+	(123, '2022_10_18_032536_create_companies_table', 15),
+	(128, '2022_10_18_035933_create_company_categories_table', 19),
+	(125, '2022_10_18_035944_create_category_labels_table', 17);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.modules
+DROP TABLE IF EXISTS `modules`;
 CREATE TABLE IF NOT EXISTS `modules` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` bigint(20) unsigned DEFAULT NULL,
@@ -385,19 +623,18 @@ CREATE TABLE IF NOT EXISTS `modules` (
   PRIMARY KEY (`id`),
   KEY `modules_name_index` (`name`),
   KEY `modules_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~31 rows (approximately)
-DELETE FROM `modules`;
+-- Dumping data for table prestige.modules: ~33 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin Management', '#', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2022-08-08 01:26:43', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
 	(4, 1, 'Modules', '/admin/modules', 'nav-icon fas fa-link', 1, '2022-08-08 18:51:00', '2022-08-08 18:51:00', NULL),
-	(5, NULL, 'Users Management', '/admin/subscriber', 'nav-icon fas fa-users', 1, '2022-08-08 18:52:38', '2022-08-08 18:58:13', NULL),
+	(5, NULL, 'Company Management', '#', 'nav-icon fas fa-users', 1, '2022-08-08 18:52:38', '2022-10-17 21:31:09', NULL),
 	(6, NULL, 'Look-up Management', '#', 'nav-icon fas fa-clipboard-list', 1, '2022-08-08 18:58:42', '2022-08-18 17:49:30', NULL),
 	(7, 6, 'Categories', '/admin/categories', 'nav-icon fas fa-th-list', 1, '2022-08-08 18:59:53', '2022-08-08 18:59:53', NULL),
 	(8, 6, 'Supplementals', '/admin/supplementals', 'nav-icon fas fa-list-ul', 1, '2022-08-08 19:05:44', '2022-08-08 19:05:44', NULL),
-	(9, 6, 'Classifications', '/admin/classifications', 'nav-icon fas fa-list-ol', 1, '2022-08-08 19:06:11', '2022-08-08 19:06:11', NULL),
+	(9, 5, 'Classifications', '/admin/classifications', 'nav-icon fas fa-list-ol', 1, '2022-08-08 19:06:11', '2022-10-17 21:38:00', NULL),
 	(10, NULL, 'Brand Management', '/admin/brands', 'nav-icon fas fa-copyright', 1, '2022-08-08 19:11:32', '2022-08-08 19:11:32', NULL),
 	(11, 1, 'User', '/admin/users', 'nav-icon fas fa-user-secret', 1, '2022-08-08 01:32:54', '2022-08-08 18:50:08', NULL),
 	(12, NULL, 'Tenant Management', '#', 'nav-icon fas fa-store-alt', 1, '2022-08-11 22:51:31', '2022-08-23 22:30:10', '2022-08-23 22:30:10'),
@@ -420,9 +657,12 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`
 	(29, 20, 'Sales and Revenue', '#', 'nav-icon fas fa-chart-area', 1, '2022-08-11 23:06:21', '2022-08-11 23:06:21', NULL),
 	(30, 20, 'Earnings overview', '#', 'nav-icon fas fa-chart-area', 1, '2022-08-11 23:06:37', '2022-08-11 23:06:37', NULL),
 	(31, 6, 'Amenities', '/admin/amenities', 'nav-icon fas fa-restroom', 1, '2022-08-18 22:50:23', '2022-08-18 22:51:50', NULL),
-	(32, 6, 'Tags', '/admin/tags', 'nav-icon fa fa-tags', 1, '2022-08-22 17:03:10', '2022-08-22 17:03:22', NULL);
+	(32, 6, 'Tags', '/admin/tags', 'nav-icon fa fa-tags', 1, '2022-08-22 17:03:10', '2022-08-22 17:03:22', NULL),
+	(33, 5, 'Companies', '/admin/companies', 'nav-icon  fa fa-copyright', 1, '2022-10-17 21:33:27', '2022-10-17 22:22:12', NULL),
+	(34, 6, 'illustration', '/admin/Illustrations', 'nav-icon fas fa-images', 1, '2022-10-18 21:40:55', '2022-10-18 23:11:12', NULL);
 
 -- Dumping structure for table prestige.password_resets
+DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -431,11 +671,11 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.password_resets: 0 rows
-DELETE FROM `password_resets`;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.permissions
+DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` bigint(20) unsigned NOT NULL,
@@ -453,10 +693,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   KEY `permissions_deleted_at_index` (`deleted_at`),
   CONSTRAINT `permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`),
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~58 rows (approximately)
-DELETE FROM `permissions`;
+-- Dumping data for table prestige.permissions: ~60 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -472,11 +711,11 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(17, 1, 3, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-14 21:54:33', NULL),
 	(18, 1, 4, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-14 21:54:33', NULL),
 	(19, 1, 11, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-14 21:54:33', NULL),
-	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-11 22:49:43', NULL),
-	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-22 17:03:54', NULL),
-	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-22 17:03:54', NULL),
-	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-22 17:03:54', NULL),
-	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-22 17:03:54', NULL),
+	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-10-17 21:34:09', NULL),
+	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-10-18 21:41:17', NULL),
+	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-10-18 21:41:17', NULL),
+	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-10-18 21:41:17', NULL),
+	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-10-17 21:34:09', NULL),
 	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-11 22:49:43', NULL),
 	(26, 1, 12, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
 	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
@@ -516,10 +755,13 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(61, 2, 28, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(62, 2, 29, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(63, 2, 30, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
-	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2022-08-22 17:03:54', NULL),
-	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2022-08-22 17:03:54', NULL);
+	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2022-10-18 21:41:17', NULL),
+	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2022-10-18 21:41:17', NULL),
+	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2022-10-17 21:34:09', NULL),
+	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2022-10-18 21:41:17', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
+DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -536,11 +778,11 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.personal_access_tokens: 0 rows
-DELETE FROM `personal_access_tokens`;
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.roles
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -555,12 +797,12 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.roles: ~2 rows (approximately)
-DELETE FROM `roles`;
 INSERT INTO `roles` (`id`, `name`, `description`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Super Admin', 'Mga Alien lang ang may access dito', 1, '2022-08-08 19:13:33', '2022-08-08 19:13:33', NULL),
 	(2, 'Admin', 'Corporate access', 1, '2022-08-08 19:13:57', '2022-08-08 19:13:57', NULL);
 
 -- Dumping structure for table prestige.sites
+DROP TABLE IF EXISTS `sites`;
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -577,12 +819,12 @@ CREATE TABLE IF NOT EXISTS `sites` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.sites: ~2 rows (approximately)
-DELETE FROM `sites`;
 INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'SM Mega Mall', 'SM Mega Mall', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smrx.jpg', 1, 1, '2022-10-04 18:48:12', '2022-10-13 19:12:16', NULL),
-	(2, 'SM North Edsa', 'this is a test', '', '', 1, 0, '2022-10-12 18:27:02', '2022-10-12 19:06:25', NULL);
+	(1, 'SM Mega Mall', 'SM Mega Mall', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smrx.jpg', 1, 1, '2022-10-04 18:48:12', '2022-10-18 19:59:05', NULL),
+	(2, 'SM North Edsa', 'this is a test', 'uploads/media/sites/logos/logo-smne.png', 'uploads/media/sites/banners/about-us-smne.jpg', 1, 0, '2022-10-12 18:27:02', '2022-10-18 19:59:02', NULL);
 
 -- Dumping structure for table prestige.sites_meta
+DROP TABLE IF EXISTS `sites_meta`;
 CREATE TABLE IF NOT EXISTS `sites_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -598,7 +840,6 @@ CREATE TABLE IF NOT EXISTS `sites_meta` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.sites_meta: ~12 rows (approximately)
-DELETE FROM `sites_meta`;
 INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'facebook', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
 	(2, 1, 'instagram', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
@@ -606,14 +847,15 @@ INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at
 	(4, 1, 'time_from', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
 	(5, 1, 'time_to', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
 	(6, 1, 'website', 'null', '2022-10-04 18:48:12', '2022-10-12 18:16:21', NULL),
-	(7, 2, 'facebook', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
-	(8, 2, 'instagram', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
-	(9, 2, 'twitter', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
+	(7, 2, 'facebook', 'null', '2022-10-12 18:27:02', '2022-10-18 19:55:50', NULL),
+	(8, 2, 'instagram', 'null', '2022-10-12 18:27:02', '2022-10-18 19:55:50', NULL),
+	(9, 2, 'twitter', 'null', '2022-10-12 18:27:02', '2022-10-18 19:55:50', NULL),
 	(10, 2, 'time_from', 'null', '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
 	(11, 2, 'time_to', 'null', '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL),
-	(12, 2, 'website', NULL, '2022-10-12 18:27:02', '2022-10-12 18:27:02', NULL);
+	(12, 2, 'website', 'null', '2022-10-12 18:27:02', '2022-10-18 19:55:50', NULL);
 
 -- Dumping structure for table prestige.site_ads
+DROP TABLE IF EXISTS `site_ads`;
 CREATE TABLE IF NOT EXISTS `site_ads` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -632,12 +874,12 @@ CREATE TABLE IF NOT EXISTS `site_ads` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_ads: ~2 rows (approximately)
-DELETE FROM `site_ads`;
 INSERT INTO `site_ads` (`id`, `name`, `ad_type`, `file_path`, `file_type`, `display_order`, `display_duration`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(2, 'Admin test', 'Online', 'uploads/media/advertisements/Online/7f000001-8fd3-f779.jpg', 'jpg', 0, 5, '2022-09-01', '2022-09-30', 1, '2022-09-19 19:35:52', '2022-09-19 23:22:36', NULL),
 	(3, 'Sample Banner', 'Banners', 'uploads/media/advertisements/banners/7f000001-2d20-097e.jpg', 'jpg', 0, 5, '2022-09-01', '2022-09-30', 1, '2022-09-20 00:06:07', '2022-09-20 00:06:07', NULL);
 
 -- Dumping structure for table prestige.site_buildings
+DROP TABLE IF EXISTS `site_buildings`;
 CREATE TABLE IF NOT EXISTS `site_buildings` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -653,7 +895,6 @@ CREATE TABLE IF NOT EXISTS `site_buildings` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_buildings: ~4 rows (approximately)
-DELETE FROM `site_buildings`;
 INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'BLDG A', 'Building A', 1, '2022-10-04 18:49:19', '2022-10-04 18:49:19', NULL),
 	(2, 1, 'ATRIUM', 'ATRIUM', 1, '2022-10-04 18:51:51', '2022-10-04 18:51:51', NULL),
@@ -661,6 +902,7 @@ INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`,
 	(4, 1, 'BLDG D', 'Building D', 1, '2022-10-04 18:52:24', '2022-10-04 18:52:24', NULL);
 
 -- Dumping structure for table prestige.site_building_levels
+DROP TABLE IF EXISTS `site_building_levels`;
 CREATE TABLE IF NOT EXISTS `site_building_levels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -678,7 +920,6 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_building_levels: ~6 rows (approximately)
-DELETE FROM `site_building_levels`;
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LG Floor', 1, '2022-10-04 18:52:52', '2022-10-04 19:31:20', NULL),
 	(2, 1, 1, 'UG Floor', 1, '2022-10-04 18:52:58', '2022-10-04 19:31:10', NULL),
@@ -689,6 +930,7 @@ INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`,
 	(7, 1, 1, 'L5', 1, '2022-10-04 18:53:28', '2022-10-04 19:32:31', '2022-10-04 19:32:31');
 
 -- Dumping structure for table prestige.site_maps
+DROP TABLE IF EXISTS `site_maps`;
 CREATE TABLE IF NOT EXISTS `site_maps` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -724,13 +966,13 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_maps: ~2 rows (approximately)
-DELETE FROM `site_maps`;
 INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 1, 1, 1, 6, 'uploads/map/files/cam1_smau_2f.png', 'uploads/map/preview/cam1_smau_2f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-05 19:42:45', '2022-10-06 00:50:09', NULL),
 	(4, 1, 1, 2, 6, 'uploads/map/files/cam1_smau_3f.png', 'uploads/map/preview/cam1_smau_3f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:16:41', '2022-10-06 00:50:26', NULL),
 	(5, 1, 1, 3, 6, 'uploads/map/files/cam6-ug.png', 'uploads/map/preview/cam6-ug.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:18:31', '2022-10-06 00:50:38', NULL);
 
 -- Dumping structure for table prestige.site_points
+DROP TABLE IF EXISTS `site_points`;
 CREATE TABLE IF NOT EXISTS `site_points` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
@@ -754,7 +996,6 @@ CREATE TABLE IF NOT EXISTS `site_points` (
 ) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_points: ~113 rows (approximately)
-DELETE FROM `site_points`;
 INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `point_x`, `point_y`, `point_z`, `rotation_z`, `text_size`, `text_width`, `is_pwd`, `point_label`, `wrap_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(19, 4, 0, 0, 1679.00, 901.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:16:40', '2022-10-06 21:04:11', NULL),
 	(23, 4, 0, 0, 1698.00, 1179.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 19:17:01', '2022-10-06 21:04:26', NULL),
@@ -871,6 +1112,7 @@ INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `poin
 	(150, 3, 0, 0, 1389.00, 346.50, 0.00, 0.00, 0.00, 0.00, 0, NULL, 1, '2022-10-06 21:50:09', '2022-10-06 21:50:09', NULL);
 
 -- Dumping structure for table prestige.site_point_links
+DROP TABLE IF EXISTS `site_point_links`;
 CREATE TABLE IF NOT EXISTS `site_point_links` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_map_id` bigint(20) unsigned NOT NULL,
@@ -885,7 +1127,6 @@ CREATE TABLE IF NOT EXISTS `site_point_links` (
 ) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_point_links: ~13 rows (approximately)
-DELETE FROM `site_point_links`;
 INSERT INTO `site_point_links` (`id`, `site_map_id`, `point_a`, `point_b`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(73, 4, 78, 79, '2022-10-07 17:54:45', '2022-10-10 22:10:42', NULL),
 	(74, 4, 79, 86, '2022-10-07 17:54:46', '2022-10-10 22:12:02', NULL),
@@ -902,6 +1143,7 @@ INSERT INTO `site_point_links` (`id`, `site_map_id`, `point_a`, `point_b`, `crea
 	(85, 4, 101, 102, '2022-10-07 17:54:59', '2022-10-10 22:14:52', NULL);
 
 -- Dumping structure for table prestige.site_screens
+DROP TABLE IF EXISTS `site_screens`;
 CREATE TABLE IF NOT EXISTS `site_screens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
@@ -925,13 +1167,13 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_screens: ~3 rows (approximately)
-DELETE FROM `site_screens`;
 INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `name`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(4, 1, 1, 1, 0, 'Directory', 'Food Court', 1, 0, '2022-10-04 19:09:04', '2022-10-12 21:53:18', NULL),
 	(5, 1, 1, 2, 0, 'Directory', 'National Book Store', 1, 0, '2022-10-04 19:30:15', '2022-10-12 20:23:35', NULL),
 	(6, 1, 1, 2, 0, 'Directory', 'Kenny Rogers', 1, 1, '2022-10-04 19:33:31', '2022-10-12 21:53:18', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
+DROP TABLE IF EXISTS `site_screen_uptime`;
 CREATE TABLE IF NOT EXISTS `site_screen_uptime` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_screen_id` bigint(20) unsigned NOT NULL,
@@ -943,9 +1185,9 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptime` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_screen_uptime: ~0 rows (approximately)
-DELETE FROM `site_screen_uptime`;
 
 -- Dumping structure for table prestige.site_tenants
+DROP TABLE IF EXISTS `site_tenants`;
 CREATE TABLE IF NOT EXISTS `site_tenants` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `brand_id` bigint(20) unsigned NOT NULL,
@@ -971,12 +1213,12 @@ CREATE TABLE IF NOT EXISTS `site_tenants` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_tenants: ~2 rows (approximately)
-DELETE FROM `site_tenants`;
 INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `site_building_level_id`, `view_count`, `like_count`, `active`, `is_subscriber`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 1, 2, 0, 0, 1, 0, '2022-10-04 18:59:56', '2022-10-07 23:11:52', NULL),
 	(2, 2, 1, 1, 2, 0, 0, 1, 0, '2022-10-04 19:00:08', '2022-10-07 23:12:01', NULL);
 
 -- Dumping structure for table prestige.supplementals
+DROP TABLE IF EXISTS `supplementals`;
 CREATE TABLE IF NOT EXISTS `supplementals` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` bigint(20) unsigned DEFAULT NULL,
@@ -996,7 +1238,6 @@ CREATE TABLE IF NOT EXISTS `supplementals` (
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.supplementals: ~55 rows (approximately)
-DELETE FROM `supplementals`;
 INSERT INTO `supplementals` (`id`, `category_id`, `name`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 'American', 'uploads/media/supplemental/American.png', 'uploads/media/supplemental/strips/American.png', '', '', 1, '2022-08-18 19:17:23', '2022-08-18 19:35:05', NULL),
 	(2, 2, 'Asian', 'uploads/media/supplemental/Asian.png', 'uploads/media/supplemental/strips/Asian.png', '', '', 1, '2022-08-18 19:37:41', '2022-08-18 19:38:57', NULL),
@@ -1059,6 +1300,7 @@ INSERT INTO `supplementals` (`id`, `category_id`, `name`, `kiosk_image_primary`,
 	(59, 1, 'Flats', 'uploads/media/supplemental/Flats.png', 'uploads/media/supplemental/strips/Flats.png', '', '', 1, '2022-08-18 21:48:16', '2022-08-18 21:49:55', NULL);
 
 -- Dumping structure for table prestige.tags
+DROP TABLE IF EXISTS `tags`;
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1071,7 +1313,6 @@ CREATE TABLE IF NOT EXISTS `tags` (
 ) ENGINE=InnoDB AUTO_INCREMENT=947 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.tags: ~946 rows (approximately)
-DELETE FROM `tags`;
 INSERT INTO `tags` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'A&w', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),
 	(2, 'A4tech', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),
@@ -2021,6 +2262,7 @@ INSERT INTO `tags` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted
 	(946, 'Zenscreen', 1, '2022-08-22 18:35:38', '2022-08-22 18:35:38', NULL);
 
 -- Dumping structure for table prestige.tenant_ads
+DROP TABLE IF EXISTS `tenant_ads`;
 CREATE TABLE IF NOT EXISTS `tenant_ads` (
   `site_ad_id` bigint(20) unsigned DEFAULT NULL,
   `site_tenant_id` bigint(20) unsigned DEFAULT NULL,
@@ -2031,12 +2273,12 @@ CREATE TABLE IF NOT EXISTS `tenant_ads` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.tenant_ads: ~2 rows (approximately)
-DELETE FROM `tenant_ads`;
 INSERT INTO `tenant_ads` (`site_ad_id`, `site_tenant_id`) VALUES
 	(2, 8),
 	(3, 9);
 
 -- Dumping structure for table prestige.users
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `full_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2058,9 +2300,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.users: ~0 rows (approximately)
-DELETE FROM `users`;
 
 -- Dumping structure for table prestige.users_meta
+DROP TABLE IF EXISTS `users_meta`;
 CREATE TABLE IF NOT EXISTS `users_meta` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) unsigned DEFAULT NULL,
@@ -2076,7 +2318,6 @@ CREATE TABLE IF NOT EXISTS `users_meta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.users_meta: ~0 rows (approximately)
-DELETE FROM `users_meta`;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
