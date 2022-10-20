@@ -9759,13 +9759,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     GetCategories: function GetCategories() {
       var _this = this;
-      axios.get('/admin/category/get-all-categories').then(function (response) {
+      axios.get('/admin/category/get-parent').then(function (response) {
         return _this.categories = response.data.data;
       });
     },
     GetSupplementals: function GetSupplementals() {
       var _this2 = this;
-      axios.get('/admin/brand/get-supplementals').then(function (response) {
+      axios.get('/admin/supplemental/get-child').then(function (response) {
         return _this2.supplementals = response.data.data;
       });
     },
@@ -10110,7 +10110,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     getParentCategory: function getParentCategory() {
       var _this = this;
-      axios.get('/admin/category/get-all-categories').then(function (response) {
+      axios.get('/admin/category/get-parent').then(function (response) {
         return _this.parent_category = response.data.data;
       });
     },
@@ -10734,7 +10734,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getCategories: function getCategories() {
       var _this2 = this;
-      axios.get('/admin/category/get-all').then(function (response) {
+      axios.get('/admin/category/get-parent').then(function (response) {
         return _this2.categories = response.data.data;
       });
     },
@@ -10812,6 +10812,7 @@ __webpack_require__.r(__webpack_exports__);
         // this.illustration.kiosk_image_top = '';
         _this6.$refs.kiosk_image_primary.value = null;
         _this6.kiosk_image_primary = illustration.kiosk_image_primary_path;
+        _this6.getSubCategories(illustration.category_id);
         _this6.add_record = false;
         _this6.edit_record = true;
         $('#Illustration-form').modal('show');
@@ -12161,13 +12162,13 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     GetParentSupplemental: function GetParentSupplemental() {
       var _this = this;
-      axios.get('/admin/supplemental/get-all').then(function (response) {
+      axios.get('/admin/supplemental/get-parent').then(function (response) {
         return _this.parent_supplementals = response.data.data;
       });
     },
     GetCategories: function GetCategories() {
       var _this2 = this;
-      axios.get('/admin/category/get-all-categories').then(function (response) {
+      axios.get('/admin/category/get-parent').then(function (response) {
         return _this2.categories = response.data.data;
       });
     },
@@ -12194,8 +12195,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
       axios.get('/admin/supplemental/' + id).then(function (response) {
         var supplemental = response.data.data;
+        console.log(supplemental);
         _this4.supplemental.id = supplemental.id;
-        _this4.supplemental.category_id = supplemental.category_id ? supplemental.category_id : null;
+        _this4.supplemental.category_id = supplemental.supplemental_category_id ? supplemental.supplemental_category_id : null;
         _this4.supplemental.parent_id = supplemental.parent_id ? supplemental.parent_id : null;
         _this4.supplemental.name = supplemental.name;
         _this4.supplemental.descriptions = supplemental.descriptions;

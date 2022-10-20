@@ -247,7 +247,7 @@
 
         methods: {
 			getParentCategory: function() {
-				axios.get('/admin/category/get-all-categories')
+				axios.get('/admin/category/get-parent')
                 .then(response => this.parent_category = response.data.data);
 			},
 

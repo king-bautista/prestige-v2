@@ -142,11 +142,28 @@ class SupplementalController extends AppBaseController implements SupplementalCo
         }
     }
 
-    public function getAllSupplementals()
+    public function getParent()
     {
         try
         {
             $supplementals = CategoryViewModel::whereNull('parent_id')->where('category_type', 2)->get();
+            return $this->response($supplementals, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getChild()
+    {
+        try
+        {
+            $supplementals = CategoryViewModel::whereNotNull('parent_id')->where('category_type', 2)->get();
             return $this->response($supplementals, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

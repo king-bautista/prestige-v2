@@ -165,12 +165,12 @@
 
         methods: {
 			GetParentSupplemental: function() {
-				axios.get('/admin/supplemental/get-all')
+				axios.get('/admin/supplemental/get-parent')
                 .then(response => this.parent_supplementals = response.data.data);
 			},
 
 			GetCategories: function() {
-				axios.get('/admin/category/get-all-categories')
+				axios.get('/admin/category/get-parent')
                 .then(response => this.categories = response.data.data);
 			},
 
@@ -199,8 +199,9 @@
                 axios.get('/admin/supplemental/'+id)
                 .then(response => {
                     var supplemental = response.data.data;
+					console.log(supplemental);
                     this.supplemental.id = supplemental.id;
-                    this.supplemental.category_id = (supplemental.category_id) ? supplemental.category_id : null;
+                    this.supplemental.category_id = (supplemental.supplemental_category_id) ? supplemental.supplemental_category_id : null;
                     this.supplemental.parent_id = (supplemental.parent_id) ? supplemental.parent_id : null;
                     this.supplemental.name = supplemental.name;
                     this.supplemental.descriptions = supplemental.descriptions;

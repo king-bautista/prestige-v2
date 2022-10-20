@@ -144,7 +144,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         }
     }
 
-    public function getAllCategories()
+    public function getParent()
     {
         try
         {

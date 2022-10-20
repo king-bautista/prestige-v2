@@ -227,12 +227,12 @@
 			},
 
 			GetCategories: function() {
-				axios.get('/admin/category/get-all-categories')
+				axios.get('/admin/category/get-parent')
                 .then(response => this.categories = response.data.data);
 			},
 
 			GetSupplementals: function() {
-				axios.get('/admin/brand/get-supplementals')
+				axios.get('/admin/supplemental/get-child')
                 .then(response => this.supplementals = response.data.data);
 			},
 

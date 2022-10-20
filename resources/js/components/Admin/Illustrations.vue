@@ -242,7 +242,7 @@
 			},
 
 			getCategories: function() {
-				axios.get('/admin/category/get-all')
+				axios.get('/admin/category/get-parent')
                 .then(response => this.categories = response.data.data);
 			},
 
@@ -324,6 +324,8 @@
                     // this.illustration.kiosk_image_top = '';
                     this.$refs.kiosk_image_primary.value = null;
 					this.kiosk_image_primary = illustration.kiosk_image_primary_path;
+
+					this.getSubCategories(illustration.category_id);
                     this.add_record = false;
 					this.edit_record = true;
                     $('#Illustration-form').modal('show');

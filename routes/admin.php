@@ -71,7 +71,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/category/{id}', 'Admin\CategoriesController@details')->where('id', '[0-9]+')->name('admin.category.details');
     Route::post('/admin/category/update', 'Admin\CategoriesController@update')->name('admin.category.update');
     Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('admin.category.delete');
-    Route::get('/admin/category/get-all-categories', 'Admin\CategoriesController@getAllCategories')->where('id', '[0-9]+')->name('admin.category.get-all-categories');
+    Route::get('/admin/category/get-parent', 'Admin\CategoriesController@getParent')->where('id', '[0-9]+')->name('admin.category.get-parent');
     Route::get('/admin/category/get-all', 'Admin\CategoriesController@getAll')->name('admin.category.get-all');
     Route::get('/admin/category/get-all/{id}', 'Admin\CategoriesController@getAll')->where('id', '[0-9]+')->name('admin.category.get-sub-category');
     // Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('admin.category.delete-image');
@@ -90,7 +90,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/supplemental/{id}', 'Admin\SupplementalController@details')->where('id', '[0-9]+')->name('admin.supplemental.details');
     Route::post('/admin/supplemental/update', 'Admin\SupplementalController@update')->name('admin.supplemental.update');
     Route::get('/admin/supplemental/delete/{id}', 'Admin\SupplementalController@delete')->where('id', '[0-9]+')->name('admin.supplemental.delete');
-    Route::get('/admin/supplemental/get-all', 'Admin\SupplementalController@getAllSupplementals')->where('id', '[0-9]+')->name('admin.supplemental.get-all');
+    Route::get('/admin/supplemental/get-parent', 'Admin\SupplementalController@getParent')->where('id', '[0-9]+')->name('admin.supplemental.get-parent');
+    Route::get('/admin/supplemental/get-child', 'Admin\SupplementalController@getChild')->where('id', '[0-9]+')->name('admin.supplemental.get-child');
 
     /*
     |--------------------------------------------------------------------------
