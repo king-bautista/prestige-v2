@@ -16,12 +16,11 @@ class Category extends Model
      */
     protected $fillable = [
         'parent_id',
+        'supplemental_category_id',
         'name',
         'descriptions',
-        'kiosk_image_primary',
-        'kiosk_image_top',
-        'online_image_primary',
-        'online_image_top',
+        'class_name',
+        'category_type',
         'active',
     ];
 

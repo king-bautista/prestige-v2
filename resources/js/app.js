@@ -39,6 +39,9 @@ Vue.component('admin-building-screens', require('./components/Admin/Screens.vue'
 Vue.component('admin-building-tenants', require('./components/Admin/Tenants.vue').default);
 Vue.component('admin-advertisements', require('./components/Admin/Advertisements.vue').default);
 Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').default);
+Vue.component('admin-companies', require('./components/Admin/Company.vue').default);
+Vue.component('admin-illustrations', require('./components/Admin/Illustrations.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -46,8 +49,29 @@ Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+/**
+ * Vuejs Router part
+ */
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+
+import home from './components/Kiosk/Home.vue';
+
+const routes = [
+    {   path: '',
+        component: home,
+        name: 'home'
+     },
+];
+
+const router = new VueRouter({
+    mode: 'history',
+    routes 
+});
+
 const app = new Vue({
     el: '#app',
+    router,
     data: {
         isLoading: false,
         axiosInterceptor: null,        

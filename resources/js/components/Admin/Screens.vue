@@ -19,6 +19,7 @@
 						v-on:AddNewScreen="AddNewScreen"
 						v-on:editButton="editScreen"
 						v-on:DeleteScreen="DeleteScreen"
+						v-on:DefaultScreen="DefaultScreen"
                         ref="screensDataTable">
 			          	</Table>
 		          	</div>
@@ -82,6 +83,24 @@
 									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
 								</div>
 							</div>
+							<div class="form-group row" v-show="edit_record">
+								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="isActive" v-model="screen.active">
+										<label class="custom-control-label" for="isActive"></label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_default" v-model="screen.is_default">
+										<label class="custom-control-label" for="is_default"></label>
+									</div>
+								</div>
+							</div>
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -113,6 +132,26 @@
 			</div>
 		</div>
 		<!-- End Delete modal -->
+
+		<!-- Confirm modal -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header bg-primary">
+						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+					</div>
+					<div class="modal-body">
+						<h6>Do you really want to set this screen as default?</h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" @click="setDefault">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Confirm modal -->
+
     </div>
 </template>
 <script> 
@@ -129,8 +168,11 @@
                     site_point_id: '',
                     screen_type: '',
                     name: '',
+					active: false,
+					is_default: false,
                 },
 				id_to_deleted: 0,
+				is_default: '',
                 add_record: true,
                 edit_record: false,
                 buildings: [],
@@ -148,6 +190,14 @@
             			status: { 
             				0: '<span class="badge badge-danger">Deactivated</span>', 
             				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+					is_default: {
+            			name: "Is Default", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
             			}
             		},
                     created_at: "Date Created"
@@ -179,6 +229,15 @@
             			routeName: '',
             			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
             			method: 'link',
+            		},
+					view: {
+            			title: 'Set as Default',
+            			name: 'Set as Default',
+            			apiUrl: '',
+            			routeName: '',
+            			button: '<i class="fa fa-tag"></i> Set as Default',
+            			method: 'view',
+						v_on: 'DefaultScreen',
             		},
             	},
 				otherButtons: {
@@ -217,6 +276,7 @@
                 this.screen.site_point_id = '';
                 this.screen.screen_type = '';
                 this.screen.name = '';         
+                this.screen.is_default = false;         
               	$('#screen-form').modal('show');
             },
 
@@ -243,6 +303,8 @@
                     this.screen.site_point_id = screen.site_point_id;
                     this.screen.screen_type = screen.screen_type;
                     this.screen.name = screen.name;
+					this.screen.active = screen.active;
+					this.screen.is_default = screen.is_default;
 					this.add_record = false;
 					this.edit_record = true;
                     $('#screen-form').modal('show');
@@ -270,6 +332,20 @@
                     this.id_to_deleted = 0;
                     $('#screenDeleteModal').modal('hide');
                 });
+			},
+
+			DefaultScreen: function(data) {
+				this.is_default = data.id;
+				$('#confirmModal').modal('show');
+			},
+
+			setDefault: function() {
+				axios.get('/admin/site/screen/set-default/'+this.is_default)
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.screensDataTable.fetchData();
+                    $('#confirmModal').modal('hide');
+				})
 			}
 
         },

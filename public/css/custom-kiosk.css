@@ -1,0 +1,281 @@
+@font-face {
+    font-family: "Open Sans";
+    src: url("../assets/fonts/Open_Sans/OpenSans-SemiBold.ttf")
+}
+
+body,html {
+    height: 100%;
+    background-color: #f9f9f9;
+    color: #888888;
+    font-family: 'Henry Sans Regular';
+    font-size: 1em; 
+    scroll-behavior: smooth;
+    overflow: hidden;
+}
+
+body{
+    background-image: url('../assets/images/SMMG-BG.jpg');
+}
+
+.banner-ads {
+    height: 1080px;
+    display: block;
+    z-index: 1000;
+}
+
+.logo-holder {
+    height: 60px;
+    margin: 20px 20px 0 0;
+}
+
+.main-content-holder {
+    height: 890px;
+    width: 100%;
+}
+
+.button-holder {
+    width: 225px;
+    height: 71px;
+    padding: 0px;
+    display: block;
+    z-index: 999;
+    border: solid;
+}
+
+.h-button {
+    position: relative;
+    display: inline-flex;
+    width: 190px;
+    height: 80px;
+}
+
+.button-text-align {
+    font-family: 'Henry Sans Regular';
+    position: absolute;
+    text-align: center;
+    width: 94px;
+    top: 18px;
+    left: 68px;
+    font-size: 22px;
+}
+
+.widget-button {
+    background-size: 190px auto;
+    background-repeat: no-repeat;
+    font-family: 'Henry Sans Medium';
+}
+
+.widget-button:hover {
+    text-transform: uppercase;
+}
+
+.widget-button.active {
+    text-transform: uppercase;
+}
+
+.home-button {
+    background-image: url('../assets/images/Home.png');
+    color: black;
+}
+
+.home-button:hover {
+    background-image: url('../assets/images/Home-active.png') !important;
+}
+
+.home-button.active {
+    background-image: url('../assets/images/Home-active.png') !important;
+}
+
+.search-button {
+    background-image: url('../assets/images/Search.png');
+    color: black;
+}
+
+.search-button:hover {
+    background-image: url('../assets/images/Search-active.png') !important;
+}
+
+.search-button.active {
+    background-image: url('../assets/images/Search-active.png') !important;
+}
+
+.map-button {
+    background-image: url('../assets/images/Map.png');
+    color: black;
+}
+
+.map-button:hover {
+    background-image: url('../assets/images/Map-active.png') !important;
+}
+
+.map-button.active {
+    background-image: url('../assets/images/Map-active.png') !important;
+}
+
+.promos-button {
+    background-image: url('../assets/images/Promos.png');
+    color: black;
+}
+
+.promos-button:hover {
+    background-image: url('../assets/images/Promos-active.png') !important;
+}
+
+.promos-button.active {
+    background-image: url('../assets/images/Promos-active.png') !important;
+}
+
+.cinema-button {
+    background-image: url('../assets/images/Cinema.png');
+    color: black;
+}
+
+.cinema-button:hover {
+    background-image: url('../assets/images/Cinema-active.png') !important;
+}
+
+.cinema-button.active {
+    background-image: url('../assets/images/Cinema-active.png') !important;
+}
+
+.event-button {
+    background-image: url('../assets/images/Cinemav4.png');
+    color: black;
+}
+
+.event-button:hover {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+}
+
+.event-button.active {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+}
+
+.home-title {
+    font-family: Henry Sans Medium;
+    font-size: 40px;
+    padding: 26px 0 26px 0;
+    color: #2a2a2a;
+}
+
+.hc-button {
+    position: relative;
+    float:left;
+    cursor: pointer;
+}
+
+.food {
+    margin-top:15px;
+    margin-left:82px;
+    width:350px;
+}
+
+.fashion {
+    margin-top:15px;
+    margin-left:44px;
+    width:350px;
+}
+
+.electronics {
+    margin-top:15px;
+    margin-left:46px;
+    width:228px;   
+}
+
+.function {
+    margin-top:15px;
+    margin-left:48px;
+    width:228px;
+}
+
+.finds {
+    margin-top:24px;
+    margin-left:44px;
+    width:509px;    
+}
+
+#hc-button1 {
+    top: 46px;
+    left: 35px;
+    color: black;
+}
+
+.hc-button-align {
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Henry Sans Medium';
+}
+
+#page-title {
+    font-family: 'Henry Sans Medium';
+    font-weight: bold;
+    font-size: 30px;
+    color: #2a2a2a;
+    height: 60px;
+    margin: 25px;
+}
+
+.c-button {
+    position: relative;
+}
+
+.c-button-color2 {
+    color: black;
+}
+
+.c-button-align {
+    width: 200px;
+    text-align: left;
+    position: absolute;
+    font-size: 17px;
+    font-family: 'Henry Sans Medium';
+    top: 29px;
+    left: 23px;
+}
+
+.tabs-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: absolute;
+    width: 100%;
+    font-size: 1.5em;
+    bottom: 14rem;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+}
+
+.tabs .tabs-item {
+    background-color: #FFFFFF;
+    text-align: center;
+    color: black;
+}
+
+.tabs .tabs-item > div {
+    padding: 5px 30px 5px 30px;
+}
+
+.tab-item-selected > div {
+    background-color: #98dad0 !important;
+    color: #000 !important;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 5px 10px 5px 10px;
+}
+
+.tabs .tabs-item:nth-child(2) {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.tabs-item a, div.tabs-item a:link, div.tabs-item a:visited, div.tabs-item a:hover {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}

@@ -20,10 +20,8 @@ class CreateCategoriesTable extends Migration
             $table->bigInteger('parent_id')->unsigned()->nullable();
             $table->string('name');
             $table->mediumText('descriptions')->nullable();            
-            $table->mediumText('kiosk_image_primary')->nullable();      
-            $table->mediumText('kiosk_image_top')->nullable();     
-            $table->mediumText('online_image_primary')->nullable();
-            $table->mediumText('online_image_top')->nullable();     
+            $table->string('class_name')->nullable();
+            $table->smallInteger('category_type');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes()->index();

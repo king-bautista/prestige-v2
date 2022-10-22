@@ -86,12 +86,17 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
+            if($request->is_default == 'true') {
+                Site::where('is_default', 1)->update(['is_default' => 0]);
+            }
+
             $data = [
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'site_logo' => str_replace('\\', '/', $site_logo_path),
                 'site_banner' => str_replace('\\', '/', $site_banner_path),
-                'active' => 1
+                'active' => 1,
+                'is_default' => ($request->is_default == 'false') ? 0 : 1,
             ];
 
             $meta_value = [
@@ -138,12 +143,17 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
+            if($request->is_default == 'true') {
+                Site::where('is_default', 1)->update(['is_default' => 0]);
+            }
+
             $data = [
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
                 'active' => ($request->active == 'false') ? 0 : 1,
+                'is_default' => ($request->is_default == 'false') ? 0 : 1,
             ];
 
             $meta_value = [
@@ -194,6 +204,25 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     	{
             $sites = Site::get();
             return $this->response($sites, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function setDefault($id)
+    {
+        try
+    	{
+            Site::where('is_default', 1)->update(['is_default' => 0]);
+            $site = Site::find($id);
+            $site->update(['is_default' => 1]);
+            return $this->response($site, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {

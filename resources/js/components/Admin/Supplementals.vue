@@ -28,7 +28,7 @@
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="supplemental-form" tabindex="-1" aria-labelledby="supplemental-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Supplemental</h5>
@@ -45,14 +45,22 @@
 									<input type="text" class="form-control" v-model="supplemental.name" placeholder="Supplemental Name">
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <textarea class="form-control" v-model="supplemental.descriptions" placeholder="Descriptions"></textarea>
+								</div>
+							</div>
+                            <div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Parent Supplemental</label>
+								<div class="col-sm-8">
+									<treeselect v-model="supplemental.parent_id" :options="parent_supplementals" placeholder="Select Parent Supplemental"/>
+								</div>
+							</div>
                             <div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Category</label>
 								<div class="col-sm-8">
-									<treeselect v-model="supplemental.category_id"
-										:options="categories"
-										:normalizer="normalizer"
-										placeholder="Select Category"
-										/>
+									<treeselect v-model="supplemental.category_id" :options="categories" placeholder="Select Category"/>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -61,82 +69,6 @@
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="isActive" v-model="supplemental.active">
 										<label class="custom-control-label" for="isActive"></label>
-									</div>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Kiosk Primary Image <span class="font-italic text-danger"> *</span></label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="kiosk_image_primary" @change="kioskPrimaryChange">
-									<footer class="blockquote-footer">image max size is 349 x 528 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="kiosk_primary_url" :src="kiosk_primary_url" />
-										</div>
-										<div class="col-2" v-if="kiosk_primary_url">
-											<button @click="deleteImage('kiosk_image_primary')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
-									</div>
-                                </div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Kiosk Top Image <span class="font-italic text-danger"> *</span></label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="kiosk_image_top" @change="kioskTopChange">
-									<footer class="blockquote-footer">image max size is 1463 x 73 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="kiosk_top_url" :src="kiosk_top_url" />
-										</div>
-										<div class="col-2" v-if="kiosk_top_url">
-											<button @click="deleteImage('kiosk_image_top')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
-									</div>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Online Primary Image</label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="online_image_primary" @change="onlinePrimaryChange">
-									<footer class="blockquote-footer">image max size is 349 x 528 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="online_primary_url" :src="online_primary_url" />
-										</div>
-										<div class="col-2" v-if="online_primary_url">
-											<button @click="deleteImage('online_image_primary')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
-									</div>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Online Top Image</label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="online_image_top" @change="onlineTopChange">
-									<footer class="blockquote-footer">image max size is 1463 x 73 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="online_top_url" :src="online_top_url" />
-										</div>
-										<div class="col-2" v-if="online_top_url">
-											<button @click="deleteImage('online_image_top')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
 									</div>
 								</div>
 							</div>
@@ -167,40 +99,23 @@
             return {
                 supplemental: {
                     id: '',
+                    parent_id: null,
                     category_id: null,
-                    name: '',                
-                    kiosk_image_primary: '',                   
-                    kiosk_image_top: '',                   
-                    online_image_primary: '',                   
-                    online_image_top: '',                   
+                    name: '',
+                    descriptions: '',                   
+                    class_name: '',                   
+                    category_type: 2,                   
                     active: false,           
                 },
+                parent_supplementals: [],
                 categories: [],
                 add_record: true,
                 edit_record: false,
-				kiosk_primary_url: '',
-				kiosk_top_url: '',
-				online_primary_url: '',
-				online_top_url: '',
             	dataFields: {
             		name: "Name",          		
-                    category: "Category", 
-                    kiosk_image_primary_path: {
-            			name: "Kiosk Primary Image", 
-            			type:"image", 
-            		}, 
-                    kiosk_image_top_path: {
-            			name: "Kiosk Top Image", 
-            			type:"image", 
-            		}, 
-                    online_image_primary_path: {
-            			name: "Online Primary Image", 
-            			type:"image", 
-            		}, 
-                    online_image_top_path: {
-            			name: "Online Top Image", 
-            			type:"image", 
-            		}, 
+            		descriptions: "Descriptions",          		
+                    parent_category: "Parent Supplemental", 
+                    supplemental_category_name: "Category Name", 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -245,35 +160,17 @@
 
         created(){
             this.GetParentSupplemental();
+			this.GetCategories();
         },
 
         methods: {
-			kioskPrimaryChange: function(e) {
-				const file = e.target.files[0];
-      			this.kiosk_primary_url = URL.createObjectURL(file);
-				this.supplemental.kiosk_image_primary = file;
-			},
-
-			kioskTopChange: function(e) {
-				const file = e.target.files[0];
-				this.supplemental.kiosk_image_top = file;
-      			this.kiosk_top_url = URL.createObjectURL(file);
-			},
-
-			onlinePrimaryChange: function(e) {
-				const file = e.target.files[0];
-				this.supplemental.online_image_primary = file;
-      			this.online_primary_url = URL.createObjectURL(file);
-			},
-
-			onlineTopChange: function(e) {
-				const file = e.target.files[0];
-				this.supplemental.online_image_top = file;
-      			this.online_top_url = URL.createObjectURL(file);
-			},
-
 			GetParentSupplemental: function() {
-				axios.get('/admin/category/get-all-categories')
+				axios.get('/admin/supplemental/get-parent')
+                .then(response => this.parent_supplementals = response.data.data);
+			},
+
+			GetCategories: function() {
+				axios.get('/admin/category/get-parent')
                 .then(response => this.categories = response.data.data);
 			},
 
@@ -281,37 +178,15 @@
 				this.add_record = true;
 				this.edit_record = false;
                 this.supplemental.category_id = null;
+                this.supplemental.parent_id = null;
                 this.supplemental.name = '';
-                this.supplemental.kiosk_image_primary = '';
-                this.supplemental.kiosk_image_top = '';
-                this.supplemental.online_image_primary = '';
-                this.supplemental.online_image_top = '';
+                this.supplemental.descriptions = '';
                 this.supplemental.active = false;
-				this.kiosk_primary_url = '';
-				this.kiosk_top_url = '';
-				this.online_primary_url = '';
-				this.online_top_url = '';
-				this.$refs.kiosk_image_primary.value = null;
-				this.$refs.kiosk_image_top.value = null;
-				this.$refs.online_image_primary.value = null;
-				this.$refs.online_image_top.value = null;
               	$('#supplemental-form').modal('show');
             },
 
             storeSupplemental: function() {
-				let formData = new FormData();
-				formData.append("category_id", this.supplemental.category_id);
-				formData.append("name", this.supplemental.name);
-				formData.append("kiosk_image_primary", this.supplemental.kiosk_image_primary);
-				formData.append("kiosk_image_top", this.supplemental.kiosk_image_top);
-				formData.append("online_image_primary", this.supplemental.online_image_primary);
-				formData.append("online_image_top", this.supplemental.online_image_top);
-
-                axios.post('/admin/supplemental/store', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
+                axios.post('/admin/supplemental/store', this.supplemental)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -324,23 +199,13 @@
                 axios.get('/admin/supplemental/'+id)
                 .then(response => {
                     var supplemental = response.data.data;
+					console.log(supplemental);
                     this.supplemental.id = supplemental.id;
-                    this.supplemental.category_id = (supplemental.category_id) ? supplemental.category_id : null;
+                    this.supplemental.category_id = (supplemental.supplemental_category_id) ? supplemental.supplemental_category_id : null;
+                    this.supplemental.parent_id = (supplemental.parent_id) ? supplemental.parent_id : null;
                     this.supplemental.name = supplemental.name;
-                    this.kiosk_primary_url = supplemental.kiosk_image_primary_path;
-                    this.kiosk_top_url = supplemental.kiosk_image_top_path;
-                    this.online_primary_url = supplemental.online_image_primary_path;
-                    this.online_top_url = supplemental.online_image_top_path;
+                    this.supplemental.descriptions = supplemental.descriptions;
                     this.supplemental.active = supplemental.active;
-					this.supplemental.kiosk_image_primary = '';
-					this.supplemental.kiosk_image_top = '';
-					this.supplemental.online_image_primary = '';
-					this.supplemental.online_image_top = '';
-					this.$refs.kiosk_image_primary.value = null;
-					this.$refs.kiosk_image_top.value = null;
-					this.$refs.online_image_primary.value = null;
-					this.$refs.online_image_top.value = null;
-
 					this.add_record = false;
 					this.edit_record = true;
                     $('#supplemental-form').modal('show');
@@ -348,21 +213,7 @@
             },
 
             updateSupplemental: function() {
-				let formDataUpdate = new FormData();
-				formDataUpdate.append("id", this.supplemental.id);
-				formDataUpdate.append("category_id", this.supplemental.category_id);
-				formDataUpdate.append("name", this.supplemental.name);
-				formDataUpdate.append("kiosk_image_primary", this.supplemental.kiosk_image_primary);
-				formDataUpdate.append("kiosk_image_top", this.supplemental.kiosk_image_top);
-				formDataUpdate.append("online_image_primary", this.supplemental.online_image_primary);
-				formDataUpdate.append("online_image_top", this.supplemental.online_image_top);
-				formDataUpdate.append("active", this.supplemental.active);
-
-                axios.post('/admin/supplemental/update', formDataUpdate, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
+                axios.post('/admin/supplemental/update', this.supplemental)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -371,19 +222,6 @@
 				})
                     
             },
-
-			deleteImage: function(column) {
-				axios.post('/admin/supplemental/delete-image',{
-					id: this.supplemental.id,
-					column: column
-				})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.editSupplemental(this.supplemental.id);
-					this.$refs.dataTable.fetchData();
-				})
-			},
-
         },
 
         components: {

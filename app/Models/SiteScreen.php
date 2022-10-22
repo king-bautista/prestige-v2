@@ -21,6 +21,8 @@ class SiteScreen extends Model
         'site_point_id',
         'screen_type',
         'name',
+        'active',
+        'is_default',
     ];
 
     /**

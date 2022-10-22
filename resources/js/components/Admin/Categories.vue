@@ -29,7 +29,7 @@
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="category-form" tabindex="-1" aria-labelledby="category-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Category</h5>
@@ -55,10 +55,13 @@
                             <div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Parent Category</label>
 								<div class="col-sm-8">
-									<treeselect v-model="category.parent_id"
-										:options="parent_category"
-										placeholder="Select Parent Category"
-										/>
+									<treeselect v-model="category.parent_id" :options="parent_category" placeholder="Select Parent Category"/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Class Name</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="category.class_name" placeholder="Class Name">
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -67,82 +70,6 @@
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="isActive" v-model="category.active">
 										<label class="custom-control-label" for="isActive"></label>
-									</div>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Kiosk Primary Image <span class="font-italic text-danger"> *</span></label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="kiosk_image_primary" @change="kioskPrimaryChange">
-									<footer class="blockquote-footer">image max size is 349 x 528 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="kiosk_primary_url" :src="kiosk_primary_url" />
-										</div>
-										<div class="col-2" v-if="kiosk_primary_url">
-											<button @click="deleteImage('kiosk_image_primary')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
-									</div>
-                                </div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Kiosk Top Image <span class="font-italic text-danger"> *</span></label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="kiosk_image_top" @change="kioskTopChange">
-									<footer class="blockquote-footer">image max size is 1463 x 73 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="kiosk_top_url" :src="kiosk_top_url" />
-										</div>
-										<div class="col-2" v-if="kiosk_top_url">
-											<button @click="deleteImage('kiosk_image_top')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
-									</div>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Online Primary Image</label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="online_image_primary" @change="onlinePrimaryChange">
-									<footer class="blockquote-footer">image max size is 349 x 528 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="online_primary_url" :src="online_primary_url" />
-										</div>
-										<div class="col-2" v-if="online_primary_url">
-											<button @click="deleteImage('online_image_primary')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
-									</div>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Online Top Image</label>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6">
-                                    <input type="file" accept="image/*" ref="online_image_top" @change="onlineTopChange">
-									<footer class="blockquote-footer">image max size is 1463 x 73 pixels</footer>
-								</div>
-								<div class="col-sm-6">
-									<div class="row">
-										<div class="col-10" id="preview">
-											<img v-if="online_top_url" :src="online_top_url" />
-										</div>
-										<div class="col-2" v-if="online_top_url">
-											<button @click="deleteImage('online_image_top')" type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash-alt"></i></button>											
-										</div>
 									</div>
 								</div>
 							</div>
@@ -168,12 +95,20 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<div class="card-body">
-							
+						<div class="card-body">							
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Category <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Category</label>
 								<div class="col-sm-8">
 									<label for="firstName" class="col-sm-4 col-form-label">{{ category_label_for }} </label>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Company</label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="category_label.company_id">
+									    <option value="">Select Company</option>
+									    <option v-for="company in companies" :value="company.id"> {{ company.name }}</option>
+								    </select>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -243,17 +178,17 @@
                     parent_id: null,
                     name: '',
                     descriptions: '',                   
-                    kiosk_image_primary: '',                   
-                    kiosk_image_top: '',                   
-                    online_image_primary: '',                   
-                    online_image_top: '',                   
+                    class_name: '',                   
+                    category_type: 1,                   
                     active: false,           
                 },
                 parent_category: [],
+				companies: [],
 				site_list: [],
 				category_label: {
 					id: '',
 					category_id: '',
+					company_id: '',
 					site_id: '',
 					label: ''
 				},
@@ -261,30 +196,10 @@
 				category_label_for: '',
                 add_record: true,
                 edit_record: false,
-				kiosk_primary_url: '',
-				kiosk_top_url: '',
-				online_primary_url: '',
-				online_top_url: '',
             	dataFields: {
             		name: "Name", 
             		descriptions: "Descriptions",          		
                     parent_category: "Parent Category", 
-                    kiosk_image_primary_path: {
-            			name: "Kiosk Primary Image", 
-            			type:"image", 
-            		}, 
-                    kiosk_image_top_path: {
-            			name: "Kiosk Top Image", 
-            			type:"image", 
-            		}, 
-                    online_image_primary_path: {
-            			name: "Online Primary Image", 
-            			type:"image", 
-            		}, 
-                    online_image_top_path: {
-            			name: "Online Top Image", 
-            			type:"image", 
-            		}, 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -337,38 +252,20 @@
         },
 
         created(){
+			this.getCompanies();
             this.getParentCategory();
 			this.getSites();
         },
 
         methods: {
-			kioskPrimaryChange: function(e) {
-				const file = e.target.files[0];
-      			this.kiosk_primary_url = URL.createObjectURL(file);
-				this.category.kiosk_image_primary = file;
-			},
-
-			kioskTopChange: function(e) {
-				const file = e.target.files[0];
-				this.category.kiosk_image_top = file;
-      			this.kiosk_top_url = URL.createObjectURL(file);
-			},
-
-			onlinePrimaryChange: function(e) {
-				const file = e.target.files[0];
-				this.category.online_image_primary = file;
-      			this.online_primary_url = URL.createObjectURL(file);
-			},
-
-			onlineTopChange: function(e) {
-				const file = e.target.files[0];
-				this.category.online_image_top = file;
-      			this.online_top_url = URL.createObjectURL(file);
-			},
-
 			getParentCategory: function() {
-				axios.get('/admin/category/get-all-categories')
+				axios.get('/admin/category/get-parent')
                 .then(response => this.parent_category = response.data.data);
+			},
+
+			getCompanies: function() {
+				axios.get('/admin/company/get-all')
+                .then(response => this.companies = response.data.data);
 			},
 
 			addNewCategory: function() {
@@ -377,37 +274,13 @@
                 this.category.parent_id = null;
                 this.category.name = '';
                 this.category.descriptions = '';
-                this.category.kiosk_image_primary = '';
-                this.category.kiosk_image_top = '';
-                this.category.online_image_primary = '';
-                this.category.online_image_top = '';
+                this.category.class_name = '';
                 this.category.active = false;
-				this.kiosk_primary_url = '';
-				this.kiosk_top_url = '';
-				this.online_primary_url = '';
-				this.online_top_url = '';
-				this.$refs.kiosk_image_primary.value = null;
-				this.$refs.kiosk_image_top.value = null;
-				this.$refs.online_image_primary.value = null;
-				this.$refs.online_image_top.value = null;
               	$('#category-form').modal('show');
             },
 
             storeCategory: function() {
-				let formData = new FormData();
-				formData.append("parent_id", this.category.parent_id);
-				formData.append("name", this.category.name);
-				formData.append("descriptions", this.category.descriptions);
-				formData.append("kiosk_image_primary", this.category.kiosk_image_primary);
-				formData.append("kiosk_image_top", this.category.kiosk_image_top);
-				formData.append("online_image_primary", this.category.online_image_primary);
-				formData.append("online_image_top", this.category.online_image_top);
-
-                axios.post('/admin/category/store', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
+                axios.post('/admin/category/store', this.category)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -424,20 +297,8 @@
                     this.category.parent_id = (category.parent_id) ? category.parent_id : null;
                     this.category.name = category.name;
                     this.category.descriptions = category.descriptions;
-                    this.kiosk_primary_url = category.kiosk_image_primary_path;
-                    this.kiosk_top_url = category.kiosk_image_top_path;
-                    this.online_primary_url = category.online_image_primary_path;
-                    this.online_top_url = category.online_image_top_path;
+                    this.category.class_name = category.class_name;
                     this.category.active = category.active;
-					this.category.kiosk_image_primary = '';
-					this.category.kiosk_image_top = '';
-					this.category.online_image_primary = '';
-					this.category.online_image_top = '';
-					this.$refs.kiosk_image_primary.value = null;
-					this.$refs.kiosk_image_top.value = null;
-					this.$refs.online_image_primary.value = null;
-					this.$refs.online_image_top.value = null;
-
 					this.add_record = false;
 					this.edit_record = true;
                     $('#category-form').modal('show');
@@ -445,22 +306,7 @@
             },
 
             updateCategory: function() {
-				let formDataUpdate = new FormData();
-				formDataUpdate.append("id", this.category.id);
-				formDataUpdate.append("parent_id", this.category.parent_id);
-				formDataUpdate.append("name", this.category.name);
-				formDataUpdate.append("descriptions", this.category.descriptions);
-				formDataUpdate.append("kiosk_image_primary", this.category.kiosk_image_primary);
-				formDataUpdate.append("kiosk_image_top", this.category.kiosk_image_top);
-				formDataUpdate.append("online_image_primary", this.category.online_image_primary);
-				formDataUpdate.append("online_image_top", this.category.online_image_top);
-				formDataUpdate.append("active", this.category.active);
-
-                axios.post('/admin/category/update', formDataUpdate, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
+                axios.post('/admin/category/update', this.category)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -469,18 +315,6 @@
 				})
                     
             },
-
-			deleteImage: function(column) {
-				axios.post('/admin/category/delete-image',{
-					id: this.category.id,
-					column: column
-				})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.editCategory(this.category.id);
-					this.$refs.dataTable.fetchData();
-				})
-			},
 
 			getSites: function() {
 				axios.get('/admin/site/get-all')
@@ -518,6 +352,7 @@
 				axios.post('/admin/category/label/store', this.category_label)
 				.then(response => {
 					toastr.success(response.data.message);
+					this.category_label.company_id = '';
 					this.category_label.site_id = '';
 					this.category_label.label = '';
 					this.getLabels(response.data.data.category_id);

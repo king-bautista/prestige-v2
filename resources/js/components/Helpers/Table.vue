@@ -43,6 +43,9 @@
                             <span v-else-if="tHeader.type == 'image'">
                             {{ tHeader.name }}
                             </span>
+                            <span v-else-if="tHeader.type == 'logo'">
+                            {{ tHeader.name }}
+                            </span>
                             <span v-else-if="tHeader.type == 'icon'">
                             {{ tHeader.name }}
                             </span>

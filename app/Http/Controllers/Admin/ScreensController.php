@@ -77,6 +77,11 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         try
     	{
             $site_id = session()->get('site_id');
+
+            if($request->is_default == 'true') {
+                SiteScreen::where('is_default', 1)->update(['is_default' => 0]);
+            }
+
             $data = [
                 'site_id' => $site_id,
                 'site_building_id' => $request->site_building_id,
@@ -85,6 +90,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'screen_type' => $request->screen_type,
                 'name' => $request->name,
                 'active' => 1,
+                'is_default' => ($request->is_default == 'false') ? 0 : 1,
             ];
 
             $site_screen = SiteScreen::create($data);
@@ -107,13 +113,18 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     	{
             $site_screen = SiteScreen::find($request->id);
 
+            if($request->is_default == 'true') {
+                SiteScreen::where('is_default', 1)->update(['is_default' => 0]);
+            }
+
             $data = [
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'site_point_id' => $request->site_point_id,
                 'screen_type' => $request->screen_type,
                 'name' => $request->name,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => ($request->active == 0) ? 0 : 1,
+                'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
 
             $site_screen->update($data);
@@ -155,6 +166,25 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_id = session()->get('site_id');
             $site_screen = SiteScreenViewModel::where('site_id', $site_id)->get();
             return $this->response($site_screen, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function setDefault($id)
+    {
+        try
+    	{
+            SiteScreen::where('is_default', 1)->update(['is_default' => 0]);
+            $site = SiteScreen::find($id);
+            $site->update(['is_default' => 1]);
+            return $this->response($site, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
