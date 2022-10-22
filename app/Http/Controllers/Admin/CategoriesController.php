@@ -207,8 +207,9 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         {
             $category_label = CategoryLabel::updateOrCreate(
                 [
-                   'category_id' => $request->category_id,
-                   'site_id' => $request->site_id
+                    'company_id' => $request->company_id,
+                    'category_id' => $request->category_id,
+                    'site_id' => $request->site_id
                 ],
                 [
                    'name' => $request->label

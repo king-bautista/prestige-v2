@@ -30,6 +30,7 @@ body{
 
 .main-content-holder {
     height: 890px;
+    width: 100%;
 }
 
 .button-holder {
@@ -196,7 +197,7 @@ body{
 #hc-button1 {
     top: 46px;
     left: 35px;
-    color: #246c63;
+    color: black;
 }
 
 .hc-button-align {
@@ -212,4 +213,69 @@ body{
     color: #2a2a2a;
     height: 60px;
     margin: 25px;
+}
+
+.c-button {
+    position: relative;
+}
+
+.c-button-color2 {
+    color: black;
+}
+
+.c-button-align {
+    width: 200px;
+    text-align: left;
+    position: absolute;
+    font-size: 17px;
+    font-family: 'Henry Sans Medium';
+    top: 29px;
+    left: 23px;
+}
+
+.tabs-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: absolute;
+    width: 100%;
+    font-size: 1.5em;
+    bottom: 14rem;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+}
+
+.tabs .tabs-item {
+    background-color: #FFFFFF;
+    text-align: center;
+    color: black;
+}
+
+.tabs .tabs-item > div {
+    padding: 5px 30px 5px 30px;
+}
+
+.tab-item-selected > div {
+    background-color: #98dad0 !important;
+    color: #000 !important;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 5px 10px 5px 10px;
+}
+
+.tabs .tabs-item:nth-child(2) {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.tabs-item a, div.tabs-item a:link, div.tabs-item a:visited, div.tabs-item a:hover {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
 }

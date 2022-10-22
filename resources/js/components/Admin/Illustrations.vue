@@ -165,7 +165,7 @@
             		},
                     kiosk_image_top_path: {
             			name: "Kiosk Top Image", 
-            			type:"logo", 
+            			type:"image", 
             		},
             		company_name: "Company", 
             		category_name: "Category",          		
@@ -242,7 +242,7 @@
 			},
 
 			getCategories: function() {
-				axios.get('/admin/category/get-parent')
+				axios.get('/admin/category/get-all')
                 .then(response => this.categories = response.data.data);
 			},
 
@@ -264,8 +264,8 @@
 
             kioskTop: function(e) {
 				const file = e.target.files[0];
-      			this.online_image_top = URL.createObjectURL(file);
-				this.illustration.online_image_top = file;
+      			this.kiosk_image_top = URL.createObjectURL(file);
+				this.illustration.kiosk_image_top = file;
 			},
 
 			addNewIllustration: function() {
@@ -284,6 +284,9 @@
 
 				this.$refs.kiosk_image_primary.value = null;
 				this.kiosk_image_primary = '';
+
+				this.$refs.kiosk_image_top.value = null;
+				this.kiosk_image_top = '';
 
                 this.illustration.active = false;
               	$('#Illustration-form').modal('show');
@@ -324,6 +327,9 @@
                     // this.illustration.kiosk_image_top = '';
                     this.$refs.kiosk_image_primary.value = null;
 					this.kiosk_image_primary = illustration.kiosk_image_primary_path;
+
+                    this.$refs.kiosk_image_top.value = null;
+					this.kiosk_image_top = illustration.kiosk_image_top_path;
 
 					this.getSubCategories(illustration.category_id);
                     this.add_record = false;

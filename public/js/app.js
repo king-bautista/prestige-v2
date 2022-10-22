@@ -10038,10 +10038,12 @@ __webpack_require__.r(__webpack_exports__);
         active: false
       },
       parent_category: [],
+      companies: [],
       site_list: [],
       category_label: {
         id: '',
         category_id: '',
+        company_id: '',
         site_id: '',
         label: ''
       },
@@ -10104,6 +10106,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.getCompanies();
     this.getParentCategory();
     this.getSites();
   },
@@ -10112,6 +10115,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
       axios.get('/admin/category/get-parent').then(function (response) {
         return _this.parent_category = response.data.data;
+      });
+    },
+    getCompanies: function getCompanies() {
+      var _this2 = this;
+      axios.get('/admin/company/get-all').then(function (response) {
+        return _this2.companies = response.data.data;
       });
     },
     addNewCategory: function addNewCategory() {
@@ -10125,58 +10134,58 @@ __webpack_require__.r(__webpack_exports__);
       $('#category-form').modal('show');
     },
     storeCategory: function storeCategory() {
-      var _this2 = this;
+      var _this3 = this;
       axios.post('/admin/category/store', this.category).then(function (response) {
         toastr.success(response.data.message);
-        _this2.$refs.dataTable.fetchData();
-        _this2.getParentCategory();
+        _this3.$refs.dataTable.fetchData();
+        _this3.getParentCategory();
         $('#category-form').modal('hide');
       });
     },
     editCategory: function editCategory(id) {
-      var _this3 = this;
+      var _this4 = this;
       axios.get('/admin/category/' + id).then(function (response) {
         var category = response.data.data;
-        _this3.category.id = category.id;
-        _this3.category.parent_id = category.parent_id ? category.parent_id : null;
-        _this3.category.name = category.name;
-        _this3.category.descriptions = category.descriptions;
-        _this3.category.class_name = category.class_name;
-        _this3.category.active = category.active;
-        _this3.add_record = false;
-        _this3.edit_record = true;
+        _this4.category.id = category.id;
+        _this4.category.parent_id = category.parent_id ? category.parent_id : null;
+        _this4.category.name = category.name;
+        _this4.category.descriptions = category.descriptions;
+        _this4.category.class_name = category.class_name;
+        _this4.category.active = category.active;
+        _this4.add_record = false;
+        _this4.edit_record = true;
         $('#category-form').modal('show');
       });
     },
     updateCategory: function updateCategory() {
-      var _this4 = this;
+      var _this5 = this;
       axios.post('/admin/category/update', this.category).then(function (response) {
         toastr.success(response.data.message);
-        _this4.$refs.dataTable.fetchData();
-        _this4.getParentCategory();
+        _this5.$refs.dataTable.fetchData();
+        _this5.getParentCategory();
         $('#category-form').modal('hide');
       });
     },
     getSites: function getSites() {
-      var _this5 = this;
+      var _this6 = this;
       axios.get('/admin/site/get-all').then(function (response) {
-        return _this5.site_list = response.data.data;
+        return _this6.site_list = response.data.data;
       });
     },
     deleteLabel: function deleteLabel(id, category_id) {
-      var _this6 = this;
+      var _this7 = this;
       if (id) {
         if (confirm("Do you really want to delete?")) {
           axios.get('/admin/category/label/delete/' + id).then(function (response) {
-            _this6.getLabels(category_id);
+            _this7.getLabels(category_id);
           });
         }
       }
     },
     getLabels: function getLabels(id) {
-      var _this7 = this;
+      var _this8 = this;
       axios.get('/admin/category/labels/' + id).then(function (response) {
-        _this7.category_labels = response.data.data;
+        _this8.category_labels = response.data.data;
       });
     },
     modalLabels: function modalLabels(data) {
@@ -10188,12 +10197,13 @@ __webpack_require__.r(__webpack_exports__);
       $('#label-form').modal('show');
     },
     saveLabels: function saveLabels() {
-      var _this8 = this;
+      var _this9 = this;
       axios.post('/admin/category/label/store', this.category_label).then(function (response) {
         toastr.success(response.data.message);
-        _this8.category_label.site_id = '';
-        _this8.category_label.label = '';
-        _this8.getLabels(response.data.data.category_id);
+        _this9.category_label.company_id = '';
+        _this9.category_label.site_id = '';
+        _this9.category_label.label = '';
+        _this9.getLabels(response.data.data.category_id);
       });
     }
   },
@@ -10657,7 +10667,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         kiosk_image_top_path: {
           name: "Kiosk Top Image",
-          type: "logo"
+          type: "image"
         },
         company_name: "Company",
         category_name: "Category",
@@ -10734,7 +10744,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getCategories: function getCategories() {
       var _this2 = this;
-      axios.get('/admin/category/get-parent').then(function (response) {
+      axios.get('/admin/category/get-all').then(function (response) {
         return _this2.categories = response.data.data;
       });
     },
@@ -10757,8 +10767,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     kioskTop: function kioskTop(e) {
       var file = e.target.files[0];
-      this.online_image_top = URL.createObjectURL(file);
-      this.illustration.online_image_top = file;
+      this.kiosk_image_top = URL.createObjectURL(file);
+      this.illustration.kiosk_image_top = file;
     },
     addNewIllustration: function addNewIllustration() {
       this.add_record = true;
@@ -10775,6 +10785,8 @@ __webpack_require__.r(__webpack_exports__);
       this.illustration.mobile_image_top = '';
       this.$refs.kiosk_image_primary.value = null;
       this.kiosk_image_primary = '';
+      this.$refs.kiosk_image_top.value = null;
+      this.kiosk_image_top = '';
       this.illustration.active = false;
       $('#Illustration-form').modal('show');
     },
@@ -10812,6 +10824,8 @@ __webpack_require__.r(__webpack_exports__);
         // this.illustration.kiosk_image_top = '';
         _this6.$refs.kiosk_image_primary.value = null;
         _this6.kiosk_image_primary = illustration.kiosk_image_primary_path;
+        _this6.$refs.kiosk_image_top.value = null;
+        _this6.kiosk_image_top = illustration.kiosk_image_top_path;
         _this6.getSubCategories(illustration.category_id);
         _this6.add_record = false;
         _this6.edit_record = true;
@@ -12963,7 +12977,14 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       main_category: [],
-      site_logo: ''
+      site_logo: '',
+      back_button: 'assets/images/English/Back.png',
+      page_title: 'Home',
+      home_category: true,
+      child_category: false,
+      alphabetical: false,
+      supplementals: false,
+      current_category: ''
     };
   },
   created: function created() {
@@ -12982,9 +13003,33 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/v1/categories').then(function (response) {
         return _this2.main_category = response.data.data;
       });
+    },
+    getTenants: function getTenants() {},
+    getSupplementals: function getSupplementals() {},
+    showChildren: function showChildren(category) {
+      this.current_category = category;
+      this.page_title = 'Store List';
+      $('#category-tab').click();
+      this.home_category = false;
+      this.child_category = true;
+      this.alphabetical = false;
+      this.supplementals = false;
+    },
+    goBack: function goBack() {
+      this.page_title = 'Home';
+      this.home_category = true;
+      this.child_category = false;
+      this.alphabetical = false;
+      this.supplementals = false;
     }
   },
   components: {}
+});
+$(document).ready(function () {
+  $('.store-tabs-item').click(function () {
+    $('.store-tabs-item').removeClass('tab-item-selected');
+    $(this).addClass('tab-item-selected');
+  });
 });
 
 /***/ }),
@@ -14603,7 +14648,12 @@ var render = function render() {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Category")]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("label", {
     staticClass: "col-sm-4 col-form-label",
@@ -14612,7 +14662,45 @@ var render = function render() {
     }
   }, [_vm._v(_vm._s(_vm.category_label_for) + " ")])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Company")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.category_label.company_id,
+      expression: "category_label.company_id"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.category_label, "company_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Company")]), _vm._v(" "), _vm._l(_vm.companies, function (company) {
+    return _c("option", {
+      domProps: {
+        value: company.id
+      }
+    }, [_vm._v(" " + _vm._s(company.name))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -14645,7 +14733,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(site.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(6), _vm._v(" "), _c("div", {
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -14685,7 +14773,7 @@ var render = function render() {
     staticStyle: {
       width: "100%"
     }
-  }, [_vm._m(7), _vm._v(" "), _c("tbody", _vm._l(_vm.category_labels, function (label) {
+  }, [_vm._m(6), _vm._v(" "), _c("tbody", _vm._l(_vm.category_labels, function (label) {
     return _c("tr", [_c("td", [_vm._v(_vm._s(label.site_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(label.category_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(label.name))]), _vm._v(" "), _c("td", {
       staticStyle: {
         "text-align": "right"
@@ -14704,7 +14792,7 @@ var render = function render() {
     }, [_c("i", {
       staticClass: "fas fa-trash-alt"
     })])])]);
-  }), 0)])])]), _vm._v(" "), _vm._m(8)])])])]);
+  }), 0)])])]), _vm._v(" "), _vm._m(7)])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -14762,17 +14850,6 @@ var staticRenderFns = [function () {
       "aria-hidden": "true"
     }
   }, [_vm._v("×")])])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Category "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -21228,9 +21305,19 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_c("div", {
+  return _c("div", {
+    staticStyle: {
+      width: "100%"
+    }
+  }, [_c("div", {
     staticClass: "row"
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("div", {
+    attrs: {
+      id: "page-title"
+    }
+  }, [_vm._v(_vm._s(_vm.page_title))])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-6 text-right"
   }, [_c("img", {
     staticClass: "logo-holder",
@@ -21238,16 +21325,27 @@ var render = function render() {
       src: _vm.site_logo
     }
   })])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.home_category,
+      expression: "home_category"
+    }],
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
-  }, [_vm._m(1), _vm._v(" "), _c("div", {
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
   }, _vm._l(_vm.main_category, function (category, index) {
     return _c("div", {
-      "class": [category.class_name, "hc-button"]
+      "class": [category.class_name, "hc-button"],
+      on: {
+        click: function click($event) {
+          return _vm.showChildren(category);
+        }
+      }
     }, [_c("img", {
       attrs: {
         src: category.kiosk_image_primary_path
@@ -21257,20 +21355,77 @@ var render = function render() {
       attrs: {
         id: "hc-button1"
       }
-    }, [_vm._v(_vm._s(category.name))])]);
-  }), 0)])])])]);
+    }, [_vm._v(_vm._s(category.label))])]);
+  }), 0)])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.child_category,
+      expression: "child_category"
+    }],
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-6 offset-md-3"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12 home-title text-center"
+  }, [_vm._v("\n                    " + _vm._s(_vm.current_category.label) + "\n                ")])]), _vm._v(" "), _c("div", {
+    staticClass: "row mb-3"
+  }, _vm._l(_vm.current_category.children, function (category) {
+    return _c("div", {
+      staticClass: "col-12 col-sm-6 text-left mt-3"
+    }, [_c("div", {
+      staticClass: "c-button"
+    }, [_c("img", {
+      staticClass: "tenant-category",
+      staticStyle: {
+        "max-width": "100%"
+      },
+      attrs: {
+        src: category.kiosk_image_primary_path
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "c-button-align c-button-color2 translateme"
+    }, [_vm._v(_vm._s(category.label))])])]);
+  }), 0)])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.child_category,
+      expression: "child_category"
+    }],
+    staticClass: "tabs-container"
+  }, [_c("div", {
+    staticClass: "tabs"
+  }, [_vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("div", {
+    staticClass: "tabs-item store-tabs-item"
+  }, [_c("div", [_vm.current_category.supplemental ? _c("a", {
+    staticClass: "tenant-supplementals translateme",
+    staticStyle: {
+      "font-size": "1em"
+    },
+    attrs: {
+      id: "tenant-supplemental-tabtext1",
+      "data-target": "1"
+    }
+  }, [_vm._v(_vm._s(_vm.current_category.supplemental.name))]) : _vm._e()])])])]), _vm._v(" "), _c("img", {
+    staticStyle: {
+      "z-index": "999",
+      position: "absolute",
+      top: "690px",
+      right: "15px",
+      cursor: "pointer"
+    },
+    attrs: {
+      src: _vm.back_button
+    },
+    on: {
+      click: _vm.goBack
+    }
+  })]);
 };
 var staticRenderFns = [function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "col-md-6"
-  }, [_c("div", {
-    attrs: {
-      id: "page-title"
-    }
-  }, [_vm._v("Home")])]);
-}, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
@@ -21278,6 +21433,42 @@ var staticRenderFns = [function () {
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
   }, [_vm._v("\n                    Search your favorite stores\n                ")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("span", {
+    staticClass: "mr-4 my-auto",
+    staticStyle: {
+      color: "#2a2a2a"
+    }
+  }, [_c("span", {
+    staticClass: "translateme"
+  }, [_vm._v("View stores by")]), _vm._v(": ")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "tabs-item store-tabs-item tab-item-selected",
+    attrs: {
+      id: "category-tab"
+    }
+  }, [_c("div", [_c("a", {
+    staticClass: "translateme tenant-category",
+    attrs: {
+      "data-target": "1/0"
+    }
+  }, [_vm._v("Category")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "tabs-item store-tabs-item"
+  }, [_c("div", [_c("a", {
+    staticClass: "translateme tenant-alphabet",
+    attrs: {
+      "data-target": "1/num/0"
+    }
+  }, [_vm._v("Alphabetical")])])]);
 }];
 render._withStripped = true;
 

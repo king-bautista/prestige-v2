@@ -17,9 +17,9 @@ class CreateCategoryLabelsTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('category_id')->unsigned();
-            $table->bigInteger('company_id')->unsigned();
-            $table->bigInteger('site_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned()->nullable();
+            $table->bigInteger('company_id')->unsigned()->nullable();
+            $table->bigInteger('site_id')->unsigned()->nullable();
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();

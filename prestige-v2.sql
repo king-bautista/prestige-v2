@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   KEY `admins_full_name_index` (`full_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.admins: ~0 rows (approximately)
+-- Dumping data for table prestige.admins: ~2 rows (approximately)
 INSERT INTO `admins` (`id`, `full_name`, `email`, `email_verified_at`, `password`, `api_token`, `salt`, `login_attempt`, `is_blocked`, `active`, `activation_token`, `created_by`, `updated_by`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 'Bautista, King', 'superadmin@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2022-08-10 18:52:17', '2022-08-10 21:24:30', NULL),
 	(4, 'Admin, Admin', 'admin@gmail.com', NULL, '$2y$10$QEY0OLI9HdHbfMsc9igWFuvg17iBIBK9hZ6RzyPzz29SV8Cp77RqK', NULL, 'aTVOhYWuUpIxmrn4cv1G', 0, 0, 1, NULL, 0, 0, NULL, '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `admin_roles` (
   CONSTRAINT `admin_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.admin_roles: ~2 rows (approximately)
+-- Dumping data for table prestige.admin_roles: ~3 rows (approximately)
 INSERT INTO `admin_roles` (`admin_id`, `role_id`) VALUES
 	(3, 1),
 	(3, 2),
@@ -457,9 +457,9 @@ INSERT INTO `categories` (`id`, `parent_id`, `supplemental_category_id`, `name`,
 DROP TABLE IF EXISTS `category_labels`;
 CREATE TABLE IF NOT EXISTS `category_labels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `category_id` bigint(20) unsigned NOT NULL,
-  `company_id` bigint(20) unsigned NOT NULL,
-  `site_id` bigint(20) unsigned NOT NULL,
+  `category_id` bigint(20) unsigned DEFAULT NULL,
+  `company_id` bigint(20) unsigned DEFAULT NULL,
+  `site_id` bigint(20) unsigned DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -471,9 +471,12 @@ CREATE TABLE IF NOT EXISTS `category_labels` (
   CONSTRAINT `category_labels_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
   CONSTRAINT `category_labels_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `category_labels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.category_labels: ~0 rows (approximately)
+-- Dumping data for table prestige.category_labels: ~2 rows (approximately)
+INSERT INTO `category_labels` (`id`, `category_id`, `company_id`, `site_id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, NULL, 1, 'Food Court', '2022-10-20 17:20:34', '2022-10-20 17:27:41', '2022-10-20 17:27:41'),
+	(2, 1, NULL, 2, 'Food Set', '2022-10-20 17:27:36', '2022-10-20 17:27:36', NULL);
 
 -- Dumping structure for table prestige.classifications
 DROP TABLE IF EXISTS `classifications`;
@@ -545,15 +548,192 @@ CREATE TABLE IF NOT EXISTS `company_categories` (
   CONSTRAINT `company_categories_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `company_categories_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`),
   CONSTRAINT `company_categories_sub_category_id_foreign` FOREIGN KEY (`sub_category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.company_categories: ~1 rows (approximately)
+-- Dumping data for table prestige.company_categories: ~182 rows (approximately)
 INSERT INTO `company_categories` (`id`, `company_id`, `category_id`, `sub_category_id`, `site_id`, `active`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `mobile_image_primary`, `mobile_image_top`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, NULL, 1, NULL, NULL, 1, 'uploads/media/category/Food.png', '', NULL, NULL, NULL, NULL, '2022-10-19 01:42:09', '2022-10-19 17:45:32', NULL),
+	(1, NULL, 1, NULL, NULL, 1, 'uploads/media/category/20221020071525Food.png', '', NULL, NULL, NULL, NULL, '2022-10-19 01:42:09', '2022-10-19 23:15:25', NULL),
 	(2, NULL, 2, NULL, NULL, 1, 'uploads/media/category/Fashion.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:18:25', '2022-10-19 17:18:25', NULL),
 	(3, NULL, 3, NULL, NULL, 1, 'uploads/media/category/Consumer-Electronics.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:19:25', '2022-10-19 17:19:25', NULL),
 	(4, NULL, 4, NULL, NULL, 1, 'uploads/media/category/Function.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:19:46', '2022-10-19 17:19:46', NULL),
-	(5, NULL, 5, NULL, NULL, 1, 'uploads/media/category/Finds.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:20:06', '2022-10-19 17:20:06', NULL);
+	(5, NULL, 5, NULL, NULL, 1, 'uploads/media/category/Finds.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:20:06', '2022-10-19 17:20:06', NULL),
+	(6, NULL, 1, NULL, 2, 1, 'uploads/media/category/20221020071343Food.png', '', NULL, NULL, NULL, NULL, '2022-10-19 23:07:33', '2022-10-20 00:45:15', NULL),
+	(7, NULL, 1, 6, NULL, 1, 'uploads/media/category/20221021013619Casual-Dining.png', 'uploads/media/category/strips/20221021014001Casual-Dining-copy.png', NULL, NULL, NULL, NULL, '2022-10-20 17:36:19', '2022-10-20 17:40:01', NULL),
+	(8, NULL, 1, 7, NULL, 1, 'uploads/media/category/20221021014211SMMG-Food-Court-button.png', 'uploads/media/category/strips/20221021014211SMMG-Food-Court-strip.png', NULL, NULL, NULL, NULL, '2022-10-20 17:42:11', '2022-10-20 17:42:11', NULL),
+	(9, NULL, 1, 8, NULL, 1, 'uploads/media/category/20221021014407SMMG-Food-Hall-button.png', 'uploads/media/category/strips/20221021014407SMMG-Food-Hall-Strip.png', NULL, NULL, NULL, NULL, '2022-10-20 17:44:07', '2022-10-20 17:44:07', NULL),
+	(10, NULL, 1, 9, NULL, 1, 'uploads/media/category/20221021014434Novelty-Food-_-Drinks.png', 'uploads/media/category/strips/20221021014434Novelty-Food-_-Drinks.png', NULL, NULL, NULL, NULL, '2022-10-20 17:44:34', '2022-10-20 17:44:34', NULL),
+	(11, NULL, 1, 10, NULL, 1, 'uploads/media/category/20221021014500Pastries,-Desserts,-_-Beverages.png', 'uploads/media/category/strips/20221021014500Pastries,-Desserts,-_-Beverages.png', NULL, NULL, NULL, NULL, '2022-10-20 17:45:00', '2022-10-20 17:45:00', NULL),
+	(12, NULL, 1, 11, NULL, 1, 'uploads/media/category/20221021014523Quick-Serve.png', 'uploads/media/category/strips/20221021014523Quick-Serve.png', NULL, NULL, NULL, NULL, '2022-10-20 17:45:23', '2022-10-20 17:45:23', NULL),
+	(13, NULL, 2, 12, NULL, 1, 'uploads/media/category/20221021014750Accessories.png', 'uploads/media/category/strips/20221021014750Accessories.png', NULL, NULL, NULL, NULL, '2022-10-20 17:47:50', '2022-10-20 17:47:50', NULL),
+	(14, NULL, 2, 13, NULL, 1, 'uploads/media/category/20221021014809Active-Lifestyle.png', 'uploads/media/category/strips/20221021014809Active-Lifestyle.png', NULL, NULL, NULL, NULL, '2022-10-20 17:48:09', '2022-10-20 17:48:09', NULL),
+	(15, NULL, 2, 14, NULL, 1, 'uploads/media/category/20221021014917Bags-_-Footwear.png', 'uploads/media/category/strips/20221021014917Bags-_-Footwear.png', NULL, NULL, NULL, NULL, '2022-10-20 17:49:17', '2022-10-20 17:49:17', NULL),
+	(16, NULL, 2, 15, NULL, 1, 'uploads/media/category/20221021014938Childrens-wear.png', 'uploads/media/category/strips/20221021014938Childrens-wear.png', NULL, NULL, NULL, NULL, '2022-10-20 17:49:38', '2022-10-20 17:49:38', NULL),
+	(17, NULL, 2, 16, NULL, 1, 'uploads/media/category/20221021014956Clothing.png', 'uploads/media/category/strips/20221021014956Clothing.png', NULL, NULL, NULL, NULL, '2022-10-20 17:49:56', '2022-10-20 17:49:56', NULL),
+	(18, NULL, 3, 17, NULL, 1, 'uploads/media/category/20221021015124Appliance-stores.png', 'uploads/media/category/strips/20221021015124Appliance-stores.png', NULL, NULL, NULL, NULL, '2022-10-20 17:51:24', '2022-10-20 17:51:24', NULL),
+	(19, NULL, 3, 18, NULL, 1, 'uploads/media/category/20221021015231Computers-and-Telecommunications.png', 'uploads/media/category/strips/20221021015231Computers-_-Telecommunications.png', NULL, NULL, NULL, NULL, '2022-10-20 17:52:31', '2022-10-20 17:52:31', NULL),
+	(20, NULL, 3, 19, NULL, 1, 'uploads/media/category/20221021015252Photography,-print,-and-photo-services.png', 'uploads/media/category/strips/20221021015252Photography,-print,-and-photo-services.png', NULL, NULL, NULL, NULL, '2022-10-20 17:52:52', '2022-10-20 17:52:52', NULL),
+	(21, NULL, 4, 20, NULL, 1, 'uploads/media/category/20221021015401Banks.png', 'uploads/media/category/strips/20221021015401Bank.png', NULL, NULL, NULL, NULL, '2022-10-20 17:54:01', '2022-10-20 17:54:01', NULL),
+	(22, NULL, 4, 21, NULL, 1, 'uploads/media/category/20221021015419Business,-Supplies,-and-Service-Centers.png', 'uploads/media/category/strips/20221021015419Business,-Supplies-_-Service-Centers.png', NULL, NULL, NULL, NULL, '2022-10-20 17:54:19', '2022-10-20 17:54:19', NULL),
+	(23, NULL, 4, 22, NULL, 1, 'uploads/media/category/20221021015450Government-Services.png', 'uploads/media/category/strips/20221021015450Government-Services.png', NULL, NULL, NULL, NULL, '2022-10-20 17:54:40', '2022-10-20 17:54:50', NULL),
+	(24, NULL, 4, 23, NULL, 1, 'uploads/media/category/20221021020551Health-and-Beauty-Serrvices.png', 'uploads/media/category/strips/20221021020551Health-and-Beauty-Services.png', NULL, NULL, NULL, NULL, '2022-10-20 18:05:51', '2022-10-20 18:05:51', NULL),
+	(25, NULL, 4, 24, NULL, 1, 'uploads/media/category/20221021020610Pet-Services.png', 'uploads/media/category/strips/20221021020610Pet-Services.png', NULL, NULL, NULL, NULL, '2022-10-20 18:06:10', '2022-10-20 18:06:10', NULL),
+	(26, NULL, 4, 25, NULL, 1, 'uploads/media/category/20221021020628Wellness-Centers.png', 'uploads/media/category/strips/20221021020628Wellness.png', NULL, NULL, NULL, NULL, '2022-10-20 18:06:28', '2022-10-20 18:06:28', NULL),
+	(27, NULL, 5, 26, NULL, 1, 'uploads/media/category/20221021020722Amusement-_-Exhibitions.png', 'uploads/media/category/strips/20221021020722Amusement-_-Exhbitions.png', NULL, NULL, NULL, NULL, '2022-10-20 18:07:22', '2022-10-20 18:07:22', NULL),
+	(28, NULL, 5, 27, NULL, 1, 'uploads/media/category/20221021020738Auto-supplies-_-accessories.png', 'uploads/media/category/strips/20221021020738Auto-Supplies-_-Accessories.png', NULL, NULL, NULL, NULL, '2022-10-20 18:07:38', '2022-10-20 18:07:38', NULL),
+	(29, NULL, 5, 28, NULL, 1, 'uploads/media/category/20221021020803Department-stores-_-supermarkets.png', 'uploads/media/category/strips/20221021020803Department-Stores-_-Supermarkets.png', NULL, NULL, NULL, NULL, '2022-10-20 18:08:03', '2022-10-20 18:08:03', NULL),
+	(30, NULL, 5, 29, NULL, 1, 'uploads/media/category/20221021020946Hobbies-_-Novelties.png', 'uploads/media/category/strips/20221021020946Hobbies-_-Novelties.png', NULL, NULL, NULL, NULL, '2022-10-20 18:09:46', '2022-10-20 18:09:46', NULL),
+	(31, NULL, 5, 30, NULL, 1, 'uploads/media/category/20221021021009Home-_-Gardening.png', 'uploads/media/category/strips/20221021021009Home-_-Gardening.png', NULL, NULL, NULL, NULL, '2022-10-20 18:10:09', '2022-10-20 18:10:09', NULL),
+	(32, NULL, 5, 31, NULL, 1, 'uploads/media/category/20221021021031Media-_-Music.png', 'uploads/media/category/strips/20221021021031Media-_-Music.png', NULL, NULL, NULL, NULL, '2022-10-20 18:10:31', '2022-10-20 18:10:31', NULL),
+	(33, NULL, 5, 32, NULL, 1, 'uploads/media/category/20221021021053Personal-Care-_-Drug.png', 'uploads/media/category/strips/20221021021053Personal-Care-_-Drug.png', NULL, NULL, NULL, NULL, '2022-10-20 18:10:53', '2022-10-20 18:10:53', NULL),
+	(34, NULL, 5, 33, NULL, 1, 'uploads/media/category/20221021021118School-and-Office-Supplies.png', 'uploads/media/category/strips/20221021021118School-_-Office-Supplies.png', NULL, NULL, NULL, NULL, '2022-10-20 18:11:18', '2022-10-20 18:11:18', NULL),
+	(35, NULL, 5, 34, NULL, 1, 'uploads/media/category/20221021021147Sporting-Goods.png', 'uploads/media/category/strips/20221021021147Sporting-Goods.png', NULL, NULL, NULL, NULL, '2022-10-20 18:11:47', '2022-10-20 18:11:47', NULL),
+	(36, NULL, 35, 40, NULL, 1, 'uploads/media/category/20221021080949American.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:09:49', '2022-10-21 00:09:49', NULL),
+	(37, NULL, 35, 41, NULL, 1, 'uploads/media/category/20221021080959ASIAN.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:09:59', '2022-10-21 00:09:59', NULL),
+	(38, NULL, 35, 42, NULL, 1, 'uploads/media/category/20221021081008Baby-back-ribs.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:10:08', '2022-10-21 00:10:08', NULL),
+	(39, NULL, 35, 43, NULL, 1, 'uploads/media/category/20221021081016Barbecue.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:10:16', '2022-10-21 00:10:16', NULL),
+	(40, NULL, 35, 44, NULL, 1, 'uploads/media/category/20221021081024Beef.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:10:24', '2022-10-21 00:10:24', NULL),
+	(41, NULL, 35, 45, NULL, 1, 'uploads/media/category/20221021081033Bread.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:10:33', '2022-10-21 00:10:33', NULL),
+	(42, NULL, 35, 46, NULL, 1, 'uploads/media/category/20221021081041Burger.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:10:41', '2022-10-21 00:10:41', NULL),
+	(43, NULL, 35, 47, NULL, 1, 'uploads/media/category/20221021081053Cake.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:10:53', '2022-10-21 00:10:53', NULL),
+	(44, NULL, 35, 48, NULL, 1, 'uploads/media/category/20221021081101Chicken.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:11:01', '2022-10-21 00:11:01', NULL),
+	(45, NULL, 35, 49, NULL, 1, 'uploads/media/category/20221021081111Chinese.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:11:11', '2022-10-21 00:11:11', NULL),
+	(46, NULL, 35, 50, NULL, 1, 'uploads/media/category/20221021081122Coffee.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:11:22', '2022-10-21 00:11:22', NULL),
+	(47, NULL, 35, 51, NULL, 1, 'uploads/media/category/20221021081140Dimsum.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:11:40', '2022-10-21 00:11:40', NULL),
+	(48, NULL, 35, 52, NULL, 1, 'uploads/media/category/20221021081152Donut.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:11:52', '2022-10-21 00:11:52', NULL),
+	(49, NULL, 35, 53, NULL, 1, 'uploads/media/category/20221021081200European.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:12:00', '2022-10-21 00:12:00', NULL),
+	(50, NULL, 35, 54, NULL, 1, 'uploads/media/category/20221021081219Filipino.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:12:19', '2022-10-21 00:12:19', NULL),
+	(51, NULL, 35, 55, NULL, 1, 'uploads/media/category/20221021081229French.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:12:29', '2022-10-21 00:12:29', NULL),
+	(52, NULL, 35, 56, NULL, 1, 'uploads/media/category/20221021081243Grilled.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:12:43', '2022-10-21 00:12:43', NULL),
+	(53, NULL, 35, 57, NULL, 1, 'uploads/media/category/20221021081255Halal.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:12:55', '2022-10-21 00:12:55', NULL),
+	(54, NULL, 35, 58, NULL, 1, 'uploads/media/category/20221021081308Ice-cream.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:13:08', '2022-10-21 00:13:08', NULL),
+	(55, NULL, 35, 59, NULL, 1, 'uploads/media/category/20221021081317Indian.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:13:17', '2022-10-21 00:13:17', NULL),
+	(56, NULL, 35, 60, NULL, 1, 'uploads/media/category/20221021081328Italian.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:13:28', '2022-10-21 00:13:28', NULL),
+	(57, NULL, 35, 61, NULL, 1, 'uploads/media/category/20221021081340Japanese.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:13:40', '2022-10-21 00:13:40', NULL),
+	(58, NULL, 35, 62, NULL, 1, 'uploads/media/category/20221021081350Juice-_-Shakes.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:13:50', '2022-10-21 00:13:50', NULL),
+	(59, NULL, 35, 63, NULL, 1, 'uploads/media/category/20221021081401Korean.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:14:01', '2022-10-21 00:14:01', NULL),
+	(60, NULL, 35, 64, NULL, 1, 'uploads/media/category/20221021081411Lechon.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:14:11', '2022-10-21 00:14:11', NULL),
+	(61, NULL, 35, 65, NULL, 1, 'uploads/media/category/20221021081424Liquor.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:14:24', '2022-10-21 00:14:24', NULL),
+	(62, NULL, 35, 66, NULL, 1, 'uploads/media/category/20221021081437mediterranean.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:14:37', '2022-10-21 00:14:37', NULL),
+	(63, NULL, 35, 67, NULL, 1, 'uploads/media/category/20221021081455Merienda.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:14:55', '2022-10-21 00:14:55', NULL),
+	(64, NULL, 35, 68, NULL, 1, 'uploads/media/category/20221021081509Mexican.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:15:09', '2022-10-21 00:15:09', NULL),
+	(65, NULL, 35, 69, NULL, 1, 'uploads/media/category/20221021081522Milk-tea.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:15:22', '2022-10-21 00:15:22', NULL),
+	(66, NULL, 35, 70, NULL, 1, 'uploads/media/category/20221021081532Noodles.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:15:32', '2022-10-21 00:15:32', NULL),
+	(67, NULL, 35, 71, NULL, 1, 'uploads/media/category/20221021081545Pasta.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:15:45', '2022-10-21 00:15:45', NULL),
+	(68, NULL, 35, 72, NULL, 1, 'uploads/media/category/20221021081558Pizza.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:15:58', '2022-10-21 00:15:58', NULL),
+	(69, NULL, 35, 73, NULL, 1, 'uploads/media/category/20221021081608Pork.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:16:08', '2022-10-21 00:16:08', NULL),
+	(70, NULL, 35, 74, NULL, 1, 'uploads/media/category/20221021081621Roasted.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:16:21', '2022-10-21 00:16:21', NULL),
+	(71, NULL, 35, 75, NULL, 1, 'uploads/media/category/20221021081633Sandwich.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:16:33', '2022-10-21 00:16:33', NULL),
+	(72, NULL, 35, 76, NULL, 1, 'uploads/media/category/20221021081643Seafood.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:16:43', '2022-10-21 00:16:43', NULL),
+	(73, NULL, 35, 77, NULL, 1, 'uploads/media/category/20221021081653Singaporean.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:16:53', '2022-10-21 00:16:53', NULL),
+	(74, NULL, 35, 78, NULL, 1, 'uploads/media/category/20221021081713Sisig.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:17:13', '2022-10-21 00:17:13', NULL),
+	(75, NULL, 35, 79, NULL, 1, 'uploads/media/category/20221021081724Soup.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:17:24', '2022-10-21 00:17:24', NULL),
+	(76, NULL, 35, 80, NULL, 1, 'uploads/media/category/20221021081800Spanish.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:18:00', '2022-10-21 00:18:00', NULL),
+	(77, NULL, 35, 81, NULL, 1, 'uploads/media/category/20221021081810Steak.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:18:10', '2022-10-21 00:18:10', NULL),
+	(78, NULL, 35, 82, NULL, 1, 'uploads/media/category/20221021081821Sushi.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:18:21', '2022-10-21 00:18:21', NULL),
+	(79, NULL, 35, 83, NULL, 1, 'uploads/media/category/20221021081831Thai.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:18:31', '2022-10-21 00:18:31', NULL),
+	(80, NULL, 35, 84, NULL, 1, 'uploads/media/category/20221021081843Vegetarian.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:18:43', '2022-10-21 00:18:43', NULL),
+	(81, NULL, 35, 85, NULL, 1, 'uploads/media/category/20221021081852Vietnamese.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:18:52', '2022-10-21 00:18:52', NULL),
+	(82, NULL, 36, 86, NULL, 1, 'uploads/media/category/20221021083229Activewear.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:32:29', '2022-10-21 00:32:29', NULL),
+	(83, NULL, 36, 87, NULL, 1, 'uploads/media/category/20221021083236Backpack.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:32:36', '2022-10-21 00:32:36', NULL),
+	(84, NULL, 36, 88, NULL, 1, 'uploads/media/category/20221021083244Bags.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:32:44', '2022-10-21 00:32:44', NULL),
+	(85, NULL, 36, 89, NULL, 1, 'uploads/media/category/20221021083253Belt.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:32:53', '2022-10-21 00:32:53', NULL),
+	(86, NULL, 36, 90, NULL, 1, 'uploads/media/category/20221021083306Boots.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:33:06', '2022-10-21 00:33:06', NULL),
+	(87, NULL, 36, 91, NULL, 1, 'uploads/media/category/20221021083315Business-attire.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:33:15', '2022-10-21 00:33:15', NULL),
+	(88, NULL, 36, 92, NULL, 1, 'uploads/media/category/20221021083322Casual.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:33:22', '2022-10-21 00:33:22', NULL),
+	(89, NULL, 36, 93, NULL, 1, 'uploads/media/category/20221021083333Coat-_-Tie.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:33:33', '2022-10-21 00:33:33', NULL),
+	(90, NULL, 36, 94, NULL, 1, 'uploads/media/category/20221021083342Denim.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:33:42', '2022-10-21 00:33:42', NULL),
+	(91, NULL, 36, 95, NULL, 1, 'uploads/media/category/20221021083350Designer.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:33:50', '2022-10-21 00:33:50', NULL),
+	(92, NULL, 36, 96, NULL, 1, 'uploads/media/category/20221021083400Dress.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:34:00', '2022-10-21 00:34:00', NULL),
+	(93, NULL, 36, 97, NULL, 1, 'uploads/media/category/20221021083407Eyewear.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:34:07', '2022-10-21 00:34:07', NULL),
+	(94, NULL, 36, 98, NULL, 1, 'uploads/media/category/20221021083414Flats.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:34:14', '2022-10-21 00:34:14', NULL),
+	(95, NULL, 36, 99, NULL, 1, 'uploads/media/category/20221021083426Flip-flops.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:34:26', '2022-10-21 00:34:26', NULL),
+	(96, NULL, 36, 100, NULL, 1, 'uploads/media/category/20221021083441Formal.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:34:41', '2022-10-21 00:34:41', NULL),
+	(97, NULL, 36, 101, NULL, 1, 'uploads/media/category/20221021083453Gown.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:34:53', '2022-10-21 00:34:53', NULL),
+	(98, NULL, 36, 102, NULL, 1, 'uploads/media/category/20221021083502Headwear.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:35:02', '2022-10-21 00:35:02', NULL),
+	(99, NULL, 36, 103, NULL, 1, 'uploads/media/category/20221021083514Heels.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:35:14', '2022-10-21 00:35:14', NULL),
+	(100, NULL, 36, 104, NULL, 1, 'uploads/media/category/20221021083525Jackets-and-Coats.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:35:25', '2022-10-21 00:35:25', NULL),
+	(101, NULL, 36, 105, NULL, 1, 'uploads/media/category/20221021083534Jewelry.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:35:34', '2022-10-21 00:35:34', NULL),
+	(102, NULL, 36, 106, NULL, 1, 'uploads/media/category/20221021083545Laptop-Bags.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:35:45', '2022-10-21 00:35:45', NULL),
+	(103, NULL, 36, 107, NULL, 1, 'uploads/media/category/20221021083555Maternity.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:35:55', '2022-10-21 00:35:55', NULL),
+	(104, NULL, 36, 108, NULL, 1, 'uploads/media/category/20221021083603Pants.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:36:03', '2022-10-21 00:36:03', NULL),
+	(105, NULL, 36, 109, NULL, 1, 'uploads/media/category/20221021083615Rubber-shoes.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:36:15', '2022-10-21 00:36:15', NULL),
+	(106, NULL, 36, 110, NULL, 1, 'uploads/media/category/20221021083627School-shoes.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:36:27', '2022-10-21 00:36:27', NULL),
+	(107, NULL, 36, 111, NULL, 1, 'uploads/media/category/20221021083637Shoes.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:36:37', '2022-10-21 00:36:37', NULL),
+	(108, NULL, 36, 112, NULL, 1, 'uploads/media/category/20221021083647Sleepwear.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:36:47', '2022-10-21 00:36:47', NULL),
+	(109, NULL, 36, 113, NULL, 1, 'uploads/media/category/20221021083656Swimwear.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:36:56', '2022-10-21 00:36:56', NULL),
+	(110, NULL, 36, 114, NULL, 1, 'uploads/media/category/20221021083705Top.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:37:05', '2022-10-21 00:37:05', NULL),
+	(111, NULL, 36, 115, NULL, 1, 'uploads/media/category/20221021083714Tote-bags.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:37:14', '2022-10-21 00:37:14', NULL),
+	(112, NULL, 36, 116, NULL, 1, 'uploads/media/category/20221021083727Travel-Bags.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:37:27', '2022-10-21 00:37:27', NULL),
+	(113, NULL, 36, 117, NULL, 1, 'uploads/media/category/20221021083736Underwear.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:37:36', '2022-10-21 00:37:36', NULL),
+	(114, NULL, 36, 118, NULL, 1, 'uploads/media/category/20221021083744Watch.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:37:44', '2022-10-21 00:37:44', NULL),
+	(115, NULL, 37, 119, NULL, 1, 'uploads/media/category/20221021083858AI-Technology.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:38:58', '2022-10-21 00:38:58', NULL),
+	(116, NULL, 37, 120, NULL, 1, 'uploads/media/category/20221021083906Appliances.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:39:06', '2022-10-21 00:39:06', NULL),
+	(117, NULL, 37, 121, NULL, 1, 'uploads/media/category/20221021083915Battery-_-Charger.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:39:15', '2022-10-21 00:39:15', NULL),
+	(118, NULL, 37, 122, NULL, 1, 'uploads/media/category/20221021083925Cable-Services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:39:25', '2022-10-21 00:39:25', NULL),
+	(119, NULL, 37, 123, NULL, 1, 'uploads/media/category/20221021083934Cables-and-cords.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:39:34', '2022-10-21 00:39:34', NULL),
+	(120, NULL, 37, 124, NULL, 1, 'uploads/media/category/20221021083943Camera-_-Webcam.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:39:43', '2022-10-21 00:39:43', NULL),
+	(121, NULL, 37, 125, NULL, 1, 'uploads/media/category/20221021083952Camera-accessories.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:39:52', '2022-10-21 00:39:52', NULL),
+	(122, NULL, 37, 126, NULL, 1, 'uploads/media/category/20221021084018Computer.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:40:18', '2022-10-21 00:40:18', NULL),
+	(123, NULL, 37, 127, NULL, 1, 'uploads/media/category/20221021084028Computer-accessories.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:40:28', '2022-10-21 00:40:28', NULL),
+	(124, NULL, 37, 128, NULL, 1, 'uploads/media/category/20221021084036Cyberzone.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:40:36', '2022-10-21 00:40:36', NULL),
+	(125, NULL, 37, 129, NULL, 1, 'uploads/media/category/20221021084045Gadgets.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:40:45', '2022-10-21 00:40:45', NULL),
+	(126, NULL, 37, 130, NULL, 1, 'uploads/media/category/20221021084053Games.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:40:53', '2022-10-21 00:40:53', NULL),
+	(127, NULL, 37, 131, NULL, 1, 'uploads/media/category/20221021084101Headsets.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:41:01', '2022-10-21 00:41:01', NULL),
+	(128, NULL, 37, 132, NULL, 1, 'uploads/media/category/20221021084110Household-appliances.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:41:10', '2022-10-21 00:41:10', NULL),
+	(129, NULL, 37, 133, NULL, 1, 'uploads/media/category/20221021084123Internet-Cafe.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:41:23', '2022-10-21 00:41:23', NULL),
+	(130, NULL, 37, 134, NULL, 1, 'uploads/media/category/20221021084135Internet-Services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:41:35', '2022-10-21 00:41:35', NULL),
+	(131, NULL, 37, 135, NULL, 1, 'uploads/media/category/20221021084146Kitchen-Appliances.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:41:46', '2022-10-21 00:41:46', NULL),
+	(132, NULL, 37, 136, NULL, 1, 'uploads/media/category/20221021084156Large-Appliances.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:41:56', '2022-10-21 00:41:56', NULL),
+	(133, NULL, 37, 137, NULL, 1, 'uploads/media/category/20221021084206Monopods-_-Tripods.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:42:06', '2022-10-21 00:42:06', NULL),
+	(134, NULL, 37, 138, NULL, 1, 'uploads/media/category/20221021084219Office-Appliances.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:42:19', '2022-10-21 00:42:19', NULL),
+	(135, NULL, 37, 139, NULL, 1, 'uploads/media/category/20221021084232Phone-accessories.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:42:32', '2022-10-21 00:42:32', NULL),
+	(136, NULL, 37, 140, NULL, 1, 'uploads/media/category/20221021084247Photo-studio.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:42:47', '2022-10-21 00:42:47', NULL),
+	(137, NULL, 37, 141, NULL, 1, 'uploads/media/category/20221021084304Powerbank.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:43:04', '2022-10-21 00:43:04', NULL),
+	(138, NULL, 37, 142, NULL, 1, 'uploads/media/category/20221021084316Printer-_-Scanner.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:43:16', '2022-10-21 00:43:16', NULL),
+	(139, NULL, 37, 143, NULL, 1, 'uploads/media/category/20221021084327Printing-Services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:43:27', '2022-10-21 00:43:27', NULL),
+	(140, NULL, 37, 144, NULL, 1, 'uploads/media/category/20221021084337Rush-ID.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:43:37', '2022-10-21 00:43:37', NULL),
+	(141, NULL, 37, 145, NULL, 1, 'uploads/media/category/20221021084346Screen-protector-and-case.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:43:46', '2022-10-21 00:43:46', NULL),
+	(142, NULL, 37, 146, NULL, 1, 'uploads/media/category/20221021084357Service-_-Repair.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:43:57', '2022-10-21 00:43:57', NULL),
+	(143, NULL, 37, 147, NULL, 1, 'uploads/media/category/20221021084408Smartphone.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:44:08', '2022-10-21 00:44:08', NULL),
+	(144, NULL, 37, 148, NULL, 1, 'uploads/media/category/20221021084419Smartwatch.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:44:19', '2022-10-21 00:44:19', NULL),
+	(145, NULL, 37, 149, NULL, 1, 'uploads/media/category/20221021084428Software.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:44:28', '2022-10-21 00:44:28', NULL),
+	(146, NULL, 37, 150, NULL, 1, 'uploads/media/category/20221021084438Speakers.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:44:38', '2022-10-21 00:44:38', NULL),
+	(147, NULL, 37, 151, NULL, 1, 'uploads/media/category/20221021084447Storage.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:44:47', '2022-10-21 00:44:47', NULL),
+	(148, NULL, 37, 152, NULL, 1, 'uploads/media/category/20221021084509Tablet.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:45:09', '2022-10-21 00:45:09', NULL),
+	(149, NULL, 37, 153, NULL, 1, 'uploads/media/category/20221021084518Tablet-accessories.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:45:18', '2022-10-21 00:45:18', NULL),
+	(150, NULL, 37, 154, NULL, 1, 'uploads/media/category/20221021084529Telecomm.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:45:29', '2022-10-21 00:45:29', NULL),
+	(151, NULL, 37, 155, NULL, 1, 'uploads/media/category/20221021084540Television.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:45:40', '2022-10-21 00:45:40', NULL),
+	(152, NULL, 38, 156, NULL, 1, 'uploads/media/category/20221021084708Atm.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:47:08', '2022-10-21 00:47:08', NULL),
+	(153, NULL, 38, 157, NULL, 1, 'uploads/media/category/20221021084719Bag-_-Shoe-Repair.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:47:19', '2022-10-21 00:47:19', NULL),
+	(154, NULL, 38, 159, NULL, 1, 'uploads/media/category/20221021085017Barbershop.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:50:17', '2022-10-21 00:50:17', NULL),
+	(155, NULL, 38, 160, NULL, 1, 'uploads/media/category/20221021085028Bills-Payment.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:50:28', '2022-10-21 00:50:28', NULL),
+	(156, NULL, 38, 161, NULL, 1, 'uploads/media/category/20221021085036Body-Pamper.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:50:36', '2022-10-21 00:50:36', NULL),
+	(157, NULL, 38, 162, NULL, 1, 'uploads/media/category/20221021085044Courier-_-Freight.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:50:44', '2022-10-21 00:50:44', NULL),
+	(158, NULL, 38, 163, NULL, 1, 'uploads/media/category/20221021085054Dental-Clinics.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:50:54', '2022-10-21 00:50:54', NULL),
+	(159, NULL, 38, 164, NULL, 1, 'uploads/media/category/20221021085105Dermatology-Clinics.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:51:05', '2022-10-21 00:51:05', NULL),
+	(160, NULL, 38, 165, NULL, 1, 'uploads/media/category/20221021085115Detoxify.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:51:15', '2022-10-21 00:51:15', NULL),
+	(161, NULL, 38, 166, NULL, 1, 'uploads/media/category/20221021085122Facial-Care.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:51:22', '2022-10-21 00:51:22', NULL),
+	(162, NULL, 38, 167, NULL, 1, 'uploads/media/category/20221021085129Foreign-Exchange.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:51:29', '2022-10-21 00:51:29', NULL),
+	(163, NULL, 38, 168, NULL, 1, 'uploads/media/category/20221021085139Gym-_-Fitness.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:51:39', '2022-10-21 00:51:39', NULL),
+	(164, NULL, 38, 169, NULL, 1, 'uploads/media/category/20221021085148Hair-Removal.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:51:48', '2022-10-21 00:51:48', NULL),
+	(165, NULL, 38, 170, NULL, 1, 'uploads/media/category/20221021085158Hair-Salon.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:51:58', '2022-10-21 00:51:58', NULL),
+	(166, NULL, 38, 171, NULL, 1, 'uploads/media/category/20221021085210Makeup.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:52:10', '2022-10-21 00:52:10', NULL),
+	(167, NULL, 38, 172, NULL, 1, 'uploads/media/category/20221021085223Medical-Clinics.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:52:23', '2022-10-21 00:52:23', NULL),
+	(168, NULL, 38, 173, NULL, 1, 'uploads/media/category/20221021085238Money-Transfer.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:52:38', '2022-10-21 00:52:38', NULL),
+	(169, NULL, 38, 174, NULL, 1, 'uploads/media/category/20221021085247Nail-Services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:52:47', '2022-10-21 00:52:47', NULL),
+	(170, NULL, 38, 175, NULL, 1, 'uploads/media/category/20221021085301Optical-Clinics.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:53:01', '2022-10-21 00:53:01', NULL),
+	(171, NULL, 38, 176, NULL, 1, 'uploads/media/category/20221021085313Petshop-_-grooming.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:53:13', '2022-10-21 00:53:13', NULL),
+	(172, NULL, 38, 177, NULL, 1, 'uploads/media/category/20221021085326Prescription-Lens.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:53:26', '2022-10-21 00:53:26', NULL),
+	(173, NULL, 38, 178, NULL, 1, 'uploads/media/category/20221021085336Real-estate.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:53:36', '2022-10-21 00:53:36', NULL),
+	(174, NULL, 38, 179, NULL, 1, 'uploads/media/category/20221021085346School-services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:53:46', '2022-10-21 00:53:46', NULL),
+	(175, NULL, 38, 180, NULL, 1, 'uploads/media/category/20221021085355Slimming.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:53:55', '2022-10-21 00:53:55', NULL),
+	(176, NULL, 38, 181, NULL, 1, 'uploads/media/category/20221021085420Spa-_-Sauna.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:54:20', '2022-10-21 00:54:20', NULL),
+	(177, NULL, 38, 182, NULL, 1, 'uploads/media/category/20221021085429Tailoring-Services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:54:29', '2022-10-21 00:54:29', NULL),
+	(178, NULL, 38, 183, NULL, 1, 'uploads/media/category/20221021085439Tattoo-_-Inking-services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:54:39', '2022-10-21 00:54:39', NULL),
+	(179, NULL, 38, 184, NULL, 1, 'uploads/media/category/20221021085449Travel-Services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:54:49', '2022-10-21 00:54:49', NULL),
+	(180, NULL, 38, 185, NULL, 1, 'uploads/media/category/20221021085510Waxing-services.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:55:10', '2022-10-21 00:55:10', NULL),
+	(181, NULL, 38, 186, NULL, 1, 'uploads/media/category/20221021085519Wellness.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:55:19', '2022-10-21 00:55:19', NULL),
+	(182, NULL, 38, 187, NULL, 1, 'uploads/media/category/20221021085527Whitening.png', '', NULL, NULL, NULL, NULL, '2022-10-21 00:55:27', '2022-10-21 00:55:27', NULL);
 
 -- Dumping structure for table prestige.failed_jobs
 DROP TABLE IF EXISTS `failed_jobs`;
@@ -623,9 +803,9 @@ CREATE TABLE IF NOT EXISTS `modules` (
   PRIMARY KEY (`id`),
   KEY `modules_name_index` (`name`),
   KEY `modules_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~33 rows (approximately)
+-- Dumping data for table prestige.modules: ~36 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin Management', '#', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2022-08-08 01:26:43', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -638,7 +818,7 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`
 	(10, NULL, 'Brand Management', '/admin/brands', 'nav-icon fas fa-copyright', 1, '2022-08-08 19:11:32', '2022-08-08 19:11:32', NULL),
 	(11, 1, 'User', '/admin/users', 'nav-icon fas fa-user-secret', 1, '2022-08-08 01:32:54', '2022-08-08 18:50:08', NULL),
 	(12, NULL, 'Tenant Management', '#', 'nav-icon fas fa-store-alt', 1, '2022-08-11 22:51:31', '2022-08-23 22:30:10', '2022-08-23 22:30:10'),
-	(13, NULL, 'Sites Management', '/admin/sites', 'nav-icon fas fa-city', 1, '2022-08-11 22:51:51', '2022-09-05 01:08:52', NULL),
+	(13, NULL, 'Sites Management', '#', 'nav-icon fas fa-city', 1, '2022-08-11 22:51:51', '2022-10-19 21:56:15', NULL),
 	(14, NULL, 'Advertisements', '#', 'nav-icon fas fa-photo-video', 1, '2022-08-11 22:52:09', '2022-09-18 18:58:47', NULL),
 	(15, 14, 'Online', '/admin/advertisements/online', 'nav-icon fas fa-images', 1, '2022-08-11 22:52:33', '2022-09-18 23:14:54', NULL),
 	(16, 14, 'Banners', '/admin/advertisements/banner', 'nav-icon fas fa-images', 1, '2022-08-11 22:52:53', '2022-09-19 23:58:20', NULL),
@@ -659,7 +839,10 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`
 	(31, 6, 'Amenities', '/admin/amenities', 'nav-icon fas fa-restroom', 1, '2022-08-18 22:50:23', '2022-08-18 22:51:50', NULL),
 	(32, 6, 'Tags', '/admin/tags', 'nav-icon fa fa-tags', 1, '2022-08-22 17:03:10', '2022-08-22 17:03:22', NULL),
 	(33, 5, 'Companies', '/admin/companies', 'nav-icon  fa fa-copyright', 1, '2022-10-17 21:33:27', '2022-10-17 22:22:12', NULL),
-	(34, 6, 'illustration', '/admin/Illustrations', 'nav-icon fas fa-images', 1, '2022-10-18 21:40:55', '2022-10-18 23:11:12', NULL);
+	(34, 6, 'illustration', '/admin/Illustrations', 'nav-icon fas fa-images', 1, '2022-10-18 21:40:55', '2022-10-18 23:11:12', NULL),
+	(35, 13, 'Sites / Buildings', '/admin/sites', 'nav-icon fa fa-building', 1, '2022-10-19 21:54:25', '2022-10-19 21:54:44', NULL),
+	(36, 13, 'Tenants', '#', 'nav-icon fa fa-address-card', 1, '2022-10-19 21:59:24', '2022-10-19 21:59:36', NULL),
+	(37, 13, 'Screens', '#', 'nav-icon fa fa-desktop', 1, '2022-10-19 22:00:09', '2022-10-19 22:00:18', NULL);
 
 -- Dumping structure for table prestige.password_resets
 DROP TABLE IF EXISTS `password_resets`;
@@ -693,9 +876,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   KEY `permissions_deleted_at_index` (`deleted_at`),
   CONSTRAINT `permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`),
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~60 rows (approximately)
+-- Dumping data for table prestige.permissions: ~65 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -718,7 +901,7 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-10-17 21:34:09', NULL),
 	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-11 22:49:43', NULL),
 	(26, 1, 12, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
-	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
+	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-10-19 22:00:30', NULL),
 	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
 	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
 	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
@@ -758,7 +941,10 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2022-10-18 21:41:17', NULL),
 	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2022-10-18 21:41:17', NULL),
 	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2022-10-17 21:34:09', NULL),
-	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2022-10-18 21:41:17', NULL);
+	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2022-10-18 21:41:17', NULL),
+	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2022-10-19 22:00:30', NULL),
+	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-10-19 22:00:30', NULL),
+	(70, 1, 37, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-10-19 22:00:30', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
 DROP TABLE IF EXISTS `personal_access_tokens`;
@@ -919,7 +1105,7 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~6 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~7 rows (approximately)
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LG Floor', 1, '2022-10-04 18:52:52', '2022-10-04 19:31:20', NULL),
 	(2, 1, 1, 'UG Floor', 1, '2022-10-04 18:52:58', '2022-10-04 19:31:10', NULL),
@@ -965,7 +1151,7 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   CONSTRAINT `site_maps_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_maps: ~2 rows (approximately)
+-- Dumping data for table prestige.site_maps: ~3 rows (approximately)
 INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 1, 1, 1, 6, 'uploads/map/files/cam1_smau_2f.png', 'uploads/map/preview/cam1_smau_2f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-05 19:42:45', '2022-10-06 00:50:09', NULL),
 	(4, 1, 1, 2, 6, 'uploads/map/files/cam1_smau_3f.png', 'uploads/map/preview/cam1_smau_3f.png', NULL, 3000, 3001, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-10-06 00:16:41', '2022-10-06 00:50:26', NULL),
@@ -1237,7 +1423,7 @@ CREATE TABLE IF NOT EXISTS `supplementals` (
   CONSTRAINT `supplementals_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.supplementals: ~55 rows (approximately)
+-- Dumping data for table prestige.supplementals: ~59 rows (approximately)
 INSERT INTO `supplementals` (`id`, `category_id`, `name`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 'American', 'uploads/media/supplemental/American.png', 'uploads/media/supplemental/strips/American.png', '', '', 1, '2022-08-18 19:17:23', '2022-08-18 19:35:05', NULL),
 	(2, 2, 'Asian', 'uploads/media/supplemental/Asian.png', 'uploads/media/supplemental/strips/Asian.png', '', '', 1, '2022-08-18 19:37:41', '2022-08-18 19:38:57', NULL),

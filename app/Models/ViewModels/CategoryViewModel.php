@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Category;
+use App\Models\CategoryLabel;
 use App\Models\CompanyCategory;
 
 class CategoryViewModel extends Model
@@ -48,7 +49,8 @@ class CategoryViewModel extends Model
         'type_category_name',
         'children',
         'label',
-        'kiosk_image_primary_path',  
+        'kiosk_image_primary_path',
+        'supplemental',
     ];
 
     public static $site_id = '';
@@ -113,29 +115,118 @@ class CategoryViewModel extends Model
 
     public function getLabelAttribute() 
     {
+        // SITE AND COMPANY LABEL
+        if(self::$company_id && self::$site_id) {
+            $category_label = CategoryLabel::where('category_id', $this->id)->where('site_id', self::$site_id)->where('company_id', self::$company_id)->first();
+            if($category_label) 
+                return $category_label['name'];
+        }
+
+        // SITE LABEL
+        if(self::$site_id) {
+            $category_label = CategoryLabel::where('category_id', $this->id)->where('site_id', self::$site_id)->first();
+            if($category_label) 
+                return $category_label['name'];
+        }
+
+        // COMPANY LABEL
+        if(self::$company_id) {
+            $category_label = CategoryLabel::where('category_id', $this->id)->where('company_id', self::$company_id)->first();
+            if($category_label) 
+                return $category_label['name'];
+        }
+
         return $this->name;
     }
 
     public function getKioskImagePrimaryPathAttribute() 
     {
+        // DEFAULT MAIN CATEGORY IMAGE
+        // SITE ID AND COMPANY ID EXIST
+        if(self::$site_id && self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                                ->whereNull('sub_category_id')
+                                ->where('site_id', self::$site_id)
+                                ->where('company_id', self::$company_id)
+                                ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_primary']);
+        }
+
         // SITE PRIMARY IMAGE
         if(self::$site_id) {
-            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)->where('site_id', self::$site_id)->first();
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                                ->whereNull('sub_category_id')
+                                ->where('site_id', self::$site_id)
+                                ->first();
             if($company_categories) 
                 return asset($company_categories['kiosk_image_primary']);
         }
 
         // COMPANY PRIMARY IMAGE
         if(self::$company_id) {
-            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)->where('company_id', self::$company_id)->first();
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                                ->whereNull('sub_category_id')
+                                ->where('company_id', self::$company_id)
+                                ->first();
             if($company_categories) 
                 return asset($company_categories['kiosk_image_primary']);
         }
 
-        // DEFAULT PRIMARY IMAGE
-        $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)->whereNull('site_id')->whereNull('company_id')->first();
+        $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                            ->whereNull('sub_category_id')
+                            ->whereNull('site_id')->whereNull('company_id')
+                            ->first();
         if($company_categories) 
             return asset($company_categories['kiosk_image_primary']);
+
+        // SUB CATEGORY IMAGE
+        // SITE ID AND COMPANY ID EXIST
+        if(self::$site_id && self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                                  ->where('site_id', self::$site_id)
+                                  ->where('company_id', self::$company_id)
+                                  ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_primary']);
+        }
+
+        // SITE PRIMARY IMAGE
+        if(self::$site_id) {
+            $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                                  ->where('site_id', self::$site_id)
+                                  ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_primary']);
+        }
+
+        // COMPANY PRIMARY IMAGE
+        if(self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                                  ->where('company_id', self::$company_id)
+                                  ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_primary']);
+        }
+
+        // DEFAULT SUB CATEGORY IMAGE
+        $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                            ->whereNull('site_id')
+                            ->whereNull('company_id')
+                            ->first();
+        if($company_categories) 
+            return asset($company_categories['kiosk_image_primary']);
+        
         return asset('/images/no-image-available.png');
+    }
+
+    public function getSupplementalAttribute() 
+    {
+        $supplemental = Category::where('supplemental_category_id', $this->id)->first();
+        if($supplemental) {
+            $supplemental['children'] = Category::where('parent_id', $supplemental['id'])->get();
+            return $supplemental;
+        }
+        return null;
     }
 }

@@ -33,19 +33,19 @@ class MainController extends AppBaseController
 
     public function getCategories()
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::where('is_default', 1)->first();
             $categories = CategoryViewModel::getMainCategory($site->id);
             
             return $this->response($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Categories to display!',
-                'status_code' => 200,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Categories to display!',
+        //         'status_code' => 200,
+        //     ], 422);
+        // }
     }
 }

@@ -97,9 +97,18 @@
 					<div class="modal-body">
 						<div class="card-body">							
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Category <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Category</label>
 								<div class="col-sm-8">
 									<label for="firstName" class="col-sm-4 col-form-label">{{ category_label_for }} </label>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Company</label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="category_label.company_id">
+									    <option value="">Select Company</option>
+									    <option v-for="company in companies" :value="company.id"> {{ company.name }}</option>
+								    </select>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -174,10 +183,12 @@
                     active: false,           
                 },
                 parent_category: [],
+				companies: [],
 				site_list: [],
 				category_label: {
 					id: '',
 					category_id: '',
+					company_id: '',
 					site_id: '',
 					label: ''
 				},
@@ -241,6 +252,7 @@
         },
 
         created(){
+			this.getCompanies();
             this.getParentCategory();
 			this.getSites();
         },
@@ -249,6 +261,11 @@
 			getParentCategory: function() {
 				axios.get('/admin/category/get-parent')
                 .then(response => this.parent_category = response.data.data);
+			},
+
+			getCompanies: function() {
+				axios.get('/admin/company/get-all')
+                .then(response => this.companies = response.data.data);
 			},
 
 			addNewCategory: function() {
@@ -335,6 +352,7 @@
 				axios.post('/admin/category/label/store', this.category_label)
 				.then(response => {
 					toastr.success(response.data.message);
+					this.category_label.company_id = '';
 					this.category_label.site_id = '';
 					this.category_label.label = '';
 					this.getLabels(response.data.data.category_id);
