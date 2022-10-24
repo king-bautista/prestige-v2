@@ -4,7 +4,7 @@ namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Supplemental;
+use App\Models\Category;
 use App\Models\Tag;
 
 class BrandViewModel extends Model
@@ -71,7 +71,7 @@ class BrandViewModel extends Model
     public function getSupplementalsAttribute()
     {
         $ids = $this->getSupplementals()->pluck('supplemental_id');
-        return Supplemental::whereIn('id', $ids)->get();
+        return Category::whereIn('id', $ids)->get();
     }  
 
     public function getTagsAttribute()
@@ -89,9 +89,9 @@ class BrandViewModel extends Model
 
     public function getCategoryNameAttribute()
     {
-        $name = $this->getCategory()->first()->name;
-        if($name)
-            return $name;
+        $category = $this->getCategory()->first();
+        if($category)
+            return $category['name'];
         return null;
     } 
 
@@ -99,7 +99,7 @@ class BrandViewModel extends Model
     {
         $ids = $this->getSupplementals()->pluck('supplemental_id');
         if($ids) {
-            $supplementals = Supplemental::whereIn('id', $ids)->pluck('name')->toArray();
+            $supplementals = Category::whereIn('id', $ids)->pluck('name')->toArray();
             return implode(', ', $supplementals);
         }
         return null;

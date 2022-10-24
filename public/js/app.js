@@ -9688,15 +9688,15 @@ __webpack_require__.r(__webpack_exports__);
       add_record: true,
       edit_record: false,
       dataFields: {
+        logo_image_path: {
+          name: "Logo",
+          type: "logo"
+        },
         name: "Name",
         descriptions: "Descriptions",
         category_name: "Category Name",
         supplemental_names: "Supplementals",
         tag_names: "Tags",
-        logo_image_path: {
-          name: "Logo",
-          type: "image"
-        },
         active: {
           name: "Status",
           type: "Boolean",
@@ -9740,6 +9740,13 @@ __webpack_require__.r(__webpack_exports__);
           title: 'New Brand',
           v_on: 'AddNewBrand',
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Brand',
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
+        },
+        batchUpload: {
+          title: 'Batch Upload',
+          v_on: 'modalBatchUpload',
+          icon: '<i class="fas fa-upload"></i> Batch Upload',
           "class": 'btn btn-primary btn-sm',
           method: 'add'
         }
@@ -9876,6 +9883,30 @@ __webpack_require__.r(__webpack_exports__);
         toastr.success(response.data.message);
         _this6.$refs.dataTable.fetchData();
         $('#brand-form').modal('hide');
+      });
+    },
+    modalBatchUpload: function modalBatchUpload() {
+      $('#batchModal').modal('show');
+    },
+    handleFileUpload: function handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+      $('#batchInputLabel').html(this.file.name);
+    },
+    storeBatch: function storeBatch() {
+      var _this7 = this;
+      var formData = new FormData();
+      formData.append('file', this.file);
+      axios.post('/admin/brand/batch-upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        _this7.$refs.file.value = null;
+        _this7.$refs.dataTable.fetchData();
+        toastr.success(response.data.message);
+        $('#batchModal').modal('hide');
+        $('#batchInputLabel').html('Choose File');
+        window.location.reload();
       });
     }
   },
@@ -13729,7 +13760,8 @@ var render = function render() {
     },
     on: {
       AddNewBrand: _vm.AddNewBrand,
-      editButton: _vm.editBrand
+      editButton: _vm.editBrand,
+      modalBatchUpload: _vm.modalBatchUpload
     }
   })], 1)])])])])]), _vm._v(" "), _c("div", {
     staticClass: "modal fade",
@@ -14018,7 +14050,64 @@ var render = function render() {
     on: {
       click: _vm.updateBrand
     }
-  }, [_vm._v("Save Changes")])])])])])])]);
+  }, [_vm._v("Save Changes")])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "modal fade",
+    attrs: {
+      id: "batchModal",
+      tabindex: "-1",
+      role: "dialog",
+      "aria-labelledby": "batchModalLabel",
+      "aria-hidden": "true"
+    }
+  }, [_c("div", {
+    staticClass: "modal-dialog",
+    attrs: {
+      role: "document"
+    }
+  }, [_c("div", {
+    staticClass: "modal-content"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_c("form", [_c("div", {
+    staticClass: "form-group col-md-12"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "custom-file"
+  }, [_c("input", {
+    ref: "file",
+    staticClass: "custom-file-input",
+    attrs: {
+      type: "file",
+      accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+      id: "batchInput"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.handleFileUpload();
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "custom-file-label",
+    attrs: {
+      id: "batchInputLabel",
+      "for": "batchInput"
+    }
+  }, [_vm._v("Choose file")])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "modal-footer justify-content-between"
+  }, [_c("button", {
+    staticClass: "btn btn-secondary",
+    attrs: {
+      type: "button",
+      "data-bs-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.storeBatch
+    }
+  }, [_vm._v("Save changes")])])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -14068,6 +14157,34 @@ var staticRenderFns = [function () {
   }, [_vm._v("Category "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "modal-header"
+  }, [_c("h5", {
+    staticClass: "modal-title",
+    attrs: {
+      id: "batchModalLabel"
+    }
+  }, [_vm._v("Batch Upload")]), _vm._v(" "), _c("button", {
+    staticClass: "close",
+    attrs: {
+      type: "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c("span", {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_vm._v("CSV File: "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")])]);
 }];
 render._withStripped = true;
 
