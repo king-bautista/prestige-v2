@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\BrandControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Brand;
@@ -14,6 +15,8 @@ use App\Models\BrandProductPromos;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\BrandViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
+
+use App\Imports\BrandsImport;
 
 class BrandController extends AppBaseController implements BrandControllerInterface
 {
@@ -236,6 +239,23 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        // try
+        // {
+            Excel::import(new BrandsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
 }

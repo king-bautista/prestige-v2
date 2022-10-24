@@ -17,15 +17,13 @@ class CreateBrandsTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('category_id')->unsigned()->nullable();
+            $table->bigInteger('category_id')->unsigned()->nullable()->index();
             $table->string('name');
             $table->mediumText('descriptions')->nullable();      
             $table->mediumText('logo')->nullable();      
             $table->boolean('active')->default(true);
             $table->timestamps();
-            $table->softDeletes()->index();
-
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->softDeletes();
         });
 
         Schema::create('brand_supplementals', function (Blueprint $table) {
@@ -35,7 +33,7 @@ class CreateBrandsTable extends Migration
             $table->bigInteger('supplemental_id')->unsigned();
 
             $table->foreign('brand_id')->references('id')->on('brands');
-            $table->foreign('supplemental_id')->references('id')->on('supplementals');
+            $table->foreign('supplemental_id')->references('id')->on('categories');
         });
 
         Schema::create('brand_tags', function (Blueprint $table) {

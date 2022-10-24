@@ -224,7 +224,7 @@ class CategoryViewModel extends Model
     {
         $supplemental = Category::where('supplemental_category_id', $this->id)->first();
         if($supplemental) {
-            $supplemental['children'] = Category::where('parent_id', $supplemental['id'])->get();
+            $supplemental['children'] = CategoryViewModel::where('parent_id', $supplemental['id'])->get();
             return $supplemental;
         }
         return null;
