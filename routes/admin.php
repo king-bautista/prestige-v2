@@ -229,6 +229,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     | Sites Screens Routes
     |--------------------------------------------------------------------------
     */
+    Route::get('/admin/site/screens', 'Admin\ScreensController@index')->name('admin.site.screens');
     Route::get('/admin/site/screen/list', 'Admin\ScreensController@list')->name('admin.site.screen.list');
     Route::post('/admin/site/screen/store', 'Admin\ScreensController@store')->name('admin.site.screen.store');
     Route::get('/admin/site/screen/{id}', 'Admin\ScreensController@details')->where('id', '[0-9]+')->name('admin.site.screen.details');

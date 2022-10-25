@@ -18,16 +18,19 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 13; 
-        $this->module_name = 'Sites Management';
+        $this->module_id = 37; 
+        $this->module_name = 'Screens';
+    }
+
+    public function index()
+    {
+        return view('admin.screens');
     }
 
     public function list(Request $request)
     {
         try
         {
-            $site_id = session()->get('site_id');
-
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_screens = SiteScreenViewModel::when(request('search'), function($query){
@@ -40,7 +43,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
             ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_screens.*')
-            ->where('site_screens.site_id', $site_id)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
@@ -76,21 +78,20 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try
     	{
-            $site_id = session()->get('site_id');
-
             if($request->is_default == 'true') {
                 SiteScreen::where('is_default', 1)->update(['is_default' => 0]);
             }
 
             $data = [
-                'site_id' => $site_id,
+                'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'site_point_id' => $request->site_point_id,
                 'screen_type' => $request->screen_type,
                 'name' => $request->name,
+                'kiosk_id' => $request->kiosk_id,
                 'active' => 1,
-                'is_default' => ($request->is_default == 'false') ? 0 : 1,
+                'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
 
             $site_screen = SiteScreen::create($data);
@@ -118,11 +119,13 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $data = [
+                'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'site_point_id' => $request->site_point_id,
                 'screen_type' => $request->screen_type,
                 'name' => $request->name,
+                'kiosk_id' => $request->kiosk_id,
                 'active' => ($request->active == 0) ? 0 : 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
@@ -181,8 +184,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try
     	{
-            SiteScreen::where('is_default', 1)->update(['is_default' => 0]);
             $site = SiteScreen::find($id);
+            SiteScreen::where('is_default', 1)->where('site_id', $site->site_id)->update(['is_default' => 0]);
             $site->update(['is_default' => 1]);
             return $this->response($site, 'Successfully Modified!', 200);
         }
