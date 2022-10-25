@@ -12434,6 +12434,7 @@ __webpack_require__.r(__webpack_exports__);
       tenant: {
         id: '',
         brand_id: '',
+        site_id: '',
         site_building_id: '',
         site_building_level_id: '',
         active: true,
@@ -12443,16 +12444,18 @@ __webpack_require__.r(__webpack_exports__);
       add_record: true,
       edit_record: false,
       brands: [],
+      sites: [],
       buildings: [],
       floors: [],
       dataFields: {
-        brand_name: "Brand Name",
         brand_logo: {
           name: "Brand Logo",
           type: "logo"
         },
-        floor_name: "Floor Name",
+        brand_name: "Brand Name",
+        site_name: "Site Name",
         building_name: "Building Name",
+        floor_name: "Floor Name",
         active: {
           name: "Status",
           type: "Boolean",
@@ -12504,65 +12507,72 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.getSites();
     this.GetBrands();
   },
   methods: {
-    GetBrands: function GetBrands() {
+    getSites: function getSites() {
       var _this = this;
-      axios.get('/admin/brand/get-all').then(function (response) {
-        return _this.brands = response.data.data;
+      axios.get('/admin/site/get-all').then(function (response) {
+        return _this.sites = response.data.data;
       });
     },
-    GetBuildings: function GetBuildings() {
+    GetBrands: function GetBrands() {
       var _this2 = this;
-      axios.get('/admin/site/buildings').then(function (response) {
-        return _this2.buildings = response.data.data;
+      axios.get('/admin/brand/get-all').then(function (response) {
+        return _this2.brands = response.data.data;
       });
-      this.tenant.site_building_level_id = '';
+    },
+    getBuildings: function getBuildings(id) {
+      var _this3 = this;
+      axios.get('/admin/site/get-buildings/' + id).then(function (response) {
+        return _this3.buildings = response.data.data;
+      });
     },
     getFloorLevel: function getFloorLevel(id) {
-      var _this3 = this;
+      var _this4 = this;
       axios.get('/admin/site/floors/' + id).then(function (response) {
-        return _this3.floors = response.data.data;
+        return _this4.floors = response.data.data;
       });
     },
     AddNewTenant: function AddNewTenant() {
-      this.GetBuildings();
       this.add_record = true;
       this.edit_record = false;
       this.tenant.brand_id = '';
+      this.tenant.site_id = '';
       this.tenant.site_building_id = '';
       this.tenant.site_building_level_id = '';
       $('#tenant-form').modal('show');
     },
     storeTenant: function storeTenant() {
-      var _this4 = this;
+      var _this5 = this;
       axios.post('/admin/site/tenant/store', this.tenant).then(function (response) {
         toastr.success(response.data.message);
-        _this4.$refs.tenantsDataTable.fetchData();
+        _this5.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
       });
     },
     editTenant: function editTenant(id) {
-      var _this5 = this;
-      this.GetBuildings();
+      var _this6 = this;
       axios.get('/admin/site/tenant/' + id).then(function (response) {
         var tenant = response.data.data;
-        _this5.tenant.id = tenant.id;
-        _this5.tenant.brand_id = tenant.brand_details;
-        _this5.tenant.site_building_id = tenant.site_building_id;
-        _this5.getFloorLevel(tenant.site_building_id);
-        _this5.tenant.site_building_level_id = tenant.site_building_level_id;
-        _this5.add_record = false;
-        _this5.edit_record = true;
+        _this6.tenant.id = tenant.id;
+        _this6.tenant.brand_id = tenant.brand_details;
+        _this6.tenant.site_id = tenant.site_id;
+        _this6.tenant.site_building_id = tenant.site_building_id;
+        _this6.getBuildings(tenant.site_id);
+        _this6.getFloorLevel(tenant.site_building_id);
+        _this6.tenant.site_building_level_id = tenant.site_building_level_id;
+        _this6.add_record = false;
+        _this6.edit_record = true;
         $('#tenant-form').modal('show');
       });
     },
     updateTenant: function updateTenant() {
-      var _this6 = this;
+      var _this7 = this;
       axios.put('/admin/site/tenant/update', this.tenant).then(function (response) {
         toastr.success(response.data.message);
-        _this6.$refs.tenantsDataTable.fetchData();
+        _this7.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
       });
     },
@@ -12571,10 +12581,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#tenantDeleteModal').modal('show');
     },
     removeTenant: function removeTenant() {
-      var _this7 = this;
+      var _this8 = this;
       axios.get('/admin/site/tenant/delete/' + this.id_to_deleted).then(function (response) {
-        _this7.$refs.tenantsDataTable.fetchData();
-        _this7.id_to_deleted = 0;
+        _this8.$refs.tenantsDataTable.fetchData();
+        _this8.id_to_deleted = 0;
         $('#tenantDeleteModal').modal('hide');
       });
     }
@@ -20126,7 +20136,7 @@ var render = function render() {
     staticClass: "col-md-12"
   }, [_c("div", {
     staticClass: "card"
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
+  }, [_c("div", {
     staticClass: "card-body"
   }, [_c("Table", {
     ref: "tenantsDataTable",
@@ -20182,13 +20192,13 @@ var render = function render() {
     attrs: {
       "aria-hidden": "true"
     }
-  }), _vm._v(" Edit Tenant")]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c("div", {
+  }), _vm._v(" Edit Tenant")]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c("div", {
     staticClass: "modal-body"
   }, [_c("div", {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(2), _vm._v(" "), _c("div", {
+  }, [_vm._m(1), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
@@ -20207,6 +20217,41 @@ var render = function render() {
       expression: "tenant.brand_id"
     }
   })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.site_id,
+      expression: "tenant.site_id"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.tenant, "site_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.getBuildings($event.target.value);
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Site")]), _vm._v(" "), _vm._l(_vm.sites, function (site) {
+    return _c("option", {
+      domProps: {
+        value: site.id
+      }
+    }, [_vm._v(" " + _vm._s(site.name))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(3), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
@@ -20441,14 +20486,6 @@ var render = function render() {
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "card-header"
-  }, [_c("h3", {
-    staticClass: "card-title"
-  }, [_vm._v("Tenants")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
   return _c("button", {
     staticClass: "close",
     attrs: {
@@ -20470,6 +20507,17 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Brands "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Site "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {

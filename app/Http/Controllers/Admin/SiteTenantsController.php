@@ -18,16 +18,19 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 13; 
-        $this->module_name = 'Sites Management';
+        $this->module_id = 36; 
+        $this->module_name = 'Tenants';
+    }
+
+    public function index()
+    {
+        return view('admin.tenants');
     }
 
     public function list(Request $request)
     {
         try
         {
-            $site_id = session()->get('site_id');
-
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
@@ -39,7 +42,6 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             ->leftJoin('site_buildings', 'site_tenants.site_building_id', '=', 'site_buildings.id')
             ->leftJoin('site_building_levels', 'site_tenants.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_tenants.*')
-            ->where('site_tenants.site_id', $site_id)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_tenants, 'Successfully Retreived!', 200);
@@ -75,10 +77,9 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
     	{
-            $site_id = session()->get('site_id');
             $data = [
                 'brand_id' => $request->brand_id['id'],
-                'site_id' => $site_id,
+                'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'active' => ($request->active) ? 1 : 0,
@@ -103,12 +104,10 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
     	{
-            $site_id = session()->get('site_id');
             $site_tenant = SiteTenant::find($request->id);
-
             $data = [
                 'brand_id' => $request->brand_id['id'],
-                'site_id' => $site_id,
+                'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'active' => ($request->active) ? 1 : 0,

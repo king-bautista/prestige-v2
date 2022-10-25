@@ -6,9 +6,6 @@
 	        <div class="row">
 	          <div class="col-md-12">
 	          	<div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Tenants</h3>
-                    </div>
 	    			<div class="card-body">
 			          	<Table 
                         :dataFields="dataFields"
@@ -48,6 +45,15 @@
 								<div class="col-sm-8">
                                     <multiselect v-model="tenant.brand_id" track-by="name" label="name" placeholder="Select Brand" :options="brands" :searchable="true" :allow-empty="false">
                                     </multiselect> 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="tenant.site_id" @change="getBuildings($event.target.value)">
+									    <option value="">Select Site</option>
+									    <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
+								    </select>
 								</div>
 							</div>
                             <div class="form-group row">
@@ -128,6 +134,7 @@
                 tenant: {
                     id: '',
                     brand_id: '',
+                    site_id: '',
                     site_building_id: '',
                     site_building_level_id: '',
                     active: true,
@@ -137,16 +144,18 @@
                 add_record: true,
                 edit_record: false,
                 brands: [],
+                sites: [],
                 buildings: [],
                 floors: [],
             	dataFields: {
-            		brand_name: "Brand Name", 
 					brand_logo: {
             			name: "Brand Logo", 
             			type:"logo", 
-            		},
-                    floor_name: "Floor Name",
+            		},            		
+					brand_name: "Brand Name", 
+					site_name: "Site Name",
                     building_name: "Building Name",
+                    floor_name: "Floor Name",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -199,19 +208,24 @@
         },
 
         created(){
+			this.getSites();
             this.GetBrands();
         },
 
         methods: {
+			getSites: function() {
+                axios.get('/admin/site/get-all')
+                .then(response => this.sites = response.data.data);
+            },
+
             GetBrands: function() {
 				axios.get('/admin/brand/get-all')
                 .then(response => this.brands = response.data.data);
 			},
 
-            GetBuildings: function() {
-				axios.get('/admin/site/buildings')
+            getBuildings: function(id) {
+				axios.get('/admin/site/get-buildings/'+id)
                 .then(response => this.buildings = response.data.data);
-                this.tenant.site_building_level_id = '';
 			},
 
             getFloorLevel: function(id) {
@@ -220,10 +234,10 @@
             },
 
 			AddNewTenant: function() {
-                this.GetBuildings();
 				this.add_record = true;
 				this.edit_record = false;
                 this.tenant.brand_id = '';
+                this.tenant.site_id = '';
                 this.tenant.site_building_id = '';
                 this.tenant.site_building_level_id = '';
               	$('#tenant-form').modal('show');
@@ -239,14 +253,15 @@
             },
 
 			editTenant: function(id) {
-                this.GetBuildings();
                 axios.get('/admin/site/tenant/'+id)
                 .then(response => {
                     var tenant = response.data.data;
                     this.tenant.id = tenant.id;
                     this.tenant.brand_id = tenant.brand_details;
+                    this.tenant.site_id = tenant.site_id;
                     this.tenant.site_building_id = tenant.site_building_id;
 
+                    this.getBuildings(tenant.site_id);
                     this.getFloorLevel(tenant.site_building_id);
 
                     this.tenant.site_building_level_id = tenant.site_building_level_id;
