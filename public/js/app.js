@@ -11678,11 +11678,13 @@ __webpack_require__.r(__webpack_exports__);
     return {
       screen: {
         id: '',
+        site_id: '',
         site_building_id: '',
         site_building_level_id: '',
         site_point_id: '',
         screen_type: '',
         name: '',
+        kiosk_id: '',
         active: false,
         is_default: false
       },
@@ -11690,6 +11692,7 @@ __webpack_require__.r(__webpack_exports__);
       is_default: '',
       add_record: true,
       edit_record: false,
+      sites: [],
       buildings: [],
       floors: [],
       screen_types: ['Directory', 'LED', 'LFD', 'LED funnel'],
@@ -11766,25 +11769,32 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  created: function created() {},
+  created: function created() {
+    this.getSites();
+  },
   methods: {
-    GetBuildings: function GetBuildings() {
+    getSites: function getSites() {
       var _this = this;
-      axios.get('/admin/site/buildings').then(function (response) {
-        return _this.buildings = response.data.data;
+      axios.get('/admin/site/get-all').then(function (response) {
+        return _this.sites = response.data.data;
       });
-      this.screen.site_building_level_id = '';
+    },
+    getBuildings: function getBuildings(id) {
+      var _this2 = this;
+      axios.get('/admin/site/get-buildings/' + id).then(function (response) {
+        return _this2.buildings = response.data.data;
+      });
     },
     getFloorLevel: function getFloorLevel(id) {
-      var _this2 = this;
+      var _this3 = this;
       axios.get('/admin/site/floors/' + id).then(function (response) {
-        return _this2.floors = response.data.data;
+        return _this3.floors = response.data.data;
       });
     },
     AddNewScreen: function AddNewScreen() {
-      this.GetBuildings();
       this.add_record = true;
       this.edit_record = false;
+      this.screen.site_id = '';
       this.screen.site_building_id = '';
       this.screen.site_building_level_id = '';
       this.screen.site_point_id = '';
@@ -11794,37 +11804,38 @@ __webpack_require__.r(__webpack_exports__);
       $('#screen-form').modal('show');
     },
     storeScreen: function storeScreen() {
-      var _this3 = this;
+      var _this4 = this;
       axios.post('/admin/site/screen/store', this.screen).then(function (response) {
         toastr.success(response.data.message);
-        _this3.$refs.screensDataTable.fetchData();
+        _this4.$refs.screensDataTable.fetchData();
         $('#screen-form').modal('hide');
       });
     },
     editScreen: function editScreen(id) {
-      var _this4 = this;
-      this.GetBuildings();
+      var _this5 = this;
       axios.get('/admin/site/screen/' + id).then(function (response) {
         var screen = response.data.data;
-        _this4.screen.id = screen.id;
-        _this4.screen.site_building_id = screen.site_building_id;
-        _this4.getFloorLevel(screen.site_building_id);
-        _this4.screen.site_building_level_id = screen.site_building_level_id;
-        _this4.screen.site_point_id = screen.site_point_id;
-        _this4.screen.screen_type = screen.screen_type;
-        _this4.screen.name = screen.name;
-        _this4.screen.active = screen.active;
-        _this4.screen.is_default = screen.is_default;
-        _this4.add_record = false;
-        _this4.edit_record = true;
+        _this5.screen.id = screen.id;
+        _this5.screen.site_id = screen.site_id;
+        _this5.screen.site_building_id = screen.site_building_id;
+        _this5.getBuildings(screen.site_id);
+        _this5.getFloorLevel(screen.site_building_id);
+        _this5.screen.site_building_level_id = screen.site_building_level_id;
+        _this5.screen.site_point_id = screen.site_point_id;
+        _this5.screen.screen_type = screen.screen_type;
+        _this5.screen.name = screen.name;
+        _this5.screen.active = screen.active;
+        _this5.screen.is_default = screen.is_default;
+        _this5.add_record = false;
+        _this5.edit_record = true;
         $('#screen-form').modal('show');
       });
     },
     updateScreen: function updateScreen() {
-      var _this5 = this;
+      var _this6 = this;
       axios.put('/admin/site/screen/update', this.screen).then(function (response) {
         toastr.success(response.data.message);
-        _this5.$refs.screensDataTable.fetchData();
+        _this6.$refs.screensDataTable.fetchData();
         $('#screen-form').modal('hide');
       });
     },
@@ -11833,10 +11844,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#screenDeleteModal').modal('show');
     },
     removeScreen: function removeScreen() {
-      var _this6 = this;
+      var _this7 = this;
       axios.get('/admin/site/screen/delete/' + this.id_to_deleted).then(function (response) {
-        _this6.$refs.screensDataTable.fetchData();
-        _this6.id_to_deleted = 0;
+        _this7.$refs.screensDataTable.fetchData();
+        _this7.id_to_deleted = 0;
         $('#screenDeleteModal').modal('hide');
       });
     },
@@ -11845,10 +11856,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#confirmModal').modal('show');
     },
     setDefault: function setDefault() {
-      var _this7 = this;
+      var _this8 = this;
       axios.get('/admin/site/screen/set-default/' + this.is_default).then(function (response) {
         toastr.success(response.data.message);
-        _this7.$refs.screensDataTable.fetchData();
+        _this8.$refs.screensDataTable.fetchData();
         $('#confirmModal').modal('hide');
       });
     }
@@ -18417,6 +18428,41 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
+      value: _vm.screen.site_id,
+      expression: "screen.site_id"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.screen, "site_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.getBuildings($event.target.value);
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Site")]), _vm._v(" "), _vm._l(_vm.sites, function (site) {
+    return _c("option", {
+      domProps: {
+        value: site.id
+      }
+    }, [_vm._v(" " + _vm._s(site.name))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(3), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.screen.site_building_id,
       expression: "screen.site_building_id"
     }],
@@ -18446,7 +18492,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(building.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(3), _vm._v(" "), _c("div", {
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -18479,7 +18525,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(floor.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -18512,7 +18558,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(screen_type))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -18538,7 +18584,7 @@ var render = function render() {
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(6), _vm._v(" "), _c("div", {
+  }, [_vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -18560,6 +18606,32 @@ var render = function render() {
       input: function input($event) {
         if ($event.target.composing) return;
         _vm.$set(_vm.screen, "name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.screen.kiosk_id,
+      expression: "screen.kiosk_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Kiosk ID",
+      required: ""
+    },
+    domProps: {
+      value: _vm.screen.kiosk_id
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.screen, "kiosk_id", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -18714,7 +18786,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(7), _vm._v(" "), _vm._m(8), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -18742,7 +18814,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("div", {
+  }, [_vm._m(11), _vm._v(" "), _vm._m(12), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -18783,6 +18855,17 @@ var staticRenderFns = [function () {
       "aria-hidden": "true"
     }
   }, [_vm._v("×")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Site "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -18836,6 +18919,17 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Name "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Kiosk ID "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {

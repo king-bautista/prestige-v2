@@ -44,6 +44,15 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="screen.site_id" @change="getBuildings($event.target.value)">
+									    <option value="">Select Site</option>
+									    <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
+								    </select>
+								</div>
+							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -81,6 +90,12 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Kiosk ID <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.kiosk_id" placeholder="Kiosk ID" required>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -163,11 +178,13 @@
             return {
                 screen: {
                     id: '',
+					site_id: '',
                     site_building_id: '',
                     site_building_level_id: '',
                     site_point_id: '',
                     screen_type: '',
                     name: '',
+					kiosk_id: '',
 					active: false,
 					is_default: false,
                 },
@@ -175,6 +192,7 @@
 				is_default: '',
                 add_record: true,
                 edit_record: false,
+                sites: [],
                 buildings: [],
                 floors: [],
                 screen_types: ['Directory','LED','LFD','LED funnel'],
@@ -253,13 +271,18 @@
         },
 
         created(){
+			this.getSites();
         },
 
         methods: {
-            GetBuildings: function() {
-				axios.get('/admin/site/buildings')
+			getSites: function() {
+                axios.get('/admin/site/get-all')
+                .then(response => this.sites = response.data.data);
+            },
+
+            getBuildings: function(id) {
+				axios.get('/admin/site/get-buildings/'+id)
                 .then(response => this.buildings = response.data.data);
-                this.screen.site_building_level_id = '';
 			},
 
             getFloorLevel: function(id) {
@@ -268,9 +291,9 @@
             },
 
 			AddNewScreen: function() {
-                this.GetBuildings();
 				this.add_record = true;
 				this.edit_record = false;
+                this.screen.site_id = '';
                 this.screen.site_building_id = '';
                 this.screen.site_building_level_id = '';
                 this.screen.site_point_id = '';
@@ -290,13 +313,14 @@
             },
 
 			editScreen: function(id) {
-                this.GetBuildings();
                 axios.get('/admin/site/screen/'+id)
                 .then(response => {
                     var screen = response.data.data;
                     this.screen.id = screen.id;
+                    this.screen.site_id = screen.site_id;
                     this.screen.site_building_id = screen.site_building_id;
 
+					this.getBuildings(screen.site_id);
                     this.getFloorLevel(screen.site_building_id);
 
                     this.screen.site_building_level_id = screen.site_building_level_id;
