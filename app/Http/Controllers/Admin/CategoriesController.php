@@ -36,7 +36,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
             $categories = CategoryViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                             ->where('descriptions', 'LIKE', '%' . request('search') . '%');
             })
             ->where('category_type', 1)
             ->latest()

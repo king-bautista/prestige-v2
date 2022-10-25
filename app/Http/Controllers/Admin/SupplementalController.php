@@ -30,11 +30,11 @@ class SupplementalController extends AppBaseController implements SupplementalCo
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $categories = CategoryViewModel::when(request('search'), function($query){
+            $categories = CategoryViewModel::where('category_type', 2)
+            ->when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                             ->where('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('category_type', 2)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);
@@ -107,7 +107,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
                 'descriptions' => $request->descriptions,
                 'class_name' => $request->class_name,
                 'category_type' => $request->category_type,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => ($request->active == false) ? 0 : 1,
             ];
 
             $category->update($data);

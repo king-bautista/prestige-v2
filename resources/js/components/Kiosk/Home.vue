@@ -42,27 +42,67 @@
                 </div>
             </div>
         </div>
-        <div class="tabs-container" v-show="child_category">
+        <div class="row" v-show="supplementals">
+            <div class="col-md-9 offset-md-2">
+                <div class="row">
+                    <div class="col-md-12 home-title text-center">
+                        {{ current_category.label}}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
+                        <div class="carousel-inner">
+                            
+                            <!-- Control dots -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"></li>
+                    </ol>
+
+                            <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" v-bind:class = "(index == 0) ? 'active':''">
+                                <div class="row mb-3">
+                                    <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3">			
+                                        <div class="c-button">						
+                                            <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
+                                            <div class="c-button-align c-button-color2 translateme">{{supplemental.label}}</div>                        
+                                        </div>					
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="carousel-control-prev" type="button" data-target="#myCarousel" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#myCarousel" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="tabs-container" v-show="!home_category">
             <div class="tabs">
                 <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">View stores by</span>: </span>
                 <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab">
                     <div>
-                        <a class="translateme tenant-category" data-target="1/0">Category</a>
+                        <a class="translateme tenant-category" @click="showCategories">Category</a>
                     </div>
                 </div>
                 <div class="tabs-item store-tabs-item">
                     <div>
-                        <a class="translateme tenant-alphabet" data-target="1/num/0">Alphabetical</a>
+                        <a class="translateme tenant-alphabet" >Alphabetical</a>
                     </div>
                 </div>
                 <div class="tabs-item store-tabs-item">
                     <div>
-                        <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
+                        <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" @click="showSupplementals" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
                     </div>
                 </div>
             </div>
         </div>
-        <img :src="back_button" style="z-index:999;position:absolute;top:690px;right:15px; cursor:pointer;" @click="goBack">
+        <img v-show="!home_category" :src="back_button" style="z-index:999;position:absolute;top:690px;right:15px; cursor:pointer;" @click="goBack">
 
     </div>
 </template>
@@ -80,6 +120,7 @@
                 alphabetical: false,
                 supplementals: false,
                 current_category: '',
+                current_supplementals: '',
             };
         },
 
@@ -103,12 +144,23 @@
 
             },
 
-            getSupplementals: function() {
+            showCategories: function() {
+                this.home_category = false;
+                this.child_category = true;
+                this.alphabetical = false;
+                this.supplementals = false;
+            },
 
+            showSupplementals: function() {
+                this.home_category = false;
+                this.child_category = false;
+                this.alphabetical = false;
+                this.supplementals = true;
             },
 
             showChildren: function(category) {
                 this.current_category = category;
+                this.current_supplementals = category.supplemental;
                 this.page_title = 'Store List';
                 $('#category-tab').click();
                 this.home_category = false;
@@ -136,5 +188,61 @@
             $('.store-tabs-item').removeClass('tab-item-selected');
             $(this).addClass('tab-item-selected');
         });
+
+        $(".carousel").carousel({
+            interval: false,
+            pause: true,
+            touch:true,
+        });
+        
+        // $( ".carousel .carousel-inner" ).swipe( {
+        //     swipeLeft: function ( event, direction, distance, duration, fingerCount ) {
+        //         this.parent( ).carousel( 'next' );
+        //     },
+
+        //     swipeRight: function ( ) {
+        //         this.parent( ).carousel( 'prev' );
+        //     },
+
+        //     threshold: 0,
+
+        //     // tap: function(event, target) {
+        //     // // get the location: in my case the target is my link
+        //     //     window.location = $(this).find('.carousel-item.active a').attr('href');
+        //     // },
+        //     //เอา  a ออกถ้าต้องการให้ slide ที่เป็น tag a สามารถคลิกได้
+        //     excludedElements:"label, button, input, select, textarea, .noSwipe"
+        // } );
+        
+        // $('.carousel .carousel-inner').on('dragstart', 'a', function () {
+        //     return false;
+        // });
     });
+
 </script>
+<style lang="scss" scoped>
+    .carousel-control-prev {
+        width: 2rem;
+        height: 674px;
+        border: none;
+        background: url('/assets/images/Left.png') no-repeat;
+        background-position: center;
+    }
+    .carousel-control-prev {
+        left: -70px;
+    }
+
+    .carousel-control-next {
+        width: 2rem;
+        height: 674px;
+        border: none;
+        background: url('/assets/images/Right.png') no-repeat;
+        background-position: center;
+    }
+
+    .carousel-control-next {
+        right: -35px;
+    }
+
+
+</style>

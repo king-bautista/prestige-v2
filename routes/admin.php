@@ -210,6 +210,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/site/building/update', 'Admin\BuildingsController@update')->name('admin.site.building.update');
     Route::get('/admin/site/building/delete/{id}', 'Admin\BuildingsController@delete')->where('id', '[0-9]+')->name('admin.site.building.delete');
     Route::get('/admin/site/buildings', 'Admin\BuildingsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
+    Route::get('/admin/site/get-buildings/{id}', 'Admin\BuildingsController@getBuildings')->where('id', '[0-9]+')->name('admin.site.buildings.get-buildings');
 
     /*
     |--------------------------------------------------------------------------
@@ -241,6 +242,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     | Sites Tenants Routes
     |--------------------------------------------------------------------------
     */
+    Route::get('/admin/site/tenants', 'Admin\SiteTenantsController@index')->name('admin.site.tenants');
     Route::get('/admin/site/tenant/list', 'Admin\SiteTenantsController@list')->name('admin.site.tenant.list');
     Route::post('/admin/site/tenant/store', 'Admin\SiteTenantsController@store')->name('admin.site.tenant.store');
     Route::get('/admin/site/tenant/{id}', 'Admin\SiteTenantsController@details')->where('id', '[0-9]+')->name('admin.site.tenant.details');

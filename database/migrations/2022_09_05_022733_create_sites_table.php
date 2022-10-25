@@ -79,6 +79,7 @@ class CreateSitesTable extends Migration
             $table->bigInteger('site_point_id')->unsigned();
             $table->enum('screen_type', ['Directory', 'LED', 'LFD', 'LED funnel']);
             $table->string('name');
+            $table->string('kiosk_id');
             $table->boolean('active')->default(true);
             $table->boolean('is_default')->default(false);
             $table->timestamps();
@@ -186,7 +187,6 @@ class CreateSitesTable extends Migration
 
             $table->foreign('site_screen_id')->references('id')->on('site_screens');
         });
-
     }
 
     /**
