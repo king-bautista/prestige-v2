@@ -154,7 +154,7 @@ body{
 .home-title {
     font-family: Henry Sans Medium;
     font-size: 40px;
-    padding: 26px 0 26px 0;
+    padding: 15px 0 15px 0;
     color: #2a2a2a;
 }
 
@@ -211,8 +211,8 @@ body{
     font-weight: bold;
     font-size: 30px;
     color: #2a2a2a;
-    height: 60px;
-    margin: 25px;
+    height: 45px;
+    margin: 15px 0 0 25px;
 }
 
 .c-button {
@@ -278,4 +278,26 @@ body{
     text-decoration: none;
     color: #000;
     cursor: pointer;
+}
+
+#myCarousel {
+    width: 100%;
+}
+
+.carousel-inner {
+    padding-bottom: 2rem;
+}
+
+.carousel-indicators {
+    bottom: -1rem;
+}
+
+.carousel-indicators li {
+    width: 15px;
+    height: 15px;
+    background-color: #ffdb00;
+    border: solid 0px;
+    border-radius: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
 }

@@ -186,7 +186,6 @@ class CreateSitesTable extends Migration
 
             $table->foreign('site_screen_id')->references('id')->on('site_screens');
         });
-
     }
 
     /**
