@@ -79,7 +79,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         try
     	{
             if($request->is_default == 'true') {
-                SiteScreen::where('is_default', 1)->update(['is_default' => 0]);
+                SiteScreen::where('is_default', 1)->where('site_id', $request->site_id)->update(['is_default' => 0]);
             }
 
             $data = [
@@ -115,7 +115,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_screen = SiteScreen::find($request->id);
 
             if($request->is_default == 'true') {
-                SiteScreen::where('is_default', 1)->update(['is_default' => 0]);
+                SiteScreen::where('is_default', 1)->where('site_id', $request->site_id)->update(['is_default' => 0]);
             }
 
             $data = [
