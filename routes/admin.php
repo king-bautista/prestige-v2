@@ -251,6 +251,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/tenant/delete/{id}', 'Admin\SiteTenantsController@delete')->where('id', '[0-9]+')->name('admin.site.tenant.delete');
     Route::get('/admin/site/tenant/get-tenants/{ids}', 'Admin\SiteTenantsController@getTenants')->name('admin.site.tenant.get-tenants');
     Route::get('/admin/site/tenant/get-tenants-per-floor/{id}', 'Admin\SiteTenantsController@getTenantPerFloor')->where('id', '[0-9]+')->name('admin.site.tenant.get-tenants-floor');
+    Route::post('/admin/site/tenant/batch-upload', 'Admin\SiteTenantsController@batchUpload')->name('admin.site.tenant.batch-upload');
     
     /*
     |--------------------------------------------------------------------------

@@ -12513,6 +12513,13 @@ __webpack_require__.r(__webpack_exports__);
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Tenant',
           "class": 'btn btn-primary btn-sm',
           method: 'add'
+        },
+        batchUpload: {
+          title: 'Batch Upload',
+          v_on: 'modalBatchUpload',
+          icon: '<i class="fas fa-upload"></i> Batch Upload',
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
         }
       }
     };
@@ -12597,6 +12604,30 @@ __webpack_require__.r(__webpack_exports__);
         _this8.$refs.tenantsDataTable.fetchData();
         _this8.id_to_deleted = 0;
         $('#tenantDeleteModal').modal('hide');
+      });
+    },
+    modalBatchUpload: function modalBatchUpload() {
+      $('#batchModal').modal('show');
+    },
+    handleFileUpload: function handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+      $('#batchInputLabel').html(this.file.name);
+    },
+    storeBatch: function storeBatch() {
+      var _this9 = this;
+      var formData = new FormData();
+      formData.append('file', this.file);
+      axios.post('/admin/site/tenant/batch-upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        _this9.$refs.file.value = null;
+        _this9.$refs.tenantsDataTable.fetchData();
+        toastr.success(response.data.message);
+        $('#batchModal').modal('hide');
+        $('#batchInputLabel').html('Choose File');
+        window.location.reload();
       });
     }
   },
@@ -12914,6 +12945,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     onEnterSearch: function onEnterSearch(e) {
       if (e.keyCode === 13) {
+        this.page = 1;
         this.fetchData();
       }
     },
@@ -20244,7 +20276,8 @@ var render = function render() {
     on: {
       AddNewTenant: _vm.AddNewTenant,
       editButton: _vm.editTenant,
-      DeleteTenant: _vm.DeleteTenant
+      DeleteTenant: _vm.DeleteTenant,
+      modalBatchUpload: _vm.modalBatchUpload
     }
   })], 1)])])])])]), _vm._v(" "), _c("div", {
     staticClass: "modal fade",
@@ -20575,7 +20608,64 @@ var render = function render() {
     on: {
       click: _vm.removeTenant
     }
-  }, [_vm._v("OK")])])])])])]);
+  }, [_vm._v("OK")])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "modal fade",
+    attrs: {
+      id: "batchModal",
+      tabindex: "-1",
+      role: "dialog",
+      "aria-labelledby": "batchModalLabel",
+      "aria-hidden": "true"
+    }
+  }, [_c("div", {
+    staticClass: "modal-dialog",
+    attrs: {
+      role: "document"
+    }
+  }, [_c("div", {
+    staticClass: "modal-content"
+  }, [_vm._m(7), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_c("form", [_c("div", {
+    staticClass: "form-group col-md-12"
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
+    staticClass: "custom-file"
+  }, [_c("input", {
+    ref: "file",
+    staticClass: "custom-file-input",
+    attrs: {
+      type: "file",
+      accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+      id: "batchInput"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.handleFileUpload();
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "custom-file-label",
+    attrs: {
+      id: "batchInputLabel",
+      "for": "batchInput"
+    }
+  }, [_vm._v("Choose file")])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "modal-footer justify-content-between"
+  }, [_c("button", {
+    staticClass: "btn btn-secondary",
+    attrs: {
+      type: "button",
+      "data-bs-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.storeBatch
+    }
+  }, [_vm._v("Save changes")])])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -20653,6 +20743,34 @@ var staticRenderFns = [function () {
   return _c("div", {
     staticClass: "modal-body"
   }, [_c("h6", [_vm._v("Do you really want to delete?")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "modal-header"
+  }, [_c("h5", {
+    staticClass: "modal-title",
+    attrs: {
+      id: "batchModalLabel"
+    }
+  }, [_vm._v("Batch Upload")]), _vm._v(" "), _c("button", {
+    staticClass: "close",
+    attrs: {
+      type: "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c("span", {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_vm._v("CSV File: "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")])]);
 }];
 render._withStripped = true;
 
