@@ -243,19 +243,19 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function batchUpload(Request $request)
     {
-        // try
-        // {
+        try
+        {
             Excel::import(new BrandsImport, $request->file('file'));
             return $this->response(true, 'Successfully Uploaded!', 200);  
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
 }

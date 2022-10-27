@@ -253,6 +253,7 @@
 
         	onEnterSearch(e) {
                 if (e.keyCode === 13) {
+                    this.page = 1;
                     this.fetchData()
                 } 
             },

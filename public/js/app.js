@@ -12513,6 +12513,13 @@ __webpack_require__.r(__webpack_exports__);
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Tenant',
           "class": 'btn btn-primary btn-sm',
           method: 'add'
+        },
+        batchUpload: {
+          title: 'Batch Upload',
+          v_on: 'modalBatchUpload',
+          icon: '<i class="fas fa-upload"></i> Batch Upload',
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
         }
       }
     };
@@ -12597,6 +12604,30 @@ __webpack_require__.r(__webpack_exports__);
         _this8.$refs.tenantsDataTable.fetchData();
         _this8.id_to_deleted = 0;
         $('#tenantDeleteModal').modal('hide');
+      });
+    },
+    modalBatchUpload: function modalBatchUpload() {
+      $('#batchModal').modal('show');
+    },
+    handleFileUpload: function handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+      $('#batchInputLabel').html(this.file.name);
+    },
+    storeBatch: function storeBatch() {
+      var _this9 = this;
+      var formData = new FormData();
+      formData.append('file', this.file);
+      axios.post('/admin/site/tenant/batch-upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        _this9.$refs.file.value = null;
+        _this9.$refs.tenantsDataTable.fetchData();
+        toastr.success(response.data.message);
+        $('#batchModal').modal('hide');
+        $('#batchInputLabel').html('Choose File');
+        window.location.reload();
       });
     }
   },
@@ -12914,6 +12945,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     onEnterSearch: function onEnterSearch(e) {
       if (e.keyCode === 13) {
+        this.page = 1;
         this.fetchData();
       }
     },
@@ -13029,6 +13061,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       main_category: [],
+      tenant_list: [],
       site_logo: '',
       back_button: 'assets/images/English/Back.png',
       page_title: 'Home',
@@ -13037,12 +13070,15 @@ __webpack_require__.r(__webpack_exports__);
       alphabetical: false,
       supplementals: false,
       current_category: '',
-      current_supplementals: ''
+      current_supplementals: '',
+      category_label: '',
+      category_top_banner: '',
+      no_record_found: false
     };
   },
   created: function created() {
-    this.getCategories();
     this.getSite();
+    this.getCategories();
   },
   methods: {
     getSite: function getSite() {
@@ -13057,7 +13093,57 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.main_category = response.data.data;
       });
     },
-    getTenants: function getTenants() {},
+    getTenants: function getTenants(category) {
+      var _this3 = this;
+      this.no_record_found = false;
+      this.tenant_list = [];
+      this.category_label = category.label;
+      this.category_top_banner = '';
+      axios.get('/api/v1/tenants/alphabetical/' + category.id).then(function (response) {
+        _this3.tenant_list = response.data.data;
+        _this3.home_category = false;
+        _this3.child_category = false;
+        _this3.alphabetical = true;
+        _this3.supplementals = false;
+        if (_this3.tenant_list.length == 0) {
+          _this3.no_record_found = true;
+        }
+      });
+    },
+    getTenantsByCategory: function getTenantsByCategory(category) {
+      var _this4 = this;
+      this.no_record_found = false;
+      this.tenant_list = [];
+      this.category_label = category.label;
+      this.category_top_banner = category.kiosk_image_top_path;
+      axios.get('/api/v1/tenants/caategory/' + category.id).then(function (response) {
+        _this4.tenant_list = response.data.data;
+        _this4.home_category = false;
+        _this4.child_category = false;
+        _this4.alphabetical = true;
+        _this4.supplementals = false;
+        if (_this4.tenant_list.length == 0) {
+          _this4.no_record_found = true;
+        }
+      });
+    },
+    getTenantsBySupplementals: function getTenantsBySupplementals(category) {
+      var _this5 = this;
+      this.no_record_found = false;
+      this.tenant_list = [];
+      this.category_label = category.label;
+      this.category_top_banner = category.kiosk_image_top_path;
+      axios.get('/api/v1/tenants/supplemental/' + category.id).then(function (response) {
+        _this5.tenant_list = response.data.data;
+        _this5.home_category = false;
+        _this5.child_category = false;
+        _this5.alphabetical = true;
+        _this5.supplementals = false;
+        if (_this5.tenant_list.length == 0) {
+          _this5.no_record_found = true;
+        }
+      });
+    },
     showCategories: function showCategories() {
       this.home_category = false;
       this.child_category = true;
@@ -13071,10 +13157,11 @@ __webpack_require__.r(__webpack_exports__);
       this.supplementals = true;
     },
     showChildren: function showChildren(category) {
+      $('#category-tab').click();
       this.current_category = category;
       this.current_supplementals = category.supplemental;
       this.page_title = 'Store List';
-      $('#category-tab').click();
+      this.category_label = category.label;
       this.home_category = false;
       this.child_category = true;
       this.alphabetical = false;
@@ -20244,7 +20331,8 @@ var render = function render() {
     on: {
       AddNewTenant: _vm.AddNewTenant,
       editButton: _vm.editTenant,
-      DeleteTenant: _vm.DeleteTenant
+      DeleteTenant: _vm.DeleteTenant,
+      modalBatchUpload: _vm.modalBatchUpload
     }
   })], 1)])])])])]), _vm._v(" "), _c("div", {
     staticClass: "modal fade",
@@ -20575,7 +20663,64 @@ var render = function render() {
     on: {
       click: _vm.removeTenant
     }
-  }, [_vm._v("OK")])])])])])]);
+  }, [_vm._v("OK")])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "modal fade",
+    attrs: {
+      id: "batchModal",
+      tabindex: "-1",
+      role: "dialog",
+      "aria-labelledby": "batchModalLabel",
+      "aria-hidden": "true"
+    }
+  }, [_c("div", {
+    staticClass: "modal-dialog",
+    attrs: {
+      role: "document"
+    }
+  }, [_c("div", {
+    staticClass: "modal-content"
+  }, [_vm._m(7), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_c("form", [_c("div", {
+    staticClass: "form-group col-md-12"
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
+    staticClass: "custom-file"
+  }, [_c("input", {
+    ref: "file",
+    staticClass: "custom-file-input",
+    attrs: {
+      type: "file",
+      accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+      id: "batchInput"
+    },
+    on: {
+      change: function change($event) {
+        return _vm.handleFileUpload();
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "custom-file-label",
+    attrs: {
+      id: "batchInputLabel",
+      "for": "batchInput"
+    }
+  }, [_vm._v("Choose file")])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "modal-footer justify-content-between"
+  }, [_c("button", {
+    staticClass: "btn btn-secondary",
+    attrs: {
+      type: "button",
+      "data-bs-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.storeBatch
+    }
+  }, [_vm._v("Save changes")])])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -20653,6 +20798,34 @@ var staticRenderFns = [function () {
   return _c("div", {
     staticClass: "modal-body"
   }, [_c("h6", [_vm._v("Do you really want to delete?")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "modal-header"
+  }, [_c("h5", {
+    staticClass: "modal-title",
+    attrs: {
+      id: "batchModalLabel"
+    }
+  }, [_vm._v("Batch Upload")]), _vm._v(" "), _c("button", {
+    staticClass: "close",
+    attrs: {
+      type: "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c("span", {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", [_vm._v("CSV File: "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")])]);
 }];
 render._withStripped = true;
 
@@ -21630,10 +21803,7 @@ var render = function render() {
       rawName: "v-show",
       value: _vm.home_category,
       expression: "home_category"
-    }],
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
+    }]
   }, [_vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
@@ -21656,25 +21826,27 @@ var render = function render() {
         id: "hc-button1"
       }
     }, [_vm._v(_vm._s(category.label))])]);
-  }), 0)])])]), _vm._v(" "), _c("div", {
+  }), 0)])]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: _vm.child_category,
       expression: "child_category"
-    }],
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-6 offset-md-3"
+    }]
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
-  }, [_vm._v("\n                    " + _vm._s(_vm.current_category.label) + "\n                ")])]), _vm._v(" "), _c("div", {
-    staticClass: "row mb-3"
+  }, [_vm._v("\n                " + _vm._s(_vm.current_category.label) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "row col-md-6 offset-md-3 mb-3"
   }, _vm._l(_vm.current_category.children, function (category) {
     return _c("div", {
-      staticClass: "col-12 col-sm-6 text-left mt-3"
+      staticClass: "col-12 col-sm-6 text-left mt-3",
+      on: {
+        click: function click($event) {
+          return _vm.getTenantsByCategory(category);
+        }
+      }
     }, [_c("div", {
       staticClass: "c-button"
     }, [_c("img", {
@@ -21688,22 +21860,19 @@ var render = function render() {
     }), _vm._v(" "), _c("div", {
       staticClass: "c-button-align c-button-color2 translateme"
     }, [_vm._v(_vm._s(category.label))])])]);
-  }), 0)])]), _vm._v(" "), _c("div", {
+  }), 0)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: _vm.supplementals,
       expression: "supplementals"
-    }],
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-9 offset-md-2"
+    }]
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
-  }, [_vm._v("\n                    " + _vm._s(_vm.current_category.label) + "\n                ")])]), _vm._v(" "), _c("div", {
-    staticClass: "row mb-3"
+  }, [_vm._v("\n                " + _vm._s(_vm.current_category.label) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "row col-md-9 offset-md-2 mb-3"
   }, [_c("div", {
     staticClass: "carousel slide",
     attrs: {
@@ -21732,7 +21901,12 @@ var render = function render() {
       staticClass: "row mb-3"
     }, _vm._l(supplementals, function (supplemental) {
       return _c("div", {
-        staticClass: "col-12 col-sm-4 text-left mt-3"
+        staticClass: "col-12 col-sm-4 text-left mt-3",
+        on: {
+          click: function click($event) {
+            return _vm.getTenantsBySupplementals(supplemental);
+          }
+        }
       }, [_c("div", {
         staticClass: "c-button"
       }, [_c("img", {
@@ -21747,7 +21921,103 @@ var render = function render() {
         staticClass: "c-button-align c-button-color2 translateme"
       }, [_vm._v(_vm._s(supplemental.label))])])]);
     }), 0)]);
-  })], 2)]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])])]), _vm._v(" "), _c("div", {
+  })], 2), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.alphabetical,
+      expression: "alphabetical"
+    }]
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12 home-title text-center"
+  }, [!_vm.category_top_banner ? _c("div", [_vm._v(_vm._s(_vm.category_label))]) : _vm._e(), _vm._v(" "), _vm.category_top_banner ? _c("div", {
+    staticClass: "hts-strip"
+  }, [_c("img", {
+    staticClass: "tenant-category-strip",
+    staticStyle: {
+      width: "100%"
+    },
+    attrs: {
+      src: _vm.category_top_banner
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "hts-strip-align hts-strip-color2 translateme"
+  }, [_vm._v(_vm._s(_vm.category_label))])]) : _vm._e()])]), _vm._v(" "), _c("div", {
+    staticClass: "row col-md-9 offset-md-2"
+  }, [_vm.tenant_list.length > 0 ? _c("div", {
+    staticClass: "carousel slide",
+    attrs: {
+      id: "myTenants",
+      "data-ride": "carousel",
+      "data-interval": "false",
+      "data-touch": "true"
+    }
+  }, [_c("div", {
+    staticClass: "carousel-inner"
+  }, [_c("ol", {
+    staticClass: "carousel-indicators"
+  }, _vm._l(_vm.tenant_list, function (tenants, index) {
+    return _c("li", {
+      "class": index == 0 ? "active" : "",
+      attrs: {
+        "data-target": "#myTenants",
+        "data-slide-to": index
+      }
+    });
+  }), 0), _vm._v(" "), _vm._l(_vm.tenant_list, function (tenants, index) {
+    return _c("div", {
+      staticClass: "carousel-item",
+      "class": index == 0 ? "active" : ""
+    }, [_c("div", {
+      staticClass: "row mb-3"
+    }, _vm._l(tenants, function (tenant) {
+      return _c("div", {
+        staticClass: "col-12 col-sm-4 text-left mt-3"
+      }, [_c("div", {
+        staticClass: "tenant-store bg-white text-center box-shadowed"
+      }, [_c("div", {
+        staticClass: "image-holder h-100"
+      }, [_c("img", {
+        attrs: {
+          src: tenant.brand_logo,
+          alt: tenant.brand_name
+        }
+      })]), _vm._v(" "), _c("div", {
+        staticClass: "text-left pta-2 brand-name"
+      }, [_c("div", {
+        staticClass: "shop_name"
+      }, [_vm._v(_vm._s(tenant.brand_name))]), _vm._v(" "), _c("div", {
+        staticStyle: {
+          "font-size": "0.7em",
+          color: "#2a2a2a"
+        }
+      }, [_vm._v(_vm._s(tenant.building_name) + ", " + _vm._s(tenant.floor_name) + " ")]), _vm._v(" "), _c("div", {
+        staticStyle: {
+          "font-weight": "bold",
+          "font-size": "0.7em"
+        }
+      }, [tenant.active == 1 ? _c("span", {
+        staticClass: "translateme text-success"
+      }, [_vm._v("Open")]) : _vm._e(), _vm._v(" "), tenant.active == 0 ? _c("span", {
+        staticClass: "translateme text-success"
+      }, [_vm._v("Close")]) : _vm._e()])])])]);
+    }), 0)]);
+  })], 2), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4)]) : _vm._e(), _vm._v(" "), _c("img", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.no_record_found,
+      expression: "no_record_found"
+    }],
+    staticStyle: {
+      margin: "auto"
+    },
+    attrs: {
+      src: "images/stick-around-for-future-deals.png"
+    }
+  })])]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -21757,7 +22027,7 @@ var render = function render() {
     staticClass: "tabs-container"
   }, [_c("div", {
     staticClass: "tabs"
-  }, [_vm._m(3), _vm._v(" "), _c("div", {
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "tabs-item store-tabs-item tab-item-selected",
     attrs: {
       id: "category-tab"
@@ -21767,7 +22037,16 @@ var render = function render() {
     on: {
       click: _vm.showCategories
     }
-  }, [_vm._v("Category")])])]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("div", {
+  }, [_vm._v("Category")])])]), _vm._v(" "), _c("div", {
+    staticClass: "tabs-item store-tabs-item"
+  }, [_c("div", [_c("a", {
+    staticClass: "translateme tenant-alphabet",
+    on: {
+      click: function click($event) {
+        return _vm.getTenants(_vm.current_category);
+      }
+    }
+  }, [_vm._v("Alphabetical")])])]), _vm._v(" "), _c("div", {
     staticClass: "tabs-item store-tabs-item"
   }, [_c("div", [_vm.current_category.supplemental ? _c("a", {
     staticClass: "tenant-supplementals translateme",
@@ -21810,7 +22089,7 @@ var staticRenderFns = [function () {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
-  }, [_vm._v("\n                    Search your favorite stores\n                ")])]);
+  }, [_vm._v("\n                Search your favorite stores\n            ")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -21850,6 +22129,42 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "carousel-control-prev",
+    attrs: {
+      type: "button",
+      "data-target": "#myTenants",
+      "data-slide": "prev"
+    }
+  }, [_c("span", {
+    staticClass: "carousel-control-prev-icon",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "sr-only"
+  }, [_vm._v("Previous")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "carousel-control-next",
+    attrs: {
+      type: "button",
+      "data-target": "#myTenants",
+      "data-slide": "next"
+    }
+  }, [_c("span", {
+    staticClass: "carousel-control-next-icon",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "sr-only"
+  }, [_vm._v("Next")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
   return _c("span", {
     staticClass: "mr-4 my-auto",
     staticStyle: {
@@ -21858,14 +22173,6 @@ var staticRenderFns = [function () {
   }, [_c("span", {
     staticClass: "translateme"
   }, [_vm._v("View stores by")]), _vm._v(": ")]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "tabs-item store-tabs-item"
-  }, [_c("div", [_c("a", {
-    staticClass: "translateme tenant-alphabet"
-  }, [_vm._v("Alphabetical")])])]);
 }];
 render._withStripped = true;
 
@@ -38449,7 +38756,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".carousel-control-prev[data-v-39f81890] {\n  width: 2rem;\n  height: 674px;\n  border: none;\n  background: url(\"/assets/images/Left.png\") no-repeat;\n  background-position: center;\n}\n.carousel-control-prev[data-v-39f81890] {\n  left: -70px;\n}\n.carousel-control-next[data-v-39f81890] {\n  width: 2rem;\n  height: 674px;\n  border: none;\n  background: url(\"/assets/images/Right.png\") no-repeat;\n  background-position: center;\n}\n.carousel-control-next[data-v-39f81890] {\n  right: -35px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".carousel-control-prev[data-v-39f81890] {\n  width: 2rem;\n  height: 578px;\n  border: none;\n  background: url(\"/assets/images/Left.png\") no-repeat;\n  background-position: center;\n}\n.carousel-control-prev[data-v-39f81890] {\n  left: -70px;\n}\n.carousel-control-next[data-v-39f81890] {\n  width: 2rem;\n  height: 578px;\n  border: none;\n  background: url(\"/assets/images/Right.png\") no-repeat;\n  background-position: center;\n}\n.carousel-control-next[data-v-39f81890] {\n  right: -55px;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

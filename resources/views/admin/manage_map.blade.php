@@ -5,8 +5,8 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Management Maps : {{$site_screen->name}}
-            <a type="button" href="/admin/site/buildings/{{$site_screen->site_id}}" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back to Site Details</a>
+        <h1 class="m-0">Manage Maps : {{$site_screen->name}}
+            <a type="button" href="/admin/site/screens" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back to Site Details</a>
         </h1>
       </div><!-- /.col -->
       <div class="col-sm-6">

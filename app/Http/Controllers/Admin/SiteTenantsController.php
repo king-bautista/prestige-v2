@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\SiteTenantsControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\SiteTenant;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
+
+use App\Imports\SiteTenantsImport;
 
 class SiteTenantsController extends AppBaseController implements SiteTenantsControllerInterface
 {
@@ -181,6 +184,23 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        // try
+        // {
+            Excel::import(new SiteTenantsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
 }
