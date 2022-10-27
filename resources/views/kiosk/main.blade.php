@@ -8,8 +8,10 @@
             </div>
         </div>
         <div class="col-md-9 m-0 p-0">
-            <div class="row main-content-holder">
-                <router-view></router-view>
+            <div class="row mr-0 ml-0">
+                <div class="col-md-12 main-content-holder">
+                    <router-view></router-view>
+                </div>
             </div>            
             <div class="row">
                 <div class="col-md-12 text-center">

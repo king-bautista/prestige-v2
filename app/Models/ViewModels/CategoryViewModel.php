@@ -50,6 +50,7 @@ class CategoryViewModel extends Model
         'children',
         'label',
         'kiosk_image_primary_path',
+        'kiosk_image_top_path',
         'supplemental',
     ];
 
@@ -216,6 +217,87 @@ class CategoryViewModel extends Model
                             ->first();
         if($company_categories) 
             return asset($company_categories['kiosk_image_primary']);
+        
+        return asset('/images/no-image-available.png');
+    }
+
+    public function getKioskImageTopPathAttribute() 
+    {
+        // DEFAULT MAIN CATEGORY IMAGE
+        // SITE ID AND COMPANY ID EXIST
+        if(self::$site_id && self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                                ->whereNull('sub_category_id')
+                                ->where('site_id', self::$site_id)
+                                ->where('company_id', self::$company_id)
+                                ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_top']);
+        }
+
+        // SITE PRIMARY IMAGE
+        if(self::$site_id) {
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                                ->whereNull('sub_category_id')
+                                ->where('site_id', self::$site_id)
+                                ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_top']);
+        }
+
+        // COMPANY PRIMARY IMAGE
+        if(self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                                ->whereNull('sub_category_id')
+                                ->where('company_id', self::$company_id)
+                                ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_top']);
+        }
+
+        $company_categories = CompanyCategoryViewModel::where('category_id', $this->id)
+                            ->whereNull('sub_category_id')
+                            ->whereNull('site_id')->whereNull('company_id')
+                            ->first();
+        if($company_categories) 
+            return asset($company_categories['kiosk_image_top']);
+
+        // SUB CATEGORY IMAGE
+        // SITE ID AND COMPANY ID EXIST
+        if(self::$site_id && self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                                  ->where('site_id', self::$site_id)
+                                  ->where('company_id', self::$company_id)
+                                  ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_top']);
+        }
+
+        // SITE PRIMARY IMAGE
+        if(self::$site_id) {
+            $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                                  ->where('site_id', self::$site_id)
+                                  ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_top']);
+        }
+
+        // COMPANY PRIMARY IMAGE
+        if(self::$company_id) {
+            $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                                  ->where('company_id', self::$company_id)
+                                  ->first();
+            if($company_categories) 
+                return asset($company_categories['kiosk_image_top']);
+        }
+
+        // DEFAULT SUB CATEGORY IMAGE
+        $company_categories = CompanyCategoryViewModel::where('sub_category_id', $this->id)
+                            ->whereNull('site_id')
+                            ->whereNull('company_id')
+                            ->first();
+        if($company_categories) 
+            return asset($company_categories['kiosk_image_top']);
         
         return asset('/images/no-image-available.png');
     }
