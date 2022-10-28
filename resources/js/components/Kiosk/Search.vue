@@ -45,21 +45,7 @@
 			},
 
             getTenantsSearch: function(category) {
-                this.no_record_found = false;
-                this.tenant_list = [];
-                this.category_label = category.label;
-                this.category_top_banner = '';
-                axios.get('/api/v1/tenants/alphabetical/'+category.id)
-                .then(response => {
-                    this.tenant_list = response.data.data
-                    this.home_category = false;
-                    this.child_category = false;
-                    this.alphabetical = true;
-                    this.supplementals = false;
-                    if(this.tenant_list.length == 0) {
-                        this.no_record_found = true;         
-                    }
-                });
+                
             },
 
             goBack: function() {
@@ -118,13 +104,3 @@
     };
 
 </script>
-<style lang="scss" scoped>
-    img.keyboard-key, img.keyboard-del, img.keyboard-chars
-    {
-        transition: transform 0.25s ease;
-    }
-    input.keyboard-checkbox:checked ~ label > img {
-        transform: scale(1.5);
-    }
-
-</style>
