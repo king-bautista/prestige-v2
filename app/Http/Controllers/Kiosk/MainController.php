@@ -20,7 +20,7 @@ class MainController extends AppBaseController
     {
         try
         {
-            $site = SiteViewModel::where('is_default', 1)->first();
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             return $this->response($site, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
