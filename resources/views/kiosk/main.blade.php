@@ -15,12 +15,17 @@
             </div>            
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <div class="h-button widget-button home-button active">
-                        <div class="button-text-align">Home</div>
-                    </div>
-                    <div class="h-button widget-button search-button">
-                        <div class="button-text-align">Search</div>
-                    </div>
+                    <router-link to="/">
+                        <div class="h-button widget-button home-button active">
+                            <div class="button-text-align">Home</div>
+                        </div>
+                    </router-link>
+                    <router-link to="/Search">
+                        <div class="h-button widget-button search-button">
+                            <div class="button-text-align">Search</div>
+                        </div>
+                    </router-link>
+                    
                     <div class="h-button widget-button map-button">
                         <div class="button-text-align">Map</div>
                     </div>
@@ -57,7 +62,14 @@
         $('.assistance_tooltip').on('click',function(){
             $("#popover-content").html('To search, input your location and your desired destination. Then, click Get Directions');
         });
+
+        $('.h-button').on('click', function(){
+            $('.h-button').removeClass('active');
+            $(this).addClass('active');
+        });
     });
+
+    $('.home-button').click();
     
 </script>
 @endpush

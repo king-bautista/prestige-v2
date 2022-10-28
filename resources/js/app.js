@@ -42,7 +42,6 @@ Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').
 Vue.component('admin-companies', require('./components/Admin/Company.vue').default);
 Vue.component('admin-illustrations', require('./components/Admin/Illustrations.vue').default);
 
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -56,12 +55,19 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import home from './components/Kiosk/Home.vue';
+import search from './components/Kiosk/Search.vue';
 
 const routes = [
-    {   path: '',
+    {   
+        path: '',
         component: home,
         name: 'home'
-     },
+    },
+    {   
+        path: '/Search',
+        component: search,
+        name: 'search'
+    },
 ];
 
 const router = new VueRouter({
