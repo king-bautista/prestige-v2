@@ -195,7 +195,9 @@
 
             getCategories: function() {
 				axios.get('/api/v1/categories')
-                .then(response => this.main_category = response.data.data);
+                .then(response =>{
+                    this.main_category = response.data.data
+                });
 			},
 
             getTenants: function(category) {

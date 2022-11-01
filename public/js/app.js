@@ -13090,7 +13090,7 @@ __webpack_require__.r(__webpack_exports__);
     getCategories: function getCategories() {
       var _this2 = this;
       axios.get('/api/v1/categories').then(function (response) {
-        return _this2.main_category = response.data.data;
+        _this2.main_category = response.data.data;
       });
     },
     getTenants: function getTenants(category) {
