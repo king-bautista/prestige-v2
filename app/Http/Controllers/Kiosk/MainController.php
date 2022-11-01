@@ -120,4 +120,41 @@ class MainController extends AppBaseController
             ], 422);
         }    
     }
+
+    public function search(Request $request)
+    {
+        try
+        {
+            $array_words = explode(' ', $request->key_words);
+            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            ->where(function ($query) use($array_words) {
+                foreach($array_words as $key) {
+                    $query->orWhere('brands.name', 'like', '%'.$key.'%')
+                    ->orWhere('categories.name', 'like', '%'.$key.'%')
+                    ->orWhere('supp.name', 'like', '%'.$key.'%')
+                    ->orWhere('tags.name', 'like', '%'.$key.'%');
+                }
+            })
+            ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
+            ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
+            ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
+            ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
+            ->select('site_tenants.*')
+            ->distinct()
+            ->orderBy('brands.name', 'ASC')
+            ->get()->toArray();
+            
+            $site_tenants = array_chunk($site_tenants, 15);
+            return $this->response($site_tenants, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 422);
+        }    
+    }
 }
