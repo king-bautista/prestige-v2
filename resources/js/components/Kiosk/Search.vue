@@ -128,7 +128,8 @@
                     var suggestion_list = response.data.data;
                     $(function() {
                         $('#code').autocomplete({
-                            source: suggestion_list
+                            minLength: 4,
+                            source: suggestion_list,
                         });
                     })
                 });
@@ -183,7 +184,14 @@
         },
 
         mounted() {
+            var cursorPos = 0;
             this.softkeys();
+            $(function() {
+                $(".softkeys__btn").on('mousedown',function(){
+                }).on('mouseup',function(){
+                    $('#code').trigger('keydown');
+                });
+            })
         },
 
         components: {
@@ -215,6 +223,5 @@
     .carousel-control-next {
         right: -55px;
     }
-
 
 </style>

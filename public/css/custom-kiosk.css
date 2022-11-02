@@ -423,3 +423,15 @@ body{
     background-color: #98dad0 !important;
     color: #fff;
 }
+
+.ui-widget-content {
+    border: 1px solid #ddd;
+    background: #98dad0;
+    color: #333;
+    height: 135px !important;
+    overflow: hidden;
+    overflow-y: scroll;
+    z-index: 1;
+    border-radius: 5px !important;
+    margin-top: 2px !important;
+}
