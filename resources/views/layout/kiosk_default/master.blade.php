@@ -21,7 +21,8 @@
         <div id="app">
         
             @yield('content')
-            
+
+            <loader :is-visible="isLoading"></loader>            
         </div>
 
         <!-- REQUIRED SCRIPTS -->

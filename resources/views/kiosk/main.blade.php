@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-3 m-0 p-0">
             <div class="banner-ads">
-                <video muted="muted" autoplay="true" data-itemid="811" id="multirotator_157_0" class="multirotator_item multirotator_157 video" style="border-radius: 20px; margin: 0px; height: 100%;"><source src="http://localhost/prestige/admin/public/uploads/multirotator/70c9716a-f639-a28f.ogv" type="video/ogg">Your browser does not support the video tag.</video>
+                <video muted="muted" autoplay="true" data-itemid="811" id="multirotator_157_0" class="multirotator_item multirotator_157 video" style="border-radius: 20px; margin: 0px; height: 100%;"><source src="http://localhost/prestige/admin/public/uploads/multirotator/7f000001-fcf9-55c4.ogv" type="video/ogg">Your browser does not support the video tag.</video>
             </div>
         </div>
         <div class="col-md-9 m-0 p-0">

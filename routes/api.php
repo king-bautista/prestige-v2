@@ -43,6 +43,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/tenants/alphabetical/{id}', 'Kiosk\MainController@getTenantsAlphabetical')->where('id', '[0-9]+')->name('kiosk.tenants');
     Route::get('/tenants/caategory/{id}', 'Kiosk\MainController@getTenantsByCategory')->where('id', '[0-9]+')->name('kiosk.tenants.by-category');
     Route::get('/tenants/supplemental/{id}', 'Kiosk\MainController@getTenantsBySupplementals')->where('id', '[0-9]+')->name('kiosk.tenants.by-supplemental');
+    Route::post('/search', 'Kiosk\MainController@search')->name('kiosk.search');
 
 });
 
