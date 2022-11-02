@@ -224,7 +224,7 @@
                 this.category_label = category.label;
                 this.category_top_banner = category.kiosk_image_top_path;
 
-                axios.get('/api/v1/tenants/caategory/'+category.id)
+                axios.get('/api/v1/tenants/category/'+category.id)
                 .then(response => {
                     this.tenant_list = response.data.data
                     this.home_category = false;

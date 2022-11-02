@@ -43,7 +43,7 @@
                                         </div>
                                         <div class="text-left pta-2 brand-name">
                                             <div class="shop_name">{{ tenant.brand_name }}</div>
-                                            <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.building_name }}, {{ tenant.floor_name }} </div>
+                                            <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.building_name }}, {{ tenant.floor_name }}</div>
                                             <div style="font-weight: bold;font-size: 0.7em">
                                                 <span class="translateme text-success" v-if="tenant.active==1">Open</span>
                                                 <span class="translateme text-success" v-if="tenant.active==0">Close</span>
@@ -70,6 +70,9 @@
     </div>
 </template>
 <script> 
+    import VueSimpleSuggest from 'vue-simple-suggest'
+    import 'vue-simple-suggest/dist/styles.css' // Optional CSS
+
 	export default {
         name: "Search",
         data() {
@@ -78,6 +81,7 @@
                     key_words: '',
                 },
                 tenant_list: [],
+                suggestion_list: [],
                 site_logo: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Search',
@@ -88,6 +92,7 @@
 
         created() {
             this.getSite();
+            this.getSuggestionList();
         },
 
         methods: {
@@ -111,9 +116,22 @@
 
             goBack: function() {
                 this.softkeys();
+                this.getSuggestionList();
                 this.search.key_words = '';
                 this.tenant_list = [];
                 this.search_results = false;
+            },
+
+            getSuggestionList: function() {
+                axios.get('/api/v1/tenants/suggestion/list')
+                .then(response => {
+                    var suggestion_list = response.data.data;
+                    $(function() {
+                        $('#code').autocomplete({
+                            source: suggestion_list
+                        });
+                    })
+                });
             },
 
             softkeys: function() {
@@ -169,7 +187,8 @@
         },
 
         components: {
- 	   }
+            VueSimpleSuggest
+ 	    }
     };
 
 </script>
