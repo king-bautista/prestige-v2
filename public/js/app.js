@@ -13281,6 +13281,7 @@ __webpack_require__.r(__webpack_exports__);
         var suggestion_list = response.data.data;
         $(function () {
           $('#code').autocomplete({
+            minLength: 4,
             source: suggestion_list
           });
         });
@@ -13296,7 +13297,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var cursorPos = 0;
     this.softkeys();
+    $(function () {
+      $(".softkeys__btn").on('mousedown', function () {}).on('mouseup', function () {
+        $('#code').trigger('keydown');
+      });
+    });
   },
   components: {
     VueSimpleSuggest: vue_simple_suggest__WEBPACK_IMPORTED_MODULE_0__["default"]
