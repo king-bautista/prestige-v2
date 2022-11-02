@@ -28,6 +28,7 @@
         <!-- REQUIRED SCRIPTS -->
         <!-- jQuery -->
         <script src="{{ URL::to('plugins/jquery/jquery.min.js') }}"></script>
+        <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/popper-v2.min.js') }}"></script>	
         <script src="{{ mix('/js/app.js') }}"></script>

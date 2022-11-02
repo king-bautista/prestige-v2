@@ -9,6 +9,7 @@ use App\Models\Site;
 use App\Models\SiteBuilding;
 use App\Models\SiteBuildingLevel;
 use App\Models\Brand;
+use App\Models\Category;
 
 class SiteTenantViewModel extends Model
 {
@@ -52,6 +53,7 @@ class SiteTenantViewModel extends Model
         'floor_name',
         'site_name',
         'brand_site_name',
+        'category_name',
     ];
 
     /****************************************
@@ -95,6 +97,15 @@ class SiteTenantViewModel extends Model
         $brand_name = Brand::find($this->brand_id)->name;
         $site_name = Site::find($this->site_id)->name;
         return $brand_name.' - '.$site_name;
+    }
+
+    public function getCategoryNameAttribute() 
+    {
+        $brand_category_id = Brand::find($this->brand_id)->category_id;
+        $category_name = Category::find($brand_category_id);
+        if($category_name)
+            return $category_name['name'];
+        return null;
     }
 
 }
