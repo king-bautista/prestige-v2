@@ -5,6 +5,7 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Site;
 use App\Models\SiteBuilding;
 use App\Models\SiteBuildingLevel;
 
@@ -45,6 +46,7 @@ class SiteScreenViewModel extends Model
 	public $appends = [
         'building_name',
         'floor_name',
+        'screen_type_name',
     ];
 
     /****************************************
@@ -58,6 +60,12 @@ class SiteScreenViewModel extends Model
     public function getFloorNameAttribute() 
     {
         return SiteBuildingLevel::find($this->site_building_level_id)->name;
+    }
+
+    public function getScreenTypeNameAttribute() 
+    {
+        $site_name = Site::find($this->site_id)->name;
+        return $site_name.' - '.$this->name . ' ( '.$this->screen_type.' )';
     }
 
 }

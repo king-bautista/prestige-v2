@@ -17,6 +17,7 @@ class CreateCompaniesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->bigInteger('parent_id')->unsigned()->nullable()->index();
             $table->bigInteger('classification_id')->unsigned();
             $table->string('name');
             $table->mediumText('address')->nullable();            

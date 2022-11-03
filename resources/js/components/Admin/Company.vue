@@ -28,7 +28,7 @@
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="company-form" tabindex="-1" aria-labelledby="company-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Company</h5>
@@ -54,9 +54,9 @@
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">TIN Number <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="company.tin" placeholder="Company Name" required>
+									<input type="text" class="form-control" v-model="company.tin" placeholder="TIN Number" required>
 								</div>
-							</div>
+							</div>							
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Classification <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -64,6 +64,12 @@
 									    <option value="">Select Classification</option>
 									    <option v-for="classification in classifications" :value="classification.id"> {{ classification.name }}</option>
 								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Parent Company</label>
+								<div class="col-sm-8">
+									<treeselect v-model="company.parent_id" :options="parent_company" placeholder="Select Parent Company"/>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -91,6 +97,10 @@
 </template>
 <script> 
 	import Table from '../Helpers/Table';
+	// import the component
+	import Treeselect from '@riophae/vue-treeselect'
+	// import the styles
+	import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 	export default {
         name: "Users",
@@ -98,17 +108,20 @@
             return {
                 company: {
                     id: '',
+                    parent_id: '',
                     classification_id: '',
                     name: '',
                     address: '',
                     tin: '',
                     active: false,           
                 },
+                parent_company: [],
                 classifications: [],
                 add_record: true,
                 edit_record: false,
             	dataFields: {
             		name: "Name", 
+					parent_company: "Parent Company",
                     classification_name: "Classification Name",
             		address: "Address", 
             		tin: "TIN Number", 
@@ -156,9 +169,15 @@
 
         created(){
             this.getClassifications();
+			this.getParentCompany();
         },
 
         methods: {
+			getParentCompany: function() {
+				axios.get('/admin/company/get-parent')
+                .then(response => this.parent_company = response.data.data);
+			},
+
             getClassifications: function() {
 				axios.get('/admin/classification/get-all')
                 .then(response => this.classifications = response.data.data);
@@ -167,6 +186,7 @@
 			AddNewCompany: function() {
 				this.add_record = true;
 				this.edit_record = false;
+                this.company.parent_id = '';
                 this.company.classification_id = '';
                 this.company.name = '';
                 this.company.address = '';
@@ -190,6 +210,7 @@
                     var company = response.data.data;
                     this.company.id = id;
                     this.company.name = company.name;
+                    this.company.parent_id = company.parent_id;
                     this.company.classification_id = company.classification_id;
                     this.company.address = company.address;
                     this.company.tin = company.tin;
@@ -212,7 +233,8 @@
         },
 
         components: {
-        	Table
+        	Table,
+			Treeselect
  	   }
     };
 </script> 

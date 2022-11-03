@@ -112,6 +112,7 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
             }
 
             $data = [
+                'company_id' => $request->company_id,
                 'name' => $request->name,
                 'ad_type' => $request->ad_type,
                 'file_path' => str_replace('\\', '/', $file_path_path),
@@ -124,7 +125,9 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
             ];
 
             $site_ad = SiteAd::create($data);
+            $site_ad->saveSites($request->sites);
             $site_ad->saveTenants($request->tenants);
+            $site_ad->saveScreens($request->screens);
 
             return $this->response($site_ad, 'Successfully Created!', 200);
         }
@@ -154,6 +157,7 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
             }
 
             $data = [
+                'company_id' => $request->company_id,
                 'name' => $request->name,
                 'ad_type' => $request->ad_type,
                 'file_path' => ($file_path_path) ? str_replace('\\', '/', $file_path_path) : $site_ad->file_path,
@@ -166,7 +170,9 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
             ];
 
             $site_ad->update($data);
+            $site_ad->saveSites($request->sites);
             $site_ad->saveTenants($request->tenants);
+            $site_ad->saveScreens($request->screens);
 
             return $this->response($site_ad, 'Successfully Modified!', 200);
         }

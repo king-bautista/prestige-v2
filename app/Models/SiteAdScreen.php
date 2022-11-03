@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TenantAd extends Model
+class SiteAdScreen extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,7 +13,7 @@ class TenantAd extends Model
      */
     protected $fillable = [
         'site_ad_id', 
-        'site_tenant_id'
+        'site_screen_id'
     ];
 
     /**
@@ -28,5 +28,5 @@ class TenantAd extends Model
      *
      * @var string
     */
-    protected $table = 'tenant_ads';
+    protected $table = 'site_ad_screens';
 }

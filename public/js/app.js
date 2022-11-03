@@ -9292,11 +9292,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-bootstrap-datetimepicker */ "./node_modules/vue-bootstrap-datetimepicker/dist/vue-bootstrap-datetimepicker.js");
 /* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css */ "./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @riophae/vue-treeselect */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.cjs.js");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _riophae_vue_treeselect_dist_vue_treeselect_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @riophae/vue-treeselect/dist/vue-treeselect.css */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css");
 
 // Import this component
 
+// Import date picker js
 
 // Import date picker css
+
+// import the component
+
+// import the styles
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Advertisements",
@@ -9310,6 +9318,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       advertisements: {
         id: '',
+        company_id: '',
         name: '',
         ad_type: '',
         file_path: '',
@@ -9318,13 +9327,17 @@ __webpack_require__.r(__webpack_exports__);
         end_date: '',
         sites: '',
         tenants: '',
+        screens: '',
         active: true
       },
       material: '',
+      companies: [],
       sites: [],
       site_ids: [],
       tenants: [],
       tenant_ids: [],
+      screens: [],
+      screen_ids: [],
       options: {
         format: 'YYYY/MM/DD',
         useCurrent: false
@@ -9332,13 +9345,15 @@ __webpack_require__.r(__webpack_exports__);
       add_record: true,
       edit_record: false,
       dataFields: {
-        name: "Name",
-        site_names: "Site Name/s",
-        tenant_names: "Tenant/s",
         material_image_path: {
           name: "Preview",
-          type: "image"
+          type: "logo"
         },
+        name: "Name",
+        company_name: "Company",
+        site_names: "Site Name/s",
+        tenant_names: "Tenant/s",
+        screen_names: "Screen/s",
         duration: "Duration",
         air_dates: "Airdates",
         active: {
@@ -9384,27 +9399,45 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.getSites();
+    this.getCompany();
   },
   methods: {
-    getSites: function getSites() {
+    getCompany: function getCompany() {
       var _this = this;
+      axios.get('/admin/company/get-all').then(function (response) {
+        return _this.companies = response.data.data;
+      });
+    },
+    getSites: function getSites() {
+      var _this2 = this;
       axios.get('/admin/site/get-all').then(function (response) {
-        return _this.sites = response.data.data;
+        return _this2.sites = response.data.data;
       });
     },
     getTenants: function getTenants() {
-      var _this2 = this;
+      var _this3 = this;
       var site_ids = '';
       for (var i = 0; i < this.site_ids.length; i++) {
         site_ids += this.site_ids[i] + ',';
       }
       axios.get('/admin/site/tenant/get-tenants/' + site_ids).then(function (response) {
-        return _this2.tenants = response.data.data;
+        return _this3.tenants = response.data.data;
+      });
+    },
+    getScreens: function getScreens() {
+      var _this4 = this;
+      var site_ids = '';
+      for (var i = 0; i < this.site_ids.length; i++) {
+        site_ids += this.site_ids[i] + ',';
+      }
+      axios.get('/admin/site/screen/get-screens/' + site_ids).then(function (response) {
+        return _this4.screens = response.data.data;
       });
     },
     toggleSelected: function toggleSelected(value, id) {
       this.site_ids.push(value.id);
       this.getTenants();
+      this.getScreens();
     },
     toggleUnSelected: function toggleUnSelected(value, id) {
       var index = this.site_ids.indexOf(value.id);
@@ -9425,6 +9458,17 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
 
+    toggleSelectedScreen: function toggleSelectedScreen(value, id) {
+      this.screen_ids.push(value.id);
+    },
+    toggleUnSelectedScreen: function toggleUnSelectedScreen(value, id) {
+      var index = this.screen_ids.indexOf(value.id);
+      if (index > -1) {
+        // only splice array when item is found
+        this.screen_ids.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    },
+
     materialChange: function materialChange(e) {
       var file = e.target.files[0];
       this.material = URL.createObjectURL(file);
@@ -9433,6 +9477,7 @@ __webpack_require__.r(__webpack_exports__);
     AddNewAdvertisements: function AddNewAdvertisements() {
       this.add_record = true;
       this.edit_record = false;
+      this.advertisements.company_id = null;
       this.advertisements.name = '';
       this.advertisements.ad_type = this.ad_type;
       this.advertisements.file_path = '';
@@ -9441,65 +9486,16 @@ __webpack_require__.r(__webpack_exports__);
       this.advertisements.end_date = '';
       this.advertisements.sites = [];
       this.advertisements.tenants = [];
+      this.advertisements.screens = [];
       this.advertisements.active = true;
       this.$refs.material.value = null;
       this.material = null;
       $('#site_ad-form').modal('show');
     },
     storeAdvertisements: function storeAdvertisements() {
-      var _this3 = this;
-      var formData = new FormData();
-      formData.append("name", this.advertisements.name);
-      formData.append("ad_type", this.advertisements.ad_type);
-      formData.append("file_path", this.advertisements.material);
-      formData.append("display_duration", this.advertisements.display_duration);
-      formData.append("start_date", this.advertisements.start_date);
-      formData.append("end_date", this.advertisements.end_date);
-      formData.append("sites", this.site_ids);
-      formData.append("tenants", this.tenant_ids);
-      formData.append("active", this.advertisements.name);
-      axios.post('/admin/advertisement/store', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (response) {
-        toastr.success(response.data.message);
-        _this3.$refs.dataTable.fetchData();
-        $('#site_ad-form').modal('hide');
-      });
-    },
-    editAdvertisements: function editAdvertisements(id) {
-      var _this4 = this;
-      axios.get('/admin/advertisement/' + id).then(function (response) {
-        var advertisements = response.data.data;
-        _this4.advertisements.id = advertisements.id;
-        _this4.advertisements.name = advertisements.name;
-        _this4.advertisements.ad_type = _this4.ad_type;
-        _this4.advertisements.file_path = advertisements.name;
-        _this4.advertisements.display_duration = advertisements.display_duration;
-        _this4.advertisements.start_date = advertisements.start_date;
-        _this4.advertisements.end_date = advertisements.end_date;
-        _this4.advertisements.sites = advertisements.sites;
-        _this4.advertisements.tenants = advertisements.tenants;
-        _this4.advertisements.active = advertisements.active;
-        _this4.$refs.material.value = null;
-        _this4.material = advertisements.material_image_path;
-        advertisements.sites.forEach(function (value) {
-          _this4.site_ids.push(value.id);
-        });
-        advertisements.tenants.forEach(function (value) {
-          _this4.tenant_ids.push(value.id);
-        });
-        _this4.getTenants();
-        _this4.add_record = false;
-        _this4.edit_record = true;
-        $('#site_ad-form').modal('show');
-      });
-    },
-    updateAdvertisements: function updateAdvertisements() {
       var _this5 = this;
       var formData = new FormData();
-      formData.append("id", this.advertisements.id);
+      formData.append("company_id", this.advertisements.company_id);
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
       formData.append("file_path", this.advertisements.material);
@@ -9508,8 +9504,9 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("end_date", this.advertisements.end_date);
       formData.append("sites", this.site_ids);
       formData.append("tenants", this.tenant_ids);
-      formData.append("active", this.advertisements.name);
-      axios.post('/admin/advertisement/update', formData, {
+      formData.append("screens", this.screen_ids);
+      formData.append("active", this.advertisements.active);
+      axios.post('/admin/advertisement/store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -9518,12 +9515,73 @@ __webpack_require__.r(__webpack_exports__);
         _this5.$refs.dataTable.fetchData();
         $('#site_ad-form').modal('hide');
       });
+    },
+    editAdvertisements: function editAdvertisements(id) {
+      var _this6 = this;
+      axios.get('/admin/advertisement/' + id).then(function (response) {
+        var advertisements = response.data.data;
+        _this6.advertisements.id = advertisements.id;
+        _this6.advertisements.company_id = advertisements.company_id;
+        _this6.advertisements.name = advertisements.name;
+        _this6.advertisements.ad_type = _this6.ad_type;
+        _this6.advertisements.file_path = advertisements.name;
+        _this6.advertisements.display_duration = advertisements.display_duration;
+        _this6.advertisements.start_date = advertisements.start_date;
+        _this6.advertisements.end_date = advertisements.end_date;
+        _this6.advertisements.sites = advertisements.sites;
+        _this6.advertisements.tenants = advertisements.tenants;
+        _this6.advertisements.screens = advertisements.screens;
+        _this6.advertisements.active = advertisements.active;
+        _this6.$refs.material.value = null;
+        _this6.advertisements.material = '';
+        _this6.material = advertisements.material_image_path;
+        advertisements.sites.forEach(function (value) {
+          _this6.site_ids.push(value.id);
+        });
+        advertisements.tenants.forEach(function (value) {
+          _this6.tenant_ids.push(value.id);
+        });
+        advertisements.screens.forEach(function (value) {
+          _this6.screen_ids.push(value.id);
+        });
+        _this6.getTenants();
+        _this6.getScreens();
+        _this6.add_record = false;
+        _this6.edit_record = true;
+        $('#site_ad-form').modal('show');
+      });
+    },
+    updateAdvertisements: function updateAdvertisements() {
+      var _this7 = this;
+      var formData = new FormData();
+      formData.append("id", this.advertisements.id);
+      formData.append("company_id", this.advertisements.company_id);
+      formData.append("name", this.advertisements.name);
+      formData.append("ad_type", this.advertisements.ad_type);
+      formData.append("file_path", this.advertisements.material);
+      formData.append("display_duration", this.advertisements.display_duration);
+      formData.append("start_date", this.advertisements.start_date);
+      formData.append("end_date", this.advertisements.end_date);
+      formData.append("sites", this.site_ids);
+      formData.append("tenants", this.tenant_ids);
+      formData.append("screens", this.screen_ids);
+      formData.append("active", this.advertisements.active);
+      axios.post('/admin/advertisement/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        toastr.success(response.data.message);
+        _this7.$refs.dataTable.fetchData();
+        $('#site_ad-form').modal('hide');
+      });
     }
   },
   components: {
     Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"],
     datePicker: (vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2___default()),
-    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default())
+    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default()),
+    Treeselect: (_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4___default())
   }
 });
 
@@ -10379,6 +10437,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Table */ "./resources/js/components/Helpers/Table.vue");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @riophae/vue-treeselect */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.cjs.js");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _riophae_vue_treeselect_dist_vue_treeselect_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @riophae/vue-treeselect/dist/vue-treeselect.css */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css");
+
+// import the component
+
+// import the styles
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Users",
@@ -10386,17 +10451,20 @@ __webpack_require__.r(__webpack_exports__);
     return {
       company: {
         id: '',
+        parent_id: '',
         classification_id: '',
         name: '',
         address: '',
         tin: '',
         active: false
       },
+      parent_company: [],
       classifications: [],
       add_record: true,
       edit_record: false,
       dataFields: {
         name: "Name",
+        parent_company: "Parent Company",
         classification_name: "Classification Name",
         address: "Address",
         tin: "TIN Number",
@@ -10443,17 +10511,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.getClassifications();
+    this.getParentCompany();
   },
   methods: {
-    getClassifications: function getClassifications() {
+    getParentCompany: function getParentCompany() {
       var _this = this;
+      axios.get('/admin/company/get-parent').then(function (response) {
+        return _this.parent_company = response.data.data;
+      });
+    },
+    getClassifications: function getClassifications() {
+      var _this2 = this;
       axios.get('/admin/classification/get-all').then(function (response) {
-        return _this.classifications = response.data.data;
+        return _this2.classifications = response.data.data;
       });
     },
     AddNewCompany: function AddNewCompany() {
       this.add_record = true;
       this.edit_record = false;
+      this.company.parent_id = '';
       this.company.classification_id = '';
       this.company.name = '';
       this.company.address = '';
@@ -10462,39 +10538,41 @@ __webpack_require__.r(__webpack_exports__);
       $('#company-form').modal('show');
     },
     storeCompany: function storeCompany() {
-      var _this2 = this;
+      var _this3 = this;
       axios.post('/admin/company/store', this.company).then(function (response) {
         toastr.success(response.data.message);
-        _this2.$refs.dataTable.fetchData();
+        _this3.$refs.dataTable.fetchData();
         $('#company-form').modal('hide');
       });
     },
     editCompany: function editCompany(id) {
-      var _this3 = this;
+      var _this4 = this;
       axios.get('/admin/company/' + id).then(function (response) {
         var company = response.data.data;
-        _this3.company.id = id;
-        _this3.company.name = company.name;
-        _this3.company.classification_id = company.classification_id;
-        _this3.company.address = company.address;
-        _this3.company.tin = company.tin;
-        _this3.company.active = company.active;
-        _this3.add_record = false;
-        _this3.edit_record = true;
+        _this4.company.id = id;
+        _this4.company.name = company.name;
+        _this4.company.parent_id = company.parent_id;
+        _this4.company.classification_id = company.classification_id;
+        _this4.company.address = company.address;
+        _this4.company.tin = company.tin;
+        _this4.company.active = company.active;
+        _this4.add_record = false;
+        _this4.edit_record = true;
         $('#company-form').modal('show');
       });
     },
     updateCompany: function updateCompany() {
-      var _this4 = this;
+      var _this5 = this;
       axios.put('/admin/company/update', this.company).then(function (response) {
         toastr.success(response.data.message);
-        _this4.$refs.dataTable.fetchData();
+        _this5.$refs.dataTable.fetchData();
         $('#company-form').modal('hide');
       });
     }
   },
   components: {
-    Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Treeselect: (_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1___default())
   }
 });
 
@@ -13516,6 +13594,22 @@ var render = function render() {
     staticClass: "form-group row"
   }, [_vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
+  }, [_c("treeselect", {
+    attrs: {
+      options: _vm.companies,
+      placeholder: "Select Company"
+    },
+    model: {
+      value: _vm.advertisements.company_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "company_id", $$v);
+      },
+      expression: "advertisements.company_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
       options: _vm.sites,
@@ -13538,7 +13632,12 @@ var render = function render() {
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
@@ -13559,6 +13658,40 @@ var render = function render() {
         _vm.$set(_vm.advertisements, "tenants", $$v);
       },
       expression: "advertisements.tenants"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Screens")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.screens,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Screens",
+      label: "screen_type_name",
+      "track-by": "screen_type_name"
+    },
+    on: {
+      select: _vm.toggleSelectedScreen,
+      remove: _vm.toggleUnSelectedScreen
+    },
+    model: {
+      value: _vm.advertisements.screens,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "screens", $$v);
+      },
+      expression: "advertisements.screens"
     }
   }, [_c("span", {
     attrs: {
@@ -13712,9 +13845,9 @@ var staticRenderFns = [function () {
   return _c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
-      "for": "inputPassword3"
+      "for": "lastName"
     }
-  }, [_vm._v("Associate Sites "), _c("span", {
+  }, [_vm._v("Company "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -13725,7 +13858,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "inputPassword3"
     }
-  }, [_vm._v("Tenants "), _c("span", {
+  }, [_vm._v("Associate Sites "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }];
@@ -15548,7 +15681,7 @@ var render = function render() {
       "aria-hidden": "true"
     }
   }, [_c("div", {
-    staticClass: "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+    staticClass: "modal-dialog modal-dialog-centered modal-lg"
   }, [_c("div", {
     staticClass: "modal-content"
   }, [_c("div", {
@@ -15648,7 +15781,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "text",
-      placeholder: "Company Name",
+      placeholder: "TIN Number",
       required: ""
     },
     domProps: {
@@ -15694,6 +15827,27 @@ var render = function render() {
       }
     }, [_vm._v(" " + _vm._s(classification.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "lastName"
+    }
+  }, [_vm._v("Parent Company")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("treeselect", {
+    attrs: {
+      options: _vm.parent_company,
+      placeholder: "Select Parent Company"
+    },
+    model: {
+      value: _vm.company.parent_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.company, "parent_id", $$v);
+      },
+      expression: "company.parent_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
