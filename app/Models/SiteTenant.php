@@ -19,6 +19,7 @@ class SiteTenant extends Model
         'site_id',
         'site_building_id',
         'site_building_level_id',
+        'company_id',
         'view_count',
         'like_count',
         'active',

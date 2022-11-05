@@ -184,7 +184,6 @@
         },
 
         mounted() {
-            var cursorPos = 0;
             this.softkeys();
             $(function() {
                 $(".softkeys__btn").on('mousedown',function(){

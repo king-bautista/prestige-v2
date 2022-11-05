@@ -2,33 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class SiteTenantMeta extends Model
 {
     use SoftDeletes;
 
     /**
+     * The attributes that are soft delete.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+    
+    /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
-        'classification_id',
-        'parent_id',
-        'name',
-        'email',
-        'contact_number',
-        'address',
-        'tin',
-        'active',
+        'site_tenant_id', 
+        'meta_key', 
+        'meta_value'
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id', 
+        'site_tenant_id', 
+        'created_at', 
+        'updated_at', 
+        'deleted_at'
     ];
 
     /**
      * The attributes that should be cast.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -41,7 +56,7 @@ class Company extends Model
      *
      * @var string
     */
-    protected $table = 'companies';
+    protected $table = 'site_tenant_metas';
 
     /**
      * The primary key associated with the table.

@@ -51,6 +51,18 @@
                                     <textarea class="form-control" v-model="company.address" placeholder="Company Address" required></textarea>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Email <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <input type="email" class="form-control" v-model="company.email" placeholder="Email" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Contact Number <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <input type="email" class="form-control" v-model="company.contact_number" placeholder="Contact Number" required>
+								</div>
+							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">TIN Number <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -111,6 +123,8 @@
                     parent_id: '',
                     classification_id: '',
                     name: '',
+                    email: '',
+                    contact_number: '',
                     address: '',
                     tin: '',
                     active: false,           
@@ -123,6 +137,8 @@
             		name: "Name", 
 					parent_company: "Parent Company",
                     classification_name: "Classification Name",
+            		email: "Email", 
+            		contact_number: "Contact Number", 
             		address: "Address", 
             		tin: "TIN Number", 
             		active: {
@@ -186,9 +202,11 @@
 			AddNewCompany: function() {
 				this.add_record = true;
 				this.edit_record = false;
-                this.company.parent_id = '';
+                this.company.parent_id = null;
                 this.company.classification_id = '';
                 this.company.name = '';
+                this.company.email = '';
+                this.company.contact_number = '';
                 this.company.address = '';
                 this.company.tin = '';
                 this.company.active = false;				
@@ -212,6 +230,8 @@
                     this.company.name = company.name;
                     this.company.parent_id = company.parent_id;
                     this.company.classification_id = company.classification_id;
+                    this.company.email = company.email;
+                    this.company.contact_number = company.contact_number;
                     this.company.address = company.address;
                     this.company.tin = company.tin;
                     this.company.active = company.active;

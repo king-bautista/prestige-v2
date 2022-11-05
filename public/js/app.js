@@ -10454,6 +10454,8 @@ __webpack_require__.r(__webpack_exports__);
         parent_id: '',
         classification_id: '',
         name: '',
+        email: '',
+        contact_number: '',
         address: '',
         tin: '',
         active: false
@@ -10466,6 +10468,8 @@ __webpack_require__.r(__webpack_exports__);
         name: "Name",
         parent_company: "Parent Company",
         classification_name: "Classification Name",
+        email: "Email",
+        contact_number: "Contact Number",
         address: "Address",
         tin: "TIN Number",
         active: {
@@ -10529,9 +10533,11 @@ __webpack_require__.r(__webpack_exports__);
     AddNewCompany: function AddNewCompany() {
       this.add_record = true;
       this.edit_record = false;
-      this.company.parent_id = '';
+      this.company.parent_id = null;
       this.company.classification_id = '';
       this.company.name = '';
+      this.company.email = '';
+      this.company.contact_number = '';
       this.company.address = '';
       this.company.tin = '';
       this.company.active = false;
@@ -10553,6 +10559,8 @@ __webpack_require__.r(__webpack_exports__);
         _this4.company.name = company.name;
         _this4.company.parent_id = company.parent_id;
         _this4.company.classification_id = company.classification_id;
+        _this4.company.email = company.email;
+        _this4.company.contact_number = company.contact_number;
         _this4.company.address = company.address;
         _this4.company.tin = company.tin;
         _this4.company.active = company.active;
@@ -12514,7 +12522,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Table */ "./resources/js/components/Helpers/Table.vue");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @riophae/vue-treeselect */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.cjs.js");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _riophae_vue_treeselect_dist_vue_treeselect_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @riophae/vue-treeselect/dist/vue-treeselect.css */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css");
+var schedules = [];
 
+
+// import the component
+
+// import the styles
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Tenant",
@@ -12526,16 +12542,20 @@ __webpack_require__.r(__webpack_exports__);
         site_id: '',
         site_building_id: '',
         site_building_level_id: '',
+        company_id: '',
         active: true,
-        is_subscriber: ''
+        is_subscriber: '',
+        operational_hours: []
       },
       id_to_deleted: 0,
       add_record: true,
       edit_record: false,
+      subscriber_logo: '',
       brands: [],
       sites: [],
       buildings: [],
       floors: [],
+      companies: [],
       dataFields: {
         brand_logo: {
           name: "Brand Logo",
@@ -12605,8 +12625,14 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.getSites();
     this.GetBrands();
+    this.getCompany();
   },
   methods: {
+    subscriberLogoChange: function subscriberLogoChange(e) {
+      var file = e.target.files[0];
+      this.subscriber_logo = URL.createObjectURL(file);
+      this.tenant.subscriber_logo = file;
+    },
     getSites: function getSites() {
       var _this = this;
       axios.get('/admin/site/get-all').then(function (response) {
@@ -12619,17 +12645,39 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.brands = response.data.data;
       });
     },
-    getBuildings: function getBuildings(id) {
+    getCompany: function getCompany() {
       var _this3 = this;
+      axios.get('/admin/company/get-all').then(function (response) {
+        return _this3.companies = response.data.data;
+      });
+    },
+    getBuildings: function getBuildings(id) {
+      var _this4 = this;
       axios.get('/admin/site/get-buildings/' + id).then(function (response) {
-        return _this3.buildings = response.data.data;
+        return _this4.buildings = response.data.data;
       });
     },
     getFloorLevel: function getFloorLevel(id) {
-      var _this4 = this;
+      var _this5 = this;
       axios.get('/admin/site/floors/' + id).then(function (response) {
-        return _this4.floors = response.data.data;
+        return _this5.floors = response.data.data;
       });
+    },
+    addOperationalHours: function addOperationalHours() {
+      this.tenant.operational_hours.push({
+        schedules: '',
+        start_time: '',
+        end_time: ''
+      });
+      this.schedule();
+    },
+    getChecked: function getChecked(item, index) {
+      if (schedules[index]) {
+        schedules[index] += ', ' + item;
+      } else {
+        schedules[index] = item;
+      }
+      this.tenant.operational_hours[index].schedules = schedules[index];
     },
     AddNewTenant: function AddNewTenant() {
       this.add_record = true;
@@ -12638,37 +12686,48 @@ __webpack_require__.r(__webpack_exports__);
       this.tenant.site_id = '';
       this.tenant.site_building_id = '';
       this.tenant.site_building_level_id = '';
+      this.tenant.company_id = null;
+      this.tenant.operational_hours = [];
+      this.tenant.subscriber_logo = '';
+      this.$refs.subscriber_logo.value = null;
+      this.subscriber_logo = null;
+      this.addOperationalHours();
       $('#tenant-form').modal('show');
     },
     storeTenant: function storeTenant() {
-      var _this5 = this;
+      var _this6 = this;
       axios.post('/admin/site/tenant/store', this.tenant).then(function (response) {
         toastr.success(response.data.message);
-        _this5.$refs.tenantsDataTable.fetchData();
+        _this6.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
       });
     },
     editTenant: function editTenant(id) {
-      var _this6 = this;
+      var _this7 = this;
       axios.get('/admin/site/tenant/' + id).then(function (response) {
         var tenant = response.data.data;
-        _this6.tenant.id = tenant.id;
-        _this6.tenant.brand_id = tenant.brand_details;
-        _this6.tenant.site_id = tenant.site_id;
-        _this6.tenant.site_building_id = tenant.site_building_id;
-        _this6.getBuildings(tenant.site_id);
-        _this6.getFloorLevel(tenant.site_building_id);
-        _this6.tenant.site_building_level_id = tenant.site_building_level_id;
-        _this6.add_record = false;
-        _this6.edit_record = true;
+        _this7.tenant.id = tenant.id;
+        _this7.tenant.brand_id = tenant.brand_details;
+        _this7.tenant.site_id = tenant.site_id;
+        _this7.tenant.site_building_id = tenant.site_building_id;
+        _this7.getBuildings(tenant.site_id);
+        _this7.getFloorLevel(tenant.site_building_id);
+        _this7.tenant.site_building_level_id = tenant.site_building_level_id;
+        _this7.tenant.company_id = tenant.company_id;
+        _this7.tenant.subscriber_logo = '';
+        _this7.$refs.subscriber_logo.value = null;
+        _this7.subscriber_logo = null;
+        _this7.add_record = false;
+        _this7.edit_record = true;
+        _this7.schedule();
         $('#tenant-form').modal('show');
       });
     },
     updateTenant: function updateTenant() {
-      var _this7 = this;
+      var _this8 = this;
       axios.put('/admin/site/tenant/update', this.tenant).then(function (response) {
         toastr.success(response.data.message);
-        _this7.$refs.tenantsDataTable.fetchData();
+        _this8.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
       });
     },
@@ -12677,10 +12736,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#tenantDeleteModal').modal('show');
     },
     removeTenant: function removeTenant() {
-      var _this8 = this;
+      var _this9 = this;
       axios.get('/admin/site/tenant/delete/' + this.id_to_deleted).then(function (response) {
-        _this8.$refs.tenantsDataTable.fetchData();
-        _this8.id_to_deleted = 0;
+        _this9.$refs.tenantsDataTable.fetchData();
+        _this9.id_to_deleted = 0;
         $('#tenantDeleteModal').modal('hide');
       });
     },
@@ -12692,7 +12751,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#batchInputLabel').html(this.file.name);
     },
     storeBatch: function storeBatch() {
-      var _this9 = this;
+      var _this10 = this;
       var formData = new FormData();
       formData.append('file', this.file);
       axios.post('/admin/site/tenant/batch-upload', formData, {
@@ -12700,18 +12759,31 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
-        _this9.$refs.file.value = null;
-        _this9.$refs.tenantsDataTable.fetchData();
+        _this10.$refs.file.value = null;
+        _this10.$refs.tenantsDataTable.fetchData();
         toastr.success(response.data.message);
         $('#batchModal').modal('hide');
         $('#batchInputLabel').html('Choose File');
         window.location.reload();
       });
+    },
+    schedule: function schedule() {
+      $(function () {
+        $(".custom-btn").on('click', function () {
+          if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+          } else {
+            $(this).addClass('active');
+          }
+        });
+      });
     }
   },
+  mounted: function mounted() {},
   components: {
     Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default())
+    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default()),
+    Treeselect: (_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2___default())
   }
 });
 
@@ -13375,7 +13447,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var cursorPos = 0;
     this.softkeys();
     $(function () {
       $(".softkeys__btn").on('mousedown', function () {}).on('mouseup', function () {
@@ -15775,6 +15846,58 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
+      value: _vm.company.email,
+      expression: "company.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      placeholder: "Email",
+      required: ""
+    },
+    domProps: {
+      value: _vm.company.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.company, "email", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.company.contact_number,
+      expression: "company.contact_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      placeholder: "Contact Number",
+      required: ""
+    },
+    domProps: {
+      value: _vm.company.contact_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.company, "contact_number", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.company.tin,
       expression: "company.tin"
     }],
@@ -15795,7 +15918,7 @@ var render = function render() {
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -15975,6 +16098,28 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Address "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Email "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Contact Number "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -20595,7 +20740,7 @@ var render = function render() {
       "aria-hidden": "true"
     }
   }, [_c("div", {
-    staticClass: "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+    staticClass: "modal-dialog modal-dialog-centered modal-xl"
   }, [_c("div", {
     staticClass: "modal-content"
   }, [_c("div", {
@@ -20633,7 +20778,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "form-group row"
   }, [_vm._m(1), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("multiselect", {
     attrs: {
       "track-by": "name",
@@ -20653,7 +20798,7 @@ var render = function render() {
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(2), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("select", {
     directives: [{
       name: "model",
@@ -20688,7 +20833,7 @@ var render = function render() {
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(3), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("select", {
     directives: [{
       name: "model",
@@ -20723,7 +20868,7 @@ var render = function render() {
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(4), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("select", {
     directives: [{
       name: "model",
@@ -20756,61 +20901,185 @@ var render = function render() {
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
-      "for": "is_subscriber"
+      "for": "lastName"
     }
-  }, [_vm._v("Is Subscriber")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("div", {
-    staticClass: "custom-control custom-switch"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.tenant.is_subscriber,
-      expression: "tenant.is_subscriber"
-    }],
-    staticClass: "custom-control-input",
+  }, [_vm._v("Company")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("treeselect", {
     attrs: {
-      type: "checkbox",
-      id: "is_subscriber"
+      options: _vm.companies,
+      placeholder: "Select Company"
     },
-    domProps: {
-      checked: Array.isArray(_vm.tenant.is_subscriber) ? _vm._i(_vm.tenant.is_subscriber, null) > -1 : _vm.tenant.is_subscriber
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.tenant.is_subscriber,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.tenant, "is_subscriber", $$a.concat([$$v]));
-          } else {
-            $$i > -1 && _vm.$set(_vm.tenant, "is_subscriber", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.$set(_vm.tenant, "is_subscriber", $$c);
-        }
-      }
+    model: {
+      value: _vm.tenant.company_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.tenant, "company_id", $$v);
+      },
+      expression: "tenant.company_id"
     }
-  }), _vm._v(" "), _c("label", {
-    staticClass: "custom-control-label",
-    attrs: {
-      "for": "is_subscriber"
-    }
-  })])])]), _vm._v(" "), _c("div", {
+  })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "is_subscriber"
+    }
+  }, [_vm._v("Operational Hours")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_vm._l(_vm.tenant.operational_hours, function (operational, index) {
+    return _c("div", {
+      staticClass: "row mb-3 mx-0"
+    }, [_c("div", {
+      staticClass: "col-9 d-flex"
+    }, [_c("div", {
+      staticClass: "btn-group-toggle",
+      attrs: {
+        "data-toggle": "buttons"
+      }
+    }, [_c("label", {
+      staticClass: "btn custom-btn",
+      attrs: {
+        "for": "SU0"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Sun", index);
+        }
+      }
+    }, [_vm._v("SU")]), _vm._v(" "), _c("label", {
+      staticClass: "btn custom-btn",
+      attrs: {
+        "for": "M0"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Mon", index);
+        }
+      }
+    }, [_vm._v("M")]), _vm._v(" "), _c("label", {
+      staticClass: "btn custom-btn",
+      attrs: {
+        "for": "T0"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Tue", index);
+        }
+      }
+    }, [_vm._v("T")]), _vm._v(" "), _c("label", {
+      staticClass: "btn custom-btn",
+      attrs: {
+        "for": "W0"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Wed", index);
+        }
+      }
+    }, [_vm._v("W")]), _vm._v(" "), _c("label", {
+      staticClass: "btn custom-btn",
+      attrs: {
+        "for": "TH0"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Thu", index);
+        }
+      }
+    }, [_vm._v("TH")]), _vm._v(" "), _c("label", {
+      staticClass: "btn custom-btn",
+      attrs: {
+        "for": "F0"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Fri", index);
+        }
+      }
+    }, [_vm._v("F")]), _vm._v(" "), _c("label", {
+      staticClass: "btn custom-btn",
+      attrs: {
+        "for": "S0"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Sat", index);
+        }
+      }
+    }, [_vm._v("S")])]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: operational.start_time,
+        expression: "operational.start_time"
+      }],
+      staticClass: "form-control ml-1 time mr-2",
+      staticStyle: {
+        width: "120px"
+      },
+      attrs: {
+        type: "time"
+      },
+      domProps: {
+        value: operational.start_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(operational, "start_time", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _c("p", {
+      staticClass: "m-0 pt-2"
+    }, [_vm._v("to")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: operational.end_time,
+        expression: "operational.end_time"
+      }],
+      staticClass: "form-control time ml-2",
+      staticStyle: {
+        width: "120px"
+      },
+      attrs: {
+        type: "time"
+      },
+      domProps: {
+        value: operational.end_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(operational, "end_time", $event.target.value);
+        }
+      }
+    })]), _vm._v(" "), _c("div", {
+      staticClass: "col-3"
+    }, [_c("i", [_vm._v(_vm._s(operational.schedules) + " "), operational.start_time ? _c("span", [_vm._v("|")]) : _vm._e(), _vm._v(" " + _vm._s(operational.start_time) + " "), operational.end_time ? _c("span", [_vm._v("to")]) : _vm._e(), _vm._v(" " + _vm._s(operational.end_time))])])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "col-12"
+  }, [_c("button", {
+    staticClass: "btn btn-link",
+    staticStyle: {
+      "padding-left": "0px"
+    },
+    on: {
+      click: _vm.addOperationalHours
+    }
+  }, [_vm._v("Add Hours +")])])])], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "tennat_active"
     }
   }, [_vm._v("Active")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("div", {
     staticClass: "custom-control custom-switch"
   }, [_c("input", {
@@ -20851,7 +21120,80 @@ var render = function render() {
     attrs: {
       "for": "tennat_active"
     }
-  })])])])])]), _vm._v(" "), _c("div", {
+  })])])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "is_subscriber"
+    }
+  }, [_vm._v("Is Subscriber")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("div", {
+    staticClass: "custom-control custom-switch"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.is_subscriber,
+      expression: "tenant.is_subscriber"
+    }],
+    staticClass: "custom-control-input",
+    attrs: {
+      type: "checkbox",
+      id: "is_subscriber"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.tenant.is_subscriber) ? _vm._i(_vm.tenant.is_subscriber, null) > -1 : _vm.tenant.is_subscriber
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.tenant.is_subscriber,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.tenant, "is_subscriber", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.tenant, "is_subscriber", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.tenant, "is_subscriber", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "custom-control-label",
+    attrs: {
+      "for": "is_subscriber"
+    }
+  })])])]), _vm._v(" "), _vm.tenant.is_subscriber == 1 ? _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-5"
+  }, [_c("input", {
+    ref: "subscriber_logo",
+    attrs: {
+      type: "file",
+      accept: "image/*"
+    },
+    on: {
+      change: _vm.subscriberLogoChange
+    }
+  }), _vm._v(" "), _c("footer", {
+    staticClass: "blockquote-footer"
+  }, [_vm._v("Max file size is 15MB")]), _vm._v(" "), _c("footer", {
+    staticClass: "blockquote-footer"
+  }, [_vm._v("image max size is 550 x 550 pixels")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-4 text-center"
+  }, [_vm.subscriber_logo ? _c("img", {
+    staticClass: "img-thumbnail",
+    attrs: {
+      src: _vm.subscriber_logo
+    }
+  }) : _vm._e()])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -20899,7 +21241,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -20931,11 +21273,11 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(7), _vm._v(" "), _c("div", {
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
     staticClass: "modal-body"
   }, [_c("form", [_c("div", {
     staticClass: "form-group col-md-12"
-  }, [_vm._m(8), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _c("div", {
     staticClass: "custom-file"
   }, [_c("input", {
     ref: "file",
@@ -20993,7 +21335,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
@@ -21004,7 +21346,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
@@ -21015,7 +21357,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
@@ -21026,11 +21368,22 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
   }, [_vm._v("Floor "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Subscriber Logo "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
