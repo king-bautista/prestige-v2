@@ -87,13 +87,13 @@
 									<div class="row mb-3 mx-0" v-for="(operational, index)  in tenant.operational_hours ">
 										<div class="col-9 d-flex">
 											<div class="btn-group-toggle" data-toggle="buttons">
-												<label class="btn custom-btn" for="SU0" @click="getChecked('Sun', index)">SU</label>
-												<label class="btn custom-btn" for="M0" @click="getChecked('Mon', index)">M</label>
-												<label class="btn custom-btn" for="T0" @click="getChecked('Tue', index)">T</label>
-												<label class="btn custom-btn" for="W0" @click="getChecked('Wed', index)">W</label>
-												<label class="btn custom-btn" for="TH0" @click="getChecked('Thu', index)">TH</label>
-												<label class="btn custom-btn" for="F0" @click="getChecked('Fri', index)">F</label>
-												<label class="btn custom-btn" for="S0" @click="getChecked('Sat', index)">S</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Sun', index)" @click="getChecked('Sun', index)">SU</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Mon', index)" @click="getChecked('Mon', index)">M</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Tue', index)" @click="getChecked('Tue', index)">T</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Wed', index)" @click="getChecked('Wed', index)">W</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Thu', index)" @click="getChecked('Thu', index)">TH</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Fri', index)" @click="getChecked('Fri', index)">F</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Sat', index)" @click="getChecked('Sat', index)">S</label>
 											</div>
 											<input type="time" v-model="operational.start_time" class="form-control ml-1 time mr-2" style="width: 120px">
 											<p class="m-0 pt-2">to</p>
@@ -221,7 +221,7 @@
                     site_building_level_id: '',
                     company_id: '',
                     active: true,
-                    is_subscriber: '',
+                    is_subscriber: false,
 					operational_hours: [],
                 },
 				id_to_deleted: 0,
@@ -344,20 +344,28 @@
 					start_time: '',
 					end_time: '',
 				});
-				this.schedule();
 			},
 
 			getChecked: function(item, index) {
-				if(schedules[index]) {
-					schedules[index] += ', '+item;
+				var position = (schedules[index]) ? schedules[index].indexOf(item) : -1;
+				if(position >= 0) {
+					schedules[index] = schedules[index].replace(", "+item, "").replace(item+",", "").replace(item, "");
 				}
 				else {
-					schedules[index] = item;
+					if(schedules[index]) {
+						schedules[index] += ', '+item;
+					}
+					else {
+						schedules[index] = item;
+					}
 				}
+
 				this.tenant.operational_hours[index].schedules = schedules[index];
 			},
 
 			AddNewTenant: function() {
+				this.removeActiveStatus();
+				schedules = [];
 				this.add_record = true;
 				this.edit_record = false;
                 this.tenant.brand_id = '';
@@ -367,7 +375,8 @@
                 this.tenant.company_id = null;
 				this.tenant.operational_hours = [];
 				this.tenant.subscriber_logo = '';
-				this.$refs.subscriber_logo.value = null;
+				this.tenant.active = true;
+				this.tenant.is_subscriber = false;
 				this.subscriber_logo = null;
 
 				this.addOperationalHours();
@@ -375,17 +384,34 @@
             },
 
             storeTenant: function() {
-                axios.post('/admin/site/tenant/store', this.tenant)
+				let formData = new FormData();
+				formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
+				formData.append("site_id", this.tenant.site_id);
+				formData.append("site_building_id", this.tenant.site_building_id);
+				formData.append("site_building_level_id", this.tenant.site_building_level_id);
+				formData.append("company_id", this.tenant.company_id);
+				formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+				formData.append("active", this.tenant.active);
+				formData.append("is_subscriber", this.tenant.is_subscriber);
+				formData.append("subscriber_logo", this.tenant.subscriber_logo);
+                axios.post('/admin/site/tenant/store', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.tenantsDataTable.fetchData();
 					$('#tenant-form').modal('hide');
-				})
+				});
             },
 
 			editTenant: function(id) {
                 axios.get('/admin/site/tenant/'+id)
                 .then(response => {
+					this.tenant.operational_hours = [];
+					schedules = [];
+
                     var tenant = response.data.data;
                     this.tenant.id = tenant.id;
                     this.tenant.brand_id = tenant.brand_details;
@@ -397,26 +423,61 @@
 
                     this.tenant.site_building_level_id = tenant.site_building_level_id;
                     this.tenant.company_id = tenant.company_id;
+                    this.tenant.active = tenant.active;
+                    this.tenant.is_subscriber = tenant.is_subscriber;
+					this.subscriber_logo = '';
 
-					this.tenant.subscriber_logo = '';
-					this.$refs.subscriber_logo.value = null;
-					this.subscriber_logo = null;
+					if(tenant.is_subscriber == true) {
+						this.tenant.subscriber_logo = '';
+						this.subscriber_logo = tenant.subscriber_logo;
+					}
+
+					if(tenant.operational_hours) {
+						for (let i = 0; i < tenant.operational_hours.length; i++) {
+							let operational = tenant.operational_hours[i];
+
+							this.tenant.operational_hours.push({
+								schedules: operational.schedules,
+								start_time: operational.start_time,
+								end_time: operational.end_time
+							});
+
+							schedules[i] = operational.schedules;
+						}
+					}
+					else {
+						this.addOperationalHours();
+					}
 
 					this.add_record = false;
 					this.edit_record = true;
 
-					this.schedule();
 					$('#tenant-form').modal('show');
                 });
             },
 
             updateTenant: function() {
-                axios.put('/admin/site/tenant/update', this.tenant)
-                    .then(response => {
-                        toastr.success(response.data.message);
-                        this.$refs.tenantsDataTable.fetchData();
-                        $('#tenant-form').modal('hide');
-                    })
+				let formData = new FormData();
+				formData.append("id", this.tenant.id);
+				formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
+				formData.append("site_id", this.tenant.site_id);
+				formData.append("site_building_id", this.tenant.site_building_id);
+				formData.append("site_building_level_id", this.tenant.site_building_level_id);
+				formData.append("company_id", this.tenant.company_id);
+				formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+				formData.append("active", this.tenant.active);
+				formData.append("is_subscriber", this.tenant.is_subscriber);
+				formData.append("subscriber_logo", this.tenant.subscriber_logo);
+                axios.post('/admin/site/tenant/update', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.tenantsDataTable.fetchData();
+					$('#tenant-form').modal('hide');
+				});
             },
 
 			DeleteTenant: function(data) {
@@ -472,6 +533,21 @@
 						}
 					});
 				});
+			},
+
+			removeActiveStatus: function() {
+				$(function() {
+					$(".custom-btn").removeClass('active');
+				});
+			},
+
+			conditionActive: function(shedules, item, index) {
+				if(shedules.indexOf(item) >= 0) {					
+					return 'btn custom-btn active';
+				}
+				else {
+					return 'btn custom-btn';
+				}
 			},
 
         },

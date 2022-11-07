@@ -50,4 +50,19 @@ class SiteTenant extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveMeta($meta_data)
+    {
+        foreach ($meta_data as $key => $data) {
+            SiteTenantMeta::updateOrCreate(
+                [
+                   'site_tenant_id' => $this->id,
+                   'meta_key' => $key
+                ],
+                [
+                   'meta_value' => $data,
+                ],
+            );
+        }
+    }
 }

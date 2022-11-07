@@ -12544,7 +12544,7 @@ var schedules = [];
         site_building_level_id: '',
         company_id: '',
         active: true,
-        is_subscriber: '',
+        is_subscriber: false,
         operational_hours: []
       },
       id_to_deleted: 0,
@@ -12669,17 +12669,23 @@ var schedules = [];
         start_time: '',
         end_time: ''
       });
-      this.schedule();
     },
     getChecked: function getChecked(item, index) {
-      if (schedules[index]) {
-        schedules[index] += ', ' + item;
+      var position = schedules[index] ? schedules[index].indexOf(item) : -1;
+      if (position >= 0) {
+        schedules[index] = schedules[index].replace(", " + item, "").replace(item + ",", "").replace(item, "");
       } else {
-        schedules[index] = item;
+        if (schedules[index]) {
+          schedules[index] += ', ' + item;
+        } else {
+          schedules[index] = item;
+        }
       }
       this.tenant.operational_hours[index].schedules = schedules[index];
     },
     AddNewTenant: function AddNewTenant() {
+      this.removeActiveStatus();
+      schedules = [];
       this.add_record = true;
       this.edit_record = false;
       this.tenant.brand_id = '';
@@ -12689,14 +12695,29 @@ var schedules = [];
       this.tenant.company_id = null;
       this.tenant.operational_hours = [];
       this.tenant.subscriber_logo = '';
-      this.$refs.subscriber_logo.value = null;
+      this.tenant.active = true;
+      this.tenant.is_subscriber = false;
       this.subscriber_logo = null;
       this.addOperationalHours();
       $('#tenant-form').modal('show');
     },
     storeTenant: function storeTenant() {
       var _this6 = this;
-      axios.post('/admin/site/tenant/store', this.tenant).then(function (response) {
+      var formData = new FormData();
+      formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
+      formData.append("site_id", this.tenant.site_id);
+      formData.append("site_building_id", this.tenant.site_building_id);
+      formData.append("site_building_level_id", this.tenant.site_building_level_id);
+      formData.append("company_id", this.tenant.company_id);
+      formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+      formData.append("active", this.tenant.active);
+      formData.append("is_subscriber", this.tenant.is_subscriber);
+      formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      axios.post('/admin/site/tenant/store', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         toastr.success(response.data.message);
         _this6.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
@@ -12705,6 +12726,8 @@ var schedules = [];
     editTenant: function editTenant(id) {
       var _this7 = this;
       axios.get('/admin/site/tenant/' + id).then(function (response) {
+        _this7.tenant.operational_hours = [];
+        schedules = [];
         var tenant = response.data.data;
         _this7.tenant.id = tenant.id;
         _this7.tenant.brand_id = tenant.brand_details;
@@ -12714,18 +12737,49 @@ var schedules = [];
         _this7.getFloorLevel(tenant.site_building_id);
         _this7.tenant.site_building_level_id = tenant.site_building_level_id;
         _this7.tenant.company_id = tenant.company_id;
-        _this7.tenant.subscriber_logo = '';
-        _this7.$refs.subscriber_logo.value = null;
-        _this7.subscriber_logo = null;
+        _this7.tenant.active = tenant.active;
+        _this7.tenant.is_subscriber = tenant.is_subscriber;
+        _this7.subscriber_logo = '';
+        if (tenant.is_subscriber == true) {
+          _this7.tenant.subscriber_logo = '';
+          _this7.subscriber_logo = tenant.subscriber_logo;
+        }
+        if (tenant.operational_hours) {
+          for (var i = 0; i < tenant.operational_hours.length; i++) {
+            var operational = tenant.operational_hours[i];
+            _this7.tenant.operational_hours.push({
+              schedules: operational.schedules,
+              start_time: operational.start_time,
+              end_time: operational.end_time
+            });
+            schedules[i] = operational.schedules;
+          }
+        } else {
+          _this7.addOperationalHours();
+        }
         _this7.add_record = false;
         _this7.edit_record = true;
-        _this7.schedule();
         $('#tenant-form').modal('show');
       });
     },
     updateTenant: function updateTenant() {
       var _this8 = this;
-      axios.put('/admin/site/tenant/update', this.tenant).then(function (response) {
+      var formData = new FormData();
+      formData.append("id", this.tenant.id);
+      formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
+      formData.append("site_id", this.tenant.site_id);
+      formData.append("site_building_id", this.tenant.site_building_id);
+      formData.append("site_building_level_id", this.tenant.site_building_level_id);
+      formData.append("company_id", this.tenant.company_id);
+      formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+      formData.append("active", this.tenant.active);
+      formData.append("is_subscriber", this.tenant.is_subscriber);
+      formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      axios.post('/admin/site/tenant/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         toastr.success(response.data.message);
         _this8.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
@@ -12777,6 +12831,18 @@ var schedules = [];
           }
         });
       });
+    },
+    removeActiveStatus: function removeActiveStatus() {
+      $(function () {
+        $(".custom-btn").removeClass('active');
+      });
+    },
+    conditionActive: function conditionActive(shedules, item, index) {
+      if (shedules.indexOf(item) >= 0) {
+        return 'btn custom-btn active';
+      } else {
+        return 'btn custom-btn';
+      }
     }
   },
   mounted: function mounted() {},
@@ -20939,70 +21005,49 @@ var render = function render() {
         "data-toggle": "buttons"
       }
     }, [_c("label", {
-      staticClass: "btn custom-btn",
-      attrs: {
-        "for": "SU0"
-      },
+      "class": _vm.conditionActive(operational.schedules, "Sun", index),
       on: {
         click: function click($event) {
           return _vm.getChecked("Sun", index);
         }
       }
     }, [_vm._v("SU")]), _vm._v(" "), _c("label", {
-      staticClass: "btn custom-btn",
-      attrs: {
-        "for": "M0"
-      },
+      "class": _vm.conditionActive(operational.schedules, "Mon", index),
       on: {
         click: function click($event) {
           return _vm.getChecked("Mon", index);
         }
       }
     }, [_vm._v("M")]), _vm._v(" "), _c("label", {
-      staticClass: "btn custom-btn",
-      attrs: {
-        "for": "T0"
-      },
+      "class": _vm.conditionActive(operational.schedules, "Tue", index),
       on: {
         click: function click($event) {
           return _vm.getChecked("Tue", index);
         }
       }
     }, [_vm._v("T")]), _vm._v(" "), _c("label", {
-      staticClass: "btn custom-btn",
-      attrs: {
-        "for": "W0"
-      },
+      "class": _vm.conditionActive(operational.schedules, "Wed", index),
       on: {
         click: function click($event) {
           return _vm.getChecked("Wed", index);
         }
       }
     }, [_vm._v("W")]), _vm._v(" "), _c("label", {
-      staticClass: "btn custom-btn",
-      attrs: {
-        "for": "TH0"
-      },
+      "class": _vm.conditionActive(operational.schedules, "Thu", index),
       on: {
         click: function click($event) {
           return _vm.getChecked("Thu", index);
         }
       }
     }, [_vm._v("TH")]), _vm._v(" "), _c("label", {
-      staticClass: "btn custom-btn",
-      attrs: {
-        "for": "F0"
-      },
+      "class": _vm.conditionActive(operational.schedules, "Fri", index),
       on: {
         click: function click($event) {
           return _vm.getChecked("Fri", index);
         }
       }
     }, [_vm._v("F")]), _vm._v(" "), _c("label", {
-      staticClass: "btn custom-btn",
-      attrs: {
-        "for": "S0"
-      },
+      "class": _vm.conditionActive(operational.schedules, "Sat", index),
       on: {
         click: function click($event) {
           return _vm.getChecked("Sat", index);

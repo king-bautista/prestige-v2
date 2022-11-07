@@ -82,16 +82,28 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
     	{
+            $subscriber_logo = $request->file('subscriber_logo');
+            $subscriber_logo_path = '';
+            if($subscriber_logo) {
+                $originalname = $subscriber_logo->getClientOriginalName();
+                $subscriber_logo_path = $subscriber_logo->move('uploads/media/subscriber/', str_replace(' ','-', $originalname)); 
+            }
+
+            $brand_id = json_decode($request->brand_id, 1);
             $data = [
-                'brand_id' => $request->brand_id['id'],
+                'brand_id' => $brand_id['id'],
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
+                'company_id' => $request->company_id,
                 'active' => ($request->active) ? 1 : 0,
-                'is_subscriber' => ($request->is_subscriber) ? 1 : 0,
+                'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
             ];
 
             $site_tenant = SiteTenant::create($data);
+
+            $meta_details = ["schedules" => $request->operational_hours, "subscriber_logo" => str_replace('\\', '/', $subscriber_logo_path)];
+            $site_tenant->saveMeta($meta_details);
 
             return $this->response($site_tenant, 'Successfully Created!', 200);
         }
@@ -110,16 +122,34 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         try
     	{
             $site_tenant = SiteTenant::find($request->id);
+
+            $subscriber_logo = $request->file('subscriber_logo');
+            $subscriber_logo_path = '';
+            if($subscriber_logo) {
+                $originalname = $subscriber_logo->getClientOriginalName();
+                $subscriber_logo_path = $subscriber_logo->move('uploads/media/subscriber/', str_replace(' ','-', $originalname)); 
+            }
+
+            $brand_id = json_decode($request->brand_id, 1);
             $data = [
-                'brand_id' => $request->brand_id['id'],
+                'brand_id' => $brand_id['id'],
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
+                'company_id' => $request->company_id,
                 'active' => ($request->active) ? 1 : 0,
-                'is_subscriber' => ($request->is_subscriber) ? 1 : 0,
+                'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
             ];
 
             $site_tenant->update($data);
+
+            if($request->operational_hours)
+                $meta_details["schedules"] = $request->operational_hours;
+            
+            if($subscriber_logo_path)
+                $meta_details["subscriber_logo"] = str_replace('\\', '/', $subscriber_logo_path);
+
+            $site_tenant->saveMeta($meta_details);
 
             return $this->response($site_tenant, 'Successfully Modified!', 200);
         }

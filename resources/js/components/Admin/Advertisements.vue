@@ -376,8 +376,7 @@
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 	              	$('#site_ad-form').modal('hide');
-				})
-				
+				});				
             },
 
 			editAdvertisements: function(id) {

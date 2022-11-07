@@ -29,8 +29,8 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
             if($row['store_name']) {
                 $brand_id = ($row['store_name']) ? $this->getBrandId($row['store_name']) : 0;
                 $site_id = ($row['mall_name']) ? $this->getSiteId($row['mall_name']) : 0;
-                $building_id = ($row['building_name']) ? $this->getBuildingId($row['building_name']) : 0;
-                $level_id = ($row['level_name']) ? $this->getBuildingLevelId($site_id, $row['level_name']) : 0;
+                $building_id = ($row['building_name']) ? $this->getBuildingId($site_id, $row['building_name']) : 0;
+                $level_id = ($row['level_name']) ? $this->getBuildingLevelId($site_id, $building_id, $row['level_name']) : 0;
 
                 $brand = SiteTenant::updateOrCreate(
                     [
@@ -68,10 +68,12 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
         return 0;
     }
 
-    public function getBuildingId($building)
+    public function getBuildingId($site_id, $building)
     {
         if($building) {
-            $building_id = SiteBuilding::where('name', 'like', '%'.rtrim(ltrim($building)).'%')->first();
+            $building_id = SiteBuilding::where('name', 'like', '%'.rtrim(ltrim($building)).'%')
+            ->where('site_id', $site_id)
+            ->first();
             if($building_id)
                 return $building_id['id'];
             return 0;
@@ -80,10 +82,14 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
         return 0;
     }
 
-    public function getBuildingLevelId($site_id, $level_name)
+    public function getBuildingLevelId($site_id, $building_id, $level_name)
     {
         if($site_id && $level_name) {
-            $level_name_id = SiteBuildingLevel::where('name', 'like', '%'.rtrim(ltrim($level_name)).'%')->where('site_id', $site_id)->first();
+            $level_name_id = SiteBuildingLevel::where('name', 'like', '%'.rtrim(ltrim($level_name)).'%')
+            ->where('site_id', $site_id)
+            ->where('site_building_id', $building_id)
+            ->first();
+
             if($level_name_id)
                 return $level_name_id['id'];
             return 0;
