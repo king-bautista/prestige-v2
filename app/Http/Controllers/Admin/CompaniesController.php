@@ -74,8 +74,11 @@ class CompaniesController extends AppBaseController implements CompaniesControll
         try
     	{
             $data = [
+                'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'classification_id' => $request->classification_id,
                 'name' => $request->name,
+                'email' => $request->email,
+                'contact_number' => $request->contact_number,
                 'address' => $request->address,
                 'tin' => $request->tin,
                 'active' => 1
@@ -102,8 +105,11 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $company = Company::find($request->id);
 
             $data = [
+                'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'classification_id' => $request->classification_id,
                 'name' => $request->name,
+                'email' => $request->email,
+                'contact_number' => $request->contact_number,
                 'address' => $request->address,
                 'tin' => $request->tin,
                 'active' => ($request->active == 'false') ? 0 : 1,
@@ -145,7 +151,24 @@ class CompaniesController extends AppBaseController implements CompaniesControll
     {
         try
         {
-            $companies = Company::get();
+            $companies = CompanyViewModel::get();
+            return $this->response($companies, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getParent()
+    {
+        try
+        {
+            $companies = CompanyViewModel::whereNull('parent_id')->where('active', 1)->get();
             return $this->response($companies, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

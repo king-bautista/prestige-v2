@@ -142,8 +142,6 @@ class CreateSitesTable extends Migration
             $table->foreign('site_building_level_id')->references('id')->on('site_building_levels');
         });
 
-        
-
         Schema::create('site_points', function (Blueprint $table) {
             $table->engine = "InnoDB";
             

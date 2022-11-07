@@ -5,6 +5,7 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Company;
 use App\Models\Classification;
 
 class CompanyViewModel extends Model
@@ -42,8 +43,21 @@ class CompanyViewModel extends Model
      * @var string
      */
 	public $appends = [
+        'parent_company',
         'classification_name',
+        'label',
     ]; 
+
+    /****************************************
+    *           ATTRIBUTES PARTS            *
+    ****************************************/    
+    public function getParentCompanyAttribute() 
+    {
+        $parent_company = Company::find($this->parent_id);
+        if($parent_company)
+            return $parent_company['name'];
+        return null;
+    }
 
     public function getClassificationNameAttribute() 
     {
@@ -52,5 +66,10 @@ class CompanyViewModel extends Model
         if($classification)
             return $classification['name'];
         return null;
+    }
+
+    public function getLabelAttribute() 
+    {
+        return $this->name;
     }
 }

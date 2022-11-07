@@ -19,6 +19,7 @@ class SiteTenant extends Model
         'site_id',
         'site_building_id',
         'site_building_level_id',
+        'company_id',
         'view_count',
         'like_count',
         'active',
@@ -49,4 +50,19 @@ class SiteTenant extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveMeta($meta_data)
+    {
+        foreach ($meta_data as $key => $data) {
+            SiteTenantMeta::updateOrCreate(
+                [
+                   'site_tenant_id' => $this->id,
+                   'meta_key' => $key
+                ],
+                [
+                   'meta_value' => $data,
+                ],
+            );
+        }
+    }
 }

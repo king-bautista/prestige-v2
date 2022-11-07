@@ -143,8 +143,7 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
     {
         try
     	{
-            $site_id = session()->get('site_id');
-            $building_levels = SiteBuildingLevel::where('site_id', $site_id)->where('site_building_id', $id)->get();
+            $building_levels = SiteBuildingLevel::where('site_building_id', $id)->get();
             return $this->response($building_levels, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 

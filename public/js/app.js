@@ -9292,11 +9292,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-bootstrap-datetimepicker */ "./node_modules/vue-bootstrap-datetimepicker/dist/vue-bootstrap-datetimepicker.js");
 /* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css */ "./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @riophae/vue-treeselect */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.cjs.js");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _riophae_vue_treeselect_dist_vue_treeselect_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @riophae/vue-treeselect/dist/vue-treeselect.css */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css");
 
 // Import this component
 
+// Import date picker js
 
 // Import date picker css
+
+// import the component
+
+// import the styles
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Advertisements",
@@ -9310,6 +9318,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       advertisements: {
         id: '',
+        company_id: '',
         name: '',
         ad_type: '',
         file_path: '',
@@ -9318,13 +9327,17 @@ __webpack_require__.r(__webpack_exports__);
         end_date: '',
         sites: '',
         tenants: '',
+        screens: '',
         active: true
       },
       material: '',
+      companies: [],
       sites: [],
       site_ids: [],
       tenants: [],
       tenant_ids: [],
+      screens: [],
+      screen_ids: [],
       options: {
         format: 'YYYY/MM/DD',
         useCurrent: false
@@ -9332,13 +9345,15 @@ __webpack_require__.r(__webpack_exports__);
       add_record: true,
       edit_record: false,
       dataFields: {
-        name: "Name",
-        site_names: "Site Name/s",
-        tenant_names: "Tenant/s",
         material_image_path: {
           name: "Preview",
-          type: "image"
+          type: "logo"
         },
+        name: "Name",
+        company_name: "Company",
+        site_names: "Site Name/s",
+        tenant_names: "Tenant/s",
+        screen_names: "Screen/s",
         duration: "Duration",
         air_dates: "Airdates",
         active: {
@@ -9384,27 +9399,45 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.getSites();
+    this.getCompany();
   },
   methods: {
-    getSites: function getSites() {
+    getCompany: function getCompany() {
       var _this = this;
+      axios.get('/admin/company/get-all').then(function (response) {
+        return _this.companies = response.data.data;
+      });
+    },
+    getSites: function getSites() {
+      var _this2 = this;
       axios.get('/admin/site/get-all').then(function (response) {
-        return _this.sites = response.data.data;
+        return _this2.sites = response.data.data;
       });
     },
     getTenants: function getTenants() {
-      var _this2 = this;
+      var _this3 = this;
       var site_ids = '';
       for (var i = 0; i < this.site_ids.length; i++) {
         site_ids += this.site_ids[i] + ',';
       }
       axios.get('/admin/site/tenant/get-tenants/' + site_ids).then(function (response) {
-        return _this2.tenants = response.data.data;
+        return _this3.tenants = response.data.data;
+      });
+    },
+    getScreens: function getScreens() {
+      var _this4 = this;
+      var site_ids = '';
+      for (var i = 0; i < this.site_ids.length; i++) {
+        site_ids += this.site_ids[i] + ',';
+      }
+      axios.get('/admin/site/screen/get-screens/' + site_ids).then(function (response) {
+        return _this4.screens = response.data.data;
       });
     },
     toggleSelected: function toggleSelected(value, id) {
       this.site_ids.push(value.id);
       this.getTenants();
+      this.getScreens();
     },
     toggleUnSelected: function toggleUnSelected(value, id) {
       var index = this.site_ids.indexOf(value.id);
@@ -9425,6 +9458,17 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
 
+    toggleSelectedScreen: function toggleSelectedScreen(value, id) {
+      this.screen_ids.push(value.id);
+    },
+    toggleUnSelectedScreen: function toggleUnSelectedScreen(value, id) {
+      var index = this.screen_ids.indexOf(value.id);
+      if (index > -1) {
+        // only splice array when item is found
+        this.screen_ids.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    },
+
     materialChange: function materialChange(e) {
       var file = e.target.files[0];
       this.material = URL.createObjectURL(file);
@@ -9433,6 +9477,7 @@ __webpack_require__.r(__webpack_exports__);
     AddNewAdvertisements: function AddNewAdvertisements() {
       this.add_record = true;
       this.edit_record = false;
+      this.advertisements.company_id = null;
       this.advertisements.name = '';
       this.advertisements.ad_type = this.ad_type;
       this.advertisements.file_path = '';
@@ -9441,65 +9486,16 @@ __webpack_require__.r(__webpack_exports__);
       this.advertisements.end_date = '';
       this.advertisements.sites = [];
       this.advertisements.tenants = [];
+      this.advertisements.screens = [];
       this.advertisements.active = true;
       this.$refs.material.value = null;
       this.material = null;
       $('#site_ad-form').modal('show');
     },
     storeAdvertisements: function storeAdvertisements() {
-      var _this3 = this;
-      var formData = new FormData();
-      formData.append("name", this.advertisements.name);
-      formData.append("ad_type", this.advertisements.ad_type);
-      formData.append("file_path", this.advertisements.material);
-      formData.append("display_duration", this.advertisements.display_duration);
-      formData.append("start_date", this.advertisements.start_date);
-      formData.append("end_date", this.advertisements.end_date);
-      formData.append("sites", this.site_ids);
-      formData.append("tenants", this.tenant_ids);
-      formData.append("active", this.advertisements.name);
-      axios.post('/admin/advertisement/store', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (response) {
-        toastr.success(response.data.message);
-        _this3.$refs.dataTable.fetchData();
-        $('#site_ad-form').modal('hide');
-      });
-    },
-    editAdvertisements: function editAdvertisements(id) {
-      var _this4 = this;
-      axios.get('/admin/advertisement/' + id).then(function (response) {
-        var advertisements = response.data.data;
-        _this4.advertisements.id = advertisements.id;
-        _this4.advertisements.name = advertisements.name;
-        _this4.advertisements.ad_type = _this4.ad_type;
-        _this4.advertisements.file_path = advertisements.name;
-        _this4.advertisements.display_duration = advertisements.display_duration;
-        _this4.advertisements.start_date = advertisements.start_date;
-        _this4.advertisements.end_date = advertisements.end_date;
-        _this4.advertisements.sites = advertisements.sites;
-        _this4.advertisements.tenants = advertisements.tenants;
-        _this4.advertisements.active = advertisements.active;
-        _this4.$refs.material.value = null;
-        _this4.material = advertisements.material_image_path;
-        advertisements.sites.forEach(function (value) {
-          _this4.site_ids.push(value.id);
-        });
-        advertisements.tenants.forEach(function (value) {
-          _this4.tenant_ids.push(value.id);
-        });
-        _this4.getTenants();
-        _this4.add_record = false;
-        _this4.edit_record = true;
-        $('#site_ad-form').modal('show');
-      });
-    },
-    updateAdvertisements: function updateAdvertisements() {
       var _this5 = this;
       var formData = new FormData();
-      formData.append("id", this.advertisements.id);
+      formData.append("company_id", this.advertisements.company_id);
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
       formData.append("file_path", this.advertisements.material);
@@ -9508,8 +9504,9 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("end_date", this.advertisements.end_date);
       formData.append("sites", this.site_ids);
       formData.append("tenants", this.tenant_ids);
-      formData.append("active", this.advertisements.name);
-      axios.post('/admin/advertisement/update', formData, {
+      formData.append("screens", this.screen_ids);
+      formData.append("active", this.advertisements.active);
+      axios.post('/admin/advertisement/store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -9518,12 +9515,73 @@ __webpack_require__.r(__webpack_exports__);
         _this5.$refs.dataTable.fetchData();
         $('#site_ad-form').modal('hide');
       });
+    },
+    editAdvertisements: function editAdvertisements(id) {
+      var _this6 = this;
+      axios.get('/admin/advertisement/' + id).then(function (response) {
+        var advertisements = response.data.data;
+        _this6.advertisements.id = advertisements.id;
+        _this6.advertisements.company_id = advertisements.company_id;
+        _this6.advertisements.name = advertisements.name;
+        _this6.advertisements.ad_type = _this6.ad_type;
+        _this6.advertisements.file_path = advertisements.name;
+        _this6.advertisements.display_duration = advertisements.display_duration;
+        _this6.advertisements.start_date = advertisements.start_date;
+        _this6.advertisements.end_date = advertisements.end_date;
+        _this6.advertisements.sites = advertisements.sites;
+        _this6.advertisements.tenants = advertisements.tenants;
+        _this6.advertisements.screens = advertisements.screens;
+        _this6.advertisements.active = advertisements.active;
+        _this6.$refs.material.value = null;
+        _this6.advertisements.material = '';
+        _this6.material = advertisements.material_image_path;
+        advertisements.sites.forEach(function (value) {
+          _this6.site_ids.push(value.id);
+        });
+        advertisements.tenants.forEach(function (value) {
+          _this6.tenant_ids.push(value.id);
+        });
+        advertisements.screens.forEach(function (value) {
+          _this6.screen_ids.push(value.id);
+        });
+        _this6.getTenants();
+        _this6.getScreens();
+        _this6.add_record = false;
+        _this6.edit_record = true;
+        $('#site_ad-form').modal('show');
+      });
+    },
+    updateAdvertisements: function updateAdvertisements() {
+      var _this7 = this;
+      var formData = new FormData();
+      formData.append("id", this.advertisements.id);
+      formData.append("company_id", this.advertisements.company_id);
+      formData.append("name", this.advertisements.name);
+      formData.append("ad_type", this.advertisements.ad_type);
+      formData.append("file_path", this.advertisements.material);
+      formData.append("display_duration", this.advertisements.display_duration);
+      formData.append("start_date", this.advertisements.start_date);
+      formData.append("end_date", this.advertisements.end_date);
+      formData.append("sites", this.site_ids);
+      formData.append("tenants", this.tenant_ids);
+      formData.append("screens", this.screen_ids);
+      formData.append("active", this.advertisements.active);
+      axios.post('/admin/advertisement/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        toastr.success(response.data.message);
+        _this7.$refs.dataTable.fetchData();
+        $('#site_ad-form').modal('hide');
+      });
     }
   },
   components: {
     Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"],
     datePicker: (vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2___default()),
-    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default())
+    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default()),
+    Treeselect: (_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4___default())
   }
 });
 
@@ -10379,6 +10437,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Table */ "./resources/js/components/Helpers/Table.vue");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @riophae/vue-treeselect */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.cjs.js");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _riophae_vue_treeselect_dist_vue_treeselect_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @riophae/vue-treeselect/dist/vue-treeselect.css */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css");
+
+// import the component
+
+// import the styles
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Users",
@@ -10386,18 +10451,25 @@ __webpack_require__.r(__webpack_exports__);
     return {
       company: {
         id: '',
+        parent_id: '',
         classification_id: '',
         name: '',
+        email: '',
+        contact_number: '',
         address: '',
         tin: '',
         active: false
       },
+      parent_company: [],
       classifications: [],
       add_record: true,
       edit_record: false,
       dataFields: {
         name: "Name",
+        parent_company: "Parent Company",
         classification_name: "Classification Name",
+        email: "Email",
+        contact_number: "Contact Number",
         address: "Address",
         tin: "TIN Number",
         active: {
@@ -10443,58 +10515,72 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.getClassifications();
+    this.getParentCompany();
   },
   methods: {
-    getClassifications: function getClassifications() {
+    getParentCompany: function getParentCompany() {
       var _this = this;
+      axios.get('/admin/company/get-parent').then(function (response) {
+        return _this.parent_company = response.data.data;
+      });
+    },
+    getClassifications: function getClassifications() {
+      var _this2 = this;
       axios.get('/admin/classification/get-all').then(function (response) {
-        return _this.classifications = response.data.data;
+        return _this2.classifications = response.data.data;
       });
     },
     AddNewCompany: function AddNewCompany() {
       this.add_record = true;
       this.edit_record = false;
+      this.company.parent_id = null;
       this.company.classification_id = '';
       this.company.name = '';
+      this.company.email = '';
+      this.company.contact_number = '';
       this.company.address = '';
       this.company.tin = '';
       this.company.active = false;
       $('#company-form').modal('show');
     },
     storeCompany: function storeCompany() {
-      var _this2 = this;
+      var _this3 = this;
       axios.post('/admin/company/store', this.company).then(function (response) {
         toastr.success(response.data.message);
-        _this2.$refs.dataTable.fetchData();
+        _this3.$refs.dataTable.fetchData();
         $('#company-form').modal('hide');
       });
     },
     editCompany: function editCompany(id) {
-      var _this3 = this;
+      var _this4 = this;
       axios.get('/admin/company/' + id).then(function (response) {
         var company = response.data.data;
-        _this3.company.id = id;
-        _this3.company.name = company.name;
-        _this3.company.classification_id = company.classification_id;
-        _this3.company.address = company.address;
-        _this3.company.tin = company.tin;
-        _this3.company.active = company.active;
-        _this3.add_record = false;
-        _this3.edit_record = true;
+        _this4.company.id = id;
+        _this4.company.name = company.name;
+        _this4.company.parent_id = company.parent_id;
+        _this4.company.classification_id = company.classification_id;
+        _this4.company.email = company.email;
+        _this4.company.contact_number = company.contact_number;
+        _this4.company.address = company.address;
+        _this4.company.tin = company.tin;
+        _this4.company.active = company.active;
+        _this4.add_record = false;
+        _this4.edit_record = true;
         $('#company-form').modal('show');
       });
     },
     updateCompany: function updateCompany() {
-      var _this4 = this;
+      var _this5 = this;
       axios.put('/admin/company/update', this.company).then(function (response) {
         toastr.success(response.data.message);
-        _this4.$refs.dataTable.fetchData();
+        _this5.$refs.dataTable.fetchData();
         $('#company-form').modal('hide');
       });
     }
   },
   components: {
-    Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Treeselect: (_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_1___default())
   }
 });
 
@@ -12436,7 +12522,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Table */ "./resources/js/components/Helpers/Table.vue");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @riophae/vue-treeselect */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.cjs.js");
+/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _riophae_vue_treeselect_dist_vue_treeselect_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @riophae/vue-treeselect/dist/vue-treeselect.css */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css");
+var schedules = [];
 
+
+// import the component
+
+// import the styles
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Tenant",
@@ -12448,16 +12542,20 @@ __webpack_require__.r(__webpack_exports__);
         site_id: '',
         site_building_id: '',
         site_building_level_id: '',
+        company_id: '',
         active: true,
-        is_subscriber: ''
+        is_subscriber: false,
+        operational_hours: []
       },
       id_to_deleted: 0,
       add_record: true,
       edit_record: false,
+      subscriber_logo: '',
       brands: [],
       sites: [],
       buildings: [],
       floors: [],
+      companies: [],
       dataFields: {
         brand_logo: {
           name: "Brand Logo",
@@ -12527,8 +12625,14 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.getSites();
     this.GetBrands();
+    this.getCompany();
   },
   methods: {
+    subscriberLogoChange: function subscriberLogoChange(e) {
+      var file = e.target.files[0];
+      this.subscriber_logo = URL.createObjectURL(file);
+      this.tenant.subscriber_logo = file;
+    },
     getSites: function getSites() {
       var _this = this;
       axios.get('/admin/site/get-all').then(function (response) {
@@ -12541,56 +12645,143 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.brands = response.data.data;
       });
     },
-    getBuildings: function getBuildings(id) {
+    getCompany: function getCompany() {
       var _this3 = this;
+      axios.get('/admin/company/get-all').then(function (response) {
+        return _this3.companies = response.data.data;
+      });
+    },
+    getBuildings: function getBuildings(id) {
+      var _this4 = this;
       axios.get('/admin/site/get-buildings/' + id).then(function (response) {
-        return _this3.buildings = response.data.data;
+        return _this4.buildings = response.data.data;
       });
     },
     getFloorLevel: function getFloorLevel(id) {
-      var _this4 = this;
+      var _this5 = this;
       axios.get('/admin/site/floors/' + id).then(function (response) {
-        return _this4.floors = response.data.data;
+        return _this5.floors = response.data.data;
       });
     },
+    addOperationalHours: function addOperationalHours() {
+      this.tenant.operational_hours.push({
+        schedules: '',
+        start_time: '',
+        end_time: ''
+      });
+    },
+    getChecked: function getChecked(item, index) {
+      var position = schedules[index] ? schedules[index].indexOf(item) : -1;
+      if (position >= 0) {
+        schedules[index] = schedules[index].replace(", " + item, "").replace(item + ",", "").replace(item, "");
+      } else {
+        if (schedules[index]) {
+          schedules[index] += ', ' + item;
+        } else {
+          schedules[index] = item;
+        }
+      }
+      this.tenant.operational_hours[index].schedules = schedules[index];
+    },
     AddNewTenant: function AddNewTenant() {
+      this.removeActiveStatus();
+      schedules = [];
       this.add_record = true;
       this.edit_record = false;
       this.tenant.brand_id = '';
       this.tenant.site_id = '';
       this.tenant.site_building_id = '';
       this.tenant.site_building_level_id = '';
+      this.tenant.company_id = null;
+      this.tenant.operational_hours = [];
+      this.tenant.subscriber_logo = '';
+      this.tenant.active = true;
+      this.tenant.is_subscriber = false;
+      this.subscriber_logo = null;
+      this.addOperationalHours();
       $('#tenant-form').modal('show');
     },
     storeTenant: function storeTenant() {
-      var _this5 = this;
-      axios.post('/admin/site/tenant/store', this.tenant).then(function (response) {
+      var _this6 = this;
+      var formData = new FormData();
+      formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
+      formData.append("site_id", this.tenant.site_id);
+      formData.append("site_building_id", this.tenant.site_building_id);
+      formData.append("site_building_level_id", this.tenant.site_building_level_id);
+      formData.append("company_id", this.tenant.company_id);
+      formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+      formData.append("active", this.tenant.active);
+      formData.append("is_subscriber", this.tenant.is_subscriber);
+      formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      axios.post('/admin/site/tenant/store', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         toastr.success(response.data.message);
-        _this5.$refs.tenantsDataTable.fetchData();
+        _this6.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
       });
     },
     editTenant: function editTenant(id) {
-      var _this6 = this;
+      var _this7 = this;
       axios.get('/admin/site/tenant/' + id).then(function (response) {
+        _this7.tenant.operational_hours = [];
+        schedules = [];
         var tenant = response.data.data;
-        _this6.tenant.id = tenant.id;
-        _this6.tenant.brand_id = tenant.brand_details;
-        _this6.tenant.site_id = tenant.site_id;
-        _this6.tenant.site_building_id = tenant.site_building_id;
-        _this6.getBuildings(tenant.site_id);
-        _this6.getFloorLevel(tenant.site_building_id);
-        _this6.tenant.site_building_level_id = tenant.site_building_level_id;
-        _this6.add_record = false;
-        _this6.edit_record = true;
+        _this7.tenant.id = tenant.id;
+        _this7.tenant.brand_id = tenant.brand_details;
+        _this7.tenant.site_id = tenant.site_id;
+        _this7.tenant.site_building_id = tenant.site_building_id;
+        _this7.getBuildings(tenant.site_id);
+        _this7.getFloorLevel(tenant.site_building_id);
+        _this7.tenant.site_building_level_id = tenant.site_building_level_id;
+        _this7.tenant.company_id = tenant.company_id;
+        _this7.tenant.active = tenant.active;
+        _this7.tenant.is_subscriber = tenant.is_subscriber;
+        _this7.subscriber_logo = '';
+        if (tenant.is_subscriber == true) {
+          _this7.tenant.subscriber_logo = '';
+          _this7.subscriber_logo = tenant.subscriber_logo;
+        }
+        if (tenant.operational_hours) {
+          for (var i = 0; i < tenant.operational_hours.length; i++) {
+            var operational = tenant.operational_hours[i];
+            _this7.tenant.operational_hours.push({
+              schedules: operational.schedules,
+              start_time: operational.start_time,
+              end_time: operational.end_time
+            });
+            schedules[i] = operational.schedules;
+          }
+        } else {
+          _this7.addOperationalHours();
+        }
+        _this7.add_record = false;
+        _this7.edit_record = true;
         $('#tenant-form').modal('show');
       });
     },
     updateTenant: function updateTenant() {
-      var _this7 = this;
-      axios.put('/admin/site/tenant/update', this.tenant).then(function (response) {
+      var _this8 = this;
+      var formData = new FormData();
+      formData.append("id", this.tenant.id);
+      formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
+      formData.append("site_id", this.tenant.site_id);
+      formData.append("site_building_id", this.tenant.site_building_id);
+      formData.append("site_building_level_id", this.tenant.site_building_level_id);
+      formData.append("company_id", this.tenant.company_id);
+      formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+      formData.append("active", this.tenant.active);
+      formData.append("is_subscriber", this.tenant.is_subscriber);
+      formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      axios.post('/admin/site/tenant/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         toastr.success(response.data.message);
-        _this7.$refs.tenantsDataTable.fetchData();
+        _this8.$refs.tenantsDataTable.fetchData();
         $('#tenant-form').modal('hide');
       });
     },
@@ -12599,10 +12790,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#tenantDeleteModal').modal('show');
     },
     removeTenant: function removeTenant() {
-      var _this8 = this;
+      var _this9 = this;
       axios.get('/admin/site/tenant/delete/' + this.id_to_deleted).then(function (response) {
-        _this8.$refs.tenantsDataTable.fetchData();
-        _this8.id_to_deleted = 0;
+        _this9.$refs.tenantsDataTable.fetchData();
+        _this9.id_to_deleted = 0;
         $('#tenantDeleteModal').modal('hide');
       });
     },
@@ -12614,7 +12805,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#batchInputLabel').html(this.file.name);
     },
     storeBatch: function storeBatch() {
-      var _this9 = this;
+      var _this10 = this;
       var formData = new FormData();
       formData.append('file', this.file);
       axios.post('/admin/site/tenant/batch-upload', formData, {
@@ -12622,18 +12813,43 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
-        _this9.$refs.file.value = null;
-        _this9.$refs.tenantsDataTable.fetchData();
+        _this10.$refs.file.value = null;
+        _this10.$refs.tenantsDataTable.fetchData();
         toastr.success(response.data.message);
         $('#batchModal').modal('hide');
         $('#batchInputLabel').html('Choose File');
         window.location.reload();
       });
+    },
+    schedule: function schedule() {
+      $(function () {
+        $(".custom-btn").on('click', function () {
+          if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+          } else {
+            $(this).addClass('active');
+          }
+        });
+      });
+    },
+    removeActiveStatus: function removeActiveStatus() {
+      $(function () {
+        $(".custom-btn").removeClass('active');
+      });
+    },
+    conditionActive: function conditionActive(shedules, item, index) {
+      if (shedules.indexOf(item) >= 0) {
+        return 'btn custom-btn active';
+      } else {
+        return 'btn custom-btn';
+      }
     }
   },
+  mounted: function mounted() {},
   components: {
     Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default())
+    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default()),
+    Treeselect: (_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_2___default())
   }
 });
 
@@ -13297,7 +13513,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var cursorPos = 0;
     this.softkeys();
     $(function () {
       $(".softkeys__btn").on('mousedown', function () {}).on('mouseup', function () {
@@ -13516,6 +13731,22 @@ var render = function render() {
     staticClass: "form-group row"
   }, [_vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
+  }, [_c("treeselect", {
+    attrs: {
+      options: _vm.companies,
+      placeholder: "Select Company"
+    },
+    model: {
+      value: _vm.advertisements.company_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "company_id", $$v);
+      },
+      expression: "advertisements.company_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
       options: _vm.sites,
@@ -13538,7 +13769,12 @@ var render = function render() {
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
@@ -13559,6 +13795,40 @@ var render = function render() {
         _vm.$set(_vm.advertisements, "tenants", $$v);
       },
       expression: "advertisements.tenants"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Screens")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.screens,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Screens",
+      label: "screen_type_name",
+      "track-by": "screen_type_name"
+    },
+    on: {
+      select: _vm.toggleSelectedScreen,
+      remove: _vm.toggleUnSelectedScreen
+    },
+    model: {
+      value: _vm.advertisements.screens,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "screens", $$v);
+      },
+      expression: "advertisements.screens"
     }
   }, [_c("span", {
     attrs: {
@@ -13712,9 +13982,9 @@ var staticRenderFns = [function () {
   return _c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
-      "for": "inputPassword3"
+      "for": "lastName"
     }
-  }, [_vm._v("Associate Sites "), _c("span", {
+  }, [_vm._v("Company "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -13725,7 +13995,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "inputPassword3"
     }
-  }, [_vm._v("Tenants "), _c("span", {
+  }, [_vm._v("Associate Sites "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }];
@@ -15548,7 +15818,7 @@ var render = function render() {
       "aria-hidden": "true"
     }
   }, [_c("div", {
-    staticClass: "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+    staticClass: "modal-dialog modal-dialog-centered modal-lg"
   }, [_c("div", {
     staticClass: "modal-content"
   }, [_c("div", {
@@ -15642,13 +15912,65 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
+      value: _vm.company.email,
+      expression: "company.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      placeholder: "Email",
+      required: ""
+    },
+    domProps: {
+      value: _vm.company.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.company, "email", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.company.contact_number,
+      expression: "company.contact_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      placeholder: "Contact Number",
+      required: ""
+    },
+    domProps: {
+      value: _vm.company.contact_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.company, "contact_number", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.company.tin,
       expression: "company.tin"
     }],
     staticClass: "form-control",
     attrs: {
       type: "text",
-      placeholder: "Company Name",
+      placeholder: "TIN Number",
       required: ""
     },
     domProps: {
@@ -15662,7 +15984,7 @@ var render = function render() {
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -15694,6 +16016,27 @@ var render = function render() {
       }
     }, [_vm._v(" " + _vm._s(classification.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "lastName"
+    }
+  }, [_vm._v("Parent Company")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("treeselect", {
+    attrs: {
+      options: _vm.parent_company,
+      placeholder: "Select Parent Company"
+    },
+    model: {
+      value: _vm.company.parent_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.company, "parent_id", $$v);
+      },
+      expression: "company.parent_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -15821,6 +16164,28 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Address "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Email "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Contact Number "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -20441,7 +20806,7 @@ var render = function render() {
       "aria-hidden": "true"
     }
   }, [_c("div", {
-    staticClass: "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+    staticClass: "modal-dialog modal-dialog-centered modal-xl"
   }, [_c("div", {
     staticClass: "modal-content"
   }, [_c("div", {
@@ -20479,7 +20844,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "form-group row"
   }, [_vm._m(1), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("multiselect", {
     attrs: {
       "track-by": "name",
@@ -20499,7 +20864,7 @@ var render = function render() {
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(2), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("select", {
     directives: [{
       name: "model",
@@ -20534,7 +20899,7 @@ var render = function render() {
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(3), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("select", {
     directives: [{
       name: "model",
@@ -20569,7 +20934,7 @@ var render = function render() {
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(4), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("select", {
     directives: [{
       name: "model",
@@ -20602,61 +20967,164 @@ var render = function render() {
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
-      "for": "is_subscriber"
+      "for": "lastName"
     }
-  }, [_vm._v("Is Subscriber")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("div", {
-    staticClass: "custom-control custom-switch"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.tenant.is_subscriber,
-      expression: "tenant.is_subscriber"
-    }],
-    staticClass: "custom-control-input",
+  }, [_vm._v("Company")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("treeselect", {
     attrs: {
-      type: "checkbox",
-      id: "is_subscriber"
+      options: _vm.companies,
+      placeholder: "Select Company"
     },
-    domProps: {
-      checked: Array.isArray(_vm.tenant.is_subscriber) ? _vm._i(_vm.tenant.is_subscriber, null) > -1 : _vm.tenant.is_subscriber
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.tenant.is_subscriber,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.tenant, "is_subscriber", $$a.concat([$$v]));
-          } else {
-            $$i > -1 && _vm.$set(_vm.tenant, "is_subscriber", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.$set(_vm.tenant, "is_subscriber", $$c);
-        }
-      }
+    model: {
+      value: _vm.tenant.company_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.tenant, "company_id", $$v);
+      },
+      expression: "tenant.company_id"
     }
-  }), _vm._v(" "), _c("label", {
-    staticClass: "custom-control-label",
-    attrs: {
-      "for": "is_subscriber"
-    }
-  })])])]), _vm._v(" "), _c("div", {
+  })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "is_subscriber"
+    }
+  }, [_vm._v("Operational Hours")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_vm._l(_vm.tenant.operational_hours, function (operational, index) {
+    return _c("div", {
+      staticClass: "row mb-3 mx-0"
+    }, [_c("div", {
+      staticClass: "col-9 d-flex"
+    }, [_c("div", {
+      staticClass: "btn-group-toggle",
+      attrs: {
+        "data-toggle": "buttons"
+      }
+    }, [_c("label", {
+      "class": _vm.conditionActive(operational.schedules, "Sun", index),
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Sun", index);
+        }
+      }
+    }, [_vm._v("SU")]), _vm._v(" "), _c("label", {
+      "class": _vm.conditionActive(operational.schedules, "Mon", index),
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Mon", index);
+        }
+      }
+    }, [_vm._v("M")]), _vm._v(" "), _c("label", {
+      "class": _vm.conditionActive(operational.schedules, "Tue", index),
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Tue", index);
+        }
+      }
+    }, [_vm._v("T")]), _vm._v(" "), _c("label", {
+      "class": _vm.conditionActive(operational.schedules, "Wed", index),
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Wed", index);
+        }
+      }
+    }, [_vm._v("W")]), _vm._v(" "), _c("label", {
+      "class": _vm.conditionActive(operational.schedules, "Thu", index),
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Thu", index);
+        }
+      }
+    }, [_vm._v("TH")]), _vm._v(" "), _c("label", {
+      "class": _vm.conditionActive(operational.schedules, "Fri", index),
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Fri", index);
+        }
+      }
+    }, [_vm._v("F")]), _vm._v(" "), _c("label", {
+      "class": _vm.conditionActive(operational.schedules, "Sat", index),
+      on: {
+        click: function click($event) {
+          return _vm.getChecked("Sat", index);
+        }
+      }
+    }, [_vm._v("S")])]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: operational.start_time,
+        expression: "operational.start_time"
+      }],
+      staticClass: "form-control ml-1 time mr-2",
+      staticStyle: {
+        width: "120px"
+      },
+      attrs: {
+        type: "time"
+      },
+      domProps: {
+        value: operational.start_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(operational, "start_time", $event.target.value);
+        }
+      }
+    }), _vm._v(" "), _c("p", {
+      staticClass: "m-0 pt-2"
+    }, [_vm._v("to")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: operational.end_time,
+        expression: "operational.end_time"
+      }],
+      staticClass: "form-control time ml-2",
+      staticStyle: {
+        width: "120px"
+      },
+      attrs: {
+        type: "time"
+      },
+      domProps: {
+        value: operational.end_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(operational, "end_time", $event.target.value);
+        }
+      }
+    })]), _vm._v(" "), _c("div", {
+      staticClass: "col-3"
+    }, [_c("i", [_vm._v(_vm._s(operational.schedules) + " "), operational.start_time ? _c("span", [_vm._v("|")]) : _vm._e(), _vm._v(" " + _vm._s(operational.start_time) + " "), operational.end_time ? _c("span", [_vm._v("to")]) : _vm._e(), _vm._v(" " + _vm._s(operational.end_time))])])]);
+  }), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "col-12"
+  }, [_c("button", {
+    staticClass: "btn btn-link",
+    staticStyle: {
+      "padding-left": "0px"
+    },
+    on: {
+      click: _vm.addOperationalHours
+    }
+  }, [_vm._v("Add Hours +")])])])], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "tennat_active"
     }
   }, [_vm._v("Active")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
+    staticClass: "col-sm-9"
   }, [_c("div", {
     staticClass: "custom-control custom-switch"
   }, [_c("input", {
@@ -20697,7 +21165,80 @@ var render = function render() {
     attrs: {
       "for": "tennat_active"
     }
-  })])])])])]), _vm._v(" "), _c("div", {
+  })])])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "is_subscriber"
+    }
+  }, [_vm._v("Is Subscriber")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("div", {
+    staticClass: "custom-control custom-switch"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.is_subscriber,
+      expression: "tenant.is_subscriber"
+    }],
+    staticClass: "custom-control-input",
+    attrs: {
+      type: "checkbox",
+      id: "is_subscriber"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.tenant.is_subscriber) ? _vm._i(_vm.tenant.is_subscriber, null) > -1 : _vm.tenant.is_subscriber
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.tenant.is_subscriber,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.tenant, "is_subscriber", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.tenant, "is_subscriber", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.tenant, "is_subscriber", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "custom-control-label",
+    attrs: {
+      "for": "is_subscriber"
+    }
+  })])])]), _vm._v(" "), _vm.tenant.is_subscriber == 1 ? _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-5"
+  }, [_c("input", {
+    ref: "subscriber_logo",
+    attrs: {
+      type: "file",
+      accept: "image/*"
+    },
+    on: {
+      change: _vm.subscriberLogoChange
+    }
+  }), _vm._v(" "), _c("footer", {
+    staticClass: "blockquote-footer"
+  }, [_vm._v("Max file size is 15MB")]), _vm._v(" "), _c("footer", {
+    staticClass: "blockquote-footer"
+  }, [_vm._v("image max size is 550 x 550 pixels")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-4 text-center"
+  }, [_vm.subscriber_logo ? _c("img", {
+    staticClass: "img-thumbnail",
+    attrs: {
+      src: _vm.subscriber_logo
+    }
+  }) : _vm._e()])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -20745,7 +21286,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -20777,11 +21318,11 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(7), _vm._v(" "), _c("div", {
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
     staticClass: "modal-body"
   }, [_c("form", [_c("div", {
     staticClass: "form-group col-md-12"
-  }, [_vm._m(8), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _c("div", {
     staticClass: "custom-file"
   }, [_c("input", {
     ref: "file",
@@ -20839,7 +21380,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
@@ -20850,7 +21391,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
@@ -20861,7 +21402,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
@@ -20872,11 +21413,22 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
+    staticClass: "col-sm-3 col-form-label",
     attrs: {
       "for": "firstName"
     }
   }, [_vm._v("Floor "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Subscriber Logo "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {

@@ -73,6 +73,12 @@
                                     <date-picker v-model="advertisements.end_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<treeselect v-model="advertisements.company_id" :options="companies" placeholder="Select Company"/>
+								</div>
+							</div>
                             <div class="form-group row">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Associate Sites <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -89,7 +95,7 @@
 								</div>
 							</div>
                             <div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants <span class="font-italic text-danger"> *</span></label>
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.tenants"
 										:options="tenants"
@@ -100,6 +106,24 @@
 										track-by="brand_site_name"
 										@select="toggleSelectedTenant"
 										@remove="toggleUnSelectedTenant">
+										<span slot="noOptions">
+											Please select a sites
+										</span>
+									</multiselect> 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Screens</label>
+								<div class="col-sm-8">
+									<multiselect v-model="advertisements.screens"
+										:options="screens"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="Select Screens"
+										label="screen_type_name"
+										track-by="screen_type_name"
+										@select="toggleSelectedScreen"
+										@remove="toggleUnSelectedScreen">
 										<span slot="noOptions">
 											Please select a sites
 										</span>
@@ -134,9 +158,14 @@
 	import Table from '../Helpers/Table';
     // Import this component
     import Multiselect from 'vue-multiselect';
+    // Import date picker js
     import datePicker from 'vue-bootstrap-datetimepicker';    
     // Import date picker css
     import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+	// import the component
+	import Treeselect from '@riophae/vue-treeselect'
+	// import the styles
+	import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 	
 	export default {
         name: "Advertisements",
@@ -150,6 +179,7 @@
             return {
                 advertisements: {
                     id: '',
+					company_id: '',
                     name: '',
 					ad_type: '',
 					file_path: '',
@@ -158,13 +188,17 @@
 					end_date: '',
 					sites: '',
 					tenants: '',
+					screens: '',
                     active: true,           
                 },
 				material: '',
+                companies: [],
                 sites: [],
                 site_ids: [],
                 tenants: [],
                 tenant_ids: [],
+				screens: [],
+				screen_ids: [],
                 options: {
                     format: 'YYYY/MM/DD',
                     useCurrent: false,
@@ -172,13 +206,15 @@
                 add_record: true,
                 edit_record: false,
             	dataFields: {
-            		name: "Name", 
-            		site_names: "Site Name/s", 
-            		tenant_names: "Tenant/s", 
 					material_image_path: {
             			name: "Preview", 
-            			type:"image", 
+            			type:"logo", 
             		},
+            		name: "Name", 
+					company_name: "Company",
+            		site_names: "Site Name/s", 
+            		tenant_names: "Tenant/s", 
+					screen_names: "Screen/s",
 					duration: "Duration",
 					air_dates: "Airdates",
             		active: {
@@ -225,9 +261,15 @@
 
         created(){
             this.getSites();
+			this.getCompany();
         },
 
         methods: {
+			getCompany: function() {
+				axios.get('/admin/company/get-all')
+                .then(response => this.companies = response.data.data);
+			},
+
             getSites: function() {
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
@@ -242,9 +284,19 @@
                 .then(response => this.tenants = response.data.data);
             },
 
+			getScreens: function() {
+                var site_ids = '';
+                for (var i = 0; i < this.site_ids.length; i++) {
+                    site_ids += this.site_ids[i]+',';
+                }
+                axios.get('/admin/site/screen/get-screens/'+site_ids)
+                .then(response => this.screens = response.data.data);
+            },
+
             toggleSelected: function(value, id) {
 				this.site_ids.push(value.id);
                 this.getTenants();
+				this.getScreens();
 			},
 
 			toggleUnSelected: function(value, id) {
@@ -265,6 +317,17 @@
 				}
 			},
 
+			toggleSelectedScreen: function(value, id) {
+				this.screen_ids.push(value.id);
+			},
+
+			toggleUnSelectedScreen: function(value, id) {
+				const index = this.screen_ids.indexOf(value.id);
+				if (index > -1) { // only splice array when item is found
+					this.screen_ids.splice(index, 1); // 2nd parameter means remove one item only
+				}
+			},
+
 			materialChange: function(e) {
 				const file = e.target.files[0];
       			this.material = URL.createObjectURL(file);
@@ -274,6 +337,7 @@
 			AddNewAdvertisements: function() {
 				this.add_record = true;
 				this.edit_record = false;
+				this.advertisements.company_id = null;
                 this.advertisements.name = '';
 				this.advertisements.ad_type = this.ad_type;
 				this.advertisements.file_path = '';
@@ -282,6 +346,7 @@
 				this.advertisements.end_date = '';
 				this.advertisements.sites = [];
 				this.advertisements.tenants = [];
+				this.advertisements.screens = [];
                 this.advertisements.active = true;				
 				this.$refs.material.value = null;
 				this.material = null;
@@ -291,6 +356,7 @@
 
             storeAdvertisements: function() {
 				let formData = new FormData();
+				formData.append("company_id", this.advertisements.company_id);
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
 				formData.append("file_path", this.advertisements.material);
@@ -299,7 +365,8 @@
 				formData.append("end_date", this.advertisements.end_date);
 				formData.append("sites", this.site_ids);
 				formData.append("tenants", this.tenant_ids);
-				formData.append("active", this.advertisements.name);
+				formData.append("screens", this.screen_ids);
+				formData.append("active", this.advertisements.active);
                 axios.post('/admin/advertisement/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
@@ -309,8 +376,7 @@
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 	              	$('#site_ad-form').modal('hide');
-				})
-				
+				});				
             },
 
 			editAdvertisements: function(id) {
@@ -318,6 +384,7 @@
                 .then(response => {
                     var advertisements = response.data.data;
 					this.advertisements.id = advertisements.id;
+					this.advertisements.company_id = advertisements.company_id;
 					this.advertisements.name = advertisements.name;
 					this.advertisements.ad_type = this.ad_type;
 					this.advertisements.file_path = advertisements.name;
@@ -326,8 +393,10 @@
 					this.advertisements.end_date = advertisements.end_date;
 					this.advertisements.sites = advertisements.sites;
 					this.advertisements.tenants = advertisements.tenants;
+					this.advertisements.screens = advertisements.screens;
 					this.advertisements.active = advertisements.active;
 					this.$refs.material.value = null;
+					this.advertisements.material = '';
 					this.material = advertisements.material_image_path;
 
 					advertisements.sites.forEach((value) => {
@@ -338,7 +407,12 @@
 						this.tenant_ids.push(value.id);
                 	});
 
+					advertisements.screens.forEach((value) => {
+						this.screen_ids.push(value.id);
+                	});
+
 					this.getTenants();
+					this.getScreens();
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -350,6 +424,7 @@
             updateAdvertisements: function() {
 				let formData = new FormData();
 				formData.append("id", this.advertisements.id);
+				formData.append("company_id", this.advertisements.company_id);
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
 				formData.append("file_path", this.advertisements.material);
@@ -358,7 +433,8 @@
 				formData.append("end_date", this.advertisements.end_date);
 				formData.append("sites", this.site_ids);
 				formData.append("tenants", this.tenant_ids);
-				formData.append("active", this.advertisements.name);
+				formData.append("screens", this.screen_ids);
+				formData.append("active", this.advertisements.active);
                 axios.post('/admin/advertisement/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
@@ -376,7 +452,8 @@
         components: {
         	Table,
 			datePicker,
-            Multiselect
+            Multiselect,
+			Treeselect
  	   }
     };
 </script> 

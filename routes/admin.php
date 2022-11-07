@@ -118,6 +118,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/company/update', 'Admin\CompaniesController@update')->name('admin.company.update');
     Route::get('/admin/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('admin.company.delete');
     Route::get('/admin/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('admin.company.get-all');
+    Route::get('/admin/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('admin.company.get-parent');
 
     /*
     |--------------------------------------------------------------------------
@@ -235,7 +236,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/screen/{id}', 'Admin\ScreensController@details')->where('id', '[0-9]+')->name('admin.site.screen.details');
     Route::put('/admin/site/screen/update', 'Admin\ScreensController@update')->name('admin.site.screen.update');
     Route::get('/admin/site/screen/delete/{id}', 'Admin\ScreensController@delete')->where('id', '[0-9]+')->name('admin.site.screen.delete');
-    Route::get('/admin/site/screen/get-screens/{id}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens');
+    Route::get('/admin/site/screen/get-screens/{ids}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens');
     Route::get('/admin/site/screen/set-default/{id}', 'Admin\ScreensController@setDefault')->where('id', '[0-9]+')->name('admin.site.screen.set-default');
 
     /*
@@ -247,7 +248,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/tenant/list', 'Admin\SiteTenantsController@list')->name('admin.site.tenant.list');
     Route::post('/admin/site/tenant/store', 'Admin\SiteTenantsController@store')->name('admin.site.tenant.store');
     Route::get('/admin/site/tenant/{id}', 'Admin\SiteTenantsController@details')->where('id', '[0-9]+')->name('admin.site.tenant.details');
-    Route::put('/admin/site/tenant/update', 'Admin\SiteTenantsController@update')->name('admin.site.tenant.update');
+    Route::post('/admin/site/tenant/update', 'Admin\SiteTenantsController@update')->name('admin.site.tenant.update');
     Route::get('/admin/site/tenant/delete/{id}', 'Admin\SiteTenantsController@delete')->where('id', '[0-9]+')->name('admin.site.tenant.delete');
     Route::get('/admin/site/tenant/get-tenants/{ids}', 'Admin\SiteTenantsController@getTenants')->name('admin.site.tenant.get-tenants');
     Route::get('/admin/site/tenant/get-tenants-per-floor/{id}', 'Admin\SiteTenantsController@getTenantPerFloor')->where('id', '[0-9]+')->name('admin.site.tenant.get-tenants-floor');

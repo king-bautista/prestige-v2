@@ -15,6 +15,7 @@ class SiteAd extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'company_id',
         'name',
         'ad_type',
         'file_path',
@@ -51,19 +52,51 @@ class SiteAd extends Model
      */
     protected $primaryKey = 'id';
 
+    public function saveSites($sites)
+    {
+        SiteAdSite::where('site_ad_id', $this->id)->delete();
+
+        if($sites) {
+            $site_ids =  explode(',',$sites);
+            foreach ($site_ids as $index => $data) {
+                SiteAdSite::updateOrCreate(
+                    [
+                       'site_ad_id' => $this->id,
+                       'site_id' => $data,
+                    ],
+                );
+            }
+        }
+    }
+
     public function saveTenants($tenants)
     {
+        SiteAdTenant::where('site_ad_id', $this->id)->delete();
 
         if($tenants) {
-
-            TenantAd::where('site_ad_id', $this->id)->delete();
-
             $tenant_ids =  explode(',',$tenants);
             foreach ($tenant_ids as $index => $data) {
-                TenantAd::updateOrCreate(
+                SiteAdTenant::updateOrCreate(
                     [
                        'site_ad_id' => $this->id,
                        'site_tenant_id' => $data,
+                    ],
+                );
+            }
+        }
+    }
+
+    public function saveScreens($screens)
+    {
+        SiteAdScreen::where('site_ad_id', $this->id)->delete();
+
+        if($screens) {
+            $screen_ids =  explode(',',$screens);
+            foreach ($screen_ids as $index => $data) {
+                SiteAdScreen::updateOrCreate(
+                    [
+                       'site_ad_id' => $this->id,
+                       'site_screen_id' => $data,
                     ],
                 );
             }

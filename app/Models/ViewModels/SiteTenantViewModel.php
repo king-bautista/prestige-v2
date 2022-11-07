@@ -54,7 +54,14 @@ class SiteTenantViewModel extends Model
         'site_name',
         'brand_site_name',
         'category_name',
+        'subscriber_logo',
+        'operational_hours',
     ];
+
+    public function getTenantDetails()
+    {   
+        return $this->hasMany('App\Models\SiteTenantMeta', 'site_tenant_id', 'id');
+    }
 
     /****************************************
     *           ATTRIBUTES PARTS            *
@@ -107,5 +114,22 @@ class SiteTenantViewModel extends Model
             return $category_name['name'];
         return null;
     }
+
+    public function getSubscriberLogoAttribute() 
+    {
+        $subscriber_logo = $this->getTenantDetails()->where('meta_key', 'subscriber_logo')->first();
+        if($subscriber_logo)
+            return asset($subscriber_logo->meta_value);
+        return asset('/images/no-image-available.png');
+    }
+
+    public function getOperationalHoursAttribute() 
+    {
+        $schedules = $this->getTenantDetails()->where('meta_key', 'schedules')->first();
+        if($schedules)
+            return json_decode($schedules->meta_value);
+        return null;
+    }
+
 
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\Site;
+use App\Models\Company;
 
 class SiteAdViewModel extends Model
 {
@@ -43,14 +44,29 @@ class SiteAdViewModel extends Model
         'duration',
         'sites',
         'tenants',
+        'screens',
         'site_names',
         'tenant_names',
+        'screen_names',
+        'company_name',
     ]; 
 
-    public function getTenantAds()
+    public function getAdSites()
     {   
-        $tenant_ids = $this->hasMany('App\Models\TenantAd', 'site_ad_id', 'id')->get()->pluck('site_tenant_id');
+        $site_ids = $this->hasMany('App\Models\SiteAdSite', 'site_ad_id', 'id')->get()->pluck('site_id');
+        return SiteViewModel::whereIn('id', $site_ids)->get();
+    }
+
+    public function getAdTenants()
+    {   
+        $tenant_ids = $this->hasMany('App\Models\SiteAdTenant', 'site_ad_id', 'id')->get()->pluck('site_tenant_id');
         return SiteTenantViewModel::whereIn('id', $tenant_ids)->get();
+    }
+
+    public function getAdScreens()
+    {   
+        $screen_ids = $this->hasMany('App\Models\SiteAdScreen', 'site_ad_id', 'id')->get()->pluck('site_screen_id');
+        return SiteScreenViewModel::whereIn('id', $screen_ids)->get();
     }
 
     /****************************************
@@ -75,13 +91,17 @@ class SiteAdViewModel extends Model
 
     public function getTenantsAttribute()
     {
-        return $this->getTenantAds();
+        return $this->getAdTenants();
+    }
+
+    public function getScreensAttribute()
+    {
+        return $this->getAdScreens();
     }
 
     public function getSitesAttribute()
     {
-        $site_ids = array_unique($this->getTenantAds()->pluck('site_id')->toArray());
-        return Site::whereIn('id', $site_ids)->get();
+        return $this->getAdSites();
     }
 
     public function getSiteNamesAttribute()
@@ -94,6 +114,20 @@ class SiteAdViewModel extends Model
     {
         $tenant_names = $this->getTenantsAttribute()->pluck('brand_site_name')->toArray();
         return implode(', ', $tenant_names);
+    }
+
+    public function getScreenNamesAttribute()
+    {
+        $screen_names = $this->getScreensAttribute()->pluck('screen_type_name')->toArray();
+        return implode(', ', $screen_names);
+    }
+
+    public function getCompanyNameAttribute()
+    {
+        $company = Company::find($this->company_id);
+        if($company)
+            return $company['name'];
+        return null;
     }
 
 }
