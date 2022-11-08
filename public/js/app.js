@@ -9331,6 +9331,7 @@ __webpack_require__.r(__webpack_exports__);
         active: true
       },
       material: '',
+      material_type: '',
       companies: [],
       sites: [],
       site_ids: [],
@@ -9402,6 +9403,42 @@ __webpack_require__.r(__webpack_exports__);
     this.getCompany();
   },
   methods: {
+    getFileExtension: function getFileExtension(filename) {
+      var fileExt = '';
+      if (this.material_type) {
+        fileExt = this.material_type;
+      } else {
+        fileExt = filename.split('.').pop();
+      }
+      switch (fileExt) {
+        case 'ogv':
+        case 'mp4':
+        case 'wmv':
+        case 'avi':
+        case 'mkv':
+        case 'video/ogg':
+        case 'video/ogv':
+        case 'video/mp4':
+        case 'video/wmv':
+        case 'video/avi':
+        case 'video/mkv':
+          return 'video';
+          break;
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+        case 'image/gif':
+          return 'image';
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
     getCompany: function getCompany() {
       var _this = this;
       axios.get('/admin/company/get-all').then(function (response) {
@@ -9471,6 +9508,7 @@ __webpack_require__.r(__webpack_exports__);
 
     materialChange: function materialChange(e) {
       var file = e.target.files[0];
+      this.material_type = e.target.files[0].type;
       this.material = URL.createObjectURL(file);
       this.advertisements.material = file;
     },
@@ -9490,6 +9528,9 @@ __webpack_require__.r(__webpack_exports__);
       this.advertisements.active = true;
       this.$refs.material.value = null;
       this.material = null;
+      this.tenant_ids = [];
+      this.site_ids = [];
+      this.screen_ids = [];
       $('#site_ad-form').modal('show');
     },
     storeAdvertisements: function storeAdvertisements() {
@@ -9520,6 +9561,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this6 = this;
       axios.get('/admin/advertisement/' + id).then(function (response) {
         var advertisements = response.data.data;
+        _this6.tenant_ids = [];
+        _this6.site_ids = [];
+        _this6.screen_ids = [];
         _this6.advertisements.id = advertisements.id;
         _this6.advertisements.company_id = advertisements.company_id;
         _this6.advertisements.name = advertisements.name;
@@ -12545,7 +12589,14 @@ var schedules = [];
         company_id: '',
         active: true,
         is_subscriber: false,
-        operational_hours: []
+        operational_hours: [],
+        address: '',
+        email: '',
+        contact_number: '',
+        facebook: '',
+        twitter: '',
+        instagram: '',
+        website: ''
       },
       id_to_deleted: 0,
       add_record: true,
@@ -12698,6 +12749,13 @@ var schedules = [];
       this.tenant.active = true;
       this.tenant.is_subscriber = false;
       this.subscriber_logo = null;
+      this.tenant.address = '';
+      this.tenant.email = '';
+      this.tenant.contact_number = '';
+      this.tenant.facebook = '';
+      this.tenant.twitter = '';
+      this.tenant.instagram = '';
+      this.tenant.website = '';
       this.addOperationalHours();
       $('#tenant-form').modal('show');
     },
@@ -12713,6 +12771,13 @@ var schedules = [];
       formData.append("active", this.tenant.active);
       formData.append("is_subscriber", this.tenant.is_subscriber);
       formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      formData.append("address", this.tenant.address);
+      formData.append("email", this.tenant.email);
+      formData.append("contact_number", this.tenant.contact_number);
+      formData.append("facebook", this.tenant.facebook);
+      formData.append("twitter", this.tenant.twitter);
+      formData.append("instagram", this.tenant.instagram);
+      formData.append("website", this.tenant.website);
       axios.post('/admin/site/tenant/store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -12739,6 +12804,13 @@ var schedules = [];
         _this7.tenant.company_id = tenant.company_id;
         _this7.tenant.active = tenant.active;
         _this7.tenant.is_subscriber = tenant.is_subscriber;
+        _this7.tenant.address = tenant.tenant_details.address;
+        _this7.tenant.email = tenant.tenant_details.email;
+        _this7.tenant.contact_number = tenant.tenant_details.contact_number;
+        _this7.tenant.facebook = tenant.tenant_details.facebook;
+        _this7.tenant.twitter = tenant.tenant_details.twitter;
+        _this7.tenant.instagram = tenant.tenant_details.instagram;
+        _this7.tenant.website = tenant.tenant_details.website;
         _this7.subscriber_logo = '';
         if (tenant.is_subscriber == true) {
           _this7.tenant.subscriber_logo = '';
@@ -12775,6 +12847,13 @@ var schedules = [];
       formData.append("active", this.tenant.active);
       formData.append("is_subscriber", this.tenant.is_subscriber);
       formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      formData.append("address", this.tenant.address);
+      formData.append("email", this.tenant.email);
+      formData.append("contact_number", this.tenant.contact_number);
+      formData.append("facebook", this.tenant.facebook);
+      formData.append("twitter", this.tenant.twitter);
+      formData.append("instagram", this.tenant.instagram);
+      formData.append("website", this.tenant.website);
       axios.post('/admin/site/tenant/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -13117,6 +13196,27 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchData();
   },
   methods: {
+    getFileExtension: function getFileExtension(filename) {
+      var fileExt = filename.split('.').pop();
+      switch (fileExt) {
+        case 'ogv':
+        case 'mp4':
+        case 'wmv':
+        case 'avi':
+        case 'mkv':
+          return 'video';
+          break;
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+          return 'image';
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
     condition: function condition(action, permission) {
       if (!permission) return false;
       switch (action) {
@@ -13655,22 +13755,35 @@ var render = function render() {
     staticClass: "blockquote-footer"
   }, [_vm._v("Max file size is 15MB")]), _vm._v(" "), _vm.ad_type == "Online" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 1140 x 140 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Banners" ? _c("footer", {
+  }, [_vm._v("image/video max size is 1140 x 140 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Banners" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Fullscreen" ? _c("footer", {
+  }, [_vm._v("image/video max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Fullscreen" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 1920 x 1080 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Pop-Up" ? _c("footer", {
+  }, [_vm._v("image/video max size is 1920 x 1080 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Pop-Up" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Events" ? _c("footer", {
+  }, [_vm._v("image/video max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Events" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 286 x 286 pixels")]) : _vm._e()]), _vm._v(" "), _c("div", {
+  }, [_vm._v("image/video max size is 286 x 286 pixels")]) : _vm._e()]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-3 text-center"
-  }, [_vm.material ? _c("img", {
+  }, [_vm.material && _vm.getFileExtension(_vm.material) == "image" ? _c("span", [_vm.material ? _c("img", {
     staticClass: "img-thumbnail",
     attrs: {
       src: _vm.material
     }
-  }) : _vm._e()])]), _vm._v(" "), _c("div", {
+  }) : _vm._e()]) : _vm.material && _vm.getFileExtension(_vm.material) == "video" ? _c("span", [_c("video", {
+    staticClass: "img-thumbnail",
+    attrs: {
+      muted: "muted"
+    },
+    domProps: {
+      muted: true
+    }
+  }, [_c("source", {
+    attrs: {
+      src: _vm.material,
+      type: "video/ogg"
+    }
+  }), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\tYour browser does not support the video tag.\n\t\t\t\t\t\t\t\t\t\t")])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(3), _vm._v(" "), _c("div", {
     staticClass: "col-sm-2"
@@ -21121,10 +21234,219 @@ var render = function render() {
   }, [_c("label", {
     staticClass: "col-sm-3 col-form-label",
     attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Address")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.address,
+      expression: "tenant.address"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      placeholder: "Store Address"
+    },
+    domProps: {
+      value: _vm.tenant.address
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "address", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store E-mail")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.email,
+      expression: "tenant.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store E-mail"
+    },
+    domProps: {
+      value: _vm.tenant.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "email", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Contact Number")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.contact_number,
+      expression: "tenant.contact_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Contact No."
+    },
+    domProps: {
+      value: _vm.tenant.contact_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "contact_number", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Facebook")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.facebook,
+      expression: "tenant.facebook"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Facebook"
+    },
+    domProps: {
+      value: _vm.tenant.facebook
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "facebook", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Twitter")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.twitter,
+      expression: "tenant.twitter"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Twitter"
+    },
+    domProps: {
+      value: _vm.tenant.twitter
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "twitter", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Instagram")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.instagram,
+      expression: "tenant.instagram"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Instagram"
+    },
+    domProps: {
+      value: _vm.tenant.instagram
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "instagram", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Website")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.website,
+      expression: "tenant.website"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Website"
+    },
+    domProps: {
+      value: _vm.tenant.website
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "website", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
       "for": "tennat_active"
     }
   }, [_vm._v("Active")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-9"
+    staticClass: "col-sm-3"
   }, [_c("div", {
     staticClass: "custom-control custom-switch"
   }, [_c("input", {
@@ -21173,7 +21495,7 @@ var render = function render() {
       "for": "is_subscriber"
     }
   }, [_vm._v("Is Subscriber")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-9"
+    staticClass: "col-sm-3"
   }, [_c("div", {
     staticClass: "custom-control custom-switch"
   }, [_c("input", {
@@ -21217,7 +21539,7 @@ var render = function render() {
   })])])]), _vm._v(" "), _vm.tenant.is_subscriber == 1 ? _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(5), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-5"
+    staticClass: "col-sm-3"
   }, [_c("input", {
     ref: "subscriber_logo",
     attrs: {
@@ -21232,7 +21554,7 @@ var render = function render() {
   }, [_vm._v("Max file size is 15MB")]), _vm._v(" "), _c("footer", {
     staticClass: "blockquote-footer"
   }, [_vm._v("image max size is 550 x 550 pixels")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-4 text-center"
+    staticClass: "col-sm-3 offset-sm-1 text-center"
   }, [_vm.subscriber_logo ? _c("img", {
     staticClass: "img-thumbnail",
     attrs: {
@@ -22246,17 +22568,43 @@ var render = function render() {
         domProps: {
           innerHTML: _vm._s(tHeader.status[data[key]])
         }
-      })]) : tHeader.type == "image" ? _c("span", [_c("img", {
+      })]) : tHeader.type == "image" && _vm.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
         staticClass: "img-thumbnail",
         attrs: {
           src: data[key]
         }
-      })]) : tHeader.type == "logo" ? _c("span", [_c("img", {
+      })]) : tHeader.type == "logo" && _vm.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
         staticClass: "img-logo",
         attrs: {
           src: data[key]
         }
-      })]) : tHeader.type == "icon" ? _c("span", [_c("i", {
+      })]) : tHeader.type == "image" && _vm.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
+        staticClass: "img-thumbnail",
+        attrs: {
+          muted: "muted"
+        },
+        domProps: {
+          muted: true
+        }
+      }, [_c("source", {
+        attrs: {
+          src: data[key],
+          type: "video/ogg"
+        }
+      }), _vm._v("\n                                    Your browser does not support the video tag.\n                                ")])]) : tHeader.type == "logo" && _vm.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
+        staticClass: "img-logo",
+        attrs: {
+          muted: "muted"
+        },
+        domProps: {
+          muted: true
+        }
+      }, [_c("source", {
+        attrs: {
+          src: data[key],
+          type: "video/ogg"
+        }
+      }), _vm._v("\n                                    Your browser does not support the video tag.\n                                ")])]) : tHeader.type == "icon" ? _c("span", [_c("i", {
         "class": data[key],
         attrs: {
           "aria-hidden": "true"

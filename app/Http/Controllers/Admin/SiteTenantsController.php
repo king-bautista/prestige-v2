@@ -102,7 +102,17 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
 
             $site_tenant = SiteTenant::create($data);
 
-            $meta_details = ["schedules" => $request->operational_hours, "subscriber_logo" => str_replace('\\', '/', $subscriber_logo_path)];
+            $meta_details = [
+                "address" => $request->address, 
+                "email" => $request->email,
+                "contact_number" => $request->contact_number,
+                "facebook" => $request->facebook,
+                "twitter" => $request->twitter,
+                "instagram" => $request->instagram,
+                "website" => $request->website,
+                "schedules" => $request->operational_hours,
+                "subscriber_logo" => str_replace('\\', '/', $subscriber_logo_path)
+            ];
             $site_tenant->saveMeta($meta_details);
 
             return $this->response($site_tenant, 'Successfully Created!', 200);
@@ -142,6 +152,16 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             ];
 
             $site_tenant->update($data);
+
+            $meta_details = [
+                "address" => $request->address, 
+                "email" => $request->email,
+                "contact_number" => $request->contact_number,
+                "facebook" => $request->facebook,
+                "twitter" => $request->twitter,
+                "instagram" => $request->instagram,
+                "website" => $request->website,
+            ];
 
             if($request->operational_hours)
                 $meta_details["schedules"] = $request->operational_hours;

@@ -54,6 +54,7 @@ class SiteTenantViewModel extends Model
         'site_name',
         'brand_site_name',
         'category_name',
+        'tenant_details',
         'subscriber_logo',
         'operational_hours',
     ];
@@ -113,6 +114,11 @@ class SiteTenantViewModel extends Model
         if($category_name)
             return $category_name['name'];
         return null;
+    }
+
+    public function getTenantDetailsAttribute() 
+    {
+        return $this->getTenantDetails()->pluck('meta_value','meta_key')->toArray();
     }
 
     public function getSubscriberLogoAttribute() 
