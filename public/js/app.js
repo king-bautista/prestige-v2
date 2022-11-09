@@ -9331,6 +9331,7 @@ __webpack_require__.r(__webpack_exports__);
         active: true
       },
       material: '',
+      material_type: '',
       companies: [],
       sites: [],
       site_ids: [],
@@ -9352,8 +9353,8 @@ __webpack_require__.r(__webpack_exports__);
         name: "Name",
         company_name: "Company",
         site_names: "Site Name/s",
-        tenant_names: "Tenant/s",
         screen_names: "Screen/s",
+        tenant_names: "Tenant/s",
         duration: "Duration",
         air_dates: "Airdates",
         active: {
@@ -9364,7 +9365,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/advertisement/list",
@@ -9402,6 +9403,42 @@ __webpack_require__.r(__webpack_exports__);
     this.getCompany();
   },
   methods: {
+    getFileExtension: function getFileExtension(filename) {
+      var fileExt = '';
+      if (this.material_type) {
+        fileExt = this.material_type;
+      } else {
+        fileExt = filename.split('.').pop();
+      }
+      switch (fileExt) {
+        case 'ogv':
+        case 'mp4':
+        case 'wmv':
+        case 'avi':
+        case 'mkv':
+        case 'video/ogg':
+        case 'video/ogv':
+        case 'video/mp4':
+        case 'video/wmv':
+        case 'video/avi':
+        case 'video/mkv':
+          return 'video';
+          break;
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+        case 'image/gif':
+          return 'image';
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
     getCompany: function getCompany() {
       var _this = this;
       axios.get('/admin/company/get-all').then(function (response) {
@@ -9471,6 +9508,7 @@ __webpack_require__.r(__webpack_exports__);
 
     materialChange: function materialChange(e) {
       var file = e.target.files[0];
+      this.material_type = e.target.files[0].type;
       this.material = URL.createObjectURL(file);
       this.advertisements.material = file;
     },
@@ -9490,6 +9528,9 @@ __webpack_require__.r(__webpack_exports__);
       this.advertisements.active = true;
       this.$refs.material.value = null;
       this.material = null;
+      this.tenant_ids = [];
+      this.site_ids = [];
+      this.screen_ids = [];
       $('#site_ad-form').modal('show');
     },
     storeAdvertisements: function storeAdvertisements() {
@@ -9520,6 +9561,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this6 = this;
       axios.get('/admin/advertisement/' + id).then(function (response) {
         var advertisements = response.data.data;
+        _this6.tenant_ids = [];
+        _this6.site_ids = [];
+        _this6.screen_ids = [];
         _this6.advertisements.id = advertisements.id;
         _this6.advertisements.company_id = advertisements.company_id;
         _this6.advertisements.name = advertisements.name;
@@ -9622,7 +9666,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/amenity/list",
@@ -9763,7 +9807,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/brand/list",
@@ -10013,7 +10057,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/site/building/list",
@@ -10152,7 +10196,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/category/list",
@@ -10339,7 +10383,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/classification/list",
@@ -10480,7 +10524,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/company/list",
@@ -10626,7 +10670,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/site/floor/list",
@@ -10814,7 +10858,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/Illustration/list",
@@ -11040,7 +11084,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Yes</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/site/manage-map/list",
@@ -11256,7 +11300,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/modules/list",
@@ -11416,7 +11460,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/brand/product/list",
@@ -11594,7 +11638,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/roles/list",
@@ -11764,15 +11808,17 @@ __webpack_require__.r(__webpack_exports__);
     return {
       screen: {
         id: '',
+        screen_type: '',
         site_id: '',
         site_building_id: '',
         site_building_level_id: '',
         site_point_id: '',
-        screen_type: '',
-        name: '',
         kiosk_id: '',
+        name: '',
+        slots: '',
         active: false,
-        is_default: false
+        is_default: false,
+        is_exclusive: false
       },
       id_to_deleted: 0,
       is_default: '',
@@ -11787,6 +11833,8 @@ __webpack_require__.r(__webpack_exports__);
         floor_name: "Floor Name",
         building_name: "Building Name",
         site_point_id: "Site Point ID",
+        kiosk_id: "Kiosk ID",
+        slots: "Slots",
         screen_type: "Screen Type",
         active: {
           name: "Status",
@@ -11794,6 +11842,14 @@ __webpack_require__.r(__webpack_exports__);
           status: {
             0: '<span class="badge badge-danger">Deactivated</span>',
             1: '<span class="badge badge-info">Active</span>'
+          }
+        },
+        is_exclusive: {
+          name: "Is exclusive",
+          type: "Boolean",
+          status: {
+            0: '<span class="badge badge-danger">No</span>',
+            1: '<span class="badge badge-info">Yes</span>'
           }
         },
         is_default: {
@@ -11804,7 +11860,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Yes</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/site/screen/list",
@@ -11880,13 +11936,17 @@ __webpack_require__.r(__webpack_exports__);
     AddNewScreen: function AddNewScreen() {
       this.add_record = true;
       this.edit_record = false;
+      this.screen.screen_type = '';
       this.screen.site_id = '';
       this.screen.site_building_id = '';
       this.screen.site_building_level_id = '';
       this.screen.site_point_id = '';
-      this.screen.screen_type = '';
+      this.screen.kiosk_id = '';
       this.screen.name = '';
+      this.screen.slots = '';
+      this.screen.active = false;
       this.screen.is_default = false;
+      this.screen.is_exclusive = false;
       $('#screen-form').modal('show');
     },
     storeScreen: function storeScreen() {
@@ -11900,20 +11960,23 @@ __webpack_require__.r(__webpack_exports__);
     editScreen: function editScreen(id) {
       var _this5 = this;
       axios.get('/admin/site/screen/' + id).then(function (response) {
-        var screen = response.data.data;
-        _this5.screen.id = screen.id;
-        _this5.screen.site_id = screen.site_id;
-        _this5.screen.site_building_id = screen.site_building_id;
-        _this5.getBuildings(screen.site_id);
-        _this5.getFloorLevel(screen.site_building_id);
-        _this5.screen.site_building_level_id = screen.site_building_level_id;
-        _this5.screen.site_point_id = screen.site_point_id;
-        _this5.screen.screen_type = screen.screen_type;
-        _this5.screen.name = screen.name;
-        _this5.screen.active = screen.active;
-        _this5.screen.is_default = screen.is_default;
         _this5.add_record = false;
         _this5.edit_record = true;
+        var screen = response.data.data;
+        _this5.getBuildings(screen.site_id);
+        _this5.getFloorLevel(screen.site_building_id);
+        _this5.screen.id = screen.id;
+        _this5.screen.screen_type = screen.screen_type;
+        _this5.screen.site_id = screen.site_id;
+        _this5.screen.site_building_id = screen.site_building_id;
+        _this5.screen.site_building_level_id = screen.site_building_level_id;
+        _this5.screen.site_point_id = screen.site_point_id;
+        _this5.screen.kiosk_id = screen.kiosk_id;
+        _this5.screen.name = screen.name;
+        _this5.screen.slots = screen.slots;
+        _this5.screen.active = screen.active;
+        _this5.screen.is_default = screen.is_default;
+        _this5.screen.is_exclusive = screen.is_exclusive;
         $('#screen-form').modal('show');
       });
     },
@@ -12032,7 +12095,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Yes</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/site/list",
@@ -12264,7 +12327,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/supplemental/list",
@@ -12401,7 +12464,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/tag/list",
@@ -12545,7 +12608,14 @@ var schedules = [];
         company_id: '',
         active: true,
         is_subscriber: false,
-        operational_hours: []
+        operational_hours: [],
+        address: '',
+        email: '',
+        contact_number: '',
+        facebook: '',
+        twitter: '',
+        instagram: '',
+        website: ''
       },
       id_to_deleted: 0,
       add_record: true,
@@ -12581,7 +12651,7 @@ var schedules = [];
             1: '<span class="badge badge-info">Yes</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/site/tenant/list",
@@ -12698,6 +12768,13 @@ var schedules = [];
       this.tenant.active = true;
       this.tenant.is_subscriber = false;
       this.subscriber_logo = null;
+      this.tenant.address = '';
+      this.tenant.email = '';
+      this.tenant.contact_number = '';
+      this.tenant.facebook = '';
+      this.tenant.twitter = '';
+      this.tenant.instagram = '';
+      this.tenant.website = '';
       this.addOperationalHours();
       $('#tenant-form').modal('show');
     },
@@ -12713,6 +12790,13 @@ var schedules = [];
       formData.append("active", this.tenant.active);
       formData.append("is_subscriber", this.tenant.is_subscriber);
       formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      formData.append("address", this.tenant.address);
+      formData.append("email", this.tenant.email);
+      formData.append("contact_number", this.tenant.contact_number);
+      formData.append("facebook", this.tenant.facebook);
+      formData.append("twitter", this.tenant.twitter);
+      formData.append("instagram", this.tenant.instagram);
+      formData.append("website", this.tenant.website);
       axios.post('/admin/site/tenant/store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -12739,6 +12823,13 @@ var schedules = [];
         _this7.tenant.company_id = tenant.company_id;
         _this7.tenant.active = tenant.active;
         _this7.tenant.is_subscriber = tenant.is_subscriber;
+        _this7.tenant.address = tenant.tenant_details.address;
+        _this7.tenant.email = tenant.tenant_details.email;
+        _this7.tenant.contact_number = tenant.tenant_details.contact_number;
+        _this7.tenant.facebook = tenant.tenant_details.facebook;
+        _this7.tenant.twitter = tenant.tenant_details.twitter;
+        _this7.tenant.instagram = tenant.tenant_details.instagram;
+        _this7.tenant.website = tenant.tenant_details.website;
         _this7.subscriber_logo = '';
         if (tenant.is_subscriber == true) {
           _this7.tenant.subscriber_logo = '';
@@ -12775,6 +12866,13 @@ var schedules = [];
       formData.append("active", this.tenant.active);
       formData.append("is_subscriber", this.tenant.is_subscriber);
       formData.append("subscriber_logo", this.tenant.subscriber_logo);
+      formData.append("address", this.tenant.address);
+      formData.append("email", this.tenant.email);
+      formData.append("contact_number", this.tenant.contact_number);
+      formData.append("facebook", this.tenant.facebook);
+      formData.append("twitter", this.tenant.twitter);
+      formData.append("instagram", this.tenant.instagram);
+      formData.append("website", this.tenant.website);
       axios.post('/admin/site/tenant/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -12904,7 +13002,7 @@ __webpack_require__.r(__webpack_exports__);
             1: '<span class="badge badge-info">Active</span>'
           }
         },
-        created_at: "Date Created"
+        updated_at: "Last Updated"
       },
       primaryKey: "id",
       dataUrl: "/admin/users/list",
@@ -13117,6 +13215,27 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchData();
   },
   methods: {
+    getFileExtension: function getFileExtension(filename) {
+      var fileExt = filename.split('.').pop();
+      switch (fileExt) {
+        case 'ogv':
+        case 'mp4':
+        case 'wmv':
+        case 'avi':
+        case 'mkv':
+          return 'video';
+          break;
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+          return 'image';
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
     condition: function condition(action, permission) {
       if (!permission) return false;
       switch (action) {
@@ -13655,22 +13774,35 @@ var render = function render() {
     staticClass: "blockquote-footer"
   }, [_vm._v("Max file size is 15MB")]), _vm._v(" "), _vm.ad_type == "Online" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 1140 x 140 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Banners" ? _c("footer", {
+  }, [_vm._v("image/video max size is 1140 x 140 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Banners" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Fullscreen" ? _c("footer", {
+  }, [_vm._v("image/video max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Fullscreen" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 1920 x 1080 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Pop-Up" ? _c("footer", {
+  }, [_vm._v("image/video max size is 1920 x 1080 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Pop-Up" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Events" ? _c("footer", {
+  }, [_vm._v("image/video max size is 470 x 1060 pixels")]) : _vm._e(), _vm._v(" "), _vm.ad_type == "Events" ? _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("image max size is 286 x 286 pixels")]) : _vm._e()]), _vm._v(" "), _c("div", {
+  }, [_vm._v("image/video max size is 286 x 286 pixels")]) : _vm._e()]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-3 text-center"
-  }, [_vm.material ? _c("img", {
+  }, [_vm.material && _vm.getFileExtension(_vm.material) == "image" ? _c("span", [_vm.material ? _c("img", {
     staticClass: "img-thumbnail",
     attrs: {
       src: _vm.material
     }
-  }) : _vm._e()])]), _vm._v(" "), _c("div", {
+  }) : _vm._e()]) : _vm.material && _vm.getFileExtension(_vm.material) == "video" ? _c("span", [_c("video", {
+    staticClass: "img-thumbnail",
+    attrs: {
+      muted: "muted"
+    },
+    domProps: {
+      muted: true
+    }
+  }, [_c("source", {
+    attrs: {
+      src: _vm.material,
+      type: "video/ogg"
+    }
+  }), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\tYour browser does not support the video tag.\n\t\t\t\t\t\t\t\t\t\t")])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(3), _vm._v(" "), _c("div", {
     staticClass: "col-sm-2"
@@ -13774,40 +13906,6 @@ var render = function render() {
     attrs: {
       "for": "inputPassword3"
     }
-  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.tenants,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Tenants",
-      label: "brand_site_name",
-      "track-by": "brand_site_name"
-    },
-    on: {
-      select: _vm.toggleSelectedTenant,
-      remove: _vm.toggleUnSelectedTenant
-    },
-    model: {
-      value: _vm.advertisements.tenants,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "tenants", $$v);
-      },
-      expression: "advertisements.tenants"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
   }, [_vm._v("Screens")]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("multiselect", {
@@ -13829,6 +13927,40 @@ var render = function render() {
         _vm.$set(_vm.advertisements, "screens", $$v);
       },
       expression: "advertisements.screens"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.tenants,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Tenants",
+      label: "brand_site_name",
+      "track-by": "brand_site_name"
+    },
+    on: {
+      select: _vm.toggleSelectedTenant,
+      remove: _vm.toggleUnSelectedTenant
+    },
+    model: {
+      value: _vm.advertisements.tenants,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "tenants", $$v);
+      },
+      expression: "advertisements.tenants"
     }
   }, [_c("span", {
     attrs: {
@@ -18978,6 +19110,39 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
+      value: _vm.screen.screen_type,
+      expression: "screen.screen_type"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.screen, "screen_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Screen Type")]), _vm._v(" "), _vm._l(_vm.screen_types, function (screen_type) {
+    return _c("option", {
+      domProps: {
+        value: screen_type
+      }
+    }, [_vm._v(" " + _vm._s(screen_type))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(3), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.screen.site_id,
       expression: "screen.site_id"
     }],
@@ -19007,7 +19172,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(site.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(3), _vm._v(" "), _c("div", {
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -19042,7 +19207,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(building.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -19075,66 +19240,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(floor.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.screen.screen_type,
-      expression: "screen.screen_type"
-    }],
-    staticClass: "custom-select",
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.screen, "screen_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: ""
-    }
-  }, [_vm._v("Select Screen Type")]), _vm._v(" "), _vm._l(_vm.screen_types, function (screen_type) {
-    return _c("option", {
-      domProps: {
-        value: screen_type
-      }
-    }, [_vm._v(" " + _vm._s(screen_type))]);
-  })], 2)])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
   }, [_vm._m(6), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.screen.site_point_id,
-      expression: "screen.site_point_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Map Point ID",
-      required: ""
-    },
-    domProps: {
-      value: _vm.screen.site_point_id
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.screen, "site_point_id", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -19158,9 +19264,40 @@ var render = function render() {
         _vm.$set(_vm.screen, "name", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(8), _vm._v(" "), _c("div", {
+  }, [_vm._m(7), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.screen.site_point_id,
+      expression: "screen.site_point_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Map Point ID",
+      required: ""
+    },
+    domProps: {
+      value: _vm.screen.site_point_id
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.screen, "site_point_id", $event.target.value);
+      }
+    }
+  })])]) : _vm._e(), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Kiosk ID")]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -19184,7 +19321,131 @@ var render = function render() {
         _vm.$set(_vm.screen, "kiosk_id", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.screen.slots,
+      expression: "screen.slots"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Slots",
+      required: ""
+    },
+    domProps: {
+      value: _vm.screen.slots
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.screen, "slots", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _vm.screen.screen_type == "LED" || _vm.screen.screen_type == "LFD" ? _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "isExclusive"
+    }
+  }, [_vm._v("Is Exclusive ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("div", {
+    staticClass: "custom-control custom-switch"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.screen.is_exclusive,
+      expression: "screen.is_exclusive"
+    }],
+    staticClass: "custom-control-input",
+    attrs: {
+      type: "checkbox",
+      id: "is_exclusive"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.screen.is_exclusive) ? _vm._i(_vm.screen.is_exclusive, null) > -1 : _vm.screen.is_exclusive
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.screen.is_exclusive,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.screen, "is_exclusive", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.screen, "is_exclusive", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.screen, "is_exclusive", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "custom-control-label",
+    attrs: {
+      "for": "is_exclusive"
+    }
+  })])])]) : _vm._e(), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "isActive"
+    }
+  }, [_vm._v("Is Default")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("div", {
+    staticClass: "custom-control custom-switch"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.screen.is_default,
+      expression: "screen.is_default"
+    }],
+    staticClass: "custom-control-input",
+    attrs: {
+      type: "checkbox",
+      id: "is_default"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.screen.is_default) ? _vm._i(_vm.screen.is_default, null) > -1 : _vm.screen.is_default
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.screen.is_default,
+          $$el = $event.target,
+          $$c = $$el.checked ? true : false;
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.screen, "is_default", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.screen, "is_default", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.screen, "is_default", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "custom-control-label",
+    attrs: {
+      "for": "is_default"
+    }
+  })])])]) : _vm._e(), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -19238,55 +19499,6 @@ var render = function render() {
     staticClass: "custom-control-label",
     attrs: {
       "for": "isActive"
-    }
-  })])])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "isActive"
-    }
-  }, [_vm._v("Is Default")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("div", {
-    staticClass: "custom-control custom-switch"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.screen.is_default,
-      expression: "screen.is_default"
-    }],
-    staticClass: "custom-control-input",
-    attrs: {
-      type: "checkbox",
-      id: "is_default"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.screen.is_default) ? _vm._i(_vm.screen.is_default, null) > -1 : _vm.screen.is_default
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.screen.is_default,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.screen, "is_default", $$a.concat([$$v]));
-          } else {
-            $$i > -1 && _vm.$set(_vm.screen, "is_default", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.$set(_vm.screen, "is_default", $$c);
-        }
-      }
-    }
-  }), _vm._v(" "), _c("label", {
-    staticClass: "custom-control-label",
-    attrs: {
-      "for": "is_default"
     }
   })])])])])]), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
@@ -19413,6 +19625,17 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "firstName"
     }
+  }, [_vm._v("Type "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
   }, [_vm._v("Site "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
@@ -19446,7 +19669,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "firstName"
     }
-  }, [_vm._v("Type "), _c("span", {
+  }, [_vm._v("Name "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -19468,18 +19691,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "firstName"
     }
-  }, [_vm._v("Name "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Kiosk ID "), _c("span", {
+  }, [_vm._v("Slots "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -21121,10 +21333,219 @@ var render = function render() {
   }, [_c("label", {
     staticClass: "col-sm-3 col-form-label",
     attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Address")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.address,
+      expression: "tenant.address"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      placeholder: "Store Address"
+    },
+    domProps: {
+      value: _vm.tenant.address
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "address", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store E-mail")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.email,
+      expression: "tenant.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store E-mail"
+    },
+    domProps: {
+      value: _vm.tenant.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "email", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Contact Number")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.contact_number,
+      expression: "tenant.contact_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Contact No."
+    },
+    domProps: {
+      value: _vm.tenant.contact_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "contact_number", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Facebook")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.facebook,
+      expression: "tenant.facebook"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Facebook"
+    },
+    domProps: {
+      value: _vm.tenant.facebook
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "facebook", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Twitter")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.twitter,
+      expression: "tenant.twitter"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Twitter"
+    },
+    domProps: {
+      value: _vm.tenant.twitter
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "twitter", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Instagram")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.instagram,
+      expression: "tenant.instagram"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Instagram"
+    },
+    domProps: {
+      value: _vm.tenant.instagram
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "instagram", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Store Website")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-9"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.tenant.website,
+      expression: "tenant.website"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Store Website"
+    },
+    domProps: {
+      value: _vm.tenant.website
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.tenant, "website", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-3 col-form-label",
+    attrs: {
       "for": "tennat_active"
     }
   }, [_vm._v("Active")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-9"
+    staticClass: "col-sm-3"
   }, [_c("div", {
     staticClass: "custom-control custom-switch"
   }, [_c("input", {
@@ -21173,7 +21594,7 @@ var render = function render() {
       "for": "is_subscriber"
     }
   }, [_vm._v("Is Subscriber")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-9"
+    staticClass: "col-sm-3"
   }, [_c("div", {
     staticClass: "custom-control custom-switch"
   }, [_c("input", {
@@ -21217,7 +21638,7 @@ var render = function render() {
   })])])]), _vm._v(" "), _vm.tenant.is_subscriber == 1 ? _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(5), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-5"
+    staticClass: "col-sm-3"
   }, [_c("input", {
     ref: "subscriber_logo",
     attrs: {
@@ -21232,7 +21653,7 @@ var render = function render() {
   }, [_vm._v("Max file size is 15MB")]), _vm._v(" "), _c("footer", {
     staticClass: "blockquote-footer"
   }, [_vm._v("image max size is 550 x 550 pixels")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-4 text-center"
+    staticClass: "col-sm-3 offset-sm-1 text-center"
   }, [_vm.subscriber_logo ? _c("img", {
     staticClass: "img-thumbnail",
     attrs: {
@@ -22246,17 +22667,43 @@ var render = function render() {
         domProps: {
           innerHTML: _vm._s(tHeader.status[data[key]])
         }
-      })]) : tHeader.type == "image" ? _c("span", [_c("img", {
+      })]) : tHeader.type == "image" && _vm.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
         staticClass: "img-thumbnail",
         attrs: {
           src: data[key]
         }
-      })]) : tHeader.type == "logo" ? _c("span", [_c("img", {
+      })]) : tHeader.type == "logo" && _vm.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
         staticClass: "img-logo",
         attrs: {
           src: data[key]
         }
-      })]) : tHeader.type == "icon" ? _c("span", [_c("i", {
+      })]) : tHeader.type == "image" && _vm.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
+        staticClass: "img-thumbnail",
+        attrs: {
+          muted: "muted"
+        },
+        domProps: {
+          muted: true
+        }
+      }, [_c("source", {
+        attrs: {
+          src: data[key],
+          type: "video/ogg"
+        }
+      }), _vm._v("\n                                    Your browser does not support the video tag.\n                                ")])]) : tHeader.type == "logo" && _vm.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
+        staticClass: "img-logo",
+        attrs: {
+          muted: "muted"
+        },
+        domProps: {
+          muted: true
+        }
+      }, [_c("source", {
+        attrs: {
+          src: data[key],
+          type: "video/ogg"
+        }
+      }), _vm._v("\n                                    Your browser does not support the video tag.\n                                ")])]) : tHeader.type == "icon" ? _c("span", [_c("i", {
         "class": data[key],
         attrs: {
           "aria-hidden": "true"
@@ -23160,9 +23607,13 @@ var app = new Vue({
         switch (error.response.status) {
           case 422:
             var errors = error.response.data.errors;
-            if (errors) $.each(errors, function (key, value) {
-              toastr.error(value);
-            });
+            if (errors) {
+              $.each(errors, function (key, value) {
+                toastr.error(value);
+              });
+            } else {
+              toastr.error(error.response.data.message);
+            }
             break;
           case 405:
             toastr.error(error.response.statusText);

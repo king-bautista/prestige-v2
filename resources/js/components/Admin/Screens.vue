@@ -45,6 +45,15 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="screen.screen_type">
+									    <option value="">Select Screen Type</option>
+									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
+								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="screen.site_id" @change="getBuildings($event.target.value)">
@@ -71,31 +80,46 @@
 								    </select>
 								</div>
 							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Type <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.screen_type">
-									    <option value="">Select Screen Type</option>
-									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
-								    </select>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Map Point ID <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.site_point_id" placeholder="Map Point ID" required>
-								</div>
-							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Kiosk ID <span class="font-italic text-danger"> *</span></label>
+                            <div class="form-group row" v-if="screen.screen_type == 'Directory'">
+								<label for="firstName" class="col-sm-4 col-form-label">Map Point ID <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.site_point_id" placeholder="Map Point ID" required>
+								</div>
+							</div>
+							<div class="form-group row" v-if="screen.screen_type == 'Directory'">
+								<label for="firstName" class="col-sm-4 col-form-label">Kiosk ID</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.kiosk_id" placeholder="Kiosk ID" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Slots <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.slots" placeholder="Slots" required>
+								</div>
+							</div>
+							<div class="form-group row" v-if="screen.screen_type == 'LED' || screen.screen_type == 'LFD'">
+								<label for="isExclusive" class="col-sm-4 col-form-label">Is Exclusive </label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_exclusive" v-model="screen.is_exclusive">
+										<label class="custom-control-label" for="is_exclusive"></label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row" v-if="screen.screen_type == 'Directory'">
+								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_default" v-model="screen.is_default">
+										<label class="custom-control-label" for="is_default"></label>
+									</div>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -104,15 +128,6 @@
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="isActive" v-model="screen.active">
 										<label class="custom-control-label" for="isActive"></label>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_default" v-model="screen.is_default">
-										<label class="custom-control-label" for="is_default"></label>
 									</div>
 								</div>
 							</div>
@@ -178,15 +193,17 @@
             return {
                 screen: {
                     id: '',
+                    screen_type: '',
 					site_id: '',
                     site_building_id: '',
                     site_building_level_id: '',
                     site_point_id: '',
-                    screen_type: '',
-                    name: '',
 					kiosk_id: '',
+                    name: '',
+                    slots: '',
 					active: false,
 					is_default: false,
+					is_exclusive: false,
                 },
 				id_to_deleted: 0,
 				is_default: '',
@@ -201,6 +218,8 @@
                     floor_name: "Floor Name",
                     building_name: "Building Name",
             		site_point_id: "Site Point ID", 
+            		kiosk_id: "Kiosk ID", 
+            		slots: "Slots", 
             		screen_type: "Screen Type", 
             		active: {
             			name: "Status", 
@@ -208,6 +227,14 @@
             			status: { 
             				0: '<span class="badge badge-danger">Deactivated</span>', 
             				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+					is_exclusive: {
+            			name: "Is exclusive", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
             			}
             		},
 					is_default: {
@@ -218,7 +245,7 @@
             				1: '<span class="badge badge-info">Yes</span>'
             			}
             		},
-                    created_at: "Date Created"
+                    updated_at: "Last Updated"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/site/screen/list",
@@ -293,13 +320,19 @@
 			AddNewScreen: function() {
 				this.add_record = true;
 				this.edit_record = false;
+
+				this.screen.screen_type = '';
                 this.screen.site_id = '';
                 this.screen.site_building_id = '';
                 this.screen.site_building_level_id = '';
                 this.screen.site_point_id = '';
-                this.screen.screen_type = '';
+				this.screen.kiosk_id = '';
                 this.screen.name = '';         
+                this.screen.slots = '';         
+                this.screen.active = false;         
                 this.screen.is_default = false;         
+                this.screen.is_exclusive = false;      
+
               	$('#screen-form').modal('show');
             },
 
@@ -315,22 +348,26 @@
 			editScreen: function(id) {
                 axios.get('/admin/site/screen/'+id)
                 .then(response => {
-                    var screen = response.data.data;
-                    this.screen.id = screen.id;
-                    this.screen.site_id = screen.site_id;
-                    this.screen.site_building_id = screen.site_building_id;
+					this.add_record = false;
+					this.edit_record = true;
 
+                    var screen = response.data.data;
 					this.getBuildings(screen.site_id);
                     this.getFloorLevel(screen.site_building_id);
 
+					this.screen.id = screen.id;
+                    this.screen.screen_type = screen.screen_type;
+                    this.screen.site_id = screen.site_id;
+					this.screen.site_building_id = screen.site_building_id;
                     this.screen.site_building_level_id = screen.site_building_level_id;
                     this.screen.site_point_id = screen.site_point_id;
-                    this.screen.screen_type = screen.screen_type;
-                    this.screen.name = screen.name;
-					this.screen.active = screen.active;
-					this.screen.is_default = screen.is_default;
-					this.add_record = false;
-					this.edit_record = true;
+					this.screen.kiosk_id = screen.kiosk_id;
+					this.screen.name = screen.name; 
+					this.screen.slots = screen.slots;   
+					this.screen.active = screen.active;    
+					this.screen.is_default = screen.is_default; 
+					this.screen.is_exclusive = screen.is_exclusive;
+
                     $('#screen-form').modal('show');
                 });
             },

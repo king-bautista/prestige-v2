@@ -15,15 +15,17 @@ class SiteScreen extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'screen_type',
         'site_id',
         'site_building_id',
         'site_building_level_id',
         'site_point_id',
-        'screen_type',
-        'name',
         'kiosk_id',
+        'name',
+        'slots',
         'active',
         'is_default',
+        'is_exclusive',
     ];
 
     /**

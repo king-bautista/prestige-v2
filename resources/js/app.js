@@ -106,10 +106,14 @@ const app = new Vue({
                 switch(error.response.status) {
                   case 422:
                         var errors = error.response.data.errors
-                        if(errors)
+                        if(errors) {
                             $.each(errors, function(key,value) {
                                 toastr.error(value)
                             }); 
+                        }
+                        else {
+                            toastr.error(error.response.data.message)
+                        }
                     break;
                   case 405:
                         toastr.error(error.response.statusText)

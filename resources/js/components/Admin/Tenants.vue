@@ -110,9 +110,51 @@
                                     </div>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Address</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" v-model="tenant.address" placeholder="Store Address"></textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store E-mail</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.email" placeholder="Store E-mail">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Contact Number</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.contact_number" placeholder="Store Contact No.">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Facebook</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.facebook" placeholder="Store Facebook">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Twitter</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.twitter" placeholder="Store Twitter">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Instagram</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.instagram" placeholder="Store Instagram">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Website</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.website" placeholder="Store Website">
+								</div>
+							</div>
 							<div class="form-group row" >
 								<label for="tennat_active" class="col-sm-3 col-form-label">Active</label>
-								<div class="col-sm-9">
+								<div class="col-sm-3">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="tennat_active" v-model="tenant.active">
 										<label class="custom-control-label" for="tennat_active"></label>
@@ -121,7 +163,7 @@
 							</div>
 							<div class="form-group row">
 								<label for="is_subscriber" class="col-sm-3 col-form-label">Is Subscriber</label>
-								<div class="col-sm-9">
+								<div class="col-sm-3">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="is_subscriber" v-model="tenant.is_subscriber">
 										<label class="custom-control-label" for="is_subscriber"></label>
@@ -130,12 +172,12 @@
 							</div>
 							<div class="form-group row" v-if="tenant.is_subscriber == 1">
 								<label for="firstName" class="col-sm-3 col-form-label">Subscriber Logo <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-5">
+								<div class="col-sm-3">
                                     <input type="file" accept="image/*" ref="subscriber_logo" @change="subscriberLogoChange">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer">image max size is 550 x 550 pixels</footer>
 								</div>
-								<div class="col-sm-4 text-center">
+								<div class="col-sm-3 offset-sm-1 text-center">
                                     <img v-if="subscriber_logo" :src="subscriber_logo" class="img-thumbnail" />
 								</div>
 							</div>
@@ -223,6 +265,13 @@
                     active: true,
                     is_subscriber: false,
 					operational_hours: [],
+                    address: '',
+                    email: '',
+                    contact_number: '',
+                    facebook: '',
+                    twitter: '',
+                    instagram: '',
+                    website: '',
                 },
 				id_to_deleted: 0,
                 add_record: true,
@@ -258,7 +307,7 @@
             				1: '<span class="badge badge-info">Yes</span>'
             			}
             		},                    
-					created_at: "Date Created"
+					updated_at: "Last Updated"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/site/tenant/list",
@@ -378,7 +427,13 @@
 				this.tenant.active = true;
 				this.tenant.is_subscriber = false;
 				this.subscriber_logo = null;
-
+				this.tenant.address = '';
+				this.tenant.email = '';
+				this.tenant.contact_number = '';
+				this.tenant.facebook = '';
+				this.tenant.twitter = '';
+				this.tenant.instagram = '';
+				this.tenant.website = '';			
 				this.addOperationalHours();
               	$('#tenant-form').modal('show');
             },
@@ -394,6 +449,13 @@
 				formData.append("active", this.tenant.active);
 				formData.append("is_subscriber", this.tenant.is_subscriber);
 				formData.append("subscriber_logo", this.tenant.subscriber_logo);
+				formData.append("address", this.tenant.address);
+				formData.append("email", this.tenant.email);
+				formData.append("contact_number", this.tenant.contact_number);
+				formData.append("facebook", this.tenant.facebook);
+				formData.append("twitter", this.tenant.twitter);
+				formData.append("instagram", this.tenant.instagram);
+				formData.append("website", this.tenant.website);
                 axios.post('/admin/site/tenant/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
@@ -425,6 +487,14 @@
                     this.tenant.company_id = tenant.company_id;
                     this.tenant.active = tenant.active;
                     this.tenant.is_subscriber = tenant.is_subscriber;
+					this.tenant.address = tenant.tenant_details.address;
+					this.tenant.email = tenant.tenant_details.email;
+					this.tenant.contact_number = tenant.tenant_details.contact_number;
+					this.tenant.facebook = tenant.tenant_details.facebook;
+					this.tenant.twitter = tenant.tenant_details.twitter;
+					this.tenant.instagram = tenant.tenant_details.instagram;
+					this.tenant.website = tenant.tenant_details.website;
+
 					this.subscriber_logo = '';
 
 					if(tenant.is_subscriber == true) {
@@ -468,6 +538,13 @@
 				formData.append("active", this.tenant.active);
 				formData.append("is_subscriber", this.tenant.is_subscriber);
 				formData.append("subscriber_logo", this.tenant.subscriber_logo);
+				formData.append("address", this.tenant.address);
+				formData.append("email", this.tenant.email);
+				formData.append("contact_number", this.tenant.contact_number);
+				formData.append("facebook", this.tenant.facebook);
+				formData.append("twitter", this.tenant.twitter);
+				formData.append("instagram", this.tenant.instagram);
+				formData.append("website", this.tenant.website);
                 axios.post('/admin/site/tenant/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'

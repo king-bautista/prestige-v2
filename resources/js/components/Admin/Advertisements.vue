@@ -50,14 +50,22 @@
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="material" @change="materialChange">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Online'">image max size is 1140 x 140 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Banners'">image max size is 470 x 1060 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Fullscreen'">image max size is 1920 x 1080 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Pop-Up'">image max size is 470 x 1060 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Events'">image max size is 286 x 286 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Online'">image/video max size is 1140 x 140 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Banners'">image/video max size is 470 x 1060 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Fullscreen'">image/video max size is 1920 x 1080 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Pop-Up'">image/video max size is 470 x 1060 pixels</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Events'">image/video max size is 286 x 286 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
-                                    <img v-if="material" :src="material" class="img-thumbnail" />
+									<span v-if="material && getFileExtension(material) == 'image'">
+										<img v-if="material" :src="material" class="img-thumbnail" />
+									</span>
+									<span v-else-if="material && getFileExtension(material) == 'video'">
+										<video muted="muted" class="img-thumbnail">
+											<source :src="material" type="video/ogg">
+											Your browser does not support the video tag.
+										</video>
+									</span>
 								</div>
 							</div>
                             <div class="form-group row">
@@ -93,25 +101,7 @@
 										@remove="toggleUnSelected">
 									</multiselect> 
 								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
-								<div class="col-sm-8">
-									<multiselect v-model="advertisements.tenants"
-										:options="tenants"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Tenants"
-										label="brand_site_name"
-										track-by="brand_site_name"
-										@select="toggleSelectedTenant"
-										@remove="toggleUnSelectedTenant">
-										<span slot="noOptions">
-											Please select a sites
-										</span>
-									</multiselect> 
-								</div>
-							</div>
+							</div>                            
 							<div class="form-group row">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Screens</label>
 								<div class="col-sm-8">
@@ -124,6 +114,24 @@
 										track-by="screen_type_name"
 										@select="toggleSelectedScreen"
 										@remove="toggleUnSelectedScreen">
+										<span slot="noOptions">
+											Please select a sites
+										</span>
+									</multiselect> 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
+								<div class="col-sm-8">
+									<multiselect v-model="advertisements.tenants"
+										:options="tenants"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="Select Tenants"
+										label="brand_site_name"
+										track-by="brand_site_name"
+										@select="toggleSelectedTenant"
+										@remove="toggleUnSelectedTenant">
 										<span slot="noOptions">
 											Please select a sites
 										</span>
@@ -192,6 +200,7 @@
                     active: true,           
                 },
 				material: '',
+				material_type: '',
                 companies: [],
                 sites: [],
                 site_ids: [],
@@ -213,8 +222,8 @@
             		name: "Name", 
 					company_name: "Company",
             		site_names: "Site Name/s", 
-            		tenant_names: "Tenant/s", 
 					screen_names: "Screen/s",
+            		tenant_names: "Tenant/s", 
 					duration: "Duration",
 					air_dates: "Airdates",
             		active: {
@@ -225,7 +234,7 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    created_at: "Date Created"
+                    updated_at: "Last Updated"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/advertisement/list",
@@ -265,6 +274,46 @@
         },
 
         methods: {
+			getFileExtension(filename) {
+                var fileExt = '';
+				
+				if(this.material_type) {
+					fileExt = this.material_type;
+				}
+				else {
+					fileExt = filename.split('.').pop();
+				}
+				
+                switch(fileExt) {
+                    case 'ogv':
+                    case 'mp4':
+                    case 'wmv':
+                    case 'avi':
+                    case 'mkv':
+                    case 'video/ogg':
+                    case 'video/ogv':
+                    case 'video/mp4':
+                    case 'video/wmv':
+                    case 'video/avi':
+                    case 'video/mkv':
+                        return 'video';
+                        break;
+                    case 'jpeg':
+                    case 'jpg':
+                    case 'png':
+                    case 'gif':
+                    case 'image/jpeg':
+                    case 'image/jpg':
+                    case 'image/png':
+                    case 'image/gif':
+                        return 'image';
+                        break;
+                    default:
+						return false;
+                        break;
+                }
+            },
+
 			getCompany: function() {
 				axios.get('/admin/company/get-all')
                 .then(response => this.companies = response.data.data);
@@ -330,6 +379,7 @@
 
 			materialChange: function(e) {
 				const file = e.target.files[0];
+				this.material_type = e.target.files[0].type;
       			this.material = URL.createObjectURL(file);
 				this.advertisements.material = file;
 			},
@@ -350,6 +400,9 @@
                 this.advertisements.active = true;				
 				this.$refs.material.value = null;
 				this.material = null;
+				this.tenant_ids = [];
+				this.site_ids = [];
+				this.screen_ids = [];
 
               	$('#site_ad-form').modal('show');
             },
@@ -383,6 +436,9 @@
                 axios.get('/admin/advertisement/'+id)
                 .then(response => {
                     var advertisements = response.data.data;
+					this.tenant_ids = [];
+					this.site_ids = [];
+					this.screen_ids = [];
 					this.advertisements.id = advertisements.id;
 					this.advertisements.company_id = advertisements.company_id;
 					this.advertisements.name = advertisements.name;

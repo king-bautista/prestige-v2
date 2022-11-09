@@ -69,11 +69,23 @@
                 			<span v-if="tHeader.type == 'Boolean'">
                 				<span v-html="tHeader.status[data[key]]"></span>
                 			</span>
-                            <span v-else-if="tHeader.type == 'image'">
+                            <span v-else-if="tHeader.type == 'image' && getFileExtension(data[key]) == 'image'">
                                 <img class="img-thumbnail" :src="data[key]" />
                             </span>
-                            <span v-else-if="tHeader.type == 'logo'">
+                            <span v-else-if="tHeader.type == 'logo' && getFileExtension(data[key]) == 'image'">
                                 <img class="img-logo" :src="data[key]" />
+                            </span>
+                            <span v-else-if="tHeader.type == 'image' && getFileExtension(data[key]) == 'video'">
+                                <video muted="muted" class="img-thumbnail">
+                                    <source :src="data[key]" type="video/ogg">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </span>
+                            <span v-else-if="tHeader.type == 'logo' && getFileExtension(data[key]) == 'video'">
+                                <video muted="muted" class="img-logo">
+                                    <source :src="data[key]" type="video/ogg">
+                                    Your browser does not support the video tag.
+                                </video>
                             </span>
                             <span v-else-if="tHeader.type == 'icon'">
                                 <i :class="data[key]" aria-hidden="true"></i>
@@ -196,6 +208,28 @@
         },
 
         methods: {
+            getFileExtension(filename) {
+                var fileExt = filename.split('.').pop();
+                switch(fileExt) {
+                    case 'ogv':
+                    case 'mp4':
+                    case 'wmv':
+                    case 'avi':
+                    case 'mkv':
+                        return 'video';
+                        break;
+                    case 'jpeg':
+                    case 'jpg':
+                    case 'png':
+                    case 'gif':
+                        return 'image';
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
+            },
+
             condition(action, permission) {
                 if(!permission)
                     return false;

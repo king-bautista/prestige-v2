@@ -28,7 +28,7 @@ class MainController extends AppBaseController
             return response([
                 'message' => 'No Site to display!',
                 'status_code' => 200,
-            ], 422);
+            ], 200);
         }
     }
 
@@ -46,7 +46,7 @@ class MainController extends AppBaseController
             return response([
                 'message' => 'No Categories to display!',
                 'status_code' => 200,
-            ], 422);
+            ], 200);
         }
     }
 
@@ -70,7 +70,7 @@ class MainController extends AppBaseController
             return response([
                 'message' => 'No Tenants to display!',
                 'status_code' => 200,
-            ], 422);
+            ], 200);
         }    
     }
 
@@ -93,7 +93,7 @@ class MainController extends AppBaseController
             return response([
                 'message' => 'No Tenants to display!',
                 'status_code' => 200,
-            ], 422);
+            ], 200);
         }    
     }
 
@@ -117,7 +117,7 @@ class MainController extends AppBaseController
             return response([
                 'message' => 'No Tenants to display!',
                 'status_code' => 200,
-            ], 422);
+            ], 200);
         }    
     }
 
@@ -139,7 +139,7 @@ class MainController extends AppBaseController
             return response([
                 'message' => 'No Tenants to display!',
                 'status_code' => 200,
-            ], 422);
+            ], 200);
         }  
     }
 
@@ -176,7 +176,22 @@ class MainController extends AppBaseController
             return response([
                 'message' => 'No Tenants to display!',
                 'status_code' => 200,
-            ], 422);
+            ], 200);
         }    
+    }
+    
+    public function getAdvertisements($type, $site_id, $screen_id = null)
+    {
+        try
+        {            
+            return $this->response($site_tenants, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Banners to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
 }
