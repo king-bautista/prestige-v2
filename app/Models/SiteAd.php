@@ -18,6 +18,7 @@ class SiteAd extends Model
         'company_id',
         'name',
         'ad_type',
+        'screen_type',
         'file_path',
         'file_type',
         'display_order',

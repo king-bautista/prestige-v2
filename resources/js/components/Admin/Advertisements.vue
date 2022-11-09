@@ -45,6 +45,72 @@
 									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<treeselect v-model="advertisements.company_id" :options="companies" placeholder="Select Company"/>
+								</div>
+							</div>
+                            <div class="form-group row">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Associate Sites <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<multiselect v-model="advertisements.sites"
+										:options="sites"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="Select Sites"
+										label="name"
+										track-by="name"
+                                        @select="toggleSelected"
+										@remove="toggleUnSelected">
+									</multiselect> 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="advertisements.screen_type" @change="getScreens($event.target.value)">
+									    <option value="">Select Screen Type</option>
+									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
+								    </select>
+								</div>
+							</div>						
+							<div class="form-group row" v-if="advertisements.screen_type == 'LED' || advertisements.screen_type == 'LFD'">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Available Screens</label>
+								<div class="col-sm-8">
+									<multiselect v-model="advertisements.screens"
+										:options="screens"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="Select Screens"
+										label="screen_type_name"
+										track-by="screen_type_name"
+										@select="toggleSelectedScreen"
+										@remove="toggleUnSelectedScreen">
+										<span slot="noOptions">
+											Please select a associate sites and screen type.
+										</span>
+									</multiselect> 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
+								<div class="col-sm-8">
+									<multiselect v-model="advertisements.tenants"
+										:options="tenants"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="Select Tenants"
+										label="brand_site_name"
+										track-by="brand_site_name"
+										@select="toggleSelectedTenant"
+										@remove="toggleUnSelectedTenant">
+										<span slot="noOptions">
+											Please select a associate sites.
+										</span>
+									</multiselect> 
+								</div>
+							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
@@ -79,63 +145,6 @@
 								</div>
 								<div class="col-sm-3 text-center">
                                     <date-picker v-model="advertisements.end_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<treeselect v-model="advertisements.company_id" :options="companies" placeholder="Select Company"/>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Associate Sites <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<multiselect v-model="advertisements.sites"
-										:options="sites"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Sites"
-										label="name"
-										track-by="name"
-                                        @select="toggleSelected"
-										@remove="toggleUnSelected">
-									</multiselect> 
-								</div>
-							</div>                            
-							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Screens</label>
-								<div class="col-sm-8">
-									<multiselect v-model="advertisements.screens"
-										:options="screens"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Screens"
-										label="screen_type_name"
-										track-by="screen_type_name"
-										@select="toggleSelectedScreen"
-										@remove="toggleUnSelectedScreen">
-										<span slot="noOptions">
-											Please select a sites
-										</span>
-									</multiselect> 
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
-								<div class="col-sm-8">
-									<multiselect v-model="advertisements.tenants"
-										:options="tenants"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Tenants"
-										label="brand_site_name"
-										track-by="brand_site_name"
-										@select="toggleSelectedTenant"
-										@remove="toggleUnSelectedTenant">
-										<span slot="noOptions">
-											Please select a sites
-										</span>
-									</multiselect> 
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -196,6 +205,7 @@
 					end_date: '',
 					sites: '',
 					tenants: '',
+					screen_type: '',
 					screens: '',
                     active: true,           
                 },
@@ -208,6 +218,7 @@
                 tenant_ids: [],
 				screens: [],
 				screen_ids: [],
+				screen_types: ['Directory','LED','LFD','LED funnel'],
                 options: {
                     format: 'YYYY/MM/DD',
                     useCurrent: false,
@@ -221,6 +232,7 @@
             		},
             		name: "Name", 
 					company_name: "Company",
+					screen_type: "Screen Type",
             		site_names: "Site Name/s", 
 					screen_names: "Screen/s",
             		tenant_names: "Tenant/s", 
@@ -333,19 +345,18 @@
                 .then(response => this.tenants = response.data.data);
             },
 
-			getScreens: function() {
+			getScreens: function(type) {
                 var site_ids = '';
                 for (var i = 0; i < this.site_ids.length; i++) {
                     site_ids += this.site_ids[i]+',';
                 }
-                axios.get('/admin/site/screen/get-screens/'+site_ids)
+                axios.get('/admin/site/screen/get-screens/'+site_ids+'/'+type)
                 .then(response => this.screens = response.data.data);
             },
 
             toggleSelected: function(value, id) {
 				this.site_ids.push(value.id);
                 this.getTenants();
-				this.getScreens();
 			},
 
 			toggleUnSelected: function(value, id) {
@@ -396,6 +407,7 @@
 				this.advertisements.end_date = '';
 				this.advertisements.sites = [];
 				this.advertisements.tenants = [];
+				this.advertisements.screen_type = '';
 				this.advertisements.screens = [];
                 this.advertisements.active = true;				
 				this.$refs.material.value = null;
@@ -412,6 +424,7 @@
 				formData.append("company_id", this.advertisements.company_id);
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
+				formData.append("screen_type", this.advertisements.screen_type);
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
 				formData.append("start_date", this.advertisements.start_date);
@@ -449,6 +462,7 @@
 					this.advertisements.end_date = advertisements.end_date;
 					this.advertisements.sites = advertisements.sites;
 					this.advertisements.tenants = advertisements.tenants;
+					this.advertisements.screen_type = advertisements.screen_type;
 					this.advertisements.screens = advertisements.screens;
 					this.advertisements.active = advertisements.active;
 					this.$refs.material.value = null;
@@ -467,8 +481,11 @@
 						this.screen_ids.push(value.id);
                 	});
 
+					if(advertisements.screen_type) {
+						this.getScreens();
+					}
+
 					this.getTenants();
-					this.getScreens();
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -483,6 +500,7 @@
 				formData.append("company_id", this.advertisements.company_id);
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
+				formData.append("screen_type", this.advertisements.screen_type);
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
 				formData.append("start_date", this.advertisements.start_date);

@@ -9327,6 +9327,7 @@ __webpack_require__.r(__webpack_exports__);
         end_date: '',
         sites: '',
         tenants: '',
+        screen_type: '',
         screens: '',
         active: true
       },
@@ -9339,6 +9340,7 @@ __webpack_require__.r(__webpack_exports__);
       tenant_ids: [],
       screens: [],
       screen_ids: [],
+      screen_types: ['Directory', 'LED', 'LFD', 'LED funnel'],
       options: {
         format: 'YYYY/MM/DD',
         useCurrent: false
@@ -9352,6 +9354,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         name: "Name",
         company_name: "Company",
+        screen_type: "Screen Type",
         site_names: "Site Name/s",
         screen_names: "Screen/s",
         tenant_names: "Tenant/s",
@@ -9461,20 +9464,19 @@ __webpack_require__.r(__webpack_exports__);
         return _this3.tenants = response.data.data;
       });
     },
-    getScreens: function getScreens() {
+    getScreens: function getScreens(type) {
       var _this4 = this;
       var site_ids = '';
       for (var i = 0; i < this.site_ids.length; i++) {
         site_ids += this.site_ids[i] + ',';
       }
-      axios.get('/admin/site/screen/get-screens/' + site_ids).then(function (response) {
+      axios.get('/admin/site/screen/get-screens/' + site_ids + '/' + type).then(function (response) {
         return _this4.screens = response.data.data;
       });
     },
     toggleSelected: function toggleSelected(value, id) {
       this.site_ids.push(value.id);
       this.getTenants();
-      this.getScreens();
     },
     toggleUnSelected: function toggleUnSelected(value, id) {
       var index = this.site_ids.indexOf(value.id);
@@ -9524,6 +9526,7 @@ __webpack_require__.r(__webpack_exports__);
       this.advertisements.end_date = '';
       this.advertisements.sites = [];
       this.advertisements.tenants = [];
+      this.advertisements.screen_type = '';
       this.advertisements.screens = [];
       this.advertisements.active = true;
       this.$refs.material.value = null;
@@ -9539,6 +9542,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("company_id", this.advertisements.company_id);
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
+      formData.append("screen_type", this.advertisements.screen_type);
       formData.append("file_path", this.advertisements.material);
       formData.append("display_duration", this.advertisements.display_duration);
       formData.append("start_date", this.advertisements.start_date);
@@ -9574,6 +9578,7 @@ __webpack_require__.r(__webpack_exports__);
         _this6.advertisements.end_date = advertisements.end_date;
         _this6.advertisements.sites = advertisements.sites;
         _this6.advertisements.tenants = advertisements.tenants;
+        _this6.advertisements.screen_type = advertisements.screen_type;
         _this6.advertisements.screens = advertisements.screens;
         _this6.advertisements.active = advertisements.active;
         _this6.$refs.material.value = null;
@@ -9588,8 +9593,10 @@ __webpack_require__.r(__webpack_exports__);
         advertisements.screens.forEach(function (value) {
           _this6.screen_ids.push(value.id);
         });
+        if (advertisements.screen_type) {
+          _this6.getScreens();
+        }
         _this6.getTenants();
-        _this6.getScreens();
         _this6.add_record = false;
         _this6.edit_record = true;
         $('#site_ad-form').modal('show');
@@ -9602,6 +9609,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("company_id", this.advertisements.company_id);
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
+      formData.append("screen_type", this.advertisements.screen_type);
       formData.append("file_path", this.advertisements.material);
       formData.append("display_duration", this.advertisements.display_duration);
       formData.append("start_date", this.advertisements.start_date);
@@ -13760,6 +13768,149 @@ var render = function render() {
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("treeselect", {
+    attrs: {
+      options: _vm.companies,
+      placeholder: "Select Company"
+    },
+    model: {
+      value: _vm.advertisements.company_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "company_id", $$v);
+      },
+      expression: "advertisements.company_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(3), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.sites,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Sites",
+      label: "name",
+      "track-by": "name"
+    },
+    on: {
+      select: _vm.toggleSelected,
+      remove: _vm.toggleUnSelected
+    },
+    model: {
+      value: _vm.advertisements.sites,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "sites", $$v);
+      },
+      expression: "advertisements.sites"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.advertisements.screen_type,
+      expression: "advertisements.screen_type"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.advertisements, "screen_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.getScreens($event.target.value);
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Screen Type")]), _vm._v(" "), _vm._l(_vm.screen_types, function (screen_type) {
+    return _c("option", {
+      domProps: {
+        value: screen_type
+      }
+    }, [_vm._v(" " + _vm._s(screen_type))]);
+  })], 2)])]), _vm._v(" "), _vm.advertisements.screen_type == "LED" || _vm.advertisements.screen_type == "LFD" ? _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Available Screens")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.screens,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Screens",
+      label: "screen_type_name",
+      "track-by": "screen_type_name"
+    },
+    on: {
+      select: _vm.toggleSelectedScreen,
+      remove: _vm.toggleUnSelectedScreen
+    },
+    model: {
+      value: _vm.advertisements.screens,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "screens", $$v);
+      },
+      expression: "advertisements.screens"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites and screen type.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.tenants,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Tenants",
+      label: "brand_site_name",
+      "track-by": "brand_site_name"
+    },
+    on: {
+      select: _vm.toggleSelectedTenant,
+      remove: _vm.toggleUnSelectedTenant
+    },
+    model: {
+      value: _vm.advertisements.tenants,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "tenants", $$v);
+      },
+      expression: "advertisements.tenants"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-5"
   }, [_c("input", {
     ref: "material",
@@ -13804,7 +13955,7 @@ var render = function render() {
     }
   }), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\tYour browser does not support the video tag.\n\t\t\t\t\t\t\t\t\t\t")])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(3), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-2"
   }, [_c("input", {
     directives: [{
@@ -13860,114 +14011,6 @@ var render = function render() {
       expression: "advertisements.end_date"
     }
   })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("treeselect", {
-    attrs: {
-      options: _vm.companies,
-      placeholder: "Select Company"
-    },
-    model: {
-      value: _vm.advertisements.company_id,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "company_id", $$v);
-      },
-      expression: "advertisements.company_id"
-    }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.sites,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Sites",
-      label: "name",
-      "track-by": "name"
-    },
-    on: {
-      select: _vm.toggleSelected,
-      remove: _vm.toggleUnSelected
-    },
-    model: {
-      value: _vm.advertisements.sites,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "sites", $$v);
-      },
-      expression: "advertisements.sites"
-    }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Screens")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.screens,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Screens",
-      label: "screen_type_name",
-      "track-by": "screen_type_name"
-    },
-    on: {
-      select: _vm.toggleSelectedScreen,
-      remove: _vm.toggleUnSelectedScreen
-    },
-    model: {
-      value: _vm.advertisements.screens,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "screens", $$v);
-      },
-      expression: "advertisements.screens"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.tenants,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Tenants",
-      label: "brand_site_name",
-      "track-by": "brand_site_name"
-    },
-    on: {
-      select: _vm.toggleSelectedTenant,
-      remove: _vm.toggleUnSelectedTenant
-    },
-    model: {
-      value: _vm.advertisements.tenants,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "tenants", $$v);
-      },
-      expression: "advertisements.tenants"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -14092,28 +14135,6 @@ var staticRenderFns = [function () {
   return _c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Material "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Duration "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
       "for": "lastName"
     }
   }, [_vm._v("Company "), _c("span", {
@@ -14128,6 +14149,39 @@ var staticRenderFns = [function () {
       "for": "inputPassword3"
     }
   }, [_vm._v("Associate Sites "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Screen Type "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Material "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Duration "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }];
@@ -19625,7 +19679,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "firstName"
     }
-  }, [_vm._v("Type "), _c("span", {
+  }, [_vm._v("Screen Type "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {

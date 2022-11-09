@@ -45,7 +45,7 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Type <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="screen.screen_type">
 									    <option value="">Select Screen Type</option>
