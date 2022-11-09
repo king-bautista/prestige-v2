@@ -101,25 +101,7 @@
 										@remove="toggleUnSelected">
 									</multiselect> 
 								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
-								<div class="col-sm-8">
-									<multiselect v-model="advertisements.tenants"
-										:options="tenants"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Tenants"
-										label="brand_site_name"
-										track-by="brand_site_name"
-										@select="toggleSelectedTenant"
-										@remove="toggleUnSelectedTenant">
-										<span slot="noOptions">
-											Please select a sites
-										</span>
-									</multiselect> 
-								</div>
-							</div>
+							</div>                            
 							<div class="form-group row">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Screens</label>
 								<div class="col-sm-8">
@@ -132,6 +114,24 @@
 										track-by="screen_type_name"
 										@select="toggleSelectedScreen"
 										@remove="toggleUnSelectedScreen">
+										<span slot="noOptions">
+											Please select a sites
+										</span>
+									</multiselect> 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
+								<div class="col-sm-8">
+									<multiselect v-model="advertisements.tenants"
+										:options="tenants"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="Select Tenants"
+										label="brand_site_name"
+										track-by="brand_site_name"
+										@select="toggleSelectedTenant"
+										@remove="toggleUnSelectedTenant">
 										<span slot="noOptions">
 											Please select a sites
 										</span>
@@ -222,8 +222,8 @@
             		name: "Name", 
 					company_name: "Company",
             		site_names: "Site Name/s", 
-            		tenant_names: "Tenant/s", 
 					screen_names: "Screen/s",
+            		tenant_names: "Tenant/s", 
 					duration: "Duration",
 					air_dates: "Airdates",
             		active: {
@@ -234,7 +234,7 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    created_at: "Date Created"
+                    updated_at: "Last Updated"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/advertisement/list",

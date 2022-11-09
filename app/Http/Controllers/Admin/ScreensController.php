@@ -83,15 +83,17 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $data = [
+                'screen_type' => $request->screen_type,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_point_id' => $request->site_point_id,
-                'screen_type' => $request->screen_type,
-                'name' => $request->name,
+                'site_point_id' => ($request->site_point_id) ? $request->site_point_id : 0,
                 'kiosk_id' => $request->kiosk_id,
+                'name' => $request->name,
+                'slots' => $request->slots,
                 'active' => 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
+                'is_exclusive' => ($request->is_exclusive == 0) ? 0 : 1,
             ];
 
             $site_screen = SiteScreen::create($data);
@@ -119,15 +121,17 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $data = [
+                'screen_type' => $request->screen_type,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_point_id' => $request->site_point_id,
-                'screen_type' => $request->screen_type,
-                'name' => $request->name,
+                'site_point_id' => ($request->site_point_id) ? $request->site_point_id : 0,
                 'kiosk_id' => $request->kiosk_id,
+                'name' => $request->name,
+                'slots' => $request->slots,
                 'active' => ($request->active == 0) ? 0 : 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
+                'is_exclusive' => ($request->is_exclusive == 0) ? 0 : 1,
             ];
 
             $site_screen->update($data);
@@ -185,6 +189,14 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         try
     	{
             $site = SiteScreen::find($id);
+
+            if($site->screen_type != 'Directory')
+                return response([
+                    'message' => 'Only directory can set as default.',
+                    'status' => false,
+                    'status_code' => 422,
+                ], 422);
+
             SiteScreen::where('is_default', 1)->where('site_id', $site->site_id)->update(['is_default' => 0]);
             $site->update(['is_default' => 1]);
             return $this->response($site, 'Successfully Modified!', 200);

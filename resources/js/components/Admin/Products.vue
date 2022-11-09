@@ -167,7 +167,7 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    created_at: "Date Created"
+                    updated_at: "Last Updated"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/brand/product/list",
