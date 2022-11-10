@@ -13388,6 +13388,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
+/***/ (() => {
+
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\wamp64\\www\\prestige_v2\\resources\\js\\components\\Kiosk\\Banners.vue: Support for the experimental syntax 'jsx' isn't currently enabled (75:33):\n\n\u001b[0m \u001b[90m 73 |\u001b[39m                                 }\u001b[0m\n\u001b[0m \u001b[90m 74 |\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 |\u001b[39m                                 \u001b[33m<\u001b[39m\u001b[33mspan\u001b[39m v\u001b[33m-\u001b[39m\u001b[36melse\u001b[39m\u001b[33m-\u001b[39m\u001b[36mif\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"getFileExtension(banner.file_type) == 'image'\"\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 76 |\u001b[39m                                     \u001b[33m<\u001b[39m\u001b[33mimg\u001b[39m \u001b[33m:\u001b[39msrc\u001b[33m=\u001b[39m\u001b[32m\"banner.material_image_path\"\u001b[39m style\u001b[33m=\u001b[39m\u001b[32m\"border-radius: 20px; margin: 0px; height: 100%;\"\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 77 |\u001b[39m                                 \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mspan\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 78 |\u001b[39m                             \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m\u001b[32m'\u001b[39m\u001b[0m\n\nAdd @babel/preset-react (https://github.com/babel/babel/tree/main/packages/babel-preset-react) to the 'presets' section of your Babel config to enable transformation.\nIf you want to leave it as-is, add @babel/plugin-syntax-jsx (https://github.com/babel/babel/tree/main/packages/babel-plugin-syntax-jsx) to the 'plugins' section to enable parsing.\n    at instantiate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:72:32)\n    at constructor (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:367:12)\n    at Parser.raise (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:3706:19)\n    at Parser.expectOnePlugin (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:3763:18)\n    at Parser.parseExprAtom (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13305:18)\n    at Parser.parseExprSubscripts (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12875:23)\n    at Parser.parseUpdate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12854:21)\n    at Parser.parseMaybeUnary (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12824:23)\n    at Parser.parseMaybeUnaryOrPrivate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12615:61)\n    at Parser.parseExprOps (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12622:23)\n    at Parser.parseMaybeConditional (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12592:23)\n    at Parser.parseMaybeAssign (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12544:21)\n    at Parser.parseExpressionBase (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12480:23)\n    at C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12474:39\n    at Parser.allowInAnd (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14570:16)\n    at Parser.parseExpression (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12474:17)\n    at Parser.parseStatementContent (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15014:23)\n    at Parser.parseStatement (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14871:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15531:25)\n    at Parser.parseBlockBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15522:10)\n    at Parser.parseBlock (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15505:10)\n    at Parser.parseFunctionBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14175:24)\n    at Parser.parseFunctionBodyAndFinish (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14159:10)\n    at C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15679:12\n    at Parser.withSmartMixTopicForbiddingContext (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14547:14)\n    at Parser.parseFunction (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15678:10)\n    at Parser.parseFunctionOrFunctionSent (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13506:17)\n    at Parser.parseExprAtom (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13229:21)\n    at Parser.parseExprSubscripts (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12875:23)\n    at Parser.parseUpdate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12854:21)\n    at Parser.parseMaybeUnary (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12824:23)\n    at Parser.parseMaybeUnaryOrPrivate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12615:61)\n    at Parser.parseExprOps (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12622:23)\n    at Parser.parseMaybeConditional (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12592:23)\n    at Parser.parseMaybeAssign (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12544:21)\n    at C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12502:39\n    at Parser.allowInAnd (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14576:12)\n    at Parser.parseMaybeAssignAllowIn (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12502:17)\n    at Parser.parseExprListItem (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14281:18)\n    at Parser.parseCallExpressionArguments (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13101:22)\n    at Parser.parseCoverCallAndAsyncArrowHead (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12998:29)\n    at Parser.parseSubscript (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12923:19)\n    at Parser.parseSubscripts (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12892:19)\n    at Parser.parseExprSubscripts (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12881:17)\n    at Parser.parseUpdate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12854:21)\n    at Parser.parseMaybeUnary (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12824:23)\n    at Parser.parseMaybeUnaryOrPrivate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12615:61)\n    at Parser.parseExprOps (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12622:23)\n    at Parser.parseMaybeConditional (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12592:23)\n    at Parser.parseMaybeAssign (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12544:21)");
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js& ***!
@@ -22914,6 +22924,72 @@ render._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "carousel slide carousel-fade",
+    attrs: {
+      id: "banner-ads-carousel",
+      "data-ride": "carousel"
+    }
+  }, [_c("div", {
+    staticClass: "carousel-inner"
+  }, _vm._l(_vm.banners[0], function (banner, index) {
+    return _c("div", {
+      "class": index == 0 ? "carousel-item active" : "carousel-item",
+      attrs: {
+        "data-interval": banner.display_duration * 1000
+      }
+    }, [_vm.getFileExtension(banner.file_type) == "video" ? _c("span", [_c("video", {
+      staticStyle: {
+        "border-radius": "20px",
+        margin: "0px",
+        height: "100%"
+      },
+      attrs: {
+        preload: "none",
+        muted: "muted",
+        autoplay: "true"
+      },
+      domProps: {
+        muted: true
+      }
+    }, [_c("source", {
+      attrs: {
+        src: banner.material_image_path,
+        type: "video/ogg"
+      }
+    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.getFileExtension(banner.file_type) == "image" ? _c("span", [_c("img", {
+      staticStyle: {
+        "border-radius": "20px",
+        margin: "0px",
+        height: "100%"
+      },
+      attrs: {
+        src: banner.material_image_path
+      }
+    })]) : _vm._e()]);
+  }), 0)])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=template&id=39f81890&scoped=true&":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=template&id=39f81890&scoped=true& ***!
@@ -23606,6 +23682,11 @@ Vue.component('admin-advertisements', (__webpack_require__(/*! ./components/Admi
 Vue.component('admin-manage-maps', (__webpack_require__(/*! ./components/Admin/ManageMaps.vue */ "./resources/js/components/Admin/ManageMaps.vue")["default"]));
 Vue.component('admin-companies', (__webpack_require__(/*! ./components/Admin/Company.vue */ "./resources/js/components/Admin/Company.vue")["default"]));
 Vue.component('admin-illustrations', (__webpack_require__(/*! ./components/Admin/Illustrations.vue */ "./resources/js/components/Admin/Illustrations.vue")["default"]));
+
+/**
+ * KIOSK PART
+ */
+Vue.component('rotating-banners', (__webpack_require__(/*! ./components/Kiosk/Banners.vue */ "./resources/js/components/Kiosk/Banners.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -84901,6 +84982,45 @@ component.options.__file = "resources/js/components/Helpers/Table.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Banners.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/Kiosk/Banners.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Banners.vue?vue&type=template&id=b31e1ab4& */ "./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&");
+/* harmony import */ var _Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Banners.vue?vue&type=script&lang=js& */ "./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Kiosk/Banners.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Home.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/Kiosk/Home.vue ***!
@@ -85335,6 +85455,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Banners.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js& ***!
@@ -85737,6 +85873,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_template_id_9c7a2d6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_template_id_9c7a2d6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Table.vue?vue&type=template&id=9c7a2d6e&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Helpers/Table.vue?vue&type=template&id=9c7a2d6e&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Banners.vue?vue&type=template&id=b31e1ab4& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&");
 
 
 /***/ }),

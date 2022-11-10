@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ViewModels\SiteViewModel;
 use App\Models\ViewModels\CategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
+use App\Models\ViewModels\SiteAdViewModel;
 
 class MainController extends AppBaseController
 {
@@ -178,6 +179,32 @@ class MainController extends AppBaseController
                 'status_code' => 200,
             ], 200);
         }    
+    }
+
+    public function getBanners()
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            
+            $banners = SiteAdViewModel::where('site_ad_sites.site_id', $site->id)
+            ->where('site_ads.screen_type', 'Directory')
+            ->where('site_ads.ad_type', 'Banners')
+            ->join('site_ad_sites', 'site_ad_sites.site_ad_id', '=', 'site_ads.id')
+            ->select('site_ads.*')
+            ->get()->toArray();
+
+            $banners = array_chunk($banners, 2);
+            
+            return $this->response($banners, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Categories to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
     
     public function getAdvertisements($type, $site_id, $screen_id = null)
