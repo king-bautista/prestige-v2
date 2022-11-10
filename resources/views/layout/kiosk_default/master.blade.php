@@ -33,6 +33,7 @@
         <script src="{{ URL::to('assets/js/popper-v2.min.js') }}"></script>	
         <script src="{{ mix('/js/app.js') }}"></script>
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
+        <script src="{{ URL::to('js/lozad.min.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>
 </html>

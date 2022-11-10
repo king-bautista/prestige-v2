@@ -43,6 +43,11 @@ Vue.component('admin-companies', require('./components/Admin/Company.vue').defau
 Vue.component('admin-illustrations', require('./components/Admin/Illustrations.vue').default);
 
 /**
+ * KIOSK PART
+ */
+Vue.component('rotating-banners', require('./components/Kiosk/Banners.vue').default);
+
+/**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.

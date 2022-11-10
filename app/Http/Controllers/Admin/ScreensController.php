@@ -166,12 +166,15 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function getScreens($ids)
+    public function getScreens($ids, $type='')
     {
         try
     	{
             $ids = explode(",", substr($ids, 0, -1));
-            $site_screens = SiteScreenViewModel::whereIn('site_id', $ids)->get();
+            $site_screens = SiteScreenViewModel::whereIn('site_id', $ids)
+            ->when($type, function($query) use ($type) { 
+                return $query->where('screen_type', $type);
+            })->get();
             return $this->response($site_screens, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 

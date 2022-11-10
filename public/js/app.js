@@ -9327,6 +9327,7 @@ __webpack_require__.r(__webpack_exports__);
         end_date: '',
         sites: '',
         tenants: '',
+        screen_type: '',
         screens: '',
         active: true
       },
@@ -9339,6 +9340,7 @@ __webpack_require__.r(__webpack_exports__);
       tenant_ids: [],
       screens: [],
       screen_ids: [],
+      screen_types: ['Directory', 'LED', 'LFD', 'LED funnel'],
       options: {
         format: 'YYYY/MM/DD',
         useCurrent: false
@@ -9352,6 +9354,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         name: "Name",
         company_name: "Company",
+        screen_type: "Screen Type",
         site_names: "Site Name/s",
         screen_names: "Screen/s",
         tenant_names: "Tenant/s",
@@ -9461,20 +9464,19 @@ __webpack_require__.r(__webpack_exports__);
         return _this3.tenants = response.data.data;
       });
     },
-    getScreens: function getScreens() {
+    getScreens: function getScreens(type) {
       var _this4 = this;
       var site_ids = '';
       for (var i = 0; i < this.site_ids.length; i++) {
         site_ids += this.site_ids[i] + ',';
       }
-      axios.get('/admin/site/screen/get-screens/' + site_ids).then(function (response) {
+      axios.get('/admin/site/screen/get-screens/' + site_ids + '/' + type).then(function (response) {
         return _this4.screens = response.data.data;
       });
     },
     toggleSelected: function toggleSelected(value, id) {
       this.site_ids.push(value.id);
       this.getTenants();
-      this.getScreens();
     },
     toggleUnSelected: function toggleUnSelected(value, id) {
       var index = this.site_ids.indexOf(value.id);
@@ -9524,6 +9526,7 @@ __webpack_require__.r(__webpack_exports__);
       this.advertisements.end_date = '';
       this.advertisements.sites = [];
       this.advertisements.tenants = [];
+      this.advertisements.screen_type = '';
       this.advertisements.screens = [];
       this.advertisements.active = true;
       this.$refs.material.value = null;
@@ -9539,6 +9542,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("company_id", this.advertisements.company_id);
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
+      formData.append("screen_type", this.advertisements.screen_type);
       formData.append("file_path", this.advertisements.material);
       formData.append("display_duration", this.advertisements.display_duration);
       formData.append("start_date", this.advertisements.start_date);
@@ -9574,6 +9578,7 @@ __webpack_require__.r(__webpack_exports__);
         _this6.advertisements.end_date = advertisements.end_date;
         _this6.advertisements.sites = advertisements.sites;
         _this6.advertisements.tenants = advertisements.tenants;
+        _this6.advertisements.screen_type = advertisements.screen_type;
         _this6.advertisements.screens = advertisements.screens;
         _this6.advertisements.active = advertisements.active;
         _this6.$refs.material.value = null;
@@ -9588,8 +9593,10 @@ __webpack_require__.r(__webpack_exports__);
         advertisements.screens.forEach(function (value) {
           _this6.screen_ids.push(value.id);
         });
+        if (advertisements.screen_type) {
+          _this6.getScreens();
+        }
         _this6.getTenants();
-        _this6.getScreens();
         _this6.add_record = false;
         _this6.edit_record = true;
         $('#site_ad-form').modal('show');
@@ -9602,6 +9609,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("company_id", this.advertisements.company_id);
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
+      formData.append("screen_type", this.advertisements.screen_type);
       formData.append("file_path", this.advertisements.material);
       formData.append("display_duration", this.advertisements.display_duration);
       formData.append("start_date", this.advertisements.start_date);
@@ -13380,6 +13388,128 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var count = 1;
+var banner_array = [];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Banners",
+  data: function data() {
+    return {
+      banners: []
+    };
+  },
+  created: function created() {
+    this.getBanners();
+  },
+  methods: {
+    getFileExtension: function getFileExtension(fileType) {
+      switch (fileType) {
+        case 'ogg':
+        case 'ogv':
+        case 'mp4':
+        case 'wmv':
+        case 'avi':
+        case 'mkv':
+        case 'video/ogg':
+        case 'video/ogv':
+        case 'video/mp4':
+        case 'video/wmv':
+        case 'video/avi':
+        case 'video/mkv':
+          return 'video';
+          break;
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+        case 'image/gif':
+          return 'image';
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
+    getBanners: function getBanners() {
+      var _this = this;
+      axios.get('/api/v1/advertisements/banners').then(function (response) {
+        _this.banners = response.data.data;
+        banner_array = response.data.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    $(function () {
+      $('#banner-ads-carousel').on('slide.bs.carousel', function () {
+        if (banner_array[count].length > 0) {
+          $.each(banner_array[count], function (index, banner) {
+            var type = 'image';
+            switch (banner.file_type) {
+              case 'ogg':
+              case 'ogv':
+              case 'mp4':
+              case 'wmv':
+              case 'avi':
+              case 'mkv':
+              case 'video/ogg':
+              case 'video/ogv':
+              case 'video/mp4':
+              case 'video/wmv':
+              case 'video/avi':
+              case 'video/mkv':
+                type = 'video';
+                break;
+              case 'jpeg':
+              case 'jpg':
+              case 'png':
+              case 'gif':
+              case 'image/jpeg':
+              case 'image/jpg':
+              case 'image/png':
+              case 'image/gif':
+                type = 'image';
+                break;
+            }
+            var carousel_item = '';
+            carousel_item += '<div class=carousel-item data-interval="' + banner.display_duration * 1000 + '">';
+            if (type == 'video') {
+              carousel_item += '<span>';
+              carousel_item += '<video preload="none" muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%;">';
+              carousel_item += '<source src="' + banner.material_image_path + '" type="video/ogg">';
+              carousel_item += 'Your browser does not support the video tag.';
+              carousel_item += '</video>';
+              carousel_item += '</span>';
+            } else {
+              carousel_item += '<span>';
+              carousel_item += '<img src="' + banner.material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%;">';
+              carousel_item += '</span>';
+            }
+            carousel_item += '</div>';
+            $(".carousel-inner").append(carousel_item);
+          });
+          count++;
+        }
+      });
+    });
+  },
+  components: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js& ***!
@@ -13560,11 +13690,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_simple_suggest__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-simple-suggest */ "./node_modules/vue-simple-suggest/dist/es6.js");
-/* harmony import */ var vue_simple_suggest_dist_styles_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-simple-suggest/dist/styles.css */ "./node_modules/vue-simple-suggest/dist/styles.css");
-
- // Optional CSS
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Search",
   data: function data() {
@@ -13639,9 +13764,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  components: {
-    VueSimpleSuggest: vue_simple_suggest__WEBPACK_IMPORTED_MODULE_0__["default"]
-  }
+  components: {}
 });
 
 /***/ }),
@@ -13760,6 +13883,149 @@ var render = function render() {
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("treeselect", {
+    attrs: {
+      options: _vm.companies,
+      placeholder: "Select Company"
+    },
+    model: {
+      value: _vm.advertisements.company_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "company_id", $$v);
+      },
+      expression: "advertisements.company_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(3), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.sites,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Sites",
+      label: "name",
+      "track-by": "name"
+    },
+    on: {
+      select: _vm.toggleSelected,
+      remove: _vm.toggleUnSelected
+    },
+    model: {
+      value: _vm.advertisements.sites,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "sites", $$v);
+      },
+      expression: "advertisements.sites"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.advertisements.screen_type,
+      expression: "advertisements.screen_type"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.advertisements, "screen_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.getScreens($event.target.value);
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Screen Type")]), _vm._v(" "), _vm._l(_vm.screen_types, function (screen_type) {
+    return _c("option", {
+      domProps: {
+        value: screen_type
+      }
+    }, [_vm._v(" " + _vm._s(screen_type))]);
+  })], 2)])]), _vm._v(" "), _vm.advertisements.screen_type == "LED" || _vm.advertisements.screen_type == "LFD" ? _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Available Screens")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.screens,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Screens",
+      label: "screen_type_name",
+      "track-by": "screen_type_name"
+    },
+    on: {
+      select: _vm.toggleSelectedScreen,
+      remove: _vm.toggleUnSelectedScreen
+    },
+    model: {
+      value: _vm.advertisements.screens,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "screens", $$v);
+      },
+      expression: "advertisements.screens"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites and screen type.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.tenants,
+      multiple: true,
+      "close-on-select": true,
+      placeholder: "Select Tenants",
+      label: "brand_site_name",
+      "track-by": "brand_site_name"
+    },
+    on: {
+      select: _vm.toggleSelectedTenant,
+      remove: _vm.toggleUnSelectedTenant
+    },
+    model: {
+      value: _vm.advertisements.tenants,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "tenants", $$v);
+      },
+      expression: "advertisements.tenants"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-5"
   }, [_c("input", {
     ref: "material",
@@ -13804,7 +14070,7 @@ var render = function render() {
     }
   }), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\tYour browser does not support the video tag.\n\t\t\t\t\t\t\t\t\t\t")])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(3), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-2"
   }, [_c("input", {
     directives: [{
@@ -13860,114 +14126,6 @@ var render = function render() {
       expression: "advertisements.end_date"
     }
   })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("treeselect", {
-    attrs: {
-      options: _vm.companies,
-      placeholder: "Select Company"
-    },
-    model: {
-      value: _vm.advertisements.company_id,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "company_id", $$v);
-      },
-      expression: "advertisements.company_id"
-    }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.sites,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Sites",
-      label: "name",
-      "track-by": "name"
-    },
-    on: {
-      select: _vm.toggleSelected,
-      remove: _vm.toggleUnSelected
-    },
-    model: {
-      value: _vm.advertisements.sites,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "sites", $$v);
-      },
-      expression: "advertisements.sites"
-    }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Screens")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.screens,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Screens",
-      label: "screen_type_name",
-      "track-by": "screen_type_name"
-    },
-    on: {
-      select: _vm.toggleSelectedScreen,
-      remove: _vm.toggleUnSelectedScreen
-    },
-    model: {
-      value: _vm.advertisements.screens,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "screens", $$v);
-      },
-      expression: "advertisements.screens"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.tenants,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Tenants",
-      label: "brand_site_name",
-      "track-by": "brand_site_name"
-    },
-    on: {
-      select: _vm.toggleSelectedTenant,
-      remove: _vm.toggleUnSelectedTenant
-    },
-    model: {
-      value: _vm.advertisements.tenants,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "tenants", $$v);
-      },
-      expression: "advertisements.tenants"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a sites\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -14092,28 +14250,6 @@ var staticRenderFns = [function () {
   return _c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Material "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Duration "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
       "for": "lastName"
     }
   }, [_vm._v("Company "), _c("span", {
@@ -14128,6 +14264,39 @@ var staticRenderFns = [function () {
       "for": "inputPassword3"
     }
   }, [_vm._v("Associate Sites "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Screen Type "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Material "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Duration "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }];
@@ -19625,7 +19794,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "firstName"
     }
-  }, [_vm._v("Type "), _c("span", {
+  }, [_vm._v("Screen Type "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -22860,6 +23029,72 @@ render._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "carousel slide carousel-fade",
+    attrs: {
+      id: "banner-ads-carousel",
+      "data-ride": "carousel"
+    }
+  }, [_c("div", {
+    staticClass: "carousel-inner"
+  }, _vm._l(_vm.banners[0], function (banner, index) {
+    return _c("div", {
+      "class": index == 0 ? "carousel-item active" : "carousel-item",
+      attrs: {
+        "data-interval": banner.display_duration * 1000
+      }
+    }, [_vm.getFileExtension(banner.file_type) == "video" ? _c("span", [_c("video", {
+      staticStyle: {
+        "border-radius": "20px",
+        margin: "0px",
+        height: "100%"
+      },
+      attrs: {
+        preload: "none",
+        muted: "muted",
+        autoplay: "true"
+      },
+      domProps: {
+        muted: true
+      }
+    }, [_c("source", {
+      attrs: {
+        src: banner.material_image_path,
+        type: "video/ogg"
+      }
+    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.getFileExtension(banner.file_type) == "image" ? _c("span", [_c("img", {
+      staticStyle: {
+        "border-radius": "20px",
+        margin: "0px",
+        height: "100%"
+      },
+      attrs: {
+        src: banner.material_image_path
+      }
+    })]) : _vm._e()]);
+  }), 0)])]);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=template&id=39f81890&scoped=true&":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=template&id=39f81890&scoped=true& ***!
@@ -23552,6 +23787,11 @@ Vue.component('admin-advertisements', (__webpack_require__(/*! ./components/Admi
 Vue.component('admin-manage-maps', (__webpack_require__(/*! ./components/Admin/ManageMaps.vue */ "./resources/js/components/Admin/ManageMaps.vue")["default"]));
 Vue.component('admin-companies', (__webpack_require__(/*! ./components/Admin/Company.vue */ "./resources/js/components/Admin/Company.vue")["default"]));
 Vue.component('admin-illustrations', (__webpack_require__(/*! ./components/Admin/Illustrations.vue */ "./resources/js/components/Admin/Illustrations.vue")["default"]));
+
+/**
+ * KIOSK PART
+ */
+Vue.component('rotating-banners', (__webpack_require__(/*! ./components/Kiosk/Banners.vue */ "./resources/js/components/Kiosk/Banners.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -40160,30 +40400,6 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "/*!\n * Datetimepicker for Bootstrap 3\n * version : 4.17.47\n * https://github.com/Eonasdan/bootstrap-datetimepicker/\n */\n.bootstrap-datetimepicker-widget {\n  list-style: none;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu {\n  display: block;\n  margin: 2px 0;\n  padding: 4px;\n  width: 19em;\n}\n@media (min-width: 576px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n@media (min-width: 768px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n@media (min-width: 992px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n.bootstrap-datetimepicker-widget.dropdown-menu:before,\n.bootstrap-datetimepicker-widget.dropdown-menu:after {\n  content: '';\n  display: inline-block;\n  position: absolute;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.bottom:before {\n  border-left: 7px solid transparent;\n  border-right: 7px solid transparent;\n  border-bottom: 7px solid #ccc;\n  border-bottom-color: rgba(0, 0, 0, 0.2);\n  top: -7px;\n  left: 7px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.bottom:after {\n  border-left: 6px solid transparent;\n  border-right: 6px solid transparent;\n  border-bottom: 6px solid white;\n  top: -6px;\n  left: 8px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.top:before {\n  border-left: 7px solid transparent;\n  border-right: 7px solid transparent;\n  border-top: 7px solid #ccc;\n  border-top-color: rgba(0, 0, 0, 0.2);\n  bottom: -7px;\n  left: 6px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.top:after {\n  border-left: 6px solid transparent;\n  border-right: 6px solid transparent;\n  border-top: 6px solid white;\n  bottom: -6px;\n  left: 7px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.pull-right:before {\n  left: auto;\n  right: 6px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.pull-right:after {\n  left: auto;\n  right: 7px;\n}\n.bootstrap-datetimepicker-widget .list-unstyled {\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget a[data-action] {\n  padding: 6px 0;\n}\n.bootstrap-datetimepicker-widget a[data-action]:active {\n  box-shadow: none;\n}\n.bootstrap-datetimepicker-widget .timepicker-hour,\n.bootstrap-datetimepicker-widget .timepicker-minute,\n.bootstrap-datetimepicker-widget .timepicker-second {\n  width: 54px;\n  font-weight: bold;\n  font-size: 1.2em;\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget button[data-action] {\n  padding: 6px;\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"incrementHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Increment Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"incrementMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Increment Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"decrementHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Decrement Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"decrementMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Decrement Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"showHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Show Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"showMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Show Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"togglePeriod\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Toggle AM/PM\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"clear\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Clear the picker\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"today\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Set the date to today\";\n}\n.bootstrap-datetimepicker-widget .picker-switch {\n  text-align: center;\n}\n.bootstrap-datetimepicker-widget .picker-switch::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Toggle Date and Time Screens\";\n}\n.bootstrap-datetimepicker-widget .picker-switch td {\n  padding: 0;\n  margin: 0;\n  height: auto;\n  width: auto;\n  line-height: inherit;\n}\n.bootstrap-datetimepicker-widget .picker-switch td span,\n.bootstrap-datetimepicker-widget .picker-switch td i {\n  line-height: 2.5;\n  height: 2.5em;\n  width: 100%;\n}\n.bootstrap-datetimepicker-widget table {\n  width: 100%;\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget table td,\n.bootstrap-datetimepicker-widget table th {\n  text-align: center;\n  border-radius: 0.25rem;\n  padding: 0.5em;\n}\n.bootstrap-datetimepicker-widget table th {\n  height: 20px;\n  line-height: 20px;\n  width: 20px;\n}\n.bootstrap-datetimepicker-widget table th.picker-switch {\n  width: 145px;\n}\n.bootstrap-datetimepicker-widget table th.disabled,\n.bootstrap-datetimepicker-widget table th.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget table th.prev::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Previous Month\";\n}\n.bootstrap-datetimepicker-widget table th.next::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Next Month\";\n}\n.bootstrap-datetimepicker-widget table thead tr:first-child th {\n  cursor: pointer;\n}\n.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {\n  background: #f8f9fa;\n}\n.bootstrap-datetimepicker-widget table td {\n  height: 54px;\n  line-height: 54px;\n  width: 54px;\n}\n.bootstrap-datetimepicker-widget table td.cw {\n  font-size: 0.8em;\n  height: 20px;\n  line-height: 20px;\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td.day {\n  height: 20px;\n  line-height: 20px;\n  width: 20px;\n}\n.bootstrap-datetimepicker-widget table td.day:hover,\n.bootstrap-datetimepicker-widget table td.hour:hover,\n.bootstrap-datetimepicker-widget table td.minute:hover,\n.bootstrap-datetimepicker-widget table td.second:hover {\n  background: #f8f9fa;\n  cursor: pointer;\n}\n.bootstrap-datetimepicker-widget table td.old,\n.bootstrap-datetimepicker-widget table td.new {\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td.today {\n  position: relative;\n}\n.bootstrap-datetimepicker-widget table td.today:before {\n  content: '';\n  display: inline-block;\n  border: solid transparent;\n  border-width: 0 0 7px 7px;\n  border-bottom-color: #dee2e6;\n  border-top-color: rgba(0, 0, 0, 0.2);\n  position: absolute;\n  bottom: 4px;\n  right: 4px;\n}\n.bootstrap-datetimepicker-widget table td.active,\n.bootstrap-datetimepicker-widget table td.active:hover {\n  background-color: #dee2e6;\n  color: #007bff;\n  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);\n}\n.bootstrap-datetimepicker-widget table td.active.today:before {\n  border-bottom-color: #fff;\n}\n.bootstrap-datetimepicker-widget table td.disabled,\n.bootstrap-datetimepicker-widget table td.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget table td span,\n.bootstrap-datetimepicker-widget table td i {\n  display: inline-block;\n  width: 54px;\n  height: 54px;\n  line-height: 54px;\n  margin: 2px 1.5px;\n  cursor: pointer;\n  border-radius: 0.25rem;\n}\n.bootstrap-datetimepicker-widget table td span:hover,\n.bootstrap-datetimepicker-widget table td i:hover {\n  background: #f8f9fa;\n}\n.bootstrap-datetimepicker-widget table td span.active,\n.bootstrap-datetimepicker-widget table td i.active {\n  background-color: #dee2e6;\n  color: #007bff;\n  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);\n}\n.bootstrap-datetimepicker-widget table td span.old,\n.bootstrap-datetimepicker-widget table td i.old {\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td span.disabled,\n.bootstrap-datetimepicker-widget table td i.disabled,\n.bootstrap-datetimepicker-widget table td span.disabled:hover,\n.bootstrap-datetimepicker-widget table td i.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget.usetwentyfour td.hour {\n  height: 27px;\n  line-height: 27px;\n}\n.bootstrap-datetimepicker-widget.wider {\n  width: 21em;\n}\n.bootstrap-datetimepicker-widget .datepicker-decades .decade {\n  line-height: 1.8em !important;\n}\n.input-group.date .input-group-addon {\n  cursor: pointer;\n}\n.input-group.date .input-group-text {\n  cursor: pointer;\n}\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n", ""]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
-/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-simple-suggest/dist/styles.css":
-/*!******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-simple-suggest/dist/styles.css ***!
-  \******************************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
-// Imports
-
-var ___CSS_LOADER_EXPORT___ = _laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, "\r\n\r\n.vue-simple-suggest > ul {\r\n  list-style: none;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.vue-simple-suggest.designed {\r\n  position: relative;\r\n}\r\n\r\n.vue-simple-suggest.designed, .vue-simple-suggest.designed * {\r\n  -webkit-box-sizing: border-box;\r\n          box-sizing: border-box;\r\n}\r\n\r\n.vue-simple-suggest.designed .input-wrapper input {\r\n  display: block;\r\n  width: 100%;\r\n  padding: 10px;\r\n  border: 1px solid #cde;\r\n  border-radius: 3px;\r\n  color: black;\r\n  background: white;\r\n  outline:none;\r\n  -webkit-transition: all .1s;\r\n  transition: all .1s;\r\n  -webkit-transition-delay: .05s;\r\n          transition-delay: .05s\r\n}\r\n\r\n.vue-simple-suggest.designed.focus .input-wrapper input {\r\n  border: 1px solid #aaa;\r\n}\r\n\r\n.vue-simple-suggest.designed .suggestions {\r\n  position: absolute;\r\n  left: 0;\r\n  right: 0;\r\n  top: 100%;\r\n  top: calc(100% + 5px);\r\n  border-radius: 3px;\r\n  border: 1px solid #aaa;\r\n  background-color: #fff;\r\n  opacity: 1;\r\n  z-index: 1000;\r\n}\r\n\r\n.vue-simple-suggest.designed .suggestions .suggest-item {\r\n  cursor: pointer;\r\n  -webkit-user-select: none;\r\n     -moz-user-select: none;\r\n      -ms-user-select: none;\r\n          user-select: none;\r\n}\r\n\r\n.vue-simple-suggest.designed .suggestions .suggest-item,\r\n.vue-simple-suggest.designed .suggestions .misc-item {\r\n  padding: 5px 10px;\r\n}\r\n\r\n.vue-simple-suggest.designed .suggestions .suggest-item.hover {\r\n  background-color: #2874D5 !important;\r\n  color: #fff !important;\r\n}\r\n\r\n.vue-simple-suggest.designed .suggestions .suggest-item.selected {\r\n  background-color: #2832D5;\r\n  color: #fff;\r\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -83220,36 +83436,6 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
-/***/ "./node_modules/vue-simple-suggest/dist/styles.css":
-/*!*********************************************************!*\
-  !*** ./node_modules/vue-simple-suggest/dist/styles.css ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_styles_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./styles.css */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-simple-suggest/dist/styles.css");
-
-            
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_styles_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_styles_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css& ***!
@@ -84847,6 +85033,45 @@ component.options.__file = "resources/js/components/Helpers/Table.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Banners.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/Kiosk/Banners.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Banners.vue?vue&type=template&id=b31e1ab4& */ "./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&");
+/* harmony import */ var _Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Banners.vue?vue&type=script&lang=js& */ "./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Kiosk/Banners.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Home.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/Kiosk/Home.vue ***!
@@ -85281,6 +85506,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Banners.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/Kiosk/Home.vue?vue&type=script&lang=js& ***!
@@ -85683,6 +85924,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_template_id_9c7a2d6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_template_id_9c7a2d6e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Table.vue?vue&type=template&id=9c7a2d6e&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Helpers/Table.vue?vue&type=template&id=9c7a2d6e&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Banners_vue_vue_type_template_id_b31e1ab4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Banners.vue?vue&type=template&id=b31e1ab4& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=template&id=b31e1ab4&");
 
 
 /***/ }),
@@ -89135,706 +89393,6 @@ if (inBrowser && window.Vue) {
 var version = '3.6.5';
 
 
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-simple-suggest/dist/es6.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/vue-simple-suggest/dist/es6.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
-const defaultControls = {
-  selectionUp: [38],
-  selectionDown: [40],
-  select: [13],
-  hideList: [27],
-  showList: [40],
-  autocomplete: [32, 13]
-};
-
-const modes = {
-  input: String,
-  select: Object
-};
-
-function fromPath(obj, path) {
-  return path.split('.').reduce((o, i) => o === Object(o) ? o[i] : o, obj);
-}
-
-function hasKeyCode(arr, event) {
-  return hasKeyCodeByCode(arr, event.keyCode);
-}
-
-function hasKeyCodeByCode(arr, keyCode) {
-  if (arr.length <= 0) return false;
-
-  const has = arr => arr.some(code => code === keyCode);
-  if (Array.isArray(arr[0])) {
-    return arr.some(array => has(array));
-  } else {
-    return has(arr);
-  }
-}
-
-function _await(value, then, direct) {
-  if (direct) {
-    return then ? then(value) : value;
-  }if (!value || !value.then) {
-    value = Promise.resolve(value);
-  }return then ? value.then(then) : value;
-}function _async(f) {
-  return function () {
-    for (var args = [], i = 0; i < arguments.length; i++) {
-      args[i] = arguments[i];
-    }try {
-      return Promise.resolve(f.apply(this, args));
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  };
-}function _empty() {}function _awaitIgnored(value, direct) {
-  if (!direct) {
-    return value && value.then ? value.then(_empty) : Promise.resolve();
-  }
-}function _invoke(body, then) {
-  var result = body();if (result && result.then) {
-    return result.then(then);
-  }return then(result);
-}function _invokeIgnored(body) {
-  var result = body();if (result && result.then) {
-    return result.then(_empty);
-  }
-}
-function _catch(body, recover) {
-  try {
-    var result = body();
-  } catch (e) {
-    return recover(e);
-  }if (result && result.then) {
-    return result.then(void 0, recover);
-  }return result;
-}function _finally(body, finalizer) {
-  try {
-    var result = body();
-  } catch (e) {
-    return finalizer();
-  }if (result && result.then) {
-    return result.then(finalizer, finalizer);
-  }return finalizer();
-}var VueSimpleSuggest = {
-  render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "vue-simple-suggest", class: [_vm.styles.vueSimpleSuggest, { designed: !_vm.destyled, focus: _vm.isInFocus }], on: { "keydown": function ($event) {
-          if (!$event.type.indexOf('key') && _vm._k($event.keyCode, "tab", 9, $event.key, "Tab")) {
-            return null;
-          }_vm.isTabbed = true;
-        } } }, [_c('div', { ref: "inputSlot", staticClass: "input-wrapper", class: _vm.styles.inputWrapper, attrs: { "role": "combobox", "aria-haspopup": "listbox", "aria-owns": _vm.listId, "aria-expanded": !!_vm.listShown && !_vm.removeList ? 'true' : 'false' } }, [_vm._t("default", [_c('input', _vm._b({ staticClass: "default-input", class: _vm.styles.defaultInput, domProps: { "value": _vm.text || '' } }, 'input', _vm.$attrs, false))])], 2), _vm._v(" "), _c('transition', { attrs: { "name": "vue-simple-suggest" } }, [!!_vm.listShown && !_vm.removeList ? _c('ul', { staticClass: "suggestions", class: _vm.styles.suggestions, attrs: { "id": _vm.listId, "role": "listbox", "aria-labelledby": _vm.listId } }, [!!this.$scopedSlots['misc-item-above'] ? _c('li', { class: _vm.styles.miscItemAbove }, [_vm._t("misc-item-above", null, { "suggestions": _vm.suggestions, "query": _vm.text })], 2) : _vm._e(), _vm._v(" "), _vm._l(_vm.suggestions, function (suggestion, index) {
-      return _c('li', { key: _vm.getId(suggestion, index), staticClass: "suggest-item", class: [_vm.styles.suggestItem, {
-          selected: _vm.isSelected(suggestion),
-          hover: _vm.isHovered(suggestion)
-        }], attrs: { "role": "option", "aria-selected": _vm.isHovered(suggestion) || _vm.isSelected(suggestion) ? 'true' : 'false', "id": _vm.getId(suggestion, index) }, on: { "mouseenter": function ($event) {
-            return _vm.hover(suggestion, $event.target);
-          }, "mouseleave": function ($event) {
-            return _vm.hover(undefined);
-          }, "click": function ($event) {
-            return _vm.suggestionClick(suggestion, $event);
-          } } }, [_vm._t("suggestion-item", [_c('span', [_vm._v(_vm._s(_vm.displayProperty(suggestion)))])], { "autocomplete": function () {
-          return _vm.autocompleteText(suggestion);
-        }, "suggestion": suggestion, "query": _vm.text })], 2);
-    }), _vm._v(" "), !!this.$scopedSlots['misc-item-below'] ? _c('li', { class: _vm.styles.miscItemBelow }, [_vm._t("misc-item-below", null, { "suggestions": _vm.suggestions, "query": _vm.text })], 2) : _vm._e()], 2) : _vm._e()])], 1);
-  },
-  staticRenderFns: [],
-  name: 'vue-simple-suggest',
-  inheritAttrs: false,
-  model: {
-    prop: 'value',
-    event: 'input'
-  },
-  props: {
-    styles: {
-      type: Object,
-      default: () => ({})
-    },
-    controls: {
-      type: Object,
-      default: () => defaultControls
-    },
-    minLength: {
-      type: Number,
-      default: 1
-    },
-    maxSuggestions: {
-      type: Number,
-      default: 10
-    },
-    displayAttribute: {
-      type: String,
-      default: 'title'
-    },
-    valueAttribute: {
-      type: String,
-      default: 'id'
-    },
-    list: {
-      type: [Function, Array],
-      default: () => []
-    },
-    removeList: {
-      type: Boolean,
-      default: false
-    },
-    destyled: {
-      type: Boolean,
-      default: false
-    },
-    filterByQuery: {
-      type: Boolean,
-      default: false
-    },
-    filter: {
-      type: Function,
-      default(el, value) {
-        return value ? ~this.displayProperty(el).toLowerCase().indexOf(value.toLowerCase()) : true;
-      }
-    },
-    debounce: {
-      type: Number,
-      default: 0
-    },
-    nullableSelect: {
-      type: Boolean,
-      default: false
-    },
-    value: {},
-    mode: {
-      type: String,
-      default: 'input',
-      validator: value => !!~Object.keys(modes).indexOf(value.toLowerCase())
-    },
-    preventHide: {
-      type: Boolean,
-      default: false
-    }
-  },
-  // Handle run-time mode changes (now working):
-  watch: {
-    mode: {
-      handler(current, old) {
-        this.constructor.options.model.event = current;
-
-        // Can be null if the component is root
-        this.$parent && this.$parent.$forceUpdate();
-
-        this.$nextTick(() => {
-          if (current === 'input') {
-            this.$emit('input', this.text);
-          } else {
-            this.$emit('select', this.selected);
-          }
-        });
-      },
-      immediate: true
-    },
-    value: {
-      handler(current) {
-        if (typeof current !== 'string') {
-          current = this.displayProperty(current);
-        }
-        this.updateTextOutside(current);
-      },
-      immediate: true
-    }
-  },
-  //
-  data() {
-    return {
-      selected: null,
-      hovered: null,
-      suggestions: [],
-      listShown: false,
-      inputElement: null,
-      canSend: true,
-      timeoutInstance: null,
-      text: this.value,
-      isPlainSuggestion: false,
-      isClicking: false,
-      isInFocus: false,
-      isFalseFocus: false,
-      isTabbed: false,
-      controlScheme: {},
-      listId: `${this._uid}-suggestions`
-    };
-  },
-  computed: {
-    listIsRequest() {
-      return typeof this.list === 'function';
-    },
-    inputIsComponent() {
-      return this.$slots.default && this.$slots.default.length > 0 && !!this.$slots.default[0].componentInstance;
-    },
-    input() {
-      return this.inputIsComponent ? this.$slots.default[0].componentInstance : this.inputElement;
-    },
-    on() {
-      return this.inputIsComponent ? '$on' : 'addEventListener';
-    },
-    off() {
-      return this.inputIsComponent ? '$off' : 'removeEventListener';
-    },
-    hoveredIndex() {
-      for (let i = 0; i < this.suggestions.length; i++) {
-        const el = this.suggestions[i];
-        if (this.hovered && this.valueProperty(this.hovered) == this.valueProperty(el)) {
-          return i;
-        }
-      }
-      return -1;
-    },
-    textLength() {
-      return this.text && this.text.length || this.inputElement.value.length || 0;
-    },
-    isSelectedUpToDate() {
-      return !!this.selected && this.displayProperty(this.selected) === this.text;
-    }
-  },
-  created() {
-    this.controlScheme = Object.assign({}, defaultControls, this.controls);
-  },
-  mounted: _async(function () {
-    const _this = this;
-
-    return _await(_this.$slots.default, function () {
-
-      _this.$nextTick(() => {
-        _this.inputElement = _this.$refs['inputSlot'].querySelector('input');
-
-        if (_this.inputElement) {
-          _this.setInputAriaAttributes();
-          _this.prepareEventHandlers(true);
-        } else {
-          console.error('No input element found');
-        }
-      });
-    });
-  }),
-
-  beforeDestroy() {
-    this.prepareEventHandlers(false);
-  },
-  methods: {
-    isEqual(suggestion, item) {
-      return item && this.valueProperty(suggestion) == this.valueProperty(item);
-    },
-    isSelected(suggestion) {
-      return this.isEqual(suggestion, this.selected);
-    },
-    isHovered(suggestion) {
-      return this.isEqual(suggestion, this.hovered);
-    },
-    setInputAriaAttributes() {
-      this.inputElement.setAttribute('aria-activedescendant', '');
-      this.inputElement.setAttribute('aria-autocomplete', 'list');
-      this.inputElement.setAttribute('aria-controls', this.listId);
-    },
-    prepareEventHandlers(enable) {
-      const binder = this[enable ? 'on' : 'off'];
-      const keyEventsList = {
-        click: this.showSuggestions,
-        keydown: this.onKeyDown,
-        keyup: this.onListKeyUp
-      };
-      const eventsList = Object.assign({
-        blur: this.onBlur,
-        focus: this.onFocus,
-        input: this.onInput
-      }, keyEventsList);
-
-      for (const event in eventsList) {
-        this.input[binder](event, eventsList[event]);
-      }
-
-      const listenerBinder = enable ? 'addEventListener' : 'removeEventListener';
-
-      for (const event in keyEventsList) {
-        this.inputElement[listenerBinder](event, keyEventsList[event]);
-      }
-    },
-    isScopedSlotEmpty(slot) {
-      if (slot) {
-        const vNode = slot(this);
-        return !(Array.isArray(vNode) || vNode && (vNode.tag || vNode.context || vNode.text || vNode.children));
-      }
-
-      return true;
-    },
-    miscSlotsAreEmpty() {
-      const slots = ['misc-item-above', 'misc-item-below'].map(s => this.$scopedSlots[s]);
-
-      if (slots.every(s => !!s)) {
-        return slots.every(this.isScopedSlotEmpty.bind(this));
-      }
-
-      const slot = slots.find(s => !!s);
-
-      return this.isScopedSlotEmpty.call(this, slot);
-    },
-    getPropertyByAttribute(obj, attr) {
-      return this.isPlainSuggestion ? obj : typeof obj !== undefined ? fromPath(obj, attr) : obj;
-    },
-    displayProperty(obj) {
-      if (this.isPlainSuggestion) {
-        return obj;
-      }
-
-      let display = this.getPropertyByAttribute(obj, this.displayAttribute);
-
-      if (typeof display === 'undefined') {
-        display = JSON.stringify(obj);
-
-        if (process && ~"development".indexOf('dev')) {
-          console.warn('[vue-simple-suggest]: Please, provide `display-attribute` as a key or a dotted path for a property from your object.');
-        }
-      }
-
-      return String(display || '');
-    },
-    valueProperty(obj) {
-      if (this.isPlainSuggestion) {
-        return obj;
-      }
-
-      const value = this.getPropertyByAttribute(obj, this.valueAttribute);
-
-      if (typeof value === 'undefined') {
-        console.error(`[vue-simple-suggest]: Please, check if you passed 'value-attribute' (default is 'id') and 'display-attribute' (default is 'title') props correctly.
-        Your list objects should always contain a unique identifier.`);
-      }
-
-      return value;
-    },
-
-    autocompleteText(suggestion) {
-      this.setText(this.displayProperty(suggestion));
-    },
-    setText(text) {
-      this.$nextTick(() => {
-        this.inputElement.value = text;
-        this.text = text;
-        this.$emit('input', text);
-      });
-    },
-    select(item) {
-      if (this.selected !== item || this.nullableSelect && !item) {
-        this.selected = item;
-        this.$emit('select', item);
-
-        if (item) {
-          this.autocompleteText(item);
-        }
-      }
-
-      this.hover(null);
-    },
-    hover(item, elem) {
-      const elemId = !!item ? this.getId(item, this.hoveredIndex) : '';
-
-      this.inputElement.setAttribute('aria-activedescendant', elemId);
-
-      if (item && item !== this.hovered) {
-        this.$emit('hover', item, elem);
-      }
-
-      this.hovered = item;
-    },
-    hideList() {
-      if (this.listShown) {
-        this.listShown = false;
-        this.hover(null);
-        this.$emit('hide-list');
-      }
-    },
-    showList() {
-      if (!this.listShown) {
-        if (this.textLength >= this.minLength && (this.suggestions.length > 0 || !this.miscSlotsAreEmpty())) {
-          this.listShown = true;
-          this.$emit('show-list');
-        }
-      }
-    },
-    showSuggestions: _async(function () {
-      const _this2 = this;
-
-      return _invoke(function () {
-        if (_this2.suggestions.length === 0 && _this2.minLength <= _this2.textLength) {
-          // try show misc slots while researching
-          _this2.showList();
-          return _awaitIgnored(_this2.research());
-        }
-      }, function () {
-
-        _this2.showList();
-      });
-    }),
-
-    onShowList(e) {
-      if (hasKeyCode(this.controlScheme.showList, e)) {
-        this.showSuggestions();
-      }
-    },
-    moveSelection(e) {
-      if (!this.listShown || !this.suggestions.length) return;
-      if (hasKeyCode([this.controlScheme.selectionUp, this.controlScheme.selectionDown], e)) {
-        e.preventDefault();
-
-        const isMovingDown = hasKeyCode(this.controlScheme.selectionDown, e);
-        const direction = isMovingDown * 2 - 1;
-        const listEdge = isMovingDown ? 0 : this.suggestions.length - 1;
-        const hoversBetweenEdges = isMovingDown ? this.hoveredIndex < this.suggestions.length - 1 : this.hoveredIndex > 0;
-
-        let item = null;
-
-        if (!this.hovered) {
-          item = this.selected || this.suggestions[listEdge];
-        } else if (hoversBetweenEdges) {
-          item = this.suggestions[this.hoveredIndex + direction];
-        } else /* if hovers on edge */{
-            item = this.suggestions[listEdge];
-          }
-        this.hover(item);
-      }
-    },
-    onKeyDown(e) {
-      const select = this.controlScheme.select,
-            hideList = this.controlScheme.hideList;
-
-      // prevent form submit on keydown if Enter key registered in the keyup list
-      if (e.key === 'Enter' && this.listShown && hasKeyCodeByCode([select, hideList], 13)) {
-        e.preventDefault();
-      }
-
-      if (e.key === 'Tab' && this.hovered) {
-        this.select(this.hovered);
-      }
-
-      this.onShowList(e);
-      this.moveSelection(e);
-      this.onAutocomplete(e);
-    },
-    onListKeyUp(e) {
-      const select = this.controlScheme.select,
-            hideList = this.controlScheme.hideList;
-
-      if (this.listShown && hasKeyCode([select, hideList], e)) {
-        e.preventDefault();
-        if (hasKeyCode(select, e)) {
-          this.select(this.hovered);
-        }
-
-        this.hideList();
-      }
-    },
-    onAutocomplete(e) {
-      if (hasKeyCode(this.controlScheme.autocomplete, e) && (e.ctrlKey || e.shiftKey) && this.suggestions.length > 0 && this.suggestions[0] && this.listShown) {
-        e.preventDefault();
-        this.hover(this.suggestions[0]);
-        this.autocompleteText(this.suggestions[0]);
-      }
-    },
-    suggestionClick(suggestion, e) {
-      this.$emit('suggestion-click', suggestion, e);
-      this.select(suggestion);
-
-      if (!this.preventHide) this.hideList();
-
-      if (this.isClicking) {
-        setTimeout(() => {
-          this.inputElement.focus();
-
-          /// Ensure, that all needed flags are off before finishing the click.
-          this.isClicking = false;
-        }, 0);
-      }
-    },
-    onBlur(e) {
-      if (this.isInFocus) {
-
-        /// Clicking starts here, because input's blur occurs before the suggestionClick
-        /// and exactly when the user clicks the mouse button or taps the screen.
-        this.isClicking = this.hovered && !this.isTabbed;
-
-        if (!this.isClicking) {
-          this.isInFocus = false;
-          this.hideList();
-
-          this.$emit('blur', e);
-        } else if (e && e.isTrusted && !this.isTabbed) {
-          this.isFalseFocus = true;
-        }
-      } else {
-        this.inputElement.blur();
-        console.error(`This should never happen!
-          If you encountered this error, please make sure that your input component emits 'focus' events properly.
-          For more info see https://github.com/KazanExpress/vue-simple-suggest#custom-input.
-
-          If your 'vue-simple-suggest' setup does not include a custom input component - please,
-          report to https://github.com/KazanExpress/vue-simple-suggest/issues/new`);
-      }
-
-      this.isTabbed = false;
-    },
-    onFocus(e) {
-      this.isInFocus = true;
-
-      // Only emit, if it was a native input focus
-      if (e && !this.isFalseFocus) {
-        this.$emit('focus', e);
-      }
-
-      // Show list only if the item has not been clicked (isFalseFocus indicates that click was made earlier)
-      if (!this.isClicking && !this.isFalseFocus) {
-        this.showSuggestions();
-      }
-
-      this.isFalseFocus = false;
-    },
-    onInput(inputEvent) {
-      const value = !inputEvent.target ? inputEvent : inputEvent.target.value;
-
-      this.updateTextOutside(value);
-      this.$emit('input', value);
-    },
-    updateTextOutside(value) {
-      if (this.text === value) {
-        return;
-      }
-
-      this.text = value;
-      if (this.hovered) this.hover(null);
-
-      if (this.text.length < this.minLength) {
-        this.hideList();
-        return;
-      }
-
-      if (this.debounce) {
-        clearTimeout(this.timeoutInstance);
-        this.timeoutInstance = setTimeout(this.research, this.debounce);
-      } else {
-        this.research();
-      }
-    },
-    research: _async(function () {
-      const _this3 = this;
-
-      return _finally(function () {
-        return _catch(function () {
-          return _invokeIgnored(function () {
-            if (_this3.canSend) {
-              _this3.canSend = false;
-              // @TODO: fix when promises will be cancelable (never :D)
-              let textBeforeRequest = _this3.text;
-              return _await(_this3.getSuggestions(_this3.text), function (newList) {
-                if (textBeforeRequest === _this3.text) {
-                  _this3.$set(_this3, 'suggestions', newList);
-                }
-              });
-            }
-          });
-        }, function (e) {
-          _this3.clearSuggestions();
-          throw e;
-        });
-      }, function () {
-        _this3.canSend = true;
-
-        if (_this3.suggestions.length === 0 && _this3.miscSlotsAreEmpty()) {
-          _this3.hideList();
-        } else if (_this3.isInFocus) {
-          _this3.showList();
-        }
-
-        return _this3.suggestions;
-      });
-    }),
-    getSuggestions: _async(function (value) {
-      const _this4 = this;
-
-      value = value || '';
-
-      if (value.length < _this4.minLength) {
-        return [];
-      }
-
-      _this4.selected = null;
-
-      // Start request if can
-      if (_this4.listIsRequest) {
-        _this4.$emit('request-start', value);
-      }
-
-      let nextIsPlainSuggestion = false;
-      let result = [];
-      return _finally(function () {
-        return _catch(function () {
-          return _invoke(function () {
-            if (_this4.listIsRequest) {
-              return _await(_this4.list(value), function (_this4$list) {
-                result = _this4$list || [];
-              });
-            } else {
-              result = _this4.list;
-            }
-          }, function () {
-
-            // IFF the result is not an array (just in case!) - make it an array
-            if (!Array.isArray(result)) {
-              result = [result];
-            }
-
-            nextIsPlainSuggestion = typeof result[0] !== 'object' && typeof result[0] !== 'undefined' || Array.isArray(result[0]);
-
-            if (_this4.filterByQuery) {
-              result = result.filter(el => _this4.filter(el, value));
-            }
-
-            if (_this4.listIsRequest) {
-              _this4.$emit('request-done', result);
-            }
-          });
-        }, function (e) {
-          if (_this4.listIsRequest) {
-            _this4.$emit('request-failed', e);
-          } else {
-            throw e;
-          }
-        });
-      }, function () {
-        if (_this4.maxSuggestions) {
-          result.splice(_this4.maxSuggestions);
-        }
-
-        _this4.isPlainSuggestion = nextIsPlainSuggestion;
-        return result;
-      });
-    }),
-
-    clearSuggestions() {
-      this.suggestions.splice(0);
-    },
-    getId(value, i) {
-      return `${this.listId}-suggestion-${this.isPlainSuggestion ? i : this.valueProperty(value) || i}`;
-    }
-  }
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VueSimpleSuggest);
 
 
 /***/ }),
