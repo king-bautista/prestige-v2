@@ -11383,6 +11383,7 @@ CREATE TABLE IF NOT EXISTS `site_ads` (
   `company_id` bigint(20) unsigned DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ad_type` enum('Events','Online','Banners','Fullscreen','Pop-Up') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `screen_type` enum('Directory','LED','LFD','LED funnel') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `file_path` mediumtext COLLATE utf8mb4_unicode_ci,
   `file_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `display_order` int(11) NOT NULL,
@@ -11397,28 +11398,28 @@ CREATE TABLE IF NOT EXISTS `site_ads` (
   KEY `site_ads_company_id_index` (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ads: ~3 rows (approximately)
-INSERT INTO `site_ads` (`id`, `company_id`, `name`, `ad_type`, `file_path`, `file_type`, `display_order`, `display_duration`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 'MEGA - FACADE BA', 'Banners', 'uploads/media/advertisements/Banners/70c97549-3e15-9cda.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-03 01:07:15', '2022-11-07 19:45:16', NULL),
-	(2, 1, 'SM - You\'re always welcome here BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-9230-3481.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 19:45:51', '2022-11-07 19:45:51', NULL),
-	(3, 2, 'Powered By PRESTIGE BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-92b5-38f2.ogv', 'ogv', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 19:47:07', '2022-11-07 23:06:05', NULL),
-	(4, 1, 'SMMG SWATCH BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-9385-9d11.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:32:58', '2022-11-07 22:32:58', NULL),
-	(5, 1, 'SMMG - Auntie Anne BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-941c-2863.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:34:53', '2022-11-07 22:43:21', NULL),
-	(6, 1, 'SMMG Scribe BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-94a9-4f97.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:44:38', '2022-11-07 22:47:08', NULL),
-	(7, 1, 'SMMG PLANET VAPE BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-952d-4894.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:56:15', '2022-11-07 22:56:15', NULL),
-	(8, 1, 'SMMG MELONPAN ICE BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-95bb-2444.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:57:18', '2022-11-07 22:57:18', NULL),
-	(9, 1, 'SMMG HEAVENLY STITCHIN BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-9646-d790.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:59:51', '2022-11-07 22:59:51', NULL),
-	(10, 1, 'SMMG BLK 513 BA', 'Banners', 'uploads/media/advertisements/banners/70c97549-96db-bf89.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:01:34', '2022-11-07 23:01:34', NULL),
-	(11, 1, 'MEGA - FACADE FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-3de9-1d76.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:03:45', '2022-11-07 23:03:45', NULL),
-	(12, 1, 'SM - You\'re always welcome here FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-91f0-f52a.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:04:39', '2022-11-07 23:04:39', NULL),
-	(13, 2, 'Powered By PRESTIGE FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-9286-5c27.ogv', 'ogv', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:05:41', '2022-11-07 23:05:41', NULL),
-	(14, 1, 'SMMG SWATCH FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-9343-a869.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:06:53', '2022-11-07 23:06:53', NULL),
-	(15, 1, 'SMMG Auntie Anne FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-93f1-5d98.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:07:39', '2022-11-07 23:07:39', NULL),
-	(16, 1, 'SMMG Scribe FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-945f-5e01.ogv', 'ogv', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:10:55', '2022-11-07 23:10:55', NULL),
-	(17, 1, 'SMMG PLANET VAPE FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-94f5-9a12.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:11:30', '2022-11-07 23:11:30', NULL),
-	(18, 1, 'SMMG MELONPAN ICE FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-958d-4add.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:12:05', '2022-11-07 23:12:05', NULL),
-	(19, 1, 'SMMG HEAVENLY STITCHIN FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-961c-36f4.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:13:17', '2022-11-07 23:13:17', NULL),
-	(20, 1, 'SMMG BLK 513 FS', 'Fullscreen', 'uploads/media/advertisements/fullscreen/70c97549-96ba-ba7d.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:13:49', '2022-11-07 23:13:49', NULL);
+-- Dumping data for table prestige.site_ads: ~20 rows (approximately)
+INSERT INTO `site_ads` (`id`, `company_id`, `name`, `ad_type`, `screen_type`, `file_path`, `file_type`, `display_order`, `display_duration`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 'MEGA - FACADE BA', 'Banners', 'Directory', 'uploads/media/advertisements/Banners/70c97549-3e15-9cda.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-03 01:07:15', '2022-11-07 19:45:16', NULL),
+	(2, 1, 'SM - You\'re always welcome here BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-9230-3481.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 19:45:51', '2022-11-07 19:45:51', NULL),
+	(3, 2, 'Powered By PRESTIGE BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-92b5-38f2.ogv', 'ogv', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 19:47:07', '2022-11-09 00:08:52', NULL),
+	(4, 1, 'SMMG SWATCH BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-9385-9d11.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:32:58', '2022-11-07 22:32:58', NULL),
+	(5, 1, 'SMMG - Auntie Anne BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-941c-2863.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:34:53', '2022-11-07 22:43:21', NULL),
+	(6, 1, 'SMMG Scribe BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-94a9-4f97.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:44:38', '2022-11-07 22:47:08', NULL),
+	(7, 1, 'SMMG PLANET VAPE BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-952d-4894.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:56:15', '2022-11-07 22:56:15', NULL),
+	(8, 1, 'SMMG MELONPAN ICE BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-95bb-2444.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:57:18', '2022-11-07 22:57:18', NULL),
+	(9, 1, 'SMMG HEAVENLY STITCHIN BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-9646-d790.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:59:51', '2022-11-07 22:59:51', NULL),
+	(10, 1, 'SMMG BLK 513 BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-96db-bf89.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:01:34', '2022-11-08 22:29:11', NULL),
+	(11, 1, 'MEGA - FACADE FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-3de9-1d76.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:03:45', '2022-11-07 23:03:45', NULL),
+	(12, 1, 'SM - You\'re always welcome here FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-91f0-f52a.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:04:39', '2022-11-07 23:04:39', NULL),
+	(13, 2, 'Powered By PRESTIGE FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-9286-5c27.ogv', 'ogv', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:05:41', '2022-11-07 23:05:41', NULL),
+	(14, 1, 'SMMG SWATCH FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-9343-a869.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:06:53', '2022-11-07 23:06:53', NULL),
+	(15, 1, 'SMMG Auntie Anne FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-93f1-5d98.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:07:39', '2022-11-07 23:07:39', NULL),
+	(16, 1, 'SMMG Scribe FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-945f-5e01.ogv', 'ogv', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:10:55', '2022-11-07 23:10:55', NULL),
+	(17, 1, 'SMMG PLANET VAPE FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-94f5-9a12.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:11:30', '2022-11-07 23:11:30', NULL),
+	(18, 1, 'SMMG MELONPAN ICE FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-958d-4add.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:12:05', '2022-11-07 23:12:05', NULL),
+	(19, 1, 'SMMG HEAVENLY STITCHIN FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-961c-36f4.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:13:17', '2022-11-07 23:13:17', NULL),
+	(20, 1, 'SMMG BLK 513 FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-96ba-ba7d.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:13:49', '2022-11-07 23:13:49', NULL);
 
 -- Dumping structure for table prestige.site_ad_screens
 DROP TABLE IF EXISTS `site_ad_screens`;
@@ -11444,7 +11445,7 @@ CREATE TABLE IF NOT EXISTS `site_ad_sites` (
   CONSTRAINT `site_ad_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ad_sites: ~3 rows (approximately)
+-- Dumping data for table prestige.site_ad_sites: ~19 rows (approximately)
 INSERT INTO `site_ad_sites` (`site_ad_id`, `site_id`) VALUES
 	(1, 1),
 	(2, 1),
@@ -11454,7 +11455,6 @@ INSERT INTO `site_ad_sites` (`site_ad_id`, `site_id`) VALUES
 	(7, 1),
 	(8, 1),
 	(9, 1),
-	(10, 1),
 	(11, 1),
 	(12, 1),
 	(14, 1),
@@ -11463,7 +11463,9 @@ INSERT INTO `site_ad_sites` (`site_ad_id`, `site_id`) VALUES
 	(17, 1),
 	(18, 1),
 	(19, 1),
-	(20, 1);
+	(20, 1),
+	(10, 1),
+	(3, 1);
 
 -- Dumping structure for table prestige.site_ad_tenants
 DROP TABLE IF EXISTS `site_ad_tenants`;
@@ -11476,7 +11478,7 @@ CREATE TABLE IF NOT EXISTS `site_ad_tenants` (
   CONSTRAINT `site_ad_tenants_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ad_tenants: ~0 rows (approximately)
+-- Dumping data for table prestige.site_ad_tenants: ~13 rows (approximately)
 INSERT INTO `site_ad_tenants` (`site_ad_id`, `site_tenant_id`) VALUES
 	(4, 410),
 	(5, 124),
@@ -11484,14 +11486,14 @@ INSERT INTO `site_ad_tenants` (`site_ad_id`, `site_tenant_id`) VALUES
 	(7, 677),
 	(8, 231),
 	(9, 950),
-	(10, 848),
 	(14, 410),
 	(15, 124),
 	(16, 908),
 	(17, 677),
 	(18, 231),
 	(19, 950),
-	(20, 848);
+	(20, 848),
+	(10, 848);
 
 -- Dumping structure for table prestige.site_buildings
 DROP TABLE IF EXISTS `site_buildings`;
@@ -11641,15 +11643,17 @@ CREATE TABLE IF NOT EXISTS `site_point_links` (
 DROP TABLE IF EXISTS `site_screens`;
 CREATE TABLE IF NOT EXISTS `site_screens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `screen_type` enum('Directory','LED','LFD','LED funnel') COLLATE utf8mb4_unicode_ci NOT NULL,
   `site_id` bigint(20) unsigned NOT NULL,
   `site_building_id` bigint(20) unsigned NOT NULL,
   `site_building_level_id` bigint(20) unsigned NOT NULL,
-  `site_point_id` bigint(20) unsigned NOT NULL,
-  `screen_type` enum('Directory','LED','LFD','LED funnel') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `site_point_id` bigint(20) unsigned DEFAULT '0',
   `kiosk_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slots` int(11) NOT NULL DEFAULT '0',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `is_exclusive` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -11660,14 +11664,16 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_screens_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screens: ~3 rows (approximately)
-INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `name`, `kiosk_id`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 1, 2, 0, 'Directory', 'National Book Store', '13747', 1, 0, '2022-10-25 01:28:36', '2022-10-25 17:24:02', NULL),
-	(2, 1, 1, 2, 0, 'Directory', 'Kenny Rogers', NULL, 1, 1, '2022-10-25 01:39:22', '2022-10-25 17:24:02', NULL),
-	(3, 2, 4, 19, 0, 'Directory', 'Admin Test', '1549', 1, 1, '2022-10-25 17:21:39', '2022-10-25 17:23:55', NULL),
-	(4, 2, 4, 20, 0, 'Directory', 'Sample', NULL, 1, 0, '2022-10-25 17:22:01', '2022-10-25 17:23:55', NULL);
+-- Dumping data for table prestige.site_screens: ~6 rows (approximately)
+INSERT INTO `site_screens` (`id`, `screen_type`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Directory', 1, 1, 2, 0, '789101', 'National Book Store', 24, 1, 1, 0, '2022-10-25 01:28:36', '2022-11-08 18:25:30', NULL),
+	(2, 'Directory', 1, 1, 2, 0, '123456', 'Kenny Rogers', 24, 1, 0, 0, '2022-10-25 01:39:22', '2022-11-08 18:25:30', NULL),
+	(3, 'Directory', 2, 4, 19, 0, '1549', 'Admin Test', 0, 1, 1, 0, '2022-10-25 17:21:39', '2022-11-08 18:10:58', '2022-11-08 18:10:58'),
+	(4, 'Directory', 2, 4, 20, 0, NULL, 'Sample', 0, 1, 0, 0, '2022-10-25 17:22:01', '2022-11-08 18:10:56', '2022-11-08 18:10:56'),
+	(5, 'LED', 1, 2, 12, 0, NULL, 'Samsung', 40, 1, 0, 0, '2022-11-08 18:08:57', '2022-11-08 18:10:09', NULL),
+	(6, 'LED', 1, 1, 4, 0, NULL, 'Uniqlo', 40, 1, 0, 0, '2022-11-08 18:11:22', '2022-11-08 18:11:22', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
 DROP TABLE IF EXISTS `site_screen_uptime`;
