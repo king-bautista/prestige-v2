@@ -79,10 +79,37 @@
                 $('#banner-ads-carousel').on('slide.bs.carousel', function () {
                     if(banner_array[count].length > 0) {
                         $.each(banner_array[count], function (index, banner) {
-                            console.log(banner);
+                            var type = 'image';
+                            switch(banner.file_type) {
+                                case 'ogg':
+                                case 'ogv':
+                                case 'mp4':
+                                case 'wmv':
+                                case 'avi':
+                                case 'mkv':
+                                case 'video/ogg':
+                                case 'video/ogv':
+                                case 'video/mp4':
+                                case 'video/wmv':
+                                case 'video/avi':
+                                case 'video/mkv':
+                                    type = 'video';
+                                    break;
+                                case 'jpeg':
+                                case 'jpg':
+                                case 'png':
+                                case 'gif':
+                                case 'image/jpeg':
+                                case 'image/jpg':
+                                case 'image/png':
+                                case 'image/gif':
+                                    type = 'image';
+                                    break;
+                            }
+
                             var carousel_item = '';
-                            carousel_item = '<div class=carousel-item data-interval="('+banner.display_duration*1000+')">';
-                                if(getFileExtension(banner.file_type) == 'video') {
+                            carousel_item += '<div class=carousel-item data-interval="'+banner.display_duration*1000+'">';
+                                if(type == 'video') {
                                     carousel_item += '<span>';
                                     carousel_item += '<video preload="none" muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%;">';
                                     carousel_item += '<source src="'+banner.material_image_path+'" type="video/ogg">';
@@ -90,11 +117,13 @@
                                     carousel_item += '</video>';
                                     carousel_item += '</span>';
                                 }
-
-                                <span v-else-if="getFileExtension(banner.file_type) == 'image'">
-                                    <img :src="banner.material_image_path" style="border-radius: 20px; margin: 0px; height: 100%;">
-                                </span>
-                            </div>'
+                                else {
+                                    carousel_item += '<span>';
+                                    carousel_item += '<img src="'+banner.material_image_path+'" style="border-radius: 20px; margin: 0px; height: 100%;">';
+                                    carousel_item += '</span>';
+                                }
+                            carousel_item += '</div>';
+                            $(".carousel-inner").append(carousel_item);
                         });
                         count++;
                     }

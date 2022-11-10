@@ -70,9 +70,6 @@
     </div>
 </template>
 <script> 
-    import VueSimpleSuggest from 'vue-simple-suggest'
-    import 'vue-simple-suggest/dist/styles.css' // Optional CSS
-
 	export default {
         name: "Search",
         data() {
@@ -194,7 +191,6 @@
         },
 
         components: {
-            VueSimpleSuggest
  	    }
     };
 
