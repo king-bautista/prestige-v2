@@ -183,8 +183,8 @@ class MainController extends AppBaseController
 
     public function getBanners()
     {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             
             $banners = SiteAdViewModel::where('site_ad_sites.site_id', $site->id)
@@ -195,18 +195,47 @@ class MainController extends AppBaseController
             ->select('site_ads.*')
             ->get()->toArray();
 
-            $banners = array_chunk($banners, 2);
+            $banners = array_chunk($banners, 1);
             
             return $this->response($banners, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Categories to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Banner to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
+
+    public function getFullscreen()
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            
+            $fullscreens = SiteAdViewModel::where('site_ad_sites.site_id', $site->id)
+            ->where('site_ads.screen_type', 'Directory')
+            ->where('site_ads.ad_type', 'Fullscreen')
+            ->where('active', 1)
+            ->join('site_ad_sites', 'site_ad_sites.site_ad_id', '=', 'site_ads.id')
+            ->select('site_ads.*')
+            ->get()->toArray();
+
+            $fullscreens = array_chunk($fullscreens, 1);
+            
+            return $this->response($fullscreens, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Fullscreen to display!',
+                'status_code' => 200,
+            ], 200);
+        }
+    }
+
+    
     
     public function getAdvertisements($type, $site_id, $screen_id = null)
     {

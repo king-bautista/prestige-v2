@@ -34,6 +34,21 @@
         <script src="{{ mix('/js/app.js') }}"></script>
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
         <script src="{{ URL::to('js/lozad.min.js') }}"></script>
+        <script>
+            // $('body').append("<div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>");
+
+            // $(window).on('load', function(){
+            //     setTimeout(removeLoader, 6000); //wait for page load PLUS two seconds.
+            // });
+
+            // function removeLoader(){
+            //     $( "#loadingDiv" ).fadeOut(500, function() {
+            //         // fadeOut complete. Remove the loading div
+            //         $( "#loadingDiv" ).remove(); //makes page more lightweight 
+            //     });  
+            // }
+
+        </script>
         @stack('scripts') <!-- To include script links -->
     </body>
 </html>

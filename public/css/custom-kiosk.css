@@ -29,7 +29,7 @@ body{
 }
 
 .main-content-holder {
-    height: 890px;
+    height: 980px;
 }
 
 .button-holder {
@@ -44,7 +44,7 @@ body{
 .h-button {
     position: relative;
     display: inline-flex;
-    width: 190px;
+    width: 225px;
     height: 80px;
 }
 
@@ -53,13 +53,13 @@ body{
     position: absolute;
     text-align: center;
     width: 94px;
-    top: 18px;
-    left: 68px;
-    font-size: 22px;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
 }
 
 .widget-button {
-    background-size: 190px auto;
+    background-size: 225px auto;
     background-repeat: no-repeat;
     font-family: 'Henry Sans Medium';
 }
@@ -306,7 +306,7 @@ body{
     padding: 5px;
     border-radius:10px;
     height:90px;
-    width:320px;
+    width:360px;
 }
 
 .tenant-store .image-holder {
@@ -434,4 +434,22 @@ body{
     z-index: 1;
     border-radius: 5px !important;
     margin-top: 2px !important;
+}
+
+#loadingDiv {
+    position:absolute;;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index: 99999;
+    background-color:#000;
+}
+
+#screensaverwidget
+{
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    z-index: 9999;
 }

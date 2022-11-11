@@ -1,0 +1,156 @@
+<template>
+    <div>
+        <div style="width:100%;height:100%;position:absolute; top: 0;" id="screensaverwidget">
+            <div id="fullscreen-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+                <div class="carousel-inner" id="carousel-fullscreen">
+                    <div v-for="(screen, index) in fullscreen[0]" class="carousel-item active" :data-interval="(screen.display_duration*1000)">
+                        <span v-if="getFileExtension(screen.file_type) == 'video'">
+                            <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
+                                <source :src="screen.material_image_path" type="video/ogg">
+                                Your browser does not support the video tag.
+                            </video>
+                        </span>
+                        <span v-else-if="getFileExtension(screen.file_type) == 'image'">
+                            <img :src="screen.material_image_path" style="margin: 0px; height: 100%; width: 100%;">
+                        </span>
+                    </div>
+                    <div v-for="(screen, index) in fullscreen[1]" class="carousel-item" :data-interval="(screen.display_duration*1000)">
+                        <span v-if="getFileExtension(screen.file_type) == 'video'">
+                            <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
+                                <source :src="screen.material_image_path" type="video/ogg">
+                                Your browser does not support the video tag.
+                            </video>
+                        </span>
+                        <span v-else-if="getFileExtension(screen.file_type) == 'image'">
+                            <img :src="screen.material_image_path" style="margin: 0px; height: 100%; width: 100%;">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <img src="/assets/images/touchheretostart.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">
+        </div>
+    </div>
+</template>
+<script> 
+    var countscreen = 2;
+    var fullscreen_array = [];
+	export default {
+        name: "Fullscreen",
+        data() {
+            return {
+                fullscreen: [],
+            };
+        },
+
+        created() {
+            this.getFullscreen();
+        },
+
+        methods: {
+            getFileExtension(fileType) {			
+                switch(fileType) {
+                    case 'ogg':
+                    case 'ogv':
+                    case 'mp4':
+                    case 'wmv':
+                    case 'avi':
+                    case 'mkv':
+                    case 'video/ogg':
+                    case 'video/ogv':
+                    case 'video/mp4':
+                    case 'video/wmv':
+                    case 'video/avi':
+                    case 'video/mkv':
+                        return 'video';
+                        break;
+                    case 'jpeg':
+                    case 'jpg':
+                    case 'png':
+                    case 'gif':
+                    case 'image/jpeg':
+                    case 'image/jpg':
+                    case 'image/png':
+                    case 'image/gif':
+                        return 'image';
+                        break;
+                    default:
+						return false;
+                        break;
+                }
+            },
+
+            getFullscreen: function() {
+                axios.get('/api/v1/advertisements/fullscreen')
+                .then(response => {
+                    this.fullscreen = response.data.data;
+                    fullscreen_array = response.data.data;
+                });
+            }
+        },
+
+        mounted() {
+            $(function() {
+                $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
+                    $('#carousel-fullscreen .carousel-item:first').remove();
+                    appendFullscreen();
+                    if(fullscreen_array.length == countscreen) {
+                        countscreen = 0;                        
+                    }
+                })
+            });
+
+            function appendFullscreen() {
+                if((fullscreen_array.length-1) >= countscreen) {
+                    $.each(fullscreen_array[countscreen], function (index, screen) {
+                        var type = 'image';
+                        switch(screen.file_type) {
+                            case 'ogg':
+                            case 'ogv':
+                            case 'mp4':
+                            case 'wmv':
+                            case 'avi':
+                            case 'mkv':
+                            case 'video/ogg':
+                            case 'video/ogv':
+                            case 'video/mp4':
+                            case 'video/wmv':
+                            case 'video/avi':
+                            case 'video/mkv':
+                                type = 'video';
+                                break;
+                            case 'jpeg':
+                            case 'jpg':
+                            case 'png':
+                            case 'gif':
+                            case 'image/jpeg':
+                            case 'image/jpg':
+                            case 'image/png':
+                            case 'image/gif':
+                                type = 'image';
+                                break;
+                        }
+
+                        var carousel_item = '';
+                        carousel_item += '<div data-interval="'+screen.display_duration*1000+'" class="carousel-item">';
+                            if(type == 'video') {
+                                carousel_item += '<span>';
+                                carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
+                                carousel_item += '<source src="'+screen.material_image_path+'" type="video/ogg">';
+                                carousel_item += 'Your browser does not support the video tag.';
+                                carousel_item += '</video>';
+                                carousel_item += '</span>';
+                            }
+                            else {
+                                carousel_item += '<span>';
+                                carousel_item += '<img src="'+screen.material_image_path+'" style="margin: 0px; height: 100%; width: 100%;">';
+                                carousel_item += '</span>';
+                            }
+                        carousel_item += '</div>';
+                        $("#carousel-fullscreen").append(carousel_item);
+                    });
+                    countscreen++;
+                }
+            }
+        },
+    };
+</script>

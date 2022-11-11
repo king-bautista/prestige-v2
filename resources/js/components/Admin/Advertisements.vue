@@ -76,7 +76,7 @@
 								</div>
 							</div>						
 							<div class="form-group row" v-if="advertisements.screen_type == 'LED' || advertisements.screen_type == 'LFD'">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Available Screens</label>
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Available Screens <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.screens"
 										:options="screens"
@@ -94,7 +94,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants</label>
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.tenants"
 										:options="tenants"
