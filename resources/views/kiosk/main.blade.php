@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3 mt-2 p-0">
+        <div class="col-md-3 p-1">
             <div class="banner-ads">
                 <rotating-banners></rotating-banners>               
             </div>
@@ -40,17 +40,34 @@
             <div id="popover-content" class="hide d-none" style="z-index:999">
                 Need help? Touch here.
             </div>
-            <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip" style="z-index:9999;position:absolute;top:775px;right:0px;">
+            <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip" style="z-index:9999;position:absolute;top:870px;right:0px;">
                 <img src="{{ URL::to('assets/images/English/Help.png') }}" id="helpbutton">
             </div>
         </div>
     </div>
 </div>
+<rotating-screensaver></rotating-screensaver>
+
 <!-- /.content -->
 @stop
 
 @push('scripts')
 <script>
+    var screensaver_handle = null;
+
+    $(document).on('click',function(){
+        $("#screensaverwidget").hide();
+        if(screensaver_handle) {
+			clearTimeout(screensaver_handle);	
+			screensaver_handle = null;
+		}
+
+        screensaver_handle = setTimeout(() => {
+            $("#screensaverwidget").show();
+		}, 1000 * 60 * 2);
+		// }, 10000000 * 60 * 2);//DEVMODE
+    });
+
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover({
             html: true,

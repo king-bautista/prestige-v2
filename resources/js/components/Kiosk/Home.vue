@@ -10,7 +10,7 @@
         </div>
         <!-- MAIN CATEGORY -->
         <div v-show="home_category">
-            <div class="row">
+            <div class="row mt-5 mb-5">
                 <div class="col-md-12 home-title text-center">
                     Search your favorite stores
                 </div>
@@ -28,7 +28,7 @@
 
         <!-- SUB CATEGORY -->
         <div v-show="child_category">
-            <div class="row">
+            <div class="row mt-5 mb-5">
                 <div class="col-md-12 home-title text-center">
                     {{ current_category.label}}
                 </div>
@@ -46,12 +46,12 @@
 
         <!-- SUPPLEMENTALS -->
         <div v-show="supplementals">
-            <div class="row">
+            <div class="row mt-5 mb-5">
                 <div class="col-md-12 home-title text-center">
                     {{ current_category.label}}
                 </div>
             </div>
-            <div class="row col-md-9 offset-md-2 mb-3">
+            <div class="row col-md-10 offset-md-1 mb-3">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
                     <div class="carousel-inner">
                         
@@ -86,7 +86,7 @@
 
         <!-- ALPHABETICAL -->
         <div v-show="alphabetical">
-            <div class="row">
+            <div class="row mt-5 mb-5">
                 <div class="col-md-12 home-title text-center">
                     <div v-if="!category_top_banner">{{ category_label }}</div>
                     <div class="hts-strip" v-if="category_top_banner">
@@ -95,7 +95,7 @@
                     </div>                    
                 </div>
             </div>
-            <div class="row col-md-9 offset-md-2">
+            <div class="row col-md-10 offset-md-1">
                 <div id="myTenants" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-if="tenant_list.length > 0">
                     <div class="carousel-inner">
                         
@@ -156,7 +156,7 @@
                 </div>
             </div>
         </div>
-        <img v-show="!home_category" :src="back_button" style="z-index:999;position:absolute;top:690px;right:15px; cursor:pointer;" @click="goBack">
+        <img v-show="!home_category" :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
 
     </div>
 </template>

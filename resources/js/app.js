@@ -46,6 +46,7 @@ Vue.component('admin-illustrations', require('./components/Admin/Illustrations.v
  * KIOSK PART
  */
 Vue.component('rotating-banners', require('./components/Kiosk/Banners.vue').default);
+Vue.component('rotating-screensaver', require('./components/Kiosk/ScreenSaver.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

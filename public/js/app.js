@@ -13399,7 +13399,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var count = 1;
+var count = 2;
 var banner_array = [];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Banners",
@@ -13454,56 +13454,63 @@ var banner_array = [];
   mounted: function mounted() {
     $(function () {
       $('#banner-ads-carousel').on('slide.bs.carousel', function () {
-        if (banner_array[count].length > 0) {
-          $.each(banner_array[count], function (index, banner) {
-            var type = 'image';
-            switch (banner.file_type) {
-              case 'ogg':
-              case 'ogv':
-              case 'mp4':
-              case 'wmv':
-              case 'avi':
-              case 'mkv':
-              case 'video/ogg':
-              case 'video/ogv':
-              case 'video/mp4':
-              case 'video/wmv':
-              case 'video/avi':
-              case 'video/mkv':
-                type = 'video';
-                break;
-              case 'jpeg':
-              case 'jpg':
-              case 'png':
-              case 'gif':
-              case 'image/jpeg':
-              case 'image/jpg':
-              case 'image/png':
-              case 'image/gif':
-                type = 'image';
-                break;
-            }
-            var carousel_item = '';
-            carousel_item += '<div class=carousel-item data-interval="' + banner.display_duration * 1000 + '">';
-            if (type == 'video') {
-              carousel_item += '<span>';
-              carousel_item += '<video preload="none" muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%;">';
-              carousel_item += '<source src="' + banner.material_image_path + '" type="video/ogg">';
-              carousel_item += 'Your browser does not support the video tag.';
-              carousel_item += '</video>';
-              carousel_item += '</span>';
-            } else {
-              carousel_item += '<span>';
-              carousel_item += '<img src="' + banner.material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%;">';
-              carousel_item += '</span>';
-            }
-            carousel_item += '</div>';
-            $(".carousel-inner").append(carousel_item);
-          });
-          count++;
+        $('#carousel-banner .carousel-item:first').remove();
+        appendBanners();
+        if (banner_array.length == count) {
+          count = 0;
         }
       });
     });
+    function appendBanners() {
+      if (banner_array.length >= count) {
+        $.each(banner_array[count], function (index, banner) {
+          var type = 'image';
+          switch (banner.file_type) {
+            case 'ogg':
+            case 'ogv':
+            case 'mp4':
+            case 'wmv':
+            case 'avi':
+            case 'mkv':
+            case 'video/ogg':
+            case 'video/ogv':
+            case 'video/mp4':
+            case 'video/wmv':
+            case 'video/avi':
+            case 'video/mkv':
+              type = 'video';
+              break;
+            case 'jpeg':
+            case 'jpg':
+            case 'png':
+            case 'gif':
+            case 'image/jpeg':
+            case 'image/jpg':
+            case 'image/png':
+            case 'image/gif':
+              type = 'image';
+              break;
+          }
+          var carousel_item = '';
+          carousel_item += '<div data-interval="' + banner.display_duration * 1000 + '" class="carousel-item">';
+          if (type == 'video') {
+            carousel_item += '<span>';
+            carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">';
+            carousel_item += '<source src="' + banner.material_image_path + '" type="video/ogg">';
+            carousel_item += 'Your browser does not support the video tag.';
+            carousel_item += '</video>';
+            carousel_item += '</span>';
+          } else {
+            carousel_item += '<span>';
+            carousel_item += '<img src="' + banner.material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">';
+            carousel_item += '</span>';
+          }
+          carousel_item += '</div>';
+          $("#carousel-banner").append(carousel_item);
+        });
+        count++;
+      }
+    }
   },
   components: {}
 });
@@ -13675,6 +13682,134 @@ $(document).ready(function () {
   // $('.carousel .carousel-inner').on('dragstart', 'a', function () {
   //     return false;
   // });
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var countscreen = 2;
+var fullscreen_array = [];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Fullscreen",
+  data: function data() {
+    return {
+      fullscreen: []
+    };
+  },
+  created: function created() {
+    this.getFullscreen();
+  },
+  methods: {
+    getFileExtension: function getFileExtension(fileType) {
+      switch (fileType) {
+        case 'ogg':
+        case 'ogv':
+        case 'mp4':
+        case 'wmv':
+        case 'avi':
+        case 'mkv':
+        case 'video/ogg':
+        case 'video/ogv':
+        case 'video/mp4':
+        case 'video/wmv':
+        case 'video/avi':
+        case 'video/mkv':
+          return 'video';
+          break;
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+        case 'image/gif':
+          return 'image';
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
+    getFullscreen: function getFullscreen() {
+      var _this = this;
+      axios.get('/api/v1/advertisements/fullscreen').then(function (response) {
+        _this.fullscreen = response.data.data;
+        fullscreen_array = response.data.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    $(function () {
+      $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
+        $('#carousel-fullscreen .carousel-item:first').remove();
+        appendFullscreen();
+        if (fullscreen_array.length == countscreen) {
+          countscreen = 0;
+        }
+      });
+    });
+    function appendFullscreen() {
+      if (fullscreen_array.length - 1 >= countscreen) {
+        $.each(fullscreen_array[countscreen], function (index, screen) {
+          var type = 'image';
+          switch (screen.file_type) {
+            case 'ogg':
+            case 'ogv':
+            case 'mp4':
+            case 'wmv':
+            case 'avi':
+            case 'mkv':
+            case 'video/ogg':
+            case 'video/ogv':
+            case 'video/mp4':
+            case 'video/wmv':
+            case 'video/avi':
+            case 'video/mkv':
+              type = 'video';
+              break;
+            case 'jpeg':
+            case 'jpg':
+            case 'png':
+            case 'gif':
+            case 'image/jpeg':
+            case 'image/jpg':
+            case 'image/png':
+            case 'image/gif':
+              type = 'image';
+              break;
+          }
+          var carousel_item = '';
+          carousel_item += '<div data-interval="' + screen.display_duration * 1000 + '" class="carousel-item">';
+          if (type == 'video') {
+            carousel_item += '<span>';
+            carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
+            carousel_item += '<source src="' + screen.material_image_path + '" type="video/ogg">';
+            carousel_item += 'Your browser does not support the video tag.';
+            carousel_item += '</video>';
+            carousel_item += '</span>';
+          } else {
+            carousel_item += '<span>';
+            carousel_item += '<img src="' + screen.material_image_path + '" style="margin: 0px; height: 100%; width: 100%;">';
+            carousel_item += '</span>';
+          }
+          carousel_item += '</div>';
+          $("#carousel-fullscreen").append(carousel_item);
+        });
+        countscreen++;
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -13957,12 +14092,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(screen_type))]);
   })], 2)])]), _vm._v(" "), _vm.advertisements.screen_type == "LED" || _vm.advertisements.screen_type == "LFD" ? _c("div", {
     staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Available Screens")]), _vm._v(" "), _c("div", {
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
@@ -13991,12 +14121,7 @@ var render = function render() {
     slot: "noOptions"
   }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites and screen type.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Tenants")]), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
@@ -14025,7 +14150,7 @@ var render = function render() {
     slot: "noOptions"
   }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "col-sm-5"
   }, [_c("input", {
     ref: "material",
@@ -14070,7 +14195,7 @@ var render = function render() {
     }
   }), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\tYour browser does not support the video tag.\n\t\t\t\t\t\t\t\t\t\t")])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(6), _vm._v(" "), _c("div", {
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
     staticClass: "col-sm-2"
   }, [_c("input", {
     directives: [{
@@ -14275,6 +14400,28 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Screen Type "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Available Screens "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Tenants "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -23051,8 +23198,11 @@ var render = function render() {
       "data-ride": "carousel"
     }
   }, [_c("div", {
-    staticClass: "carousel-inner"
-  }, _vm._l(_vm.banners[0], function (banner, index) {
+    staticClass: "carousel-inner",
+    attrs: {
+      id: "carousel-banner"
+    }
+  }, [_vm._l(_vm.banners[0], function (banner, index) {
     return _c("div", {
       "class": index == 0 ? "carousel-item active" : "carousel-item",
       attrs: {
@@ -23062,10 +23212,10 @@ var render = function render() {
       staticStyle: {
         "border-radius": "20px",
         margin: "0px",
-        height: "100%"
+        height: "100%",
+        width: "100%"
       },
       attrs: {
-        preload: "none",
         muted: "muted",
         autoplay: "true"
       },
@@ -23081,13 +23231,50 @@ var render = function render() {
       staticStyle: {
         "border-radius": "20px",
         margin: "0px",
-        height: "100%"
+        height: "100%",
+        width: "100%"
       },
       attrs: {
         src: banner.material_image_path
       }
     })]) : _vm._e()]);
-  }), 0)])]);
+  }), _vm._v(" "), _vm._l(_vm.banners[1], function (banner, index) {
+    return _c("div", {
+      staticClass: "carousel-item",
+      attrs: {
+        "data-interval": banner.display_duration * 1000
+      }
+    }, [_vm.getFileExtension(banner.file_type) == "video" ? _c("span", [_c("video", {
+      staticStyle: {
+        "border-radius": "20px",
+        margin: "0px",
+        height: "100%",
+        width: "100%"
+      },
+      attrs: {
+        muted: "muted",
+        autoplay: "true"
+      },
+      domProps: {
+        muted: true
+      }
+    }, [_c("source", {
+      attrs: {
+        src: banner.material_image_path,
+        type: "video/ogg"
+      }
+    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.getFileExtension(banner.file_type) == "image" ? _c("span", [_c("img", {
+      staticStyle: {
+        "border-radius": "20px",
+        margin: "0px",
+        height: "100%",
+        width: "100%"
+      },
+      attrs: {
+        src: banner.material_image_path
+      }
+    })]) : _vm._e()]);
+  })], 2)])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -23166,7 +23353,7 @@ var render = function render() {
       expression: "child_category"
     }]
   }, [_c("div", {
-    staticClass: "row"
+    staticClass: "row mt-5 mb-5"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
   }, [_vm._v("\n                " + _vm._s(_vm.current_category.label) + "\n            ")])]), _vm._v(" "), _c("div", {
@@ -23200,11 +23387,11 @@ var render = function render() {
       expression: "supplementals"
     }]
   }, [_c("div", {
-    staticClass: "row"
+    staticClass: "row mt-5 mb-5"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
   }, [_vm._v("\n                " + _vm._s(_vm.current_category.label) + "\n            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "row col-md-9 offset-md-2 mb-3"
+    staticClass: "row col-md-10 offset-md-1 mb-3"
   }, [_c("div", {
     staticClass: "carousel slide",
     attrs: {
@@ -23261,7 +23448,7 @@ var render = function render() {
       expression: "alphabetical"
     }]
   }, [_c("div", {
-    staticClass: "row"
+    staticClass: "row mt-5 mb-5"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
   }, [!_vm.category_top_banner ? _c("div", [_vm._v(_vm._s(_vm.category_label))]) : _vm._e(), _vm._v(" "), _vm.category_top_banner ? _c("div", {
@@ -23277,7 +23464,7 @@ var render = function render() {
   }), _vm._v(" "), _c("div", {
     staticClass: "hts-strip-align hts-strip-color2 translateme"
   }, [_vm._v(_vm._s(_vm.category_label))])]) : _vm._e()])]), _vm._v(" "), _c("div", {
-    staticClass: "row col-md-9 offset-md-2"
+    staticClass: "row col-md-10 offset-md-1"
   }, [_vm.tenant_list.length > 0 ? _c("div", {
     staticClass: "carousel slide",
     attrs: {
@@ -23402,7 +23589,7 @@ var render = function render() {
     staticStyle: {
       "z-index": "999",
       position: "absolute",
-      top: "690px",
+      top: "780px",
       right: "15px",
       cursor: "pointer"
     },
@@ -23418,7 +23605,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "row"
+    staticClass: "row mt-5 mb-5"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
   }, [_vm._v("\n                Search your favorite stores\n            ")])]);
@@ -23506,6 +23693,130 @@ var staticRenderFns = [function () {
     staticClass: "translateme"
   }, [_vm._v("View stores by")]), _vm._v(": ")]);
 }];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=template&id=90e27e30&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=template&id=90e27e30& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticStyle: {
+      width: "100%",
+      height: "100%",
+      position: "absolute",
+      top: "0"
+    },
+    attrs: {
+      id: "screensaverwidget"
+    }
+  }, [_c("div", {
+    staticClass: "carousel slide carousel-fade",
+    attrs: {
+      id: "fullscreen-ads-carousel",
+      "data-ride": "carousel"
+    }
+  }, [_c("div", {
+    staticClass: "carousel-inner",
+    attrs: {
+      id: "carousel-fullscreen"
+    }
+  }, [_vm._l(_vm.fullscreen[0], function (screen, index) {
+    return _c("div", {
+      staticClass: "carousel-item active",
+      attrs: {
+        "data-interval": screen.display_duration * 1000
+      }
+    }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
+      staticStyle: {
+        margin: "0px",
+        height: "100%",
+        width: "100%"
+      },
+      attrs: {
+        muted: "muted",
+        autoplay: "true"
+      },
+      domProps: {
+        muted: true
+      }
+    }, [_c("source", {
+      attrs: {
+        src: screen.material_image_path,
+        type: "video/ogg"
+      }
+    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _vm.getFileExtension(screen.file_type) == "image" ? _c("span", [_c("img", {
+      staticStyle: {
+        margin: "0px",
+        height: "100%",
+        width: "100%"
+      },
+      attrs: {
+        src: screen.material_image_path
+      }
+    })]) : _vm._e()]);
+  }), _vm._v(" "), _vm._l(_vm.fullscreen[1], function (screen, index) {
+    return _c("div", {
+      staticClass: "carousel-item",
+      attrs: {
+        "data-interval": screen.display_duration * 1000
+      }
+    }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
+      staticStyle: {
+        margin: "0px",
+        height: "100%",
+        width: "100%"
+      },
+      attrs: {
+        muted: "muted",
+        autoplay: "true"
+      },
+      domProps: {
+        muted: true
+      }
+    }, [_c("source", {
+      attrs: {
+        src: screen.material_image_path,
+        type: "video/ogg"
+      }
+    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _vm.getFileExtension(screen.file_type) == "image" ? _c("span", [_c("img", {
+      staticStyle: {
+        margin: "0px",
+        height: "100%",
+        width: "100%"
+      },
+      attrs: {
+        src: screen.material_image_path
+      }
+    })]) : _vm._e()]);
+  })], 2)]), _vm._v(" "), _c("img", {
+    staticStyle: {
+      width: "100%",
+      position: "absolute",
+      bottom: "0px",
+      left: "0px",
+      height: "158px",
+      "z-index": "9999"
+    },
+    attrs: {
+      src: "/assets/images/touchheretostart.png"
+    }
+  })])]);
+};
+var staticRenderFns = [];
 render._withStripped = true;
 
 
@@ -23792,6 +24103,7 @@ Vue.component('admin-illustrations', (__webpack_require__(/*! ./components/Admin
  * KIOSK PART
  */
 Vue.component('rotating-banners', (__webpack_require__(/*! ./components/Kiosk/Banners.vue */ "./resources/js/components/Kiosk/Banners.vue")["default"]));
+Vue.component('rotating-screensaver', (__webpack_require__(/*! ./components/Kiosk/ScreenSaver.vue */ "./resources/js/components/Kiosk/ScreenSaver.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -85113,6 +85425,45 @@ component.options.__file = "resources/js/components/Kiosk/Home.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/ScreenSaver.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/Kiosk/ScreenSaver.vue ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ScreenSaver_vue_vue_type_template_id_90e27e30___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ScreenSaver.vue?vue&type=template&id=90e27e30& */ "./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=template&id=90e27e30&");
+/* harmony import */ var _ScreenSaver_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ScreenSaver.vue?vue&type=script&lang=js& */ "./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ScreenSaver_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ScreenSaver_vue_vue_type_template_id_90e27e30___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ScreenSaver_vue_vue_type_template_id_90e27e30___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Kiosk/ScreenSaver.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Search.vue":
 /*!**************************************************!*\
   !*** ./resources/js/components/Kiosk/Search.vue ***!
@@ -85538,6 +85889,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ScreenSaver_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ScreenSaver.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ScreenSaver_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Search.vue?vue&type=script&lang=js&":
 /*!***************************************************************************!*\
   !*** ./resources/js/components/Kiosk/Search.vue?vue&type=script&lang=js& ***!
@@ -85958,6 +86325,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_39f81890_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_39f81890_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Home.vue?vue&type=template&id=39f81890&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Home.vue?vue&type=template&id=39f81890&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=template&id=90e27e30&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=template&id=90e27e30& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ScreenSaver_vue_vue_type_template_id_90e27e30___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ScreenSaver_vue_vue_type_template_id_90e27e30___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ScreenSaver_vue_vue_type_template_id_90e27e30___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ScreenSaver.vue?vue&type=template&id=90e27e30& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/ScreenSaver.vue?vue&type=template&id=90e27e30&");
 
 
 /***/ }),
