@@ -13392,9 +13392,127 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Banners.vue?vue&type=script&lang=js& ***!
   \********************************************************************************************************************************************************************************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\wamp64\\www\\prestige_v2\\resources\\js\\components\\Kiosk\\Banners.vue: Unexpected token (120:21)\n\n\u001b[0m \u001b[90m 118 |\u001b[39m                         carousel_item \u001b[33m+=\u001b[39m \u001b[32m'</div>'\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 119 |\u001b[39m                         $(\u001b[32m\"#carousel-banner\"\u001b[39m)\u001b[33m.\u001b[39mappend(carousel_item)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m                     })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m     |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 121 |\u001b[39m                     count\u001b[33m++\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 122 |\u001b[39m                 \u001b[90m// }\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 123 |\u001b[39m             }\u001b[0m\n    at instantiate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:72:32)\n    at constructor (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:367:12)\n    at Parser.raise (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:3706:19)\n    at Parser.unexpected (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:3744:16)\n    at Parser.parseExprAtom (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13350:22)\n    at Parser.parseExprSubscripts (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12875:23)\n    at Parser.parseUpdate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12854:21)\n    at Parser.parseMaybeUnary (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12824:23)\n    at Parser.parseMaybeUnaryOrPrivate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12615:61)\n    at Parser.parseExprOps (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12622:23)\n    at Parser.parseMaybeConditional (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12592:23)\n    at Parser.parseMaybeAssign (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12544:21)\n    at Parser.parseExpressionBase (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12480:23)\n    at C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12474:39\n    at Parser.allowInAnd (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14570:16)\n    at Parser.parseExpression (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12474:17)\n    at Parser.parseStatementContent (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15014:23)\n    at Parser.parseStatement (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14871:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15531:25)\n    at Parser.parseBlockBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15522:10)\n    at Parser.parseBlock (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15505:10)\n    at Parser.parseFunctionBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14175:24)\n    at Parser.parseFunctionBodyAndFinish (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14159:10)\n    at C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15679:12\n    at Parser.withSmartMixTopicForbiddingContext (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14547:14)\n    at Parser.parseFunction (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15678:10)\n    at Parser.parseFunctionStatement (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15279:17)\n    at Parser.parseStatementContent (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14915:21)\n    at Parser.parseStatement (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14871:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15531:25)\n    at Parser.parseBlockBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15522:10)\n    at Parser.parseBlock (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:15505:10)\n    at Parser.parseFunctionBody (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14175:24)\n    at Parser.parseFunctionBodyAndFinish (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14159:10)\n    at Parser.parseMethod (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14108:31)\n    at Parser.parseObjectMethod (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13984:19)\n    at Parser.parseObjPropValue (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14025:23)\n    at Parser.parsePropertyDefinition (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13943:17)\n    at Parser.parseObjectLike (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13833:21)\n    at Parser.parseExprAtom (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:13225:23)\n    at Parser.parseExprSubscripts (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12875:23)\n    at Parser.parseUpdate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12854:21)\n    at Parser.parseMaybeUnary (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12824:23)\n    at Parser.parseMaybeUnaryOrPrivate (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12615:61)\n    at Parser.parseExprOps (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12622:23)\n    at Parser.parseMaybeConditional (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12592:23)\n    at Parser.parseMaybeAssign (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12544:21)\n    at C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12502:39\n    at Parser.allowInAnd (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:14570:16)\n    at Parser.parseMaybeAssignAllowIn (C:\\wamp64\\www\\prestige_v2\\node_modules\\@babel\\parser\\lib\\index.js:12502:17)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var count = 2;
+var banner_array = [];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Banners",
+  data: function data() {
+    return {
+      banners: []
+    };
+  },
+  created: function created() {
+    this.getBanners();
+  },
+  methods: {
+    getFileExtension: function getFileExtension(fileType) {
+      switch (fileType) {
+        case 'ogg':
+        case 'ogv':
+        case 'mp4':
+        case 'wmv':
+        case 'avi':
+        case 'mkv':
+        case 'video/ogg':
+        case 'video/ogv':
+        case 'video/mp4':
+        case 'video/wmv':
+        case 'video/avi':
+        case 'video/mkv':
+          return 'video';
+          break;
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/png':
+        case 'image/gif':
+          return 'image';
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
+    getBanners: function getBanners() {
+      var _this = this;
+      axios.get('/api/v1/advertisements/banners').then(function (response) {
+        _this.banners = response.data.data;
+        banner_array = response.data.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    $(function () {
+      $('#banner-ads-carousel').on('slide.bs.carousel', function () {
+        current_index = $(this).find('.active').data('index');
+        $('#carousel-banner .carousel-item:first').remove();
+        appendBanners();
+        if (banner_array.length == count) {
+          count = 0;
+        }
+      });
+    });
+    function appendBanners() {
+      if (banner_array.length >= count) {
+        var type = 'image';
+        switch (banner_array[count].file_type) {
+          case 'ogg':
+          case 'ogv':
+          case 'mp4':
+          case 'wmv':
+          case 'avi':
+          case 'mkv':
+          case 'video/ogg':
+          case 'video/ogv':
+          case 'video/mp4':
+          case 'video/wmv':
+          case 'video/avi':
+          case 'video/mkv':
+            type = 'video';
+            break;
+          case 'jpeg':
+          case 'jpg':
+          case 'png':
+          case 'gif':
+          case 'image/jpeg':
+          case 'image/jpg':
+          case 'image/png':
+          case 'image/gif':
+            type = 'image';
+            break;
+        }
+        var carousel_item = '';
+        carousel_item += '<div data-interval="' + banner_array[count].display_duration * 1000 + '" data-index="' + count + '" data-id="' + banner_array[count].id + '" class="carousel-item">';
+        if (type == 'video') {
+          carousel_item += '<span>';
+          carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">';
+          carousel_item += '<source src="' + banner_array[count].material_image_path + '" type="video/ogg">';
+          carousel_item += 'Your browser does not support the video tag.';
+          carousel_item += '</video>';
+          carousel_item += '</span>';
+        } else {
+          carousel_item += '<span>';
+          carousel_item += '<img src="' + banner_array[count].material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">';
+          carousel_item += '</span>';
+        }
+        carousel_item += '</div>';
+        $("#carousel-banner").append(carousel_item);
+        count++;
+      }
+    }
+  },
+  components: {}
+});
 
 /***/ }),
 
@@ -13633,6 +13751,8 @@ var fullscreen_array = [];
   mounted: function mounted() {
     $(function () {
       $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
+        current_index = $(this).find('.active').data('index');
+        console.log(current_index);
         $('#carousel-fullscreen .carousel-item:first').remove();
         appendFullscreen();
         if (fullscreen_array.length == countscreen) {
@@ -13642,51 +13762,49 @@ var fullscreen_array = [];
     });
     function appendFullscreen() {
       if (fullscreen_array.length - 1 >= countscreen) {
-        $.each(fullscreen_array[countscreen], function (index, screen) {
-          var type = 'image';
-          switch (screen.file_type) {
-            case 'ogg':
-            case 'ogv':
-            case 'mp4':
-            case 'wmv':
-            case 'avi':
-            case 'mkv':
-            case 'video/ogg':
-            case 'video/ogv':
-            case 'video/mp4':
-            case 'video/wmv':
-            case 'video/avi':
-            case 'video/mkv':
-              type = 'video';
-              break;
-            case 'jpeg':
-            case 'jpg':
-            case 'png':
-            case 'gif':
-            case 'image/jpeg':
-            case 'image/jpg':
-            case 'image/png':
-            case 'image/gif':
-              type = 'image';
-              break;
-          }
-          var carousel_item = '';
-          carousel_item += '<div data-interval="' + screen.display_duration * 1000 + '" data-index="' + index + '" class="carousel-item">';
-          if (type == 'video') {
-            carousel_item += '<span>';
-            carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
-            carousel_item += '<source src="' + screen.material_image_path + '" type="video/ogg">';
-            carousel_item += 'Your browser does not support the video tag.';
-            carousel_item += '</video>';
-            carousel_item += '</span>';
-          } else {
-            carousel_item += '<span>';
-            carousel_item += '<img src="' + screen.material_image_path + '" style="margin: 0px; height: 100%; width: 100%;">';
-            carousel_item += '</span>';
-          }
-          carousel_item += '</div>';
-          $("#carousel-fullscreen").append(carousel_item);
-        });
+        var type = 'image';
+        switch (fullscreen_array[countscreen].file_type) {
+          case 'ogg':
+          case 'ogv':
+          case 'mp4':
+          case 'wmv':
+          case 'avi':
+          case 'mkv':
+          case 'video/ogg':
+          case 'video/ogv':
+          case 'video/mp4':
+          case 'video/wmv':
+          case 'video/avi':
+          case 'video/mkv':
+            type = 'video';
+            break;
+          case 'jpeg':
+          case 'jpg':
+          case 'png':
+          case 'gif':
+          case 'image/jpeg':
+          case 'image/jpg':
+          case 'image/png':
+          case 'image/gif':
+            type = 'image';
+            break;
+        }
+        var carousel_item = '';
+        carousel_item += '<div data-interval="' + fullscreen_array[countscreen].display_duration * 1000 + '" data-index="' + countscreen + '" data-id="' + fullscreen_array[countscreen].id + '" class="carousel-item">';
+        if (type == 'video') {
+          carousel_item += '<span>';
+          carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
+          carousel_item += '<source src="' + fullscreen_array[countscreen].material_image_path + '" type="video/ogg">';
+          carousel_item += 'Your browser does not support the video tag.';
+          carousel_item += '</video>';
+          carousel_item += '</span>';
+        } else {
+          carousel_item += '<span>';
+          carousel_item += '<img src="' + fullscreen_array[countscreen].material_image_path + '" style="margin: 0px; height: 100%; width: 100%;">';
+          carousel_item += '</span>';
+        }
+        carousel_item += '</div>';
+        $("#carousel-fullscreen").append(carousel_item);
         countscreen++;
       }
     }
@@ -23562,8 +23680,8 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", [_c("div", {
     staticStyle: {
-      width: "0",
-      height: "0",
+      width: "100",
+      height: "100",
       position: "absolute",
       top: "0"
     },
@@ -23581,11 +23699,12 @@ var render = function render() {
     attrs: {
       id: "carousel-fullscreen"
     }
-  }, [_vm._l(_vm.fullscreen[0], function (screen, index) {
+  }, _vm._l(_vm.fullscreen.slice(0, 2), function (screen, index) {
     return _c("div", {
-      staticClass: "carousel-item active",
+      "class": index == 0 ? "carousel-item active" : "carousel-item",
       attrs: {
         "data-index": index,
+        "data-id": screen.id,
         "data-interval": screen.display_duration * 1000
       }
     }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
@@ -23616,42 +23735,7 @@ var render = function render() {
         src: screen.material_image_path
       }
     })]) : _vm._e()]);
-  }), _vm._v(" "), _vm._l(_vm.fullscreen[1], function (screen, index) {
-    return _c("div", {
-      staticClass: "carousel-item",
-      attrs: {
-        "data-index": index,
-        "data-interval": screen.display_duration * 1000
-      }
-    }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
-      staticStyle: {
-        margin: "0px",
-        height: "100%",
-        width: "100%"
-      },
-      attrs: {
-        muted: "muted",
-        autoplay: "true"
-      },
-      domProps: {
-        muted: true
-      }
-    }, [_c("source", {
-      attrs: {
-        src: screen.material_image_path,
-        type: "video/ogg"
-      }
-    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _vm.getFileExtension(screen.file_type) == "image" ? _c("span", [_c("img", {
-      staticStyle: {
-        margin: "0px",
-        height: "100%",
-        width: "100%"
-      },
-      attrs: {
-        src: screen.material_image_path
-      }
-    })]) : _vm._e()]);
-  })], 2)]), _vm._v(" "), _c("img", {
+  }), 0)]), _vm._v(" "), _c("img", {
     staticStyle: {
       width: "100%",
       position: "absolute",

@@ -54,6 +54,7 @@
 @push('scripts')
 <script>
     var screensaver_handle = null;
+    var current_index = 0;
 
     $(document).on('click',function(){
         $("#screensaverwidget").hide();

@@ -195,8 +195,6 @@ class MainController extends AppBaseController
             ->select('site_ads.*')
             ->get()->toArray();
 
-            //$banners = array_chunk($banners, 1);
-            
             return $this->response($banners, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -221,8 +219,6 @@ class MainController extends AppBaseController
             ->join('site_ad_sites', 'site_ad_sites.site_ad_id', '=', 'site_ads.id')
             ->select('site_ads.*')
             ->get()->toArray();
-
-            $fullscreens = array_chunk($fullscreens, 1);
             
             return $this->response($fullscreens, 'Successfully Retreived!', 200);
         }
