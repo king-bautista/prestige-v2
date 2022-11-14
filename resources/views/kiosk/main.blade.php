@@ -188,10 +188,8 @@
 
         screensaver_handle = setTimeout(() => {
             $("#screensaverwidget").show("slow", function() {
-                appendFullscreen(current_index+1);
+                appendFullscreen(current_index);
                 appendFullscreen();
-                appendBanners(current_index);
-                appendBanners();
             });
 		}, 1000 * 60 * 2);
     });
@@ -213,8 +211,13 @@
             $(this).addClass('active');
         });
 
+        $("#screensaverwidget").on('click', function() {
+            appendBanners(current_index);
+            appendBanners();
+        });
+
         $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
-            //current_index = $(this).find('.active').data('index');
+            current_index = $(this).find('.active').data('index');
             $('#carousel-fullscreen .carousel-item:first').remove();
             appendFullscreen();
             if(fullscreen_array.length == countscreen) {
