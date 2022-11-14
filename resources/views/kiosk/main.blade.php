@@ -180,17 +180,14 @@
     }
 
     $(document).on('click',function(){
-        $("#screensaverwidget").hide();
+        $("#screensaverwidget").height('0').width('0');
         if(screensaver_handle) {
 			clearTimeout(screensaver_handle);	
 			screensaver_handle = null;
 		}
 
         screensaver_handle = setTimeout(() => {
-            $("#screensaverwidget").show("slow", function() {
-                appendFullscreen(current_index);
-                appendFullscreen();
-            });
+            $("#screensaverwidget").height('100%').width('100%');
 		}, 1000 * 60 * 2);
     });
 
@@ -210,12 +207,7 @@
             $('.h-button').removeClass('active');
             $(this).addClass('active');
         });
-
-        $("#screensaverwidget").on('click', function() {
-            appendBanners(current_index);
-            appendBanners();
-        });
-
+        
         $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
             current_index = $(this).find('.active').data('index');
             $('#carousel-fullscreen .carousel-item:first').remove();
