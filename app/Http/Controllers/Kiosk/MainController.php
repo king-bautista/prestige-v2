@@ -195,7 +195,7 @@ class MainController extends AppBaseController
             ->select('site_ads.*')
             ->get()->toArray();
 
-            $banners = array_chunk($banners, 1);
+            //$banners = array_chunk($banners, 1);
             
             return $this->response($banners, 'Successfully Retreived!', 200);
         }

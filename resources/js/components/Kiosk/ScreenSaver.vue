@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div style="width:100%;height:100%;position:absolute; top: 0;" id="screensaverwidget">
+        <div style="width:0;height:0;position:absolute; top: 0;" id="screensaverwidget">
             <div id="fullscreen-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel">
                 <div class="carousel-inner" id="carousel-fullscreen">
-                    <div v-for="(screen, index) in fullscreen[0]" class="carousel-item active" :data-interval="(screen.display_duration*1000)">
+                    <div v-for="(screen, index) in fullscreen[0]" :data-index="index" class="carousel-item active" :data-interval="(screen.display_duration*1000)">
                         <span v-if="getFileExtension(screen.file_type) == 'video'">
                             <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
                                 <source :src="screen.material_image_path" type="video/ogg">
@@ -14,7 +14,7 @@
                             <img :src="screen.material_image_path" style="margin: 0px; height: 100%; width: 100%;">
                         </span>
                     </div>
-                    <div v-for="(screen, index) in fullscreen[1]" class="carousel-item" :data-interval="(screen.display_duration*1000)">
+                    <div v-for="(screen, index) in fullscreen[1]" :data-index="index" class="carousel-item" :data-interval="(screen.display_duration*1000)">
                         <span v-if="getFileExtension(screen.file_type) == 'video'">
                             <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
                                 <source :src="screen.material_image_path" type="video/ogg">
@@ -131,7 +131,7 @@
                         }
 
                         var carousel_item = '';
-                        carousel_item += '<div data-interval="'+screen.display_duration*1000+'" class="carousel-item">';
+                        carousel_item += '<div data-interval="'+screen.display_duration*1000+'" data-index="'+index+'" class="carousel-item">';
                             if(type == 'video') {
                                 carousel_item += '<span>';
                                 carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';

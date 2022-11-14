@@ -2,7 +2,7 @@
     <div>
         <div id="banner-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel">
             <div class="carousel-inner" id="carousel-banner">
-                <div v-for="(banner, index) in banners[0]" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(banner.display_duration*1000)">
+                <div v-for="(banner, index) in banners.slice(0,2)" :data-index="index" :data-id="banner.id"  :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(banner.display_duration*1000)">
                     <span v-if="getFileExtension(banner.file_type) == 'video'">
                         <video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                             <source :src="banner.material_image_path" type="video/ogg">
@@ -13,7 +13,7 @@
                         <img :src="banner.material_image_path" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                     </span>
                 </div>
-                <div v-for="(banner, index) in banners[1]" class="carousel-item" :data-interval="(banner.display_duration*1000)">
+                <!-- <div v-for="(banner, index) in banners[1]" :data-index="banner.id" class="carousel-item" :data-interval="(banner.display_duration*1000)">
                     <span v-if="getFileExtension(banner.file_type) == 'video'">
                         <video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                             <source :src="banner.material_image_path" type="video/ogg">
@@ -23,12 +23,13 @@
                     <span v-else-if="getFileExtension(banner.file_type) == 'image'">
                         <img :src="banner.material_image_path" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                     </span>
-                </div>
+                </div> -->
             </div>
         </div> 
     </div>
 </template>
 <script> 
+    var current_index = 0;
     var count = 2;
     var banner_array = [];
 	export default {
@@ -88,8 +89,10 @@
         mounted() {
             $(function() {
                 $('#banner-ads-carousel').on('slide.bs.carousel', function () {
+                    current_index = console.log($(this).find('.active').data('index'));
                     $('#carousel-banner .carousel-item:first').remove();
-                    appendBanners();
+                    console.log(banner_array[3]);
+                    //appendBanners();
                     if(banner_array.length == count) {
                         count = 0;                        
                     }
@@ -98,7 +101,7 @@
 
             function appendBanners() {
                 if((banner_array.length) >= count) {
-                    $.each(banner_array[count], function (index, banner) {
+                    // $.each(banner_array[count], function (index, banner) {
                         var type = 'image';
                         switch(banner.file_type) {
                             case 'ogg':
@@ -128,7 +131,7 @@
                         }
 
                         var carousel_item = '';
-                        carousel_item += '<div data-interval="'+banner.display_duration*1000+'" class="carousel-item">';
+                        carousel_item += '<div data-interval="'+banner.display_duration*1000+'" data-index="'+index+'" data-id="'+banner.id+'" class="carousel-item">';
                             if(type == 'video') {
                                 carousel_item += '<span>';
                                 carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">';
@@ -146,7 +149,7 @@
                         $("#carousel-banner").append(carousel_item);
                     });
                     count++;
-                }
+                // }
             }
         },
 
