@@ -190,7 +190,7 @@
             $("#screensaverwidget").show("slow", function() {
                 appendFullscreen(current_index+1);
                 appendFullscreen();
-                appendBanners(current_index+1);
+                appendBanners(current_index);
                 appendBanners();
             });
 		}, 1000 * 60 * 2);
