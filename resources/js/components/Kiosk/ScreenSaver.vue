@@ -21,8 +21,6 @@
     </div>
 </template>
 <script> 
-    var countscreen = 2;
-    var fullscreen_array = [];
 	export default {
         name: "Fullscreen",
         data() {
@@ -77,69 +75,5 @@
             }
         },
 
-        mounted() {
-            $(function() {
-                $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
-                    current_index = $(this).find('.active').data('index');
-                    console.log(current_index);
-                    $('#carousel-fullscreen .carousel-item:first').remove();
-                    appendFullscreen();
-                    if(fullscreen_array.length == countscreen) {
-                        countscreen = 0;                        
-                    }
-                })
-            });
-
-            function appendFullscreen() {
-                if((fullscreen_array.length-1) >= countscreen) {
-                    var type = 'image';
-                    switch(fullscreen_array[countscreen].file_type) {
-                        case 'ogg':
-                        case 'ogv':
-                        case 'mp4':
-                        case 'wmv':
-                        case 'avi':
-                        case 'mkv':
-                        case 'video/ogg':
-                        case 'video/ogv':
-                        case 'video/mp4':
-                        case 'video/wmv':
-                        case 'video/avi':
-                        case 'video/mkv':
-                            type = 'video';
-                            break;
-                        case 'jpeg':
-                        case 'jpg':
-                        case 'png':
-                        case 'gif':
-                        case 'image/jpeg':
-                        case 'image/jpg':
-                        case 'image/png':
-                        case 'image/gif':
-                            type = 'image';
-                            break;
-                    }
-
-                    var carousel_item = '';
-                    carousel_item += '<div data-interval="'+fullscreen_array[countscreen].display_duration*1000+'" data-index="'+countscreen+'" data-id="'+fullscreen_array[countscreen].id+'" class="carousel-item">';
-                        if(type == 'video') {
-                            carousel_item += '<span>';
-                            carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
-                            carousel_item += '<source src="'+fullscreen_array[countscreen].material_image_path+'" type="video/ogg">';
-                            carousel_item += 'Your browser does not support the video tag.';
-                            carousel_item += '</video>';
-                            carousel_item += '</span>';
-                        }
-                        else {
-                            carousel_item += '<span>';
-                            carousel_item += '<img src="'+fullscreen_array[countscreen].material_image_path+'" style="margin: 0px; height: 100%; width: 100%;">';
-                            carousel_item += '</span>';
-                        }
-                    carousel_item += '</div>';
-                    $("#carousel-fullscreen").append(carousel_item);
-                    countscreen++;
-                }
-            }
-        },
     };
 </script>

@@ -13399,8 +13399,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var count = 2;
-var banner_array = [];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Banners",
   data: function data() {
@@ -13452,64 +13450,7 @@ var banner_array = [];
     }
   },
   mounted: function mounted() {
-    $(function () {
-      $('#banner-ads-carousel').on('slide.bs.carousel', function () {
-        current_index = $(this).find('.active').data('index');
-        $('#carousel-banner .carousel-item:first').remove();
-        appendBanners();
-        if (banner_array.length == count) {
-          count = 0;
-        }
-      });
-    });
-    function appendBanners() {
-      if (banner_array.length >= count) {
-        var type = 'image';
-        switch (banner_array[count].file_type) {
-          case 'ogg':
-          case 'ogv':
-          case 'mp4':
-          case 'wmv':
-          case 'avi':
-          case 'mkv':
-          case 'video/ogg':
-          case 'video/ogv':
-          case 'video/mp4':
-          case 'video/wmv':
-          case 'video/avi':
-          case 'video/mkv':
-            type = 'video';
-            break;
-          case 'jpeg':
-          case 'jpg':
-          case 'png':
-          case 'gif':
-          case 'image/jpeg':
-          case 'image/jpg':
-          case 'image/png':
-          case 'image/gif':
-            type = 'image';
-            break;
-        }
-        var carousel_item = '';
-        carousel_item += '<div data-interval="' + banner_array[count].display_duration * 1000 + '" data-index="' + count + '" data-id="' + banner_array[count].id + '" class="carousel-item">';
-        if (type == 'video') {
-          carousel_item += '<span>';
-          carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">';
-          carousel_item += '<source src="' + banner_array[count].material_image_path + '" type="video/ogg">';
-          carousel_item += 'Your browser does not support the video tag.';
-          carousel_item += '</video>';
-          carousel_item += '</span>';
-        } else {
-          carousel_item += '<span>';
-          carousel_item += '<img src="' + banner_array[count].material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">';
-          carousel_item += '</span>';
-        }
-        carousel_item += '</div>';
-        $("#carousel-banner").append(carousel_item);
-        count++;
-      }
-    }
+    $(function () {});
   },
   components: {}
 });
@@ -13696,8 +13637,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var countscreen = 2;
-var fullscreen_array = [];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Fullscreen",
   data: function data() {
@@ -13746,67 +13685,6 @@ var fullscreen_array = [];
         _this.fullscreen = response.data.data;
         fullscreen_array = response.data.data;
       });
-    }
-  },
-  mounted: function mounted() {
-    $(function () {
-      $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
-        current_index = $(this).find('.active').data('index');
-        console.log(current_index);
-        $('#carousel-fullscreen .carousel-item:first').remove();
-        appendFullscreen();
-        if (fullscreen_array.length == countscreen) {
-          countscreen = 0;
-        }
-      });
-    });
-    function appendFullscreen() {
-      if (fullscreen_array.length - 1 >= countscreen) {
-        var type = 'image';
-        switch (fullscreen_array[countscreen].file_type) {
-          case 'ogg':
-          case 'ogv':
-          case 'mp4':
-          case 'wmv':
-          case 'avi':
-          case 'mkv':
-          case 'video/ogg':
-          case 'video/ogv':
-          case 'video/mp4':
-          case 'video/wmv':
-          case 'video/avi':
-          case 'video/mkv':
-            type = 'video';
-            break;
-          case 'jpeg':
-          case 'jpg':
-          case 'png':
-          case 'gif':
-          case 'image/jpeg':
-          case 'image/jpg':
-          case 'image/png':
-          case 'image/gif':
-            type = 'image';
-            break;
-        }
-        var carousel_item = '';
-        carousel_item += '<div data-interval="' + fullscreen_array[countscreen].display_duration * 1000 + '" data-index="' + countscreen + '" data-id="' + fullscreen_array[countscreen].id + '" class="carousel-item">';
-        if (type == 'video') {
-          carousel_item += '<span>';
-          carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
-          carousel_item += '<source src="' + fullscreen_array[countscreen].material_image_path + '" type="video/ogg">';
-          carousel_item += 'Your browser does not support the video tag.';
-          carousel_item += '</video>';
-          carousel_item += '</span>';
-        } else {
-          carousel_item += '<span>';
-          carousel_item += '<img src="' + fullscreen_array[countscreen].material_image_path + '" style="margin: 0px; height: 100%; width: 100%;">';
-          carousel_item += '</span>';
-        }
-        carousel_item += '</div>';
-        $("#carousel-fullscreen").append(carousel_item);
-        countscreen++;
-      }
     }
   }
 });
