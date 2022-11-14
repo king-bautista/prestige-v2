@@ -13448,11 +13448,7 @@ __webpack_require__.r(__webpack_exports__);
         banner_array = response.data.data;
       });
     }
-  },
-  mounted: function mounted() {
-    $(function () {});
-  },
-  components: {}
+  }
 });
 
 /***/ }),
@@ -23556,6 +23552,11 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
+  return _vm._m(0);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
   return _c("div", [_c("div", {
     staticStyle: {
       width: "100",
@@ -23577,43 +23578,7 @@ var render = function render() {
     attrs: {
       id: "carousel-fullscreen"
     }
-  }, _vm._l(_vm.fullscreen.slice(0, 2), function (screen, index) {
-    return _c("div", {
-      "class": index == 0 ? "carousel-item active" : "carousel-item",
-      attrs: {
-        "data-index": index,
-        "data-id": screen.id,
-        "data-interval": screen.display_duration * 1000
-      }
-    }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
-      staticStyle: {
-        margin: "0px",
-        height: "100%",
-        width: "100%"
-      },
-      attrs: {
-        muted: "muted",
-        autoplay: "true"
-      },
-      domProps: {
-        muted: true
-      }
-    }, [_c("source", {
-      attrs: {
-        src: screen.material_image_path,
-        type: "video/ogg"
-      }
-    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _vm.getFileExtension(screen.file_type) == "image" ? _c("span", [_c("img", {
-      staticStyle: {
-        margin: "0px",
-        height: "100%",
-        width: "100%"
-      },
-      attrs: {
-        src: screen.material_image_path
-      }
-    })]) : _vm._e()]);
-  }), 0)]), _vm._v(" "), _c("img", {
+  })]), _vm._v(" "), _c("img", {
     staticStyle: {
       width: "100%",
       position: "absolute",
@@ -23626,8 +23591,7 @@ var render = function render() {
       src: "/assets/images/touchheretostart.png"
     }
   })])]);
-};
-var staticRenderFns = [];
+}];
 render._withStripped = true;
 
 

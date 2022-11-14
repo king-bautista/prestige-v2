@@ -18,6 +18,8 @@
     </head>
 
     <body>
+        @stack('scripts_var') <!-- To include script links -->
+        
         <div id="app">
         
             @yield('content')

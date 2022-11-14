@@ -71,16 +71,5 @@
                 });
             }
         },
-
-        mounted() {
-            $(function() {
-                
-            })
-
-            
-        },
-
-        components: {
- 	    }
     };
 </script>
