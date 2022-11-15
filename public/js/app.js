@@ -9539,7 +9539,7 @@ __webpack_require__.r(__webpack_exports__);
     storeAdvertisements: function storeAdvertisements() {
       var _this5 = this;
       var formData = new FormData();
-      formData.append("company_id", this.advertisements.company_id);
+      formData.append("company_id", JSON.stringify(this.advertisements.company_id));
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
       formData.append("screen_type", this.advertisements.screen_type);
@@ -9569,7 +9569,7 @@ __webpack_require__.r(__webpack_exports__);
         _this6.site_ids = [];
         _this6.screen_ids = [];
         _this6.advertisements.id = advertisements.id;
-        _this6.advertisements.company_id = advertisements.company_id;
+        _this6.advertisements.company_id = advertisements.company_details;
         _this6.advertisements.name = advertisements.name;
         _this6.advertisements.ad_type = _this6.ad_type;
         _this6.advertisements.file_path = advertisements.name;
@@ -9593,9 +9593,7 @@ __webpack_require__.r(__webpack_exports__);
         advertisements.screens.forEach(function (value) {
           _this6.screen_ids.push(value.id);
         });
-        if (advertisements.screen_type) {
-          _this6.getScreens();
-        }
+        _this6.getScreens(advertisements.screen_type);
         _this6.getTenants();
         _this6.add_record = false;
         _this6.edit_record = true;
@@ -9606,7 +9604,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this7 = this;
       var formData = new FormData();
       formData.append("id", this.advertisements.id);
-      formData.append("company_id", this.advertisements.company_id);
+      formData.append("company_id", JSON.stringify(this.advertisements.company_id));
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
       formData.append("screen_type", this.advertisements.screen_type);
@@ -11817,6 +11815,7 @@ __webpack_require__.r(__webpack_exports__);
       screen: {
         id: '',
         screen_type: '',
+        orientation: '',
         site_id: '',
         site_building_id: '',
         site_building_level_id: '',
@@ -11836,6 +11835,7 @@ __webpack_require__.r(__webpack_exports__);
       buildings: [],
       floors: [],
       screen_types: ['Directory', 'LED', 'LFD', 'LED funnel'],
+      orientations: ['Landscape', 'Portrait'],
       dataFields: {
         name: "Name",
         floor_name: "Floor Name",
@@ -11844,6 +11844,7 @@ __webpack_require__.r(__webpack_exports__);
         kiosk_id: "Kiosk ID",
         slots: "Slots",
         screen_type: "Screen Type",
+        orientation: "Orientation",
         active: {
           name: "Status",
           type: "Boolean",
@@ -11945,6 +11946,7 @@ __webpack_require__.r(__webpack_exports__);
       this.add_record = true;
       this.edit_record = false;
       this.screen.screen_type = '';
+      this.screen.orientation = '';
       this.screen.site_id = '';
       this.screen.site_building_id = '';
       this.screen.site_building_level_id = '';
@@ -11975,6 +11977,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.getFloorLevel(screen.site_building_id);
         _this5.screen.id = screen.id;
         _this5.screen.screen_type = screen.screen_type;
+        _this5.screen.orientation = screen.orientation;
         _this5.screen.site_id = screen.site_id;
         _this5.screen.site_building_id = screen.site_building_id;
         _this5.screen.site_building_level_id = screen.site_building_level_id;
@@ -13583,41 +13586,19 @@ __webpack_require__.r(__webpack_exports__);
       this.supplementals = false;
     }
   },
-  components: {}
-});
-$(document).ready(function () {
-  $('.store-tabs-item').click(function () {
-    $('.store-tabs-item').removeClass('tab-item-selected');
-    $(this).addClass('tab-item-selected');
-  });
-  $(".carousel").carousel({
-    interval: false,
-    pause: true,
-    touch: true
-  });
-
-  // $( ".carousel .carousel-inner" ).swipe( {
-  //     swipeLeft: function ( event, direction, distance, duration, fingerCount ) {
-  //         this.parent( ).carousel( 'next' );
-  //     },
-
-  //     swipeRight: function ( ) {
-  //         this.parent( ).carousel( 'prev' );
-  //     },
-
-  //     threshold: 0,
-
-  //     // tap: function(event, target) {
-  //     // // get the location: in my case the target is my link
-  //     //     window.location = $(this).find('.carousel-item.active a').attr('href');
-  //     // },
-  //     //เอา  a ออกถ้าต้องการให้ slide ที่เป็น tag a สามารถคลิกได้
-  //     excludedElements:"label, button, input, select, textarea, .noSwipe"
-  // } );
-
-  // $('.carousel .carousel-inner').on('dragstart', 'a', function () {
-  //     return false;
-  // });
+  mounted: function mounted() {
+    $(function () {
+      $('.store-tabs-item').click(function () {
+        $('.store-tabs-item').removeClass('tab-item-selected');
+        $(this).addClass('tab-item-selected');
+      });
+      $(".carousel").carousel({
+        interval: false,
+        pause: true,
+        touch: true
+      });
+    });
+  }
 });
 
 /***/ }),
@@ -13731,7 +13712,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/v1/search', this.search).then(function (response) {
         _this2.tenant_list = response.data.data;
         if (_this2.tenant_list.length == 0) {
-          _this2.no_record_found = true;
+          _this2.no_record_found = false;
         } else {
           _this2.search_results = true;
         }
@@ -13892,10 +13873,14 @@ var render = function render() {
     staticClass: "form-group row"
   }, [_vm._m(2), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
-  }, [_c("treeselect", {
+  }, [_c("multiselect", {
     attrs: {
       options: _vm.companies,
-      placeholder: "Select Company"
+      multiple: false,
+      "close-on-select": true,
+      placeholder: "Select Company",
+      label: "name",
+      "track-by": "name"
     },
     model: {
       value: _vm.advertisements.company_id,
@@ -13932,6 +13917,35 @@ var render = function render() {
     staticClass: "form-group row"
   }, [_vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.tenants,
+      multiple: false,
+      "close-on-select": true,
+      placeholder: "Select Tenants",
+      label: "brand_site_name",
+      "track-by": "brand_site_name"
+    },
+    on: {
+      select: _vm.toggleSelectedTenant,
+      remove: _vm.toggleUnSelectedTenant
+    },
+    model: {
+      value: _vm.advertisements.tenants,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "tenants", $$v);
+      },
+      expression: "advertisements.tenants"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
       name: "model",
@@ -13963,16 +13977,16 @@ var render = function render() {
         value: screen_type
       }
     }, [_vm._v(" " + _vm._s(screen_type))]);
-  })], 2)])]), _vm._v(" "), _vm.advertisements.screen_type == "LED" || _vm.advertisements.screen_type == "LFD" ? _c("div", {
+  })], 2)])]), _vm._v(" "), _vm.advertisements.screen_type != "LED funnel" ? _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("multiselect", {
     attrs: {
       options: _vm.screens,
       multiple: true,
       "close-on-select": true,
-      placeholder: "Select Screens",
+      placeholder: "All Screens",
       label: "screen_type_name",
       "track-by": "screen_type_name"
     },
@@ -13993,35 +14007,6 @@ var render = function render() {
     },
     slot: "noOptions"
   }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites and screen type.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(6), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.tenants,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Tenants",
-      label: "brand_site_name",
-      "track-by": "brand_site_name"
-    },
-    on: {
-      select: _vm.toggleSelectedTenant,
-      remove: _vm.toggleUnSelectedTenant
-    },
-    model: {
-      value: _vm.advertisements.tenants,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "tenants", $$v);
-      },
-      expression: "advertisements.tenants"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "col-sm-5"
@@ -14270,6 +14255,17 @@ var staticRenderFns = [function () {
   return _c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
+      "for": "inputPassword3"
+    }
+  }, [_vm._v("Tenants "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
       "for": "firstName"
     }
   }, [_vm._v("Screen Type "), _c("span", {
@@ -14284,17 +14280,6 @@ var staticRenderFns = [function () {
       "for": "inputPassword3"
     }
   }, [_vm._v("Available Screens "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Tenants "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -19332,6 +19317,39 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
+      value: _vm.screen.orientation,
+      expression: "screen.orientation"
+    }],
+    staticClass: "custom-select",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.screen, "orientation", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("Select Orientation")]), _vm._v(" "), _vm._l(_vm.orientations, function (orientation) {
+    return _c("option", {
+      domProps: {
+        value: orientation
+      }
+    }, [_vm._v(" " + _vm._s(orientation))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.screen.site_id,
       expression: "screen.site_id"
     }],
@@ -19361,7 +19379,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(site.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -19396,7 +19414,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(building.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("select", {
     directives: [{
@@ -19429,7 +19447,7 @@ var render = function render() {
     }, [_vm._v(" " + _vm._s(floor.name))]);
   })], 2)])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(6), _vm._v(" "), _c("div", {
+  }, [_vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -19455,7 +19473,7 @@ var render = function render() {
     }
   })])]), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(7), _vm._v(" "), _c("div", {
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -19512,7 +19530,7 @@ var render = function render() {
     }
   })])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(8), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -19737,7 +19755,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("div", {
+  }, [_vm._m(10), _vm._v(" "), _vm._m(11), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -19765,7 +19783,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(11), _vm._v(" "), _vm._m(12), _vm._v(" "), _c("div", {
+  }, [_vm._m(12), _vm._v(" "), _vm._m(13), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -19815,6 +19833,17 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Screen Type "), _c("span", {
+    staticClass: "font-italic text-danger"
+  }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Orientation "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -23389,23 +23418,22 @@ var render = function render() {
     staticClass: "tabs-item store-tabs-item tab-item-selected",
     attrs: {
       id: "category-tab"
-    }
-  }, [_c("div", [_c("a", {
-    staticClass: "translateme tenant-category",
+    },
     on: {
       click: _vm.showCategories
     }
-  }, [_vm._v("Category")])])]), _vm._v(" "), _c("div", {
-    staticClass: "tabs-item store-tabs-item"
-  }, [_c("div", [_c("a", {
-    staticClass: "translateme tenant-alphabet",
+  }, [_vm._m(6)]), _vm._v(" "), _c("div", {
+    staticClass: "tabs-item store-tabs-item",
     on: {
       click: function click($event) {
         return _vm.getTenants(_vm.current_category);
       }
     }
-  }, [_vm._v("Alphabetical")])])]), _vm._v(" "), _c("div", {
-    staticClass: "tabs-item store-tabs-item"
+  }, [_vm._m(7)]), _vm._v(" "), _c("div", {
+    staticClass: "tabs-item store-tabs-item",
+    on: {
+      click: _vm.showSupplementals
+    }
   }, [_c("div", [_vm.current_category.supplemental ? _c("a", {
     staticClass: "tenant-supplementals translateme",
     staticStyle: {
@@ -23414,9 +23442,6 @@ var render = function render() {
     attrs: {
       id: "tenant-supplemental-tabtext1",
       "data-target": "1"
-    },
-    on: {
-      click: _vm.showSupplementals
     }
   }, [_vm._v(_vm._s(_vm.current_category.supplemental.name))]) : _vm._e()])])])]), _vm._v(" "), _c("img", {
     directives: [{
@@ -23531,6 +23556,18 @@ var staticRenderFns = [function () {
   }, [_c("span", {
     staticClass: "translateme"
   }, [_vm._v("View stores by")]), _vm._v(": ")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("a", {
+    staticClass: "translateme tenant-category"
+  }, [_vm._v("Category")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("a", {
+    staticClass: "translateme tenant-alphabet"
+  }, [_vm._v("Alphabetical")])]);
 }];
 render._withStripped = true;
 
@@ -23557,7 +23594,8 @@ var render = function render() {
       width: "0",
       height: "0",
       position: "absolute",
-      top: "0"
+      top: "0",
+      "z-index": "9999"
     },
     attrs: {
       id: "screensaverwidget"

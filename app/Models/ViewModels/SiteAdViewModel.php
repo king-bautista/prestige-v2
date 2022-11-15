@@ -49,6 +49,7 @@ class SiteAdViewModel extends Model
         'tenant_names',
         'screen_names',
         'company_name',
+        'company_details',
     ]; 
 
     public function getAdSites()
@@ -127,6 +128,14 @@ class SiteAdViewModel extends Model
         $company = Company::find($this->company_id);
         if($company)
             return $company['name'];
+        return null;
+    }
+
+    public function getCompanyDetailsAttribute()
+    {
+        $company = Company::find($this->company_id);
+        if($company)
+            return $company;
         return null;
     }
 

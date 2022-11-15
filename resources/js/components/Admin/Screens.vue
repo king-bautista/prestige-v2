@@ -54,6 +54,15 @@
 								</div>
 							</div>
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Orientation <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="screen.orientation">
+									    <option value="">Select Orientation</option>
+									    <option v-for="orientation in orientations" :value="orientation"> {{ orientation }}</option>
+								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="screen.site_id" @change="getBuildings($event.target.value)">
@@ -194,6 +203,7 @@
                 screen: {
                     id: '',
                     screen_type: '',
+                    orientation: '',
 					site_id: '',
                     site_building_id: '',
                     site_building_level_id: '',
@@ -213,6 +223,7 @@
                 buildings: [],
                 floors: [],
                 screen_types: ['Directory','LED','LFD','LED funnel'],
+                orientations: ['Landscape','Portrait'],
             	dataFields: {
             		name: "Name", 
                     floor_name: "Floor Name",
@@ -221,6 +232,7 @@
             		kiosk_id: "Kiosk ID", 
             		slots: "Slots", 
             		screen_type: "Screen Type", 
+            		orientation: "Orientation", 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -322,6 +334,7 @@
 				this.edit_record = false;
 
 				this.screen.screen_type = '';
+				this.screen.orientation = '';
                 this.screen.site_id = '';
                 this.screen.site_building_id = '';
                 this.screen.site_building_level_id = '';
@@ -357,6 +370,7 @@
 
 					this.screen.id = screen.id;
                     this.screen.screen_type = screen.screen_type;
+					this.screen.orientation = screen.orientation;
                     this.screen.site_id = screen.site_id;
 					this.screen.site_building_id = screen.site_building_id;
                     this.screen.site_building_level_id = screen.site_building_level_id;

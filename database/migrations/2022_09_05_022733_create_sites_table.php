@@ -74,6 +74,7 @@ class CreateSitesTable extends Migration
             
             $table->bigIncrements('id');
             $table->enum('screen_type', ['Directory', 'LED', 'LFD', 'LED funnel']);
+            $table->enum('orientation', ['Landscape', 'Portrait']);
             $table->bigInteger('site_id')->unsigned();
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();

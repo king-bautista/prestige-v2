@@ -48,7 +48,14 @@
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<treeselect v-model="advertisements.company_id" :options="companies" placeholder="Select Company"/>
+									<multiselect v-model="advertisements.company_id"
+										:options="companies"
+										:multiple="false"
+										:close-on-select="true"
+										placeholder="Select Company"
+										label="name"
+										track-by="name">
+									</multiselect>
 								</div>
 							</div>
                             <div class="form-group row">
@@ -67,38 +74,11 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="advertisements.screen_type" @change="getScreens($event.target.value)">
-									    <option value="">Select Screen Type</option>
-									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
-								    </select>
-								</div>
-							</div>						
-							<div class="form-group row" v-if="advertisements.screen_type == 'LED' || advertisements.screen_type == 'LFD'">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Available Screens <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<multiselect v-model="advertisements.screens"
-										:options="screens"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Screens"
-										label="screen_type_name"
-										track-by="screen_type_name"
-										@select="toggleSelectedScreen"
-										@remove="toggleUnSelectedScreen">
-										<span slot="noOptions">
-											Please select a associate sites and screen type.
-										</span>
-									</multiselect> 
-								</div>
-							</div>
-							<div class="form-group row">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.tenants"
 										:options="tenants"
-										:multiple="true"
+										:multiple="false"
 										:close-on-select="true"
 										placeholder="Select Tenants"
 										label="brand_site_name"
@@ -111,6 +91,34 @@
 									</multiselect> 
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="advertisements.screen_type" @change="getScreens($event.target.value)">
+									    <option value="">Select Screen Type</option>
+									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
+								    </select>
+								</div>
+							</div>						
+							<div class="form-group row" v-if="advertisements.screen_type != 'LED funnel'">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Available Screens <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<multiselect v-model="advertisements.screens"
+										:options="screens"
+										:multiple="true"
+										:close-on-select="true"
+										placeholder="All Screens"
+										label="screen_type_name"
+										track-by="screen_type_name"
+										@select="toggleSelectedScreen"
+										@remove="toggleUnSelectedScreen">
+										<span slot="noOptions">
+											Please select a associate sites and screen type.
+										</span>
+									</multiselect> 
+								</div>
+							</div>
+							
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
@@ -421,7 +429,7 @@
 
             storeAdvertisements: function() {
 				let formData = new FormData();
-				formData.append("company_id", this.advertisements.company_id);
+				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
 				formData.append("screen_type", this.advertisements.screen_type);
@@ -453,7 +461,7 @@
 					this.site_ids = [];
 					this.screen_ids = [];
 					this.advertisements.id = advertisements.id;
-					this.advertisements.company_id = advertisements.company_id;
+					this.advertisements.company_id = advertisements.company_details;
 					this.advertisements.name = advertisements.name;
 					this.advertisements.ad_type = this.ad_type;
 					this.advertisements.file_path = advertisements.name;
@@ -481,10 +489,7 @@
 						this.screen_ids.push(value.id);
                 	});
 
-					if(advertisements.screen_type) {
-						this.getScreens();
-					}
-
+					this.getScreens(advertisements.screen_type);
 					this.getTenants();
 
 					this.add_record = false;
@@ -497,7 +502,7 @@
             updateAdvertisements: function() {
 				let formData = new FormData();
 				formData.append("id", this.advertisements.id);
-				formData.append("company_id", this.advertisements.company_id);
+				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
 				formData.append("screen_type", this.advertisements.screen_type);

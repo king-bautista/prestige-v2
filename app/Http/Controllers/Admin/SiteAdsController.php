@@ -104,6 +104,8 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
     {
         try
     	{
+            $company_id = json_decode($request->company_id);
+
             $file_path = $request->file('file_path');
             if($file_path) {
                 $originalname = $file_path->getClientOriginalName();
@@ -112,7 +114,7 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
             }
 
             $data = [
-                'company_id' => $request->company_id,
+                'company_id' => $company_id->id,
                 'name' => $request->name,
                 'ad_type' => $request->ad_type,
                 'screen_type' => $request->screen_type,
@@ -147,9 +149,9 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
         try
     	{
             $site_ad = SiteAd::find($request->id);
+            $company_id = json_decode($request->company_id);
 
             $file_path_path = '';
-
             $file_path = $request->file('file_path');
             if($file_path) {
                 $originalname = $file_path->getClientOriginalName();
@@ -158,7 +160,7 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
             }
 
             $data = [
-                'company_id' => $request->company_id,
+                'company_id' => $company_id->id,
                 'name' => $request->name,
                 'ad_type' => $request->ad_type,
                 'screen_type' => $request->screen_type,
