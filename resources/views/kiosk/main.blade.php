@@ -29,9 +29,12 @@
                     <div class="h-button widget-button map-button">
                         <div class="button-text-align">Map</div>
                     </div>
-                    <div class="h-button widget-button promos-button">
-                        <div class="button-text-align">Promos</div>
-                    </div>
+
+                    <router-link to="/Promos">
+                        <div class="h-button widget-button promos-button">
+                            <div class="button-text-align">Promos</div>
+                        </div>
+                    </router-link>
                     <div class="h-button widget-button cinema-button">
                         <div class="button-text-align">Cinema</div>
                     </div>

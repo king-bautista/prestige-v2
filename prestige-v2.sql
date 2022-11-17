@@ -6587,6 +6587,7 @@ DROP TABLE IF EXISTS `brand_products_promos`;
 CREATE TABLE IF NOT EXISTS `brand_products_promos` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `brand_id` bigint(20) unsigned DEFAULT NULL,
+  `tenant_id` bigint(20) DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descriptions` mediumtext COLLATE utf8mb4_unicode_ci,
   `type` enum('product','promo') COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -6602,10 +6603,29 @@ CREATE TABLE IF NOT EXISTS `brand_products_promos` (
   PRIMARY KEY (`id`),
   KEY `brand_products_promos_brand_id_foreign` (`brand_id`),
   KEY `brand_products_promos_deleted_at_index` (`deleted_at`),
+  KEY `brand_products_promos_tenant_id_index` (`tenant_id`),
   CONSTRAINT `brand_products_promos_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brand_products_promos: ~0 rows (approximately)
+-- Dumping data for table prestige.brand_products_promos: ~17 rows (approximately)
+INSERT INTO `brand_products_promos` (`id`, `brand_id`, `tenant_id`, `name`, `descriptions`, `type`, `thumbnail`, `image_url`, `date_from`, `date_to`, `sequence`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 6417, NULL, '8 - pc. Chickenjoy Bucket', 'A bucket of your favorite crispylicious, juicylicious Chickenjoy!', 'product', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-11-16 00:19:40', '2022-11-16 00:22:37', NULL),
+	(2, 6417, NULL, '6 - pc. Chickenjoy Bucket', 'A bucket of your favorite crispylicious, juicylicious Chickenjoy!', 'product', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', NULL, NULL, 0, 1, '2022-11-16 00:23:19', '2022-11-16 00:23:19', NULL),
+	(3, 6417, NULL, '4 - pc. Chickenjoy Family Box', 'Four-piece Family Box of the Philippines’ best-tasting crispylicious, juicylicious Chickenjoy.', 'product', 'uploads/media/brand/products/20e82c53c06022bb365f2b1cd3c0ac23.jpg', 'uploads/media/brand/products/20e82c53c06022bb365f2b1cd3c0ac23.jpg', NULL, NULL, 0, 1, '2022-11-16 00:27:44', '2022-11-16 00:27:44', NULL),
+	(4, 6417, NULL, '2 - pc. Chickenjoy Solo', 'Philippines’ best-tasting crispylicious, juicylicious Chickenjoy that is crispy on the outside, tender and juicy on the inside.', 'product', 'uploads/media/brand/products/chickenjoy.jpg', 'uploads/media/brand/products/chickenjoy.jpg', NULL, NULL, 0, 1, '2022-11-16 00:35:03', '2022-11-16 00:35:03', NULL),
+	(5, 6417, NULL, '1 - pc. Chickenjoy Solo', 'Philippines’ best-tasting crispylicious, juicylicious Chickenjoy that is crispy on the outside, tender and juicy on the inside.', 'product', 'uploads/media/brand/products/chickenjoy_opt.jpg', 'uploads/media/brand/products/chickenjoy_opt.jpg', NULL, NULL, 0, 1, '2022-11-16 00:36:43', '2022-11-16 00:36:43', NULL),
+	(6, 6417, NULL, '1 - pc. Chickenjoy w/ Jolly Spaghetti w/ Drink', 'Philippines’ best-tasting crispylicious, juicylicious Chickenjoy paired with the meatiest, cheesiest, sweet-sarap Jolly Spaghetti.', 'product', 'uploads/media/brand/products/Spaghetti-w--chicken.jpg', 'uploads/media/brand/products/Spaghetti-w--chicken.jpg', NULL, NULL, 0, 1, '2022-11-16 00:39:21', '2022-11-16 00:39:21', NULL),
+	(7, 6417, NULL, '1 - pc. Chickenjoy w/ Burger Steak', 'Philippines’ best-tasting crispylicious, juicylicious Chickenjoy that is crispy on the outside, tender and juicy on the inside.', 'product', 'uploads/media/brand/products/images.jpg', 'uploads/media/brand/products/images.jpg', NULL, NULL, 0, 1, '2022-11-16 00:42:10', '2022-11-16 00:42:10', NULL),
+	(8, 6417, NULL, '1 - pc. Chickenjoy w/ Palabok', 'Philippines’ best-tasting crispylicious, juicylicious Chickenjoy paired with your classic favorite saucy-sarap Palabok.', 'product', 'uploads/media/brand/products/palabok-and-fried-chicken.jpg', 'uploads/media/brand/products/palabok-and-fried-chicken.jpg', NULL, NULL, 0, 1, '2022-11-16 00:52:55', '2022-11-16 00:52:55', NULL),
+	(9, 6417, NULL, 'Choose Your Freebie: Get a FREE Champ or a FREE Chicken a la King Pie Trio', 'Make your meals even MORE joyful with MORE freebies to choose from!\r\n\r\nGet a FREE Champ or a FREE Chicken a la King Pie Trio with a min. order of P650 for registered users!\r\n\r\nCatch these App Exclusive deals from September 1 – October 31, 2022', 'promo', 'uploads/media/brand/products/promo-1.jpg', 'uploads/media/brand/products/promo-1.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 00:58:31', '2022-11-16 00:58:31', NULL),
+	(10, 6417, NULL, 'Welcome Gift: Get a FREE Peach Mango Pie 3 Pies To-Go', 'Your Welcome Gift is waiting!\r\n\r\nGet a FREE Peach Mango 3 Pies To-Go with a min. purchase of P400 for first-time users! \r\n\r\nCatch this App Exclusive deal from September 1 – October 31, 2022.', 'promo', 'uploads/media/brand/products/promo-2.jpg', 'uploads/media/brand/products/promo-2.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:01:05', '2022-11-16 01:01:05', NULL),
+	(11, 6417, NULL, 'Jollibee Plush Doll Novelty Promo', 'Get Jollibee Plush Doll for only P275 with any food purchase.\r\n\r\nPromo period is from August 15 – December 31, 2022.\r\n\r\nValid for dine-in, take out, drive-thru and delivery via #87000.\r\n\r\nAvailable at participating Jollibee stores only.\r\n\r\nCannot be used in conjunction with other promos.\r\n\r\nIn the purchase of goods and services which are on promotional discounts, the senior citizen can avail of the establishment’s offered discount or the 20 percent discount provided under Expanded Senior Citizens Act of 2010, whichever is higher and more favorable.', 'promo', 'uploads/media/brand/products/promo-3.jpg', 'uploads/media/brand/products/promo-3.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:02:47', '2022-11-16 01:02:47', NULL),
+	(12, 6417, NULL, 'Funko Champ', 'Jollibee launches another Funko exclusive toy with a punch!\r\n\r\nGet the limited edition Jollibee Funko Champ for P650 when you order any Champ or Champ Jr. via the Jollibee App. Enjoy it with a limited edition Champ Sleeve when you order Champ – Solo or Champ w/ Fries! Promo runs from Oct 1 – 15, 2022 extended until November 30, 2022.', 'promo', 'uploads/media/brand/products/promo-4.jpg', 'uploads/media/brand/products/promo-4.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:05:14', '2022-11-16 01:05:14', NULL),
+	(13, 6417, NULL, '10.10 Jollibee App Exclusive Deal!', 'Adding to your cart has never been this joyful with the Jollibee App Exclusive 10.10 Deal! \r\n\r\nGet a FREE Chicken Sandwich for a min. order of P500 in delivery! Promo runs from Oct 10-12.\r\n\r\nWhat are you waiting for? Grab this deal now!', 'promo', 'uploads/media/brand/products/promo-5.jpg', 'uploads/media/brand/products/promo-5.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:30:37', '2022-11-16 01:30:37', NULL),
+	(14, 6417, NULL, 'No Tricks, Just Jolly Treats Promo', 'Visit your favorite Jollibee store in your Halloween costume and get a special treat with any food purchase this October 29 – 30 from 1pm to 4pm.\r\n\r\nDTI Fair Trade Permit No. FTEB-153535 Series of 2022', 'promo', 'uploads/media/brand/products/promo-6.jpg', 'uploads/media/brand/products/promo-6.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:37:13', '2022-11-16 01:37:13', NULL),
+	(15, 6417, NULL, 'Bench x Jollibee Love Pinoy Shirts Promo', 'Promo is from October 29 – November 4, 2022.\r\n\r\nAvailable only via Jollibee App on October 29.\r\n\r\nAvailable via dine-in, take out, drive-thru and delivery via #87000 hotline, Jollibee App and website from October 30 – November 4.\r\n\r\nCannot be sold separately and without food purchase.\r\n\r\nAvailable at participating Jollibee stores only.\r\n\r\nCannot be used in conjunction with other promos.\r\n\r\nAvailable in two designs. Free size only.\r\n\r\nIn the purchase of goods and services which are on promotional discounts, the Senior Citizen can avail of the establishment’s offered discount, or the 20 percent discount provided under Expanded Senior Citizens Act of 2010, whichever is higher and more favorable.\r\n\r\nDTI Fair Trade Permit No. FTEB – 152840, Series of 2022', 'promo', 'uploads/media/brand/products/promo-7.jpg', 'uploads/media/brand/products/promo-7.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:38:18', '2022-11-16 01:38:18', NULL),
+	(16, 6417, NULL, 'Jollibee Sarap ng Pasko Big Order Service (JSPB) Program', 'Book your Christmas party now and avail of the 10% giftback* for a minimum single-receipt food purchase worth P5,501.\r\n\r\nOffer is valid for bookings from November 15 to December 31, 2022.\r\n\r\nApplicable only to select Christmas bundles, Jolly Kiddie Meals, and solo food items.\r\n\r\nBig order is available via dine-in, take out and delivery via #87000 hotline.\r\n\r\nAvailable at participating Jollibee stores nationwide.\r\n\r\nCannot be used in conjunction with other promos.\r\n\r\nIn the purchase of goods and services which are on promotional discounts, the Senior Citizen can avail of the establishment’s offered discount, or the 20 percent discount provided under Expanded Senior Citizens Act of 2010, whichever is higher and more favorable.\r\n\r\nDTI Fair Trade Permit No. FTEB-154670 Series of 2022.\r\n\r\n*Giftback may be in a form of Jollibee Gift Certificates or products, whichever may be availed by the customer and requested through the JSPB-serving store.', 'promo', 'uploads/media/brand/products/promo-8.jpg', 'uploads/media/brand/products/promo-8.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:39:42', '2022-11-16 01:39:42', NULL),
+	(17, 6417, NULL, '11.11 Jollibee App Exclusive Deal!', 'Add joy to your cart this 11.11 with a free Peach Mango Pie 6 Pies-to-go! Just order at least P500 to make your 11.11 shopping extra sweeter!\r\n\r\nPromo runs from Nov. 11 – 13, 2022. Full promo mechanics here: https://www.jollibee.com.ph/11-11-deal/\r\n\r\nWhat are you waiting for? Grab this deal now!', 'promo', 'uploads/media/brand/products/promo-9.jpg', 'uploads/media/brand/products/promo-9.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:44:50', '2022-11-16 01:44:50', NULL);
 
 -- Dumping structure for table prestige.brand_supplementals
 DROP TABLE IF EXISTS `brand_supplementals`;
@@ -11095,9 +11115,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=139 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.migrations: 22 rows
+-- Dumping data for table prestige.migrations: 23 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(86, '2014_10_12_000000_create_users_table', 1),
@@ -11121,7 +11141,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(123, '2022_10_18_032536_create_companies_table', 15),
 	(128, '2022_10_18_035933_create_company_categories_table', 19),
 	(125, '2022_10_18_035944_create_category_labels_table', 17),
-	(138, '2022_11_04_052739_create_site_tenant_metas_table', 23);
+	(138, '2022_11_04_052739_create_site_tenant_metas_table', 23),
+	(139, '2022_11_17_020425_create_site_tenant_products_table', 24);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.modules
@@ -11237,7 +11258,7 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-10-17 21:34:09', NULL),
 	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2022-08-11 22:49:43', NULL),
 	(26, 1, 12, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
-	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-10-19 22:00:30', NULL),
+	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-11-15 18:37:58', NULL),
 	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
 	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
 	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
@@ -11278,9 +11299,9 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2022-10-18 21:41:17', NULL),
 	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2022-10-17 21:34:09', NULL),
 	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2022-10-18 21:41:17', NULL),
-	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2022-10-19 22:00:30', NULL),
-	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-10-19 22:00:30', NULL),
-	(70, 1, 37, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-10-19 22:00:30', NULL);
+	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2022-11-15 18:37:58', NULL),
+	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-11-15 18:37:58', NULL),
+	(70, 1, 37, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-11-15 18:37:58', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
 DROP TABLE IF EXISTS `personal_access_tokens`;
@@ -11409,10 +11430,10 @@ INSERT INTO `site_ads` (`id`, `company_id`, `name`, `ad_type`, `screen_type`, `f
 	(7, 1, 'SMMG PLANET VAPE BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-952d-4894.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:56:15', '2022-11-07 22:56:15', NULL),
 	(8, 1, 'SMMG MELONPAN ICE BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-95bb-2444.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:57:18', '2022-11-07 22:57:18', NULL),
 	(9, 1, 'SMMG HEAVENLY STITCHIN BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-9646-d790.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:59:51', '2022-11-07 22:59:51', NULL),
-	(10, 1, 'SMMG BLK 513 BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-96db-bf89.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:01:34', '2022-11-08 22:29:11', NULL),
+	(10, 1, 'SMMG BLK 513 BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-96db-bf89.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:01:34', '2022-11-14 23:17:16', NULL),
 	(11, 1, 'MEGA - FACADE FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-3de9-1d76.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:03:45', '2022-11-07 23:03:45', NULL),
 	(12, 1, 'SM - You\'re always welcome here FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-91f0-f52a.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:04:39', '2022-11-07 23:04:39', NULL),
-	(13, 2, 'Powered By PRESTIGE FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-9286-5c27.ogv', 'ogv', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:05:41', '2022-11-07 23:05:41', NULL),
+	(13, 2, 'Powered By PRESTIGE FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-9286-5c27.ogv', 'ogv', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 23:05:41', '2022-11-14 00:27:32', NULL),
 	(14, 1, 'SMMG SWATCH FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-9343-a869.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:06:53', '2022-11-07 23:06:53', NULL),
 	(15, 1, 'SMMG Auntie Anne FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-93f1-5d98.jpg', 'jpg', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:07:39', '2022-11-07 23:07:39', NULL),
 	(16, 1, 'SMMG Scribe FS', 'Fullscreen', 'Directory', 'uploads/media/advertisements/fullscreen/70c97549-945f-5e01.ogv', 'ogv', 0, 10, '2022-11-11', '2022-11-15', 1, '2022-11-07 23:10:55', '2022-11-07 23:10:55', NULL),
@@ -11445,7 +11466,7 @@ CREATE TABLE IF NOT EXISTS `site_ad_sites` (
   CONSTRAINT `site_ad_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ad_sites: ~19 rows (approximately)
+-- Dumping data for table prestige.site_ad_sites: ~20 rows (approximately)
 INSERT INTO `site_ad_sites` (`site_ad_id`, `site_id`) VALUES
 	(1, 1),
 	(2, 1),
@@ -11464,8 +11485,9 @@ INSERT INTO `site_ad_sites` (`site_ad_id`, `site_id`) VALUES
 	(18, 1),
 	(19, 1),
 	(20, 1),
-	(10, 1),
-	(3, 1);
+	(3, 1),
+	(13, 1),
+	(10, 1);
 
 -- Dumping structure for table prestige.site_ad_tenants
 DROP TABLE IF EXISTS `site_ad_tenants`;
@@ -11644,6 +11666,7 @@ DROP TABLE IF EXISTS `site_screens`;
 CREATE TABLE IF NOT EXISTS `site_screens` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `screen_type` enum('Directory','LED','LFD','LED funnel') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `orientation` enum('Landscape','Portrait') COLLATE utf8mb4_unicode_ci NOT NULL,
   `site_id` bigint(20) unsigned NOT NULL,
   `site_building_id` bigint(20) unsigned NOT NULL,
   `site_building_level_id` bigint(20) unsigned NOT NULL,
@@ -11667,13 +11690,13 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_screens: ~6 rows (approximately)
-INSERT INTO `site_screens` (`id`, `screen_type`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Directory', 1, 1, 2, 0, '789101', 'National Book Store', 24, 1, 1, 0, '2022-10-25 01:28:36', '2022-11-08 18:25:30', NULL),
-	(2, 'Directory', 1, 1, 2, 0, '123456', 'Kenny Rogers', 24, 1, 0, 0, '2022-10-25 01:39:22', '2022-11-08 18:25:30', NULL),
-	(3, 'Directory', 2, 4, 19, 0, '1549', 'Admin Test', 0, 1, 1, 0, '2022-10-25 17:21:39', '2022-11-08 18:10:58', '2022-11-08 18:10:58'),
-	(4, 'Directory', 2, 4, 20, 0, NULL, 'Sample', 0, 1, 0, 0, '2022-10-25 17:22:01', '2022-11-08 18:10:56', '2022-11-08 18:10:56'),
-	(5, 'LED', 1, 2, 12, 0, NULL, 'Samsung', 40, 1, 0, 0, '2022-11-08 18:08:57', '2022-11-08 18:10:09', NULL),
-	(6, 'LED', 1, 1, 4, 0, NULL, 'Uniqlo', 40, 1, 0, 0, '2022-11-08 18:11:22', '2022-11-08 18:11:22', NULL);
+INSERT INTO `site_screens` (`id`, `screen_type`, `orientation`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Directory', 'Landscape', 1, 1, 2, 0, '789101', 'National Book Store', 24, 1, 1, 0, '2022-10-25 01:28:36', '2022-11-14 21:10:52', NULL),
+	(2, 'Directory', 'Landscape', 1, 1, 2, 0, '123456', 'Kenny Rogers', 24, 1, 0, 0, '2022-10-25 01:39:22', '2022-11-08 18:25:30', NULL),
+	(3, 'Directory', 'Landscape', 2, 4, 19, 0, '1549', 'Admin Test', 0, 1, 1, 0, '2022-10-25 17:21:39', '2022-11-08 18:10:58', '2022-11-08 18:10:58'),
+	(4, 'Directory', 'Landscape', 2, 4, 20, 0, NULL, 'Sample', 0, 1, 0, 0, '2022-10-25 17:22:01', '2022-11-08 18:10:56', '2022-11-08 18:10:56'),
+	(5, 'LED', 'Landscape', 1, 2, 12, 0, NULL, 'Samsung', 40, 1, 0, 0, '2022-11-08 18:08:57', '2022-11-08 18:10:09', NULL),
+	(6, 'LED', 'Landscape', 1, 1, 4, 0, NULL, 'Uniqlo', 40, 1, 0, 0, '2022-11-08 18:11:22', '2022-11-08 18:11:22', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
 DROP TABLE IF EXISTS `site_screen_uptime`;
@@ -12132,7 +12155,7 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(413, 6871, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(414, 7312, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(415, 2311, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
-	(416, 6417, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
+	(416, 6417, 1, 1, 2, 0, 0, 0, 1, 1, '2022-10-25 22:19:38', '2022-11-16 17:41:55', NULL),
 	(417, 1902, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(418, 7379, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(419, 6173, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
@@ -12860,8 +12883,8 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(1141, 7222, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1142, 7226, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1143, 2886, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1144, 7153, 1, 2, 12, 1, 0, 0, 1, 1, '2022-10-25 22:19:44', '2022-11-07 18:42:43', NULL),
-	(1145, 907, 1, 2, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:44', '2022-10-25 22:19:44', NULL),
+	(1144, 7153, 1, 2, 12, 1, 0, 0, 1, 0, '2022-10-25 22:19:44', '2022-11-16 01:46:45', NULL),
+	(1145, 907, 1, 2, 6, 0, 0, 0, 1, 1, '2022-10-25 22:19:44', '2022-11-17 00:21:56', NULL),
 	(1146, 7398, 1, 2, 4, NULL, 0, 0, 1, 0, '2022-10-25 22:19:44', '2022-10-25 22:19:44', NULL),
 	(1147, 3, 1, 1, 6, 1, 0, 0, 1, 1, '2022-11-07 01:45:41', '2022-11-07 17:47:37', '2022-11-07 17:47:37');
 
@@ -12879,9 +12902,9 @@ CREATE TABLE IF NOT EXISTS `site_tenant_metas` (
   KEY `site_tenant_metas_site_tenant_id_foreign` (`site_tenant_id`),
   KEY `site_tenant_metas_meta_key_index` (`meta_key`),
   CONSTRAINT `site_tenant_metas_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenant_metas: ~11 rows (approximately)
+-- Dumping data for table prestige.site_tenant_metas: ~27 rows (approximately)
 INSERT INTO `site_tenant_metas` (`id`, `site_tenant_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1144, 'schedules', '[{"schedules":"       Wed, Tue","start_time":"09:00","end_time":"22:00"},{"schedules":"Thu, Fri, Sat, Sun, Mon","start_time":"10:00","end_time":"22:00"}]', '2022-11-06 22:33:34', '2022-11-07 01:41:21', NULL),
 	(2, 1144, 'subscriber_logo', 'uploads/media/subscriber/70c972c5-7b83-dfbd.jpg', '2022-11-06 22:33:34', '2022-11-06 22:58:21', NULL),
@@ -12893,7 +12916,53 @@ INSERT INTO `site_tenant_metas` (`id`, `site_tenant_id`, `meta_key`, `meta_value
 	(8, 1144, 'facebook', 'admintest', '2022-11-07 18:25:17', '2022-11-07 18:42:43', NULL),
 	(9, 1144, 'twitter', 'admintest', '2022-11-07 18:25:17', '2022-11-07 18:42:43', NULL),
 	(10, 1144, 'instagram', 'admintest', '2022-11-07 18:25:17', '2022-11-07 18:42:43', NULL),
-	(11, 1144, 'website', 'www.admintest.com', '2022-11-07 18:25:17', '2022-11-07 18:42:43', NULL);
+	(11, 1144, 'website', 'www.admintest.com', '2022-11-07 18:25:17', '2022-11-07 18:42:43', NULL),
+	(12, 1145, 'address', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(13, 1145, 'email', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(14, 1145, 'contact_number', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(15, 1145, 'facebook', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(16, 1145, 'twitter', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(17, 1145, 'instagram', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(18, 1145, 'website', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(19, 1145, 'schedules', '[{"schedules":"","start_time":"","end_time":""}]', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
+	(20, 416, 'address', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
+	(21, 416, 'email', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
+	(22, 416, 'contact_number', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
+	(23, 416, 'facebook', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
+	(24, 416, 'twitter', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
+	(25, 416, 'instagram', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
+	(26, 416, 'website', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
+	(27, 416, 'schedules', '[{"schedules":"","start_time":"","end_time":""}]', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL);
+
+-- Dumping structure for table prestige.site_tenant_products
+DROP TABLE IF EXISTS `site_tenant_products`;
+CREATE TABLE IF NOT EXISTS `site_tenant_products` (
+  `brand_product_promo_id` bigint(20) unsigned DEFAULT NULL,
+  `site_tenant_id` bigint(20) unsigned DEFAULT NULL,
+  KEY `site_tenant_products_brand_product_promo_id_foreign` (`brand_product_promo_id`),
+  KEY `site_tenant_products_site_tenant_id_foreign` (`site_tenant_id`),
+  CONSTRAINT `site_tenant_products_brand_product_promo_id_foreign` FOREIGN KEY (`brand_product_promo_id`) REFERENCES `brand_products_promos` (`id`),
+  CONSTRAINT `site_tenant_products_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.site_tenant_products: ~0 rows (approximately)
+INSERT INTO `site_tenant_products` (`brand_product_promo_id`, `site_tenant_id`) VALUES
+	(13, 416),
+	(1, 416),
+	(2, 416),
+	(4, 416),
+	(3, 416),
+	(5, 416),
+	(7, 416),
+	(8, 416),
+	(9, 416),
+	(10, 416),
+	(11, 416),
+	(12, 416),
+	(15, 416),
+	(16, 416),
+	(14, 416),
+	(17, 416);
 
 -- Dumping structure for table prestige.supplementals
 DROP TABLE IF EXISTS `supplementals`;

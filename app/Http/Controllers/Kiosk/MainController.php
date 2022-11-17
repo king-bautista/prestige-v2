@@ -9,6 +9,7 @@ use App\Models\ViewModels\SiteViewModel;
 use App\Models\ViewModels\CategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SiteAdViewModel;
+use App\Models\ViewModels\BrandProductViewModel;
 
 class MainController extends AppBaseController
 {
@@ -231,20 +232,31 @@ class MainController extends AppBaseController
         }
     }
 
-    
-    
-    public function getAdvertisements($type, $site_id, $screen_id = null)
+    public function getPromos()
     {
         try
-        {            
-            return $this->response($site_tenants, 'Successfully Retreived!', 200);
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            
+            $promos = BrandProductViewModel::where('brand_products_promos.type', 'promo')
+            ->where('brand_products_promos.active', 1)
+            ->where('site_tenants.is_subscriber', 1)
+            ->join('site_tenant_products', 'brand_products_promos.id', '=', 'site_tenant_products.brand_product_promo_id')
+            ->join('site_tenants', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
+            ->select('brand_products_promos.*')
+            ->get()->toArray();
+
+            $promos = array_chunk($promos, 6);
+            
+            return $this->response($promos, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
             return response([
-                'message' => 'No Banners to display!',
+                'message' => 'No Fullscreen to display!',
                 'status_code' => 200,
             ], 200);
         }
     }
+
 }
