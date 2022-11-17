@@ -58,6 +58,23 @@ class ProductsController extends AppBaseController implements ProductsController
         }
     }
 
+    public function getProductsByBrand($id)
+    {
+        try
+        {
+            $products = BrandProductViewModel::where('brand_id', $id)->where('active', 1)->get();
+            return $this->response($products, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function details($id)
     {
         try

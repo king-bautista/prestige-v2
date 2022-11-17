@@ -65,4 +65,18 @@ class SiteTenant extends Model
             );
         }
     }
+
+    public function saveProducts($product_ids)
+    {
+        //SiteTenantProduct::where('site_tenant_id',  $this->id)->delete();
+    
+        foreach ($product_ids as $id) {
+            SiteTenantProduct::updateOrCreate(
+                [
+                    'brand_product_promo_id' => $id,
+                    'site_tenant_id' => $this->id
+                ],
+            );
+        }
+    }
 }

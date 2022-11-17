@@ -78,7 +78,7 @@
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.tenants"
 										:options="tenants"
-										:multiple="false"
+										:multiple="true"
 										:close-on-select="true"
 										placeholder="Select Tenants"
 										label="brand_site_name"

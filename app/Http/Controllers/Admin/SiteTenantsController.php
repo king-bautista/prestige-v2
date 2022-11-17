@@ -9,8 +9,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\SiteTenant;
+use App\Models\SiteTenantProduct;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
+use App\Models\ViewModels\BrandProductViewModel;
 
 use App\Imports\SiteTenantsImport;
 
@@ -28,6 +30,12 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     public function index()
     {
         return view('admin.tenants');
+    }
+
+    public function products($id)
+    {
+        $tenant_details = SiteTenantViewModel::find($id);
+        return view('admin.tenant_product', compact("tenant_details"));
     }
 
     public function list(Request $request)
@@ -238,19 +246,82 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
 
     public function batchUpload(Request $request)
     {
-        // try
-        // {
+        try
+        {
             Excel::import(new SiteTenantsImport, $request->file('file'));
             return $this->response(true, 'Successfully Uploaded!', 200);  
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function tenantProducts($id)
+    {
+        try
+        {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
+            $products = BrandProductViewModel::when(request('search'), function($query){
+                return $query->where('brand_products_promos.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brand_products_promos.descriptions', 'LIKE', '%' . request('search') . '%');
+            })
+            ->where('site_tenant_products.site_tenant_id', $id)
+            ->join('site_tenant_products', 'brand_products_promos.id', '=', 'site_tenant_products.brand_product_promo_id')
+            ->select('brand_products_promos.*')
+            ->latest()
+            ->paginate(request('perPage'));
+            return $this->responsePaginate($products, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function deleteProduct($tenant_id, $id)
+    {
+        try
+    	{
+            $tenant_product = SiteTenantProduct::where('site_tenant_id', $tenant_id)->where('brand_product_promo_id', $id)->delete();
+            return $this->response($tenant_product, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function saveBrandProduct(Request $request)
+    {
+        try
+        {
+            $tenant_product = SiteTenant::find($request->site_tenant_id);
+            $tenant_product->saveProducts($request->product_ids);
+
+            return $this->response($tenant_product, 'Successfully saved!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
 }

@@ -150,15 +150,14 @@
             		type: "Type", 
                     thumbnail_path: {
             			name: "Thumbnail", 
-            			type:"image", 
+            			type:"logo", 
             		},
                     image_url_path: {
             			name: "Product Image", 
-            			type:"image", 
+            			type:"logo", 
             		},
                     date_from: "Date From", 
             		date_to: "Date To", 
-					sequence: "Sequence",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -231,6 +230,8 @@
                 this.product.active = false;				
 				this.$refs.thumbnail.value = null;
 				this.$refs.image_url.value = null;
+                this.thumbnail = '/images/no-image-available.png';
+                this.image_url = '/images/no-image-available.png';
 
               	$('#product-form').modal('show');
             },

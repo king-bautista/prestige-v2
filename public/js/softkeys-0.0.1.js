@@ -115,7 +115,7 @@
 
                         case 'symbol' :
                             if(obj.hasClass('softkeys--alt')) {
-                                character = $(this).children('span').eq(1).html();
+                                character = $(this).children('span').eq(1).html().replace("&amp;", "&");
                             } else {
                                 character = $(this).children('span').eq(0).html();
                             }
