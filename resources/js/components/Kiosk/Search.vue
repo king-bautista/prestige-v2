@@ -104,7 +104,7 @@
 				.then(response => {
                     this.tenant_list = response.data.data;
                     if(this.tenant_list.length == 0) {
-                        this.no_record_found = true;         
+                        this.no_record_found = false;         
                     }else {
                         this.search_results = true;
                     }
@@ -145,7 +145,7 @@
                                 ['4','$'],
                                 ['5','%'],
                                 ['6','^'],
-                                ['7','&amp;'],
+                                ['7','&'],
                                 ['8','*'],
                                 ['9','('],
                                 ['0',')'],

@@ -329,6 +329,15 @@
             			method: 'custom_delete',
 						v_on: 'DeleteTenant',
             		},
+					link: {
+            			title: 'Manage Product & Promos',
+            			name: 'Link',
+            			apiUrl: '/admin/site/tenant/products',
+            			routeName: '',
+            			button: '<i class="fa fa-link"></i> Manage Products',
+            			method: 'link',
+            			conditions: { is_subscriber:1 }
+            		},
             	},
 				otherButtons: {
 					addNew: {
@@ -484,16 +493,16 @@
                     this.getFloorLevel(tenant.site_building_id);
 
                     this.tenant.site_building_level_id = tenant.site_building_level_id;
-                    this.tenant.company_id = tenant.company_id;
+                    this.tenant.company_id = (tenant.company_id) ? tenant.company_id : null;
                     this.tenant.active = tenant.active;
                     this.tenant.is_subscriber = tenant.is_subscriber;
-					this.tenant.address = tenant.tenant_details.address;
-					this.tenant.email = tenant.tenant_details.email;
-					this.tenant.contact_number = tenant.tenant_details.contact_number;
-					this.tenant.facebook = tenant.tenant_details.facebook;
-					this.tenant.twitter = tenant.tenant_details.twitter;
-					this.tenant.instagram = tenant.tenant_details.instagram;
-					this.tenant.website = tenant.tenant_details.website;
+					this.tenant.address = (tenant.tenant_details.address != 'undefined') ? tenant.tenant_details.address : '';
+					this.tenant.email = (tenant.tenant_details.email != 'undefined') ? tenant.tenant_details.email : '';
+					this.tenant.contact_number = (tenant.tenant_details.contact_number != 'undefined') ? tenant.tenant_details.contact_number : '';
+					this.tenant.facebook = (tenant.tenant_details.facebook != 'undefined') ? tenant.tenant_details.facebook : '';
+					this.tenant.twitter = (tenant.tenant_details.twitter != 'undefined') ? tenant.tenant_details.twitter : '';
+					this.tenant.instagram = (tenant.tenant_details.instagram != 'undefined') ? tenant.tenant_details.instagram : '';
+					this.tenant.website = (tenant.tenant_details.website != 'undefined') ? tenant.tenant_details.website : '';
 
 					this.subscriber_logo = '';
 

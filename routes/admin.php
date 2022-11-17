@@ -184,6 +184,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/brand/product/store', 'Admin\ProductsController@store')->name('admin.brand.product.store');
     Route::post('/admin/brand/product/update', 'Admin\ProductsController@update')->name('admin.brand.product.update');
     Route::get('/admin/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('admin.brand.product.delete');
+    Route::get('/admin/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('admin.brand.product.by-brand');
 
     /*
     |--------------------------------------------------------------------------
@@ -237,6 +238,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/site/screen/update', 'Admin\ScreensController@update')->name('admin.site.screen.update');
     Route::get('/admin/site/screen/delete/{id}', 'Admin\ScreensController@delete')->where('id', '[0-9]+')->name('admin.site.screen.delete');
     Route::get('/admin/site/screen/get-screens/{ids}/{type}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens');
+    Route::get('/admin/site/screen/get-screens/{ids}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens-ids');
     Route::get('/admin/site/screen/set-default/{id}', 'Admin\ScreensController@setDefault')->where('id', '[0-9]+')->name('admin.site.screen.set-default');
 
     /*
@@ -253,6 +255,10 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/tenant/get-tenants/{ids}', 'Admin\SiteTenantsController@getTenants')->name('admin.site.tenant.get-tenants');
     Route::get('/admin/site/tenant/get-tenants-per-floor/{id}', 'Admin\SiteTenantsController@getTenantPerFloor')->where('id', '[0-9]+')->name('admin.site.tenant.get-tenants-floor');
     Route::post('/admin/site/tenant/batch-upload', 'Admin\SiteTenantsController@batchUpload')->name('admin.site.tenant.batch-upload');
+    Route::get('/admin/site/tenant/products/{id}', 'Admin\SiteTenantsController@products')->where('id', '[0-9]+')->name('admin.site.tenant-products');
+    Route::post('/admin/site/tenant/store-brand-products', 'Admin\SiteTenantsController@saveBrandProduct')->name('admin.site.tenant.brand-products');
+    Route::get('/admin/site/tenant/product/list/{id}', 'Admin\SiteTenantsController@tenantProducts')->where('id', '[0-9]+')->name('admin.site.tenant.product-list');
+    Route::get('/admin/site/tenant/product/delete/{tid}/{id}', 'Admin\SiteTenantsController@deleteProduct')->where('tid', '[0-9]+')->where('id', '[0-9]+')->name('admin.site.tenant.delete-product');
     
     /*
     |--------------------------------------------------------------------------

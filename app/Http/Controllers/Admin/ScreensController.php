@@ -84,6 +84,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
             $data = [
                 'screen_type' => $request->screen_type,
+                'orientation' => $request->orientation,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
@@ -122,6 +123,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
             $data = [
                 'screen_type' => $request->screen_type,
+                'orientation' => $request->orientation,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,

@@ -40,7 +40,7 @@
             <div id="popover-content" class="hide d-none" style="z-index:999">
                 Need help? Touch here.
             </div>
-            <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip" style="z-index:9999;position:absolute;top:870px;right:0px;">
+            <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip" style="z-index:999;position:absolute;top:870px;right:0px;">
                 <img src="{{ URL::to('assets/images/English/Help.png') }}" id="helpbutton">
             </div>
         </div>
@@ -118,7 +118,7 @@
             class_name = 'carousel-item active';
         }
 
-        if((fullscreen_array.length-1) >= countscreen) {
+        if((fullscreen_array.length) >= countscreen) {
 
             var type = 'image';
             type = checkFileExtension(fullscreen_array[countscreen].file_type);
@@ -207,15 +207,6 @@
             $('.h-button').removeClass('active');
             $(this).addClass('active');
         });
-        
-        $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
-            current_index = $(this).find('.active').data('index');
-            $('#carousel-fullscreen .carousel-item:first').remove();
-            appendFullscreen();
-            if(fullscreen_array.length == countscreen) {
-                countscreen = 0;                        
-            }
-        });
 
         $('#banner-ads-carousel').on('slide.bs.carousel', function () {
             current_index = $(this).find('.active').data('index');
@@ -223,6 +214,15 @@
             appendBanners();
             if(banner_array.length == count) {
                 count = 0;                        
+            }
+        });
+
+        $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
+            current_index = $(this).find('.active').data('index');
+            $('#carousel-fullscreen .carousel-item:first').remove();
+            appendFullscreen();
+            if(fullscreen_array.length == countscreen) {
+                countscreen = 0;                        
             }
         });
     });

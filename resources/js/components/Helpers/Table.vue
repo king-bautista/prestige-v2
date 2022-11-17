@@ -13,7 +13,7 @@
 	        </div>
             <div class="col-md-5 mb-2" style="text-align: right;">
                 <div v-if="otherButtons" class="other-button">
-                    <div v-for="(action, index) in otherButtons" v-show="condition(action.method, meta.permissions)">
+                    <div v-for="(action, index) in otherButtons" v-show="condition(action, meta.permissions)">
                         <a type="button" :class="action.class" :title="action.title" v-html="action.icon" @click="buttonAction(action)"></a>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                 			{{ data[key] }}
                 			</span>
                 			<div class="row-actions" v-if="index==0" style="min-width: 150px;">
-	                      		<span v-for="(action, index) in actionButtons" v-bind:key="index" v-show="condition(action.method, meta.permissions)">
+	                      		<span v-for="(action, index) in actionButtons" v-bind:key="index" v-show="condition(action, meta.permissions, data)">
 	                      			<a href="#" @click="doAction(action.method, action.routeName, action.apiUrl, data[primaryKey], data, action)">
 	                      				<span v-html="action.button"></span>
 	                      			</a>
@@ -230,11 +230,25 @@
                 }
             },
 
-            condition(action, permission) {
+            condition(action, permission, data) {
                 if(!permission)
                     return false;
 
-                switch(action) {
+                if(action.conditions) {
+                    var condition = false;
+                    for (var keyname in action.conditions) {
+                        var key_value = action.conditions[keyname];
+                        if(data[keyname] == key_value) {
+                            condition = true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    return condition;
+                }
+
+                switch(action.method) {
                     case 'edit':
                         if(permission.can_edit > 0)
                             return true;
@@ -425,7 +439,7 @@
         left: -9999em;
     }
 
-	.row-actions span:not(:last-child):after {
+	.row-actions span:not(:first-child)::before {
 		content: "|";
 		color: #007bff;
 		margin-left: 5px;

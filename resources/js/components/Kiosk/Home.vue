@@ -139,19 +139,19 @@
         <div class="tabs-container" v-show="!home_category">
             <div class="tabs">
                 <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">View stores by</span>: </span>
-                <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab">
+                <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" @click="showCategories">
                     <div>
-                        <a class="translateme tenant-category" @click="showCategories">Category</a>
+                        <a class="translateme tenant-category">Category</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item">
+                <div class="tabs-item store-tabs-item" @click="getTenants(current_category)">
                     <div>
-                        <a class="translateme tenant-alphabet" @click="getTenants(current_category)">Alphabetical</a>
+                        <a class="translateme tenant-alphabet">Alphabetical</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item">
+                <div class="tabs-item store-tabs-item" @click="showSupplementals">
                     <div>
-                        <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" @click="showSupplementals" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
+                        <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
                     </div>
                 </div>
             </div>
@@ -292,47 +292,22 @@
             },
         },
 
-        components: {
+        mounted() {
+            $(function() {
+                $('.store-tabs-item').click(function () {
+                    $('.store-tabs-item').removeClass('tab-item-selected');
+                    $(this).addClass('tab-item-selected');
+                });
 
- 	   }
+                $(".carousel").carousel({
+                    interval: false,
+                    pause: true,
+                    touch:true,
+                });
+            });
+        },
     };
     
-    $(document).ready(function () {
-        $('.store-tabs-item').click(function () {
-            $('.store-tabs-item').removeClass('tab-item-selected');
-            $(this).addClass('tab-item-selected');
-        });
-
-        $(".carousel").carousel({
-            interval: false,
-            pause: true,
-            touch:true,
-        });
-        
-        // $( ".carousel .carousel-inner" ).swipe( {
-        //     swipeLeft: function ( event, direction, distance, duration, fingerCount ) {
-        //         this.parent( ).carousel( 'next' );
-        //     },
-
-        //     swipeRight: function ( ) {
-        //         this.parent( ).carousel( 'prev' );
-        //     },
-
-        //     threshold: 0,
-
-        //     // tap: function(event, target) {
-        //     // // get the location: in my case the target is my link
-        //     //     window.location = $(this).find('.carousel-item.active a').attr('href');
-        //     // },
-        //     //เอา  a ออกถ้าต้องการให้ slide ที่เป็น tag a สามารถคลิกได้
-        //     excludedElements:"label, button, input, select, textarea, .noSwipe"
-        // } );
-        
-        // $('.carousel .carousel-inner').on('dragstart', 'a', function () {
-        //     return false;
-        // });
-    });
-
 </script>
 <style lang="scss" scoped>
     .carousel-control-prev {
