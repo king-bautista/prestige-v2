@@ -259,4 +259,30 @@ class MainController extends AppBaseController
         }
     }
 
+    public function getCinemas()
+    {
+        // try
+        // {
+            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            ->where('brands.name', 'like', '%CINEMA%')
+            ->where('categories.name', 'like', '%Amusement & Exhibitions%')
+            ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->join('categories', 'brands.category_id', '=', 'categories.id')
+            ->select('site_tenants.*')
+            ->distinct()
+            ->orderBy('brands.name', 'ASC')
+            ->get()->toArray();
+            
+            $site_tenants = array_chunk($site_tenants, 10);
+            return $this->response($site_tenants, 'Successfully Retreived!', 200);
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }    
+    }
+
 }

@@ -9,7 +9,7 @@
             </div>
         </div>
         <div>
-            <div class="row col-md-9 offset-md-2">
+            <div class="row col-md-9 offset-md-2 mt-3">
                 <div id="myPromos" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-if="promo_list.length > 0">
                     <div class="carousel-inner">
                         
@@ -22,7 +22,9 @@
                             <div class="row mb-3">
                                 <div v-for="promo in promos" class="col-12 col-sm-4 text-left mt-3">
                                     <div class="bg-white text-center">
-                                        <img :src="promo.image_url_path" :alt="promo.name" style="width:80%; border: solid 2px; border-radius: 15px;">
+                                        <a :href="promo.image_url_path" data-fancybox="gallery">
+                                            <img :src="promo.image_url_path" :alt="promo.name" style="width:80%; border: solid 2px; border-radius: 15px;" />
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +71,12 @@
 
 			getPromos: function() {
 				axios.get('/api/v1/promos')
-                .then(response => this.promo_list = response.data.data);
+                .then(response => {
+                    this.promo_list = response.data.data
+                    if(!this.promo_list.length > 0) {
+                        this.no_record_found = true;         
+                    }
+                });
 			},
 
             goBack: function() {
@@ -77,10 +84,47 @@
 
         },
 
+        mounted() {
+            if(this.promo_list.length) {
+                $(function() {
+                    // Initialise Carousel
+                    const myPromos = new Carousel(document.querySelector("#myPromos"));
+
+                    // Initialise Fancybox
+                    Fancybox.bind('[data-fancybox="gallery"]', {
+                        Carousel: {
+                            on: {
+                            change: (carousel, to) => {
+                                // Sync Carousel slide
+                                // ===
+                                const $el = Fancybox.getInstance()
+                                .getSlide()
+                                .$trigger.closest(".carousel__slide");
+
+                                const slide = myPromos.slides.find((slide) => {
+                                    return slide.$el === $el;
+                                });
+
+                                myPromos.slideTo(slide.index, {
+                                    friction: 0,
+                                });
+                            },
+                            },
+                        },
+                    });
+                })
+
+            }
+        },
+
     };
 
 </script>
 <style lang="scss" scoped>
+    .carousel-item a {
+        text-decoration: none;
+        color: #fff;
+    }
     .carousel-control-prev {
         width: 2rem;
         height: 578px;
