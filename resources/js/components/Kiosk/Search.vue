@@ -66,7 +66,7 @@
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
             </div>
         </div>
-        <img v-show="search_results" :src="back_button" style="z-index:999;position:absolute;top:690px;right:15px; cursor:pointer;" @click="goBack">
+        <img v-show="search_results" :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
     </div>
 </template>
 <script> 

@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="{{ URL::to('js/jquery-ui/jquery-ui.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/custom-kiosk.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/softkeys-0.0.1.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('css/fancybox.css') }}">
     </head>
 
     <body>
@@ -35,7 +36,7 @@
         <script src="{{ URL::to('assets/js/popper-v2.min.js') }}"></script>	
         <script src="{{ mix('/js/app.js') }}"></script>
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
-        <script src="{{ URL::to('js/lozad.min.js') }}"></script>
+        <script src="{{ URL::to('js/fancybox.umd.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>
 </html>

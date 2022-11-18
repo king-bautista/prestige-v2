@@ -63,6 +63,8 @@ Vue.use(VueRouter);
 
 import home from './components/Kiosk/Home.vue';
 import search from './components/Kiosk/Search.vue';
+import promos from './components/Kiosk/Promos.vue';
+import cinema from './components/Kiosk/Cinema.vue';
 
 const routes = [
     {   
@@ -74,6 +76,16 @@ const routes = [
         path: '/Search',
         component: search,
         name: 'search'
+    },
+    {   
+        path: '/Promos',
+        component: promos,
+        name: 'promos'
+    },
+    {   
+        path: '/Cinemas',
+        component: cinema,
+        name: 'cinema'
     },
 ];
 

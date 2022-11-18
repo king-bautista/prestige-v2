@@ -48,8 +48,9 @@ Route::group(['prefix' => 'v1'], function ()
 
     Route::get('/advertisements/banners', 'Kiosk\MainController@getBanners')->name('kiosk.banners');
     Route::get('/advertisements/fullscreen', 'Kiosk\MainController@getFullscreen')->name('kiosk.fullscreen');
-    Route::get('/advertisements/{type}/{site_id}/{screen_id}', 'Kiosk\MainController@getAdvertisements')->where('site_id', '[0-9]+')->where('screen_id', '[0-9]+')->name('kiosk.advertisements');
-
+    Route::get('/promos', 'Kiosk\MainController@getPromos')->name('kiosk.promos');
+    Route::get('/cinemas', 'Kiosk\MainController@getCinemas')->name('kiosk.cinemas');
+    Route::get('/now-showing', 'Kiosk\MainController@getNowShowing')->name('kiosk.now-showing');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

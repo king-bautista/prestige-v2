@@ -29,12 +29,17 @@
                     <div class="h-button widget-button map-button">
                         <div class="button-text-align">Map</div>
                     </div>
-                    <div class="h-button widget-button promos-button">
-                        <div class="button-text-align">Promos</div>
-                    </div>
-                    <div class="h-button widget-button cinema-button">
-                        <div class="button-text-align">Cinema</div>
-                    </div>
+
+                    <router-link to="/Promos">
+                        <div class="h-button widget-button promos-button">
+                            <div class="button-text-align">Promos</div>
+                        </div>
+                    </router-link>
+                    <router-link to="/Cinemas">
+                        <div class="h-button widget-button cinema-button">
+                            <div class="button-text-align">Cinema</div>
+                        </div>
+                    </router-link>
                 </div>
             </div>
             <div id="popover-content" class="hide d-none" style="z-index:999">
