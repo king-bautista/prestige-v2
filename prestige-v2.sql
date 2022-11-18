@@ -10801,6 +10801,49 @@ INSERT INTO `category_labels` (`id`, `category_id`, `company_id`, `site_id`, `na
 	(1, 1, NULL, 1, 'Food Court', '2022-10-20 17:20:34', '2022-10-20 17:27:41', '2022-10-20 17:27:41'),
 	(2, 1, NULL, 2, 'Food Set', '2022-10-20 17:27:36', '2022-10-20 17:27:36', NULL);
 
+-- Dumping structure for table prestige.cinema_genre
+DROP TABLE IF EXISTS `cinema_genre`;
+CREATE TABLE IF NOT EXISTS `cinema_genre` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `genre_code` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `genre_label` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cinema_genre_genre_code_index` (`genre_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.cinema_genre: ~0 rows (approximately)
+
+-- Dumping structure for table prestige.cinema_schedules
+DROP TABLE IF EXISTS `cinema_schedules`;
+CREATE TABLE IF NOT EXISTS `cinema_schedules` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `synopsis` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `opening_date` date DEFAULT NULL,
+  `rating` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating_description` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `genre` int(11) DEFAULT NULL,
+  `runtime` int(11) DEFAULT NULL,
+  `casting` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trailer_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cinema_id` int(11) DEFAULT NULL,
+  `screen_code` bigint(20) DEFAULT NULL,
+  `screen_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `film_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `genre2` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `genre3` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cinema_id_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `show_time` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.cinema_schedules: ~0 rows (approximately)
+
 -- Dumping structure for table prestige.classifications
 DROP TABLE IF EXISTS `classifications`;
 CREATE TABLE IF NOT EXISTS `classifications` (
@@ -11115,9 +11158,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=141 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.migrations: 23 rows
+-- Dumping data for table prestige.migrations: 24 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(86, '2014_10_12_000000_create_users_table', 1),
@@ -11142,7 +11185,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(128, '2022_10_18_035933_create_company_categories_table', 19),
 	(125, '2022_10_18_035944_create_category_labels_table', 17),
 	(138, '2022_11_04_052739_create_site_tenant_metas_table', 23),
-	(139, '2022_11_17_020425_create_site_tenant_products_table', 24);
+	(139, '2022_11_17_020425_create_site_tenant_products_table', 24),
+	(140, '2022_11_18_082533_create_cinema_schedules_table', 25);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.modules
@@ -11991,7 +12035,7 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(249, 6328, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-10-25 22:19:37', NULL),
 	(250, 5558, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-10-25 22:19:37', NULL),
 	(251, 5503, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-10-25 22:19:37', NULL),
-	(252, 7218, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-10-25 22:19:37', NULL),
+	(252, 7218, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-11-17 23:06:52', '2022-11-17 23:06:52'),
 	(253, 7233, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-10-25 22:19:37', NULL),
 	(254, 2670, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-10-25 22:19:37', NULL),
 	(255, 4534, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:37', '2022-10-25 22:19:37', NULL),
@@ -12711,7 +12755,7 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(969, 5839, 1, 3, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(970, 4847, 1, 3, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(971, 7237, 1, 3, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
-	(972, 7233, 1, 3, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
+	(972, 7233, 1, 3, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-11-17 18:52:52', '2022-11-17 18:52:52'),
 	(973, 7034, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(974, 2923, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(975, 16, 1, 3, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
@@ -12849,19 +12893,19 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(1107, 6903, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1108, 4660, 1, 1, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1109, 4199, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1110, 7219, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1111, 7223, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1112, 7224, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1113, 7225, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1114, 7226, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1115, 7227, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1116, 7228, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1117, 7229, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1118, 7230, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1119, 7220, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1120, 7221, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1121, 7222, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1122, 7222, 1, 2, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
+	(1110, 7219, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:50', '2022-11-17 18:54:50'),
+	(1111, 7223, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:54', '2022-11-17 18:54:54'),
+	(1112, 7224, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:57', '2022-11-17 18:54:57'),
+	(1113, 7225, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:40', '2022-11-17 18:54:40'),
+	(1114, 7226, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:43', '2022-11-17 18:54:43'),
+	(1115, 7227, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:46', '2022-11-17 18:54:46'),
+	(1116, 7228, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:07', '2022-11-17 18:54:07'),
+	(1117, 7229, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:11', '2022-11-17 18:54:11'),
+	(1118, 7230, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:17', '2022-11-17 18:54:17'),
+	(1119, 7220, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:20', '2022-11-17 18:54:20'),
+	(1120, 7221, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:23', '2022-11-17 18:54:23'),
+	(1121, 7222, 1, 1, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:26', '2022-11-17 18:54:26'),
+	(1122, 7222, 1, 2, 6, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:29', '2022-11-17 18:54:29'),
 	(1123, 4259, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1124, 7507, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1125, 6073, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
@@ -12870,18 +12914,18 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(1128, 7246, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1129, 3572, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1130, 5056, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1131, 7219, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1132, 7223, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1133, 7224, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1134, 7225, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1135, 7227, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1136, 7228, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1137, 7229, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1138, 7230, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1139, 7220, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1140, 7221, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1141, 7222, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
-	(1142, 7226, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
+	(1131, 7219, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:52:58', '2022-11-17 18:52:58'),
+	(1132, 7223, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:02', '2022-11-17 18:53:02'),
+	(1133, 7224, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:06', '2022-11-17 18:53:06'),
+	(1134, 7225, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:10', '2022-11-17 18:53:10'),
+	(1135, 7227, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:14', '2022-11-17 18:53:14'),
+	(1136, 7228, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:18', '2022-11-17 18:53:18'),
+	(1137, 7229, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:32', '2022-11-17 18:53:32'),
+	(1138, 7230, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:39', '2022-11-17 18:53:39'),
+	(1139, 7220, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:32', '2022-11-17 18:54:32'),
+	(1140, 7221, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:54:35', '2022-11-17 18:54:35'),
+	(1141, 7222, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:43', '2022-11-17 18:53:43'),
+	(1142, 7226, 1, 1, 7, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-11-17 18:53:54', '2022-11-17 18:53:54'),
 	(1143, 2886, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:43', '2022-10-25 22:19:43', NULL),
 	(1144, 7153, 1, 2, 12, 1, 0, 0, 1, 0, '2022-10-25 22:19:44', '2022-11-16 01:46:45', NULL),
 	(1145, 907, 1, 2, 6, 0, 0, 0, 1, 1, '2022-10-25 22:19:44', '2022-11-17 00:21:56', NULL),
@@ -12945,23 +12989,22 @@ CREATE TABLE IF NOT EXISTS `site_tenant_products` (
   CONSTRAINT `site_tenant_products_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenant_products: ~0 rows (approximately)
+-- Dumping data for table prestige.site_tenant_products: ~15 rows (approximately)
 INSERT INTO `site_tenant_products` (`brand_product_promo_id`, `site_tenant_id`) VALUES
-	(13, 416),
 	(1, 416),
 	(2, 416),
-	(4, 416),
 	(3, 416),
-	(5, 416),
-	(7, 416),
 	(8, 416),
+	(6, 416),
+	(5, 416),
 	(9, 416),
 	(10, 416),
 	(11, 416),
 	(12, 416),
-	(15, 416),
 	(16, 416),
+	(15, 416),
 	(14, 416),
+	(13, 416),
 	(17, 416);
 
 -- Dumping structure for table prestige.supplementals
