@@ -24790,15 +24790,15 @@ var routes = [{
   component: _components_Kiosk_Home_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
   name: 'home'
 }, {
-  path: '/Search',
+  path: '/search',
   component: _components_Kiosk_Search_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   name: 'search'
 }, {
-  path: '/Promos',
+  path: '/promos',
   component: _components_Kiosk_Promos_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
   name: 'promos'
 }, {
-  path: '/Cinemas',
+  path: '/cinemas',
   component: _components_Kiosk_Cinema_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
   name: 'cinema'
 }];
