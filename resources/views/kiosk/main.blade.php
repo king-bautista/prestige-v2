@@ -20,7 +20,7 @@
                             <div class="button-text-align">Home</div>
                         </div>
                     </router-link>
-                    <router-link to="/Search">
+                    <router-link to="/search">
                         <div class="h-button widget-button search-button">
                             <div class="button-text-align">Search</div>
                         </div>
@@ -30,12 +30,12 @@
                         <div class="button-text-align">Map</div>
                     </div>
 
-                    <router-link to="/Promos">
+                    <router-link to="/promos">
                         <div class="h-button widget-button promos-button">
                             <div class="button-text-align">Promos</div>
                         </div>
                     </router-link>
-                    <router-link to="/Cinemas">
+                    <router-link to="/cinemas">
                         <div class="h-button widget-button cinema-button">
                             <div class="button-text-align">Cinema</div>
                         </div>

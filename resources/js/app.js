@@ -73,17 +73,17 @@ const routes = [
         name: 'home'
     },
     {   
-        path: '/Search',
+        path: '/search',
         component: search,
         name: 'search'
     },
     {   
-        path: '/Promos',
+        path: '/promos',
         component: promos,
         name: 'promos'
     },
     {   
-        path: '/Cinemas',
+        path: '/cinemas',
         component: cinema,
         name: 'cinema'
     },
