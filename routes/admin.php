@@ -299,5 +299,41 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/advertisement/update', 'Admin\SiteAdsController@update')->name('admin.advertisement.update');
     Route::get('/admin/advertisement/delete/{id}', 'Admin\SiteAdsController@delete')->where('id', '[0-9]+')->name('admin.advertisement.delete');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Genre Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/cinema/genres', 'Admin\GenresController@index')->name('admin.genres');
+    Route::get('/admin/cinema/genre/list', 'Admin\GenresController@list')->name('admin.genre.list');
+    Route::post('/admin/cinema/genre/store', 'Admin\GenresController@store')->name('admin.genre.store');
+    Route::get('/admin/cinema/genre/{id}', 'Admin\GenresController@details')->where('id', '[0-9]+')->name('admin.genre.details');
+    Route::put('/admin/cinema/genre/update', 'Admin\GenresController@update')->name('admin.genre.update');
+    Route::get('/admin/cinema/genre/delete/{id}', 'Admin\GenresController@delete')->where('id', '[0-9]+')->name('admin.genre.delete');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Site Code Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/cinema/site-codes', 'Admin\CinemaSiteController@index')->name('admin.site-codes');
+    Route::get('/admin/cinema/site-code/list', 'Admin\CinemaSiteController@list')->name('admin.site-code.list');
+    Route::post('/admin/cinema/site-code/store', 'Admin\CinemaSiteController@store')->name('admin.site-code.store');
+    Route::get('/admin/cinema/site-code/{id}', 'Admin\CinemaSiteController@details')->where('id', '[0-9]+')->name('admin.site-code.details');
+    Route::put('/admin/cinema/site-code/update', 'Admin\CinemaSiteController@update')->name('admin.site-code.update');
+    Route::get('/admin/cinema/site-code/delete/{id}', 'Admin\CinemaSiteController@delete')->where('id', '[0-9]+')->name('admin.site-code.delete');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cinema Schedules Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/cinema/schedules', 'Admin\CinemasScheduleController@index')->name('admin.schedules');
+    Route::get('/admin/cinema/schedule/list', 'Admin\CinemasScheduleController@list')->name('admin.schedule.list');
+    Route::post('/admin/cinema/schedule/store', 'Admin\CinemasScheduleController@store')->name('admin.schedule.store');
+    Route::get('/admin/cinema/schedule/{id}', 'Admin\CinemasScheduleController@details')->where('id', '[0-9]+')->name('admin.schedule.details');
+    Route::get('/admin/cinema/schedule/delete/{id}', 'Admin\CinemasScheduleController@delete')->where('id', '[0-9]+')->name('admin.schedule.delete');
+    Route::get('/admin/cinema/schedule/site-codes', 'Admin\CinemasScheduleController@getSiteCodes')->name('admin.cinema.site-codes');
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

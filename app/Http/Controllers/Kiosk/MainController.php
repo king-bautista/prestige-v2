@@ -10,6 +10,7 @@ use App\Models\ViewModels\CategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SiteAdViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\ViewModels\CinemaScheduleViewModel;
 
 class MainController extends AppBaseController
 {
@@ -261,8 +262,8 @@ class MainController extends AppBaseController
 
     public function getCinemas()
     {
-        // try
-        // {
+        try
+        {
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.name', 'like', '%CINEMA%')
             ->where('categories.name', 'like', '%Amusement & Exhibitions%')
@@ -275,14 +276,42 @@ class MainController extends AppBaseController
             
             $site_tenants = array_chunk($site_tenants, 10);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }    
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }    
+    }
+
+    public function getShowing()
+    {
+        try
+        {
+            $start_date =  date('Y-m-d 00:00:00');
+            $end_date =  date('Y-m-d 23:59:59');
+
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            
+            $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
+            ->where('show_time', '<=', $end_date)
+            ->where('site_id', $site->id)
+            ->groupBy('film_id')
+            ->orderBy('title')
+            ->get()->toArray();
+            
+            $now_showing = array_chunk($now_showing, 3);
+            return $this->response($now_showing, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }    
     }
 
 }

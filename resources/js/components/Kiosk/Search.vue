@@ -25,7 +25,7 @@
                     <div>Results</div>                  
                 </div>
             </div>
-            <div class="row col-md-9 offset-md-2">
+            <div class="row col-md-10 offset-md-1">
                 <div id="myTenants" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-if="tenant_list.length > 0">
                     <div class="carousel-inner">
                         
@@ -37,7 +37,7 @@
                         <div class="carousel-item" v-for="(tenants, index) in tenant_list" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
                                 <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                    <div class="tenant-store bg-white text-center box-shadowed">
+                                    <div class="tenant-store bg-white text-center box-shadowed ml-3">
                                         <div class="image-holder h-100">
                                             <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                         </div>
@@ -195,28 +195,3 @@
     };
 
 </script>
-<style lang="scss" scoped>
-    .carousel-control-prev {
-        width: 2rem;
-        height: 578px;
-        border: none;
-        background: url('/assets/images/Left.png') no-repeat;
-        background-position: center;
-    }
-    .carousel-control-prev {
-        left: -70px;
-    }
-
-    .carousel-control-next {
-        width: 2rem;
-        height: 578px;
-        border: none;
-        background: url('/assets/images/Right.png') no-repeat;
-        background-position: center;
-    }
-
-    .carousel-control-next {
-        right: -55px;
-    }
-
-</style>

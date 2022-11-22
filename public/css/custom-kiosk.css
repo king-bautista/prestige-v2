@@ -279,7 +279,7 @@ body{
     cursor: pointer;
 }
 
-#myCarousel, #myTenants, #myCinemas{
+#myCarousel, #myTenants, #myCinemas, #myMovies {
     width: 100%;
 }
 
@@ -289,6 +289,7 @@ body{
 
 .carousel-indicators {
     bottom: -1rem;
+    z-index: 0;
 }
 
 .carousel-indicators li {
@@ -474,4 +475,101 @@ body{
     -webkit-box-shadow: 0px 8px 16px 2px rgb(192 192 192 / 80%);
     -moz-box-shadow: 0px 8px 16px 2px rgba(192,192,192,.8);
     box-shadow: 0px 8px 16px 2px rgb(192 192 192 / 80%);
+}
+
+.schedule-image {
+    width: 159px;
+    height: 240px;
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 75%);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 75%);
+}
+
+.assistance_tooltip {
+    z-index:999;
+    position:absolute;
+    top:870px;
+    right:0px;
+}
+
+.back-button {
+    z-index:999;
+    position:absolute;
+    top:780px;
+    right:15px; 
+    cursor:pointer;
+}
+
+.seeDetails {
+    margin-top: 55px;
+}
+
+.btn-cinema-details {
+    color: #000;
+    border: 1px solid #98dad0;
+    font-size: 21px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.carousel-item a {
+    text-decoration: none;
+    color: #fff;
+}
+.carousel-control-prev {
+    width: 2rem;
+    height: 578px;
+    border: none;
+    background: url('/assets/images/Left.png') no-repeat;
+    background-position: center;
+}
+.carousel-control-prev {
+    left: -70px;
+}
+
+.carousel-control-next {
+    width: 2rem;
+    height: 578px;
+    border: none;
+    background: url('/assets/images/Right.png') no-repeat;
+    background-position: center;
+}
+
+.carousel-control-next {
+    right: -65px;
+}
+
+.no-record-found {
+    margin: -6rem auto auto;
+}
+
+.no-movies-found {
+    margin: 5rem auto auto;
+}
+
+.fancybox__backdrop {
+    background: var(--fancybox-bg, rgba(24, 24, 27, 0.80)) !important;
+}
+
+.custom-modal {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    height: 100%; 
+    width: 100%; 
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding: 20px; 
+    text-align: center; 
+    display: block;
+}
+
+.custom-modal-body {
+    position: relative;
+    top: 40%;
+    left: 35%;
+    transform: translateY(-50%);
+    width: 1182px;
+    color: rgb(0, 0, 0);
 }

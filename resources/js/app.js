@@ -42,6 +42,9 @@ Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').
 Vue.component('admin-companies', require('./components/Admin/Company.vue').default);
 Vue.component('admin-illustrations', require('./components/Admin/Illustrations.vue').default);
 Vue.component('admin-tenant-products', require('./components/Admin/TenantProducts.vue').default);
+Vue.component('admin-genres', require('./components/Admin/Genre.vue').default);
+Vue.component('admin-site-codes', require('./components/Admin/SiteCode.vue').default);
+Vue.component('admin-schedules', require('./components/Admin/CinemaSchedules.vue').default);
 
 /**
  * KIOSK PART

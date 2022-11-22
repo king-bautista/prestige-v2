@@ -133,7 +133,7 @@
                         <span class="sr-only">Next</span>
                     </button>
                 </div>
-                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
+                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
             </div>
         </div>
         <div class="tabs-container" v-show="!home_category">

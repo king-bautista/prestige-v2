@@ -45,7 +45,7 @@
             <div id="popover-content" class="hide d-none" style="z-index:999">
                 Need help? Touch here.
             </div>
-            <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip" style="z-index:999;position:absolute;top:870px;right:0px;">
+            <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip">
                 <img src="{{ URL::to('assets/images/English/Help.png') }}" id="helpbutton">
             </div>
         </div>

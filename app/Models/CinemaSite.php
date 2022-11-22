@@ -3,34 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CinemaSchedule extends Model
+class CinemaSite extends Model
 {
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
         'site_id',
-        'synopsis',
-        'opening_date',
-        'rating',
-        'rating_description',
-        'runtime',
-        'casting',
-        'trailer_url',
         'cinema_id',
-        'cinema_id_code',
-        'screen_code',
-        'screen_name',
-        'film_id',
-        'genre',
-        'genre2',
-        'genre3',
-        'cinema_id',
-        'show_time',
     ];
 
     /**
@@ -49,7 +34,7 @@ class CinemaSchedule extends Model
      *
      * @var string
     */
-    protected $table = 'cinema_schedules';
+    protected $table = 'cinema_sites';
 
     /**
      * The primary key associated with the table.
@@ -57,4 +42,18 @@ class CinemaSchedule extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * Append additiona info to the return data
+     *
+     * @var string
+     */
+	public $appends = [
+        'site_name',
+    ];
+
+    public function getSiteNameAttribute() 
+    {
+        return Site::find($this->site_id)->name. ' - '. $this->cinema_id;
+    }
 }
