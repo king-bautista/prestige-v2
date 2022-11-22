@@ -13,6 +13,18 @@ class CreateCinemaSchedulesTable extends Migration
      */
     public function up()
     {
+        Schema::create('cinema_sites', function (Blueprint $table) {
+            $table->engine = "InnoDB";
+            
+            $table->bigIncrements('id');
+            $table->bigInteger('site_id')->unsigned();
+            $table->string('cinema_id');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('site_id')->references('id')->on('sites');
+        });
+
         Schema::create('cinema_genre', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
@@ -23,27 +35,27 @@ class CreateCinemaSchedulesTable extends Migration
             $table->softDeletes();
         });
 
-
         Schema::create('cinema_schedules', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->bigInteger('site_id')->nullable();
             $table->string('title')->nullable();
-            $table->string('synopsis')->nullable();
+            $table->mediumText('synopsis')->nullable();
             $table->date('opening_date')->nullable();
             $table->string('rating')->nullable();
             $table->string('rating_description')->nullable();
-            $table->integer('genre')->nullable();
             $table->integer('runtime')->nullable();
             $table->string('casting')->nullable();
             $table->string('trailer_url')->nullable();
-            $table->integer('cinema_id')->nullable();
+            $table->string('cinema_id')->nullable();
+            $table->string('cinema_id_code')->nullable();
             $table->bigInteger('screen_code')->nullable();
             $table->string('screen_name')->nullable();
             $table->string('film_id')->nullable();
+            $table->string('genre')->nullable();
             $table->string('genre2')->nullable();
             $table->string('genre3')->nullable();
-            $table->string('cinema_id_code')->nullable();
             $table->dateTime('show_time')->nullable();
             $table->timestamps();
         });
@@ -58,5 +70,6 @@ class CreateCinemaSchedulesTable extends Migration
     {
         Schema::dropIfExists('cinema_schedules');
         Schema::dropIfExists('cinema_genre');
+        Schema::dropIfExists('cinema_site_id');
     }
 }

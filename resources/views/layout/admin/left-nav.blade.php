@@ -43,7 +43,7 @@
                         <ul class="nav nav-treeview">
                             @foreach($permission->sub_permissions as $sub_menu)
                                 @if($sub_menu->can_view)
-                                <li class="nav-item">
+                                <li class="nav-item ml-3">
                                     <a href="{{ $sub_menu->link }}" class="nav-link">
                                         <i class="{{ $sub_menu->class_name }}"></i>
                                         <p>{{ $sub_menu->name }}</p>
