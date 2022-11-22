@@ -36,12 +36,12 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $amenitiess = CinemaScheduleViewModel::when(request('search'), function($query){
+            $movies = CinemaScheduleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
             ->latest()
             ->paginate(request('perPage'));
-            return $this->responsePaginate($amenitiess, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($movies, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -109,7 +109,6 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
                 'runtime'=> $movie->RunTime,
                 'casting'=> $casting, 
                 'trailer_url' => addslashes($movie->TrailerUrl),
-                // 'cinema_id'=> $cinema['id'],
                 'cinema_id_code' => $movie->CinemaId,
                 'screen_code'=> $time_slot->ScreenNameAlt,
                 'screen_name'=> addslashes($time_slot->ScreenName),
@@ -124,23 +123,6 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
 
         }
     }
-
-    // public function details($id)
-    // {
-    //     try
-    //     {
-    //         $amenities = CinemaSchedule::find($id);
-    //         return $this->response($amenities, 'Successfully Retreived!', 200);
-    //     }
-    //     catch (\Exception $e)
-    //     {
-    //         return response([
-    //             'message' => $e->getMessage(),
-    //             'status' => false,
-    //             'status_code' => 422,
-    //         ], 422);
-    //     }
-    // }
 
     public function getSiteCodes()
     {
