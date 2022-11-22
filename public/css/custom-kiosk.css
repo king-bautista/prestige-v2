@@ -527,6 +527,7 @@ body{
 }
 .carousel-control-prev {
     left: -70px;
+    z-index: 0;
 }
 
 .carousel-control-next {
@@ -539,6 +540,7 @@ body{
 
 .carousel-control-next {
     right: -65px;
+    z-index: 0;
 }
 
 .no-record-found {
@@ -568,7 +570,7 @@ body{
 .custom-modal-body {
     position: relative;
     top: 40%;
-    left: 35%;
+    left: 32%;
     transform: translateY(-50%);
     width: 1182px;
     color: rgb(0, 0, 0);
