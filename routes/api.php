@@ -50,7 +50,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/advertisements/fullscreen', 'Kiosk\MainController@getFullscreen')->name('kiosk.fullscreen');
     Route::get('/promos', 'Kiosk\MainController@getPromos')->name('kiosk.promos');
     Route::get('/cinemas', 'Kiosk\MainController@getCinemas')->name('kiosk.cinemas');
-    Route::get('/now-showing', 'Kiosk\MainController@getNowShowing')->name('kiosk.now-showing');
+    Route::get('/now-showing', 'Kiosk\MainController@getShowing')->name('kiosk.now-showing');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

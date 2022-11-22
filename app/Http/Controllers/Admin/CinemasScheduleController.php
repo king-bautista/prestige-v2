@@ -61,7 +61,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
             $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
 
             $cinema_helper = new CinemaHelper($cinema_id);
-            return $movies = $cinema_helper->getSchedules();
+            $movies = $cinema_helper->getSchedules();
 
             // DELETE SCHEDULE PER SITE
             CinemaSchedule::where('site_id', $cinema_site->site_id)->delete();

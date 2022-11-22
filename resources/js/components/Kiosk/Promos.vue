@@ -9,7 +9,7 @@
             </div>
         </div>
         <div>
-            <div class="row col-md-9 offset-md-2 mt-3">
+            <div class="row col-md-10 offset-md-1 mt-5">
                 <div id="myPromos" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-if="promo_list.length > 0">
                     <div class="carousel-inner">
                         
@@ -23,7 +23,7 @@
                                 <div v-for="promo in promos" class="col-12 col-sm-4 text-left mt-3">
                                     <div class="bg-white text-center">
                                         <a :href="promo.image_url_path" data-fancybox="gallery">
-                                            <img :src="promo.image_url_path" :alt="promo.name" style="width:80%; border: solid 2px; border-radius: 15px;" />
+                                            <img :src="promo.image_url_path" :alt="promo.name" style="width:70%; border: solid 2px; border-radius: 15px;" />
                                         </a>
                                     </div>
                                 </div>
@@ -39,10 +39,10 @@
                         <span class="sr-only">Next</span>
                     </button>
                 </div>
-                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
+                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: -6rem auto auto;">
             </div>
         </div>
-        <img :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <img :src="back_button" class="back-button" @click="goBack">
     </div>
 </template>
 <script> 
@@ -120,32 +120,3 @@
     };
 
 </script>
-<style lang="scss" scoped>
-    .carousel-item a {
-        text-decoration: none;
-        color: #fff;
-    }
-    .carousel-control-prev {
-        width: 2rem;
-        height: 578px;
-        border: none;
-        background: url('/assets/images/Left.png') no-repeat;
-        background-position: center;
-    }
-    .carousel-control-prev {
-        left: -70px;
-    }
-
-    .carousel-control-next {
-        width: 2rem;
-        height: 578px;
-        border: none;
-        background: url('/assets/images/Right.png') no-repeat;
-        background-position: center;
-    }
-
-    .carousel-control-next {
-        right: -55px;
-    }
-
-</style>
