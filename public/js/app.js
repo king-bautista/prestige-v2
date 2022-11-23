@@ -24700,12 +24700,16 @@ var render = function render() {
     }
   }, [_vm._v(_vm._s(_vm.page_title))])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-6 text-right"
+  }, [_c("router-link", {
+    attrs: {
+      to: "/about-us"
+    }
   }, [_c("img", {
     staticClass: "logo-holder",
     attrs: {
       src: _vm.site_logo
     }
-  })])]), _vm._v(" "), _c("div", [_c("div", {
+  })])], 1)]), _vm._v(" "), _c("div", [_c("div", {
     staticClass: "row mt-5 mb-5"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
@@ -25634,12 +25638,16 @@ var render = function render() {
     }
   }, [_vm._v(_vm._s(_vm.page_title))])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-6 text-right"
+  }, [_c("router-link", {
+    attrs: {
+      to: "/about-us"
+    }
   }, [_c("img", {
     staticClass: "logo-holder",
     attrs: {
       src: _vm.site_logo
     }
-  })])]), _vm._v(" "), _c("div", [_c("div", {
+  })])], 1)]), _vm._v(" "), _c("div", [_c("div", {
     staticClass: "row col-md-10 offset-md-1 mt-5"
   }, [_vm.promo_list.length > 0 ? _c("div", {
     staticClass: "carousel slide",
@@ -25917,12 +25925,16 @@ var render = function render() {
     }
   }, [_vm._v(_vm._s(_vm.page_title))])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-6 text-right"
+  }, [_c("router-link", {
+    attrs: {
+      to: "/about-us"
+    }
   }, [_c("img", {
     staticClass: "logo-holder",
     attrs: {
       src: _vm.site_logo
     }
-  })])]), _vm._v(" "), !_vm.search_results ? _c("div", {
+  })])], 1)]), _vm._v(" "), !_vm.search_results ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-10 offset-md-1 mt-5 pt-5"
