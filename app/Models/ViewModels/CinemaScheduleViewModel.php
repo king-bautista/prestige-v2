@@ -7,6 +7,8 @@ use App\Models\Site;
 use App\Models\CinemaGenre;
 use App\Models\CinemaSchedule;
 
+use Carbon\Carbon;
+
 class CinemaScheduleViewModel extends Model
 {
     /**
@@ -68,7 +70,7 @@ class CinemaScheduleViewModel extends Model
         ->get();
 
         foreach($cinema_schedules as $index => $schedule) {
-            $new_cinema_schedules[$schedule->screen_name][] = $schedule->show_time;
+            $new_cinema_schedules[$schedule->screen_name][] = Carbon::parse($schedule->show_time)->format('M d, Y h:i A');;
         }
 
         return $new_cinema_schedules;

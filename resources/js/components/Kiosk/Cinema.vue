@@ -100,27 +100,32 @@
                 </div>
             </div>
         </div>
-        <img :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <img :src="back_button" style="z-index:1;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
 
-        <div class="custom-modal">
+        <div class="custom-modal" id="schedule-modal">
 		    <div class="custom-modal-body">
                 <div class="text-right text-white">
-                    <span style="font-size:1.5em;margin-right:-10px" class="btn-close-cinema">X</span>
+                    <span style="font-size:1.5em;margin-right:-10px" class="btn-close-cinema" @click="closeModal">X</span>
                 </div>
                 <div class="modal-content" style="border-radius:20px;">
                     <div class="modal-body p-5">
                         <div class="row">
                             <div class="col-9 text-left">
+                                <span><strong>Title:</strong></span>&nbsp;&nbsp;{{ movie_details.title }}                               
                                 <span style="font-size: 2em;position:relative">
-                                    <span class="movie-rating"></span>
-                                </span>
-                                <div class="mt-2 text-justify"></div>
-                                <br>Genre: 		
+                                    <span class="movie-rating">{{ movie_details.rating }}</span>
+                                </span>                              
+                                <div class="mt-2 text-justify">
+                                    <span><strong>Synopsis:</strong></span><br>
+                                    {{ movie_details.synopsis }}
+                                </div>
+                                <br><span><strong>Casting:</strong></span>&nbsp;&nbsp; {{ movie_details.casting }}
+                                <br><span><strong>Genre:</strong></span>&nbsp;&nbsp; {{ movie_details.genre_name }}
                             </div>
                             <div class="col-3 text-center">
-                                <img class="mr-2 schedule-image-2" src="//www.smcinema.com/CDN/media/entity/get/FilmPosterGraphic/h-?width=198&amp;height=247&amp;referenceScheme=HeadOffice&amp;allowPlaceHolder=true" data-filmid="">
+                                <img class="mr-2 schedule-image-2" v-bind:src="'//www.smcinema.com/CDN/media/entity/get/FilmPosterGraphic/h-'+movie_details.film_id+'?width=198&amp;height=247&amp;referenceScheme=HeadOffice&amp;allowPlaceHolder=true'" :data-filmid="movie_details.film_id">
                                 <div class="mt-2">
-                                    <button class="btn btn-prestige-color video-btn" style="width: 76%!important;border-radius:10px" data-src="">Watch Trailer</button>
+                                    <button class="btn btn-prestige-color video-btn" style="width: 76%!important;border-radius:10px" @click="showTrailer(movie_details.trailer_url)">Watch Trailer</button>
                                 </div>
                                 <div class="mt-2">
                                     <button class="btn btn-prestige" disabled="" style="width: 76%!important;border-radius:10px;color: #b6c3ff;border: 1px solid #b6c3ff;opacity: 30%;">Buy Tickets</button>
@@ -131,6 +136,13 @@
                         <div class="text-center mt-2">
                             <span style="font-size:1.2em"><span>Cinema Schedule</span>:</span>
                             <div class="row">
+                                <div v-for="(schedules, index) in movie_details.cinema_schedules" class="col-12 col-sm-3 text-center">
+                                    <span>{{ index }}</span>
+                                    <div v-for="schedule in schedules">
+                                        {{ schedule }}
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
 
@@ -138,6 +150,26 @@
                 </div>
 		    </div>
 	    </div>
+
+        <div class="custom-modal" id="myTrailerModal">
+            <div style="position: relative;top: 40%;transform: translateY(-50%);width: 1182px; left: 32%; color:#000000">
+                <div class="youtube-modal-blocker"></div>
+                <div class="text-right text-white">
+                    <span style="font-size:1.5em;margin-right:-10px" class="btn-close-trailer">X</span>
+                </div>
+                <div class="modal-content" style="border-radius:20px;">
+                    <div class="modal-body p-5">
+                        <div id="videocontainer" class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" width="420" height="315" src="" id="video" allowscriptaccess="always" allow="autoplay;"></iframe>
+                        </div>
+                        <div id="novideo" style="display:none;text-align: center;">
+                            <img src="images/no-internet.png" style="width:508px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 <script> 
@@ -173,6 +205,7 @@
 			},
 
             goBack: function() {
+                this.$router.push('/'); 
             },
 
             getCinemaList: function() {
@@ -201,7 +234,39 @@
 
             showModal: function(data) {
                 this.movie_details = data;
-                $('#cinema_details').show();
+                $('#schedule-modal').show();
+            },
+
+            closeModal: function() {
+                this.movie_details = '';
+                $('#schedule-modal').hide();
+            },
+
+            showTrailer: function(trailer_url) {
+                var videoSrc = trailer_url;
+
+                // replace with embed link
+                videoSrc = videoSrc.replace("watch?v=", "embed/");
+
+                //check internet connection
+                var ifConnected = window.navigator.onLine;
+                if (ifConnected) {
+                    // has internet connection
+                    $("#novideo").hide();
+                    $("#videocontainer").show();
+                } else {
+                    // no internet connection
+                    $("#videocontainer").hide();
+                    $("#novideo").show();
+                }
+
+                var playlist = videoSrc.substr(30);
+                
+                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
+                $("#video").attr('src',videoSrc + "?loop=1&playlist=" + playlist + "&autoplay=1"); 
+                                    
+                $("#schedule-modal").hide();
+                $("#myTrailerModal").show();
             },
         },
 
@@ -216,6 +281,12 @@
                     interval: false,
                     pause: true,
                     touch:true,
+                });
+
+                $(".btn-close-trailer").on('click',function(){
+                    $("#myTrailerModal").hide();
+                    $("#schedule-modal").show();
+                    $("#video").attr('src',""); 
                 });
             });
         },

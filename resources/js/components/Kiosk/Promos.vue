@@ -22,7 +22,7 @@
                             <div class="row mb-3">
                                 <div v-for="promo in promos" class="col-12 col-sm-4 text-left mt-3">
                                     <div class="bg-white text-center">
-                                        <a :href="promo.image_url_path" data-fancybox="gallery">
+                                        <a @click="showPromo(promo.image_url_path)">
                                             <img :src="promo.image_url_path" :alt="promo.name" style="width:70%; border: solid 2px; border-radius: 15px;" />
                                         </a>
                                     </div>
@@ -43,6 +43,20 @@
             </div>
         </div>
         <img :src="back_button" class="back-button" @click="goBack">
+
+        <div class="custom-modal" id="myPromo">
+            <div style="position: relative;top: 40%;transform: translateY(-50%);width: 540px; left: 50%; color:transparent;">
+                <div class="text-right text-white">
+                    <span style="font-size:1.5em;margin-right:-10px" class="btn-close-trailer">X</span>
+                </div>
+                <div class="modal-content" style="border-radius:20px;">
+                    <div class="modal-body">
+                        <img :src="promo_image" style="width:508px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 <script> 
@@ -55,6 +69,7 @@
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Promos',
                 no_record_found: false,
+                promo_image: '',
             };
         },
 
@@ -79,42 +94,23 @@
                 });
 			},
 
+            showPromo: function(promo) {
+                this.promo_image = promo;
+                $("#myPromo").show();
+            },
+
             goBack: function() {
+                this.$router.push('/'); 
             },
 
         },
 
         mounted() {
-            if(this.promo_list.length) {
-                $(function() {
-                    // Initialise Carousel
-                    const myPromos = new Carousel(document.querySelector("#myPromos"));
-
-                    // Initialise Fancybox
-                    Fancybox.bind('[data-fancybox="gallery"]', {
-                        Carousel: {
-                            on: {
-                            change: (carousel, to) => {
-                                // Sync Carousel slide
-                                // ===
-                                const $el = Fancybox.getInstance()
-                                .getSlide()
-                                .$trigger.closest(".carousel__slide");
-
-                                const slide = myPromos.slides.find((slide) => {
-                                    return slide.$el === $el;
-                                });
-
-                                myPromos.slideTo(slide.index, {
-                                    friction: 0,
-                                });
-                            },
-                            },
-                        },
-                    });
-                })
-
-            }
+            $(function() {
+                $(".btn-close-trailer").on('click',function(){
+                    $("#myPromo").hide();
+                });
+            })
         },
 
     };
