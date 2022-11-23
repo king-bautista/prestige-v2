@@ -5,7 +5,9 @@
                 <div id="page-title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
-                <img :src="site_logo" class="logo-holder">
+                <router-link to="/about-us">
+                    <img :src="site_logo" class="logo-holder">
+                </router-link>
             </div>
         </div>
         <div class="row" v-if="!search_results">
