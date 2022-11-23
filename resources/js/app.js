@@ -68,6 +68,7 @@ import home from './components/Kiosk/Home.vue';
 import search from './components/Kiosk/Search.vue';
 import promos from './components/Kiosk/Promos.vue';
 import cinema from './components/Kiosk/Cinema.vue';
+import about from './components/Kiosk/About.vue';
 
 const routes = [
     {   
@@ -89,6 +90,11 @@ const routes = [
         path: '/cinemas',
         component: cinema,
         name: 'cinema'
+    },
+    {   
+        path: '/about-us',
+        component: about,
+        name: 'about'
     },
 ];
 

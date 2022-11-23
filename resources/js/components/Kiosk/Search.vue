@@ -66,7 +66,7 @@
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
             </div>
         </div>
-        <img v-show="search_results" :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <img :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
     </div>
 </template>
 <script> 
@@ -112,6 +112,10 @@
             },
 
             goBack: function() {
+                if(!this.search_results) {
+                    this.$router.push('/'); 
+                }
+
                 this.softkeys();
                 this.getSuggestionList();
                 this.search.key_words = '';

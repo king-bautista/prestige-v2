@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-9 m-0 p-0">
             <div class="row mr-0 ml-0">
-                <div class="col-md-12 main-content-holder">
+                <div class="col-md-12 main-content-holder m-0 p-0">
                     <router-view></router-view>
                 </div>
             </div>            
@@ -42,7 +42,7 @@
                     </router-link>
                 </div>
             </div>
-            <div id="popover-content" class="hide d-none" style="z-index:999">
+            <div id="popover-content" class="hide d-none" style="z-index:1">
                 Need help? Touch here.
             </div>
             <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip">
