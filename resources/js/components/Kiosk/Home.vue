@@ -109,7 +109,7 @@
                         <div class="carousel-item" v-for="(tenants, index) in tenant_list" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
                                 <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                    <div class="tenant-store bg-white text-center box-shadowed ml-3">
+                                    <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="showTenant(tenant)">
                                         <div class="image-holder h-100">
                                             <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                         </div>
@@ -138,6 +138,25 @@
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
             </div>
         </div>
+
+        <!-- TENANT -->
+        <div v-show="show_tenant">
+            <div class="row">
+                <div class="col-12 col-sm-8 text-center pt-5">
+                    <div v-if="tenant_details.is_subscriber">
+                    </div>
+                    <div v-else>
+                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 p-3">
+                    <div class="bg-white p-3 box-shadowed tenant-details">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="tabs-container" v-show="!home_category">
             <div class="tabs">
                 <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">View stores by</span>: </span>
@@ -181,6 +200,8 @@
                 category_label: '',
                 category_top_banner: '',
                 no_record_found: false,
+                tenant_details: '',
+                show_tenant: false,
             };
         },
 
@@ -214,6 +235,7 @@
                     this.child_category = false;
                     this.alphabetical = true;
                     this.supplementals = false;
+                    this.show_tenant = false;
                     if(this.tenant_list.length == 0) {
                         this.no_record_found = true;         
                     }
@@ -233,6 +255,7 @@
                     this.child_category = false;
                     this.alphabetical = true;
                     this.supplementals = false;
+                    this.show_tenant = false;
                     if(this.tenant_list.length == 0) {
                         this.no_record_found = true;         
                     }
@@ -253,6 +276,7 @@
                     this.child_category = false;
                     this.alphabetical = true;
                     this.supplementals = false;
+                    this.show_tenant = false;
                     if(this.tenant_list.length == 0) {
                         this.no_record_found = true;         
                     }
@@ -264,6 +288,7 @@
                 this.child_category = true;
                 this.alphabetical = false;
                 this.supplementals = false;
+                this.show_tenant = false;
             },
 
             showSupplementals: function() {
@@ -271,6 +296,7 @@
                 this.child_category = false;
                 this.alphabetical = false;
                 this.supplementals = true;
+                this.show_tenant = false;
             },
 
             showChildren: function(category) {
@@ -283,6 +309,7 @@
                 this.child_category = true;
                 this.alphabetical = false;
                 this.supplementals = false;
+                this.show_tenant = false;
             },
 
             goBack: function() {
@@ -291,6 +318,13 @@
                 this.child_category = false;
                 this.alphabetical = false;
                 this.supplementals = false;
+                this.show_tenant = false;
+            },
+
+            showTenant: function(tenant) {
+                this.tenant_details = tenant;
+                this.alphabetical = false;
+                this.show_tenant = true;
             },
         },
 

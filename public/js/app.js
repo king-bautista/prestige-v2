@@ -14097,7 +14097,9 @@ __webpack_require__.r(__webpack_exports__);
       current_supplementals: '',
       category_label: '',
       category_top_banner: '',
-      no_record_found: false
+      no_record_found: false,
+      tenant_details: '',
+      show_tenant: false
     };
   },
   created: function created() {
@@ -14129,6 +14131,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.child_category = false;
         _this3.alphabetical = true;
         _this3.supplementals = false;
+        _this3.show_tenant = false;
         if (_this3.tenant_list.length == 0) {
           _this3.no_record_found = true;
         }
@@ -14146,6 +14149,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.child_category = false;
         _this4.alphabetical = true;
         _this4.supplementals = false;
+        _this4.show_tenant = false;
         if (_this4.tenant_list.length == 0) {
           _this4.no_record_found = true;
         }
@@ -14163,6 +14167,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.child_category = false;
         _this5.alphabetical = true;
         _this5.supplementals = false;
+        _this5.show_tenant = false;
         if (_this5.tenant_list.length == 0) {
           _this5.no_record_found = true;
         }
@@ -14173,12 +14178,14 @@ __webpack_require__.r(__webpack_exports__);
       this.child_category = true;
       this.alphabetical = false;
       this.supplementals = false;
+      this.show_tenant = false;
     },
     showSupplementals: function showSupplementals() {
       this.home_category = false;
       this.child_category = false;
       this.alphabetical = false;
       this.supplementals = true;
+      this.show_tenant = false;
     },
     showChildren: function showChildren(category) {
       $('#category-tab').click();
@@ -14190,6 +14197,7 @@ __webpack_require__.r(__webpack_exports__);
       this.child_category = true;
       this.alphabetical = false;
       this.supplementals = false;
+      this.show_tenant = false;
     },
     goBack: function goBack() {
       this.page_title = 'Home';
@@ -14197,6 +14205,12 @@ __webpack_require__.r(__webpack_exports__);
       this.child_category = false;
       this.alphabetical = false;
       this.supplementals = false;
+      this.show_tenant = false;
+    },
+    showTenant: function showTenant(tenant) {
+      this.tenant_details = tenant;
+      this.alphabetical = false;
+      this.show_tenant = true;
     }
   },
   mounted: function mounted() {
@@ -25400,7 +25414,12 @@ var render = function render() {
       return _c("div", {
         staticClass: "col-12 col-sm-4 text-left mt-3"
       }, [_c("div", {
-        staticClass: "tenant-store bg-white text-center box-shadowed ml-3"
+        staticClass: "tenant-store bg-white text-center box-shadowed ml-3",
+        on: {
+          click: function click($event) {
+            return _vm.showTenant(tenant);
+          }
+        }
       }, [_c("div", {
         staticClass: "image-holder h-100"
       }, [_c("img", {
@@ -25443,13 +25462,29 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
+      value: _vm.show_tenant,
+      expression: "show_tenant"
+    }]
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-8 text-center pt-5"
+  }, [_vm.tenant_details.is_subscriber ? _c("div") : _c("div", [_c("img", {
+    attrs: {
+      src: _vm.tenant_details.brand_logo,
+      alt: _vm.tenant_details.brand_name
+    }
+  })])]), _vm._v(" "), _vm._m(5)])]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
       value: !_vm.home_category,
       expression: "!home_category"
     }],
     staticClass: "tabs-container"
   }, [_c("div", {
     staticClass: "tabs"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
+  }, [_vm._m(6), _vm._v(" "), _c("div", {
     staticClass: "tabs-item store-tabs-item tab-item-selected",
     attrs: {
       id: "category-tab"
@@ -25457,14 +25492,14 @@ var render = function render() {
     on: {
       click: _vm.showCategories
     }
-  }, [_vm._m(6)]), _vm._v(" "), _c("div", {
+  }, [_vm._m(7)]), _vm._v(" "), _c("div", {
     staticClass: "tabs-item store-tabs-item",
     on: {
       click: function click($event) {
         return _vm.getTenants(_vm.current_category);
       }
     }
-  }, [_vm._m(7)]), _vm._v(" "), _c("div", {
+  }, [_vm._m(8)]), _vm._v(" "), _c("div", {
     staticClass: "tabs-item store-tabs-item",
     on: {
       click: _vm.showSupplementals
@@ -25580,6 +25615,14 @@ var staticRenderFns = [function () {
   }), _vm._v(" "), _c("span", {
     staticClass: "sr-only"
   }, [_vm._v("Next")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-12 col-sm-4 p-3"
+  }, [_c("div", {
+    staticClass: "bg-white p-3 box-shadowed tenant-details"
+  })]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

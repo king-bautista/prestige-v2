@@ -618,3 +618,11 @@ div.mall-details {
     vertical-align: middle;
     margin-bottom: 0.2em;
 }
+
+.tenant-details {
+    border: 1px solid #efefef; 
+    border-radius: 10px; 
+    width: 421px; 
+    height: 633px; 
+    font-size: 1.3em;
+}
