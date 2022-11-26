@@ -446,29 +446,3 @@
     };
     
 </script>
-<style lang="scss" scoped>
-    .carousel-control-prev {
-        width: 2rem;
-        height: 578px;
-        border: none;
-        background: url('/assets/images/Left.png') no-repeat;
-        background-position: center;
-    }
-    .carousel-control-prev {
-        left: -70px;
-    }
-
-    .carousel-control-next {
-        width: 2rem;
-        height: 578px;
-        border: none;
-        background: url('/assets/images/Right.png') no-repeat;
-        background-position: center;
-    }
-
-    .carousel-control-next {
-        right: -55px;
-    }
-
-
-</style>
