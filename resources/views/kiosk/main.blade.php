@@ -74,7 +74,7 @@
 
     // PRELOADER TIME INTERVAL
     $(window).on('load', function(){
-        setTimeout(removeLoader, 6000); //wait for page load PLUS two seconds.
+        setTimeout(removeLoader, 10000); //wait for page load PLUS two seconds.
     });
 
     // REMOVED PRELOADER
@@ -193,7 +193,7 @@
 
         screensaver_handle = setTimeout(() => {
             $("#screensaverwidget").height('100%').width('100%');
-		}, 1000 * 60 * 2);
+		}, 2000 * 60 * 2);
     });
 
     $(document).ready(function(){
