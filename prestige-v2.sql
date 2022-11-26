@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   KEY `admins_full_name_index` (`full_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.admins: ~2 rows (approximately)
+-- Dumping data for table prestige.admins: ~0 rows (approximately)
 INSERT INTO `admins` (`id`, `full_name`, `email`, `email_verified_at`, `password`, `api_token`, `salt`, `login_attempt`, `is_blocked`, `active`, `activation_token`, `created_by`, `updated_by`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 'Bautista, King', 'superadmin@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2022-08-10 18:52:17', '2022-08-10 21:24:30', NULL),
 	(4, 'Admin, Admin', 'admin@gmail.com', NULL, '$2y$10$QEY0OLI9HdHbfMsc9igWFuvg17iBIBK9hZ6RzyPzz29SV8Cp77RqK', NULL, 'aTVOhYWuUpIxmrn4cv1G', 0, 0, 1, NULL, 0, 0, NULL, '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL);
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `admin_roles` (
   CONSTRAINT `admin_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.admin_roles: ~3 rows (approximately)
+-- Dumping data for table prestige.admin_roles: ~2 rows (approximately)
 INSERT INTO `admin_roles` (`admin_id`, `role_id`) VALUES
 	(3, 1),
 	(3, 2),
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7706 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,437 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,316 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', NULL, 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2022-10-23 21:33:31', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -6590,7 +6590,7 @@ CREATE TABLE IF NOT EXISTS `brand_products_promos` (
   `tenant_id` bigint(20) DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descriptions` mediumtext COLLATE utf8mb4_unicode_ci,
-  `type` enum('product','promo') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('product','promo','banner') COLLATE utf8mb4_unicode_ci NOT NULL,
   `thumbnail` mediumtext COLLATE utf8mb4_unicode_ci,
   `image_url` mediumtext COLLATE utf8mb4_unicode_ci,
   `date_from` date DEFAULT NULL,
@@ -6605,9 +6605,9 @@ CREATE TABLE IF NOT EXISTS `brand_products_promos` (
   KEY `brand_products_promos_deleted_at_index` (`deleted_at`),
   KEY `brand_products_promos_tenant_id_index` (`tenant_id`),
   CONSTRAINT `brand_products_promos_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brand_products_promos: ~17 rows (approximately)
+-- Dumping data for table prestige.brand_products_promos: ~18 rows (approximately)
 INSERT INTO `brand_products_promos` (`id`, `brand_id`, `tenant_id`, `name`, `descriptions`, `type`, `thumbnail`, `image_url`, `date_from`, `date_to`, `sequence`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6417, NULL, '8 - pc. Chickenjoy Bucket', 'A bucket of your favorite crispylicious, juicylicious Chickenjoy!', 'product', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-11-16 00:19:40', '2022-11-16 00:22:37', NULL),
 	(2, 6417, NULL, '6 - pc. Chickenjoy Bucket', 'A bucket of your favorite crispylicious, juicylicious Chickenjoy!', 'product', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', 'uploads/media/brand/products/Jollibee-Chicken-Bucket-6pcs.jpg', NULL, NULL, 0, 1, '2022-11-16 00:23:19', '2022-11-16 00:23:19', NULL),
@@ -6625,7 +6625,8 @@ INSERT INTO `brand_products_promos` (`id`, `brand_id`, `tenant_id`, `name`, `des
 	(14, 6417, NULL, 'No Tricks, Just Jolly Treats Promo', 'Visit your favorite Jollibee store in your Halloween costume and get a special treat with any food purchase this October 29 – 30 from 1pm to 4pm.\r\n\r\nDTI Fair Trade Permit No. FTEB-153535 Series of 2022', 'promo', 'uploads/media/brand/products/promo-6.jpg', 'uploads/media/brand/products/promo-6.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:37:13', '2022-11-16 01:37:13', NULL),
 	(15, 6417, NULL, 'Bench x Jollibee Love Pinoy Shirts Promo', 'Promo is from October 29 – November 4, 2022.\r\n\r\nAvailable only via Jollibee App on October 29.\r\n\r\nAvailable via dine-in, take out, drive-thru and delivery via #87000 hotline, Jollibee App and website from October 30 – November 4.\r\n\r\nCannot be sold separately and without food purchase.\r\n\r\nAvailable at participating Jollibee stores only.\r\n\r\nCannot be used in conjunction with other promos.\r\n\r\nAvailable in two designs. Free size only.\r\n\r\nIn the purchase of goods and services which are on promotional discounts, the Senior Citizen can avail of the establishment’s offered discount, or the 20 percent discount provided under Expanded Senior Citizens Act of 2010, whichever is higher and more favorable.\r\n\r\nDTI Fair Trade Permit No. FTEB – 152840, Series of 2022', 'promo', 'uploads/media/brand/products/promo-7.jpg', 'uploads/media/brand/products/promo-7.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:38:18', '2022-11-16 01:38:18', NULL),
 	(16, 6417, NULL, 'Jollibee Sarap ng Pasko Big Order Service (JSPB) Program', 'Book your Christmas party now and avail of the 10% giftback* for a minimum single-receipt food purchase worth P5,501.\r\n\r\nOffer is valid for bookings from November 15 to December 31, 2022.\r\n\r\nApplicable only to select Christmas bundles, Jolly Kiddie Meals, and solo food items.\r\n\r\nBig order is available via dine-in, take out and delivery via #87000 hotline.\r\n\r\nAvailable at participating Jollibee stores nationwide.\r\n\r\nCannot be used in conjunction with other promos.\r\n\r\nIn the purchase of goods and services which are on promotional discounts, the Senior Citizen can avail of the establishment’s offered discount, or the 20 percent discount provided under Expanded Senior Citizens Act of 2010, whichever is higher and more favorable.\r\n\r\nDTI Fair Trade Permit No. FTEB-154670 Series of 2022.\r\n\r\n*Giftback may be in a form of Jollibee Gift Certificates or products, whichever may be availed by the customer and requested through the JSPB-serving store.', 'promo', 'uploads/media/brand/products/promo-8.jpg', 'uploads/media/brand/products/promo-8.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:39:42', '2022-11-16 01:39:42', NULL),
-	(17, 6417, NULL, '11.11 Jollibee App Exclusive Deal!', 'Add joy to your cart this 11.11 with a free Peach Mango Pie 6 Pies-to-go! Just order at least P500 to make your 11.11 shopping extra sweeter!\r\n\r\nPromo runs from Nov. 11 – 13, 2022. Full promo mechanics here: https://www.jollibee.com.ph/11-11-deal/\r\n\r\nWhat are you waiting for? Grab this deal now!', 'promo', 'uploads/media/brand/products/promo-9.jpg', 'uploads/media/brand/products/promo-9.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:44:50', '2022-11-16 01:44:50', NULL);
+	(17, 6417, NULL, '11.11 Jollibee App Exclusive Deal!', 'Add joy to your cart this 11.11 with a free Peach Mango Pie 6 Pies-to-go! Just order at least P500 to make your 11.11 shopping extra sweeter!\r\n\r\nPromo runs from Nov. 11 – 13, 2022. Full promo mechanics here: https://www.jollibee.com.ph/11-11-deal/\r\n\r\nWhat are you waiting for? Grab this deal now!', 'promo', 'uploads/media/brand/products/promo-9.jpg', 'uploads/media/brand/products/promo-9.jpg', '2022-11-01', '2022-11-30', 0, 1, '2022-11-16 01:44:50', '2022-11-16 01:44:50', NULL),
+	(18, 6417, NULL, 'Chicken Joy Banner', 'Chicken Joy subscriber banner image', 'banner', 'uploads/media/brand/products/f5kw-hero.jpg', 'uploads/media/brand/products/f5kw-hero.jpg', '0000-00-00', '0000-00-00', 0, 1, '2022-11-25 07:01:39', '2022-11-26 08:07:39', NULL);
 
 -- Dumping structure for table prestige.brand_supplementals
 DROP TABLE IF EXISTS `brand_supplementals`;
@@ -6654,7 +6655,7 @@ CREATE TABLE IF NOT EXISTS `brand_tags` (
   CONSTRAINT `brand_tags_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brand_tags: ~3,884 rows (approximately)
+-- Dumping data for table prestige.brand_tags: ~3,791 rows (approximately)
 INSERT INTO `brand_tags` (`brand_id`, `tag_id`) VALUES
 	(1, 323),
 	(1, 1043),
@@ -10559,7 +10560,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   KEY `categories_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.categories: ~214 rows (approximately)
+-- Dumping data for table prestige.categories: ~195 rows (approximately)
 INSERT INTO `categories` (`id`, `parent_id`, `supplemental_category_id`, `name`, `descriptions`, `class_name`, `category_type`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, NULL, 'Food', 'Food', 'food', 1, 1, '2022-10-18 00:09:09', '2022-10-18 00:09:09', NULL),
 	(2, NULL, NULL, 'Fashion', 'Fashion', 'fashion', 1, 1, '2022-10-18 00:09:54', '2022-10-18 00:09:54', NULL),
@@ -11473,7 +11474,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `modules_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~40 rows (approximately)
+-- Dumping data for table prestige.modules: ~39 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin Management', '#', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2022-08-08 01:26:43', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -11550,7 +11551,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~69 rows (approximately)
+-- Dumping data for table prestige.permissions: ~62 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -11819,7 +11820,7 @@ CREATE TABLE IF NOT EXISTS `site_ad_tenants` (
   CONSTRAINT `site_ad_tenants_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ad_tenants: ~14 rows (approximately)
+-- Dumping data for table prestige.site_ad_tenants: ~13 rows (approximately)
 INSERT INTO `site_ad_tenants` (`site_ad_id`, `site_tenant_id`) VALUES
 	(4, 410),
 	(5, 124),
@@ -11877,7 +11878,7 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~20 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~17 rows (approximately)
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LGF', 1, '2022-10-24 01:00:47', '2022-10-24 01:00:47', NULL),
 	(2, 1, 1, 'UGF', 1, '2022-10-24 01:00:53', '2022-10-24 01:00:53', NULL),
@@ -12059,7 +12060,7 @@ CREATE TABLE IF NOT EXISTS `site_tenants` (
   CONSTRAINT `site_tenants_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1148 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenants: ~1,145 rows (approximately)
+-- Dumping data for table prestige.site_tenants: ~1,144 rows (approximately)
 INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `site_building_level_id`, `company_id`, `view_count`, `like_count`, `active`, `is_subscriber`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 7446, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:35', '2022-10-25 22:19:35', NULL),
 	(4, 6483, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:35', '2022-10-25 22:19:35', NULL),
@@ -12474,7 +12475,7 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(413, 6871, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(414, 7312, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(415, 2311, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
-	(416, 6417, 1, 1, 2, 0, 0, 0, 1, 1, '2022-10-25 22:19:38', '2022-11-16 17:41:55', NULL),
+	(416, 6417, 1, 1, 2, 0, 0, 0, 1, 1, '2022-10-25 22:19:38', '2022-11-26 07:40:22', NULL),
 	(417, 1902, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(418, 7379, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
 	(419, 6173, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:38', '2022-10-25 22:19:38', NULL),
@@ -12939,7 +12940,7 @@ INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `si
 	(878, 5330, 1, 3, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(879, 6662, 1, 3, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(880, 5848, 1, 3, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
-	(881, 39, 1, 3, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
+	(881, 39, 1, 3, 16, 0, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-11-24 18:45:31', NULL),
 	(882, 57, 1, 3, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(883, 2945, 1, 1, 2, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
 	(884, 3985, 1, 3, 5, NULL, 0, 0, 1, 0, '2022-10-25 22:19:42', '2022-10-25 22:19:42', NULL),
@@ -13221,9 +13222,9 @@ CREATE TABLE IF NOT EXISTS `site_tenant_metas` (
   KEY `site_tenant_metas_site_tenant_id_foreign` (`site_tenant_id`),
   KEY `site_tenant_metas_meta_key_index` (`meta_key`),
   CONSTRAINT `site_tenant_metas_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenant_metas: ~27 rows (approximately)
+-- Dumping data for table prestige.site_tenant_metas: ~35 rows (approximately)
 INSERT INTO `site_tenant_metas` (`id`, `site_tenant_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1144, 'schedules', '[{"schedules":"       Wed, Tue","start_time":"09:00","end_time":"22:00"},{"schedules":"Thu, Fri, Sat, Sun, Mon","start_time":"10:00","end_time":"22:00"}]', '2022-11-06 22:33:34', '2022-11-07 01:41:21', NULL),
 	(2, 1144, 'subscriber_logo', 'uploads/media/subscriber/70c972c5-7b83-dfbd.jpg', '2022-11-06 22:33:34', '2022-11-06 22:58:21', NULL),
@@ -13244,14 +13245,22 @@ INSERT INTO `site_tenant_metas` (`id`, `site_tenant_id`, `meta_key`, `meta_value
 	(17, 1145, 'instagram', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
 	(18, 1145, 'website', 'undefined', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
 	(19, 1145, 'schedules', '[{"schedules":"","start_time":"","end_time":""}]', '2022-11-15 18:22:35', '2022-11-15 18:22:35', NULL),
-	(20, 416, 'address', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
-	(21, 416, 'email', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
-	(22, 416, 'contact_number', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
-	(23, 416, 'facebook', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
-	(24, 416, 'twitter', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
-	(25, 416, 'instagram', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
-	(26, 416, 'website', 'undefined', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL),
-	(27, 416, 'schedules', '[{"schedules":"","start_time":"","end_time":""}]', '2022-11-16 17:41:55', '2022-11-16 17:41:55', NULL);
+	(20, 416, 'address', NULL, '2022-11-16 17:41:55', '2022-11-26 07:40:22', NULL),
+	(21, 416, 'email', NULL, '2022-11-16 17:41:55', '2022-11-26 07:40:22', NULL),
+	(22, 416, 'contact_number', NULL, '2022-11-16 17:41:55', '2022-11-26 07:40:22', NULL),
+	(23, 416, 'facebook', 'JollibeePhilippines', '2022-11-16 17:41:55', '2022-11-26 07:26:15', NULL),
+	(24, 416, 'twitter', 'Jollibee', '2022-11-16 17:41:55', '2022-11-26 07:26:15', NULL),
+	(25, 416, 'instagram', '@jollibee', '2022-11-16 17:41:55', '2022-11-26 07:26:15', NULL),
+	(26, 416, 'website', 'https://www.jollibee.com.ph/', '2022-11-16 17:41:55', '2022-11-26 07:26:15', NULL),
+	(27, 416, 'schedules', '[{"schedules":"Sun, Mon, Tue, Wed, Thu, Fri, Sat","start_time":"09:00","end_time":"21:00"}]', '2022-11-16 17:41:55', '2022-11-26 07:40:22', NULL),
+	(28, 881, 'address', NULL, '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL),
+	(29, 881, 'email', NULL, '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL),
+	(30, 881, 'contact_number', NULL, '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL),
+	(31, 881, 'facebook', NULL, '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL),
+	(32, 881, 'twitter', NULL, '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL),
+	(33, 881, 'instagram', NULL, '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL),
+	(34, 881, 'website', NULL, '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL),
+	(35, 881, 'schedules', '[{"schedules":"Sun, Mon, Tue","start_time":"10:00","end_time":"22:00"},{"schedules":"Wed, Thu, Fri, Sat","start_time":"09:00","end_time":"22:00"}]', '2022-11-24 17:58:52', '2022-11-24 18:45:31', NULL);
 
 -- Dumping structure for table prestige.site_tenant_products
 DROP TABLE IF EXISTS `site_tenant_products`;
@@ -13264,7 +13273,7 @@ CREATE TABLE IF NOT EXISTS `site_tenant_products` (
   CONSTRAINT `site_tenant_products_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenant_products: ~15 rows (approximately)
+-- Dumping data for table prestige.site_tenant_products: ~16 rows (approximately)
 INSERT INTO `site_tenant_products` (`brand_product_promo_id`, `site_tenant_id`) VALUES
 	(1, 416),
 	(2, 416),
@@ -13280,7 +13289,8 @@ INSERT INTO `site_tenant_products` (`brand_product_promo_id`, `site_tenant_id`) 
 	(15, 416),
 	(14, 416),
 	(13, 416),
-	(17, 416);
+	(17, 416),
+	(18, 416);
 
 -- Dumping structure for table prestige.supplementals
 DROP TABLE IF EXISTS `supplementals`;
@@ -13302,7 +13312,7 @@ CREATE TABLE IF NOT EXISTS `supplementals` (
   CONSTRAINT `supplementals_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.supplementals: ~59 rows (approximately)
+-- Dumping data for table prestige.supplementals: ~55 rows (approximately)
 INSERT INTO `supplementals` (`id`, `category_id`, `name`, `kiosk_image_primary`, `kiosk_image_top`, `online_image_primary`, `online_image_top`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 'American', 'uploads/media/supplemental/American.png', 'uploads/media/supplemental/strips/American.png', '', '', 1, '2022-08-18 19:17:23', '2022-08-18 19:35:05', NULL),
 	(2, 2, 'Asian', 'uploads/media/supplemental/Asian.png', 'uploads/media/supplemental/strips/Asian.png', '', '', 1, '2022-08-18 19:37:41', '2022-08-18 19:38:57', NULL),
@@ -13377,7 +13387,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   KEY `tags_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1746 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.tags: ~1,515 rows (approximately)
+-- Dumping data for table prestige.tags: ~1,504 rows (approximately)
 INSERT INTO `tags` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'A&w', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),
 	(2, 'A4tech', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),

@@ -51,6 +51,7 @@ Vue.component('admin-schedules', require('./components/Admin/CinemaSchedules.vue
  */
 Vue.component('rotating-banners', require('./components/Kiosk/Banners.vue').default);
 Vue.component('rotating-screensaver', require('./components/Kiosk/ScreenSaver.vue').default);
+Vue.component('tenants', require('./components/Kiosk/Tenant.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
