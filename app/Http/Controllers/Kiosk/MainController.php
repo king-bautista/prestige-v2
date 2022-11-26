@@ -79,8 +79,8 @@ class MainController extends AppBaseController
 
     public function getTenantsByCategory($category_id)
     {
-        try
-        {
+        // try
+        // {
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.category_id', $category_id)
             ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
@@ -90,14 +90,14 @@ class MainController extends AppBaseController
             
             $site_tenants = array_chunk($site_tenants, 15);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        }    
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }    
     }
 
     public function getTenantsBySupplementals($category_id)

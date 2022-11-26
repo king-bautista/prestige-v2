@@ -10,6 +10,7 @@
                 </router-link>
             </div>
         </div>
+
         <!-- MAIN CATEGORY -->
         <div v-show="home_category">
             <div class="row mt-5 mb-5">
@@ -26,7 +27,6 @@
                 </div>
             </div>
         </div>
-        <!-- END MAIN CATEGORY -->
 
         <!-- SUB CATEGORY -->
         <div v-show="child_category">
@@ -44,7 +44,6 @@
                 </div>
             </div>
         </div>
-        <!-- END SUB CATEGORY -->
 
         <!-- SUPPLEMENTALS -->
         <div v-show="supplementals">
@@ -84,7 +83,6 @@
                 </div>               
             </div>
         </div>
-        <!-- END SUPPLEMENTALS -->
 
         <!-- ALPHABETICAL -->
         <div v-show="alphabetical">
@@ -142,21 +140,99 @@
         <!-- TENANT -->
         <div v-show="show_tenant">
             <div class="row">
-                <div class="col-12 col-sm-8 text-center pt-5">
-                    <div v-if="tenant_details.is_subscriber">
+                <div class="col-12 col-sm-8 text-center">
+                    <div v-if="tenant_details.is_subscriber && tenant_details.products">
+                        <div class="row ml-1" v-if="tenant_details.products.banners.length">
+                            <div class="col-12">
+                                <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid">
+                            </div>
+                        </div>
+                        <div class="row ml-2 subscriber-products">
+                            <div v-for="product in tenant_details.products.products" class="col-3 p-2">
+                                <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path)">
+                            </div>
+                        </div>
                     </div>
                     <div v-else>
-                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name">
+                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo box-shadowed">
                     </div>
                 </div>
                 <div class="col-12 col-sm-4 p-3">
                     <div class="bg-white p-3 box-shadowed tenant-details">
-
+                        <div class="my-auto p-1">
+                            <img :src="tenant_details.brand_logo" class="tenant-details-logo">
+                            <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
+                            <div class="tenant-details-floor">{{ tenant_details.floor_name }}</div>
+                            <div class="tenant-details-views"><span style="color:#000000;">{{ tenant_details.view_count }}</span>&nbsp;<span>Views</span></div>
+                            <div>
+                                <span class="btn-schedule" v-if="tenant_details.operational_hours">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                    <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
+                                    <span v-else class="text-danger"><strong>Closed</strong></span>
+                                     | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div v-if="tenant_details.is_subscriber" class="row mt-4 mb-4">
+                            <div class="text-left ml-3" v-if="tenant_details.tenant_details">
+							    <div class="mt-4"><img src="assets/images/social-media-fb.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+				                <div class="mt-4"><img src="assets/images/social-media-twitter.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+					            <div class="mt-4"><img src="assets/images/social-media-ig.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+				            </div>
+                        </div>
+                        <div v-else class="row mt-3" style="margin-bottom: 180px;">
+                            <div class="col-6">
+                                <a type="button" class="btn btn-share" disabled>
+                                    <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-danger ml-2 btn-like">
+                                    <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
+                                    <a class="btn-like-display">0 
+                                        <span>Likes</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <div v-if="tenant_details.is_subscriber" class="row mt-5">
+                            <div class="col-6 mt-3">
+                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                            </div>
+                            <div class="col-6 mt-3">
+                                <span class="text-danger ml-2 btn-like">
+                                    <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
+                                    <a class="btn-like-display">0 
+                                        <span>Likes</span>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="col-6 mt-3">
+                                <a type="button" class="btn btn-share" disabled>
+                                    <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                                </a>
+                            </div>
+                            <div class="col-6 mt-3">
+                                <button class="btn w-100 btn-prestige-rounded btn-order-now">Order Now</button>
+                            </div>
+                        </div>
+                        <div v-else class="row mt-3">
+                            <div class="col-12 mt-3">
+                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd">Get Directions (PWD-friendly)</button>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button class="btn w-100 btn-prestige-rounded btn-order-now">Order Now</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- TABS -->
         <div class="tabs-container" v-show="!home_category">
             <div class="tabs">
                 <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">View stores by</span>: </span>
@@ -178,6 +254,20 @@
             </div>
         </div>
         <img v-show="!home_category" :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+
+        <!-- MODAL -->
+        <div class="custom-modal" id="myProduct">
+            <div style="position: relative;top: 40%;transform: translateY(-50%);width: 540px; left: 50%; color:transparent;">
+                <div class="text-right text-white">
+                    <span style="font-size:1.5em;margin-right:-10px" class="btn-close-trailer">X</span>
+                </div>
+                <div class="modal-content" style="border-radius:20px;">
+                    <div class="modal-body">
+                        <img :src="product_image" style="width:508px;">
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -202,6 +292,7 @@
                 no_record_found: false,
                 tenant_details: '',
                 show_tenant: false,
+                product_image: '',
             };
         },
 
@@ -322,9 +413,15 @@
             },
 
             showTenant: function(tenant) {
+                this.page_title = 'Store Page';
                 this.tenant_details = tenant;
                 this.alphabetical = false;
                 this.show_tenant = true;
+            },
+
+            showProduct: function(product) {
+                this.product_image = product;
+                $("#myProduct").show();
             },
         },
 
@@ -339,6 +436,10 @@
                     interval: false,
                     pause: true,
                     touch:true,
+                });
+
+                $(".btn-close-trailer").on('click',function(){
+                    $("#myProduct").hide();
                 });
             });
         },

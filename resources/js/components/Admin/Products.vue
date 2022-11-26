@@ -57,6 +57,7 @@
 										<option value="">Select Type</option>
 										<option value="product">Product</option>
 										<option value="promo">Promo</option>
+										<option value="banner">Banner</option>
 									</select>
 								</div>
 							</div>
