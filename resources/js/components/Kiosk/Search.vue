@@ -229,6 +229,9 @@
                     this.softkeys();
                     this.getSuggestionList();
                 }
+                else {
+                    this.$router.push('/'); 
+                }
             },
 
             getSuggestionList: function() {
