@@ -14100,7 +14100,8 @@ __webpack_require__.r(__webpack_exports__);
       no_record_found: false,
       tenant_details: '',
       show_tenant: false,
-      product_image: ''
+      product_image: '',
+      previous_page: ''
     };
   },
   created: function created() {
@@ -14182,6 +14183,7 @@ __webpack_require__.r(__webpack_exports__);
       this.show_tenant = false;
     },
     showSupplementals: function showSupplementals() {
+      this.previous_page = 'Supplementals';
       this.home_category = false;
       this.child_category = false;
       this.alphabetical = false;
@@ -14190,6 +14192,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     showChildren: function showChildren(category) {
       $('#category-tab').click();
+      this.previous_page = 'Sub Category';
       this.current_category = category;
       this.current_supplementals = category.supplemental;
       this.page_title = 'Store List';
@@ -14201,12 +14204,31 @@ __webpack_require__.r(__webpack_exports__);
       this.show_tenant = false;
     },
     goBack: function goBack() {
-      this.page_title = 'Home';
-      this.home_category = true;
-      this.child_category = false;
-      this.alphabetical = false;
-      this.supplementals = false;
-      this.show_tenant = false;
+      if (this.show_tenant == true) {
+        this.page_title = 'Store List';
+        this.alphabetical = true;
+        this.show_tenant = false;
+      } else if (this.child_category == true) {
+        this.page_title = 'Home';
+        this.home_category = true;
+        this.child_category = false;
+      } else if (this.previous_page == 'Supplementals' && this.alphabetical == true) {
+        this.page_title = 'Store List';
+        this.supplementals = true;
+        this.alphabetical = false;
+      } else if (this.previous_page == 'Sub Category' && this.alphabetical == true) {
+        this.page_title = 'Store List';
+        this.child_category = true;
+        this.alphabetical = false;
+      } else if (this.alphabetical == true) {
+        this.page_title = 'Home';
+        this.home_category = true;
+        this.alphabetical = false;
+      } else if (this.supplementals == true) {
+        this.page_title = 'Home';
+        this.home_category = true;
+        this.supplementals = false;
+      }
     },
     showTenant: function showTenant(tenant) {
       this.page_title = 'Store Page';
@@ -14421,13 +14443,18 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goBack: function goBack() {
-      this.softkeys();
-      this.getSuggestionList();
-      this.search.key_words = '';
-      this.tenant_list = [];
-      this.search_results = false;
-      this.show_tenant = false;
-      this.search_page = true;
+      if (this.show_tenant == true) {
+        this.search_page = true;
+        this.search_results = true;
+        this.show_tenant = false;
+      } else if (this.show_tenant == false && this.search_results == true) {
+        this.tenant_list = [];
+        this.search.key_words = '';
+        this.search_page = true;
+        this.search_results = false;
+        this.softkeys();
+        this.getSuggestionList();
+      }
     },
     getSuggestionList: function getSuggestionList() {
       axios.get('/api/v1/tenants/suggestion/list').then(function (response) {

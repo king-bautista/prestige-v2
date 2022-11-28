@@ -216,13 +216,19 @@
             },
 
             goBack: function() {
-                this.softkeys();
-                this.getSuggestionList();
-                this.search.key_words = '';
-                this.tenant_list = [];
-                this.search_results = false;
-                this.show_tenant = false;
-                this.search_page = true;
+                if(this.show_tenant == true) {
+                    this.search_page = true;
+                    this.search_results = true;
+                    this.show_tenant = false;
+                }
+                else if(this.show_tenant == false && this.search_results == true) {
+                    this.tenant_list = [];
+                    this.search.key_words = '';
+                    this.search_page = true;
+                    this.search_results = false;
+                    this.softkeys();
+                    this.getSuggestionList();
+                }
             },
 
             getSuggestionList: function() {

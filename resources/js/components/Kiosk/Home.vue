@@ -293,6 +293,7 @@
                 tenant_details: '',
                 show_tenant: false,
                 product_image: '',
+                previous_page: '',
             };
         },
 
@@ -383,6 +384,7 @@
             },
 
             showSupplementals: function() {
+                this.previous_page = 'Supplementals';
                 this.home_category = false;
                 this.child_category = false;
                 this.alphabetical = false;
@@ -392,6 +394,7 @@
 
             showChildren: function(category) {
                 $('#category-tab').click();
+                this.previous_page = 'Sub Category';
                 this.current_category = category;
                 this.current_supplementals = category.supplemental;
                 this.page_title = 'Store List';
@@ -404,12 +407,36 @@
             },
 
             goBack: function() {
-                this.page_title = 'Home';
-                this.home_category = true;
-                this.child_category = false;
-                this.alphabetical = false;
-                this.supplementals = false;
-                this.show_tenant = false;
+                if(this.show_tenant == true) {
+                    this.page_title = 'Store List';
+                    this.alphabetical = true;
+                    this.show_tenant = false;
+                }
+                else if(this.child_category == true) {
+                    this.page_title = 'Home';
+                    this.home_category = true;
+                    this.child_category = false;
+                }
+                else if(this.previous_page == 'Supplementals' && this.alphabetical == true) {
+                    this.page_title = 'Store List';
+                    this.supplementals = true;
+                    this.alphabetical = false;
+                } 
+                else if(this.previous_page == 'Sub Category' && this.alphabetical == true) {
+                    this.page_title = 'Store List';
+                    this.child_category = true;
+                    this.alphabetical = false;
+                } 
+                else if(this.alphabetical == true) {
+                    this.page_title = 'Home';
+                    this.home_category = true;
+                    this.alphabetical = false;
+                }         
+                else if(this.supplementals == true) {
+                    this.page_title = 'Home';
+                    this.home_category = true;
+                    this.supplementals = false;
+                }
             },
 
             showTenant: function(tenant) {
