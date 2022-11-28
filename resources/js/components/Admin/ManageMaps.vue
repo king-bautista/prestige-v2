@@ -150,7 +150,17 @@
 	import Table from '../Helpers/Table';
 
 	export default {
-        name: "Maps",
+        name: "ManageMaps",
+		props: {
+        	site_id: {
+        		type: Number,
+        		required: true
+        	},
+			site_screen_id: {
+        		type: Number,
+        		required: true
+			},
+        },
         data() {
             return {
 				map_form: {
@@ -200,7 +210,7 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/site/manage-map/list",
+            	dataUrl: "/admin/site/manage-map/list/"+this.site_id,
             	actionButtons: {
             		edit: {
             			title: 'Edit this Map',
@@ -244,7 +254,7 @@
 
         methods: {
 			GetBuildings: function() {
-				axios.get('/admin/site/buildings')
+				axios.get('/admin/site/get-buildings/'+this.site_id)
                 .then(response => this.buildings = response.data.data);
 			},
 
@@ -288,8 +298,10 @@
 
             storeMap: function() {
                 let formData = new FormData();
+                formData.append("site_id", this.site_id);
                 formData.append("site_building_id", this.map_form.site_building_id);
                 formData.append("site_building_level_id", this.map_form.site_building_level_id);
+                formData.append("site_screen_id", this.site_screen_id);
 				formData.append("map_file", this.map_form.map_file);
 				formData.append("map_preview", this.map_form.map_preview);
 				formData.append("position_x", this.map_form.position_x);
@@ -346,8 +358,10 @@
 			updateMap: function() {
 				let formData = new FormData();
                 formData.append("id", this.map_form.id);
+                formData.append("site_id", this.site_id);
                 formData.append("site_building_id", this.map_form.site_building_id);
                 formData.append("site_building_level_id", this.map_form.site_building_level_id);
+                formData.append("site_screen_id", this.site_screen_id);
 				formData.append("map_file", this.map_form.map_file);
 				formData.append("map_preview", this.map_form.map_preview);
 				formData.append("position_x", this.map_form.position_x);
