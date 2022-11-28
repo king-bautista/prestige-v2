@@ -14454,6 +14454,8 @@ __webpack_require__.r(__webpack_exports__);
         this.search_results = false;
         this.softkeys();
         this.getSuggestionList();
+      } else {
+        this.$router.push('/');
       }
     },
     getSuggestionList: function getSuggestionList() {
