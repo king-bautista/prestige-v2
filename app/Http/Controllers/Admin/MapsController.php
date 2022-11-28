@@ -32,25 +32,21 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function index($id)
     {
-        session()->forget('site_screen_id');
-        session()->put('site_screen_id', $id);
         $site_screen = SiteScreenViewModel::find($id);
         return view('admin.manage_map', compact("site_screen"));
     }
 
-    public function list(Request $request)
+    public function list($id)
     {
         try
         {
-            $site_screen_id = session()->get('site_screen_id');
-
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_maps = SiteMapViewModel::when(request('search'), function($query){
                 return $query->where('map_file', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('site_screen_id', $site_screen_id)
+            ->where('site_screen_id', $id)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_maps, 'Successfully Retreived!', 200);
@@ -86,9 +82,6 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
-            $site_screen_id = session()->get('site_screen_id');
-            $site_screen = SiteScreenViewModel::find($site_screen_id);
-
             $map_file = $request->file('map_file');
             $map_file_path = '';
             $width = '';
@@ -110,10 +103,10 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             }
 
             $data = [
-                'site_id' => $site_screen->site_id,
+                'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_screen_id' => $site_screen_id,
+                'site_screen_id' => $request->site_screen_id,
                 'image_size_width' => $width,
                 'image_size_height' => $height,
                 'descriptions' => $request->name,
@@ -148,7 +141,6 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         try
     	{
             $site_map = SiteMap::find($request->id);
-            session()->put('site_screen_id', $site_map->site_screen_id);
 
             $map_file = $request->file('map_file');
             $map_file_path = '';
@@ -171,6 +163,10 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             }
 
             $data = [
+                'site_id' => $request->site_id,
+                'site_building_id' => $request->site_building_id,
+                'site_building_level_id' => $request->site_building_level_id,
+                'site_screen_id' => $request->site_screen_id,
                 'image_size_width' => $width,
                 'image_size_height' => $height,
                 'descriptions' => $request->name,
@@ -221,10 +217,10 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function getMapDetails($id)
     {
-        $site_id = session()->get('site_id');
-        $site_details = SiteViewModel::find($site_id);
-        $site_maps = SiteMapViewModel::where('site_id', $site_id)->get();
         $current_map = SiteMapViewModel::find($id);
+        $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->get();
+        $site_details = SiteViewModel::find($current_map->site_id);
+        
         $amenities = Amenity::get();
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
         

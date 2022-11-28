@@ -11221,7 +11221,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Table */ "./resources/js/components/Helpers/Table.vue");
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Maps",
+  name: "ManageMaps",
+  props: {
+    site_id: {
+      type: Number,
+      required: true
+    },
+    site_screen_id: {
+      type: Number,
+      required: true
+    }
+  },
   data: function data() {
     return {
       map_form: {
@@ -11271,7 +11281,7 @@ __webpack_require__.r(__webpack_exports__);
         updated_at: "Last Updated"
       },
       primaryKey: "id",
-      dataUrl: "/admin/site/manage-map/list",
+      dataUrl: "/admin/site/manage-map/list/" + this.site_id,
       actionButtons: {
         edit: {
           title: 'Edit this Map',
@@ -11313,7 +11323,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     GetBuildings: function GetBuildings() {
       var _this = this;
-      axios.get('/admin/site/buildings').then(function (response) {
+      axios.get('/admin/site/get-buildings/' + this.site_id).then(function (response) {
         return _this.buildings = response.data.data;
       });
     },
@@ -11356,8 +11366,10 @@ __webpack_require__.r(__webpack_exports__);
     storeMap: function storeMap() {
       var _this3 = this;
       var formData = new FormData();
+      formData.append("site_id", this.site_id);
       formData.append("site_building_id", this.map_form.site_building_id);
       formData.append("site_building_level_id", this.map_form.site_building_level_id);
+      formData.append("site_screen_id", this.site_screen_id);
       formData.append("map_file", this.map_form.map_file);
       formData.append("map_preview", this.map_form.map_preview);
       formData.append("position_x", this.map_form.position_x);
@@ -11409,8 +11421,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this5 = this;
       var formData = new FormData();
       formData.append("id", this.map_form.id);
+      formData.append("site_id", this.site_id);
       formData.append("site_building_id", this.map_form.site_building_id);
       formData.append("site_building_level_id", this.map_form.site_building_level_id);
+      formData.append("site_screen_id", this.site_screen_id);
       formData.append("map_file", this.map_form.map_file);
       formData.append("map_preview", this.map_form.map_preview);
       formData.append("position_x", this.map_form.position_x);

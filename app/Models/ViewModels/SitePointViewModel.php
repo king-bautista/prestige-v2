@@ -4,6 +4,7 @@ namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\SiteTenant;
 use App\Models\Brand;
 use App\Models\Amenity;
 
@@ -49,8 +50,10 @@ class SitePointViewModel extends Model
     ****************************************/
     public function getBrandNameAttribute() 
     {
-        if($this->tenant_id)
-            return Brand::find($this->tenant_id)->name;
+        if($this->tenant_id) {
+            $site_tenant = SiteTenant::find($this->tenant_id);
+            return Brand::find($site_tenant->brand_id)->name;
+        }
         return null;
     }
 

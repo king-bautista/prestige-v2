@@ -21,7 +21,7 @@
 <!-- /.content-header -->
 
 <!-- Main content -->
-<admin-manage-maps></admin-manage-maps>
+<admin-manage-maps :site_id="{{$site_screen->site_id}}" :site_screen_id="{{$site_screen->id}}"></admin-manage-maps>
 <!-- /.content -->
 @stop
 
