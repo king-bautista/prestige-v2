@@ -95,8 +95,11 @@
     </div><!-- /.container-fluid -->
 
     <div class="map-form-holder">
+      <div class="toggle-right-button">
+        <i class="fa fa-chevron-right fa-2x" aria-hidden="true" style="line-height:1.5;"></i>
+      </div>
       <div class="card">
-        <div class="card-body">
+        <div class="card-body ">          
           <form name="frmCoordinates" id="frmCoordinates">
           {{ csrf_field() }}
           <div class="form-group row mb-0">
@@ -190,6 +193,11 @@
         </div>
       </div>
     </div>
+
+    <div class="map-form-arrow-left">
+        <i class="fa fa-chevron-left fa-2x" aria-hidden="true" style="line-height:1.5;"></i>
+    </div>
+
 </section>
 <!-- /.content -->
 @stop
@@ -300,6 +308,17 @@
       if($("#pid").val() > 0) {
         $('#frmCoordinates').submit();
       }
+    });
+
+    $('.toggle-right-button').on('click', function() {
+      $('.map-form-holder').toggle( "slide", { direction: "right" }, function() {
+        $('.map-form-arrow-left').show();
+      });
+    });
+
+    $('.map-form-arrow-left').on('click', function() {
+      $('.map-form-holder').show( "slide", { direction: "right" } );
+      $('.map-form-arrow-left').hide();
     });
 
   });
@@ -471,10 +490,10 @@
 
         case 'continous_link':
             current_point = data.id;
-            if(previous_point == -2)
-            {
+            if(previous_point == -2) {
               previous_point = current_point;
-            }else {
+            }
+            else {
               if(previous_point == current_point){
                 alert("Warning: Do not connect a point to itself");
               }else{
@@ -560,9 +579,9 @@
     $("#selectable").append('<div id="line_'+line+'" class="line" style="transform:rotate(' + angle + 'deg); width:'+distance+'px; position:absolute;"></div>');
 
     if(pointB.left < pointA.left) {
-      $('#line_'+line).offset({top: pointA.top + pointAcenterY, left: pointB.left + pointBcenterX});
+      $('#line_'+line).offset({top: pointB.top + pointBcenterY, left: pointB.left + pointBcenterX});
     } else {
-      $('#line_'+line).offset({top: pointA.top + pointAcenterY, left: pointA.left + pointAcenterX});
+      $('#line_'+line).offset({top: pointB.top + pointAcenterY, left: pointA.left + pointAcenterX});
     }
 
     $('#line_'+line).click(function() {
