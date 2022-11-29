@@ -11255,10 +11255,11 @@ __webpack_require__.r(__webpack_exports__);
       edit_record: false,
       buildings: [],
       floors: [],
+      map_default_id: '',
       dataFields: {
         map_file_path: {
           name: "Map Preview",
-          type: "image"
+          type: "logo"
         },
         building_name: "Building Name",
         floor_name: "Floor Name",
@@ -11306,6 +11307,15 @@ __webpack_require__.r(__webpack_exports__);
           routeName: '',
           button: '<i class="fa fa-map-marker" aria-hidden="true"></i> Manage',
           method: 'link'
+        },
+        view: {
+          title: 'Set as Default',
+          name: 'Set as Default',
+          apiUrl: '',
+          routeName: '',
+          button: '<i class="fa fa-tag"></i> Set as Default',
+          method: 'view',
+          v_on: 'DefaultMap'
         }
       },
       otherButtons: {
@@ -11444,6 +11454,18 @@ __webpack_require__.r(__webpack_exports__);
         toastr.success(response.data.message);
         _this5.$refs.dataTable.fetchData();
         $('#map-form').modal('hide');
+      });
+    },
+    DefaultMap: function DefaultMap(data) {
+      this.map_default_id = data.id;
+      $('#confirmModal').modal('show');
+    },
+    setDefault: function setDefault() {
+      var _this6 = this;
+      axios.get('/admin/site/map/set-default/' + this.map_default_id).then(function (response) {
+        toastr.success(response.data.message);
+        _this6.$refs.dataTable.fetchData();
+        $('#confirmModal').modal('hide');
       });
     }
   },
@@ -18474,7 +18496,8 @@ var render = function render() {
     },
     on: {
       AddNewMap: _vm.AddNewMap,
-      editButton: _vm.editMap
+      editButton: _vm.editMap,
+      DefaultMap: _vm.DefaultMap
     }
   })], 1)])])])])]), _vm._v(" "), _c("div", {
     staticClass: "modal fade",
@@ -18944,7 +18967,35 @@ var render = function render() {
     on: {
       click: _vm.updateMap
     }
-  }, [_vm._v("Save Changes")])])])])])]);
+  }, [_vm._v("Save Changes")])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "modal fade",
+    attrs: {
+      id: "confirmModal",
+      tabindex: "-1",
+      "aria-labelledby": "confirmModal",
+      "aria-hidden": "true"
+    }
+  }, [_c("div", {
+    staticClass: "modal-dialog"
+  }, [_c("div", {
+    staticClass: "modal-content"
+  }, [_vm._m(12), _vm._v(" "), _vm._m(13), _vm._v(" "), _c("div", {
+    staticClass: "modal-footer"
+  }, [_c("button", {
+    staticClass: "btn btn-secondary",
+    attrs: {
+      type: "button",
+      "data-bs-dismiss": "modal"
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.setDefault
+    }
+  }, [_vm._v("OK")])])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -19082,6 +19133,23 @@ var staticRenderFns = [function () {
   }, [_vm._v("Mobile Default Zoom "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "modal-header bg-primary"
+  }, [_c("h5", {
+    staticClass: "modal-title",
+    attrs: {
+      id: "exampleModalLabel"
+    }
+  }, [_vm._v("Confirm")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "modal-body"
+  }, [_c("h6", [_vm._v("Do you really want to set this map as default?")])]);
 }];
 render._withStripped = true;
 

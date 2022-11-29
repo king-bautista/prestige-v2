@@ -102,6 +102,10 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 $map_preview_path = $map_preview->move('uploads/map/preview/', str_replace(' ','-', $originalname)); 
             }
 
+            if($request->is_default == 'true') {
+                SiteMap::where('site_id', $request->site_id)->where('site_screen_id', $request->site_screen_id)->update(['is_default' => 0]);
+            }
+
             $data = [
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
@@ -162,13 +166,17 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 $map_preview_path = $map_preview->move('uploads/map/preview/', str_replace(' ','-', $originalname)); 
             }
 
+            if($request->is_default == 'true') {
+                SiteMap::where('site_id', $request->site_id)->where('site_screen_id', $request->site_screen_id)->update(['is_default' => 0]);
+            }
+
             $data = [
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'site_screen_id' => $request->site_screen_id,
-                'image_size_width' => $width,
-                'image_size_height' => $height,
+                'image_size_width' => ($width) ? $width : $site_map->image_size_width,
+                'image_size_height' => ($height) ? $height : $site_map->image_size_height,
                 'descriptions' => $request->name,
                 'position_x' => $request->position_x,
                 'position_y' => $request->position_y,
@@ -406,6 +414,28 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point_link->delete();
 
             return $this->response($site_point_link, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function setDefault($id)
+    {
+        try
+    	{
+            
+            $site_map = SiteMap::find($id);
+
+            SiteMap::where('site_id', $site_map->site_id)->where('site_screen_id', $site_map->site_screen_id)->update(['is_default' => 0]);
+            $site_map->update(['is_default' => 1]);
+
+            return $this->response($site_map, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
