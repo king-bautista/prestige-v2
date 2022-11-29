@@ -11939,11 +11939,11 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
 
 -- Dumping data for table prestige.site_maps: ~5 rows (approximately)
 INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 1, 2, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-11-28 07:07:47', '2022-11-28 07:57:43', NULL),
-	(2, 1, 1, 4, 1, 'uploads/map/files/2F_A.png', 'uploads/map/preview/2F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:25:31', '2022-11-28 07:25:31', NULL),
-	(3, 1, 1, 5, 1, 'uploads/map/files/3F_A.png', 'uploads/map/preview/3F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:25:52', '2022-11-28 07:25:52', NULL),
-	(4, 1, 1, 6, 1, 'uploads/map/files/4F_A.png', 'uploads/map/preview/4F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:26:10', '2022-11-28 07:26:10', NULL),
-	(5, 1, 1, 7, 1, 'uploads/map/files/5F_A.png', 'uploads/map/preview/5F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:26:26', '2022-11-28 07:26:26', NULL);
+	(1, 1, 1, 2, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 1, '2022-11-28 07:07:47', '2022-11-29 02:45:33', NULL),
+	(2, 1, 1, 4, 1, 'uploads/map/files/2F_A.png', 'uploads/map/preview/2F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:25:31', '2022-11-29 02:45:33', NULL),
+	(3, 1, 1, 5, 1, 'uploads/map/files/3F_A.png', 'uploads/map/preview/3F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:25:52', '2022-11-29 02:45:33', NULL),
+	(4, 1, 1, 6, 1, 'uploads/map/files/4F_A.png', 'uploads/map/preview/4F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:26:10', '2022-11-29 02:45:33', NULL),
+	(5, 1, 1, 7, 1, 'uploads/map/files/5F_A.png', 'uploads/map/preview/5F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 1, 0, '2022-11-28 07:26:26', '2022-11-29 02:45:33', NULL);
 
 -- Dumping structure for table prestige.site_points
 DROP TABLE IF EXISTS `site_points`;
@@ -11969,7 +11969,7 @@ CREATE TABLE IF NOT EXISTS `site_points` (
   CONSTRAINT `site_points_site_map_id_foreign` FOREIGN KEY (`site_map_id`) REFERENCES `site_maps` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_points: ~37 rows (approximately)
+-- Dumping data for table prestige.site_points: ~36 rows (approximately)
 INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `point_x`, `point_y`, `point_z`, `rotation_z`, `text_size`, `text_width`, `is_pwd`, `point_label`, `wrap_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 0, 0, 1080.13, 1696.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:00', '2022-11-28 08:01:00', NULL),
 	(2, 1, 0, 0, 1207.13, 1702.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:02', '2022-11-28 08:01:02', NULL),
@@ -11987,14 +11987,13 @@ INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `poin
 	(14, 1, 0, 0, 2746.68, 1683.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:41', '2022-11-28 08:01:41', NULL),
 	(15, 1, 0, 0, 2690.68, 1513.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:44', '2022-11-28 08:01:44', NULL),
 	(16, 1, 0, 0, 2543.68, 1505.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:45', '2022-11-28 08:01:45', NULL),
-	(17, 1, 0, 0, 2411.68, 1518.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:49', '2022-11-28 08:01:49', NULL),
-	(18, 1, 0, 0, 2339.68, 1475.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:50', '2022-11-28 08:01:50', NULL),
+	(18, 1, 66, 0, 2360.66, 1487.61, 0.00, 0.00, 0.80, 0.00, 0.00, NULL, 0, '2022-11-28 08:01:50', '2022-11-28 08:47:25', NULL),
 	(19, 1, 0, 0, 2224.68, 1477.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:52', '2022-11-28 08:01:52', NULL),
 	(20, 1, 0, 0, 2176.68, 1520.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:53', '2022-11-28 08:01:53', NULL),
 	(21, 1, 0, 0, 2203.68, 1406.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:55', '2022-11-28 08:01:55', NULL),
 	(22, 1, 0, 0, 2324.68, 1407.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:56', '2022-11-28 08:01:56', NULL),
 	(23, 1, 0, 0, 2311.68, 1364.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:57', '2022-11-28 08:01:57', NULL),
-	(24, 1, 0, 0, 2191.68, 1345.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:01:59', '2022-11-28 08:01:59', NULL),
+	(24, 1, 56, 0, 2121.67, 1332.61, 0.00, -100.00, 1.20, 0.00, 0.00, NULL, 0, '2022-11-28 08:01:59', '2022-11-28 08:45:08', NULL),
 	(25, 1, 0, 0, 2033.68, 1509.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:02:01', '2022-11-28 08:02:01', NULL),
 	(26, 1, 0, 0, 1921.68, 1515.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:02:02', '2022-11-28 08:02:02', NULL),
 	(27, 1, 0, 0, 1834.68, 1514.62, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 1, '2022-11-28 08:02:02', '2022-11-28 08:02:02', NULL),

@@ -28,10 +28,7 @@
                 <div class="card">
                     <div class="card-header sticky-nav">
                       <div class="row">
-                        <div class="col-md-1">
-                          <h3 class="card-title">Manage Map</h3>
-                        </div>
-                        <div class="col-md-11">
+                        <div class="col-md-12">
                         <label class="ml-3 mouseaction">
                             Building Floor:
                         </label>
