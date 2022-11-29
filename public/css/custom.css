@@ -147,3 +147,10 @@
     background-color: #568ae5;
     border-color: #88a7df;
 }
+
+.sticky-nav {
+    position: sticky;
+    top: 0px;
+    z-index: 9;
+    background-color: #fff;
+}
