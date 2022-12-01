@@ -79,10 +79,41 @@
     top: 13rem;
     right: 2rem;
     width: 300px;
-    min-height: 600px;
-    padding: 15px;
+    height: auto;
+    max-height: 600px;
+    padding: 15px 15px 0px 25px;
     background-color: #343a40;
     z-index: 9999;
+}
+
+.toggle-right-button {
+    position: absolute;
+    top:45%;
+    left: 3px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.toggle-right-button:hover {
+    color: #c2c7d0;
+}
+
+.map-form-arrow-left {
+    position:fixed;
+    top: 28rem;
+    right: 2rem;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    background-color: #343a40;
+    color: #fff;
+    z-index: 9999;
+    cursor: pointer;
+    display: none;
+}
+
+.map-form-arrow-left:hover {
+    color: #c2c7d0;
 }
 
 .mouseaction {
@@ -119,6 +150,15 @@
     border: 1px solid red;
     cursor: pointer;
     z-index: 1;
+}
+
+.point-text {
+    color:#000;
+    display: inline-block; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    text-align: center;
+    line-height: 16px;
 }
 
 .line {

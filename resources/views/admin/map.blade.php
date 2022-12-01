@@ -59,7 +59,7 @@
                           </label>
                           <label class="ml-3 mouseaction" title="Press Key Alt + 3">
                             <i class="fa fa-minus" aria-hidden="true"></i>
-                            <input type="radio" name="action" id="mouseDelete" value="delete_point" class="d-none"> Delete Point
+                            <input type="radio" name="action" id="mouseDelete" value="delete_point" class="d-none"> Delete Point/Link
                           </label>
                           <label class="ml-3 mouseaction" title="Press Key Alt + 4">
                             <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -73,10 +73,10 @@
                             <i class="fa fa-link" aria-hidden="true"></i>
                             <input type="radio" name="action" id="mouseLink2" value="continous_link" class="d-none">Continous Link
                           </label>    
-                          <label class="ml-3 mouseaction" title="Press Key Alt + 7">
+                          <!-- <label class="ml-3 mouseaction" title="Press Key Alt + 7">
                             <i class="fa fa-minus" aria-hidden="true"></i>
                             <input type="radio" name="action" id="deleteLink" value="delete_link" class="d-none">Delete Link
-                          </label>                       
+                          </label>                        -->
                         </div>
                       </div>
                     </div>
@@ -84,6 +84,7 @@
                       <div class="row">
                         <div class="col-md-12 map-holder">
                           <div id="selectable" class="ui-selectable"></div>
+                          <canvas id="my-point" width="7500" height="6000" style="position: absolute;"></canvas>
                           <img id="map_path">
                         </div>
                       </div>
@@ -95,8 +96,11 @@
     </div><!-- /.container-fluid -->
 
     <div class="map-form-holder">
+      <div class="toggle-right-button">
+        <i class="fa fa-chevron-right fa-2x" aria-hidden="true" style="line-height:1.5;"></i>
+      </div>
       <div class="card">
-        <div class="card-body">
+        <div class="card-body ">          
           <form name="frmCoordinates" id="frmCoordinates">
           {{ csrf_field() }}
           <div class="form-group row mb-0">
@@ -107,21 +111,15 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Position X:</label>
             <div class="col-sm-6">
-              <input type="text" id="position_x" name="position_x" class="form-control form-control-sm " placeholder="0.0" readonly="readonly">
+              <input type="text" id="position_x" name="position_x" class="frm_info form-control form-control-sm " placeholder="0.0">
             </div>
           </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Position Y:</label>
             <div class="col-sm-6">
-              <input type="text" id="position_y" name="position_y" class="form-control form-control-sm" placeholder="0.0" readonly="readonly">
+              <input type="text" id="position_y" name="position_y" class="frm_info form-control form-control-sm" placeholder="0.0">
             </div>
           </div>
-          <!-- <div class="form-group row mb-0">
-            <label for="firstName" class="col-sm-6 col-form-label">Position Z:</label>
-            <div class="col-sm-6">
-              <input type="text" id="position_z" name="position_z" class="form-control form-control-sm" placeholder="0.0" required>
-            </div>
-          </div> -->
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Text Rotation:</label>
             <div class="col-sm-6">
@@ -140,15 +138,6 @@
               <input type="text" id="text_width" name="text_width" class="frm_info form-control form-control-sm" placeholder="0.0" required>
             </div>
           </div>
-          <!-- <div class="form-group row mb-0">
-            <label for="firstName" class="col-sm-6 col-form-label">Wrap Text:</label>
-            <div class="col-sm-6">
-              <div class="custom-control custom-switch">
-                <input type="checkbox" id="wrap_at" name="wrap_at" class="frm_info custom-control-input">
-                <label class="custom-control-label" for="wrap_at"></label>
-              </div>
-            </div>
-          </div> -->
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">PWD:</label>
             <div class="col-sm-6">
@@ -190,6 +179,11 @@
         </div>
       </div>
     </div>
+
+    <div class="map-form-arrow-left">
+        <i class="fa fa-chevron-left fa-2x" aria-hidden="true" style="line-height:1.5;"></i>
+    </div>
+
 </section>
 <!-- /.content -->
 @stop
@@ -198,6 +192,9 @@
 <script src="{{ URL::to('js/jquery-ui/jquery-ui.min.js') }}"></script>
 
 <script>
+	var mypoint = document.getElementById('my-point');
+  var contextp = mypoint.getContext('2d');
+
   const slider = document.querySelector('.map-holder');
   var action;
   let isDown = false;
@@ -209,10 +206,6 @@
 	var previous_point = -2;
 
   document.addEventListener('keyup', doc_keyUp, false);
-  slider.addEventListener('mousedown', onMouseDown);
-  slider.addEventListener('mouseleave', onMouseLeave);
-  slider.addEventListener('mouseup', onMouseUp);
-  slider.addEventListener('mousemove', onMouseMove);
 
   $(document).ready(function() {
 
@@ -264,13 +257,6 @@
 			$(".mouseaction").not(this).removeClass('mouseaction-selected');
       $(this).find('input[type="radio"]').prop("checked", true);
       action = $('input[name="action"]:checked').val();
-
-      if(action == 'drag_point') {
-        slider.removeEventListener('mousedown', onMouseDown);
-        slider.removeEventListener('mouseleave', onMouseLeave);
-        slider.removeEventListener('mouseup', onMouseUp);
-        slider.removeEventListener('mousemove', onMouseMove);
-      }
 		});
 
     $("#map_path").mousemove(function( event ) {
@@ -300,6 +286,17 @@
       if($("#pid").val() > 0) {
         $('#frmCoordinates').submit();
       }
+    });
+
+    $('.toggle-right-button').on('click', function() {
+      $('.map-form-holder').toggle( "slide", { direction: "right" }, function() {
+        $('.map-form-arrow-left').show();
+      });
+    });
+
+    $('.map-form-arrow-left').on('click', function() {
+      $('.map-form-holder').show( "slide", { direction: "right" } );
+      $('.map-form-arrow-left').hide();
     });
 
   });
@@ -335,10 +332,6 @@
     if (e.altKey && e.key === '1') {
       $("#mouseDrag").prop("checked", true);
       $("#mouseDrag").parent().addClass('mouseaction-selected');
-      slider.removeEventListener('mousedown', onMouseDown);
-      slider.removeEventListener('mouseleave', onMouseLeave);
-      slider.removeEventListener('mouseup', onMouseUp);
-      slider.removeEventListener('mousemove', onMouseMove);
     }
 
     if (e.altKey && e.key === '2') {
@@ -393,9 +386,10 @@
   function get_map_links() {
     $.get('/admin/site/map/get-links/'+map_id, function( data ) {
       if(data.status_code == 200) {
-        $(".line").remove();
+        //$(".line").remove();
+        contextp.clearRect(0, 0, mypoint.width, mypoint.height);
         $.each(data.data,function(i,item) {
-          draw_line('#'+item.point_a, '#'+item.point_b, item.id);
+          draw_line_canvas(item.point_a_x,item.point_a_y,item.point_b_x,item.point_b_y);
         });					
       }
     }, "json");
@@ -413,7 +407,7 @@
   }
 
   function add_point(data) {
-    $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + data.point_x +'px; top: ' + data.point_y + 'px;" lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
+    $("#selectable").append('<div id="'+data.id+'" class="point ui-draggable" style="left: ' + (data.point_x) +'px; top: ' + data.point_y + 'px;" lat="' + data.point_x +'" lng="' + data.point_y + '"></div>');
 
     var stitle_w = '';
     var point_label = '';
@@ -427,12 +421,16 @@
       point_label = data.point_label;
     }
  
-    var mtop='-45';
+    var mtop='16';
     var fontSize = (data.text_size == 0) ? 1 : data.text_size;
     var text_width = (data.text_width == 0) ? '' : 'width:'+data.text_width+'px;';
-    var rotation = (data.rotation_z == 0) ? '' : 'transform: rotate(' + data.rotation_z + 'deg);';
 
-    $("#" +  data.id).html('<p style="color:#000; font-size:'+fontSize+'rem; '+text_width+' display: inline-block; font-weight: bold; text-transform: uppercase; text-align: center; margin:'+mtop + 'px 0 0 0; '+rotation+'" >'+point_label+'</p>');
+    $("#" +  data.id).html('<p class="point-text">'+point_label+'</p>');
+
+    var p_width = $("#" +  data.id+" p:first" ).width();
+    var center=((p_width/2)-5)*-1;
+
+    $("#" +  data.id+" p:first" ).css({"font-size": fontSize+"rem", "margin": mtop+"px 0 0 "+center+"px", "transform": "rotate(" + data.rotation_z + "deg)"});
 
     $("#" +  data.id).click(function() {
       $(this).css('background-color', 'red');
@@ -461,7 +459,7 @@
                 alert("Warning: Do not connect a point to itself");
               }else{
                 $.post('/admin/site/map/connect-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_a: previous_point, point_b: current_point }, function( data ) {
-                  draw_line("#"+data.data.point_a, "#" + data.data.point_b, data.data.id);
+                  draw_line_canvas(data.data.point_a_x,data.data.point_a_y,data.data.point_b_x,data.data.point_b_y);
                 }, "json");
                 previous_point = -2;
                 current_point = -1;
@@ -471,15 +469,15 @@
 
         case 'continous_link':
             current_point = data.id;
-            if(previous_point == -2)
-            {
+            if(previous_point == -2) {
               previous_point = current_point;
-            }else {
+            }
+            else {
               if(previous_point == current_point){
                 alert("Warning: Do not connect a point to itself");
               }else{
                 $.post('/admin/site/map/connect-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_a: previous_point, point_b: current_point }, function( data ) {
-                  draw_line("#"+data.data.point_a, "#" + data.data.point_b, data.data.id);
+                  draw_line_canvas(data.data.point_a_x,data.data.point_a_y,data.data.point_b_x,data.data.point_b_y);
                 }, "json");
                 previous_point = current_point;
               }
@@ -511,6 +509,7 @@
         $('#'+id).remove();
       }
     }, "json");
+    get_map_links();
   }
 
   function point_info(id) {
@@ -547,40 +546,62 @@
     return Math.sqrt((x -= x0) * x + (y -= y0) * y);
   };
 
-  function draw_line(point1, point2, line) {
-    var pointA = $(point1).offset();
-    var pointB = $(point2).offset();
-    var pointAcenterX = $(point1).width() / 2;
-    var pointAcenterY = $(point1).height() / 2;
-    var pointBcenterX = $(point2).width() / 2;
-    var pointBcenterY = $(point2).height() / 2;
-    var angle = Math.atan2(pointB.top - pointA.top, pointB.left - pointA.left) * 180 / Math.PI;
-    var distance = lineDistance(pointA.left, pointA.top, pointB.left, pointB.top);
+  function draw_line_canvas(x1,y1,x2,y2) {
+    contextp.beginPath();
+    contextp.lineWidth = 1.5;
+    contextp.lineJoin = contextp.lineCap = 'round';
+    contextp.strokeStyle = '#ff0000';
 
-    $("#selectable").append('<div id="line_'+line+'" class="line" style="transform:rotate(' + angle + 'deg); width:'+distance+'px; position:absolute;"></div>');
-
-    if(pointB.left < pointA.left) {
-      $('#line_'+line).offset({top: pointA.top + pointAcenterY, left: pointB.left + pointBcenterX});
-    } else {
-      $('#line_'+line).offset({top: pointA.top + pointAcenterY, left: pointA.left + pointAcenterX});
+    if(x2 > x1 && y1 > y2) {
+      contextp.moveTo(parseInt(x1)+2.5,parseInt(y1)+2.5);
+      contextp.lineTo(parseInt(x2)+2.5,parseInt(y2)+2.5);
+    }
+    else if(x1 > x2 && y1 > y2) {
+      contextp.moveTo(parseInt(x1)-0.5,parseInt(y1)+4.5);
+      contextp.lineTo(parseInt(x2)-0.5,parseInt(y2)+4.5);
+    }
+    else {
+      contextp.moveTo(parseInt(x1)+6.5,parseInt(y1)+6.5);
+      contextp.lineTo(parseInt(x2)+6.5,parseInt(y2)+6.5);
     }
 
-    $('#line_'+line).click(function() {
-      if(action == 'delete_link') {
-        delete_line(line);
-      }
-    }).draggable();
-
+    contextp.stroke();
   }
 
-  function delete_line(id) {
-    $.get('/admin/site/map/delete-line/'+id, function( data ) {
-      if(data.status_code == 200) {
-        $('#line_'+id).remove();
-        get_map_points();
-      }
-    }, "json");
-  }
+  // function draw_line(point1, point2, line) {
+  //   var pointA = $(point1).offset();
+  //   var pointB = $(point2).offset();
+  //   var pointAcenterX = $(point1).width() / 2;
+  //   var pointAcenterY = $(point1).height() / 2;
+  //   var pointBcenterX = $(point2).width() / 2;
+  //   var pointBcenterY = $(point2).height() / 2;
+  //   var angle = Math.atan2(pointB.top - pointA.top, pointB.left - pointA.left) * 180 / Math.PI;
+  //   var distance = lineDistance(pointA.left, pointA.top, pointB.left, pointB.top);
+
+  //   $("#selectable").append('<div id="line_'+line+'" class="line" style="transform:rotate(' + angle + 'deg); width:'+distance+'px; position:absolute;"></div>');
+
+  //   if(pointB.left < pointA.left) {
+  //     $('#line_'+line).offset({top: pointB.top + pointBcenterY, left: pointB.left + pointBcenterX});
+  //   } else {
+  //     $('#line_'+line).offset({top: pointB.top + pointAcenterY, left: pointA.left + pointAcenterX});
+  //   }
+
+  //   $('#line_'+line).click(function() {
+  //     if(action == 'delete_link') {
+  //       delete_line(line);
+  //     }
+  //   }).draggable();
+
+  // }
+
+  // function delete_line(id) {
+  //   $.get('/admin/site/map/delete-line/'+id, function( data ) {
+  //     if(data.status_code == 200) {
+  //       $('#line_'+id).remove();
+  //       get_map_points();
+  //     }
+  //   }, "json");
+  // }
 
 </script>
 @endpush

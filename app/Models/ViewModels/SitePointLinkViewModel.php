@@ -3,12 +3,9 @@
 namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SitePoint;
 
-use App\Models\SiteTenant;
-use App\Models\Brand;
-use App\Models\Amenity;
-
-class SitePointViewModel extends Model
+class SitePointLinkViewModel extends Model
 {
     /**
      * The attributes that should be cast.
@@ -26,7 +23,7 @@ class SitePointViewModel extends Model
      *
      * @var string
     */
-    protected $table = 'site_points';
+    protected $table = 'site_point_links';
 
     /**
      * The primary key associated with the table.
@@ -41,29 +38,44 @@ class SitePointViewModel extends Model
      * @var string
      */
 	public $appends = [
-        'brand_name',
-        'amenity_name',
+        'point_a_x',
+        'point_a_y',
+        'point_b_x',
+        'point_b_y',
     ];
 
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    public function getBrandNameAttribute() 
+    public function getPointAXAttribute() 
     {
-        if($this->point_label)
-            return $this->point_label;
-
-        if($this->tenant_id) {
-            $site_tenant = SiteTenant::find($this->tenant_id);
-            return Brand::find($site_tenant->brand_id)->name;
-        }
+        $point_a = SitePoint::find($this->point_a);
+        if($point_a)
+            return $point_a->point_x;
         return null;
     }
 
-    public function getAmenityNameAttribute() 
+    public function getPointAYAttribute() 
     {
-        if($this->point_type) 
-            return Amenity::find($this->point_type)->name;
+        $point_a = SitePoint::find($this->point_a);
+        if($point_a)
+            return $point_a->point_y;
+        return null;
+    }
+
+    public function getPointBXAttribute() 
+    {
+        $point_b = SitePoint::find($this->point_b);
+        if($point_b)
+            return $point_b->point_x;
+        return null;
+    }
+
+    public function getPointBYAttribute() 
+    {
+        $point_b = SitePoint::find($this->point_b);
+        if($point_b)
+            return $point_b->point_y;
         return null;
     }
 }

@@ -18,6 +18,7 @@ use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SitePointViewModel;
+use App\Models\ViewModels\SitePointLinkViewModel;
 
 class MapsController extends AppBaseController implements MapsControllerInterface
 {
@@ -256,7 +257,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
-            $site_links = SitePointLink::where('site_map_id', $id)->get();
+            $site_links = SitePointLinkViewModel::where('site_map_id', $id)->get();
             return $this->response($site_links, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
@@ -324,6 +325,8 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point = SitePoint::find($id);
             $site_point->delete();
 
+            SitePointLink::where('point_a', $id)->delete();
+            SitePointLink::where('point_b', $id)->delete();
             return $this->response($site_point, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
@@ -383,6 +386,8 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point = SitePoint::find($request->pid);
             $data = [
                 'tenant_id' => ($request->tenant_id) ? $request->tenant_id : 0,
+                'point_x' => ($request->position_x) ? $request->position_x : 0,
+                'point_y' => ($request->position_y) ? $request->position_y : 0,
                 'point_type' => ($request->point_type) ? $request->point_type : 0,
                 'rotation_z' => ($request->text_y_position) ? $request->text_y_position : 0,
                 'text_size' => ($request->text_size) ? $request->text_size : 0,
