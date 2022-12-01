@@ -1,22 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SitePoint;
 
-class SitePointLink extends Model
+class SitePointLinkViewModel extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'site_map_id',
-        'point_a',
-        'point_b',
-    ];
-
     /**
      * The attributes that should be cast.
      *

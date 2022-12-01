@@ -18,6 +18,7 @@ use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SitePointViewModel;
+use App\Models\ViewModels\SitePointLinkViewModel;
 
 class MapsController extends AppBaseController implements MapsControllerInterface
 {
@@ -256,7 +257,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
-            $site_links = SitePointLink::where('site_map_id', $id)->get();
+            $site_links = SitePointLinkViewModel::where('site_map_id', $id)->get();
             return $this->response($site_links, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
@@ -324,6 +325,8 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point = SitePoint::find($id);
             $site_point->delete();
 
+            SitePointLink::where('point_a', $id)->delete();
+            SitePointLink::where('point_b', $id)->delete();
             return $this->response($site_point, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
