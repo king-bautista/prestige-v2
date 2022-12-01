@@ -84,7 +84,7 @@
                       <div class="row">
                         <div class="col-md-12 map-holder">
                           <div id="selectable" class="ui-selectable"></div>
-                          <canvas id="my-point" width="7500" height="6000" style="position: absolute;"></canvas>
+                          <canvas id="my-point" width="3000" height="3000" style="position: absolute;"></canvas>
                           <img id="map_path">
                         </div>
                       </div>
@@ -552,19 +552,26 @@
     contextp.lineJoin = contextp.lineCap = 'round';
     contextp.strokeStyle = '#ff0000';
 
-    if(x2 > x1 && y1 > y2) {
-      contextp.moveTo(parseInt(x1)+2.5,parseInt(y1)+2.5);
-      contextp.lineTo(parseInt(x2)+2.5,parseInt(y2)+2.5);
+    if(x1 > x2 && y1 > y2) {
+      contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
+      contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
     }
-    else if(x1 > x2 && y1 > y2) {
-      contextp.moveTo(parseInt(x1)-0.5,parseInt(y1)+4.5);
-      contextp.lineTo(parseInt(x2)-0.5,parseInt(y2)+4.5);
+    else if(x2 > x1 && y1 > y2) {
+      contextp.moveTo(parseInt(x1)+2.5,parseInt(y1)+6.5);
+      contextp.lineTo(parseInt(x2)+2.5,parseInt(y2)+6.5);
+    }
+    else if(x1 > x2 && y2 > y1) {
+      contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
+      contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
+    }
+    else if(x2 > x1 && y2 > y1) {
+      contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
+      contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
     }
     else {
-      contextp.moveTo(parseInt(x1)+6.5,parseInt(y1)+6.5);
-      contextp.lineTo(parseInt(x2)+6.5,parseInt(y2)+6.5);
+      contextp.moveTo(parseInt(x1)-6.5,parseInt(y1)+6.5);
+      contextp.lineTo(parseInt(x2)-6.5,parseInt(y2)+6.5);
     }
-
     contextp.stroke();
   }
 

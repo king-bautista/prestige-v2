@@ -157,7 +157,7 @@ class CreateSitesTable extends Migration
             $table->decimal('point_z', 10, 2);
             $table->decimal('rotation_z', 10, 2);
             $table->decimal('text_size', 10, 2);
-            $table->decimal('is_pwd', 10, 2);
+            $table->boolean('is_pwd')->default(true);
             $table->string('point_label')->nullable();
             $table->boolean('wrap_at')->default(true);
             $table->timestamps();
