@@ -50,6 +50,9 @@ class SitePointViewModel extends Model
     ****************************************/
     public function getBrandNameAttribute() 
     {
+        if($this->point_label)
+            return $this->point_label;
+
         if($this->tenant_id) {
             $site_tenant = SiteTenant::find($this->tenant_id);
             return Brand::find($site_tenant->brand_id)->name;

@@ -111,21 +111,15 @@
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Position X:</label>
             <div class="col-sm-6">
-              <input type="text" id="position_x" name="position_x" class="form-control form-control-sm " placeholder="0.0" readonly="readonly">
+              <input type="text" id="position_x" name="position_x" class="frm_info form-control form-control-sm " placeholder="0.0">
             </div>
           </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Position Y:</label>
             <div class="col-sm-6">
-              <input type="text" id="position_y" name="position_y" class="form-control form-control-sm" placeholder="0.0" readonly="readonly">
+              <input type="text" id="position_y" name="position_y" class="frm_info form-control form-control-sm" placeholder="0.0">
             </div>
           </div>
-          <!-- <div class="form-group row mb-0">
-            <label for="firstName" class="col-sm-6 col-form-label">Position Z:</label>
-            <div class="col-sm-6">
-              <input type="text" id="position_z" name="position_z" class="form-control form-control-sm" placeholder="0.0" required>
-            </div>
-          </div> -->
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Text Rotation:</label>
             <div class="col-sm-6">
@@ -144,15 +138,6 @@
               <input type="text" id="text_width" name="text_width" class="frm_info form-control form-control-sm" placeholder="0.0" required>
             </div>
           </div>
-          <!-- <div class="form-group row mb-0">
-            <label for="firstName" class="col-sm-6 col-form-label">Wrap Text:</label>
-            <div class="col-sm-6">
-              <div class="custom-control custom-switch">
-                <input type="checkbox" id="wrap_at" name="wrap_at" class="frm_info custom-control-input">
-                <label class="custom-control-label" for="wrap_at"></label>
-              </div>
-            </div>
-          </div> -->
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">PWD:</label>
             <div class="col-sm-6">
@@ -436,12 +421,16 @@
       point_label = data.point_label;
     }
  
-    var mtop='-45';
+    var mtop='16';
     var fontSize = (data.text_size == 0) ? 1 : data.text_size;
     var text_width = (data.text_width == 0) ? '' : 'width:'+data.text_width+'px;';
-    var rotation = (data.rotation_z == 0) ? '' : 'transform: rotate(' + data.rotation_z + 'deg);';
 
-    $("#" +  data.id).html('<p style="color:#000; font-size:'+fontSize+'rem; '+text_width+' display: inline-block; font-weight: bold; text-transform: uppercase; text-align: center; margin:'+mtop + 'px 0 0 0; '+rotation+'" >'+point_label+'</p>');
+    $("#" +  data.id).html('<p class="point-text">'+point_label+'</p>');
+
+    var p_width = $("#" +  data.id+" p:first" ).width();
+    var center=((p_width/2)-5)*-1;
+
+    $("#" +  data.id+" p:first" ).css({"font-size": fontSize+"rem", "margin": mtop+"px 0 0 "+center+"px", "transform": "rotate(" + data.rotation_z + "deg)"});
 
     $("#" +  data.id).click(function() {
       $(this).css('background-color', 'red');

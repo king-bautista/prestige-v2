@@ -152,6 +152,15 @@
     z-index: 1;
 }
 
+.point-text {
+    color:#000;
+    display: inline-block; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    text-align: center;
+    line-height: 16px;
+}
+
 .line {
     width: 100%;
     color: red;
