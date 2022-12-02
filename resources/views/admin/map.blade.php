@@ -194,8 +194,7 @@
 <script>
 	var mypoint = document.getElementById('my-point');
   var contextp = mypoint.getContext('2d');
-
-  const slider = document.querySelector('.map-holder');
+  //const slider = document.querySelector('.map-holder');
   var action;
   let isDown = false;
   let startX;
@@ -204,8 +203,6 @@
 
   var current_point = -1;
 	var previous_point = -2;
-
-  document.addEventListener('keyup', doc_keyUp, false);
 
   $(document).ready(function() {
 
@@ -252,27 +249,29 @@
 
     });
 
-    $(".mouseaction").on('click',function(){
+    $(".mouseaction").on('click',function() {
 			$(this).addClass('mouseaction-selected');
 			$(".mouseaction").not(this).removeClass('mouseaction-selected');
       $(this).find('input[type="radio"]').prop("checked", true);
       action = $('input[name="action"]:checked').val();
+
 		});
 
     $("#map_path").mousemove(function( event ) {
       var msg = "Handler for .mousemove() called at ";
       msg += event.pageX + ", " + event.pageY;
-      console.log(msg);
+     
     });
 
-    $("#selectable").click(function(){
+    $("#selectable").click(function() {
       var offset = $(this).offset();
       if(action === 'add_point' ) {
         create_point(offset);
       }
+
 		});
 
-    $('#frmCoordinates').on('submit', function(e){
+    $('#frmCoordinates').on('submit', function(e) {
       e.preventDefault();
       $.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
         if(response.status_code == 200) {
@@ -280,93 +279,30 @@
           toastr.success(response.message);
         }
       });
+
     });
 
     $('.frm_info').on('change', function() {
       if($("#pid").val() > 0) {
         $('#frmCoordinates').submit();
       }
+
     });
 
     $('.toggle-right-button').on('click', function() {
       $('.map-form-holder').toggle( "slide", { direction: "right" }, function() {
         $('.map-form-arrow-left').show();
       });
+
     });
 
     $('.map-form-arrow-left').on('click', function() {
       $('.map-form-holder').show( "slide", { direction: "right" } );
       $('.map-form-arrow-left').hide();
+
     });
 
-  });
-
-  function onMouseDown(e) {
-    isDown = true;
-    slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-  }
-
-  function onMouseLeave() {
-    isDown = false;
-    slider.classList.remove('active');
-  }
-
-  function onMouseUp() {
-    isDown = false;
-    slider.classList.remove('active');
-  }
-
-  function onMouseMove(e) {
-    if(!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; //scroll-fast
-    slider.scrollLeft = scrollLeft - walk;
-  }
-
-  function doc_keyUp(e) {
-
-    $(".mouseaction").removeClass('mouseaction-selected');
-    if (e.altKey && e.key === '1') {
-      $("#mouseDrag").prop("checked", true);
-      $("#mouseDrag").parent().addClass('mouseaction-selected');
-    }
-
-    if (e.altKey && e.key === '2') {
-      $("#mouseAdd").prop("checked", true);
-      $("#mouseAdd").parent().addClass('mouseaction-selected');
-    }
-
-    if (e.altKey && e.key === '3') {
-      $("#mouseDelete").prop("checked", true);
-      $("#mouseDelete").parent().addClass('mouseaction-selected');
-    }
-
-    if (e.altKey && e.key === '4') {
-      $("#mouseInfo").prop("checked", true);
-      $("#mouseInfo").parent().addClass('mouseaction-selected');
-    }
-
-    if (e.altKey && e.key === '5') {
-      $("#mouseLink").prop("checked", true);
-      $("#mouseLink").parent().addClass('mouseaction-selected');
-    }
-
-    if (e.altKey && e.key === '6') {
-      $("#mouseLink2").prop("checked", true);
-      $("#mouseLink2").parent().addClass('mouseaction-selected');
-    }
-
-    if (e.altKey && e.key === '7') {
-      $("#deleteLink").prop("checked", true);
-      $("#deleteLink").parent().addClass('mouseaction-selected');
-    }
-
-    action = $('input[name="action"]:checked').val();
-
-  }
+  }); // END $(document).ready()
 
   function get_map_points() {
 
@@ -380,14 +316,17 @@
       }
     },
     "json");
+
     return true;
+
   }
 
   function get_map_links() {
     $.get('/admin/site/map/get-links/'+map_id, function( data ) {
       if(data.status_code == 200) {
-        //$(".line").remove();
+        // CLEAR CANVAS
         contextp.clearRect(0, 0, mypoint.width, mypoint.height);
+        // DRAW LINE IN CANVAS
         $.each(data.data,function(i,item) {
           draw_line_canvas(item.point_a_x,item.point_a_y,item.point_b_x,item.point_b_y);
         });					
@@ -395,11 +334,9 @@
     }, "json");
   }
 
-  function create_point(offset) {
-    
+  function create_point(offset) {    
     var x = (event.pageX-offset.left);
     var y = (event.pageY-offset.top);
-
     $.post('/admin/site/map/create-point', { _token:"{{ csrf_token() }}", map_id: map_id, point_x: x, point_y: y }, function( data ) {
       add_point(data.data);
     }, "json");
@@ -510,6 +447,7 @@
       }
     }, "json");
     get_map_links();
+
   }
 
   function point_info(id) {
@@ -540,10 +478,12 @@
         $('#point_label').val(info.point_label);               
       }
     }, "json");
+
   }
 
   function lineDistance(x, y, x0, y0){
     return Math.sqrt((x -= x0) * x + (y -= y0) * y);
+
   };
 
   function draw_line_canvas(x1,y1,x2,y2) {
@@ -573,42 +513,8 @@
       contextp.lineTo(parseInt(x2)-6.5,parseInt(y2)+6.5);
     }
     contextp.stroke();
+
   }
-
-  // function draw_line(point1, point2, line) {
-  //   var pointA = $(point1).offset();
-  //   var pointB = $(point2).offset();
-  //   var pointAcenterX = $(point1).width() / 2;
-  //   var pointAcenterY = $(point1).height() / 2;
-  //   var pointBcenterX = $(point2).width() / 2;
-  //   var pointBcenterY = $(point2).height() / 2;
-  //   var angle = Math.atan2(pointB.top - pointA.top, pointB.left - pointA.left) * 180 / Math.PI;
-  //   var distance = lineDistance(pointA.left, pointA.top, pointB.left, pointB.top);
-
-  //   $("#selectable").append('<div id="line_'+line+'" class="line" style="transform:rotate(' + angle + 'deg); width:'+distance+'px; position:absolute;"></div>');
-
-  //   if(pointB.left < pointA.left) {
-  //     $('#line_'+line).offset({top: pointB.top + pointBcenterY, left: pointB.left + pointBcenterX});
-  //   } else {
-  //     $('#line_'+line).offset({top: pointB.top + pointAcenterY, left: pointA.left + pointAcenterX});
-  //   }
-
-  //   $('#line_'+line).click(function() {
-  //     if(action == 'delete_link') {
-  //       delete_line(line);
-  //     }
-  //   }).draggable();
-
-  // }
-
-  // function delete_line(id) {
-  //   $.get('/admin/site/map/delete-line/'+id, function( data ) {
-  //     if(data.status_code == 200) {
-  //       $('#line_'+id).remove();
-  //       get_map_points();
-  //     }
-  //   }, "json");
-  // }
 
 </script>
 @endpush

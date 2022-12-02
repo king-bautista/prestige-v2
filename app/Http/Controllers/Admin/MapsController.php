@@ -382,7 +382,6 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
-            //return $request->all();
             $site_point = SitePoint::find($request->pid);
             $data = [
                 'tenant_id' => ($request->tenant_id) ? $request->tenant_id : 0,

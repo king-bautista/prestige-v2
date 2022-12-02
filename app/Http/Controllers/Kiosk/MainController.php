@@ -11,6 +11,7 @@ use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SiteAdViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
 use App\Models\ViewModels\CinemaScheduleViewModel;
+use App\Models\ViewModels\SiteBuildingLevelViewModel;
 
 class MainController extends AppBaseController
 {
@@ -57,8 +58,10 @@ class MainController extends AppBaseController
     {
         try
         {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('categories.parent_id', $category_id)
+            ->where('site_tenants.site_id', $site->id)
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->select('site_tenants.*')
@@ -79,10 +82,12 @@ class MainController extends AppBaseController
 
     public function getTenantsByCategory($category_id)
     {
-        // try
-        // {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.category_id', $category_id)
+            ->where('site_tenants.site_id', $site->id)
             ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->select('site_tenants.*')
             ->orderBy('brands.name', 'ASC')
@@ -90,22 +95,24 @@ class MainController extends AppBaseController
             
             $site_tenants = array_chunk($site_tenants, 15);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }    
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }    
     }
 
     public function getTenantsBySupplementals($category_id)
     {
         try
         {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brand_supplementals.supplemental_id', $category_id)
+            ->where('site_tenants.site_id', $site->id)
             ->join('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->select('site_tenants.*')
@@ -128,7 +135,9 @@ class MainController extends AppBaseController
     {
         try
         {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            ->where('site_tenants.site_id', $site->id)
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->select('brands.name')
@@ -146,11 +155,38 @@ class MainController extends AppBaseController
         }  
     }
 
+    public function getAllTenants()
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            ->where('site_tenants.site_id', $site->id)
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->select('brands.name', 'site_tenants.*')
+            ->orderBy('brands.name', 'ASC')
+            ->groupBy('brands.name')
+            ->get();
+            
+            return $this->response($site_tenants, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }  
+    }
+
     public function search(Request $request)
     {
         try
         {
             $array_words = explode(' ', $request->key_words);
+
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where(function ($query) use($array_words) {
                 foreach($array_words as $key) {
@@ -160,6 +196,7 @@ class MainController extends AppBaseController
                     ->orWhere('tags.name', 'like', '%'.$key.'%');
                 }
             })
+            ->where('site_tenants.site_id', $site->id)
             ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
@@ -242,6 +279,7 @@ class MainController extends AppBaseController
             $promos = BrandProductViewModel::where('brand_products_promos.type', 'promo')
             ->where('brand_products_promos.active', 1)
             ->where('site_tenants.is_subscriber', 1)
+            ->where('site_tenants.site_id', $site->id)
             ->join('site_tenant_products', 'brand_products_promos.id', '=', 'site_tenant_products.brand_product_promo_id')
             ->join('site_tenants', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
             ->select('brand_products_promos.*')
@@ -264,9 +302,11 @@ class MainController extends AppBaseController
     {
         try
         {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.name', 'like', '%CINEMA%')
             ->where('categories.name', 'like', '%Amusement & Exhibitions%')
+            ->where('site_tenants.site_id', $site->id)
             ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->join('categories', 'brands.category_id', '=', 'categories.id')
             ->select('site_tenants.*')
@@ -312,6 +352,25 @@ class MainController extends AppBaseController
                 'status_code' => 200,
             ], 200);
         }    
+    }
+
+    public function getFloors()
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+            $site_floors = SiteBuildingLevelViewModel::where('site_id', $site->id)
+            ->get()->toArray();
+            
+            return $this->response($site_floors, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }  
     }
 
 }
