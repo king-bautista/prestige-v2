@@ -70,6 +70,7 @@ import search from './components/Kiosk/Search.vue';
 import promos from './components/Kiosk/Promos.vue';
 import cinema from './components/Kiosk/Cinema.vue';
 import about from './components/Kiosk/About.vue';
+import map from './components/Kiosk/Map.vue';
 
 const routes = [
     {   
@@ -81,6 +82,11 @@ const routes = [
         path: '/search',
         component: search,
         name: 'search'
+    },
+    {   
+        path: '/wayfinding',
+        component: map,
+        name: 'map'
     },
     {   
         path: '/promos',

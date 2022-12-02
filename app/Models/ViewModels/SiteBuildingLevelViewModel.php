@@ -48,6 +48,7 @@ class SiteBuildingLevelViewModel extends Model
         // 'map_preview_path',
         // 'is_default',
         'building_name',
+        'building_floor_name',
     ];
 
     /****************************************
@@ -74,6 +75,11 @@ class SiteBuildingLevelViewModel extends Model
     public function getBuildingNameAttribute() 
     {
         return SiteBuilding::find($this->site_building_id)->name;
+    }
+
+    public function getBuildingFloorNameAttribute() 
+    {
+        return SiteBuilding::find($this->site_building_id)->name. ' - '.$this->name;
     }
 
     // public function getMapFileAttribute() 

@@ -25,11 +25,11 @@
                             <div class="button-text-align">Search</div>
                         </div>
                     </router-link>
-                    
-                    <div class="h-button widget-button map-button">
-                        <div class="button-text-align">Map</div>
-                    </div>
-
+                    <router-link to="/wayfinding">
+                        <div class="h-button widget-button map-button">
+                            <div class="button-text-align">Map</div>
+                        </div>
+                    </router-link>
                     <router-link to="/promos">
                         <div class="h-button widget-button promos-button">
                             <div class="button-text-align">Promos</div>

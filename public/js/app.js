@@ -14297,6 +14297,76 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Wayfinding",
+  data: function data() {
+    return {
+      map_form: {
+        tenant: '',
+        is_pwd: false,
+        floor_id: ''
+      },
+      site_logo: '',
+      back_button: 'assets/images/English/Back.png',
+      page_title: 'Map',
+      tenant_list: [],
+      site_floors: []
+    };
+  },
+  created: function created() {
+    this.getSite();
+    this.getTenants();
+    this.getFloors();
+  },
+  methods: {
+    getSite: function getSite() {
+      var _this = this;
+      axios.get('/api/v1/site').then(function (response) {
+        return _this.site_logo = response.data.data.site_logo;
+      });
+    },
+    getTenants: function getTenants() {
+      var _this2 = this;
+      this.tenant_list = [];
+      axios.get('/api/v1/tenants/all').then(function (response) {
+        _this2.tenant_list = response.data.data;
+      });
+    },
+    getFloors: function getFloors() {
+      var _this3 = this;
+      this.site_floors = [];
+      axios.get('/api/v1/site/floors').then(function (response) {
+        _this3.site_floors = response.data.data;
+      });
+    },
+    goBack: function goBack() {
+      this.$router.push('/');
+    }
+  },
+  mounted: function mounted() {
+    $(function () {});
+  },
+  components: {
+    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default())
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Promos.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Promos.vue?vue&type=script&lang=js& ***!
@@ -14418,6 +14488,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.fullscreen = response.data.data;
         fullscreen_array = response.data.data;
       });
+    },
+    reload_page: function reload_page() {
+      this.$router.push('/');
     }
   }
 });
@@ -26063,6 +26136,185 @@ render._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticStyle: {
+      width: "100%"
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("div", {
+    attrs: {
+      id: "page-title"
+    }
+  }, [_vm._v(_vm._s(_vm.page_title))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 text-right"
+  }, [_c("router-link", {
+    attrs: {
+      to: "/about-us"
+    }
+  }, [_c("img", {
+    staticClass: "logo-holder",
+    attrs: {
+      src: _vm.site_logo
+    }
+  })])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "row col-md-12 mb-3 map-holder"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "tabs-container"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-sm-4 offset-md-2"
+  }, [_c("div", {
+    staticClass: "input-group"
+  }, [_c("multiselect", {
+    staticClass: "custom-select",
+    attrs: {
+      options: _vm.tenant_list,
+      multiple: false,
+      "close-on-select": true,
+      "show-labels": false,
+      placeholder: "Input Destination",
+      label: "name",
+      "track-by": "name"
+    },
+    model: {
+      value: _vm.map_form.tenant,
+      callback: function callback($$v) {
+        _vm.$set(_vm.map_form, "tenant", $$v);
+      },
+      expression: "map_form.tenant"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n                            Loading.. Please wait\n                        ")]), _vm._v(" "), _c("span", {
+    attrs: {
+      slot: "noResult"
+    },
+    slot: "noResult"
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(0)], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 col-sm-3"
+  }, [_c("div", {
+    staticClass: "input-group"
+  }, [_c("multiselect", {
+    staticClass: "custom-select",
+    attrs: {
+      options: _vm.site_floors,
+      multiple: false,
+      "close-on-select": true,
+      "show-labels": false,
+      placeholder: "Select Floor",
+      label: "building_floor_name",
+      "track-by": "building_floor_name"
+    },
+    model: {
+      value: _vm.map_form.floor_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.map_form, "floor_id", $$v);
+      },
+      expression: "map_form.floor_id"
+    }
+  }, [_c("span", {
+    attrs: {
+      slot: "noOptions"
+    },
+    slot: "noOptions"
+  }, [_vm._v("\n                            Loading.. Please wait\n                        ")]), _vm._v(" "), _c("span", {
+    attrs: {
+      slot: "noResult"
+    },
+    slot: "noResult"
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(1)], 1)])])]), _vm._v(" "), _c("img", {
+    staticStyle: {
+      "z-index": "999",
+      position: "absolute",
+      top: "780px",
+      right: "15px",
+      cursor: "pointer"
+    },
+    attrs: {
+      src: _vm.back_button
+    },
+    on: {
+      click: _vm.goBack
+    }
+  })]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "input-group-append"
+  }, [_c("button", {
+    staticClass: "btn btn-outline-secondary is-pwd-button",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-wheelchair fa-2x",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "input-group-append"
+  }, [_c("button", {
+    staticClass: "btn btn-outline-secondary custom-color",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-minus fa-2x",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-outline-secondary custom-color",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus fa-2x",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-outline-secondary custom-color",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-expand fa-2x"
+  })])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Promos.vue?vue&type=template&id=3dfbff96&":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Promos.vue?vue&type=template&id=3dfbff96& ***!
@@ -26301,6 +26553,9 @@ var render = function render() {
         "data-index": index,
         "data-id": screen.id,
         "data-interval": screen.display_duration * 1000
+      },
+      on: {
+        click: _vm.reload_page
       }
     }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
       staticStyle: {
@@ -27052,6 +27307,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Kiosk_Promos_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Kiosk/Promos.vue */ "./resources/js/components/Kiosk/Promos.vue");
 /* harmony import */ var _components_Kiosk_Cinema_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Kiosk/Cinema.vue */ "./resources/js/components/Kiosk/Cinema.vue");
 /* harmony import */ var _components_Kiosk_About_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Kiosk/About.vue */ "./resources/js/components/Kiosk/About.vue");
+/* harmony import */ var _components_Kiosk_Map_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Kiosk/Map.vue */ "./resources/js/components/Kiosk/Map.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -27121,6 +27377,7 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
+
 var routes = [{
   path: '',
   component: _components_Kiosk_Home_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -27129,6 +27386,10 @@ var routes = [{
   path: '/search',
   component: _components_Kiosk_Search_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   name: 'search'
+}, {
+  path: '/wayfinding',
+  component: _components_Kiosk_Map_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+  name: 'map'
 }, {
   path: '/promos',
   component: _components_Kiosk_Promos_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -43703,6 +43964,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "/*!\n * Datetimepicker for Bootstrap 3\n * version : 4.17.47\n * https://github.com/Eonasdan/bootstrap-datetimepicker/\n */\n.bootstrap-datetimepicker-widget {\n  list-style: none;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu {\n  display: block;\n  margin: 2px 0;\n  padding: 4px;\n  width: 19em;\n}\n@media (min-width: 576px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n@media (min-width: 768px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n@media (min-width: 992px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n.bootstrap-datetimepicker-widget.dropdown-menu:before,\n.bootstrap-datetimepicker-widget.dropdown-menu:after {\n  content: '';\n  display: inline-block;\n  position: absolute;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.bottom:before {\n  border-left: 7px solid transparent;\n  border-right: 7px solid transparent;\n  border-bottom: 7px solid #ccc;\n  border-bottom-color: rgba(0, 0, 0, 0.2);\n  top: -7px;\n  left: 7px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.bottom:after {\n  border-left: 6px solid transparent;\n  border-right: 6px solid transparent;\n  border-bottom: 6px solid white;\n  top: -6px;\n  left: 8px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.top:before {\n  border-left: 7px solid transparent;\n  border-right: 7px solid transparent;\n  border-top: 7px solid #ccc;\n  border-top-color: rgba(0, 0, 0, 0.2);\n  bottom: -7px;\n  left: 6px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.top:after {\n  border-left: 6px solid transparent;\n  border-right: 6px solid transparent;\n  border-top: 6px solid white;\n  bottom: -6px;\n  left: 7px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.pull-right:before {\n  left: auto;\n  right: 6px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.pull-right:after {\n  left: auto;\n  right: 7px;\n}\n.bootstrap-datetimepicker-widget .list-unstyled {\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget a[data-action] {\n  padding: 6px 0;\n}\n.bootstrap-datetimepicker-widget a[data-action]:active {\n  box-shadow: none;\n}\n.bootstrap-datetimepicker-widget .timepicker-hour,\n.bootstrap-datetimepicker-widget .timepicker-minute,\n.bootstrap-datetimepicker-widget .timepicker-second {\n  width: 54px;\n  font-weight: bold;\n  font-size: 1.2em;\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget button[data-action] {\n  padding: 6px;\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"incrementHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Increment Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"incrementMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Increment Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"decrementHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Decrement Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"decrementMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Decrement Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"showHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Show Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"showMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Show Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"togglePeriod\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Toggle AM/PM\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"clear\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Clear the picker\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"today\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Set the date to today\";\n}\n.bootstrap-datetimepicker-widget .picker-switch {\n  text-align: center;\n}\n.bootstrap-datetimepicker-widget .picker-switch::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Toggle Date and Time Screens\";\n}\n.bootstrap-datetimepicker-widget .picker-switch td {\n  padding: 0;\n  margin: 0;\n  height: auto;\n  width: auto;\n  line-height: inherit;\n}\n.bootstrap-datetimepicker-widget .picker-switch td span,\n.bootstrap-datetimepicker-widget .picker-switch td i {\n  line-height: 2.5;\n  height: 2.5em;\n  width: 100%;\n}\n.bootstrap-datetimepicker-widget table {\n  width: 100%;\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget table td,\n.bootstrap-datetimepicker-widget table th {\n  text-align: center;\n  border-radius: 0.25rem;\n  padding: 0.5em;\n}\n.bootstrap-datetimepicker-widget table th {\n  height: 20px;\n  line-height: 20px;\n  width: 20px;\n}\n.bootstrap-datetimepicker-widget table th.picker-switch {\n  width: 145px;\n}\n.bootstrap-datetimepicker-widget table th.disabled,\n.bootstrap-datetimepicker-widget table th.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget table th.prev::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Previous Month\";\n}\n.bootstrap-datetimepicker-widget table th.next::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Next Month\";\n}\n.bootstrap-datetimepicker-widget table thead tr:first-child th {\n  cursor: pointer;\n}\n.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {\n  background: #f8f9fa;\n}\n.bootstrap-datetimepicker-widget table td {\n  height: 54px;\n  line-height: 54px;\n  width: 54px;\n}\n.bootstrap-datetimepicker-widget table td.cw {\n  font-size: 0.8em;\n  height: 20px;\n  line-height: 20px;\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td.day {\n  height: 20px;\n  line-height: 20px;\n  width: 20px;\n}\n.bootstrap-datetimepicker-widget table td.day:hover,\n.bootstrap-datetimepicker-widget table td.hour:hover,\n.bootstrap-datetimepicker-widget table td.minute:hover,\n.bootstrap-datetimepicker-widget table td.second:hover {\n  background: #f8f9fa;\n  cursor: pointer;\n}\n.bootstrap-datetimepicker-widget table td.old,\n.bootstrap-datetimepicker-widget table td.new {\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td.today {\n  position: relative;\n}\n.bootstrap-datetimepicker-widget table td.today:before {\n  content: '';\n  display: inline-block;\n  border: solid transparent;\n  border-width: 0 0 7px 7px;\n  border-bottom-color: #dee2e6;\n  border-top-color: rgba(0, 0, 0, 0.2);\n  position: absolute;\n  bottom: 4px;\n  right: 4px;\n}\n.bootstrap-datetimepicker-widget table td.active,\n.bootstrap-datetimepicker-widget table td.active:hover {\n  background-color: #dee2e6;\n  color: #007bff;\n  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);\n}\n.bootstrap-datetimepicker-widget table td.active.today:before {\n  border-bottom-color: #fff;\n}\n.bootstrap-datetimepicker-widget table td.disabled,\n.bootstrap-datetimepicker-widget table td.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget table td span,\n.bootstrap-datetimepicker-widget table td i {\n  display: inline-block;\n  width: 54px;\n  height: 54px;\n  line-height: 54px;\n  margin: 2px 1.5px;\n  cursor: pointer;\n  border-radius: 0.25rem;\n}\n.bootstrap-datetimepicker-widget table td span:hover,\n.bootstrap-datetimepicker-widget table td i:hover {\n  background: #f8f9fa;\n}\n.bootstrap-datetimepicker-widget table td span.active,\n.bootstrap-datetimepicker-widget table td i.active {\n  background-color: #dee2e6;\n  color: #007bff;\n  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);\n}\n.bootstrap-datetimepicker-widget table td span.old,\n.bootstrap-datetimepicker-widget table td i.old {\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td span.disabled,\n.bootstrap-datetimepicker-widget table td i.disabled,\n.bootstrap-datetimepicker-widget table td span.disabled:hover,\n.bootstrap-datetimepicker-widget table td i.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget.usetwentyfour td.hour {\n  height: 27px;\n  line-height: 27px;\n}\n.bootstrap-datetimepicker-widget.wider {\n  width: 21em;\n}\n.bootstrap-datetimepicker-widget .datepicker-decades .decade {\n  line-height: 1.8em !important;\n}\n.input-group.date .input-group-addon {\n  cursor: pointer;\n}\n.input-group.date .input-group-text {\n  cursor: pointer;\n}\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.multiselect__tags {\n    min-height: 40px;\n    display: block;\n    padding: 8px 40px 0 8px;\n    border-radius: 5px;\n    border: none;\n    background: #fff;\n    font-size: 14px;\n}\n.multiselect__select {\n    position: absolute;\n    width: 0 !important;\n    height: 0 !important;\n    right: 6px !important;\n    top: 40% !important;\n    padding: 6px !important;\n    transition: transform .2s ease;\n    border: solid rgb(152, 218, 208) !important;\n    display: inline-block !important;\n    border-width: 0 6px 6px 0 !important;\n    transform: rotate(-225deg) !important;\n    -webkit-transform: rotate(225deg) !important;\n}\n.multiselect--active .multiselect__select {\n    transform: rotate(-45deg) !important;\n    -webkit-transform: rotate(45deg) !important;\n}\n.multiselect__select:before {\n    display: none;\n}\n.multiselect__tags {\n    border: none !important;\n}\n.multiselect__placeholder {\n    color: #000 !important;\n    font-size: 1rem;\n}\n.multiselect--above .multiselect__content-wrapper {\n    margin-left: -13px;\n}\n.is-pwd-button {\n    color: rgb(152, 218, 208);\n    border-color: #000;\n    border-top-right-radius: 10px;\n    border-bottom-right-radius: 10px;\n}\n.input-group>.custom-select:not(:last-child), .input-group>.form-control:not(:last-child) {\n    border-top-left-radius: 10px;\n    border-bottom-left-radius: 10px;\n    border-color: #000;\n}\n.custom-select {\n    background: none !important;\n}\n.custom-color {\n    color: rgb(152, 218, 208);\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -86709,6 +86994,36 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css& ***!
@@ -88620,6 +88935,47 @@ component.options.__file = "resources/js/components/Kiosk/Home.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Map.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/Kiosk/Map.vue ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Map.vue?vue&type=template&id=1ae74b8a& */ "./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&");
+/* harmony import */ var _Map_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Map.vue?vue&type=script&lang=js& */ "./resources/js/components/Kiosk/Map.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& */ "./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _Map_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Kiosk/Map.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Promos.vue":
 /*!**************************************************!*\
   !*** ./resources/js/components/Kiosk/Promos.vue ***!
@@ -89256,6 +89612,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Map.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Map.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Promos.vue?vue&type=script&lang=js&":
 /*!***************************************************************************!*\
   !*** ./resources/js/components/Kiosk/Promos.vue?vue&type=script&lang=js& ***!
@@ -89830,6 +90202,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=template&id=1ae74b8a& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Kiosk/Promos.vue?vue&type=template&id=3dfbff96&":
 /*!*********************************************************************************!*\
   !*** ./resources/js/components/Kiosk/Promos.vue?vue&type=template&id=3dfbff96& ***!
@@ -89998,6 +90387,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_loader_dist_cjs_js_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_vue_multiselect_min_css_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../style-loader/dist/cjs.js!../../laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../vue-loader/lib/loaders/stylePostLoader.js!../../postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./vue-multiselect.min.css?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&");
 
 
 /***/ }),
