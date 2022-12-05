@@ -26534,6 +26534,9 @@ var render = function render() {
     },
     attrs: {
       id: "screensaverwidget"
+    },
+    on: {
+      click: _vm.reload_page
     }
   }, [_c("div", {
     staticClass: "carousel slide carousel-fade",
@@ -26553,9 +26556,6 @@ var render = function render() {
         "data-index": index,
         "data-id": screen.id,
         "data-interval": screen.display_duration * 1000
-      },
-      on: {
-        click: _vm.reload_page
       }
     }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
       staticStyle: {
