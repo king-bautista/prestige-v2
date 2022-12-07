@@ -14358,7 +14358,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    $(function () {});
+    $(function () {
+      $(".zoomable-container").smartZoom({
+        'containerClass': 'zoomableContainer'
+      });
+    });
   },
   components: {
     Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default())
@@ -14490,7 +14494,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     reload_page: function reload_page() {
-      this.$router.push('/');
+      this.$router.push("/")["catch"](function () {});
     }
   }
 });
@@ -26174,9 +26178,7 @@ var render = function render() {
     attrs: {
       src: _vm.site_logo
     }
-  })])], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "row col-md-12 mb-3 map-holder"
-  }), _vm._v(" "), _c("div", {
+  })])], 1)]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "tabs-container"
   }, [_c("div", {
     staticClass: "row"
@@ -26212,7 +26214,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(0)], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(1)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-12 col-sm-3"
   }, [_c("div", {
     staticClass: "input-group"
@@ -26244,7 +26246,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(1)], 1)])])]), _vm._v(" "), _c("img", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(2)], 1)])])]), _vm._v(" "), _c("img", {
     staticStyle: {
       "z-index": "999",
       position: "absolute",
@@ -26261,6 +26263,17 @@ var render = function render() {
   })]);
 };
 var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row col-md-12 mb-3 map-holder"
+  }, [_c("div", {
+    staticClass: "zoomable-container",
+    attrs: {
+      id: "zoomable-container"
+    }
+  })]);
+}, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {

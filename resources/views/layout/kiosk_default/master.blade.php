@@ -37,6 +37,7 @@
         <script src="{{ mix('/js/app.js') }}"></script>
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
         <script src="{{ URL::to('js/fancybox.umd.js') }}"></script>
+        <script src="{{ URL::to('js/e-smart-zoom-jquery.min.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>
 </html>

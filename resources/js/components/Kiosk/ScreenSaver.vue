@@ -75,7 +75,7 @@
             },
 
             reload_page: function() {
-                this.$router.push('/');
+                this.$router.push("/").catch(()=>{});
             },
         },
     };

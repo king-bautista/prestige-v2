@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="row col-md-12 mb-3 map-holder">
-                          
+            <div class="zoomable-container" id="zoomable-container"></div>
         </div>
         <!-- TABS -->
         <div class="tabs-container">
@@ -132,6 +132,7 @@
 
         mounted() {
             $(function() {
+                $(".zoomable-container").smartZoom({'containerClass':'zoomableContainer'});
                 
             });
         },
