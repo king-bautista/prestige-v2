@@ -257,7 +257,19 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
-            $site_links = SitePointLinkViewModel::where('site_map_id', $id)->get();
+            $site_links = SitePointLinkViewModel::where('site_point_links.site_map_id', $id)
+            ->join('site_points as a', function($join) use ($id)
+             {
+                 $join->on('site_point_links.point_a', '=', 'a.id')
+                      ->where('a.site_map_id','=', $id);
+             })
+             ->join('site_points as b', function($join) use ($id)
+             {
+                 $join->on('site_point_links.point_b', '=', 'b.id')
+                      ->where('b.site_map_id','=', $id);
+             })
+             ->get();
+
             return $this->response($site_links, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 

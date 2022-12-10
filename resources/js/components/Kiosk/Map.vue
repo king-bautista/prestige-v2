@@ -10,8 +10,10 @@
                 </router-link>
             </div>
         </div>
-        <div class="row col-md-12 mb-3 map-holder">
-                          
+        <div class="row col-md-12 mb-3">
+            <div class="map-holder">
+                <div class="zoomable-container" id="zoomable-container"></div>
+            </div>
         </div>
         <!-- TABS -->
         <div class="tabs-container">
@@ -60,10 +62,10 @@
                             </span>
                         </multiselect>
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary custom-color" type="button">
+                            <button class="btn btn-outline-secondary custom-color map-control-zoomout" type="button">
                                 <i class="fa fa-minus fa-2x" aria-hidden="true"></i>
                             </button>
-                            <button class="btn btn-outline-secondary custom-color" type="button">
+                            <button class="btn btn-outline-secondary custom-color map-control-zoomin" type="button">
                                 <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
                             </button>
                             <button class="btn btn-outline-secondary custom-color" type="button">
@@ -78,6 +80,7 @@
     </div>
 </template>
 <script>
+    var site_maps = [];
     import Multiselect from 'vue-multiselect';
 	
     export default {
@@ -101,6 +104,8 @@
             this.getSite();
             this.getTenants();
             this.getFloors();
+            this.getMaps();
+            this.setMap();
         },
 
         methods: {
@@ -125,14 +130,37 @@
                 });
             },
 
+            getMaps: function() {
+                axios.get('/api/v1/site/maps')
+                .then(response => {
+                    site_maps = response.data.data;
+                });
+            },
+
+            setMap: function() {
+                $(function() {
+                    var map = new WayFinding({mapcontainer:'zoomable-container'});
+                    for (var i = 0; i < site_maps.length; i++){
+                        map.addMaps(site_maps[i]);
+                    }
+                });
+            },
+
             goBack: function() {
                 this.$router.push('/'); 
             },
+
+            
         },
 
         mounted() {
-            $(function() {
-                
+            $(document).ready(function(){
+                let zoomMap = $('#zoomable-container').ZoomArea({
+                    virtualScrollbars:false,
+                    externalIncrease:'.map-control-zoomin',
+                    externalDecrease:'.map-control-zoomout',
+                    parentOverflow:'hidden',
+                });
             });
         },
 

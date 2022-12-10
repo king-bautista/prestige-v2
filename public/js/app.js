@@ -14310,6 +14310,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+var site_maps = [];
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Wayfinding",
@@ -14331,6 +14332,8 @@ __webpack_require__.r(__webpack_exports__);
     this.getSite();
     this.getTenants();
     this.getFloors();
+    this.getMaps();
+    this.setMap();
   },
   methods: {
     getSite: function getSite() {
@@ -14353,12 +14356,34 @@ __webpack_require__.r(__webpack_exports__);
         _this3.site_floors = response.data.data;
       });
     },
+    getMaps: function getMaps() {
+      axios.get('/api/v1/site/maps').then(function (response) {
+        site_maps = response.data.data;
+      });
+    },
+    setMap: function setMap() {
+      $(function () {
+        var map = new WayFinding({
+          mapcontainer: 'zoomable-container'
+        });
+        for (var i = 0; i < site_maps.length; i++) {
+          map.addMaps(site_maps[i]);
+        }
+      });
+    },
     goBack: function goBack() {
       this.$router.push('/');
     }
   },
   mounted: function mounted() {
-    $(function () {});
+    $(document).ready(function () {
+      var zoomMap = $('#zoomable-container').ZoomArea({
+        virtualScrollbars: false,
+        externalIncrease: '.map-control-zoomin',
+        externalDecrease: '.map-control-zoomout',
+        parentOverflow: 'hidden'
+      });
+    });
   },
   components: {
     Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default())
@@ -14490,7 +14515,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     reload_page: function reload_page() {
-      this.$router.push('/');
+      this.$router.push("/")["catch"](function () {});
     }
   }
 });
@@ -26174,9 +26199,7 @@ var render = function render() {
     attrs: {
       src: _vm.site_logo
     }
-  })])], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "row col-md-12 mb-3 map-holder"
-  }), _vm._v(" "), _c("div", {
+  })])], 1)]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "tabs-container"
   }, [_c("div", {
     staticClass: "row"
@@ -26212,7 +26235,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(0)], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(1)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-12 col-sm-3"
   }, [_c("div", {
     staticClass: "input-group"
@@ -26244,7 +26267,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(1)], 1)])])]), _vm._v(" "), _c("img", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(2)], 1)])])]), _vm._v(" "), _c("img", {
     staticStyle: {
       "z-index": "999",
       position: "absolute",
@@ -26261,6 +26284,19 @@ var render = function render() {
   })]);
 };
 var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row col-md-12 mb-3"
+  }, [_c("div", {
+    staticClass: "map-holder"
+  }, [_c("div", {
+    staticClass: "zoomable-container",
+    attrs: {
+      id: "zoomable-container"
+    }
+  })])]);
+}, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
@@ -26282,7 +26318,7 @@ var staticRenderFns = [function () {
   return _c("div", {
     staticClass: "input-group-append"
   }, [_c("button", {
-    staticClass: "btn btn-outline-secondary custom-color",
+    staticClass: "btn btn-outline-secondary custom-color map-control-zoomout",
     attrs: {
       type: "button"
     }
@@ -26292,7 +26328,7 @@ var staticRenderFns = [function () {
       "aria-hidden": "true"
     }
   })]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-outline-secondary custom-color",
+    staticClass: "btn btn-outline-secondary custom-color map-control-zoomin",
     attrs: {
       type: "button"
     }
@@ -26534,6 +26570,9 @@ var render = function render() {
     },
     attrs: {
       id: "screensaverwidget"
+    },
+    on: {
+      click: _vm.reload_page
     }
   }, [_c("div", {
     staticClass: "carousel slide carousel-fade",
@@ -26553,9 +26592,6 @@ var render = function render() {
         "data-index": index,
         "data-id": screen.id,
         "data-interval": screen.display_duration * 1000
-      },
-      on: {
-        click: _vm.reload_page
       }
     }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
       staticStyle: {

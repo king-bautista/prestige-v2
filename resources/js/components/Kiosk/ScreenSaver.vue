@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div style="width:0;height:0;position:absolute; top: 0; z-index: 9999;" id="screensaverwidget">
+        <div style="width:0;height:0;position:absolute; top: 0; z-index: 9999;" id="screensaverwidget" @click="reload_page">
             <div id="fullscreen-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel">
                 <div class="carousel-inner" id="carousel-fullscreen">
-                    <div v-for="(screen, index) in fullscreen.slice(0,2)" :data-index="index" :data-id="screen.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(screen.display_duration*1000)" @click="reload_page">
+                    <div v-for="(screen, index) in fullscreen.slice(0,2)" :data-index="index" :data-id="screen.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(screen.display_duration*1000)">
                         <span v-if="getFileExtension(screen.file_type) == 'video'">
                             <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
                                 <source :src="screen.material_image_path" type="video/ogg">
@@ -75,7 +75,7 @@
             },
 
             reload_page: function() {
-                this.$router.push('/');
+                this.$router.push("/").catch(()=>{});
             },
         },
     };
