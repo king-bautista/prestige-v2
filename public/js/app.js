@@ -14310,6 +14310,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+var site_maps = [];
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Wayfinding",
@@ -14331,6 +14332,8 @@ __webpack_require__.r(__webpack_exports__);
     this.getSite();
     this.getTenants();
     this.getFloors();
+    this.getMaps();
+    this.setMap();
   },
   methods: {
     getSite: function getSite() {
@@ -14353,14 +14356,32 @@ __webpack_require__.r(__webpack_exports__);
         _this3.site_floors = response.data.data;
       });
     },
+    getMaps: function getMaps() {
+      axios.get('/api/v1/site/maps').then(function (response) {
+        site_maps = response.data.data;
+      });
+    },
+    setMap: function setMap() {
+      $(function () {
+        var map = new WayFinding({
+          mapcontainer: 'zoomable-container'
+        });
+        for (var i = 0; i < site_maps.length; i++) {
+          map.addMaps(site_maps[i]);
+        }
+      });
+    },
     goBack: function goBack() {
       this.$router.push('/');
     }
   },
   mounted: function mounted() {
-    $(function () {
-      $(".zoomable-container").smartZoom({
-        'containerClass': 'zoomableContainer'
+    $(document).ready(function () {
+      var zoomMap = $('#zoomable-container').ZoomArea({
+        virtualScrollbars: false,
+        externalIncrease: '.map-control-zoomin',
+        externalDecrease: '.map-control-zoomout',
+        parentOverflow: 'hidden'
       });
     });
   },
@@ -26266,13 +26287,15 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "row col-md-12 mb-3 map-holder"
+    staticClass: "row col-md-12 mb-3"
+  }, [_c("div", {
+    staticClass: "map-holder"
   }, [_c("div", {
     staticClass: "zoomable-container",
     attrs: {
       id: "zoomable-container"
     }
-  })]);
+  })])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -26295,7 +26318,7 @@ var staticRenderFns = [function () {
   return _c("div", {
     staticClass: "input-group-append"
   }, [_c("button", {
-    staticClass: "btn btn-outline-secondary custom-color",
+    staticClass: "btn btn-outline-secondary custom-color map-control-zoomout",
     attrs: {
       type: "button"
     }
@@ -26305,7 +26328,7 @@ var staticRenderFns = [function () {
       "aria-hidden": "true"
     }
   })]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-outline-secondary custom-color",
+    staticClass: "btn btn-outline-secondary custom-color map-control-zoomin",
     attrs: {
       type: "button"
     }

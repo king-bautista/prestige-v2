@@ -12,6 +12,7 @@ use App\Models\ViewModels\SiteAdViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
 use App\Models\ViewModels\CinemaScheduleViewModel;
 use App\Models\ViewModels\SiteBuildingLevelViewModel;
+use App\Models\ViewModels\SiteMapViewModel;
 
 class MainController extends AppBaseController
 {
@@ -371,6 +372,25 @@ class MainController extends AppBaseController
                 'status_code' => 200,
             ], 200);
         }  
+    }
+
+    public function getMaps()
+    {
+        
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_maps = SiteMapViewModel::where('site_id', $site->id)->get();
+            
+            return $this->response($site_maps, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        } 
     }
 
 }

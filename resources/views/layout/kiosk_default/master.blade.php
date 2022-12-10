@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="{{ URL::to('css/custom-kiosk.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/softkeys-0.0.1.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/fancybox.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
     </head>
 
     <body>
@@ -31,13 +32,14 @@
         <!-- REQUIRED SCRIPTS -->
         <!-- jQuery -->
         <script src="{{ URL::to('plugins/jquery/jquery.min.js') }}"></script>
+        <script src="{{ URL::to('js/jquery.mousewheel.min.js') }}"></script>
+        <script src="{{ URL::to('js/zoom.jquery.js') }}"></script>
         <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/popper-v2.min.js') }}"></script>	
-        <script src="{{ mix('/js/app.js') }}"></script>
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
-        <script src="{{ URL::to('js/fancybox.umd.js') }}"></script>
-        <script src="{{ URL::to('js/e-smart-zoom-jquery.min.js') }}"></script>
+        <script src="{{ URL::to('js/way-finding.js') }}"></script>
+        <script src="{{ mix('/js/app.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>
 </html>
