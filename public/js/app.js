@@ -14026,7 +14026,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goBack: function goBack() {
-      this.$router.push('/');
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
+      this.$router.push("/")["catch"](function () {});
     },
     getCinemaList: function getCinemaList() {
       var _this2 = this;
@@ -14372,7 +14374,9 @@ var site_maps = [];
       });
     },
     goBack: function goBack() {
-      this.$router.push('/');
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
+      this.$router.push("/")["catch"](function () {});
     }
   },
   mounted: function mounted() {
@@ -14440,7 +14444,9 @@ __webpack_require__.r(__webpack_exports__);
       $("#myPromo").show();
     },
     goBack: function goBack() {
-      this.$router.push('/');
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
+      this.$router.push("/")["catch"](function () {});
     }
   },
   mounted: function mounted() {
@@ -14515,6 +14521,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     reload_page: function reload_page() {
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
       this.$router.push("/")["catch"](function () {});
     }
   }
@@ -14589,7 +14597,9 @@ __webpack_require__.r(__webpack_exports__);
         this.softkeys();
         this.getSuggestionList();
       } else {
-        this.$router.push('/');
+        $('.h-button').removeClass('active');
+        $('.home-button').addClass('active');
+        this.$router.push("/")["catch"](function () {});
       }
     },
     getSuggestionList: function getSuggestionList() {
