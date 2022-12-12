@@ -217,6 +217,7 @@
             current_index = $(this).find('.active').data('index');
             $('#carousel-banner .carousel-item:first').remove();
             appendBanners();
+            // reset rotation
             if(banner_array.length == count) {
                 count = 0;                        
             }
@@ -226,6 +227,7 @@
             current_index = $(this).find('.active').data('index');
             $('#carousel-fullscreen .carousel-item:first').remove();
             appendFullscreen();
+            // reset rotation
             if(fullscreen_array.length == countscreen) {
                 countscreen = 0;                        
             }
