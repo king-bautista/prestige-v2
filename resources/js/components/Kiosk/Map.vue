@@ -164,17 +164,14 @@
                     parentOverflow:'hidden',
                 });
 
-                $('.pinch').on('click',function(){
-                    $(".map-control-zoomin").click().click();
-                    $(".pinch").hide();
-    			});
-
-                $('.map-control-fit').on('click', function() {
+                $('.pinch, .map-control-fit').on('click',function(){
                     var container_width = $('.map-holder').innerWidth();
                     var body_width = 3000;
                     var scale = container_width / body_width; 
                     $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': '-800px'});
-                });
+                    $(".pinch").hide();
+    			});
+
             });
         },
 
