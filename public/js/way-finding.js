@@ -119,23 +119,7 @@ WayFinding.prototype = {
 
             //add class to map
             $("#" + canvas.id).addClass('my-map').attr('level', map_details.site_building_level_id);
-
-            //make the map draggable
-            // $("#" + canvas.id).draggable({
-            //     drag: function(event, ui){}
-            // });
             
-            // $("#" + canvas.id).on('touchy-drag',function(e,type,$target,data) {
-            //     if(type == 'move') {
-            //         $(this).css({
-            //             'left': parseInt($(this).css('left'),10) + (data.movePoint.x - data.lastMovePoint.x),
-            //             'top': parseInt($(this).css('top'),10) + (data.movePoint.y - data.lastMovePoint.y)
-            //         });
-            //     }
-            // });
-            
-            //set scale
-            obj.scale(1);
             $(".zoomable-container").css({'width':image.width,'height':image.height,'position':'relative'});
         };
 
@@ -151,107 +135,12 @@ WayFinding.prototype = {
             this.settings.currentlevel = map_details.site_building_level_id;
             this.settings.currentbuilding = map_details.site_building_id;
         }
-
+        
     },
 
-    scale: function(scale){
-        if(scale) this.settings.scale = scale;
-        this.redraw();
-    },
-
-    redraw: function() {
+    load_points: function(map_id) {
         var obj = this;
-        var canvas = document.getElementById(this.settings.currentmap);
-        var canvas2 = document.getElementById('copy_' + this.settings.currentmap);
-        var context = canvas.getContext('2d');
-
-        context.clearRect(0, 0,canvas.width,canvas.height);
-        context.save();
-
-        var point_x = canvas.width / 2;
-        var point_y = canvas.height / 2;
-
-        context.translate(point_x,point_y);
-        context.scale(this.settings.scale,this.settings.scale);
-        context.translate(-point_x,-point_y);
-        context.drawImage(canvas2,0,0);
-        context.restore();
-
-        //marker layer
-        var canvas_marker = document.getElementById('here-layer');
-        canvas_marker.width = canvas.width;
-        canvas_marker.height = canvas.height;
-        
-        var context_marker = canvas_marker.getContext('2d');
-        context_marker.clearRect(0, 0,canvas.width,canvas.height);
-        context_marker.save();
-        context_marker.translate(point_x,point_y);
-        context_marker.scale(this.settings.scale,this.settings.scale);
-        context_marker.translate(-point_x,-point_y);
-        context_marker.restore();
-
-        //line layer
-        var canvas_line = document.getElementById('line-layer');
-        canvas_line.width = canvas.width;
-        canvas_line.height = canvas.height;
-        
-        var context_line = canvas_line.getContext('2d');
-        context_line.clearRect(0, 0,canvas.width,canvas.height);
-        context_line.save();
-        context_line.translate(point_x,point_y);
-        context_line.scale(this.settings.scale,this.settings.scale);
-        context_line.translate(-point_x,-point_y);
-        context_line.restore();
-
-        //tenant layer
-        var canvas_tenant = document.getElementById('tenants-layer');
-        canvas_tenant.width = canvas.width;
-        canvas_tenant.height = canvas.height;
-        
-        var context_tenant = canvas_tenant.getContext('2d');
-        context_tenant.clearRect(0, 0,canvas.width,canvas.height);
-        context_tenant.save();
-        context_tenant.translate(point_x,point_y);
-        context_tenant.scale(this.settings.scale,this.settings.scale);
-        context_tenant.translate(-point_x,-point_y);
-        context_tenant.restore();
-
-        //escalator layer
-        var canvas_escalator = document.getElementById('escalator-layer');
-        canvas_escalator.width = canvas.width;
-        canvas_escalator.height = canvas.height;
-        
-        var context_escalator = canvas_escalator.getContext('2d');
-        context_escalator.clearRect(0, 0,canvas.width,canvas.height);
-        context_escalator.save();
-        context_escalator.translate(point_x,point_y);
-        context_escalator.scale(this.settings.scale,this.settings.scale);
-        context_escalator.translate(-point_x,-point_y);
-        context_escalator.restore();
-
-        //text layer
-        var canvas_text= document.getElementById('text-layer');
-        canvas_text.width = canvas.width;
-        canvas_text.height = canvas.height;
-        
-        var context_text = canvas_text.getContext('2d');
-        context_text.clearRect(0, 0,canvas.width,canvas.height);
-        context_text.save();
-        context_text.translate(point_x,point_y);
-        context_text.scale(this.settings.scale,this.settings.scale);
-        context_text.translate(-point_x,-point_y);
-        //context_text.restore();
-
-        // var currentlevel =  this.settings.currentmap.split("-").shift();
-        // var currentbuilding = this.settings.currentmap.split("-").pop();
-
-        // HIDE FOR MAPS WITH NO PLOTTED NAMES
-        //obj.load_points(this.settings.id,currentlevel,currentbuilding);
-
-    },
-
-    load_points: function(id,level,bldg) {
-        var obj = this;
+        $.get( "/api/v1/site/maps/get-points/"+map_id).done(this.manageMaps);
         // $.ajax({
         //     url: 'get-shops-points.php?iid=' + id + '&level=' + level + '&bldg=' + bldg,
         //     type: 'get',

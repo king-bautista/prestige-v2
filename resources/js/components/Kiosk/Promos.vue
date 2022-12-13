@@ -102,7 +102,9 @@
             },
 
             goBack: function() {
-                this.$router.push('/'); 
+                $('.h-button').removeClass('active');
+                $('.home-button').addClass('active');
+                this.$router.push("/").catch(()=>{});
             },
 
         },

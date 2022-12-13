@@ -13,6 +13,7 @@
         <div class="row col-md-12 mb-3">
             <div class="map-holder">
                 <div class="zoomable-container" id="zoomable-container"></div>
+                <img src="images/Pinch1.gif" class="pinch"/>
             </div>
         </div>
         <!-- TABS -->
@@ -68,7 +69,7 @@
                             <button class="btn btn-outline-secondary custom-color map-control-zoomin" type="button">
                                 <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
                             </button>
-                            <button class="btn btn-outline-secondary custom-color" type="button">
+                            <button class="btn btn-outline-secondary custom-color map-control-fit" type="button">
                                 <i class="fas fa-expand fa-2x"></i>
                             </button>
                         </div>
@@ -147,10 +148,11 @@
             },
 
             goBack: function() {
-                this.$router.push('/'); 
+                $('.h-button').removeClass('active');
+                $('.home-button').addClass('active');
+                this.$router.push("/").catch(()=>{});
             },
-
-            
+   
         },
 
         mounted() {
@@ -160,6 +162,18 @@
                     externalIncrease:'.map-control-zoomin',
                     externalDecrease:'.map-control-zoomout',
                     parentOverflow:'hidden',
+                });
+
+                $('.pinch').on('click',function(){
+                    $(".map-control-zoomin").click().click();
+                    $(".pinch").hide();
+    			});
+
+                $('.map-control-fit').on('click', function() {
+                    var container_width = $('.map-holder').innerWidth();
+                    var body_width = 3000;
+                    var scale = container_width / body_width; 
+                    $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': '-800px'});
                 });
             });
         },

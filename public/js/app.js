@@ -14026,7 +14026,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goBack: function goBack() {
-      this.$router.push('/');
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
+      this.$router.push("/")["catch"](function () {});
     },
     getCinemaList: function getCinemaList() {
       var _this2 = this;
@@ -14372,7 +14374,9 @@ var site_maps = [];
       });
     },
     goBack: function goBack() {
-      this.$router.push('/');
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
+      this.$router.push("/")["catch"](function () {});
     }
   },
   mounted: function mounted() {
@@ -14382,6 +14386,19 @@ var site_maps = [];
         externalIncrease: '.map-control-zoomin',
         externalDecrease: '.map-control-zoomout',
         parentOverflow: 'hidden'
+      });
+      $('.pinch').on('click', function () {
+        $(".map-control-zoomin").click().click();
+        $(".pinch").hide();
+      });
+      $('.map-control-fit').on('click', function () {
+        var container_width = $('.map-holder').innerWidth();
+        var body_width = 3000;
+        var scale = container_width / body_width;
+        $('.zoomable-container').css({
+          'transform': 'scale(' + scale + ')',
+          'left': '-800px'
+        });
       });
     });
   },
@@ -14440,7 +14457,9 @@ __webpack_require__.r(__webpack_exports__);
       $("#myPromo").show();
     },
     goBack: function goBack() {
-      this.$router.push('/');
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
+      this.$router.push("/")["catch"](function () {});
     }
   },
   mounted: function mounted() {
@@ -14515,6 +14534,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     reload_page: function reload_page() {
+      $('.h-button').removeClass('active');
+      $('.home-button').addClass('active');
       this.$router.push("/")["catch"](function () {});
     }
   }
@@ -14589,7 +14610,9 @@ __webpack_require__.r(__webpack_exports__);
         this.softkeys();
         this.getSuggestionList();
       } else {
-        this.$router.push('/');
+        $('.h-button').removeClass('active');
+        $('.home-button').addClass('active');
+        this.$router.push("/")["catch"](function () {});
       }
     },
     getSuggestionList: function getSuggestionList() {
@@ -26295,6 +26318,11 @@ var staticRenderFns = [function () {
     attrs: {
       id: "zoomable-container"
     }
+  }), _vm._v(" "), _c("img", {
+    staticClass: "pinch",
+    attrs: {
+      src: "images/Pinch1.gif"
+    }
   })])]);
 }, function () {
   var _vm = this,
@@ -26338,7 +26366,7 @@ var staticRenderFns = [function () {
       "aria-hidden": "true"
     }
   })]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-outline-secondary custom-color",
+    staticClass: "btn btn-outline-secondary custom-color map-control-fit",
     attrs: {
       type: "button"
     }

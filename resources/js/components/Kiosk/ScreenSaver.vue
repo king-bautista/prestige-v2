@@ -75,6 +75,8 @@
             },
 
             reload_page: function() {
+                $('.h-button').removeClass('active');
+                $('.home-button').addClass('active');
                 this.$router.push("/").catch(()=>{});
             },
         },

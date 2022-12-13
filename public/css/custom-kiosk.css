@@ -731,3 +731,15 @@ div.mall-details {
     margin-left: -2px;
     width: 100%;
 }
+
+.pinch {
+    width: 30%;
+    position: absolute;
+    top: 15%;
+    left: 38%;
+    z-index: 1;
+    opacity: 0.8;
+    border-radius: 50%;
+    filter: hue-rotate(110deg);
+    cursor: pointer;
+}
