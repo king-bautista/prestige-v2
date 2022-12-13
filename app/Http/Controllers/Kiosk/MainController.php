@@ -13,6 +13,7 @@ use App\Models\ViewModels\BrandProductViewModel;
 use App\Models\ViewModels\CinemaScheduleViewModel;
 use App\Models\ViewModels\SiteBuildingLevelViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
+use App\Models\ViewModels\SitePointViewModel;
 
 class MainController extends AppBaseController
 {
@@ -383,6 +384,22 @@ class MainController extends AppBaseController
             $site_maps = SiteMapViewModel::where('site_id', $site->id)->get();
             
             return $this->response($site_maps, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        } 
+    }
+
+    public function getPoints($id)
+    {        
+        try
+        {
+            $site_points = SitePointViewModel::where('site_map_id', $id)->get();          
+            return $this->response($site_points, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
