@@ -14,6 +14,7 @@ use App\Models\ViewModels\CinemaScheduleViewModel;
 use App\Models\ViewModels\SiteBuildingLevelViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SitePointViewModel;
+use App\Models\ViewModels\SiteScreenViewModel;
 
 class MainController extends AppBaseController
 {
@@ -361,7 +362,8 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
-            $site_floors = SiteBuildingLevelViewModel::where('site_id', $site->id)
+            $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+            $site_floors = SiteMapViewModel::where('site_id', $site->id)->where('site_screen_id', $site_screen->id)
             ->get()->toArray();
             
             return $this->response($site_floors, 'Successfully Retreived!', 200);

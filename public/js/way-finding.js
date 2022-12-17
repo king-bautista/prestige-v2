@@ -2,6 +2,7 @@ var defaults = {
     width: 3000,
     height: 3000,
     currentmap_id: 0,
+    defaultmap_id: 0,
     currentmap: 0,
     currentlevel: 0,
     currentbuilding: 0,
@@ -11,7 +12,17 @@ var defaults = {
     locationx: 0,
     locationy: 0,
     mapcontainer: null,
-    defaultaction: null
+    defaultaction: null,
+    here_progress:0,
+    frame_here: 0,
+    marker_here_id: 0,
+    escalator_progress: 0,
+    frame_escalator: 0,
+    escalator_id: 0,
+    door_progress: 0,
+    frame_door: 0,
+    store_progress: 0,
+    frame_store: 0,
 }
 
 var self_class = '';
@@ -149,9 +160,23 @@ WayFinding.prototype = {
                 $.each(response.data,function(index,tenant) {
                     // create points and label
                     obj.create_point(tenant);
+                    if(tenant.point_type == 6) {
+                        obj.settings.locationx = tenant.point_x;
+                        obj.settings.locationy = tenant.point_y;                    
+                        obj.settings.defaultmap_id = tenant.site_map_id;
+                    }
                 });
             }
-        })
+        });
+
+        setInterval(function(){obj.animate_escalator(991.25, 1611.48);},250);
+        setInterval(function(){obj.animate_door(1901.00, 1603.50);},250);
+        setInterval(function(){obj.animate_marker_store(2551.99, 1609.49);},250);
+        
+        if(this.settings.currentmap_id && !this.settings.marker_here_id)
+        {
+            this.settings.marker_here_id = setInterval(function(){obj.animate_marker_here()},50);
+        }
     },
 
     create_point: function(tenant) {
@@ -315,5 +340,142 @@ WayFinding.prototype = {
         }
 
     },    
+
+    clearTextlayer: function() {
+        var canvas = document.getElementById('text-layer');
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0,canvas.width,canvas.height);
+        context.save();
+    },
+
+    showmap: function(map_details) {
+        if(map_details.id) {
+            id = map_details.id;
+        }
+        else {
+            id = this.settings.currentmap_id;
+        }
+
+        this.settings.currentmap_id = id;
+        this.settings.currentmap = map_details.site_building_level_id + '-' + map_details.site_building_id;
+
+        $(".my-map").hide();
+        $("#" + this.settings.currentmap).show();
+
+        this.load_points();
+
+        if(this.settings.defaultmap_id == id) {
+            $("#here-layer").show();
+        }
+        else {
+            $("#here-layer").hide();
+        }
+
+    },
+
+    animate_marker_here: function () {
+        if(this.settings.here_progress ) return;
+        this.settings.here_progress = 1;
+        if(this.settings.frame_here > 23) this.settings.frame_here = 0;
+
+        var x = this.settings.locationx;
+        var y = this.settings.locationy;                    
+       
+        var canvas = document.getElementById('here-layer');
+        var context = canvas.getContext('2d');
+        
+        context.clearRect((x-70),(y-160),canvas.width , canvas.height);
+        context.drawImage(document.getElementById('marker-you-are-here'),(x-70),(this.settings.frame_here + (y-160)), 130, 130);
+        context.restore();
+        
+        this.settings.frame_here +=1 ;
+        this.settings.here_progress = 0;
+    },
+
+    animate_marker_here_stop: function() {
+        clearInterval(this.settings.marker_here_id);
+        this.settings.marker_here_id = 0;
+        this.settings.here_progress = 0;
+    },
+
+    animate_escalator: function(x, y, direction = '', text = 'text') {
+        if(this.settings.escalator_progress) return;
+        this.settings.escalator_progress = 1;
+        if(this.settings.frame_escalator > 4) this.settings.frame_escalator = 0;
+
+        var canvas = document.getElementById('escalator-layer');
+        var context = canvas.getContext('2d');
+
+        context.clearRect(0,0,canvas.width,canvas.height);
+
+        if(direction) {
+            context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0*67,142,67,x,(y-80),142,67);
+            context.font = "bold 30px Raleway";
+            context.fillStyle = "rgb(71, 131, 162)";
+            context.fillText(text.toUpperCase(),(x+65),(y-37));
+        }
+        else {
+            context.drawImage(document.getElementById('marker-escalator-down'),(this.settings.frame_escalator*142),(0*67),142,67,x,(y-80),142,67);
+            context.font = "bold 30px Raleway";
+            context.fillStyle = "rgb(71, 131, 162)";
+            context.fillText(text.toUpperCase(),(x+65),(y-37));
+        }
+        context.restore();
+
+        this.settings.frame_escalator++;
+        this.settings.escalator_progress = 0;
+    },
+
+    animate_escalator_stop: function(){
+        clearInterval(this.settings.escalator_id);
+        this.settings.escalator_id = 0;
+        this.settings.escalator_progress = 0;
+    },
+
+    animate_door: function(x, y) {
+        if(this.settings.door_progress) return;
+        this.settings.door_progress = 1;
+        if(this.settings.frame_door > 3) this.settings.frame_door = 0;
+
+        var canvas = document.getElementById('escalator-layer');
+        var context = canvas.getContext('2d');
+
+        context.clearRect((x-75),(y-50),155,100);
+        context.drawImage(document.getElementById('marker-door'),(this.settings.frame_door*400),0,400,255,(x-75),(y-50),155,100);
+        context.restore();
+
+        this.settings.frame_door++;
+        this.settings.door_progress = 0;
+    },
+
+    animate_door_stop: function(){
+        clearInterval(this.settings.door_id);
+        this.settings.door_id = 0;
+        this.settings.door_progress = 0;
+    },
+
+    animate_marker_store: function(x, y) {
+        if(this.settings.store_progress) return;
+        // if(this.points.linePoint.length == 0 ) return;
+        this.settings.store_progress = 1;
+        if(this.settings.frame_store > 23) this.settings.frame_store = 0;
+
+        var canvas = document.getElementById('tenants-layer');
+        var context = canvas.getContext('2d');
+
+        context.clearRect((x-60),(y-170),130.4,150);
+        context.drawImage(document.getElementById('marker-store-here'),(this.settings.frame_store*130.4),0,130.4,150,(x-60),(y-170),130.4,150);
+        context.restore();
+        
+        this.settings.frame_store++;
+        this.settings.store_progress = 0;
+    },
+
+    animate_marker_store_stop: function(){
+        clearInterval(this.settings.store_id);
+        this.settings.store_id = 0;
+        this.settings.store_progress = 0;
+    },
+
 
 };

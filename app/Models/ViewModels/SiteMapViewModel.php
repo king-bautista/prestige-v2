@@ -48,6 +48,7 @@ class SiteMapViewModel extends Model
         'floor_name',
         'map_file_path',
         'map_preview_path',        
+        'building_floor_name',
     ];
 
     /****************************************
@@ -82,4 +83,8 @@ class SiteMapViewModel extends Model
         return asset('/images/no-image-available.png');
     }
 
+    public function getBuildingFloorNameAttribute() 
+    {
+        return $this->building_name.' - '.$this->floor_name;
+    }
 }

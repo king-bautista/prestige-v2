@@ -14327,7 +14327,9 @@ var site_maps = [];
       back_button: 'assets/images/English/Back.png',
       page_title: 'Map',
       tenant_list: [],
-      site_floors: []
+      site_floors: [],
+      wayfindings: '',
+      current_time: Date.now()
     };
   },
   created: function created() {
@@ -14365,11 +14367,12 @@ var site_maps = [];
     },
     setMap: function setMap() {
       $(function () {
-        var map = new WayFinding({
+        this.wayfindings = new WayFinding({
           mapcontainer: 'zoomable-container'
         });
+        this.wayfindings.animate_marker_here_stop();
         for (var i = 0; i < site_maps.length; i++) {
-          map.addMaps(site_maps[i]);
+          this.wayfindings.addMaps(site_maps[i]);
         }
       });
     },
@@ -14377,6 +14380,12 @@ var site_maps = [];
       $('.h-button').removeClass('active');
       $('.home-button').addClass('active');
       this.$router.push("/")["catch"](function () {});
+    },
+    toggleSelectedMap: function toggleSelectedMap(value, id) {
+      $(function () {
+        this.wayfindings.clearTextlayer();
+        this.wayfindings.showmap(value);
+      });
     }
   },
   mounted: function mounted() {
@@ -14391,9 +14400,11 @@ var site_maps = [];
         var container_width = $('.map-holder').innerWidth();
         var body_width = 3000;
         var scale = container_width / body_width;
+        var left_position = (container_width - $('.zoomable-container').width()) / 2;
         $('.zoomable-container').css({
           'transform': 'scale(' + scale + ')',
-          'left': '-800px'
+          'left': left_position + 'px',
+          'top': '-1120.5px'
         });
         $(".pinch").hide();
       });
@@ -26219,7 +26230,44 @@ var render = function render() {
     attrs: {
       src: _vm.site_logo
     }
-  })])], 1)]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
+  })])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "row col-md-12 mb-3"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "marker-you-are-here"
+  }, [_c("img", {
+    attrs: {
+      src: "images/darker-you-are-here-01.png?" + _vm.current_time,
+      id: "marker-you-are-here"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-escalator-up"
+  }, [_c("img", {
+    attrs: {
+      src: "images/escalator-up-sprite.png?" + _vm.current_time,
+      id: "marker-escalator-up"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-escalator-down"
+  }, [_c("img", {
+    attrs: {
+      src: "images/escalator-down-sprite.png?" + _vm.current_time,
+      id: "marker-escalator-down"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-escalator-up"
+  }, [_c("img", {
+    attrs: {
+      src: "images/door-sprite.png?" + _vm.current_time,
+      id: "marker-door"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-store-here hidden"
+  }, [_c("img", {
+    attrs: {
+      src: "images/store-here-sprite.png?" + _vm.current_time,
+      id: "marker-store-here"
+    }
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "tabs-container"
   }, [_c("div", {
     staticClass: "row"
@@ -26270,6 +26318,9 @@ var render = function render() {
       label: "building_floor_name",
       "track-by": "building_floor_name"
     },
+    on: {
+      select: _vm.toggleSelectedMap
+    },
     model: {
       value: _vm.map_form.floor_id,
       callback: function callback($$v) {
@@ -26307,8 +26358,6 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "row col-md-12 mb-3"
-  }, [_c("div", {
     staticClass: "map-holder"
   }, [_c("div", {
     staticClass: "zoomable-container",
@@ -26320,7 +26369,7 @@ var staticRenderFns = [function () {
     attrs: {
       src: "images/Pinch1.gif"
     }
-  })])]);
+  })]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
