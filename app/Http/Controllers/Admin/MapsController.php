@@ -6,12 +6,14 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\MapsControllerInterface;
 use Illuminate\Http\Request;
+use App\Helpers\DijkstraHelper;
 
 use App\Models\Amenity;
 use App\Models\SitePoint;
 use App\Models\SiteScreen;
 use App\Models\SiteMap;
 use App\Models\SitePointLink;
+use App\Models\SiteMapPaths;
 use App\Models\ViewModels\SiteViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
@@ -452,6 +454,118 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_map->update(['is_default' => 1]);
 
             return $this->response($site_map, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getOrigin($site_id, $screen_id)
+    {
+        $origin = SitePoint::where('site_maps.site_id', $site_id)
+        ->where('site_maps.site_screen_id', $screen_id)
+        ->where('point_type', 6)
+        ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+        ->select('site_points.*')
+        ->first()->id;
+
+        if($origin)
+            return $origin;
+        return 0;
+    }
+
+    public function pointDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
+	{
+		return sqrt(pow(($latitudeTo-$latitudeFrom),2) + pow(($longitudeTo-$longitudeFrom),2));
+	}
+
+    public function generateRoutes($site_id, $screen_id)
+    {
+        try
+    	{
+            $origin = $this->getOrigin($site_id, $screen_id);
+
+            $latlng = array();
+            $latlng_tmp = SitePoint::where('site_maps.site_id', $site_id)
+            ->where('site_maps.site_screen_id', $screen_id)
+            ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->select('site_points.id','site_points.point_x as lat', 'site_points.point_y as lng')
+            ->get();
+
+            $points_to_index = array();
+            $index_to_points = array();
+            $ctr = 0;
+    
+            foreach($latlng_tmp as $row)
+            {
+                $points_to_index[$row['id']] = $ctr;
+                $index_to_points[$ctr] = $row['id'];
+                $latlng[$row['id']] = array($row['lat'],$row['lng']);
+                $ctr++;
+            }
+
+            $network = array();
+            $point_links = SitePointLink::where('site_maps.site_id', $site_id)
+            ->join('site_maps', 'site_point_links.site_map_id', '=', 'site_maps.id')
+            ->get();
+
+            $max = 0;
+            foreach($point_links as $link) {                
+                if(isset($latlng[$link['point_a']]) && isset($latlng[$link['point_b']])) {
+                    $distance = $this->pointDistance($latlng[$link['point_a']][0],
+													$latlng[$link['point_a']][1],
+													$latlng[$link['point_b']][0],
+													$latlng[$link['point_b']][1]);
+                    
+                    $network[] = array($points_to_index[$link['point_a']],$points_to_index[$link['point_b']],$distance);
+
+                    $max = $latlng[$link['point_a']][0] > $max ? $latlng[$link['point_a']][0]:  $max;
+                    $max = $latlng[$link['point_a']][1] > $max ? $latlng[$link['point_a']][1]:  $max;
+                    $max = $latlng[$link['point_b']][0] > $max ? $latlng[$link['point_b']][0]:  $max;
+                    $max = $latlng[$link['point_b']][1] > $max ? $latlng[$link['point_b']][1]:  $max;
+
+                }
+            }
+
+            // Size of the matrix
+            $matrixWidth = $max;
+            $ourMap = array();
+            $points = $network;
+
+            // Read in the points and push them into the map
+            for ($i=0,$m=count($points); $i<$m; $i++)
+            {
+                $x = $points[$i][0];
+                $y = $points[$i][1];
+                $c = $points[$i][2];
+                $ourMap[$x][$y] = $c;
+                $ourMap[$y][$x] = $c;
+            }
+
+            // ensure that the distance from a node to itself is always zero
+            // Purists may want to edit this bit out.
+            for ($i=0; $i < $matrixWidth; $i++) {
+                for ($k=0; $k < $matrixWidth; $k++) {
+                    if ($i == $k) $ourMap[$i][$k] = 0;
+                }
+            }
+
+            $dijkstra = new DijkstraHelper($ourMap, $index_to_points, I, $site_id);
+            $dijkstra->findShortestPath($points_to_index[$origin]); 
+            $routes = $dijkstra->getResults();
+
+            // delete old records
+            SiteMapPaths::where('site_id', $site_id)->delete();
+            foreach($routes as $route) {
+                SiteMapPaths::create($route);
+            }
+            
+            return $this->response($routes, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {

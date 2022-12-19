@@ -412,4 +412,25 @@ class MainController extends AppBaseController
         } 
     }
 
+    public function getRoutes($destination_id)
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+            $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+
+            return $this->response($site_points, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        } 
+
+    }
+
+
+
 }

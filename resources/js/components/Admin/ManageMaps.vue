@@ -14,6 +14,7 @@
 						:otherButtons="otherButtons"
                         :primaryKey="primaryKey"
 						v-on:AddNewMap="AddNewMap"
+						v-on:GenRoutes="GenRoutes"
 						v-on:editButton="editMap"
 						v-on:DefaultMap="DefaultMap"
                         ref="dataTable">
@@ -276,6 +277,13 @@
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
+					genRoutes: {
+						title: 'Generate Routes',
+						v_on: 'GenRoutes',
+						icon: '<i class="fab fa-connectdevelop"></i> Generate Routes',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
 				}
             };
         },
@@ -429,7 +437,14 @@
 					this.$refs.dataTable.fetchData();
                     $('#confirmModal').modal('hide');
 				})
-			}
+			},
+
+			GenRoutes: function() {
+				axios.get('/admin/site/map/generate-routes/'+this.site_id+'/'+this.site_screen_id)
+				.then(response => {
+					toastr.success(response.data.message);
+				})
+			},
 
         },
 

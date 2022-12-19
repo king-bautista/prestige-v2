@@ -232,6 +232,10 @@
                 countscreen = 0;                        
             }
         });
+
+        $('.search-button').on('click', function() {
+            $('#pills-profile-tab').tab('show');
+        });
     });
 
     $('.home-button').click();

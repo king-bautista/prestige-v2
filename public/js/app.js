@@ -11325,6 +11325,13 @@ __webpack_require__.r(__webpack_exports__);
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Map',
           "class": 'btn btn-primary btn-sm',
           method: 'add'
+        },
+        genRoutes: {
+          title: 'Generate Routes',
+          v_on: 'GenRoutes',
+          icon: '<i class="fab fa-connectdevelop"></i> Generate Routes',
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
         }
       }
     };
@@ -11466,6 +11473,11 @@ __webpack_require__.r(__webpack_exports__);
         toastr.success(response.data.message);
         _this6.$refs.dataTable.fetchData();
         $('#confirmModal').modal('hide');
+      });
+    },
+    GenRoutes: function GenRoutes() {
+      axios.get('/admin/site/map/generate-routes/' + this.site_id + '/' + this.site_screen_id).then(function (response) {
+        toastr.success(response.data.message);
       });
     }
   },
@@ -14336,9 +14348,10 @@ var site_maps = [];
     this.getSite();
     this.getTenants();
     this.getFloors();
-    this.getMaps();
-    this.setMap();
+    // this.getMaps();
+    // this.setMap();
   },
+
   methods: {
     getSite: function getSite() {
       var _this = this;
@@ -14360,22 +14373,23 @@ var site_maps = [];
         _this3.site_floors = response.data.data;
       });
     },
-    getMaps: function getMaps() {
-      axios.get('/api/v1/site/maps').then(function (response) {
-        site_maps = response.data.data;
-      });
-    },
-    setMap: function setMap() {
-      $(function () {
-        this.wayfindings = new WayFinding({
-          mapcontainer: 'zoomable-container'
-        });
-        this.wayfindings.animate_marker_here_stop();
-        for (var i = 0; i < site_maps.length; i++) {
-          this.wayfindings.addMaps(site_maps[i]);
-        }
-      });
-    },
+    // getMaps: function() {
+    //     axios.get('/api/v1/site/maps')
+    //     .then(response => {
+    //         site_maps = response.data.data;
+    //     });
+    // },
+
+    // setMap: function() {
+    //     $(function() {
+    //         this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
+    //         this.wayfindings.animate_marker_here_stop();
+    //         for (var i = 0; i < site_maps.length; i++){
+    //             this.wayfindings.addMaps(site_maps[i]);
+    //         }
+    //     });
+    // },
+
     goBack: function goBack() {
       $('.h-button').removeClass('active');
       $('.home-button').addClass('active');
@@ -14386,15 +14400,32 @@ var site_maps = [];
         this.wayfindings.clearTextlayer();
         this.wayfindings.showmap(value);
       });
+    },
+    find_store: function find_store(id) {
+      $(function () {
+        this.wayfindings.drawline(id);
+      });
     }
   },
   mounted: function mounted() {
     $(document).ready(function () {
-      var zoomMap = $('#zoomable-container').ZoomArea({
-        virtualScrollbars: false,
-        externalIncrease: '.map-control-zoomin',
-        externalDecrease: '.map-control-zoomout',
-        parentOverflow: 'hidden'
+      var _this4 = this;
+      this.wayfindings = new WayFinding({
+        mapcontainer: 'zoomable-container'
+      });
+      this.wayfindings.animate_marker_here_stop();
+      axios.get('/api/v1/site/maps').then(function (response) {
+        site_maps = response.data.data;
+        for (var i = 0; i < site_maps.length; i++) {
+          _this4.wayfindings.addMaps(site_maps[i]);
+        }
+      })["finally"](function () {
+        $('#zoomable-container').ZoomArea({
+          virtualScrollbars: false,
+          externalIncrease: '.map-control-zoomin',
+          externalDecrease: '.map-control-zoomout',
+          parentOverflow: 'hidden'
+        });
       });
       $('.pinch, .map-control-fit').on('click', function () {
         var container_width = $('.map-holder').innerWidth();
@@ -18625,6 +18656,7 @@ var render = function render() {
     },
     on: {
       AddNewMap: _vm.AddNewMap,
+      GenRoutes: _vm.GenRoutes,
       editButton: _vm.editMap,
       DefaultMap: _vm.DefaultMap
     }
@@ -27470,6 +27502,12 @@ Vue.component('admin-schedules', (__webpack_require__(/*! ./components/Admin/Cin
 Vue.component('rotating-banners', (__webpack_require__(/*! ./components/Kiosk/Banners.vue */ "./resources/js/components/Kiosk/Banners.vue")["default"]));
 Vue.component('rotating-screensaver', (__webpack_require__(/*! ./components/Kiosk/ScreenSaver.vue */ "./resources/js/components/Kiosk/ScreenSaver.vue")["default"]));
 Vue.component('tenants', (__webpack_require__(/*! ./components/Kiosk/Tenant.vue */ "./resources/js/components/Kiosk/Tenant.vue")["default"]));
+Vue.component('home', (__webpack_require__(/*! ./components/Kiosk/Home.vue */ "./resources/js/components/Kiosk/Home.vue")["default"]));
+Vue.component('search', (__webpack_require__(/*! ./components/Kiosk/Search.vue */ "./resources/js/components/Kiosk/Search.vue")["default"]));
+Vue.component('promos', (__webpack_require__(/*! ./components/Kiosk/Promos.vue */ "./resources/js/components/Kiosk/Promos.vue")["default"]));
+Vue.component('cinema', (__webpack_require__(/*! ./components/Kiosk/Cinema.vue */ "./resources/js/components/Kiosk/Cinema.vue")["default"]));
+Vue.component('about', (__webpack_require__(/*! ./components/Kiosk/About.vue */ "./resources/js/components/Kiosk/About.vue")["default"]));
+Vue.component('wayfinding', (__webpack_require__(/*! ./components/Kiosk/Map.vue */ "./resources/js/components/Kiosk/Map.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

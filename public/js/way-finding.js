@@ -23,6 +23,8 @@ var defaults = {
     frame_door: 0,
     store_progress: 0,
     frame_store: 0,
+    destination: 0,
+    showescalator: 0,
 }
 
 var self_class = '';
@@ -138,13 +140,13 @@ WayFinding.prototype = {
 
         image.src = map_details.map_file_path + '?' + Math.random();
 			
-        if(map_details.is_default == 0)
-        {
+        if(map_details.is_default == 0) {
             $("#" + canvas.id).hide();
-        }else{
+        }
+        else {
             $("#" + canvas.id).show();
+            this.settings.defaultmap = map_details;
             this.settings.currentmap = map_details.site_building_level_id + '-' + map_details.site_building_id;
-            this.settings.defaultmap = map_details.site_building_level_id + '-' + map_details.site_building_id;
             this.settings.currentlevel = map_details.site_building_level_id;
             this.settings.currentbuilding = map_details.site_building_id;
             this.settings.currentmap_id = map_details.id;
@@ -163,15 +165,14 @@ WayFinding.prototype = {
                     if(tenant.point_type == 6) {
                         obj.settings.locationx = tenant.point_x;
                         obj.settings.locationy = tenant.point_y;                    
-                        obj.settings.defaultmap_id = tenant.site_map_id;
                     }
                 });
             }
         });
 
-        setInterval(function(){obj.animate_escalator(991.25, 1611.48);},250);
-        setInterval(function(){obj.animate_door(1901.00, 1603.50);},250);
-        setInterval(function(){obj.animate_marker_store(2551.99, 1609.49);},250);
+        // setInterval(function(){obj.animate_escalator(991.25, 1611.48);},250);
+        // setInterval(function(){obj.animate_door(1901.00, 1603.50);},250);
+        // setInterval(function(){obj.animate_marker_store(2551.99, 1609.49);},250);
         
         if(this.settings.currentmap_id && !this.settings.marker_here_id)
         {
@@ -364,7 +365,7 @@ WayFinding.prototype = {
 
         this.load_points();
 
-        if(this.settings.defaultmap_id == id) {
+        if(this.settings.defaultmap.id == id) {
             $("#here-layer").show();
         }
         else {
@@ -477,5 +478,25 @@ WayFinding.prototype = {
         this.settings.store_progress = 0;
     },
 
+    show_tenant_details: function(id) {
+
+    },
+
+    drawline: function(id) {
+        this.showmap(this.settings.defaultmap);
+        this.drawpoints_stop();
+        this.show_tenant_details(id);
+
+        this.destination = id;
+        this.showescalator = 1;
+        var obj = this;
+
+
+    },
+
+    drawpoints_stop: function() {
+        clearInterval(this.inter);
+        this.inter = 0;
+    },
 
 };

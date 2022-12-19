@@ -134,8 +134,8 @@
             this.getSite();
             this.getTenants();
             this.getFloors();
-            this.getMaps();
-            this.setMap();
+            // this.getMaps();
+            // this.setMap();
         },
 
         methods: {
@@ -160,22 +160,22 @@
                 });
             },
 
-            getMaps: function() {
-                axios.get('/api/v1/site/maps')
-                .then(response => {
-                    site_maps = response.data.data;
-                });
-            },
+            // getMaps: function() {
+            //     axios.get('/api/v1/site/maps')
+            //     .then(response => {
+            //         site_maps = response.data.data;
+            //     });
+            // },
 
-            setMap: function() {
-                $(function() {
-                    this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
-                    this.wayfindings.animate_marker_here_stop();
-                    for (var i = 0; i < site_maps.length; i++){
-                        this.wayfindings.addMaps(site_maps[i]);
-                    }
-                });
-            },
+            // setMap: function() {
+            //     $(function() {
+            //         this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
+            //         this.wayfindings.animate_marker_here_stop();
+            //         for (var i = 0; i < site_maps.length; i++){
+            //             this.wayfindings.addMaps(site_maps[i]);
+            //         }
+            //     });
+            // },
 
             goBack: function() {
                 $('.h-button').removeClass('active');
@@ -189,16 +189,33 @@
                     this.wayfindings.showmap(value);
                 });
 			},
+
+            find_store: function(id) {
+                $(function() {
+                    this.wayfindings.drawline(id);
+                });
+            },
    
         },
 
         mounted() {
             $(document).ready(function(){
-                let zoomMap = $('#zoomable-container').ZoomArea({
-                    virtualScrollbars:false,
-                    externalIncrease:'.map-control-zoomin',
-                    externalDecrease:'.map-control-zoomout',
-                    parentOverflow:'hidden',
+                this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
+                this.wayfindings.animate_marker_here_stop();
+
+                axios.get('/api/v1/site/maps')
+                .then(response => {
+                    site_maps = response.data.data;
+                    for (var i = 0; i < site_maps.length; i++){
+                        this.wayfindings.addMaps(site_maps[i]);
+                    }
+                }).finally(() => {
+                    $('#zoomable-container').ZoomArea({
+                        virtualScrollbars:false,
+                        externalIncrease:'.map-control-zoomin',
+                        externalDecrease:'.map-control-zoomout',
+                        parentOverflow:'hidden',
+                    });
                 });
 
                 $('.pinch, .map-control-fit').on('click',function(){

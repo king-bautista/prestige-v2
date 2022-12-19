@@ -52,6 +52,12 @@ Vue.component('admin-schedules', require('./components/Admin/CinemaSchedules.vue
 Vue.component('rotating-banners', require('./components/Kiosk/Banners.vue').default);
 Vue.component('rotating-screensaver', require('./components/Kiosk/ScreenSaver.vue').default);
 Vue.component('tenants', require('./components/Kiosk/Tenant.vue').default);
+Vue.component('home', require('./components/Kiosk/Home.vue').default);
+Vue.component('search', require('./components/Kiosk/Search.vue').default);
+Vue.component('promos', require('./components/Kiosk/Promos.vue').default);
+Vue.component('cinema', require('./components/Kiosk/Cinema.vue').default);
+Vue.component('about', require('./components/Kiosk/About.vue').default);
+Vue.component('wayfinding', require('./components/Kiosk/Map.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
