@@ -15,6 +15,8 @@ use App\Models\ViewModels\SiteBuildingLevelViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
+use App\Models\SitePoint;
+use App\Models\SiteMapPaths;
 
 class MainController extends AppBaseController
 {
@@ -417,9 +419,35 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
-            $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+            $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();
+            
+            $origin = $this->getPointId($site->id, $site_screen->id);
 
-            return $this->response($site_points, 'Successfully Retreived!', 200);
+            $coordinates = array();
+            $latlng = array();
+            $latlng_tmp = SitePoint::where('site_maps.site_id', $site->id)
+            ->where('site_maps.site_screen_id', $site_screen->id)
+            ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->select('site_points.id','site_points.point_x as lat', 'site_points.point_y as lng', 'site_maps.site_building_level_id as level', 'site_maps.site_building_id as building')
+            ->get();
+
+            foreach($latlng_tmp as $coordinate) {
+                $latlng[$coordinate['id']] = array($coordinate['lat'],$coordinate['lng'],$coordinate['level'],$coordinate['building']);
+            }
+
+            $map_paths = SiteMapPaths::where('site_id', $site->id)->where('point_orig', $origin)->where('point_dest', $destination_id)->get();
+
+            if(count($map_paths)) {
+                $coordinates = array();
+                $points = explode('-',$map_paths[0]['path']);
+                
+                foreach($points as $point)
+                {
+                    $coordinates[] = $latlng[$point];
+                }
+            }
+
+            return $this->response($coordinates, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -429,6 +457,25 @@ class MainController extends AppBaseController
             ], 200);
         } 
 
+    }
+
+    public function getPointId($site_id, $screen_id, $tenant_id = 0)
+    {
+        $site_point_id = SitePoint::where('site_maps.site_id', $site_id)
+        ->where('site_maps.site_screen_id', $screen_id)
+        ->when($tenant_id, function($query) use ($tenant_id) {
+            $query->where('tenant_id', $tenant_id);
+        })
+        ->when(!$tenant_id, function($query) use ($tenant_id) {
+            $query->where('point_type', 6);
+        })
+        ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+        ->select('site_points.*')
+        ->first()->id;
+
+        if($site_point_id)
+            return $site_point_id;
+        return 0;
     }
 
 

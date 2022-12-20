@@ -53,6 +53,7 @@
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
+                            @select="find_store"
                             placeholder="Input Destination"
                             label="name"
                             track-by="name">
@@ -134,8 +135,6 @@
             this.getSite();
             this.getTenants();
             this.getFloors();
-            // this.getMaps();
-            // this.setMap();
         },
 
         methods: {
@@ -160,23 +159,6 @@
                 });
             },
 
-            // getMaps: function() {
-            //     axios.get('/api/v1/site/maps')
-            //     .then(response => {
-            //         site_maps = response.data.data;
-            //     });
-            // },
-
-            // setMap: function() {
-            //     $(function() {
-            //         this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
-            //         this.wayfindings.animate_marker_here_stop();
-            //         for (var i = 0; i < site_maps.length; i++){
-            //             this.wayfindings.addMaps(site_maps[i]);
-            //         }
-            //     });
-            // },
-
             goBack: function() {
                 $('.h-button').removeClass('active');
                 $('.home-button').addClass('active');
@@ -190,9 +172,9 @@
                 });
 			},
 
-            find_store: function(id) {
+            find_store: function(value, id) {
                 $(function() {
-                    this.wayfindings.drawline(id);
+                    this.wayfindings.drawline(value.id);
                 });
             },
    

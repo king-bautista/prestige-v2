@@ -14348,10 +14348,7 @@ var site_maps = [];
     this.getSite();
     this.getTenants();
     this.getFloors();
-    // this.getMaps();
-    // this.setMap();
   },
-
   methods: {
     getSite: function getSite() {
       var _this = this;
@@ -14373,23 +14370,6 @@ var site_maps = [];
         _this3.site_floors = response.data.data;
       });
     },
-    // getMaps: function() {
-    //     axios.get('/api/v1/site/maps')
-    //     .then(response => {
-    //         site_maps = response.data.data;
-    //     });
-    // },
-
-    // setMap: function() {
-    //     $(function() {
-    //         this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
-    //         this.wayfindings.animate_marker_here_stop();
-    //         for (var i = 0; i < site_maps.length; i++){
-    //             this.wayfindings.addMaps(site_maps[i]);
-    //         }
-    //     });
-    // },
-
     goBack: function goBack() {
       $('.h-button').removeClass('active');
       $('.home-button').addClass('active');
@@ -14401,9 +14381,9 @@ var site_maps = [];
         this.wayfindings.showmap(value);
       });
     },
-    find_store: function find_store(id) {
+    find_store: function find_store(value, id) {
       $(function () {
-        this.wayfindings.drawline(id);
+        this.wayfindings.drawline(value.id);
       });
     }
   },
@@ -26317,6 +26297,9 @@ var render = function render() {
       placeholder: "Input Destination",
       label: "name",
       "track-by": "name"
+    },
+    on: {
+      select: _vm.find_store
     },
     model: {
       value: _vm.map_form.tenant,

@@ -25,6 +25,16 @@ var defaults = {
     frame_store: 0,
     destination: 0,
     showescalator: 0,
+    points: {linePoint : []},
+    inter: 0,
+    current_point: 0,
+}
+
+var Point = function Point(x,y,z,z2) {
+	this.x = x;
+	this.y = y;
+	this.z = z;
+	this.z2 = z2;
 }
 
 var self_class = '';
@@ -83,17 +93,6 @@ WayFinding.prototype = {
         document.getElementById(this.settings.mapcontainer).appendChild(canvas);
 
     },
-
-    // getMaps: function() {
-    //     self_class = this;
-    //     $.get( "/api/v1/site/maps").done(this.manageMaps);
-    // },
-
-    // manageMaps: function(response) {
-    //     for (var i = 0; i < response.data.length; i++){
-    //         self_class.addMaps(response.data[i]);
-    //     }
-    // },
 
     addMaps: function(map_details) {
         var obj = this;
@@ -487,16 +486,137 @@ WayFinding.prototype = {
         this.drawpoints_stop();
         this.show_tenant_details(id);
 
-        this.destination = id;
-        this.showescalator = 1;
+        this.settings.destination = id;
+        this.settings.showescalator = 1;
         var obj = this;
 
+        $.get( "/api/v1/site/maps/get-routes/"+id, function(response) {
+            if(response.data.length) {
+                obj.settings.points = { linePoint : []};
 
+                $.each(response.data,function(index, route) {
+                    var x = parseFloat(response.data[index][0]); //point_x
+                    var y = parseFloat(response.data[index][1]); //point_y
+                    var z = parseFloat(response.data[index][2]); //floor level
+                    var z2 = parseFloat(response.data[index][3]); //building
+
+                    if(index == 0) {
+                        obj.settings.points.linePoint.push(new Point(x,y,z,z2));
+                    }else{
+                        var tmp_x = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].x);
+                        var tmp_y = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].y);
+                        var tmp_z = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].z);
+                        var tmp_z2 = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].z2);
+                    
+                        if(tmp_z != z || tmp_z2 != z2) {
+                            obj.settings.points.linePoint.push(new Point(x,y,z,z2));
+                        }
+                        else{
+                            var StepSize = 10;
+                            var delta_x =  x - tmp_x;
+                            var delta_y = y - tmp_y;
+                            var slope = delta_x == 0 ? 1 : delta_y / delta_x;
+                            var b = tmp_y - slope * tmp_x;
+                            var loop_exit = true;
+
+                            if(Math.abs(delta_x) < Math.abs(delta_y)) {
+                                
+                                iy_increment = (delta_y < 0) ? -1 * StepSize : StepSize;
+
+                                for (iy = tmp_y; loop_exit; iy += iy_increment) {
+
+                                    loop_exit = delta_y < 0 ? (iy >= y) : (iy <= y);
+                                    ix = slope == 1 ? tmp_x : (iy - b) / slope;
+                                    
+                                    if (delta_y < 0 ? (iy >= y) : (iy <= y)) {
+                                        obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2));
+                                    }                                    
+                                }
+                            }
+                            else {
+                                ix_increment = delta_x < 0 ? -1 * StepSize : StepSize;
+                                for (ix = tmp_x; loop_exit; ix += ix_increment)
+                                {
+                                    if (loop_exit)
+                                    {
+                                        loop_exit = delta_x < 0 ? (ix >= x) : (ix <= x);
+                                        iy = slope * ix + b;
+                                        if (delta_x < 0 ? (ix >= x) : (ix <= x))
+                                        {
+                                            obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2));
+                                        }
+                                    }
+                                }
+                            }                    
+                        }
+                    }
+                });
+
+                clearInterval(obj.settings.inter);
+                obj.settings.inter = 0;
+                obj.settings.current_point = 0;
+                
+                if(obj.settings.points.linePoint.length > 1 && !obj.settings.inter) {
+                    obj.settings.inter = setInterval(function(){obj.drawpoints()},1);
+                }
+            }
+        });
     },
 
     drawpoints_stop: function() {
-        clearInterval(this.inter);
-        this.inter = 0;
+        clearInterval(this.settings.inter);
+        this.settings.inter = 0;
+    },
+
+    drawpoints: function() {
+        if(this.settings.points.linePoint[this.settings.current_point] 
+        && this.settings.currentmap != (this.settings.points.linePoint[this.settings.current_point].z + '-' + this.settings.points.linePoint[this.settings.current_point].z2) 
+        && this.settings.showescalator) {
+
+            var flr_build = this.settings.currentmap.split('-');
+            if(flr_build[0] != this.settings.points.linePoint[this.settings.current_point].z && flr_build[1] == this.settings.points.linePoint[this.settings.current_point].z2) {
+                var to = this.settings.points.linePoint[this.settings.current_point].z;
+                var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
+                this.settings.current_point--;
+                alert('drawescalator');
+                //this.drawescalator(flr_build[0],to,bldg);
+            }
+            else {
+                var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
+                this.settings.current_point--;
+                alert('drawdoor');
+                //this.drawdoor(bldg);
+            }
+            clearInterval(this.settings.inter);
+            this.settings.inter = 0;
+            return;
+        }
+
+        if(this.settings.points.linePoint[this.settings.current_point] && (this.settings.points.linePoint[this.settings.current_point].z + '-' + this.settings.points.linePoint[this.settings.current_point].z2) == this.settings.currentmap) {
+
+            var canvas = document.getElementById('line-layer');
+            var context = canvas.getContext('2d');
+            
+            var point_x = canvas.width / 2;
+            var point_y = canvas.height / 2;
+        
+            context.save();
+            context.translate(point_x,point_y);
+            context.scale(this.settings.scale,this.settings.scale);
+            context.translate(-point_x,-point_y);
+            context.strokeStyle = 'red';
+            context.fillStyle = 'red';
+            context.shadowColor = 'red';
+            context.shadowBlur = 2;
+            context.lineCap = 'round';
+            context.fillRect(this.settings.points.linePoint[this.settings.current_point].x, this.settings.points.linePoint[this.settings.current_point].y,5,5);
+            context.restore();
+        
+        }
+
+        this.settings.current_point++;
+
+
     },
 
 };
