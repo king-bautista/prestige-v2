@@ -174,6 +174,8 @@
 
             find_store: function(value, id) {
                 $(function() {
+                    this.wayfindings.drawpoints_stop();
+                    this.wayfindings.clearline();
                     this.wayfindings.drawline(value.id);
                 });
             },

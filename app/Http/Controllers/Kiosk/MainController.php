@@ -422,20 +422,21 @@ class MainController extends AppBaseController
             $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();
             
             $origin = $this->getPointId($site->id, $site_screen->id);
+            $destination = $this->getPointId($site->id, $site_screen->id, $destination_id);
 
             $coordinates = array();
             $latlng = array();
             $latlng_tmp = SitePoint::where('site_maps.site_id', $site->id)
             ->where('site_maps.site_screen_id', $site_screen->id)
             ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-            ->select('site_points.id','site_points.point_x as lat', 'site_points.point_y as lng', 'site_maps.site_building_level_id as level', 'site_maps.site_building_id as building')
+            ->select('site_points.id','site_points.point_x as lat', 'site_points.point_y as lng', 'site_maps.site_building_level_id as level', 'site_maps.site_building_id as building', 'site_maps.id as map_id')
             ->get();
 
             foreach($latlng_tmp as $coordinate) {
-                $latlng[$coordinate['id']] = array($coordinate['lat'],$coordinate['lng'],$coordinate['level'],$coordinate['building']);
+                $latlng[$coordinate['id']] = array($coordinate['lat'],$coordinate['lng'],$coordinate['level'],$coordinate['building'],$coordinate['map_id']);
             }
 
-            $map_paths = SiteMapPaths::where('site_id', $site->id)->where('point_orig', $origin)->where('point_dest', $destination_id)->get();
+            $map_paths = SiteMapPaths::where('site_id', $site->id)->where('point_orig', $origin)->where('point_dest', $destination)->get();
 
             if(count($map_paths)) {
                 $coordinates = array();
@@ -461,21 +462,70 @@ class MainController extends AppBaseController
 
     public function getPointId($site_id, $screen_id, $tenant_id = 0)
     {
-        $site_point_id = SitePoint::where('site_maps.site_id', $site_id)
-        ->where('site_maps.site_screen_id', $screen_id)
-        ->when($tenant_id, function($query) use ($tenant_id) {
-            $query->where('tenant_id', $tenant_id);
-        })
-        ->when(!$tenant_id, function($query) use ($tenant_id) {
-            $query->where('point_type', 6);
-        })
-        ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-        ->select('site_points.*')
-        ->first()->id;
+        try
+        {
+            $site_point_id = SitePoint::where('site_maps.site_id', $site_id)
+            ->where('site_maps.site_screen_id', $screen_id)
+            ->when($tenant_id, function($query) use ($tenant_id) {
+                $query->where('tenant_id', $tenant_id);
+            })
+            ->when(!$tenant_id, function($query) use ($tenant_id) {
+                $query->where('point_type', 6);
+            })
+            ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->select('site_points.*')
+            ->first()->id;
 
-        if($site_point_id)
-            return $site_point_id;
-        return 0;
+            if($site_point_id)
+                return $site_point_id;
+            return 0;
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }            
+    }
+
+    public function getFloorName($level_id)
+    {
+        try
+        {
+            $floor_level = SiteBuildingLevelViewModel::find($level_id);
+            if($floor_level)
+                return $floor_level->name;
+            return null;
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }
+    }
+
+    public function getFloorMap($level_id, $buidlind_id)
+    {
+        try
+        {
+            $site_map = SiteMapViewModel::where('site_building_level_id', $level_id)
+            ->where('site_building_id', $buidlind_id)
+            ->first();
+            
+            if($site_map)
+                return $site_map;
+            return null;
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
 
 

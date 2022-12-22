@@ -56,6 +56,8 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/site/maps', 'Kiosk\MainController@getMaps')->where('id', '[0-9]+')->name('kiosk.site.maps');
     Route::get('/site/maps/get-points/{id}', 'Kiosk\MainController@getPoints')->where('id', '[0-9]+')->name('kiosk.site.get-points');
     Route::get('/site/maps/get-routes/{id}', 'Kiosk\MainController@getRoutes')->where('id', '[0-9]+')->name('kiosk.site.get-routes');
+    Route::get('/site/maps/get-floor-name/{id}', 'Kiosk\MainController@getFloorName')->where('id', '[0-9]+')->name('kiosk.site.get-floor-name');
+    Route::get('/site/maps/get-map-id/{level_id}/{buidlind_id}', 'Kiosk\MainController@getFloorMap')->where('level_id', '[0-9]+')->where('buidlind_id', '[0-9]+')->name('kiosk.site.get-map-id');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

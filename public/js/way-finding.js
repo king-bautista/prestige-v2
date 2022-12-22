@@ -28,13 +28,17 @@ var defaults = {
     points: {linePoint : []},
     inter: 0,
     current_point: 0,
+    mapchange: 0,
+    storefound: 0,
+    store_id: 0,
 }
 
-var Point = function Point(x,y,z,z2) {
+var Point = function Point(x,y,z,z2,map_id) {
 	this.x = x;
 	this.y = y;
 	this.z = z;
 	this.z2 = z2;
+	this.map_id = z2;
 }
 
 var self_class = '';
@@ -169,10 +173,6 @@ WayFinding.prototype = {
             }
         });
 
-        // setInterval(function(){obj.animate_escalator(991.25, 1611.48);},250);
-        // setInterval(function(){obj.animate_door(1901.00, 1603.50);},250);
-        // setInterval(function(){obj.animate_marker_store(2551.99, 1609.49);},250);
-        
         if(this.settings.currentmap_id && !this.settings.marker_here_id)
         {
             this.settings.marker_here_id = setInterval(function(){obj.animate_marker_here()},50);
@@ -398,7 +398,22 @@ WayFinding.prototype = {
         this.settings.here_progress = 0;
     },
 
-    animate_escalator: function(x, y, direction = '', text = 'text') {
+    drawescalator: function(from,to,bldg) {
+        var text = "TEXT";
+
+        $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
+            text = response.floor_name;
+        });
+
+        var obj = this;
+        if(!this.settings.escalator_id) this.settings.escalator_id = setInterval(function(){obj.animate_escalator((to>from),text);},100);
+        setTimeout(function(){obj.drawpoints_resume(to);},3000);
+        // obj.assist_level(to,bldg);
+
+    },
+
+    animate_escalator: function(direction,text) {
+
         if(this.settings.escalator_progress) return;
         this.settings.escalator_progress = 1;
         if(this.settings.frame_escalator > 4) this.settings.frame_escalator = 0;
@@ -409,16 +424,16 @@ WayFinding.prototype = {
         context.clearRect(0,0,canvas.width,canvas.height);
 
         if(direction) {
-            context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0*67,142,67,x,(y-80),142,67);
+            context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
             context.font = "bold 30px Raleway";
             context.fillStyle = "rgb(71, 131, 162)";
-            context.fillText(text.toUpperCase(),(x+65),(y-37));
+            context.fillText(text.toUpperCase(),(this.settings.points.linePoint[this.settings.current_point].x+65),(this.settings.points.linePoint[this.settings.current_point].y-37));
         }
         else {
-            context.drawImage(document.getElementById('marker-escalator-down'),(this.settings.frame_escalator*142),(0*67),142,67,x,(y-80),142,67);
+            context.drawImage(document.getElementById('marker-escalator-down'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
             context.font = "bold 30px Raleway";
             context.fillStyle = "rgb(71, 131, 162)";
-            context.fillText(text.toUpperCase(),(x+65),(y-37));
+            context.fillText(text.toUpperCase(),(this.settings.points.linePoint[this.settings.current_point].x+65),(this.settings.points.linePoint[this.settings.current_point].y-37));
         }
         context.restore();
 
@@ -456,19 +471,39 @@ WayFinding.prototype = {
 
     animate_marker_store: function(x, y) {
         if(this.settings.store_progress) return;
-        // if(this.points.linePoint.length == 0 ) return;
+        if(this.settings.points.linePoint.length == 0 ) return;
+
+        if(this.settings.points.linePoint[this.settings.points.linePoint.length - 1] && (this.settings.points.linePoint[this.settings.points.linePoint.length - 1].z + '-' + this.settings.points.linePoint[this.settings.points.linePoint.length - 1].z2)!= this.settings.currentmap) return;
+
         this.settings.store_progress = 1;
+		
         if(this.settings.frame_store > 23) this.settings.frame_store = 0;
 
-        var canvas = document.getElementById('tenants-layer');
-        var context = canvas.getContext('2d');
+        if(this.settings.points.linePoint[this.points.linePoint.length - 1])
+        {
+            alert('3');
 
-        context.clearRect((x-60),(y-170),130.4,150);
-        context.drawImage(document.getElementById('marker-store-here'),(this.settings.frame_store*130.4),0,130.4,150,(x-60),(y-170),130.4,150);
-        context.restore();
+            var x = this.settings.points.linePoint[this.settings.points.linePoint.length - 1].x;
+            var y = this.settings.points.linePoint[this.settings.points.linePoint.length - 1].y;
         
-        this.settings.frame_store++;
+            var canvas = document.getElementById('store-layer');
+            var context = canvas.getContext('2d');
+            
+            var point_x = canvas.width / 2;
+            var point_y = canvas.height / 2;
+            
+            context.save();
+            context.translate(point_x,point_y);
+            context.scale(this.settings.scale,this.settings.scale);
+            context.translate(-point_x,-point_y);
+            context.clearRect((x-60),(y-170),130.4,150);
+            context.drawImage(document.getElementById('marker-store-here'),(this.settings.frame_store*130.4),0,130.4,150,(x-60),(y-170),130.4,150);
+            context.restore();
+            
+            this.settings.frame_store +=1 ;
+        }
         this.settings.store_progress = 0;
+
     },
 
     animate_marker_store_stop: function(){
@@ -499,9 +534,10 @@ WayFinding.prototype = {
                     var y = parseFloat(response.data[index][1]); //point_y
                     var z = parseFloat(response.data[index][2]); //floor level
                     var z2 = parseFloat(response.data[index][3]); //building
+                    var map_id = parseFloat(response.data[index][4]); //building
 
                     if(index == 0) {
-                        obj.settings.points.linePoint.push(new Point(x,y,z,z2));
+                        obj.settings.points.linePoint.push(new Point(x,y,z,z2,map_id));
                     }else{
                         var tmp_x = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].x);
                         var tmp_y = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].y);
@@ -509,7 +545,7 @@ WayFinding.prototype = {
                         var tmp_z2 = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].z2);
                     
                         if(tmp_z != z || tmp_z2 != z2) {
-                            obj.settings.points.linePoint.push(new Point(x,y,z,z2));
+                            obj.settings.points.linePoint.push(new Point(x,y,z,z2,map_id));
                         }
                         else{
                             var StepSize = 10;
@@ -529,7 +565,7 @@ WayFinding.prototype = {
                                     ix = slope == 1 ? tmp_x : (iy - b) / slope;
                                     
                                     if (delta_y < 0 ? (iy >= y) : (iy <= y)) {
-                                        obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2));
+                                        obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2,map_id));
                                     }                                    
                                 }
                             }
@@ -543,7 +579,7 @@ WayFinding.prototype = {
                                         iy = slope * ix + b;
                                         if (delta_x < 0 ? (ix >= x) : (ix <= x))
                                         {
-                                            obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2));
+                                            obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2,map_id));
                                         }
                                     }
                                 }
@@ -578,8 +614,7 @@ WayFinding.prototype = {
                 var to = this.settings.points.linePoint[this.settings.current_point].z;
                 var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
                 this.settings.current_point--;
-                alert('drawescalator');
-                //this.drawescalator(flr_build[0],to,bldg);
+                this.drawescalator(flr_build[0],to,bldg);
             }
             else {
                 var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
@@ -591,6 +626,8 @@ WayFinding.prototype = {
             this.settings.inter = 0;
             return;
         }
+
+
 
         if(this.settings.points.linePoint[this.settings.current_point] && (this.settings.points.linePoint[this.settings.current_point].z + '-' + this.settings.points.linePoint[this.settings.current_point].z2) == this.settings.currentmap) {
 
@@ -616,7 +653,106 @@ WayFinding.prototype = {
 
         this.settings.current_point++;
 
+        if(parseInt(this.settings.current_point) >= parseInt(this.settings.points.linePoint.length,10))
+        {
+            this.drawpoints_stop();
+            this.settings.storefound = 1;
+
+            // if(this.map_status==1)
+            // {
+            //     var node = document.createElement("div");                 									
+            //     //var textnode = document.createTextNode('Follow the red path and proceed to your store'); 
+            //     //node.appendChild(textnode);
+                
+            //     $(".replay").show();
+            //     $('.assist').show().css('display','block');
+            //     node.setAttribute("class", "alist");
+            //     node.innerHTML = '<ul><li>Follow the <font color="red">red path</font> to your destination</li></ul>';                            									
+            //     document.getElementById("assist").appendChild(node);
+            // }
+
+            if(!this.settings.store_id)
+            {
+                var obj = this;
+                this.settings.store_id = setInterval(function(){obj.animate_marker_store();},50);
+
+                // $(".zoomable-container").smartZoom("destroy");
+                // $(".zoomable-container").smartZoom();
+
+                //AUTO ZOOM ON DESTINATIN TEST------------------------------------------START
+
+                // var x = obj.points.linePoint[obj.points.linePoint.length - 1].x
+                // var y = obj.points.linePoint[obj.points.linePoint.length - 1].y
+                // var scale = 0.30;
+
+                // $(".zoomable-container").smartZoom('zoom', scale,{x: (x+100), y: ((y/2)-300)},500);
+
+                // $(".zoomable-container").smartZoom('zoom', scale,{x: (x/2), y: ((y/2)+150)},500);
+
+                // $(".zoomable-container").smartZoom('zoom', scale,{x: (x/2), y: ((y/2)-300)},500);//1080 WM 750 500
+
+                // console.log(x + " " + y); //-200 BONCHON -700 STARBUCKS SMUD
+
+                //AUTO ZOOM ON DESTINATION TEST------------------------------------------END
+            }
+
+
+        }
 
     },
+
+    drawpoints_resume: function(to) {
+        var obj = this;
+			
+        clearInterval(this.settings.escalator_id);
+        clearInterval(this.settings.door_id);
+        this.settings.escalator_id = 0;
+        this.settings.door_id = 0;
+        
+        this.settings.current_point+=2;
+        if(this.settings.points.linePoint[this.settings.current_point])
+        {
+            this.settings.currentmap = this.settings.points.linePoint[this.settings.current_point].z + '-' + this.settings.points.linePoint[this.settings.current_point].z2;
+        }
+      
+        this.changemap(this.settings.currentmap);
+        if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},10);
+
+    },
+
+    changemap: function(id){
+        this.stopall();
+        this.clearline();
+        this.clearTextlayer();
+
+        var obj = this;
+        var flr_build = id.split('-');
+
+        $.get( "/api/v1/site/maps/get-map-id/"+flr_build[0]+"/"+flr_build[1], function(response) {
+            obj.showmap(response);
+        });
+
+        this.settings.mapchange = 1;
+        if(this.settings.defaultmap == id)
+        {
+            this.settings.marker_here_id = setInterval(function(){obj.animate_marker_here(obj.settings.locationx,obj.settings.locationy)},50);
+        }
+    },
+
+    stopall:function(){
+        this.drawpoints_stop();
+        this.animate_marker_here_stop();
+        this.animate_escalator_stop();
+        this.animate_door_stop();
+        this.animate_marker_store_stop();
+    },
+
+    clearline: function(){
+        var canvas = document.getElementById('line-layer');
+        var context = canvas.getContext('2d');
+        
+        context.clearRect(0, 0,canvas.width,canvas.height);
+        this.points = { linePoint : []};
+    }, 
 
 };

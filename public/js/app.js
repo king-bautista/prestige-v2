@@ -14383,6 +14383,8 @@ var site_maps = [];
     },
     find_store: function find_store(value, id) {
       $(function () {
+        this.wayfindings.drawpoints_stop();
+        this.wayfindings.clearline();
         this.wayfindings.drawline(value.id);
       });
     }
