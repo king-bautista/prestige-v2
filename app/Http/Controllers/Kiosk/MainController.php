@@ -167,6 +167,7 @@ class MainController extends AppBaseController
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
+            ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->select('brands.name', 'site_tenants.*')
@@ -469,7 +470,7 @@ class MainController extends AppBaseController
             ->when($tenant_id, function($query) use ($tenant_id) {
                 $query->where('tenant_id', $tenant_id);
             })
-            ->when(!$tenant_id, function($query) use ($tenant_id) {
+            ->when($tenant_id == 0, function($query) {
                 $query->where('point_type', 6);
             })
             ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')

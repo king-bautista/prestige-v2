@@ -413,6 +413,13 @@ WayFinding.prototype = {
 
     },
 
+    drawdoor: function(bldg){//Added by Ray 3-7-16
+        var obj = this;
+        if(!this.settings.door_id) this.settings.door_id = setInterval(function(){obj.animate_door();},100);
+        setTimeout(function(){obj.drawpoints_resume();},3000);
+        //obj.assist_bldg(bldg);
+    },
+
     animate_escalator: function(direction,text) {
         console.log(text);
         if(this.settings.escalator_progress) return;
@@ -448,17 +455,26 @@ WayFinding.prototype = {
         this.settings.escalator_progress = 0;
     },
 
-    animate_door: function(x, y) {
+    animate_door: function() {
         if(this.settings.door_progress) return;
         this.settings.door_progress = 1;
         if(this.settings.frame_door > 3) this.settings.frame_door = 0;
 
-        var canvas = document.getElementById('escalator-layer');
-        var context = canvas.getContext('2d');
-
-        context.clearRect((x-75),(y-50),155,100);
-        context.drawImage(document.getElementById('marker-door'),(this.settings.frame_door*400),0,400,255,(x-75),(y-50),155,100);
-        context.restore();
+        if(this.settings.points.linePoint[this.settings.current_point])
+        {
+            var canvas = document.getElementById('escalator-layer');
+            var context = canvas.getContext('2d');
+            var point_x = canvas.width / 2;
+            var point_y = canvas.height / 2;
+            
+            context.save();
+            context.translate(point_x,point_y);
+            context.scale(this.settings.scale,this.settings.scale);
+            context.translate(-point_x,-point_y);
+            context.clearRect((this.settings.points.linePoint[this.settings.current_point].x-75),(this.settings.points.linePoint[this.settings.current_point].y-50),155,100);
+            context.drawImage(document.getElementById('marker-door'),(this.settings.frame_door*400),0,400,255,(this.settings.points.linePoint[this.settings.current_point].x-75),(this.settings.points.linePoint[this.settings.current_point].y-50),155,100);
+            context.restore();
+        }
 
         this.settings.frame_door++;
         this.settings.door_progress = 0;
@@ -500,6 +516,9 @@ WayFinding.prototype = {
         this.settings.frame_store +=1 ;
         this.settings.store_progress = 0;
 
+        var scale = 0.60;
+        $('.zoomable-container').css({'transform':'scale(' + scale + ')'});
+
     },
 
     animate_marker_store_stop: function(){
@@ -521,6 +540,7 @@ WayFinding.prototype = {
         this.settings.destination = id;
         this.settings.showescalator = 1;
         var obj = this;
+        console.log(id);
 
         $.get( "/api/v1/site/maps/get-routes/"+id, function(response) {
             if(response.data.length) {
@@ -601,7 +621,21 @@ WayFinding.prototype = {
         this.settings.inter = 0;
     },
 
+    zoomIn: function() {
+        var x = this.settings.locationx;
+        var y = this.settings.locationy;
+
+        var container_width = $('.map-holder').innerWidth();
+        var body_width = 3000;
+        var scale = container_width / body_width; 
+        var left_position = (container_width-$('.zoomable-container').width()) / 2;
+
+        var scale = 0.60;
+        $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': (left_position+x)+'px', 'top': (-1120.5 + (y-160))+'px' });
+    },
+
     drawpoints: function() {
+        
         if(this.settings.points.linePoint[this.settings.current_point] 
         && this.settings.currentmap != (this.settings.points.linePoint[this.settings.current_point].z + '-' + this.settings.points.linePoint[this.settings.current_point].z2) 
         && this.settings.showescalator) {
@@ -616,8 +650,7 @@ WayFinding.prototype = {
             else {
                 var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
                 this.settings.current_point--;
-                alert('drawdoor');
-                //this.drawdoor(bldg);
+                this.drawdoor(bldg);
             }
             clearInterval(this.settings.inter);
             this.settings.inter = 0;
@@ -633,7 +666,7 @@ WayFinding.prototype = {
             var point_y = canvas.height / 2;
         
             context.save();
-            context.translate(point_x,point_y);
+            context.translate(point_x,point_y);0
             context.scale(this.settings.scale,this.settings.scale);
             context.translate(-point_x,-point_y);
             context.strokeStyle = 'red';
@@ -670,6 +703,8 @@ WayFinding.prototype = {
             {
                 var obj = this;
                 this.settings.store_id = setInterval(function(){obj.animate_marker_store();},50);
+
+                
 
                 // $(".zoomable-container").smartZoom("destroy");
                 // $(".zoomable-container").smartZoom();
@@ -719,6 +754,7 @@ WayFinding.prototype = {
         this.stopall();
         this.clearLine();
         this.clearTextlayer();
+        this.clearEscalator();
 
         var obj = this;
         var flr_build = id.split('-');
