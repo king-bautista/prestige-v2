@@ -14378,13 +14378,19 @@ var site_maps = [];
     toggleSelectedMap: function toggleSelectedMap(value, id) {
       $(function () {
         this.wayfindings.clearTextlayer();
+        this.wayfindings.clearEscalator();
+        this.wayfindings.clearLine();
+        this.wayfindings.clearMarker();
         this.wayfindings.showmap(value);
       });
     },
     find_store: function find_store(value, id) {
       $(function () {
+        this.wayfindings.clearTextlayer();
+        this.wayfindings.clearEscalator();
+        this.wayfindings.clearLine();
+        this.wayfindings.clearMarker();
         this.wayfindings.drawpoints_stop();
-        this.wayfindings.clearline();
         this.wayfindings.drawline(value.id);
       });
     }

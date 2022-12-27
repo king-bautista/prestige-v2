@@ -399,21 +399,22 @@ WayFinding.prototype = {
     },
 
     drawescalator: function(from,to,bldg) {
-        var text = "TEXT";
+        var text = "";
 
         $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
-            text = response.floor_name;
+            text = response;
         });
 
         var obj = this;
-        if(!this.settings.escalator_id) this.settings.escalator_id = setInterval(function(){obj.animate_escalator((to>from),text);},100);
-        setTimeout(function(){obj.drawpoints_resume(to);},3000);
+        
+        if(!this.settings.escalator_id) this.settings.escalator_id = setInterval(function(){obj.animate_escalator((to>from),text);},200);
+        setTimeout(function(){obj.drawpoints_resume(to);},4000);
         // obj.assist_level(to,bldg);
 
     },
 
     animate_escalator: function(direction,text) {
-
+        console.log(text);
         if(this.settings.escalator_progress) return;
         this.settings.escalator_progress = 1;
         if(this.settings.frame_escalator > 4) this.settings.frame_escalator = 0;
@@ -469,7 +470,7 @@ WayFinding.prototype = {
         this.settings.door_progress = 0;
     },
 
-    animate_marker_store: function(x, y) {
+    animate_marker_store: function() {
         if(this.settings.store_progress) return;
         if(this.settings.points.linePoint.length == 0 ) return;
 
@@ -479,29 +480,24 @@ WayFinding.prototype = {
 		
         if(this.settings.frame_store > 23) this.settings.frame_store = 0;
 
-        if(this.settings.points.linePoint[this.points.linePoint.length - 1])
-        {
-            alert('3');
-
-            var x = this.settings.points.linePoint[this.settings.points.linePoint.length - 1].x;
-            var y = this.settings.points.linePoint[this.settings.points.linePoint.length - 1].y;
+        var x = this.settings.points.linePoint[this.settings.points.linePoint.length - 1].x;
+        var y = this.settings.points.linePoint[this.settings.points.linePoint.length - 1].y;
+    
+        var canvas = document.getElementById('tenants-layer');
+        var context = canvas.getContext('2d');
         
-            var canvas = document.getElementById('store-layer');
-            var context = canvas.getContext('2d');
-            
-            var point_x = canvas.width / 2;
-            var point_y = canvas.height / 2;
-            
-            context.save();
-            context.translate(point_x,point_y);
-            context.scale(this.settings.scale,this.settings.scale);
-            context.translate(-point_x,-point_y);
-            context.clearRect((x-60),(y-170),130.4,150);
-            context.drawImage(document.getElementById('marker-store-here'),(this.settings.frame_store*130.4),0,130.4,150,(x-60),(y-170),130.4,150);
-            context.restore();
-            
-            this.settings.frame_store +=1 ;
-        }
+        var point_x = canvas.width / 2;
+        var point_y = canvas.height / 2;
+        
+        context.save();
+        context.translate(point_x,point_y);
+        context.scale(this.settings.scale,this.settings.scale);
+        context.translate(-point_x,-point_y);
+        context.clearRect((x-60),(y-170),130.4,150);
+        context.drawImage(document.getElementById('marker-store-here'),(this.settings.frame_store*130.4),0,130.4,150,(x-60),(y-170),130.4,150);
+        context.restore();
+        
+        this.settings.frame_store +=1 ;
         this.settings.store_progress = 0;
 
     },
@@ -518,6 +514,7 @@ WayFinding.prototype = {
 
     drawline: function(id) {
         this.showmap(this.settings.defaultmap);
+        this.clearMarker();
         this.drawpoints_stop();
         this.show_tenant_details(id);
 
@@ -593,7 +590,7 @@ WayFinding.prototype = {
                 obj.settings.current_point = 0;
                 
                 if(obj.settings.points.linePoint.length > 1 && !obj.settings.inter) {
-                    obj.settings.inter = setInterval(function(){obj.drawpoints()},1);
+                    obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
                 }
             }
         });
@@ -626,8 +623,6 @@ WayFinding.prototype = {
             this.settings.inter = 0;
             return;
         }
-
-
 
         if(this.settings.points.linePoint[this.settings.current_point] && (this.settings.points.linePoint[this.settings.current_point].z + '-' + this.settings.points.linePoint[this.settings.current_point].z2) == this.settings.currentmap) {
 
@@ -716,13 +711,13 @@ WayFinding.prototype = {
         }
       
         this.changemap(this.settings.currentmap);
-        if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},10);
+        if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
 
     },
 
     changemap: function(id){
         this.stopall();
-        this.clearline();
+        this.clearLine();
         this.clearTextlayer();
 
         var obj = this;
@@ -747,12 +742,26 @@ WayFinding.prototype = {
         this.animate_marker_store_stop();
     },
 
-    clearline: function(){
+    clearLine: function(){
         var canvas = document.getElementById('line-layer');
         var context = canvas.getContext('2d');
         
         context.clearRect(0, 0,canvas.width,canvas.height);
         this.points = { linePoint : []};
     }, 
+
+    clearMarker: function() {
+        var canvas = document.getElementById('tenants-layer');
+        var context = canvas.getContext('2d');
+        
+        context.clearRect(0, 0,canvas.width,canvas.height);
+    },
+
+    clearEscalator: function() {
+        var canvas = document.getElementById('escalator-layer');
+        var context = canvas.getContext('2d');
+        
+        context.clearRect(0, 0,canvas.width,canvas.height);        
+    }
 
 };

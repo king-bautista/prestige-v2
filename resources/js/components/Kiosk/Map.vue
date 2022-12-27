@@ -168,14 +168,20 @@
             toggleSelectedMap: function(value, id) {
                 $(function() {
                     this.wayfindings.clearTextlayer();
+                    this.wayfindings.clearEscalator();
+                    this.wayfindings.clearLine();
+                    this.wayfindings.clearMarker();
                     this.wayfindings.showmap(value);
                 });
 			},
 
             find_store: function(value, id) {
                 $(function() {
+                    this.wayfindings.clearTextlayer();
+                    this.wayfindings.clearEscalator();
+                    this.wayfindings.clearLine();
+                    this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
-                    this.wayfindings.clearline();
                     this.wayfindings.drawline(value.id);
                 });
             },
