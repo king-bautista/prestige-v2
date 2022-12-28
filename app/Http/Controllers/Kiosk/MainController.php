@@ -17,6 +17,7 @@ use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
+use App\Models\SiteBuilding;
 
 class MainController extends AppBaseController
 {
@@ -496,7 +497,25 @@ class MainController extends AppBaseController
         {
             $floor_level = SiteBuildingLevelViewModel::find($level_id);
             if($floor_level)
-                return $floor_level->name;
+                return $floor_level;
+            return null;
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }
+    }
+
+    public function getBuildingName($building_id)
+    {
+        try
+        {
+            $building = SiteBuilding::find($building_id);
+            if($building)
+                return $building;
             return null;
         }
         catch (\Exception $e)

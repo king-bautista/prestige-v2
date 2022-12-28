@@ -751,3 +751,44 @@ div.mall-details {
     position: absolute;
     display: none;
 }
+
+#tenant-details {
+    width: 305px;
+    position: absolute;
+    top: 20px;
+    left: 52px;
+    display: none;
+    z-index: 1;
+    border-radius: 15px 15px 15px 15px;
+}
+
+#tenant-details .border-info {
+    border-color: rgb(152, 218, 208) !important;
+}
+
+#tenant-details .card-header{
+    background-color: rgb(152, 218, 208);
+    border-radius: 15px 15px 0 0;
+}
+
+#tenant-details .text-info {
+    background-color: rgba(255, 255, 255, .80);
+    color: #000 !important;
+}
+
+#tenant-details .assist {
+    background-color: rgba(152, 218, 208, .90);
+    color: #000 !important;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+}
+
+div.alist {
+    width: 248px;
+    margin: 15px 15px 15px 20px;
+}
+
+#tenant-details .card-footer {
+    border-radius: 0 0 15px 15px;
+    background-color: rgb(152, 218, 208);
+}

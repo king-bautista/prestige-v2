@@ -400,28 +400,46 @@ WayFinding.prototype = {
 
     drawescalator: function(from,to,bldg) {
         var text = "";
+        var bldg_name = "";
+
+        var node = document.createElement("div");
+        node.innerHTML = '<ul><li>Proceed to <img src="images/services/smcg_escalator.png" align="middle"></li></ul>';
+        $('.assist').append(node);
 
         $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
-            text = response;
+            text = response.name;
+            bldg_name = response.building_name;
+
+            var node = document.createElement("div");
+            node.innerHTML = '<ul><li>Go to ' + text + ', ' + bldg_name + '</li></ul>';
+            $('.assist').append(node);            
         });
 
         var obj = this;
-        
+
         if(!this.settings.escalator_id) this.settings.escalator_id = setInterval(function(){obj.animate_escalator((to>from),text);},200);
         setTimeout(function(){obj.drawpoints_resume(to);},4000);
-        // obj.assist_level(to,bldg);
-
     },
 
-    drawdoor: function(bldg){//Added by Ray 3-7-16
+    drawdoor: function(bldg){
         var obj = this;
+
+        var bldg_name = "";
+
+        $.get( "/api/v1/site/maps/get-building-name/"+bldg, function(response) {
+            bldg_name = response.name;
+
+            var node = document.createElement("div");
+            node.innerHTML = '<ul><li>Transfer to ' + bldg_name + '</li></ul>';   
+            $('.assist').append(node);            
+        });
+
         if(!this.settings.door_id) this.settings.door_id = setInterval(function(){obj.animate_door();},100);
         setTimeout(function(){obj.drawpoints_resume();},3000);
         //obj.assist_bldg(bldg);
     },
 
     animate_escalator: function(direction,text) {
-        console.log(text);
         if(this.settings.escalator_progress) return;
         this.settings.escalator_progress = 1;
         if(this.settings.frame_escalator > 4) this.settings.frame_escalator = 0;
@@ -531,8 +549,18 @@ WayFinding.prototype = {
 
     },
 
-    drawline: function(id) {
+    drawline: function(id, tenant) {
         this.showmap(this.settings.defaultmap);
+
+        $('#tenant-details').show();
+        var tenant_name = tenant.brand_name;
+        var tenant_location = tenant.floor_name + ', '+tenant.building_name;
+        var tenant_category = tenant.category_name;
+
+        $('.tenant-name').html(tenant_name);
+        $('.tenant-floor').html(tenant_location);
+        $('.tenant-category').html(tenant_category);
+
         this.clearMarker();
         this.drawpoints_stop();
         this.show_tenant_details(id);
@@ -540,7 +568,6 @@ WayFinding.prototype = {
         this.settings.destination = id;
         this.settings.showescalator = 1;
         var obj = this;
-        console.log(id);
 
         $.get( "/api/v1/site/maps/get-routes/"+id, function(response) {
             if(response.data.length) {
@@ -621,18 +648,18 @@ WayFinding.prototype = {
         this.settings.inter = 0;
     },
 
-    zoomIn: function() {
-        var x = this.settings.locationx;
-        var y = this.settings.locationy;
+    // zoomIn: function() {
+    //     var x = this.settings.locationx;
+    //     var y = this.settings.locationy;
 
-        var container_width = $('.map-holder').innerWidth();
-        var body_width = 3000;
-        var scale = container_width / body_width; 
-        var left_position = (container_width-$('.zoomable-container').width()) / 2;
+    //     var container_width = $('.map-holder').innerWidth();
+    //     var body_width = 3000;
+    //     var scale = container_width / body_width; 
+    //     var left_position = (container_width-$('.zoomable-container').width()) / 2;
 
-        var scale = 0.60;
-        $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': (left_position+x)+'px', 'top': (-1120.5 + (y-160))+'px' });
-    },
+    //     var scale = 0.60;
+    //     $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': (left_position+x)+'px', 'top': (-1120.5 + (y-160))+'px' });
+    // },
 
     drawpoints: function() {
         
@@ -686,47 +713,15 @@ WayFinding.prototype = {
             this.drawpoints_stop();
             this.settings.storefound = 1;
 
-            // if(this.map_status==1)
-            // {
-            //     var node = document.createElement("div");                 									
-            //     //var textnode = document.createTextNode('Follow the red path and proceed to your store'); 
-            //     //node.appendChild(textnode);
-                
-            //     $(".replay").show();
-            //     $('.assist').show().css('display','block');
-            //     node.setAttribute("class", "alist");
-            //     node.innerHTML = '<ul><li>Follow the <font color="red">red path</font> to your destination</li></ul>';                            									
-            //     document.getElementById("assist").appendChild(node);
-            // }
+            var node = document.createElement("div");
+            node.innerHTML = '<ul><li>Follow the <font color="red">red path</font> to your destination</li></ul>';  
+            $('.assist').append(node);   
 
             if(!this.settings.store_id)
             {
                 var obj = this;
                 this.settings.store_id = setInterval(function(){obj.animate_marker_store();},50);
-
-                
-
-                // $(".zoomable-container").smartZoom("destroy");
-                // $(".zoomable-container").smartZoom();
-
-                //AUTO ZOOM ON DESTINATIN TEST------------------------------------------START
-
-                // var x = obj.points.linePoint[obj.points.linePoint.length - 1].x
-                // var y = obj.points.linePoint[obj.points.linePoint.length - 1].y
-                // var scale = 0.30;
-
-                // $(".zoomable-container").smartZoom('zoom', scale,{x: (x+100), y: ((y/2)-300)},500);
-
-                // $(".zoomable-container").smartZoom('zoom', scale,{x: (x/2), y: ((y/2)+150)},500);
-
-                // $(".zoomable-container").smartZoom('zoom', scale,{x: (x/2), y: ((y/2)-300)},500);//1080 WM 750 500
-
-                // console.log(x + " " + y); //-200 BONCHON -700 STARBUCKS SMUD
-
-                //AUTO ZOOM ON DESTINATION TEST------------------------------------------END
             }
-
-
         }
 
     },

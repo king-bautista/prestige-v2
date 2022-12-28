@@ -11,6 +11,20 @@
             </div>
         </div>
         <div class="row col-md-12 mb-3">
+            
+            <div id="tenant-details" class="card border-info mb-3">
+                <div class="card-header"></div>
+                <div class="card-body text-info text-center">
+                    <h2 class="card-title tenant-name">Info card title</h2>
+                    <p class="card-text tenant-floor">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p class="card-text tenant-category">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div class="card-body assist">
+                    
+                </div>
+                <div class="card-footer"></div>
+            </div>
+
             <div class="map-holder">
                 <div class="zoomable-container" id="zoomable-container"></div>
                 <img src="images/Pinch1.gif" class="pinch"/>
@@ -182,7 +196,7 @@
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
-                    this.wayfindings.drawline(value.id);
+                    this.wayfindings.drawline(value.id, value);
                 });
             },
    

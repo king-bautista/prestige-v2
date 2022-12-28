@@ -14391,7 +14391,7 @@ var site_maps = [];
         this.wayfindings.clearLine();
         this.wayfindings.clearMarker();
         this.wayfindings.drawpoints_stop();
-        this.wayfindings.drawline(value.id);
+        this.wayfindings.drawline(value.id, value);
       });
     }
   },
@@ -26252,7 +26252,7 @@ var render = function render() {
     }
   })])], 1)]), _vm._v(" "), _c("div", {
     staticClass: "row col-md-12 mb-3"
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
+  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
     staticClass: "marker-you-are-here"
   }, [_c("img", {
     attrs: {
@@ -26326,7 +26326,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(1)], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(2)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-12 col-sm-3"
   }, [_c("div", {
     staticClass: "input-group"
@@ -26361,7 +26361,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(2)], 1)])])]), _vm._v(" "), _c("img", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(3)], 1)])])]), _vm._v(" "), _c("img", {
     staticStyle: {
       "z-index": "999",
       position: "absolute",
@@ -26378,6 +26378,29 @@ var render = function render() {
   })]);
 };
 var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "card border-info mb-3",
+    attrs: {
+      id: "tenant-details"
+    }
+  }, [_c("div", {
+    staticClass: "card-header"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-body text-info text-center"
+  }, [_c("h2", {
+    staticClass: "card-title tenant-name"
+  }, [_vm._v("Info card title")]), _vm._v(" "), _c("p", {
+    staticClass: "card-text tenant-floor"
+  }, [_vm._v("Some quick example text to build on the card title and make up the bulk of the card's content.")]), _vm._v(" "), _c("p", {
+    staticClass: "card-text tenant-category"
+  }, [_vm._v("Some quick example text to build on the card title and make up the bulk of the card's content.")])]), _vm._v(" "), _c("div", {
+    staticClass: "card-body assist"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-footer"
+  })]);
+}, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
