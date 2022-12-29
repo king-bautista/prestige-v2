@@ -59,6 +59,12 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/site/maps/get-floor-name/{id}', 'Kiosk\MainController@getFloorName')->where('id', '[0-9]+')->name('kiosk.site.get-floor-name');
     Route::get('/site/maps/get-building-name/{id}', 'Kiosk\MainController@getBuildingName')->where('id', '[0-9]+')->name('kiosk.site.get-building-name');
     Route::get('/site/maps/get-map-id/{level_id}/{buidlind_id}', 'Kiosk\MainController@getFloorMap')->where('level_id', '[0-9]+')->where('buidlind_id', '[0-9]+')->name('kiosk.site.get-map-id');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get Update 
+    |--------------------------------------------------------------------------
+    */
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
