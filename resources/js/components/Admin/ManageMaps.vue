@@ -212,6 +212,7 @@
             			name: "Map Preview", 
             			type:"logo", 
             		},
+					site_name: "Site Name",
 					building_name: "Building Name",
 					floor_name: "Floor Name",
             		active: {

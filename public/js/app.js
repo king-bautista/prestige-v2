@@ -11261,6 +11261,7 @@ __webpack_require__.r(__webpack_exports__);
           name: "Map Preview",
           type: "logo"
         },
+        site_name: "Site Name",
         building_name: "Building Name",
         floor_name: "Floor Name",
         active: {
@@ -12046,8 +12047,6 @@ __webpack_require__.r(__webpack_exports__);
         site_id: '',
         site_building_id: '',
         site_building_level_id: '',
-        site_point_id: '',
-        kiosk_id: '',
         name: '',
         slots: '',
         active: false,
@@ -12065,10 +12064,9 @@ __webpack_require__.r(__webpack_exports__);
       orientations: ['Landscape', 'Portrait'],
       dataFields: {
         name: "Name",
-        floor_name: "Floor Name",
+        site_name: "Site Name",
         building_name: "Building Name",
-        site_point_id: "Site Point ID",
-        kiosk_id: "Kiosk ID",
+        floor_name: "Floor Name",
         slots: "Slots",
         screen_type: "Screen Type",
         orientation: "Orientation",
@@ -12124,7 +12122,10 @@ __webpack_require__.r(__webpack_exports__);
           apiUrl: '/admin/site/manage-map',
           routeName: '',
           button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
-          method: 'link'
+          method: 'link',
+          conditions: {
+            screen_type: 'Directory'
+          }
         },
         view: {
           title: 'Set as Default',
@@ -12133,7 +12134,10 @@ __webpack_require__.r(__webpack_exports__);
           routeName: '',
           button: '<i class="fa fa-tag"></i> Set as Default',
           method: 'view',
-          v_on: 'DefaultScreen'
+          v_on: 'DefaultScreen',
+          conditions: {
+            screen_type: 'Directory'
+          }
         }
       },
       otherButtons: {
@@ -12177,8 +12181,6 @@ __webpack_require__.r(__webpack_exports__);
       this.screen.site_id = '';
       this.screen.site_building_id = '';
       this.screen.site_building_level_id = '';
-      this.screen.site_point_id = '';
-      this.screen.kiosk_id = '';
       this.screen.name = '';
       this.screen.slots = '';
       this.screen.active = false;
@@ -12208,8 +12210,6 @@ __webpack_require__.r(__webpack_exports__);
         _this5.screen.site_id = screen.site_id;
         _this5.screen.site_building_id = screen.site_building_id;
         _this5.screen.site_building_level_id = screen.site_building_level_id;
-        _this5.screen.site_point_id = screen.site_point_id;
-        _this5.screen.kiosk_id = screen.kiosk_id;
         _this5.screen.name = screen.name;
         _this5.screen.slots = screen.slots;
         _this5.screen.active = screen.active;
@@ -20844,66 +20844,9 @@ var render = function render() {
         _vm.$set(_vm.screen, "name", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(8), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.screen.site_point_id,
-      expression: "screen.site_point_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Map Point ID",
-      required: ""
-    },
-    domProps: {
-      value: _vm.screen.site_point_id
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.screen, "site_point_id", $event.target.value);
-      }
-    }
-  })])]) : _vm._e(), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Kiosk ID")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.screen.kiosk_id,
-      expression: "screen.kiosk_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Kiosk ID",
-      required: ""
-    },
-    domProps: {
-      value: _vm.screen.kiosk_id
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.screen, "kiosk_id", $event.target.value);
-      }
-    }
-  })])]) : _vm._e(), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(9), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -21128,7 +21071,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(10), _vm._v(" "), _vm._m(11), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -21156,7 +21099,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(12), _vm._v(" "), _vm._m(13), _vm._v(" "), _c("div", {
+  }, [_vm._m(11), _vm._v(" "), _vm._m(12), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -21261,17 +21204,6 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Name "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Map Point ID "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {

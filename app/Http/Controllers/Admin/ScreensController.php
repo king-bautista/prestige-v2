@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ScreensControllerInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Models\SiteScreen;
 use App\Models\ViewModels\AdminViewModel;
@@ -18,7 +19,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 37; 
+        $this->module_id = 42; 
         $this->module_name = 'Screens';
     }
 
@@ -82,14 +83,17 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 SiteScreen::where('is_default', 1)->where('site_id', $request->site_id)->update(['is_default' => 0]);
             }
 
+            $kiosk_id = Str::random(16);
+            $token_key = Str::random(30);
+
             $data = [
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_point_id' => ($request->site_point_id) ? $request->site_point_id : 0,
-                'kiosk_id' => $request->kiosk_id,
+                'kiosk_id' => $kiosk_id,
+                'token_key' => $token_key,
                 'name' => $request->name,
                 'slots' => $request->slots,
                 'active' => 1,
@@ -127,8 +131,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_point_id' => ($request->site_point_id) ? $request->site_point_id : 0,
-                'kiosk_id' => $request->kiosk_id,
                 'name' => $request->name,
                 'slots' => $request->slots,
                 'active' => ($request->active == 0) ? 0 : 1,

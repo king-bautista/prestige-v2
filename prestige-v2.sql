@@ -11476,7 +11476,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   PRIMARY KEY (`id`),
   KEY `modules_name_index` (`name`),
   KEY `modules_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.modules: ~40 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -11515,11 +11515,12 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`
 	(34, 6, 'illustration', '/admin/Illustrations', 'nav-icon fas fa-images', 1, '2022-10-18 21:40:55', '2022-10-18 23:11:12', NULL),
 	(35, 13, 'Sites / Buildings', '/admin/sites', 'nav-icon fa fa-building', 1, '2022-10-19 21:54:25', '2022-10-19 21:54:44', NULL),
 	(36, 13, 'Tenants', '/admin/site/tenants', 'nav-icon fa fa-address-card', 1, '2022-10-19 21:59:24', '2022-10-24 23:11:38', NULL),
-	(37, 13, 'Screens', '/admin/site/screens', 'nav-icon fa fa-desktop', 1, '2022-10-19 22:00:09', '2022-10-25 01:35:45', NULL),
+	(37, 13, 'Screens', '/admin/site/screens', 'nav-icon fa fa-desktop', 1, '2022-10-19 22:00:09', '2022-12-29 03:38:42', '2022-12-29 03:38:42'),
 	(38, NULL, 'Cinema Schedules', '#', 'nav-icon fa fa-film', 1, '2022-11-20 18:51:40', '2022-11-20 18:53:37', NULL),
 	(39, 38, 'Genre', '/admin/cinema/genres', 'nav-icon fa fa-film', 1, '2022-11-20 18:55:29', '2022-11-20 21:55:17', NULL),
 	(40, 38, 'Site Code', '/admin/cinema/site-codes', 'nav-icon fa fa-film', 1, '2022-11-20 18:56:17', '2022-11-20 22:44:57', NULL),
-	(41, 38, 'Schedules', '/admin/cinema/schedules', 'nav-icon fa fa-calendar', 1, '2022-11-20 18:57:27', '2022-11-20 18:59:23', NULL);
+	(41, 38, 'Schedules', '/admin/cinema/schedules', 'nav-icon fa fa-calendar', 1, '2022-11-20 18:57:27', '2022-11-20 18:59:23', NULL),
+	(42, NULL, 'Screens', '/admin/site/screens', 'nav-icon fa fa-desktop', 1, '2022-12-29 03:38:30', '2022-12-29 03:38:30', NULL);
 
 -- Dumping structure for table prestige.password_resets
 DROP TABLE IF EXISTS `password_resets`;
@@ -11553,7 +11554,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   KEY `permissions_deleted_at_index` (`deleted_at`),
   CONSTRAINT `permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`),
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.permissions: ~69 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -11625,7 +11626,8 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(71, 1, 38, 1, 1, 1, 1, '2022-11-20 18:59:37', '2022-11-20 18:59:37', NULL),
 	(72, 1, 39, 1, 1, 1, 1, '2022-11-20 18:59:37', '2022-11-20 18:59:37', NULL),
 	(73, 1, 40, 1, 1, 1, 1, '2022-11-20 18:59:37', '2022-11-20 18:59:37', NULL),
-	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2022-11-20 18:59:37', NULL);
+	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2022-11-20 18:59:37', NULL),
+	(75, 1, 42, 1, 1, 1, 1, '2022-12-29 03:38:57', '2022-12-29 03:38:57', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
 DROP TABLE IF EXISTS `personal_access_tokens`;
@@ -13926,6 +13928,7 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   `site_building_level_id` bigint(20) unsigned NOT NULL,
   `site_point_id` bigint(20) unsigned DEFAULT '0',
   `kiosk_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `token_key` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slots` int(11) NOT NULL DEFAULT '0',
   `active` tinyint(1) NOT NULL DEFAULT '1',
@@ -13941,16 +13944,17 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_screens_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_screens: ~6 rows (approximately)
-INSERT INTO `site_screens` (`id`, `screen_type`, `orientation`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Directory', 'Landscape', 1, 1, 2, 0, '789101', 'National Book Store', 24, 1, 1, 0, '2022-10-25 01:28:36', '2022-11-14 21:10:52', NULL),
-	(2, 'Directory', 'Landscape', 1, 1, 2, 0, '123456', 'Kenny Rogers', 24, 1, 0, 0, '2022-10-25 01:39:22', '2022-11-08 18:25:30', NULL),
-	(3, 'Directory', 'Landscape', 2, 4, 19, 0, '1549', 'Admin Test', 0, 1, 1, 0, '2022-10-25 17:21:39', '2022-11-08 18:10:58', '2022-11-08 18:10:58'),
-	(4, 'Directory', 'Landscape', 2, 4, 20, 0, NULL, 'Sample', 0, 1, 0, 0, '2022-10-25 17:22:01', '2022-11-08 18:10:56', '2022-11-08 18:10:56'),
-	(5, 'LED', 'Landscape', 1, 2, 12, 0, NULL, 'Samsung', 40, 1, 0, 0, '2022-11-08 18:08:57', '2022-11-08 18:10:09', NULL),
-	(6, 'LED', 'Landscape', 1, 1, 4, 0, NULL, 'Uniqlo', 40, 1, 0, 0, '2022-11-08 18:11:22', '2022-11-08 18:11:22', NULL);
+INSERT INTO `site_screens` (`id`, `screen_type`, `orientation`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `kiosk_id`, `token_key`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Directory', 'Landscape', 1, 1, 2, 0, '789101', NULL, 'National Book Store', 24, 1, 1, 0, '2022-10-25 01:28:36', '2022-11-14 21:10:52', NULL),
+	(2, 'Directory', 'Landscape', 1, 1, 2, 0, '123456', NULL, 'Kenny Rogers', 24, 1, 0, 0, '2022-10-25 01:39:22', '2022-11-08 18:25:30', NULL),
+	(3, 'Directory', 'Landscape', 2, 4, 19, 0, '1549', NULL, 'Admin Test', 0, 1, 1, 0, '2022-10-25 17:21:39', '2022-11-08 18:10:58', '2022-11-08 18:10:58'),
+	(4, 'Directory', 'Landscape', 2, 4, 20, 0, NULL, NULL, 'Sample', 0, 1, 0, 0, '2022-10-25 17:22:01', '2022-11-08 18:10:56', '2022-11-08 18:10:56'),
+	(5, 'LED', 'Landscape', 1, 2, 12, 0, NULL, NULL, 'Samsung', 40, 1, 0, 0, '2022-11-08 18:08:57', '2022-11-08 18:10:09', NULL),
+	(6, 'LED', 'Landscape', 1, 1, 4, 0, NULL, NULL, 'Uniqlo', 40, 1, 0, 0, '2022-11-08 18:11:22', '2022-11-08 18:11:22', NULL),
+	(7, 'LED', 'Portrait', 1, 3, 14, 0, 'yydqAFHJTGcI8fMv', '3rkINu8NmRmdmRSfkQ7XQr0vKqYcOW', 'Main Entrance', 40, 1, 0, 0, '2022-12-29 03:51:26', '2022-12-29 03:51:26', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
 DROP TABLE IF EXISTS `site_screen_uptime`;

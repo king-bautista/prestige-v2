@@ -22,6 +22,7 @@ class SiteScreen extends Model
         'site_building_level_id',
         'site_point_id',
         'kiosk_id',
+        'token_key',
         'name',
         'slots',
         'active',
