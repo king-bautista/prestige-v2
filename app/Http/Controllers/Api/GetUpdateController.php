@@ -16,6 +16,7 @@ use App\Models\BrandSupplemental;
 use App\Models\BrandTag;
 use App\Models\Site;
 use App\Models\SiteMeta;
+use App\Models\Classification;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
@@ -25,7 +26,9 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $this->updateSites($last_updated_at);
         $this->updateSiteMetas($last_updated_at);
         $this->updateAmenities($last_updated_at);
+        $this->updateClassifications($last_updated_at);
         $this->updateCategories($last_updated_at);
+        $this->updateCompanies($last_updated_at);
         $this->updateCategoryLabels($last_updated_at);
         $this->updateBrand($last_updated_at);
         $this->updateBrandProducts($last_updated_at);
@@ -56,6 +59,24 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     'name' => $amenity->name,
                     'active' => $amenity->active,
                     'deleted_at' => $amenity->deleted_at
+                    
+                ]
+            );
+        }
+    }
+
+    public function updateClassifications($last_updated_at)
+    {               
+        $classifications = Classification::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($classifications as $classification) {
+            Classification::on('mysql')->updateOrCreate(
+                [
+                    'id' => $classification->id
+                ],
+                [
+                    'name' => $classification->name,
+                    'active' => $classification->active,
+                    'deleted_at' => $classification->deleted_at
                     
                 ]
             );
@@ -255,5 +276,28 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 ]
             );
         }  
+    }
+
+    public function updateCompanies($last_updated_at)
+    {
+        $companies = Company::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($companies as $company) {
+            Company::on('mysql')->updateOrCreate(
+                [
+                    'id' => $company->id
+                ],
+                [
+                    'parent_id' => $company->parent_id,
+                    'classification_id' => $company->classification_id,
+                    'name' => $company->name,
+                    'email' => $company->email,
+                    'contact_number' => $company->contact_number,
+                    'address' => $company->address,
+                    'tin' => $company->tin,
+                    'active' => $company->active,
+                    'deleted_at' => $company->deleted_at
+                ]
+            );
+        }
     }
 }
