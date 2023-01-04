@@ -153,7 +153,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
                 'active' => ($request->active == 'false') ? 0 : 1,
-                'is_default' => ($request->is_default == 0) ? 0 : 1,
+                'is_default' => ($request->is_default == 'true') ? 1 : 0,
             ];
 
             $meta_value = [
