@@ -86,7 +86,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
-            if($request->is_default == 'true') {
+            if($request->is_default == 1) {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
 
@@ -96,7 +96,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_logo' => str_replace('\\', '/', $site_logo_path),
                 'site_banner' => str_replace('\\', '/', $site_banner_path),
                 'active' => 1,
-                'is_default' => ($request->is_default == 'false') ? 0 : 1,
+                'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
 
             $meta_value = [
@@ -143,7 +143,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
-            if($request->is_default == 'true') {
+            if($request->is_default == 1) {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
 
@@ -153,7 +153,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
                 'active' => ($request->active == 'false') ? 0 : 1,
-                'is_default' => ($request->is_default == 'false') ? 0 : 1,
+                'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
 
             $meta_value = [
