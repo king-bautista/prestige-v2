@@ -86,7 +86,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
-            if($request->is_default == 1) {
+            if($request->is_default == 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
 
@@ -143,7 +143,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
-            if($request->is_default == 1) {
+            if($request->is_default == 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
 
