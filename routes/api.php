@@ -65,6 +65,7 @@ Route::group(['prefix' => 'v1'], function ()
     | Get Update 
     |--------------------------------------------------------------------------
     */
+    Route::get('/get-update', 'Api\GetUpdateController@updateContent')->name('api.get-update');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

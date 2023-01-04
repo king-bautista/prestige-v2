@@ -551,7 +551,6 @@ WayFinding.prototype = {
 
     drawline: function(id, tenant) {
         this.showmap(this.settings.defaultmap);
-
         $('#tenant-details').show();
         var tenant_name = tenant.brand_name;
         var tenant_location = tenant.floor_name + ', '+tenant.building_name;
@@ -560,6 +559,7 @@ WayFinding.prototype = {
         $('.tenant-name').html(tenant_name);
         $('.tenant-floor').html(tenant_location);
         $('.tenant-category').html(tenant_category);
+        $('.assist').html('');
 
         this.clearMarker();
         this.drawpoints_stop();
