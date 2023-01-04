@@ -118,6 +118,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         try
     	{
             $brand = Brand::find($request->id);
+            $brand->touch();
 
             $logo = $request->file('logo');
             $logo_path = '';

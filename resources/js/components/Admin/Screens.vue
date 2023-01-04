@@ -95,18 +95,6 @@
 									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
 								</div>
 							</div>
-                            <div class="form-group row" v-if="screen.screen_type == 'Directory'">
-								<label for="firstName" class="col-sm-4 col-form-label">Map Point ID <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.site_point_id" placeholder="Map Point ID" required>
-								</div>
-							</div>
-							<div class="form-group row" v-if="screen.screen_type == 'Directory'">
-								<label for="firstName" class="col-sm-4 col-form-label">Kiosk ID</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.kiosk_id" placeholder="Kiosk ID" required>
-								</div>
-							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Slots <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -207,8 +195,6 @@
 					site_id: '',
                     site_building_id: '',
                     site_building_level_id: '',
-                    site_point_id: '',
-					kiosk_id: '',
                     name: '',
                     slots: '',
 					active: false,
@@ -226,10 +212,9 @@
                 orientations: ['Landscape','Portrait'],
             	dataFields: {
             		name: "Name", 
-                    floor_name: "Floor Name",
+                    site_name: "Site Name",
                     building_name: "Building Name",
-            		site_point_id: "Site Point ID", 
-            		kiosk_id: "Kiosk ID", 
+                    floor_name: "Floor Name",
             		slots: "Slots", 
             		screen_type: "Screen Type", 
             		orientation: "Orientation", 
@@ -286,6 +271,7 @@
             			routeName: '',
             			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
             			method: 'link',
+						conditions: { screen_type: 'Directory' }
             		},
 					view: {
             			title: 'Set as Default',
@@ -295,6 +281,7 @@
             			button: '<i class="fa fa-tag"></i> Set as Default',
             			method: 'view',
 						v_on: 'DefaultScreen',
+						conditions: { screen_type: 'Directory' }
             		},
             	},
 				otherButtons: {
@@ -338,8 +325,6 @@
                 this.screen.site_id = '';
                 this.screen.site_building_id = '';
                 this.screen.site_building_level_id = '';
-                this.screen.site_point_id = '';
-				this.screen.kiosk_id = '';
                 this.screen.name = '';         
                 this.screen.slots = '';         
                 this.screen.active = false;         
@@ -374,8 +359,6 @@
                     this.screen.site_id = screen.site_id;
 					this.screen.site_building_id = screen.site_building_id;
                     this.screen.site_building_level_id = screen.site_building_level_id;
-                    this.screen.site_point_id = screen.site_point_id;
-					this.screen.kiosk_id = screen.kiosk_id;
 					this.screen.name = screen.name; 
 					this.screen.slots = screen.slots;   
 					this.screen.active = screen.active;    

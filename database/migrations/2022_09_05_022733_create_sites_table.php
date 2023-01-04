@@ -79,7 +79,8 @@ class CreateSitesTable extends Migration
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();
             $table->bigInteger('site_point_id')->unsigned();
-            $table->string('kiosk_id');
+            $table->string('kiosk_id')->nullable();     
+            $table->string('token_key')->nullable();     
             $table->string('name');
             $table->integer('slots')->default(0);
             $table->boolean('active')->default(true);

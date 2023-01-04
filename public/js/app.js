@@ -11261,6 +11261,7 @@ __webpack_require__.r(__webpack_exports__);
           name: "Map Preview",
           type: "logo"
         },
+        site_name: "Site Name",
         building_name: "Building Name",
         floor_name: "Floor Name",
         active: {
@@ -11323,6 +11324,13 @@ __webpack_require__.r(__webpack_exports__);
           title: 'New Map',
           v_on: 'AddNewMap',
           icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Map',
+          "class": 'btn btn-primary btn-sm',
+          method: 'add'
+        },
+        genRoutes: {
+          title: 'Generate Routes',
+          v_on: 'GenRoutes',
+          icon: '<i class="fab fa-connectdevelop"></i> Generate Routes',
           "class": 'btn btn-primary btn-sm',
           method: 'add'
         }
@@ -11466,6 +11474,11 @@ __webpack_require__.r(__webpack_exports__);
         toastr.success(response.data.message);
         _this6.$refs.dataTable.fetchData();
         $('#confirmModal').modal('hide');
+      });
+    },
+    GenRoutes: function GenRoutes() {
+      axios.get('/admin/site/map/generate-routes/' + this.site_id + '/' + this.site_screen_id).then(function (response) {
+        toastr.success(response.data.message);
       });
     }
   },
@@ -12034,8 +12047,6 @@ __webpack_require__.r(__webpack_exports__);
         site_id: '',
         site_building_id: '',
         site_building_level_id: '',
-        site_point_id: '',
-        kiosk_id: '',
         name: '',
         slots: '',
         active: false,
@@ -12053,10 +12064,9 @@ __webpack_require__.r(__webpack_exports__);
       orientations: ['Landscape', 'Portrait'],
       dataFields: {
         name: "Name",
-        floor_name: "Floor Name",
+        site_name: "Site Name",
         building_name: "Building Name",
-        site_point_id: "Site Point ID",
-        kiosk_id: "Kiosk ID",
+        floor_name: "Floor Name",
         slots: "Slots",
         screen_type: "Screen Type",
         orientation: "Orientation",
@@ -12112,7 +12122,10 @@ __webpack_require__.r(__webpack_exports__);
           apiUrl: '/admin/site/manage-map',
           routeName: '',
           button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
-          method: 'link'
+          method: 'link',
+          conditions: {
+            screen_type: 'Directory'
+          }
         },
         view: {
           title: 'Set as Default',
@@ -12121,7 +12134,10 @@ __webpack_require__.r(__webpack_exports__);
           routeName: '',
           button: '<i class="fa fa-tag"></i> Set as Default',
           method: 'view',
-          v_on: 'DefaultScreen'
+          v_on: 'DefaultScreen',
+          conditions: {
+            screen_type: 'Directory'
+          }
         }
       },
       otherButtons: {
@@ -12165,8 +12181,6 @@ __webpack_require__.r(__webpack_exports__);
       this.screen.site_id = '';
       this.screen.site_building_id = '';
       this.screen.site_building_level_id = '';
-      this.screen.site_point_id = '';
-      this.screen.kiosk_id = '';
       this.screen.name = '';
       this.screen.slots = '';
       this.screen.active = false;
@@ -12196,8 +12210,6 @@ __webpack_require__.r(__webpack_exports__);
         _this5.screen.site_id = screen.site_id;
         _this5.screen.site_building_id = screen.site_building_id;
         _this5.screen.site_building_level_id = screen.site_building_level_id;
-        _this5.screen.site_point_id = screen.site_point_id;
-        _this5.screen.kiosk_id = screen.kiosk_id;
         _this5.screen.name = screen.name;
         _this5.screen.slots = screen.slots;
         _this5.screen.active = screen.active;
@@ -14327,15 +14339,15 @@ var site_maps = [];
       back_button: 'assets/images/English/Back.png',
       page_title: 'Map',
       tenant_list: [],
-      site_floors: []
+      site_floors: [],
+      wayfindings: '',
+      current_time: Date.now()
     };
   },
   created: function created() {
     this.getSite();
     this.getTenants();
     this.getFloors();
-    this.getMaps();
-    this.setMap();
   },
   methods: {
     getSite: function getSite() {
@@ -14358,42 +14370,60 @@ var site_maps = [];
         _this3.site_floors = response.data.data;
       });
     },
-    getMaps: function getMaps() {
-      axios.get('/api/v1/site/maps').then(function (response) {
-        site_maps = response.data.data;
-      });
-    },
-    setMap: function setMap() {
-      $(function () {
-        var map = new WayFinding({
-          mapcontainer: 'zoomable-container'
-        });
-        for (var i = 0; i < site_maps.length; i++) {
-          map.addMaps(site_maps[i]);
-        }
-      });
-    },
     goBack: function goBack() {
       $('.h-button').removeClass('active');
       $('.home-button').addClass('active');
       this.$router.push("/")["catch"](function () {});
+    },
+    toggleSelectedMap: function toggleSelectedMap(value, id) {
+      $(function () {
+        this.wayfindings.clearTextlayer();
+        this.wayfindings.clearEscalator();
+        this.wayfindings.clearLine();
+        this.wayfindings.clearMarker();
+        this.wayfindings.showmap(value);
+      });
+    },
+    find_store: function find_store(value, id) {
+      $(function () {
+        this.wayfindings.clearTextlayer();
+        this.wayfindings.clearEscalator();
+        this.wayfindings.clearLine();
+        this.wayfindings.clearMarker();
+        this.wayfindings.drawpoints_stop();
+        this.wayfindings.drawline(value.id, value);
+      });
     }
   },
   mounted: function mounted() {
     $(document).ready(function () {
-      var zoomMap = $('#zoomable-container').ZoomArea({
-        virtualScrollbars: false,
-        externalIncrease: '.map-control-zoomin',
-        externalDecrease: '.map-control-zoomout',
-        parentOverflow: 'hidden'
+      var _this4 = this;
+      this.wayfindings = new WayFinding({
+        mapcontainer: 'zoomable-container'
+      });
+      this.wayfindings.animate_marker_here_stop();
+      axios.get('/api/v1/site/maps').then(function (response) {
+        site_maps = response.data.data;
+        for (var i = 0; i < site_maps.length; i++) {
+          _this4.wayfindings.addMaps(site_maps[i]);
+        }
+      })["finally"](function () {
+        $('#zoomable-container').ZoomArea({
+          virtualScrollbars: false,
+          externalIncrease: '.map-control-zoomin',
+          externalDecrease: '.map-control-zoomout',
+          parentOverflow: 'hidden'
+        });
       });
       $('.pinch, .map-control-fit').on('click', function () {
         var container_width = $('.map-holder').innerWidth();
         var body_width = 3000;
         var scale = container_width / body_width;
+        var left_position = (container_width - $('.zoomable-container').width()) / 2;
         $('.zoomable-container').css({
           'transform': 'scale(' + scale + ')',
-          'left': '-800px'
+          'left': left_position + 'px',
+          'top': '-1120.5px'
         });
         $(".pinch").hide();
       });
@@ -18614,6 +18644,7 @@ var render = function render() {
     },
     on: {
       AddNewMap: _vm.AddNewMap,
+      GenRoutes: _vm.GenRoutes,
       editButton: _vm.editMap,
       DefaultMap: _vm.DefaultMap
     }
@@ -20813,66 +20844,9 @@ var render = function render() {
         _vm.$set(_vm.screen, "name", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
   }, [_vm._m(8), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.screen.site_point_id,
-      expression: "screen.site_point_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Map Point ID",
-      required: ""
-    },
-    domProps: {
-      value: _vm.screen.site_point_id
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.screen, "site_point_id", $event.target.value);
-      }
-    }
-  })])]) : _vm._e(), _vm._v(" "), _vm.screen.screen_type == "Directory" ? _c("div", {
-    staticClass: "form-group row"
-  }, [_c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Kiosk ID")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.screen.kiosk_id,
-      expression: "screen.kiosk_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Kiosk ID",
-      required: ""
-    },
-    domProps: {
-      value: _vm.screen.kiosk_id
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.screen, "kiosk_id", $event.target.value);
-      }
-    }
-  })])]) : _vm._e(), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(9), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
@@ -21097,7 +21071,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(10), _vm._v(" "), _vm._m(11), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -21125,7 +21099,7 @@ var render = function render() {
     staticClass: "modal-dialog"
   }, [_c("div", {
     staticClass: "modal-content"
-  }, [_vm._m(12), _vm._v(" "), _vm._m(13), _vm._v(" "), _c("div", {
+  }, [_vm._m(11), _vm._v(" "), _vm._m(12), _vm._v(" "), _c("div", {
     staticClass: "modal-footer"
   }, [_c("button", {
     staticClass: "btn btn-secondary",
@@ -21230,17 +21204,6 @@ var staticRenderFns = [function () {
       "for": "firstName"
     }
   }, [_vm._v("Name "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Map Point ID "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -26219,7 +26182,44 @@ var render = function render() {
     attrs: {
       src: _vm.site_logo
     }
-  })])], 1)]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
+  })])], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "row col-md-12 mb-3"
+  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
+    staticClass: "marker-you-are-here"
+  }, [_c("img", {
+    attrs: {
+      src: "images/darker-you-are-here-01.png?" + _vm.current_time,
+      id: "marker-you-are-here"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-escalator-up"
+  }, [_c("img", {
+    attrs: {
+      src: "images/escalator-up-sprite.png?" + _vm.current_time,
+      id: "marker-escalator-up"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-escalator-down"
+  }, [_c("img", {
+    attrs: {
+      src: "images/escalator-down-sprite.png?" + _vm.current_time,
+      id: "marker-escalator-down"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-escalator-up"
+  }, [_c("img", {
+    attrs: {
+      src: "images/door-sprite.png?" + _vm.current_time,
+      id: "marker-door"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "marker-store-here hidden"
+  }, [_c("img", {
+    attrs: {
+      src: "images/store-here-sprite.png?" + _vm.current_time,
+      id: "marker-store-here"
+    }
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "tabs-container"
   }, [_c("div", {
     staticClass: "row"
@@ -26238,6 +26238,9 @@ var render = function render() {
       label: "name",
       "track-by": "name"
     },
+    on: {
+      select: _vm.find_store
+    },
     model: {
       value: _vm.map_form.tenant,
       callback: function callback($$v) {
@@ -26255,7 +26258,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(1)], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(2)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-12 col-sm-3"
   }, [_c("div", {
     staticClass: "input-group"
@@ -26269,6 +26272,9 @@ var render = function render() {
       placeholder: "Select Floor",
       label: "building_floor_name",
       "track-by": "building_floor_name"
+    },
+    on: {
+      select: _vm.toggleSelectedMap
     },
     model: {
       value: _vm.map_form.floor_id,
@@ -26287,7 +26293,7 @@ var render = function render() {
       slot: "noResult"
     },
     slot: "noResult"
-  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(2)], 1)])])]), _vm._v(" "), _c("img", {
+  }, [_vm._v("\n                            List is empty\n                        ")])]), _vm._v(" "), _vm._m(3)], 1)])])]), _vm._v(" "), _c("img", {
     staticStyle: {
       "z-index": "999",
       position: "absolute",
@@ -26307,8 +26313,29 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "row col-md-12 mb-3"
+    staticClass: "card border-info mb-3",
+    attrs: {
+      id: "tenant-details"
+    }
   }, [_c("div", {
+    staticClass: "card-header"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-body text-info text-center"
+  }, [_c("h2", {
+    staticClass: "card-title tenant-name"
+  }, [_vm._v("Info card title")]), _vm._v(" "), _c("p", {
+    staticClass: "card-text tenant-floor"
+  }, [_vm._v("Some quick example text to build on the card title and make up the bulk of the card's content.")]), _vm._v(" "), _c("p", {
+    staticClass: "card-text tenant-category"
+  }, [_vm._v("Some quick example text to build on the card title and make up the bulk of the card's content.")])]), _vm._v(" "), _c("div", {
+    staticClass: "card-body assist"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-footer"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
     staticClass: "map-holder"
   }, [_c("div", {
     staticClass: "zoomable-container",
@@ -26320,7 +26347,7 @@ var staticRenderFns = [function () {
     attrs: {
       src: "images/Pinch1.gif"
     }
-  })])]);
+  })]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -27421,6 +27448,12 @@ Vue.component('admin-schedules', (__webpack_require__(/*! ./components/Admin/Cin
 Vue.component('rotating-banners', (__webpack_require__(/*! ./components/Kiosk/Banners.vue */ "./resources/js/components/Kiosk/Banners.vue")["default"]));
 Vue.component('rotating-screensaver', (__webpack_require__(/*! ./components/Kiosk/ScreenSaver.vue */ "./resources/js/components/Kiosk/ScreenSaver.vue")["default"]));
 Vue.component('tenants', (__webpack_require__(/*! ./components/Kiosk/Tenant.vue */ "./resources/js/components/Kiosk/Tenant.vue")["default"]));
+Vue.component('home', (__webpack_require__(/*! ./components/Kiosk/Home.vue */ "./resources/js/components/Kiosk/Home.vue")["default"]));
+Vue.component('search', (__webpack_require__(/*! ./components/Kiosk/Search.vue */ "./resources/js/components/Kiosk/Search.vue")["default"]));
+Vue.component('promos', (__webpack_require__(/*! ./components/Kiosk/Promos.vue */ "./resources/js/components/Kiosk/Promos.vue")["default"]));
+Vue.component('cinema', (__webpack_require__(/*! ./components/Kiosk/Cinema.vue */ "./resources/js/components/Kiosk/Cinema.vue")["default"]));
+Vue.component('about', (__webpack_require__(/*! ./components/Kiosk/About.vue */ "./resources/js/components/Kiosk/About.vue")["default"]));
+Vue.component('wayfinding', (__webpack_require__(/*! ./components/Kiosk/Map.vue */ "./resources/js/components/Kiosk/Map.vue")["default"]));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

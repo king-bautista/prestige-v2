@@ -3,31 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SiteScreen extends Model
+class SiteMapPaths extends Model
 {
-    use SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'screen_type',
-        'orientation',
+        'point_orig',
+        'point_dest',
+        'path',
+        'distance',
         'site_id',
-        'site_building_id',
-        'site_building_level_id',
-        'site_point_id',
-        'kiosk_id',
-        'token_key',
-        'name',
-        'slots',
-        'active',
-        'is_default',
-        'is_exclusive',
     ];
 
     /**
@@ -38,7 +27,6 @@ class SiteScreen extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
-        'deleted_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     /**
@@ -46,7 +34,7 @@ class SiteScreen extends Model
      *
      * @var string
     */
-    protected $table = 'site_screens';
+    protected $table = 'site_map_paths';
 
     /**
      * The primary key associated with the table.

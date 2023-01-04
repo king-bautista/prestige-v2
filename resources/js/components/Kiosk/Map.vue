@@ -11,10 +11,50 @@
             </div>
         </div>
         <div class="row col-md-12 mb-3">
+            
+            <div id="tenant-details" class="card border-info mb-3">
+                <div class="card-header"></div>
+                <div class="card-body text-info text-center">
+                    <h2 class="card-title tenant-name">Info card title</h2>
+                    <p class="card-text tenant-floor">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p class="card-text tenant-category">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div class="card-body assist">
+                    
+                </div>
+                <div class="card-footer"></div>
+            </div>
+
             <div class="map-holder">
                 <div class="zoomable-container" id="zoomable-container"></div>
                 <img src="images/Pinch1.gif" class="pinch"/>
             </div>
+
+    		<!-- you are here-->
+            <div class="marker-you-are-here">
+                <img :src="'images/darker-you-are-here-01.png?'+current_time" id="marker-you-are-here">
+            </div>
+
+            <!-- escalator up-->
+            <div class="marker-escalator-up">
+                <img :src="'images/escalator-up-sprite.png?'+current_time" id="marker-escalator-up">
+            </div>
+
+            <!-- escalator down-->
+            <div class="marker-escalator-down">
+                <img :src="'images/escalator-down-sprite.png?'+current_time"  id="marker-escalator-down">
+            </div>
+
+            <!-- door-->
+            <div class="marker-escalator-up">
+                <img :src="'images/door-sprite.png?'+current_time" id="marker-door">
+            </div>
+
+            <!-- store here-->
+            <div class="marker-store-here hidden">
+                <img :src="'images/store-here-sprite.png?'+current_time" id="marker-store-here">
+            </div>
+
         </div>
         <!-- TABS -->
         <div class="tabs-container">
@@ -27,6 +67,7 @@
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
+                            @select="find_store"
                             placeholder="Input Destination"
                             label="name"
                             track-by="name">
@@ -52,6 +93,7 @@
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
+                            @select="toggleSelectedMap"
                             placeholder="Select Floor"
                             label="building_floor_name"
                             track-by="building_floor_name">
@@ -98,6 +140,8 @@
                 page_title: 'Map',
                 tenant_list: [],
                 site_floors: [],
+                wayfindings: '',
+                current_time: Date.now()
             };
         },
 
@@ -105,8 +149,6 @@
             this.getSite();
             this.getTenants();
             this.getFloors();
-            this.getMaps();
-            this.setMap();
         },
 
         methods: {
@@ -131,44 +173,61 @@
                 });
             },
 
-            getMaps: function() {
-                axios.get('/api/v1/site/maps')
-                .then(response => {
-                    site_maps = response.data.data;
-                });
-            },
-
-            setMap: function() {
-                $(function() {
-                    var map = new WayFinding({mapcontainer:'zoomable-container'});
-                    for (var i = 0; i < site_maps.length; i++){
-                        map.addMaps(site_maps[i]);
-                    }
-                });
-            },
-
             goBack: function() {
                 $('.h-button').removeClass('active');
                 $('.home-button').addClass('active');
                 this.$router.push("/").catch(()=>{});
+            },
+
+            toggleSelectedMap: function(value, id) {
+                $(function() {
+                    this.wayfindings.clearTextlayer();
+                    this.wayfindings.clearEscalator();
+                    this.wayfindings.clearLine();
+                    this.wayfindings.clearMarker();
+                    this.wayfindings.showmap(value);
+                });
+			},
+
+            find_store: function(value, id) {
+                $(function() {
+                    this.wayfindings.clearTextlayer();
+                    this.wayfindings.clearEscalator();
+                    this.wayfindings.clearLine();
+                    this.wayfindings.clearMarker();
+                    this.wayfindings.drawpoints_stop();
+                    this.wayfindings.drawline(value.id, value);
+                });
             },
    
         },
 
         mounted() {
             $(document).ready(function(){
-                let zoomMap = $('#zoomable-container').ZoomArea({
-                    virtualScrollbars:false,
-                    externalIncrease:'.map-control-zoomin',
-                    externalDecrease:'.map-control-zoomout',
-                    parentOverflow:'hidden',
+                this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
+                this.wayfindings.animate_marker_here_stop();
+
+                axios.get('/api/v1/site/maps')
+                .then(response => {
+                    site_maps = response.data.data;
+                    for (var i = 0; i < site_maps.length; i++){
+                        this.wayfindings.addMaps(site_maps[i]);
+                    }
+                }).finally(() => {
+                    $('#zoomable-container').ZoomArea({
+                        virtualScrollbars:false,
+                        externalIncrease:'.map-control-zoomin',
+                        externalDecrease:'.map-control-zoomout',
+                        parentOverflow:'hidden',
+                    });
                 });
 
                 $('.pinch, .map-control-fit').on('click',function(){
                     var container_width = $('.map-holder').innerWidth();
                     var body_width = 3000;
                     var scale = container_width / body_width; 
-                    $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': '-800px'});
+                    var left_position = (container_width-$('.zoomable-container').width()) / 2;
+                    $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': left_position+'px', 'top': '-1120.5px'});
                     $(".pinch").hide();
     			});
 
