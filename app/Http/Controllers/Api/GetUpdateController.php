@@ -13,12 +13,17 @@ use App\Models\CategoryLabel;
 use App\Models\Brand;
 use App\Models\BrandProductPromos;
 use App\Models\BrandSupplemental;
+use App\Models\BrandTag;
+use App\Models\Site;
+use App\Models\SiteMeta;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
     public function updateContent()
     {
         $last_updated_at = $this->getLastUpdate();
+        $this->updateSites($last_updated_at);
+        $this->updateSiteMetas($last_updated_at);
         $this->updateAmenities($last_updated_at);
         $this->updateCategories($last_updated_at);
         $this->updateCategoryLabels($last_updated_at);
@@ -128,11 +133,12 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 ]
             );
 
-            $this->updateBrandSupplemental($brand->id);
+            $this->updateBrandSupplementals($brand->id);
+            $this->updateBrandTags($brand->id);
         } 
     }
 
-    public function updateBrandSupplemental($brand_id)
+    public function updateBrandSupplementals($brand_id)
     {
         $brand_supplemental = BrandSupplemental::on('mysql_server')->where('brand_id', $brand_id)->get();
         BrandSupplemental::on('mysql')->where('brand_id', $brand_id)->delete();
@@ -142,6 +148,21 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 [
                     'brand_id' => $supplemental->brand_id,
                     'supplemental_id' => $supplemental->supplemental_id
+                ],
+            );
+        }
+    }
+
+    public function updateBrandTags($brand_id)
+    {
+        $brand_tags = BrandTag::on('mysql_server')->where('brand_id', $brand_id)->get();
+        BrandTag::on('mysql')->where('brand_id', $brand_id)->delete();
+
+        foreach($brand_tags as $tags) {
+            BrandTag::on('mysql')->updateOrCreate(
+                [
+                    'brand_id' => $tags->brand_id,
+                    'tag_id' => $tags->tag_id
                 ],
             );
         }
@@ -175,5 +196,64 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 ]
             );
         } 
+    }
+
+    public function updateCinemaGenre($last_updated_at)
+    {
+        $cinema_genre = CinemaGenre::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($cinema_genre as $genre) {
+            CinemaGenre::on('mysql')->updateOrCreate(
+                [
+                    'id' => $genre->id
+                ],
+                [
+                    'genre_code' => $genre->genre_code,
+                    'genre_label' => $genre->genre_label,
+                    'deleted_at' => $genre->deleted_at
+                ]
+            );
+        }  
+    }
+
+    public function updateSites($last_updated_at)
+    {
+        $sites = Site::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($sites as $site) {
+
+            $this->saveMaterial('uploads/media/sites/logos/', $site->site_logo);
+            $this->saveMaterial('uploads/media/sites/banners/', $site->site_banner);
+
+            Site::on('mysql')->updateOrCreate(
+                [
+                    'id' => $site->id
+                ],
+                [
+                    'name' => $site->name,
+                    'descriptions' => $site->descriptions,
+                    'site_logo' => $site->site_logo,
+                    'site_banner' => $site->site_banner,
+                    'active' => $site->active,
+                    'deleted_at' => $site->deleted_at
+                ]
+            );
+        }  
+    }
+
+    public function updateSiteMetas($last_updated_at)
+    {
+        $site_metas = SiteMeta::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_metas as $meta) {
+            SiteMeta::on('mysql')->updateOrCreate(
+                [
+                    'id' => $meta->id
+                ],
+                [
+                    'site_id' => $meta->site_id,
+                    'meta_key' => $meta->meta_key,
+                    'meta_value' => $meta->meta_value,
+                    'deleted_at' => $meta->deleted_at
+                ]
+            );
+        }  
     }
 }
