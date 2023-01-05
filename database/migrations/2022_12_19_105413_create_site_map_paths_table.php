@@ -23,6 +23,7 @@ class CreateSiteMapPathsTable extends Migration
             $table->decimal('distance', 10, 2);
             $table->bigInteger('site_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('site_id')->references('id')->on('sites');
         });
