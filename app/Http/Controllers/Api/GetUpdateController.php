@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
 use App\Http\Controllers\Api\Interfaces\GetUpdateControllerInterface;
-use Illuminate\Http\Request;
 
 use App\Models\LastUpdateAt;
 use App\Models\Amenity;
@@ -16,6 +15,21 @@ use App\Models\BrandSupplemental;
 use App\Models\BrandTag;
 use App\Models\Site;
 use App\Models\SiteMeta;
+use App\Models\Classification;
+use App\Models\Company;
+use App\Models\CompanyCategory;
+use App\Models\CinemaGenre;
+use App\Models\CinemaSite;
+use App\Models\SiteAd;
+use App\Models\SiteAdScreen;
+use App\Models\SiteAdSite;
+use App\Models\SiteAdTenant;
+use App\Models\SiteBuilding;
+use App\Models\SiteBuildingLevel;
+use App\Models\SiteMap;
+use App\Models\SiteScreen;
+use App\Models\SitePoint;
+use App\Models\SitePointLink;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
@@ -24,11 +38,23 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $last_updated_at = $this->getLastUpdate();
         $this->updateSites($last_updated_at);
         $this->updateSiteMetas($last_updated_at);
+        $this->updateSiteBuildings($last_updated_at);
+        $this->updateSiteBuildingLevels($last_updated_at);
+        $this->updateSiteMaps($last_updated_at);
+        $this->updateSitePoints($last_updated_at);
+        $this->updateSitePointLinks($last_updated_at);
         $this->updateAmenities($last_updated_at);
+        $this->updateClassifications($last_updated_at);
         $this->updateCategories($last_updated_at);
+        $this->updateCompanies($last_updated_at);
+        $this->updateCompanyCategories($last_updated_at);
         $this->updateCategoryLabels($last_updated_at);
         $this->updateBrand($last_updated_at);
         $this->updateBrandProducts($last_updated_at);
+        $this->updateCinemaGenre($last_updated_at);
+        $this->updateCinemaSites($last_updated_at);
+        $this->updateSiteScreens($last_updated_at);
+        $this->updateSiteAds($last_updated_at);
         return $this->updateDate();        
     }
     public function getLastUpdate()
@@ -56,6 +82,24 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     'name' => $amenity->name,
                     'active' => $amenity->active,
                     'deleted_at' => $amenity->deleted_at
+                    
+                ]
+            );
+        }
+    }
+
+    public function updateClassifications($last_updated_at)
+    {               
+        $classifications = Classification::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($classifications as $classification) {
+            Classification::on('mysql')->updateOrCreate(
+                [
+                    'id' => $classification->id
+                ],
+                [
+                    'name' => $classification->name,
+                    'active' => $classification->active,
+                    'deleted_at' => $classification->deleted_at
                     
                 ]
             );
@@ -119,6 +163,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         foreach($brands as $brand) {
 
             $this->saveMaterial('uploads/media/brand/', $brand->logo);
+
             Brand::on('mysql')->updateOrCreate(
                 [
                     'id' => $brand->id
@@ -215,6 +260,23 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         }  
     }
 
+    public function updateCinemaSites($last_updated_at)
+    {
+        $cinema_sites = CinemaSite::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($cinema_sites as $cinema) {
+            CinemaSite::on('mysql')->updateOrCreate(
+                [
+                    'id' => $cinema->id
+                ],
+                [
+                    'site_id' => $cinema->site_id,
+                    'cinema_id' => $cinema->cinema_id,
+                    'deleted_at' => $cinema->deleted_at
+                ]
+            );
+        }  
+    }
+
     public function updateSites($last_updated_at)
     {
         $sites = Site::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
@@ -255,5 +317,283 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 ]
             );
         }  
+    }
+
+    public function updateSiteBuildings($last_updated_at)
+    {
+        $site_buildings = SiteBuilding::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_buildings as $building) {
+
+            SiteBuilding::on('mysql')->updateOrCreate(
+                [
+                    'id' => $building->id
+                ],
+                [
+                    'site_id' => $building->site_id,
+                    'name' => $building->name,
+                    'descriptions' => $building->descriptions,
+                    'active' => $building->active,
+                    'deleted_at' => $building->deleted_at
+                ]
+            );
+        } 
+    }
+
+    public function updateSiteBuildingLevels($last_updated_at)
+    {
+        $site_building_levels = SiteBuildingLevel::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_building_levels as $building_level) {
+
+            SiteBuildingLevel::on('mysql')->updateOrCreate(
+                [
+                    'id' => $building_level->id
+                ],
+                [
+                    'site_id' => $building_level->site_id,
+                    'site_building_id' => $building_level->site_building_id,
+                    'name' => $building_level->name,
+                    'active' => $building_level->active,
+                    'deleted_at' => $building_level->deleted_at
+                ]
+            );
+        } 
+    }
+
+    public function updateSiteMaps($last_updated_at)
+    {
+        $site_maps = SiteMap::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_maps as $map) {
+
+            SiteMap::on('mysql')->updateOrCreate(
+                [
+                    'id' => $map->id
+                ],
+                [
+                    'site_id' => $map->site_id,
+                    'site_building_id' => $map->site_building_id,
+                    'site_building_level_id' => $map->site_building_level_id,
+                    'site_screen_id' => $map->site_screen_id,
+                    'map_file' => $map->map_file,
+                    'map_preview' => $map->map_preview,
+                    'descriptions' => $map->descriptions,
+                    'image_size_width' => $map->image_size_width,
+                    'image_size_height' => $map->image_size_height,
+                    'position_x' => $map->position_x,
+                    'position_y' => $map->position_y,
+                    'position_z' => $map->position_z,
+                    'text_y_position' => $map->text_y_position,
+                    'default_zoom' => $map->default_zoom,
+                    'default_zoom_desktop' => $map->default_zoom_desktop,
+                    'default_zoom_mobile' => $map->default_zoom_mobile,
+                    'active' => $map->active,
+                    'deleted_at' => $map->deleted_at
+                ]
+            );
+        } 
+    }
+
+    public function updateSitePoints($last_updated_at)
+    {
+        $site_points = SitePoint::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_points as $point) {
+
+            SitePoint::on('mysql')->updateOrCreate(
+                [
+                    'id' => $point->id
+                ],
+                [
+                    'site_map_id' => $point->site_map_id,
+                    'tenant_id' => $point->tenant_id,
+                    'point_type' => $point->point_type,
+                    'point_x' => $point->point_x,
+                    'point_y' => $point->point_y,
+                    'point_z' => $point->point_z,
+                    'rotation_z' => $point->rotation_z,
+                    'text_size' => $point->text_size,
+                    'text_width' => $point->text_width,
+                    'is_pwd' => $point->is_pwd,
+                    'point_label' => $point->point_label,
+                    'wrap_at' => $point->wrap_at,
+                    'deleted_at' => $point->deleted_at
+                ]
+            );
+        } 
+    }
+
+    public function updateSitePointLinks($last_updated_at)
+    {
+        $site_point_links = SitePointLink::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_point_links as $link) {
+
+            SitePointLink::on('mysql')->updateOrCreate(
+                [
+                    'id' => $link->id
+                ],
+                [
+                    'site_map_id' => $link->site_map_id,
+                    'point_a' => $link->point_a,
+                    'point_b' => $link->point_b,
+                    'deleted_at' => $link->deleted_at
+                ]
+            );
+        } 
+    }
+
+    public function updateCompanies($last_updated_at)
+    {
+        $companies = Company::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($companies as $company) {
+            Company::on('mysql')->updateOrCreate(
+                [
+                    'id' => $company->id
+                ],
+                [
+                    'parent_id' => $company->parent_id,
+                    'classification_id' => $company->classification_id,
+                    'name' => $company->name,
+                    'email' => $company->email,
+                    'contact_number' => $company->contact_number,
+                    'address' => $company->address,
+                    'tin' => $company->tin,
+                    'active' => $company->active,
+                    'deleted_at' => $company->deleted_at
+                ]
+            );
+        }
+    }
+
+    public function updateCompanyCategories($last_updated_at)
+    {
+        $company_categories = CompanyCategory::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($company_categories as $category) {
+
+            $this->saveMaterial('uploads/media/category/', $category->kiosk_image_primary);
+            $this->saveMaterial('uploads/media/category/strips/', $category->kiosk_image_top);
+
+            CompanyCategory::on('mysql')->updateOrCreate(
+                [
+                    'id' => $category->id
+                ],
+                [
+                    'company_id' => $category->company_id,
+                    'category_id' => $category->category_id,
+                    'sub_category_id' => $category->sub_category_id,
+                    'site_id' => $category->site_id,
+                    'active' => $category->active,
+                    'kiosk_image_primary' => $category->kiosk_image_primary,
+                    'kiosk_image_top' => $category->kiosk_image_top,
+                    'online_image_primary' => $category->online_image_primary,
+                    'online_image_top' => $category->online_image_top,
+                    'mobile_image_primary' => $category->mobile_image_primary,
+                    'mobile_image_top' => $category->mobile_image_top,
+                    'deleted_at' => $category->deleted_at
+                ]
+            );
+        }
+    }
+
+    public function updateSiteScreens($last_updated_at)
+    {
+        $site_screens = SiteScreen::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_screens as $screen) {
+            SiteScreen::on('mysql')->updateOrCreate(
+                [
+                    'id' => $screen->id
+                ],
+                [
+                    'screen_type' => $screen->screen_type,
+                    'orientation' => $screen->orientation,
+                    'site_id' => $screen->site_id,
+                    'site_building_id' => $screen->site_building_id,
+                    'site_building_level_id' => $screen->site_building_level_id,
+                    'site_point_id' => $screen->site_point_id,
+                    'kiosk_id' => $screen->kiosk_id,
+                    'token_key' => $screen->token_key,
+                    'name' => $screen->name,
+                    'slots' => $screen->slots,
+                    'active' => $screen->active,
+                    'is_exclusive' => $screen->is_exclusive,
+                    'deleted_at' => $screen->deleted_at
+                ]
+            );
+        }
+    }
+
+    public function updateSiteAds($last_updated_at)
+    {
+        $site_ads = SiteAd::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_ads as $ad) {
+
+            $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
+
+            SiteAd::on('mysql')->updateOrCreate(
+                [
+                    'id' => $ad->id
+                ],
+                [
+                    'company_id' => $ad->company_id,
+                    'name' => $ad->name,
+                    'ad_type' => $ad->ad_type,
+                    'screen_type' => $ad->screen_type,
+                    'file_path' => $ad->file_path,
+                    'file_type' => $ad->file_type,
+                    'display_order' => $ad->display_order,
+                    'display_duration' => $ad->display_duration,
+                    'start_date' => $ad->start_date,
+                    'end_date' => $ad->end_date,
+                    'active' => $ad->active,
+                    'deleted_at' => $ad->deleted_at
+                ]
+            );
+
+            $this->updateAdScreens($ad->id);
+            $this->updateAdSites($ad->id);
+            $this->updateAdTenants($ad->id);
+        }
+    }
+
+    public function updateAdScreens($ad_id)
+    {
+        $site_ad_screens = SiteAdScreen::on('mysql_server')->where('site_ad_id', $ad_id)->get();
+        SiteAdScreen::on('mysql')->where('site_ad_id', $ad_id)->delete();
+
+        foreach($site_ad_screens as $screen) {
+            SiteAdScreen::on('mysql')->updateOrCreate(
+                [
+                    'site_ad_id' => $screen->site_ad_id,
+                    'site_screen_id' => $screen->site_screen_id
+                ],
+            );
+        }
+    }
+
+    public function updateAdSites($ad_id)
+    {
+        $site_ad_sites = SiteAdSite::on('mysql_server')->where('site_ad_id', $ad_id)->get();
+        SiteAdSite::on('mysql')->where('site_ad_id', $ad_id)->delete();
+
+        foreach($site_ad_sites as $site) {
+            SiteAdSite::on('mysql')->updateOrCreate(
+                [
+                    'site_ad_id' => $site->site_ad_id,
+                    'site_id' => $site->site_id
+                ],
+            );
+        }
+    }
+
+    public function updateAdTenants($ad_id)
+    {
+        $site_ad_sites = SiteAdTenant::on('mysql_server')->where('site_ad_id', $ad_id)->get();
+        SiteAdTenant::on('mysql')->where('site_ad_id', $ad_id)->delete();
+
+        foreach($site_ad_sites as $site) {
+            SiteAdTenant::on('mysql')->updateOrCreate(
+                [
+                    'site_ad_id' => $site->site_ad_id,
+                    'site_tenant_id' => $site->site_tenant_id
+                ],
+            );
+        }
     }
 }
