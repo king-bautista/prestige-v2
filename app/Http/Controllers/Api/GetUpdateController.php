@@ -34,6 +34,7 @@ use App\Models\SiteMapPaths;
 use App\Models\SiteTenant;
 use App\Models\SiteTenantMeta;
 use App\Models\SiteTenantProduct;
+use App\Models\Tag;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
@@ -54,6 +55,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $this->updateCompanies($last_updated_at);
         $this->updateCompanyCategories($last_updated_at);
         $this->updateCategoryLabels($last_updated_at);
+        $this->updateTags($last_updated_at);
         $this->updateBrand($last_updated_at);
         $this->updateBrandProducts($last_updated_at);
         $this->updateCinemaGenre($last_updated_at);
@@ -679,6 +681,23 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     'site_ad_id' => $site->site_ad_id,
                     'site_tenant_id' => $site->site_tenant_id
                 ],
+            );
+        }
+    }
+
+    public function updateTags($last_updated_at)
+    {
+        $tags = Tag::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($tags as $tag) {
+            Tag::on('mysql')->updateOrCreate(
+                [
+                    'id' => $tag->id
+                ],
+                [
+                    'name' => $tag->name,
+                    'active' => $tag->active,
+                    'deleted_at' => $tag->deleted_at
+                ]
             );
         }
     }

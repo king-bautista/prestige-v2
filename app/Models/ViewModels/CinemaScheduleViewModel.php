@@ -54,7 +54,10 @@ class CinemaScheduleViewModel extends Model
 
     public function getGenreNameAttribute() 
     {
-        return CinemaGenre::where('genre_code', $this->genre)->first()->genre_label;
+        $genre = CinemaGenre::where('genre_code', $this->genre)->first();
+        if($genre)
+            return $genre->genre_label;
+        return null;
     }
 
     public function getCinemaSchedulesAttribute() 
