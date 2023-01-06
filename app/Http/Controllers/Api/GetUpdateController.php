@@ -82,77 +82,85 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
     public function updateAmenities($last_updated_at)
     {               
         $amenities = Amenity::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($amenities as $amenity) {
-            Amenity::on('mysql')->updateOrCreate(
-                [
-                    'id' => $amenity->id
-                ],
-                [
-                    'name' => $amenity->name,
-                    'active' => $amenity->active,
-                    'deleted_at' => $amenity->deleted_at
-                ]
-            );
+        if($amenities) {
+            foreach($amenities as $amenity) {
+                Amenity::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $amenity->id
+                    ],
+                    [
+                        'name' => $amenity->name,
+                        'active' => $amenity->active,
+                        'deleted_at' => $amenity->deleted_at
+                    ]
+                );
+            }
         }
     }
 
     public function updateClassifications($last_updated_at)
     {               
         $classifications = Classification::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($classifications as $classification) {
-            Classification::on('mysql')->updateOrCreate(
-                [
-                    'id' => $classification->id
-                ],
-                [
-                    'name' => $classification->name,
-                    'active' => $classification->active,
-                    'deleted_at' => $classification->deleted_at
-                    
-                ]
-            );
+        if($classifications) {
+            foreach($classifications as $classification) {
+                Classification::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $classification->id
+                    ],
+                    [
+                        'name' => $classification->name,
+                        'active' => $classification->active,
+                        'deleted_at' => $classification->deleted_at
+                        
+                    ]
+                );
+            }
         }
     }
 
     public function updateCategories($last_updated_at)
     {
         $categories = Category::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($categories as $category) {
-            Category::on('mysql')->updateOrCreate(
-                [
-                    'id' => $category->id
-                ],
-                [
-                    'parent_id' => $category->parent_id,
-                    'supplemental_category_id' => $category->supplemental_category_id,
-                    'name' => $category->name,
-                    'descriptions' => $category->descriptions,
-                    'class_name' => $category->class_name,
-                    'category_type' => $category->category_type,
-                    'active' => $category->active,
-                    'deleted_at' => $category->deleted_at
-                ]
-            );
-        }       
+        if($categories) {
+            foreach($categories as $category) {
+                Category::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $category->id
+                    ],
+                    [
+                        'parent_id' => $category->parent_id,
+                        'supplemental_category_id' => $category->supplemental_category_id,
+                        'name' => $category->name,
+                        'descriptions' => $category->descriptions,
+                        'class_name' => $category->class_name,
+                        'category_type' => $category->category_type,
+                        'active' => $category->active,
+                        'deleted_at' => $category->deleted_at
+                    ]
+                );
+            }
+        }
     }
 
     public function updateCategoryLabels($last_updated_at)
     {
         $category_labels = CategoryLabel::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($category_labels as $label) {
-            CategoryLabel::on('mysql')->updateOrCreate(
-                [
-                    'id' => $label->id
-                ],
-                [
-                    'category_id' => $label->category_id,
-                    'company_id' => $label->company_id,
-                    'site_id' => $label->site_id,
-                    'name' => $label->name,
-                    'deleted_at' => $label->deleted_at
-                ]
-            );
-        }  
+        if($category_labels) {
+            foreach($category_labels as $label) {
+                CategoryLabel::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $label->id
+                    ],
+                    [
+                        'category_id' => $label->category_id,
+                        'company_id' => $label->company_id,
+                        'site_id' => $label->site_id,
+                        'name' => $label->name,
+                        'deleted_at' => $label->deleted_at
+                    ]
+                );
+            }  
+        }
     }
 
     public function saveMaterial($folder_path='', $file_path='')
@@ -168,537 +176,587 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
     public function updateBrand($last_updated_at)
     {
         $brands = Brand::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($brands as $brand) {
+        if($brands) {
+            foreach($brands as $brand) {
 
-            $this->saveMaterial('uploads/media/brand/', $brand->logo);
+                $this->saveMaterial('uploads/media/brand/', $brand->logo);
 
-            Brand::on('mysql')->updateOrCreate(
-                [
-                    'id' => $brand->id
-                ],
-                [
-                    'category_id' => $brand->category_id,
-                    'name' => $brand->name,
-                    'descriptions' => $brand->descriptions,
-                    'logo' => $brand->logo,
-                    'active' => $brand->active,
-                    'deleted_at' => $brand->deleted_at
-                ]
-            );
+                Brand::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $brand->id
+                    ],
+                    [
+                        'category_id' => $brand->category_id,
+                        'name' => $brand->name,
+                        'descriptions' => $brand->descriptions,
+                        'logo' => $brand->logo,
+                        'active' => $brand->active,
+                        'deleted_at' => $brand->deleted_at
+                    ]
+                );
 
-            $this->updateBrandSupplementals($brand->id);
-            $this->updateBrandTags($brand->id);
-        } 
+                $this->updateBrandSupplementals($brand->id);
+                $this->updateBrandTags($brand->id);
+            }
+        }
     }
 
     public function updateBrandSupplementals($brand_id)
     {
         $brand_supplemental = BrandSupplemental::on('mysql_server')->where('brand_id', $brand_id)->get();
-        BrandSupplemental::on('mysql')->where('brand_id', $brand_id)->delete();
+        if($brand_supplemental) {
+            BrandSupplemental::on('mysql')->where('brand_id', $brand_id)->delete();
 
-        foreach($brand_supplemental as $supplemental) {
-            BrandSupplemental::on('mysql')->updateOrCreate(
-                [
-                    'brand_id' => $supplemental->brand_id,
-                    'supplemental_id' => $supplemental->supplemental_id
-                ],
-            );
+            foreach($brand_supplemental as $supplemental) {
+                BrandSupplemental::on('mysql')->updateOrCreate(
+                    [
+                        'brand_id' => $supplemental->brand_id,
+                        'supplemental_id' => $supplemental->supplemental_id
+                    ],
+                );
+            }
         }
     }
 
     public function updateBrandTags($brand_id)
     {
         $brand_tags = BrandTag::on('mysql_server')->where('brand_id', $brand_id)->get();
-        BrandTag::on('mysql')->where('brand_id', $brand_id)->delete();
+        if($brand_tags) {
+            BrandTag::on('mysql')->where('brand_id', $brand_id)->delete();
 
-        foreach($brand_tags as $tags) {
-            BrandTag::on('mysql')->updateOrCreate(
-                [
-                    'brand_id' => $tags->brand_id,
-                    'tag_id' => $tags->tag_id
-                ],
-            );
+            foreach($brand_tags as $tags) {
+                BrandTag::on('mysql')->updateOrCreate(
+                    [
+                        'brand_id' => $tags->brand_id,
+                        'tag_id' => $tags->tag_id
+                    ],
+                );
+            }
         }
     }
 
     public function updateBrandProducts($last_updated_at)
     {
         $brand_products = BrandProductPromos::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($brand_products as $product) {
+        if($brand_products) {
+            foreach($brand_products as $product) {
 
-            $this->saveMaterial('uploads/media/brand/products/', $product->thumbnail);
-            $this->saveMaterial('uploads/media/brand/products/', $product->image_url);
+                $this->saveMaterial('uploads/media/brand/products/', $product->thumbnail);
+                $this->saveMaterial('uploads/media/brand/products/', $product->image_url);
 
-            BrandProductPromos::on('mysql')->updateOrCreate(
-                [
-                    'id' => $product->id
-                ],
-                [
-                    'brand_id' => $product->brand_id,
-                    'tenant_id' => $product->tenant_id,
-                    'name' => $product->name,
-                    'descriptions' => $product->descriptions,
-                    'type' => $product->type,
-                    'thumbnail' => $product->thumbnail,
-                    'image_url' => $product->image_url,
-                    'date_from' => $product->date_from,
-                    'date_to' => $product->date_to,
-                    'sequence' => $product->sequence,
-                    'active' => $product->active,
-                    'deleted_at' => $product->deleted_at
-                ]
-            );
-        } 
+                BrandProductPromos::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $product->id
+                    ],
+                    [
+                        'brand_id' => $product->brand_id,
+                        'tenant_id' => $product->tenant_id,
+                        'name' => $product->name,
+                        'descriptions' => $product->descriptions,
+                        'type' => $product->type,
+                        'thumbnail' => $product->thumbnail,
+                        'image_url' => $product->image_url,
+                        'date_from' => $product->date_from,
+                        'date_to' => $product->date_to,
+                        'sequence' => $product->sequence,
+                        'active' => $product->active,
+                        'deleted_at' => $product->deleted_at
+                    ]
+                );
+            }
+        }
     }
 
     public function updateCinemaGenre($last_updated_at)
     {
         $cinema_genre = CinemaGenre::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($cinema_genre as $genre) {
-            CinemaGenre::on('mysql')->updateOrCreate(
-                [
-                    'id' => $genre->id
-                ],
-                [
-                    'genre_code' => $genre->genre_code,
-                    'genre_label' => $genre->genre_label,
-                    'deleted_at' => $genre->deleted_at
-                ]
-            );
-        }  
+        if($cinema_genre) {
+            foreach($cinema_genre as $genre) {
+                CinemaGenre::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $genre->id
+                    ],
+                    [
+                        'genre_code' => $genre->genre_code,
+                        'genre_label' => $genre->genre_label,
+                        'deleted_at' => $genre->deleted_at
+                    ]
+                );
+            }  
+        }
     }
 
     public function updateCinemaSites($last_updated_at)
     {
         $cinema_sites = CinemaSite::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($cinema_sites as $cinema) {
-            CinemaSite::on('mysql')->updateOrCreate(
-                [
-                    'id' => $cinema->id
-                ],
-                [
-                    'site_id' => $cinema->site_id,
-                    'cinema_id' => $cinema->cinema_id,
-                    'deleted_at' => $cinema->deleted_at
-                ]
-            );
-        }  
+        if($cinema_sites) {
+            foreach($cinema_sites as $cinema) {
+                CinemaSite::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $cinema->id
+                    ],
+                    [
+                        'site_id' => $cinema->site_id,
+                        'cinema_id' => $cinema->cinema_id,
+                        'deleted_at' => $cinema->deleted_at
+                    ]
+                );
+            }  
+        }
     }
 
     public function updateSites($last_updated_at)
     {
         $sites = Site::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($sites as $site) {
+        if($sites) {
+            foreach($sites as $site) {
 
-            $this->saveMaterial('uploads/media/sites/logos/', $site->site_logo);
-            $this->saveMaterial('uploads/media/sites/banners/', $site->site_banner);
+                $this->saveMaterial('uploads/media/sites/logos/', $site->site_logo);
+                $this->saveMaterial('uploads/media/sites/banners/', $site->site_banner);
 
-            Site::on('mysql')->updateOrCreate(
-                [
-                    'id' => $site->id
-                ],
-                [
-                    'name' => $site->name,
-                    'descriptions' => $site->descriptions,
-                    'site_logo' => $site->site_logo,
-                    'site_banner' => $site->site_banner,
-                    'active' => $site->active,
-                    'deleted_at' => $site->deleted_at
-                ]
-            );
-        }  
+                Site::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $site->id
+                    ],
+                    [
+                        'name' => $site->name,
+                        'descriptions' => $site->descriptions,
+                        'site_logo' => $site->site_logo,
+                        'site_banner' => $site->site_banner,
+                        'active' => $site->active,
+                        'deleted_at' => $site->deleted_at
+                    ]
+                );
+            }  
+        }
     }
 
     public function updateSiteMetas($last_updated_at)
     {
         $site_metas = SiteMeta::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_metas as $meta) {
-            SiteMeta::on('mysql')->updateOrCreate(
-                [
-                    'id' => $meta->id
-                ],
-                [
-                    'site_id' => $meta->site_id,
-                    'meta_key' => $meta->meta_key,
-                    'meta_value' => $meta->meta_value,
-                    'deleted_at' => $meta->deleted_at
-                ]
-            );
-        }  
+        if($site_metas) {
+            foreach($site_metas as $meta) {
+                SiteMeta::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $meta->id
+                    ],
+                    [
+                        'site_id' => $meta->site_id,
+                        'meta_key' => $meta->meta_key,
+                        'meta_value' => $meta->meta_value,
+                        'deleted_at' => $meta->deleted_at
+                    ]
+                );
+            } 
+        }
     }
 
     public function updateSiteBuildings($last_updated_at)
     {
         $site_buildings = SiteBuilding::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_buildings as $building) {
+        if($site_buildings) {
+            foreach($site_buildings as $building) {
 
-            SiteBuilding::on('mysql')->updateOrCreate(
-                [
-                    'id' => $building->id
-                ],
-                [
-                    'site_id' => $building->site_id,
-                    'name' => $building->name,
-                    'descriptions' => $building->descriptions,
-                    'active' => $building->active,
-                    'deleted_at' => $building->deleted_at
-                ]
-            );
-        } 
+                SiteBuilding::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $building->id
+                    ],
+                    [
+                        'site_id' => $building->site_id,
+                        'name' => $building->name,
+                        'descriptions' => $building->descriptions,
+                        'active' => $building->active,
+                        'deleted_at' => $building->deleted_at
+                    ]
+                );
+            } 
+        }
     }
 
     public function updateSiteBuildingLevels($last_updated_at)
     {
         $site_building_levels = SiteBuildingLevel::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_building_levels as $building_level) {
+        if($site_building_levels) {
+            foreach($site_building_levels as $building_level) {
 
-            SiteBuildingLevel::on('mysql')->updateOrCreate(
-                [
-                    'id' => $building_level->id
-                ],
-                [
-                    'site_id' => $building_level->site_id,
-                    'site_building_id' => $building_level->site_building_id,
-                    'name' => $building_level->name,
-                    'active' => $building_level->active,
-                    'deleted_at' => $building_level->deleted_at
-                ]
-            );
-        } 
+                SiteBuildingLevel::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $building_level->id
+                    ],
+                    [
+                        'site_id' => $building_level->site_id,
+                        'site_building_id' => $building_level->site_building_id,
+                        'name' => $building_level->name,
+                        'active' => $building_level->active,
+                        'deleted_at' => $building_level->deleted_at
+                    ]
+                );
+            } 
+        }
     }
 
     public function updateSiteMaps($last_updated_at)
     {
         $site_maps = SiteMap::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_maps as $map) {
+        if($site_maps) {
+            foreach($site_maps as $map) {
 
-            SiteMap::on('mysql')->updateOrCreate(
-                [
-                    'id' => $map->id
-                ],
-                [
-                    'site_id' => $map->site_id,
-                    'site_building_id' => $map->site_building_id,
-                    'site_building_level_id' => $map->site_building_level_id,
-                    'site_screen_id' => $map->site_screen_id,
-                    'map_file' => $map->map_file,
-                    'map_preview' => $map->map_preview,
-                    'descriptions' => $map->descriptions,
-                    'image_size_width' => $map->image_size_width,
-                    'image_size_height' => $map->image_size_height,
-                    'position_x' => $map->position_x,
-                    'position_y' => $map->position_y,
-                    'position_z' => $map->position_z,
-                    'text_y_position' => $map->text_y_position,
-                    'default_zoom' => $map->default_zoom,
-                    'default_zoom_desktop' => $map->default_zoom_desktop,
-                    'default_zoom_mobile' => $map->default_zoom_mobile,
-                    'active' => $map->active,
-                    'deleted_at' => $map->deleted_at
-                ]
-            );
-        } 
+                SiteMap::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $map->id
+                    ],
+                    [
+                        'site_id' => $map->site_id,
+                        'site_building_id' => $map->site_building_id,
+                        'site_building_level_id' => $map->site_building_level_id,
+                        'site_screen_id' => $map->site_screen_id,
+                        'map_file' => $map->map_file,
+                        'map_preview' => $map->map_preview,
+                        'descriptions' => $map->descriptions,
+                        'image_size_width' => $map->image_size_width,
+                        'image_size_height' => $map->image_size_height,
+                        'position_x' => $map->position_x,
+                        'position_y' => $map->position_y,
+                        'position_z' => $map->position_z,
+                        'text_y_position' => $map->text_y_position,
+                        'default_zoom' => $map->default_zoom,
+                        'default_zoom_desktop' => $map->default_zoom_desktop,
+                        'default_zoom_mobile' => $map->default_zoom_mobile,
+                        'active' => $map->active,
+                        'deleted_at' => $map->deleted_at
+                    ]
+                );
+            } 
+        }
     }
 
     public function updateSitePoints($last_updated_at)
     {
         $site_points = SitePoint::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_points as $point) {
+        if($site_points) {
+            foreach($site_points as $point) {
 
-            SitePoint::on('mysql')->updateOrCreate(
-                [
-                    'id' => $point->id
-                ],
-                [
-                    'site_map_id' => $point->site_map_id,
-                    'tenant_id' => $point->tenant_id,
-                    'point_type' => $point->point_type,
-                    'point_x' => $point->point_x,
-                    'point_y' => $point->point_y,
-                    'point_z' => $point->point_z,
-                    'rotation_z' => $point->rotation_z,
-                    'text_size' => $point->text_size,
-                    'text_width' => $point->text_width,
-                    'is_pwd' => $point->is_pwd,
-                    'point_label' => $point->point_label,
-                    'wrap_at' => $point->wrap_at,
-                    'deleted_at' => $point->deleted_at
-                ]
-            );
-        } 
+                SitePoint::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $point->id
+                    ],
+                    [
+                        'site_map_id' => $point->site_map_id,
+                        'tenant_id' => $point->tenant_id,
+                        'point_type' => $point->point_type,
+                        'point_x' => $point->point_x,
+                        'point_y' => $point->point_y,
+                        'point_z' => $point->point_z,
+                        'rotation_z' => $point->rotation_z,
+                        'text_size' => $point->text_size,
+                        'text_width' => $point->text_width,
+                        'is_pwd' => $point->is_pwd,
+                        'point_label' => $point->point_label,
+                        'wrap_at' => $point->wrap_at,
+                        'deleted_at' => $point->deleted_at
+                    ]
+                );
+            } 
+        }
     }
 
     public function updateSitePointLinks($last_updated_at)
     {
         $site_point_links = SitePointLink::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_point_links as $link) {
+        if($site_point_links) {
+            foreach($site_point_links as $link) {
 
-            SitePointLink::on('mysql')->updateOrCreate(
-                [
-                    'id' => $link->id
-                ],
-                [
-                    'site_map_id' => $link->site_map_id,
-                    'point_a' => $link->point_a,
-                    'point_b' => $link->point_b,
-                    'deleted_at' => $link->deleted_at
-                ]
-            );
-        } 
+                SitePointLink::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $link->id
+                    ],
+                    [
+                        'site_map_id' => $link->site_map_id,
+                        'point_a' => $link->point_a,
+                        'point_b' => $link->point_b,
+                        'deleted_at' => $link->deleted_at
+                    ]
+                );
+            } 
+        }
     }
 
     public function updateSiteMapPaths($last_updated_at)
     {
         $site_map_paths = SiteMapPaths::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_map_paths as $path) {
+        if($site_map_paths) {
+            foreach($site_map_paths as $path) {
 
-            SiteMapPaths::on('mysql')->updateOrCreate(
-                [
-                    'id' => $path->id
-                ],
-                [
-                    'point_orig' => $path->point_orig,
-                    'point_dest' => $path->point_dest,
-                    'path' => $path->path,
-                    'distance' => $path->distance,
-                    'site_id' => $path->site_id,
-                    'deleted_at' => $path->deleted_at,
-                ]
-            );
-        } 
+                SiteMapPaths::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $path->id
+                    ],
+                    [
+                        'point_orig' => $path->point_orig,
+                        'point_dest' => $path->point_dest,
+                        'path' => $path->path,
+                        'distance' => $path->distance,
+                        'site_id' => $path->site_id,
+                        'deleted_at' => $path->deleted_at,
+                    ]
+                );
+            } 
+        }
     }
 
     public function updateCompanies($last_updated_at)
     {
         $companies = Company::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($companies as $company) {
-            Company::on('mysql')->updateOrCreate(
-                [
-                    'id' => $company->id
-                ],
-                [
-                    'parent_id' => $company->parent_id,
-                    'classification_id' => $company->classification_id,
-                    'name' => $company->name,
-                    'email' => $company->email,
-                    'contact_number' => $company->contact_number,
-                    'address' => $company->address,
-                    'tin' => $company->tin,
-                    'active' => $company->active,
-                    'deleted_at' => $company->deleted_at
-                ]
-            );
+        if($companies) {
+            foreach($companies as $company) {
+                Company::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $company->id
+                    ],
+                    [
+                        'parent_id' => $company->parent_id,
+                        'classification_id' => $company->classification_id,
+                        'name' => $company->name,
+                        'email' => $company->email,
+                        'contact_number' => $company->contact_number,
+                        'address' => $company->address,
+                        'tin' => $company->tin,
+                        'active' => $company->active,
+                        'deleted_at' => $company->deleted_at
+                    ]
+                );
+            }
         }
     }
 
     public function updateCompanyCategories($last_updated_at)
     {
         $company_categories = CompanyCategory::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($company_categories as $category) {
+        if($company_categories) {
+            foreach($company_categories as $category) {
 
-            $this->saveMaterial('uploads/media/category/', $category->kiosk_image_primary);
-            $this->saveMaterial('uploads/media/category/strips/', $category->kiosk_image_top);
+                $this->saveMaterial('uploads/media/category/', $category->kiosk_image_primary);
+                $this->saveMaterial('uploads/media/category/strips/', $category->kiosk_image_top);
 
-            CompanyCategory::on('mysql')->updateOrCreate(
-                [
-                    'id' => $category->id
-                ],
-                [
-                    'company_id' => $category->company_id,
-                    'category_id' => $category->category_id,
-                    'sub_category_id' => $category->sub_category_id,
-                    'site_id' => $category->site_id,
-                    'active' => $category->active,
-                    'kiosk_image_primary' => $category->kiosk_image_primary,
-                    'kiosk_image_top' => $category->kiosk_image_top,
-                    'online_image_primary' => $category->online_image_primary,
-                    'online_image_top' => $category->online_image_top,
-                    'mobile_image_primary' => $category->mobile_image_primary,
-                    'mobile_image_top' => $category->mobile_image_top,
-                    'deleted_at' => $category->deleted_at
-                ]
-            );
+                CompanyCategory::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $category->id
+                    ],
+                    [
+                        'company_id' => $category->company_id,
+                        'category_id' => $category->category_id,
+                        'sub_category_id' => $category->sub_category_id,
+                        'site_id' => $category->site_id,
+                        'active' => $category->active,
+                        'kiosk_image_primary' => $category->kiosk_image_primary,
+                        'kiosk_image_top' => $category->kiosk_image_top,
+                        'online_image_primary' => $category->online_image_primary,
+                        'online_image_top' => $category->online_image_top,
+                        'mobile_image_primary' => $category->mobile_image_primary,
+                        'mobile_image_top' => $category->mobile_image_top,
+                        'deleted_at' => $category->deleted_at
+                    ]
+                );
+            }
         }
     }
 
     public function updateSiteScreens($last_updated_at)
     {
         $site_screens = SiteScreen::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_screens as $screen) {
-            SiteScreen::on('mysql')->updateOrCreate(
-                [
-                    'id' => $screen->id
-                ],
-                [
-                    'screen_type' => $screen->screen_type,
-                    'orientation' => $screen->orientation,
-                    'site_id' => $screen->site_id,
-                    'site_building_id' => $screen->site_building_id,
-                    'site_building_level_id' => $screen->site_building_level_id,
-                    'site_point_id' => $screen->site_point_id,
-                    'kiosk_id' => $screen->kiosk_id,
-                    'token_key' => $screen->token_key,
-                    'name' => $screen->name,
-                    'slots' => $screen->slots,
-                    'active' => $screen->active,
-                    'is_exclusive' => $screen->is_exclusive,
-                    'deleted_at' => $screen->deleted_at
-                ]
-            );
+        if($site_screens) {
+            foreach($site_screens as $screen) {
+                SiteScreen::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $screen->id
+                    ],
+                    [
+                        'screen_type' => $screen->screen_type,
+                        'orientation' => $screen->orientation,
+                        'site_id' => $screen->site_id,
+                        'site_building_id' => $screen->site_building_id,
+                        'site_building_level_id' => $screen->site_building_level_id,
+                        'site_point_id' => $screen->site_point_id,
+                        'kiosk_id' => $screen->kiosk_id,
+                        'token_key' => $screen->token_key,
+                        'name' => $screen->name,
+                        'slots' => $screen->slots,
+                        'active' => $screen->active,
+                        'is_exclusive' => $screen->is_exclusive,
+                        'deleted_at' => $screen->deleted_at
+                    ]
+                );
+            }
         }
     }
 
     public function updateSiteTenants($last_updated_at)
     {
         $site_tenants = SiteTenant::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_tenants as $tenant) {
-            SiteTenant::on('mysql')->updateOrCreate(
-                [
-                    'id' => $tenant->id
-                ],
-                [
-                    'brand_id' => $tenant->brand_id,
-                    'site_id' => $tenant->site_id,
-                    'site_building_id' => $tenant->site_building_id,
-                    'site_building_level_id' => $tenant->site_building_level_id,
-                    'company_id' => $tenant->company_id,
-                    'view_count' => $tenant->view_count,
-                    'like_count' => $tenant->like_count,
-                    'active' => $tenant->active,
-                    'is_subscriber' => $tenant->is_subscriber,
-                    'deleted_at' => $tenant->deleted_at
-                ]
-            );
+        if($site_tenants) {
+            foreach($site_tenants as $tenant) {
+                SiteTenant::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $tenant->id
+                    ],
+                    [
+                        'brand_id' => $tenant->brand_id,
+                        'site_id' => $tenant->site_id,
+                        'site_building_id' => $tenant->site_building_id,
+                        'site_building_level_id' => $tenant->site_building_level_id,
+                        'company_id' => $tenant->company_id,
+                        'view_count' => $tenant->view_count,
+                        'like_count' => $tenant->like_count,
+                        'active' => $tenant->active,
+                        'is_subscriber' => $tenant->is_subscriber,
+                        'deleted_at' => $tenant->deleted_at
+                    ]
+                );
 
-            $this->updateSiteTenantProducts($tenant->id);
+                $this->updateSiteTenantProducts($tenant->id);
+            }
         }
     }
 
     public function updateSiteTenantMetas($last_updated_at)
     {
         $site_renant_metas = SiteTenantMeta::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_renant_metas as $meta) {
-            SiteTenantMeta::on('mysql')->updateOrCreate(
-                [
-                    'id' => $meta->id
-                ],
-                [
-                    'site_tenant_id' => $meta->site_tenant_id,
-                    'meta_key' => $meta->meta_key,
-                    'meta_value' => $meta->meta_value,
-                    'deleted_at' => $meta->deleted_at
-                ]
-            );
+        if($site_renant_metas) {
+            foreach($site_renant_metas as $meta) {
+                SiteTenantMeta::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $meta->id
+                    ],
+                    [
+                        'site_tenant_id' => $meta->site_tenant_id,
+                        'meta_key' => $meta->meta_key,
+                        'meta_value' => $meta->meta_value,
+                        'deleted_at' => $meta->deleted_at
+                    ]
+                );
+            }
         }
     }
 
     public function updateSiteTenantProducts($tenant_id)
     {
         $site_tenant_products = SiteTenantProduct::on('mysql_server')->where('site_tenant_id', $tenant_id)->get();
-        SiteTenantProduct::on('mysql')->where('site_tenant_id', $tenant_id)->delete();
+        if($site_tenant_products) {
+            SiteTenantProduct::on('mysql')->where('site_tenant_id', $tenant_id)->delete();
 
-        foreach($site_tenant_products as $product) {
-            SiteTenantProduct::on('mysql')->updateOrCreate(
-                [
-                    'brand_product_promo_id' => $product->brand_product_promo_id,
-                    'site_tenant_id' => $product->site_tenant_id
-                ],
-            );
+            foreach($site_tenant_products as $product) {
+                SiteTenantProduct::on('mysql')->updateOrCreate(
+                    [
+                        'brand_product_promo_id' => $product->brand_product_promo_id,
+                        'site_tenant_id' => $product->site_tenant_id
+                    ],
+                );
+            }
         }
     }
 
     public function updateSiteAds($last_updated_at)
     {
         $site_ads = SiteAd::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($site_ads as $ad) {
+        if($site_ads) {
+            foreach($site_ads as $ad) {
 
-            $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
+                $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
 
-            SiteAd::on('mysql')->updateOrCreate(
-                [
-                    'id' => $ad->id
-                ],
-                [
-                    'company_id' => $ad->company_id,
-                    'name' => $ad->name,
-                    'ad_type' => $ad->ad_type,
-                    'screen_type' => $ad->screen_type,
-                    'file_path' => $ad->file_path,
-                    'file_type' => $ad->file_type,
-                    'display_order' => $ad->display_order,
-                    'display_duration' => $ad->display_duration,
-                    'start_date' => $ad->start_date,
-                    'end_date' => $ad->end_date,
-                    'active' => $ad->active,
-                    'deleted_at' => $ad->deleted_at
-                ]
-            );
+                SiteAd::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $ad->id
+                    ],
+                    [
+                        'company_id' => $ad->company_id,
+                        'name' => $ad->name,
+                        'ad_type' => $ad->ad_type,
+                        'screen_type' => $ad->screen_type,
+                        'file_path' => $ad->file_path,
+                        'file_type' => $ad->file_type,
+                        'display_order' => $ad->display_order,
+                        'display_duration' => $ad->display_duration,
+                        'start_date' => $ad->start_date,
+                        'end_date' => $ad->end_date,
+                        'active' => $ad->active,
+                        'deleted_at' => $ad->deleted_at
+                    ]
+                );
 
-            $this->updateAdScreens($ad->id);
-            $this->updateAdSites($ad->id);
-            $this->updateAdTenants($ad->id);
+                $this->updateAdScreens($ad->id);
+                $this->updateAdSites($ad->id);
+                $this->updateAdTenants($ad->id);
+            }
         }
     }
 
     public function updateAdScreens($ad_id)
     {
         $site_ad_screens = SiteAdScreen::on('mysql_server')->where('site_ad_id', $ad_id)->get();
-        SiteAdScreen::on('mysql')->where('site_ad_id', $ad_id)->delete();
+        if($site_ad_screens) {
+            SiteAdScreen::on('mysql')->where('site_ad_id', $ad_id)->delete();
 
-        foreach($site_ad_screens as $screen) {
-            SiteAdScreen::on('mysql')->updateOrCreate(
-                [
-                    'site_ad_id' => $screen->site_ad_id,
-                    'site_screen_id' => $screen->site_screen_id
-                ],
-            );
+            foreach($site_ad_screens as $screen) {
+                SiteAdScreen::on('mysql')->updateOrCreate(
+                    [
+                        'site_ad_id' => $screen->site_ad_id,
+                        'site_screen_id' => $screen->site_screen_id
+                    ],
+                );
+            }
         }
     }
 
     public function updateAdSites($ad_id)
     {
         $site_ad_sites = SiteAdSite::on('mysql_server')->where('site_ad_id', $ad_id)->get();
-        SiteAdSite::on('mysql')->where('site_ad_id', $ad_id)->delete();
+        if($site_ad_sites) {
+            SiteAdSite::on('mysql')->where('site_ad_id', $ad_id)->delete();
 
-        foreach($site_ad_sites as $site) {
-            SiteAdSite::on('mysql')->updateOrCreate(
-                [
-                    'site_ad_id' => $site->site_ad_id,
-                    'site_id' => $site->site_id
-                ],
-            );
+            foreach($site_ad_sites as $site) {
+                SiteAdSite::on('mysql')->updateOrCreate(
+                    [
+                        'site_ad_id' => $site->site_ad_id,
+                        'site_id' => $site->site_id
+                    ],
+                );
+            }
         }
     }
 
     public function updateAdTenants($ad_id)
     {
         $site_ad_sites = SiteAdTenant::on('mysql_server')->where('site_ad_id', $ad_id)->get();
-        SiteAdTenant::on('mysql')->where('site_ad_id', $ad_id)->delete();
+        if($site_ad_sites) {
+            SiteAdTenant::on('mysql')->where('site_ad_id', $ad_id)->delete();
 
-        foreach($site_ad_sites as $site) {
-            SiteAdTenant::on('mysql')->updateOrCreate(
-                [
-                    'site_ad_id' => $site->site_ad_id,
-                    'site_tenant_id' => $site->site_tenant_id
-                ],
-            );
+            foreach($site_ad_sites as $site) {
+                SiteAdTenant::on('mysql')->updateOrCreate(
+                    [
+                        'site_ad_id' => $site->site_ad_id,
+                        'site_tenant_id' => $site->site_tenant_id
+                    ],
+                );
+            }
         }
     }
 
     public function updateTags($last_updated_at)
     {
         $tags = Tag::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        foreach($tags as $tag) {
-            Tag::on('mysql')->updateOrCreate(
-                [
-                    'id' => $tag->id
-                ],
-                [
-                    'name' => $tag->name,
-                    'active' => $tag->active,
-                    'deleted_at' => $tag->deleted_at
-                ]
-            );
+        if($tags) {
+            foreach($tags as $tag) {
+                Tag::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $tag->id
+                    ],
+                    [
+                        'name' => $tag->name,
+                        'active' => $tag->active,
+                        'deleted_at' => $tag->deleted_at
+                    ]
+                );
+            }
         }
     }
 }
