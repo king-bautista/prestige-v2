@@ -149,6 +149,7 @@ class SiteAdsController extends AppBaseController implements SiteAdsControllerIn
         try
     	{
             $site_ad = SiteAd::find($request->id);
+            $site_ad->touch();
             $company_id = json_decode($request->company_id);
 
             $file_path_path = '';

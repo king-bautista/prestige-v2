@@ -30,6 +30,10 @@ use App\Models\SiteMap;
 use App\Models\SiteScreen;
 use App\Models\SitePoint;
 use App\Models\SitePointLink;
+use App\Models\SiteMapPaths;
+use App\Models\SiteTenant;
+use App\Models\SiteTenantMeta;
+use App\Models\SiteTenantProduct;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
@@ -43,6 +47,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $this->updateSiteMaps($last_updated_at);
         $this->updateSitePoints($last_updated_at);
         $this->updateSitePointLinks($last_updated_at);
+        $this->updateSiteMapPaths($last_updated_at);        
         $this->updateAmenities($last_updated_at);
         $this->updateClassifications($last_updated_at);
         $this->updateCategories($last_updated_at);
@@ -55,6 +60,8 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $this->updateCinemaSites($last_updated_at);
         $this->updateSiteScreens($last_updated_at);
         $this->updateSiteAds($last_updated_at);
+        $this->updateSiteTenants($last_updated_at);
+        $this->updateSiteTenantMetas($last_updated_at);
         return $this->updateDate();        
     }
     public function getLastUpdate()
@@ -82,7 +89,6 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     'name' => $amenity->name,
                     'active' => $amenity->active,
                     'deleted_at' => $amenity->deleted_at
-                    
                 ]
             );
         }
@@ -439,6 +445,27 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         } 
     }
 
+    public function updateSiteMapPaths($last_updated_at)
+    {
+        $site_map_paths = SiteMapPaths::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_map_paths as $path) {
+
+            SiteMapPaths::on('mysql')->updateOrCreate(
+                [
+                    'id' => $path->id
+                ],
+                [
+                    'point_orig' => $path->point_orig,
+                    'point_dest' => $path->point_dest,
+                    'path' => $path->path,
+                    'distance' => $path->distance,
+                    'site_id' => $path->site_id,
+                    'deleted_at' => $path->deleted_at,
+                ]
+            );
+        } 
+    }
+
     public function updateCompanies($last_updated_at)
     {
         $companies = Company::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
@@ -515,6 +542,65 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     'is_exclusive' => $screen->is_exclusive,
                     'deleted_at' => $screen->deleted_at
                 ]
+            );
+        }
+    }
+
+    public function updateSiteTenants($last_updated_at)
+    {
+        $site_tenants = SiteTenant::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_tenants as $tenant) {
+            SiteTenant::on('mysql')->updateOrCreate(
+                [
+                    'id' => $tenant->id
+                ],
+                [
+                    'brand_id' => $tenant->brand_id,
+                    'site_id' => $tenant->site_id,
+                    'site_building_id' => $tenant->site_building_id,
+                    'site_building_level_id' => $tenant->site_building_level_id,
+                    'company_id' => $tenant->company_id,
+                    'view_count' => $tenant->view_count,
+                    'like_count' => $tenant->like_count,
+                    'active' => $tenant->active,
+                    'is_subscriber' => $tenant->is_subscriber,
+                    'deleted_at' => $tenant->deleted_at
+                ]
+            );
+
+            $this->updateSiteTenantProducts($tenant->id);
+        }
+    }
+
+    public function updateSiteTenantMetas($last_updated_at)
+    {
+        $site_renant_metas = SiteTenantMeta::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        foreach($site_renant_metas as $meta) {
+            SiteTenantMeta::on('mysql')->updateOrCreate(
+                [
+                    'id' => $meta->id
+                ],
+                [
+                    'site_tenant_id' => $meta->site_tenant_id,
+                    'meta_key' => $meta->meta_key,
+                    'meta_value' => $meta->meta_value,
+                    'deleted_at' => $meta->deleted_at
+                ]
+            );
+        }
+    }
+
+    public function updateSiteTenantProducts($tenant_id)
+    {
+        $site_tenant_products = SiteTenantProduct::on('mysql_server')->where('site_tenant_id', $tenant_id)->get();
+        SiteTenantProduct::on('mysql')->where('site_tenant_id', $tenant_id)->delete();
+
+        foreach($site_tenant_products as $product) {
+            SiteTenantProduct::on('mysql')->updateOrCreate(
+                [
+                    'brand_product_promo_id' => $product->brand_product_promo_id,
+                    'site_tenant_id' => $product->site_tenant_id
+                ],
             );
         }
     }

@@ -140,6 +140,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         try
     	{
             $site_tenant = SiteTenant::find($request->id);
+            $site_tenant->touch();
 
             $subscriber_logo = $request->file('subscriber_logo');
             $subscriber_logo_path = '';
@@ -310,6 +311,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         try
         {
             $tenant_product = SiteTenant::find($request->site_tenant_id);
+            $tenant_product->touch();
             $tenant_product->saveProducts($request->product_ids);
 
             return $this->response($tenant_product, 'Successfully saved!', 200);

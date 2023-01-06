@@ -128,6 +128,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
         try
     	{
             $site = Site::find($request->id);
+            $site->touch();
 
             $site_logo = $request->file('site_logo');
             $site_logo_path = '';
