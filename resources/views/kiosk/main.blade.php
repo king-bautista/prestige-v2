@@ -79,7 +79,7 @@
 
     setInterval(function(){ 
         $.get( "/api/v1/get-update", function( data ) {
-            if(data.length > 0) {
+            if(data.data.length > 0) {
                 location.reload();
             }
         });
