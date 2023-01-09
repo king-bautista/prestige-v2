@@ -38,6 +38,8 @@ use App\Models\Tag;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
+    public $data = [];
+
     public function updateContent()
     {
         $last_updated_at = $this->getLastUpdate();
@@ -76,7 +78,8 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
 
     public function updateDate()
     {
-        return LastUpdateAt::first()->update(['last_updated_at' => date('Y-m-d H:i:s')]);
+        $updated = LastUpdateAt::first()->update(['last_updated_at' => date('Y-m-d H:i:s')]);
+        return $this->response($this->data, 'Successfully Retreived!', 200);
     }
 
     public function updateAmenities($last_updated_at)
@@ -84,7 +87,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $amenities = Amenity::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($amenities) {
             foreach($amenities as $amenity) {
-                Amenity::on('mysql')->updateOrCreate(
+                $this->data[] = Amenity::on('mysql')->updateOrCreate(
                     [
                         'id' => $amenity->id
                     ],
@@ -103,7 +106,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $classifications = Classification::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($classifications) {
             foreach($classifications as $classification) {
-                Classification::on('mysql')->updateOrCreate(
+                $this->data[] = Classification::on('mysql')->updateOrCreate(
                     [
                         'id' => $classification->id
                     ],
@@ -123,7 +126,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $categories = Category::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($categories) {
             foreach($categories as $category) {
-                Category::on('mysql')->updateOrCreate(
+                $this->data[] = Category::on('mysql')->updateOrCreate(
                     [
                         'id' => $category->id
                     ],
@@ -147,7 +150,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $category_labels = CategoryLabel::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($category_labels) {
             foreach($category_labels as $label) {
-                CategoryLabel::on('mysql')->updateOrCreate(
+                $this->data[] = CategoryLabel::on('mysql')->updateOrCreate(
                     [
                         'id' => $label->id
                     ],
@@ -181,7 +184,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
 
                 $this->saveMaterial('uploads/media/brand/', $brand->logo);
 
-                Brand::on('mysql')->updateOrCreate(
+                $this->data[] = Brand::on('mysql')->updateOrCreate(
                     [
                         'id' => $brand->id
                     ],
@@ -208,7 +211,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             BrandSupplemental::on('mysql')->where('brand_id', $brand_id)->delete();
 
             foreach($brand_supplemental as $supplemental) {
-                BrandSupplemental::on('mysql')->updateOrCreate(
+                $this->data[] = BrandSupplemental::on('mysql')->updateOrCreate(
                     [
                         'brand_id' => $supplemental->brand_id,
                         'supplemental_id' => $supplemental->supplemental_id
@@ -225,7 +228,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             BrandTag::on('mysql')->where('brand_id', $brand_id)->delete();
 
             foreach($brand_tags as $tags) {
-                BrandTag::on('mysql')->updateOrCreate(
+                $this->data[] = BrandTag::on('mysql')->updateOrCreate(
                     [
                         'brand_id' => $tags->brand_id,
                         'tag_id' => $tags->tag_id
@@ -244,7 +247,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 $this->saveMaterial('uploads/media/brand/products/', $product->thumbnail);
                 $this->saveMaterial('uploads/media/brand/products/', $product->image_url);
 
-                BrandProductPromos::on('mysql')->updateOrCreate(
+                $this->data[] = BrandProductPromos::on('mysql')->updateOrCreate(
                     [
                         'id' => $product->id
                     ],
@@ -272,7 +275,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $cinema_genre = CinemaGenre::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($cinema_genre) {
             foreach($cinema_genre as $genre) {
-                CinemaGenre::on('mysql')->updateOrCreate(
+                $this->data[] = CinemaGenre::on('mysql')->updateOrCreate(
                     [
                         'id' => $genre->id
                     ],
@@ -291,7 +294,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $cinema_sites = CinemaSite::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($cinema_sites) {
             foreach($cinema_sites as $cinema) {
-                CinemaSite::on('mysql')->updateOrCreate(
+                $this->data[] = CinemaSite::on('mysql')->updateOrCreate(
                     [
                         'id' => $cinema->id
                     ],
@@ -307,6 +310,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
 
     public function updateSites($last_updated_at)
     {
+        $data = [];
         $sites = Site::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($sites) {
             foreach($sites as $site) {
@@ -314,7 +318,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 $this->saveMaterial('uploads/media/sites/logos/', $site->site_logo);
                 $this->saveMaterial('uploads/media/sites/banners/', $site->site_banner);
 
-                Site::on('mysql')->updateOrCreate(
+                $this->data[] = Site::on('mysql')->updateOrCreate(
                     [
                         'id' => $site->id
                     ],
@@ -327,7 +331,8 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                         'deleted_at' => $site->deleted_at
                     ]
                 );
-            }  
+            }
+            return $data;
         }
     }
 
@@ -336,7 +341,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $site_metas = SiteMeta::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($site_metas) {
             foreach($site_metas as $meta) {
-                SiteMeta::on('mysql')->updateOrCreate(
+                $this->data[] = SiteMeta::on('mysql')->updateOrCreate(
                     [
                         'id' => $meta->id
                     ],
@@ -357,7 +362,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_buildings) {
             foreach($site_buildings as $building) {
 
-                SiteBuilding::on('mysql')->updateOrCreate(
+                $this->data[] = SiteBuilding::on('mysql')->updateOrCreate(
                     [
                         'id' => $building->id
                     ],
@@ -379,7 +384,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_building_levels) {
             foreach($site_building_levels as $building_level) {
 
-                SiteBuildingLevel::on('mysql')->updateOrCreate(
+                $this->data[] = SiteBuildingLevel::on('mysql')->updateOrCreate(
                     [
                         'id' => $building_level->id
                     ],
@@ -401,7 +406,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_maps) {
             foreach($site_maps as $map) {
 
-                SiteMap::on('mysql')->updateOrCreate(
+                $this->data[] = SiteMap::on('mysql')->updateOrCreate(
                     [
                         'id' => $map->id
                     ],
@@ -436,7 +441,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_points) {
             foreach($site_points as $point) {
 
-                SitePoint::on('mysql')->updateOrCreate(
+                $this->data[] = SitePoint::on('mysql')->updateOrCreate(
                     [
                         'id' => $point->id
                     ],
@@ -466,7 +471,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_point_links) {
             foreach($site_point_links as $link) {
 
-                SitePointLink::on('mysql')->updateOrCreate(
+                $this->data[] = SitePointLink::on('mysql')->updateOrCreate(
                     [
                         'id' => $link->id
                     ],
@@ -487,7 +492,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_map_paths) {
             foreach($site_map_paths as $path) {
 
-                SiteMapPaths::on('mysql')->updateOrCreate(
+                $this->data[] = SiteMapPaths::on('mysql')->updateOrCreate(
                     [
                         'id' => $path->id
                     ],
@@ -509,7 +514,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $companies = Company::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($companies) {
             foreach($companies as $company) {
-                Company::on('mysql')->updateOrCreate(
+                $this->data[] = Company::on('mysql')->updateOrCreate(
                     [
                         'id' => $company->id
                     ],
@@ -538,7 +543,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 $this->saveMaterial('uploads/media/category/', $category->kiosk_image_primary);
                 $this->saveMaterial('uploads/media/category/strips/', $category->kiosk_image_top);
 
-                CompanyCategory::on('mysql')->updateOrCreate(
+                $this->data[] = CompanyCategory::on('mysql')->updateOrCreate(
                     [
                         'id' => $category->id
                     ],
@@ -566,7 +571,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $site_screens = SiteScreen::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($site_screens) {
             foreach($site_screens as $screen) {
-                SiteScreen::on('mysql')->updateOrCreate(
+                $this->data[] = SiteScreen::on('mysql')->updateOrCreate(
                     [
                         'id' => $screen->id
                     ],
@@ -595,7 +600,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $site_tenants = SiteTenant::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($site_tenants) {
             foreach($site_tenants as $tenant) {
-                SiteTenant::on('mysql')->updateOrCreate(
+                $this->data[] = SiteTenant::on('mysql')->updateOrCreate(
                     [
                         'id' => $tenant->id
                     ],
@@ -623,7 +628,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $site_renant_metas = SiteTenantMeta::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($site_renant_metas) {
             foreach($site_renant_metas as $meta) {
-                SiteTenantMeta::on('mysql')->updateOrCreate(
+                $this->data[] = SiteTenantMeta::on('mysql')->updateOrCreate(
                     [
                         'id' => $meta->id
                     ],
@@ -645,7 +650,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             SiteTenantProduct::on('mysql')->where('site_tenant_id', $tenant_id)->delete();
 
             foreach($site_tenant_products as $product) {
-                SiteTenantProduct::on('mysql')->updateOrCreate(
+                $this->data[] = SiteTenantProduct::on('mysql')->updateOrCreate(
                     [
                         'brand_product_promo_id' => $product->brand_product_promo_id,
                         'site_tenant_id' => $product->site_tenant_id
@@ -657,13 +662,14 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
 
     public function updateSiteAds($last_updated_at)
     {
+        $data = [];
         $site_ads = SiteAd::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($site_ads) {
             foreach($site_ads as $ad) {
 
                 $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
 
-                SiteAd::on('mysql')->updateOrCreate(
+                $this->data[] = SiteAd::on('mysql')->updateOrCreate(
                     [
                         'id' => $ad->id
                     ],
@@ -687,6 +693,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 $this->updateAdSites($ad->id);
                 $this->updateAdTenants($ad->id);
             }
+            return $data;
         }
     }
 
@@ -697,7 +704,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             SiteAdScreen::on('mysql')->where('site_ad_id', $ad_id)->delete();
 
             foreach($site_ad_screens as $screen) {
-                SiteAdScreen::on('mysql')->updateOrCreate(
+                $this->data[] = SiteAdScreen::on('mysql')->updateOrCreate(
                     [
                         'site_ad_id' => $screen->site_ad_id,
                         'site_screen_id' => $screen->site_screen_id
@@ -714,7 +721,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             SiteAdSite::on('mysql')->where('site_ad_id', $ad_id)->delete();
 
             foreach($site_ad_sites as $site) {
-                SiteAdSite::on('mysql')->updateOrCreate(
+                $this->data[] = SiteAdSite::on('mysql')->updateOrCreate(
                     [
                         'site_ad_id' => $site->site_ad_id,
                         'site_id' => $site->site_id
@@ -731,7 +738,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             SiteAdTenant::on('mysql')->where('site_ad_id', $ad_id)->delete();
 
             foreach($site_ad_sites as $site) {
-                SiteAdTenant::on('mysql')->updateOrCreate(
+                $this->data[] = SiteAdTenant::on('mysql')->updateOrCreate(
                     [
                         'site_ad_id' => $site->site_ad_id,
                         'site_tenant_id' => $site->site_tenant_id
@@ -746,7 +753,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $tags = Tag::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
         if($tags) {
             foreach($tags as $tag) {
-                Tag::on('mysql')->updateOrCreate(
+                $this->data[] = Tag::on('mysql')->updateOrCreate(
                     [
                         'id' => $tag->id
                     ],

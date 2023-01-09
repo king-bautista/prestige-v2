@@ -335,8 +335,8 @@ class MainController extends AppBaseController
 
     public function getShowing()
     {
-        // try
-        // {
+        try
+        {
             $start_date =  date('Y-m-d 00:00:00');
             $end_date =  date('Y-m-d 23:59:59');
 
@@ -351,14 +351,14 @@ class MainController extends AppBaseController
             
             $now_showing = array_chunk($now_showing, 3);
             return $this->response($now_showing, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }    
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }    
     }
 
     public function getFloors()
