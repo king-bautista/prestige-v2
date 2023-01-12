@@ -11283,7 +11283,7 @@ __webpack_require__.r(__webpack_exports__);
         updated_at: "Last Updated"
       },
       primaryKey: "id",
-      dataUrl: "/admin/site/manage-map/list/" + this.site_id,
+      dataUrl: "/admin/site/manage-map/list/" + this.site_screen_id,
       actionButtons: {
         edit: {
           title: 'Edit this Map',
@@ -13942,55 +13942,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+var count = 2;
+var banner_array = [];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Banners",
   data: function data() {
     return {
-      banners: []
+      banners: [],
+      helper: new Helpers()
     };
   },
   created: function created() {
     this.getBanners();
   },
   methods: {
-    getFileExtension: function getFileExtension(fileType) {
-      switch (fileType) {
-        case 'ogg':
-        case 'ogv':
-        case 'mp4':
-        case 'wmv':
-        case 'avi':
-        case 'mkv':
-        case 'video/ogg':
-        case 'video/ogv':
-        case 'video/mp4':
-        case 'video/wmv':
-        case 'video/avi':
-        case 'video/mkv':
-          return 'video';
-          break;
-        case 'jpeg':
-        case 'jpg':
-        case 'png':
-        case 'gif':
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-        case 'image/gif':
-          return 'image';
-          break;
-        default:
-          return false;
-          break;
-      }
-    },
     getBanners: function getBanners() {
       var _this = this;
       axios.get('/api/v1/advertisements/banners').then(function (response) {
         _this.banners = response.data.data;
         banner_array = response.data.data;
       });
+    },
+    appendBanners: function appendBanners() {
+      var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var helper = new Helpers();
+      var class_name = 'carousel-item';
+      if (index != null) {
+        count = index;
+        $('#carousel-banner .carousel-item').removeClass('active');
+        class_name = 'carousel-item active';
+      }
+      if (banner_array.length >= count) {
+        var type = 'image';
+        type = helper.getFileExtension(banner_array[count].file_type);
+        var carousel_item = '';
+        carousel_item += '<div data-interval="' + banner_array[count].display_duration * 1000 + '" data-index="' + count + '" data-id="' + banner_array[count].id + '" class="' + class_name + '">';
+        if (type == 'video') {
+          carousel_item += '<span>';
+          carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="logs" :data-id="' + banner_array[count].id + '" data-type="Banner Ad">';
+          carousel_item += '<source src="' + banner_array[count].material_image_path + '" type="video/ogg">';
+          carousel_item += 'Your browser does not support the video tag.';
+          carousel_item += '</video>';
+          carousel_item += '</span>';
+        } else {
+          carousel_item += '<span>';
+          carousel_item += '<img src="' + banner_array[count].material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="logs" :data-id="' + banner_array[count].id + '" data-type="Banner Ad">';
+          carousel_item += '</span>';
+        }
+        carousel_item += '</div>';
+        $("#carousel-banner").append(carousel_item);
+        count++;
+      }
     }
+  },
+  mounted: function mounted() {
+    var obj = this;
+    $(document).ready(function () {
+      $('#banner-ads-carousel').on('slide.bs.carousel', function () {
+        $('#carousel-banner .carousel-item:first').remove();
+        obj.appendBanners();
+        // reset rotation
+        if (banner_array.length == count) {
+          count = 0;
+        }
+      });
+    });
   }
 });
 
@@ -14511,48 +14527,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+var countscreen = 2;
+var fullscreen_array = [];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Fullscreen",
   data: function data() {
     return {
-      fullscreen: []
+      fullscreen: [],
+      helper: new Helpers()
     };
   },
   created: function created() {
     this.getFullscreen();
   },
   methods: {
-    getFileExtension: function getFileExtension(fileType) {
-      switch (fileType) {
-        case 'ogg':
-        case 'ogv':
-        case 'mp4':
-        case 'wmv':
-        case 'avi':
-        case 'mkv':
-        case 'video/ogg':
-        case 'video/ogv':
-        case 'video/mp4':
-        case 'video/wmv':
-        case 'video/avi':
-        case 'video/mkv':
-          return 'video';
-          break;
-        case 'jpeg':
-        case 'jpg':
-        case 'png':
-        case 'gif':
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-        case 'image/gif':
-          return 'image';
-          break;
-        default:
-          return false;
-          break;
-      }
-    },
     getFullscreen: function getFullscreen() {
       var _this = this;
       axios.get('/api/v1/advertisements/fullscreen').then(function (response) {
@@ -14560,11 +14548,55 @@ __webpack_require__.r(__webpack_exports__);
         fullscreen_array = response.data.data;
       });
     },
+    appendFullscreen: function appendFullscreen() {
+      var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var helper = new Helpers();
+      var class_name = 'carousel-item';
+      if (index != null) {
+        countscreen = index;
+        $('#carousel-fullscreen .carousel-item').removeClass('active');
+        class_name = 'carousel-item active';
+      }
+      if (fullscreen_array.length >= countscreen) {
+        var type = 'image';
+        type = helper.getFileExtension(fullscreen_array[countscreen].file_type);
+        var carousel_item = '';
+        carousel_item += '<div data-interval="' + fullscreen_array[countscreen].display_duration * 1000 + '" data-index="' + countscreen + '" data-id="' + fullscreen_array[countscreen].id + '" class="' + class_name + '">';
+        if (type == 'video') {
+          carousel_item += '<span>';
+          carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
+          carousel_item += '<source src="' + fullscreen_array[countscreen].material_image_path + '" type="video/ogg">';
+          carousel_item += 'Your browser does not support the video tag.';
+          carousel_item += '</video>';
+          carousel_item += '</span>';
+        } else {
+          carousel_item += '<span>';
+          carousel_item += '<img src="' + fullscreen_array[countscreen].material_image_path + '" style="margin: 0px; height: 100%; width: 100%;">';
+          carousel_item += '</span>';
+        }
+        carousel_item += '</div>';
+        $("#carousel-fullscreen").append(carousel_item);
+        countscreen++;
+      }
+    },
     reload_page: function reload_page() {
       $('.h-button').removeClass('active');
       $('.home-button').addClass('active');
       this.$router.push("/")["catch"](function () {});
     }
+  },
+  mounted: function mounted() {
+    var obj = this;
+    $(document).ready(function () {
+      $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
+        $('#carousel-fullscreen .carousel-item:first').remove();
+        obj.appendFullscreen();
+        // reset rotation
+        if (fullscreen_array.length == countscreen) {
+          countscreen = 0;
+        }
+      });
+    });
   }
 });
 
@@ -24904,7 +24936,8 @@ var render = function render() {
         "data-id": banner.id,
         "data-interval": banner.display_duration * 1000
       }
-    }, [_vm.getFileExtension(banner.file_type) == "video" ? _c("span", [_c("video", {
+    }, [_vm.helper.getFileExtension(banner.file_type) == "video" ? _c("span", [_c("video", {
+      staticClass: "logs",
       staticStyle: {
         "border-radius": "20px",
         margin: "0px",
@@ -24913,7 +24946,9 @@ var render = function render() {
       },
       attrs: {
         muted: "muted",
-        autoplay: "true"
+        autoplay: "true",
+        "data-id": banner.id,
+        "data-type": "Banner Ad"
       },
       domProps: {
         muted: true
@@ -24923,7 +24958,8 @@ var render = function render() {
         src: banner.material_image_path,
         type: "video/ogg"
       }
-    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.getFileExtension(banner.file_type) == "image" ? _c("span", [_c("img", {
+    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.helper.getFileExtension(banner.file_type) == "image" ? _c("span", [_c("img", {
+      staticClass: "logs",
       staticStyle: {
         "border-radius": "20px",
         margin: "0px",
@@ -24931,7 +24967,9 @@ var render = function render() {
         width: "100%"
       },
       attrs: {
-        src: banner.material_image_path
+        src: banner.material_image_path,
+        "data-id": banner.id,
+        "data-type": "Banner Ad"
       }
     })]) : _vm._e()]);
   }), 0)])]);
@@ -25513,7 +25551,8 @@ var render = function render() {
       }
     }, [_c("img", {
       attrs: {
-        src: category.kiosk_image_primary_path
+        src: category.kiosk_image_primary_path,
+        click: "logs.setLogs();"
       }
     }), _vm._v(" "), _c("div", {
       staticClass: "hc-button-align",
@@ -26645,7 +26684,7 @@ var render = function render() {
         "data-id": screen.id,
         "data-interval": screen.display_duration * 1000
       }
-    }, [_vm.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
+    }, [_vm.helper.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
       staticStyle: {
         margin: "0px",
         height: "100%",
@@ -26663,7 +26702,7 @@ var render = function render() {
         src: screen.material_image_path,
         type: "video/ogg"
       }
-    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _vm.getFileExtension(screen.file_type) == "image" ? _c("span", [_c("img", {
+    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _vm.helper.getFileExtension(screen.file_type) == "image" ? _c("span", [_c("img", {
       staticStyle: {
         margin: "0px",
         height: "100%",
@@ -27497,6 +27536,10 @@ var routes = [{
   component: _components_Kiosk_About_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
   name: 'about'
 }];
+
+// import HelperClass from '../../public/js/helper.js';
+// Vue.prototype.$helperClass = HelperClass;
+
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: routes

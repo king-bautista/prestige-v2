@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category)">
-                        <img :src="category.kiosk_image_primary_path">
+                        <img :src="category.kiosk_image_primary_path" click="logs.setLogs();">
                         <div id="hc-button1" class="hc-button-align">{{ category.label }}</div>
                     </div>
                 </div>

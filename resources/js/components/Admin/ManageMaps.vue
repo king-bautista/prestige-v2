@@ -234,7 +234,7 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/site/manage-map/list/"+this.site_id,
+            	dataUrl: "/admin/site/manage-map/list/"+this.site_screen_id,
             	actionButtons: {
             		edit: {
             			title: 'Edit this Map',
