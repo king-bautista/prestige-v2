@@ -4,13 +4,13 @@
             <div id="fullscreen-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel">
                 <div class="carousel-inner" id="carousel-fullscreen">
                     <div v-for="(screen, index) in fullscreen.slice(0,2)" :data-index="index" :data-id="screen.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(screen.display_duration*1000)">
-                        <span v-if="getFileExtension(screen.file_type) == 'video'">
+                        <span v-if="helper.getFileExtension(screen.file_type) == 'video'">
                             <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
                                 <source :src="screen.material_image_path" type="video/ogg">
                                 Your browser does not support the video tag.
                             </video>
                         </span>
-                        <span v-else-if="getFileExtension(screen.file_type) == 'image'">
+                        <span v-else-if="helper.getFileExtension(screen.file_type) == 'image'">
                             <img :src="screen.material_image_path" style="margin: 0px; height: 100%; width: 100%;">
                         </span>
                     </div>
@@ -21,11 +21,15 @@
     </div>
 </template>
 <script> 
+    var countscreen = 2;
+    var fullscreen_array = [];
+
 	export default {
         name: "Fullscreen",
         data() {
             return {
                 fullscreen: [],
+                helper: new Helpers(),
             };
         },
 
@@ -33,39 +37,7 @@
             this.getFullscreen();
         },
 
-        methods: {
-            getFileExtension(fileType) {			
-                switch(fileType) {
-                    case 'ogg':
-                    case 'ogv':
-                    case 'mp4':
-                    case 'wmv':
-                    case 'avi':
-                    case 'mkv':
-                    case 'video/ogg':
-                    case 'video/ogv':
-                    case 'video/mp4':
-                    case 'video/wmv':
-                    case 'video/avi':
-                    case 'video/mkv':
-                        return 'video';
-                        break;
-                    case 'jpeg':
-                    case 'jpg':
-                    case 'png':
-                    case 'gif':
-                    case 'image/jpeg':
-                    case 'image/jpg':
-                    case 'image/png':
-                    case 'image/gif':
-                        return 'image';
-                        break;
-                    default:
-						return false;
-                        break;
-                }
-            },
-
+        methods: {          
             getFullscreen: function() {
                 axios.get('/api/v1/advertisements/fullscreen')
                 .then(response => {
@@ -74,11 +46,60 @@
                 });
             },
 
+            appendFullscreen: function(index = null) {
+                var helper = new Helpers();
+                var class_name = 'carousel-item';
+                if(index != null) {
+                    countscreen = index;
+                    $('#carousel-fullscreen .carousel-item').removeClass('active');
+                    class_name = 'carousel-item active';
+                }
+
+                if((fullscreen_array.length) >= countscreen) {
+
+                    var type = 'image';
+                    type = helper.getFileExtension(fullscreen_array[countscreen].file_type);
+
+                    var carousel_item = '';
+                    carousel_item += '<div data-interval="'+fullscreen_array[countscreen].display_duration*1000+'" data-index="'+countscreen+'" data-id="'+fullscreen_array[countscreen].id+'" class="'+class_name+'">';
+                        if(type == 'video') {
+                            carousel_item += '<span>';
+                            carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
+                            carousel_item += '<source src="'+fullscreen_array[countscreen].material_image_path+'" type="video/ogg">';
+                            carousel_item += 'Your browser does not support the video tag.';
+                            carousel_item += '</video>';
+                            carousel_item += '</span>';
+                        }
+                        else {
+                            carousel_item += '<span>';
+                            carousel_item += '<img src="'+fullscreen_array[countscreen].material_image_path+'" style="margin: 0px; height: 100%; width: 100%;">';
+                            carousel_item += '</span>';
+                        }
+                    carousel_item += '</div>';
+                    $("#carousel-fullscreen").append(carousel_item);
+                    countscreen++;
+                }
+            },
+
             reload_page: function() {
                 $('.h-button').removeClass('active');
                 $('.home-button').addClass('active');
                 this.$router.push("/").catch(()=>{});
             },
+        },
+
+        mounted() {
+            var obj = this;
+            $(document).ready(function(){
+                $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
+                    $('#carousel-fullscreen .carousel-item:first').remove();
+                    obj.appendFullscreen();
+                    // reset rotation
+                    if(fullscreen_array.length == countscreen) {
+                        countscreen = 0;                        
+                    }
+                });
+            });
         },
     };
 </script>

@@ -19,9 +19,7 @@
         <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
     </head>
 
-    <body>
-        @stack('scripts_var') <!-- To include script links -->
-        
+    <body>       
         <div id="app">
         
             @yield('content')
@@ -39,6 +37,7 @@
         <script src="{{ URL::to('assets/js/popper-v2.min.js') }}"></script>	
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
         <script src="{{ URL::to('js/way-finding.js') }}"></script>
+        <script src="{{ URL::to('js/helper.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>

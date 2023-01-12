@@ -19,7 +19,7 @@ class CreateSiteAdsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('company_id')->unsigned()->nullable()->index();
             $table->string('name');
-            $table->enum('ad_type', ['Events', 'Online', 'Banners', 'Fullscreen', 'Pop-Up']);
+            $table->enum('ad_type', ['Events', 'Online', 'Banners', 'Fullscreen', 'Pop-Up', 'Promos']);
             $table->mediumText('file_path')->nullable();
             $table->string('file_type')->nullable();
             $table->integer('display_order');
