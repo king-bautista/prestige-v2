@@ -111,9 +111,6 @@ const routes = [
     },
 ];
 
-// import HelperClass from '../../public/js/helper.js';
-// Vue.prototype.$helperClass = HelperClass;
-
 const router = new VueRouter({
     mode: 'history',
     routes 

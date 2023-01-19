@@ -46,6 +46,8 @@ class SiteAdViewModel extends Model
         'tenants',
         'screens',
         'site_names',
+        'tenant_ids',
+        'tenant_brand_ids',
         'tenant_names',
         'screen_names',
         'company_name',
@@ -115,6 +117,18 @@ class SiteAdViewModel extends Model
     {
         $tenant_names = $this->getTenantsAttribute()->pluck('brand_site_name')->toArray();
         return implode(', ', $tenant_names);
+    }
+
+    public function getTenantIdsAttribute()
+    {
+        $tenant_ids = $this->getTenantsAttribute()->pluck('id')->toArray();
+        return implode(', ', $tenant_ids);
+    }
+
+    public function getTenantBrandIdsAttribute()
+    {
+        $tenant_ids = $this->getTenantsAttribute()->pluck('brand_id')->toArray();
+        return implode(', ', $tenant_ids);
     }
 
     public function getScreenNamesAttribute()

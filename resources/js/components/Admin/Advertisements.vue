@@ -40,12 +40,6 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
-								</div>
-							</div>
-							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.company_id"
@@ -59,66 +53,24 @@
 								</div>
 							</div>
                             <div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Associate Sites <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<multiselect v-model="advertisements.sites"
-										:options="sites"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Sites"
-										label="name"
-										track-by="name"
-                                        @select="toggleSelected"
-										@remove="toggleUnSelected">
-									</multiselect> 
+                                    <multiselect v-model="advertisements.brand_id" 
+									track-by="name" 
+									label="name" 
+									placeholder="Select Brand" 
+									:options="brands" 
+									:searchable="true" 
+									:allow-empty="false">
+                                    </multiselect> 
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Tenants <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<multiselect v-model="advertisements.tenants"
-										:options="tenants"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="Select Tenants"
-										label="brand_site_name"
-										track-by="brand_site_name"
-										@select="toggleSelectedTenant"
-										@remove="toggleUnSelectedTenant">
-										<span slot="noOptions">
-											Please select a associate sites.
-										</span>
-									</multiselect> 
+									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="advertisements.screen_type" @change="getScreens($event.target.value)">
-									    <option value="">Select Screen Type</option>
-									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
-								    </select>
-								</div>
-							</div>						
-							<div class="form-group row" v-if="advertisements.screen_type != 'LED funnel'">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Available Screens <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<multiselect v-model="advertisements.screens"
-										:options="screens"
-										:multiple="true"
-										:close-on-select="true"
-										placeholder="All Screens"
-										label="screen_type_name"
-										track-by="screen_type_name"
-										@select="toggleSelectedScreen"
-										@remove="toggleUnSelectedScreen">
-										<span slot="noOptions">
-											Please select a associate sites and screen type.
-										</span>
-									</multiselect> 
-								</div>
-							</div>
-							
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
@@ -147,12 +99,6 @@
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"> 
 									<footer class="blockquote-footer">In Seconds</footer>
-								</div>
-								<div class="col-sm-3">
-                                    <date-picker v-model="advertisements.start_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
-								</div>
-								<div class="col-sm-3 text-center">
-                                    <date-picker v-model="advertisements.end_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -183,15 +129,7 @@
 	import Table from '../Helpers/Table';
     // Import this component
     import Multiselect from 'vue-multiselect';
-    // Import date picker js
-    import datePicker from 'vue-bootstrap-datetimepicker';    
-    // Import date picker css
-    import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
-	// import the component
-	import Treeselect from '@riophae/vue-treeselect'
-	// import the styles
-	import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-	
+
 	export default {
         name: "Advertisements",
         props: {
@@ -205,32 +143,18 @@
                 advertisements: {
                     id: '',
 					company_id: '',
-                    name: '',
+					brand_id: '',
 					ad_type: '',
+                    name: '',
+                    descriptions: '',
 					file_path: '',
 					display_duration: '',
-					start_date: '',
-					end_date: '',
-					sites: '',
-					tenants: '',
-					screen_type: '',
-					screens: '',
                     active: true,           
                 },
 				material: '',
 				material_type: '',
                 companies: [],
-                sites: [],
-                site_ids: [],
-                tenants: [],
-                tenant_ids: [],
-				screens: [],
-				screen_ids: [],
-				screen_types: ['Directory','LED','LFD','LED funnel'],
-                options: {
-                    format: 'YYYY/MM/DD',
-                    useCurrent: false,
-                },
+                brands: [],
                 add_record: true,
                 edit_record: false,
             	dataFields: {
@@ -241,11 +165,7 @@
             		name: "Name", 
 					company_name: "Company",
 					screen_type: "Screen Type",
-            		site_names: "Site Name/s", 
-					screen_names: "Screen/s",
-            		tenant_names: "Tenant/s", 
 					duration: "Duration",
-					air_dates: "Airdates",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -257,7 +177,7 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/advertisement/list",
+            	dataUrl: "/admin/advertisement/list/"+this.ad_type,
             	actionButtons: {
             		edit: {
             			title: 'Edit this Advertisements',
@@ -289,8 +209,8 @@
         },
 
         created(){
-            this.getSites();
 			this.getCompany();
+			this.getBrands();
         },
 
         methods: {
@@ -339,61 +259,9 @@
                 .then(response => this.companies = response.data.data);
 			},
 
-            getSites: function() {
-                axios.get('/admin/site/get-all')
-                .then(response => this.sites = response.data.data);
-            },
-
-            getTenants: function() {
-                var site_ids = '';
-                for (var i = 0; i < this.site_ids.length; i++) {
-                    site_ids += this.site_ids[i]+',';
-                }
-                axios.get('/admin/site/tenant/get-tenants/'+site_ids)
-                .then(response => this.tenants = response.data.data);
-            },
-
-			getScreens: function(type) {
-                var site_ids = '';
-                for (var i = 0; i < this.site_ids.length; i++) {
-                    site_ids += this.site_ids[i]+',';
-                }
-                axios.get('/admin/site/screen/get-screens/'+site_ids+'/'+type)
-                .then(response => this.screens = response.data.data);
-            },
-
-            toggleSelected: function(value, id) {
-				this.site_ids.push(value.id);
-                this.getTenants();
-			},
-
-			toggleUnSelected: function(value, id) {
-				const index = this.site_ids.indexOf(value.id);
-				if (index > -1) { // only splice array when item is found
-					this.site_ids.splice(index, 1); // 2nd parameter means remove one item only
-				}
-			},
-
-			toggleSelectedTenant: function(value, id) {
-				this.tenant_ids.push(value.id);
-			},
-
-			toggleUnSelectedTenant: function(value, id) {
-				const index = this.tenant_ids.indexOf(value.id);
-				if (index > -1) { // only splice array when item is found
-					this.tenant_ids.splice(index, 1); // 2nd parameter means remove one item only
-				}
-			},
-
-			toggleSelectedScreen: function(value, id) {
-				this.screen_ids.push(value.id);
-			},
-
-			toggleUnSelectedScreen: function(value, id) {
-				const index = this.screen_ids.indexOf(value.id);
-				if (index > -1) { // only splice array when item is found
-					this.screen_ids.splice(index, 1); // 2nd parameter means remove one item only
-				}
+			getBrands: function() {
+				axios.get('/admin/brand/get-all')
+                .then(response => this.brands = response.data.data);
 			},
 
 			materialChange: function(e) {
@@ -407,39 +275,25 @@
 				this.add_record = true;
 				this.edit_record = false;
 				this.advertisements.company_id = null;
+				this.advertisements.brand_id = null;
                 this.advertisements.name = '';
 				this.advertisements.ad_type = this.ad_type;
 				this.advertisements.file_path = '';
 				this.advertisements.display_duration = '';
-				this.advertisements.start_date = '';
-				this.advertisements.end_date = '';
-				this.advertisements.sites = [];
-				this.advertisements.tenants = [];
-				this.advertisements.screen_type = '';
-				this.advertisements.screens = [];
                 this.advertisements.active = true;				
 				this.$refs.material.value = null;
 				this.material = null;
-				this.tenant_ids = [];
-				this.site_ids = [];
-				this.screen_ids = [];
-
               	$('#site_ad-form').modal('show');
             },
 
             storeAdvertisements: function() {
 				let formData = new FormData();
 				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
+				formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
-				formData.append("screen_type", this.advertisements.screen_type);
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
-				formData.append("start_date", this.advertisements.start_date);
-				formData.append("end_date", this.advertisements.end_date);
-				formData.append("sites", this.site_ids);
-				formData.append("tenants", this.tenant_ids);
-				formData.append("screens", this.screen_ids);
 				formData.append("active", this.advertisements.active);
                 axios.post('/admin/advertisement/store', formData, {
 					headers: {
@@ -457,41 +311,17 @@
                 axios.get('/admin/advertisement/'+id)
                 .then(response => {
                     var advertisements = response.data.data;
-					this.tenant_ids = [];
-					this.site_ids = [];
-					this.screen_ids = [];
 					this.advertisements.id = advertisements.id;
 					this.advertisements.company_id = advertisements.company_details;
-					this.advertisements.name = advertisements.name;
+					this.advertisements.brand_id = advertisements.brand_details;
 					this.advertisements.ad_type = this.ad_type;
+					this.advertisements.name = advertisements.name;
 					this.advertisements.file_path = advertisements.name;
 					this.advertisements.display_duration = advertisements.display_duration;
-					this.advertisements.start_date = advertisements.start_date;
-					this.advertisements.end_date = advertisements.end_date;
-					this.advertisements.sites = advertisements.sites;
-					this.advertisements.tenants = advertisements.tenants;
-					this.advertisements.screen_type = advertisements.screen_type;
-					this.advertisements.screens = advertisements.screens;
 					this.advertisements.active = advertisements.active;
 					this.$refs.material.value = null;
 					this.advertisements.material = '';
 					this.material = advertisements.material_image_path;
-
-					advertisements.sites.forEach((value) => {
-						this.site_ids.push(value.id);
-                	});
-
-					advertisements.tenants.forEach((value) => {
-						this.tenant_ids.push(value.id);
-                	});
-
-					advertisements.screens.forEach((value) => {
-						this.screen_ids.push(value.id);
-                	});
-
-					this.getScreens(advertisements.screen_type);
-					this.getTenants();
-
 					this.add_record = false;
 					this.edit_record = true;
 
@@ -503,16 +333,11 @@
 				let formData = new FormData();
 				formData.append("id", this.advertisements.id);
 				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
-				formData.append("name", this.advertisements.name);
+				formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));
 				formData.append("ad_type", this.advertisements.ad_type);
-				formData.append("screen_type", this.advertisements.screen_type);
+				formData.append("name", this.advertisements.name);
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
-				formData.append("start_date", this.advertisements.start_date);
-				formData.append("end_date", this.advertisements.end_date);
-				formData.append("sites", this.site_ids);
-				formData.append("tenants", this.tenant_ids);
-				formData.append("screens", this.screen_ids);
 				formData.append("active", this.advertisements.active);
                 axios.post('/admin/advertisement/update', formData, {
 					headers: {
@@ -530,9 +355,7 @@
 
         components: {
         	Table,
-			datePicker,
             Multiselect,
-			Treeselect
  	   }
     };
 </script> 

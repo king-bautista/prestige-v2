@@ -9289,22 +9289,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Table */ "./resources/js/components/Helpers/Table.vue");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-bootstrap-datetimepicker */ "./node_modules/vue-bootstrap-datetimepicker/dist/vue-bootstrap-datetimepicker.js");
-/* harmony import */ var vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var pc_bootstrap4_datetimepicker_build_css_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css */ "./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css");
-/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @riophae/vue-treeselect */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.cjs.js");
-/* harmony import */ var _riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _riophae_vue_treeselect_dist_vue_treeselect_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @riophae/vue-treeselect/dist/vue-treeselect.css */ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css");
 
 // Import this component
-
-// Import date picker js
-
-// Import date picker css
-
-// import the component
-
-// import the styles
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Advertisements",
@@ -9319,32 +9305,18 @@ __webpack_require__.r(__webpack_exports__);
       advertisements: {
         id: '',
         company_id: '',
-        name: '',
+        brand_id: '',
         ad_type: '',
+        name: '',
+        descriptions: '',
         file_path: '',
         display_duration: '',
-        start_date: '',
-        end_date: '',
-        sites: '',
-        tenants: '',
-        screen_type: '',
-        screens: '',
         active: true
       },
       material: '',
       material_type: '',
       companies: [],
-      sites: [],
-      site_ids: [],
-      tenants: [],
-      tenant_ids: [],
-      screens: [],
-      screen_ids: [],
-      screen_types: ['Directory', 'LED', 'LFD', 'LED funnel'],
-      options: {
-        format: 'YYYY/MM/DD',
-        useCurrent: false
-      },
+      brands: [],
       add_record: true,
       edit_record: false,
       dataFields: {
@@ -9355,11 +9327,7 @@ __webpack_require__.r(__webpack_exports__);
         name: "Name",
         company_name: "Company",
         screen_type: "Screen Type",
-        site_names: "Site Name/s",
-        screen_names: "Screen/s",
-        tenant_names: "Tenant/s",
         duration: "Duration",
-        air_dates: "Airdates",
         active: {
           name: "Status",
           type: "Boolean",
@@ -9371,7 +9339,7 @@ __webpack_require__.r(__webpack_exports__);
         updated_at: "Last Updated"
       },
       primaryKey: "id",
-      dataUrl: "/admin/advertisement/list",
+      dataUrl: "/admin/advertisement/list/" + this.ad_type,
       actionButtons: {
         edit: {
           title: 'Edit this Advertisements',
@@ -9402,8 +9370,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.getSites();
     this.getCompany();
+    this.getBrands();
   },
   methods: {
     getFileExtension: function getFileExtension(filename) {
@@ -9448,66 +9416,12 @@ __webpack_require__.r(__webpack_exports__);
         return _this.companies = response.data.data;
       });
     },
-    getSites: function getSites() {
+    getBrands: function getBrands() {
       var _this2 = this;
-      axios.get('/admin/site/get-all').then(function (response) {
-        return _this2.sites = response.data.data;
+      axios.get('/admin/brand/get-all').then(function (response) {
+        return _this2.brands = response.data.data;
       });
     },
-    getTenants: function getTenants() {
-      var _this3 = this;
-      var site_ids = '';
-      for (var i = 0; i < this.site_ids.length; i++) {
-        site_ids += this.site_ids[i] + ',';
-      }
-      axios.get('/admin/site/tenant/get-tenants/' + site_ids).then(function (response) {
-        return _this3.tenants = response.data.data;
-      });
-    },
-    getScreens: function getScreens(type) {
-      var _this4 = this;
-      var site_ids = '';
-      for (var i = 0; i < this.site_ids.length; i++) {
-        site_ids += this.site_ids[i] + ',';
-      }
-      axios.get('/admin/site/screen/get-screens/' + site_ids + '/' + type).then(function (response) {
-        return _this4.screens = response.data.data;
-      });
-    },
-    toggleSelected: function toggleSelected(value, id) {
-      this.site_ids.push(value.id);
-      this.getTenants();
-    },
-    toggleUnSelected: function toggleUnSelected(value, id) {
-      var index = this.site_ids.indexOf(value.id);
-      if (index > -1) {
-        // only splice array when item is found
-        this.site_ids.splice(index, 1); // 2nd parameter means remove one item only
-      }
-    },
-
-    toggleSelectedTenant: function toggleSelectedTenant(value, id) {
-      this.tenant_ids.push(value.id);
-    },
-    toggleUnSelectedTenant: function toggleUnSelectedTenant(value, id) {
-      var index = this.tenant_ids.indexOf(value.id);
-      if (index > -1) {
-        // only splice array when item is found
-        this.tenant_ids.splice(index, 1); // 2nd parameter means remove one item only
-      }
-    },
-
-    toggleSelectedScreen: function toggleSelectedScreen(value, id) {
-      this.screen_ids.push(value.id);
-    },
-    toggleUnSelectedScreen: function toggleUnSelectedScreen(value, id) {
-      var index = this.screen_ids.indexOf(value.id);
-      if (index > -1) {
-        // only splice array when item is found
-        this.screen_ids.splice(index, 1); // 2nd parameter means remove one item only
-      }
-    },
-
     materialChange: function materialChange(e) {
       var file = e.target.files[0];
       this.material_type = e.target.files[0].type;
@@ -9518,40 +9432,68 @@ __webpack_require__.r(__webpack_exports__);
       this.add_record = true;
       this.edit_record = false;
       this.advertisements.company_id = null;
+      this.advertisements.brand_id = null;
       this.advertisements.name = '';
       this.advertisements.ad_type = this.ad_type;
       this.advertisements.file_path = '';
       this.advertisements.display_duration = '';
-      this.advertisements.start_date = '';
-      this.advertisements.end_date = '';
-      this.advertisements.sites = [];
-      this.advertisements.tenants = [];
-      this.advertisements.screen_type = '';
-      this.advertisements.screens = [];
       this.advertisements.active = true;
       this.$refs.material.value = null;
       this.material = null;
-      this.tenant_ids = [];
-      this.site_ids = [];
-      this.screen_ids = [];
       $('#site_ad-form').modal('show');
     },
     storeAdvertisements: function storeAdvertisements() {
-      var _this5 = this;
+      var _this3 = this;
       var formData = new FormData();
       formData.append("company_id", JSON.stringify(this.advertisements.company_id));
+      formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));
       formData.append("name", this.advertisements.name);
       formData.append("ad_type", this.advertisements.ad_type);
-      formData.append("screen_type", this.advertisements.screen_type);
       formData.append("file_path", this.advertisements.material);
       formData.append("display_duration", this.advertisements.display_duration);
-      formData.append("start_date", this.advertisements.start_date);
-      formData.append("end_date", this.advertisements.end_date);
-      formData.append("sites", this.site_ids);
-      formData.append("tenants", this.tenant_ids);
-      formData.append("screens", this.screen_ids);
       formData.append("active", this.advertisements.active);
       axios.post('/admin/advertisement/store', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        toastr.success(response.data.message);
+        _this3.$refs.dataTable.fetchData();
+        $('#site_ad-form').modal('hide');
+      });
+    },
+    editAdvertisements: function editAdvertisements(id) {
+      var _this4 = this;
+      axios.get('/admin/advertisement/' + id).then(function (response) {
+        var advertisements = response.data.data;
+        _this4.advertisements.id = advertisements.id;
+        _this4.advertisements.company_id = advertisements.company_details;
+        _this4.advertisements.brand_id = advertisements.brand_details;
+        _this4.advertisements.ad_type = _this4.ad_type;
+        _this4.advertisements.name = advertisements.name;
+        _this4.advertisements.file_path = advertisements.name;
+        _this4.advertisements.display_duration = advertisements.display_duration;
+        _this4.advertisements.active = advertisements.active;
+        _this4.$refs.material.value = null;
+        _this4.advertisements.material = '';
+        _this4.material = advertisements.material_image_path;
+        _this4.add_record = false;
+        _this4.edit_record = true;
+        $('#site_ad-form').modal('show');
+      });
+    },
+    updateAdvertisements: function updateAdvertisements() {
+      var _this5 = this;
+      var formData = new FormData();
+      formData.append("id", this.advertisements.id);
+      formData.append("company_id", JSON.stringify(this.advertisements.company_id));
+      formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));
+      formData.append("ad_type", this.advertisements.ad_type);
+      formData.append("name", this.advertisements.name);
+      formData.append("file_path", this.advertisements.material);
+      formData.append("display_duration", this.advertisements.display_duration);
+      formData.append("active", this.advertisements.active);
+      axios.post('/admin/advertisement/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -9560,78 +9502,11 @@ __webpack_require__.r(__webpack_exports__);
         _this5.$refs.dataTable.fetchData();
         $('#site_ad-form').modal('hide');
       });
-    },
-    editAdvertisements: function editAdvertisements(id) {
-      var _this6 = this;
-      axios.get('/admin/advertisement/' + id).then(function (response) {
-        var advertisements = response.data.data;
-        _this6.tenant_ids = [];
-        _this6.site_ids = [];
-        _this6.screen_ids = [];
-        _this6.advertisements.id = advertisements.id;
-        _this6.advertisements.company_id = advertisements.company_details;
-        _this6.advertisements.name = advertisements.name;
-        _this6.advertisements.ad_type = _this6.ad_type;
-        _this6.advertisements.file_path = advertisements.name;
-        _this6.advertisements.display_duration = advertisements.display_duration;
-        _this6.advertisements.start_date = advertisements.start_date;
-        _this6.advertisements.end_date = advertisements.end_date;
-        _this6.advertisements.sites = advertisements.sites;
-        _this6.advertisements.tenants = advertisements.tenants;
-        _this6.advertisements.screen_type = advertisements.screen_type;
-        _this6.advertisements.screens = advertisements.screens;
-        _this6.advertisements.active = advertisements.active;
-        _this6.$refs.material.value = null;
-        _this6.advertisements.material = '';
-        _this6.material = advertisements.material_image_path;
-        advertisements.sites.forEach(function (value) {
-          _this6.site_ids.push(value.id);
-        });
-        advertisements.tenants.forEach(function (value) {
-          _this6.tenant_ids.push(value.id);
-        });
-        advertisements.screens.forEach(function (value) {
-          _this6.screen_ids.push(value.id);
-        });
-        _this6.getScreens(advertisements.screen_type);
-        _this6.getTenants();
-        _this6.add_record = false;
-        _this6.edit_record = true;
-        $('#site_ad-form').modal('show');
-      });
-    },
-    updateAdvertisements: function updateAdvertisements() {
-      var _this7 = this;
-      var formData = new FormData();
-      formData.append("id", this.advertisements.id);
-      formData.append("company_id", JSON.stringify(this.advertisements.company_id));
-      formData.append("name", this.advertisements.name);
-      formData.append("ad_type", this.advertisements.ad_type);
-      formData.append("screen_type", this.advertisements.screen_type);
-      formData.append("file_path", this.advertisements.material);
-      formData.append("display_duration", this.advertisements.display_duration);
-      formData.append("start_date", this.advertisements.start_date);
-      formData.append("end_date", this.advertisements.end_date);
-      formData.append("sites", this.site_ids);
-      formData.append("tenants", this.tenant_ids);
-      formData.append("screens", this.screen_ids);
-      formData.append("active", this.advertisements.active);
-      axios.post('/admin/advertisement/update', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (response) {
-        toastr.success(response.data.message);
-        _this7.$refs.dataTable.fetchData();
-        $('#site_ad-form').modal('hide');
-      });
     }
   },
   components: {
     Table: _Helpers_Table__WEBPACK_IMPORTED_MODULE_0__["default"],
-    datePicker: (vue_bootstrap_datetimepicker__WEBPACK_IMPORTED_MODULE_2___default()),
-    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default()),
-    Treeselect: (_riophae_vue_treeselect__WEBPACK_IMPORTED_MODULE_4___default())
+    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default())
   }
 });
 
@@ -13979,18 +13854,22 @@ var banner_array = [];
         carousel_item += '<div data-interval="' + banner_array[count].display_duration * 1000 + '" data-index="' + count + '" data-id="' + banner_array[count].id + '" class="' + class_name + '">';
         if (type == 'video') {
           carousel_item += '<span>';
-          carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="logs" :data-id="' + banner_array[count].id + '" data-type="Banner Ad">';
+          carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" id="logs_' + banner_array[count].id + '" data-id="' + banner_array[count].id + '">';
           carousel_item += '<source src="' + banner_array[count].material_image_path + '" type="video/ogg">';
           carousel_item += 'Your browser does not support the video tag.';
           carousel_item += '</video>';
           carousel_item += '</span>';
         } else {
           carousel_item += '<span>';
-          carousel_item += '<img src="' + banner_array[count].material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="logs" :data-id="' + banner_array[count].id + '" data-type="Banner Ad">';
+          carousel_item += '<img src="' + banner_array[count].material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;"  id="logs_' + banner_array[count].id + '" data-id="' + banner_array[count].id + '">';
           carousel_item += '</span>';
         }
         carousel_item += '</div>';
         $("#carousel-banner").append(carousel_item);
+        // $('#logs_'+banner_array[count].id).on('click', function() {
+        //     var id = $(this).data('id');
+        //     helper.saveLogs(id, 'Banner Ad');
+        // });
         count++;
       }
     }
@@ -14167,7 +14046,8 @@ __webpack_require__.r(__webpack_exports__);
       tenant_details: '',
       show_tenant: false,
       product_image: '',
-      previous_page: ''
+      previous_page: '',
+      helper: new Helpers()
     };
   },
   created: function created() {
@@ -14320,6 +14200,10 @@ __webpack_require__.r(__webpack_exports__);
       });
       $(".btn-close-trailer").on('click', function () {
         $("#myProduct").hide();
+      });
+      $(".hc-button").on('click', function () {
+        var category_id = $(this).data('category_id');
+        alert(category_id);
       });
     });
   }
@@ -14845,6 +14729,46 @@ var render = function render() {
     staticClass: "form-group row"
   }, [_vm._m(1), _vm._v(" "), _c("div", {
     staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.companies,
+      multiple: false,
+      "close-on-select": true,
+      placeholder: "Select Company",
+      label: "name",
+      "track-by": "name"
+    },
+    model: {
+      value: _vm.advertisements.company_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "company_id", $$v);
+      },
+      expression: "advertisements.company_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
+  }, [_c("multiselect", {
+    attrs: {
+      "track-by": "name",
+      label: "name",
+      placeholder: "Select Brand",
+      options: _vm.brands,
+      searchable: true,
+      "allow-empty": false
+    },
+    model: {
+      value: _vm.advertisements.brand_id,
+      callback: function callback($$v) {
+        _vm.$set(_vm.advertisements, "brand_id", $$v);
+      },
+      expression: "advertisements.brand_id"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_vm._m(3), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-8"
   }, [_c("input", {
     directives: [{
       name: "model",
@@ -14869,144 +14793,7 @@ var render = function render() {
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(2), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.companies,
-      multiple: false,
-      "close-on-select": true,
-      placeholder: "Select Company",
-      label: "name",
-      "track-by": "name"
-    },
-    model: {
-      value: _vm.advertisements.company_id,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "company_id", $$v);
-      },
-      expression: "advertisements.company_id"
-    }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(3), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.sites,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Sites",
-      label: "name",
-      "track-by": "name"
-    },
-    on: {
-      select: _vm.toggleSelected,
-      remove: _vm.toggleUnSelected
-    },
-    model: {
-      value: _vm.advertisements.sites,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "sites", $$v);
-      },
-      expression: "advertisements.sites"
-    }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
   }, [_vm._m(4), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.tenants,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "Select Tenants",
-      label: "brand_site_name",
-      "track-by": "brand_site_name"
-    },
-    on: {
-      select: _vm.toggleSelectedTenant,
-      remove: _vm.toggleUnSelectedTenant
-    },
-    model: {
-      value: _vm.advertisements.tenants,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "tenants", $$v);
-      },
-      expression: "advertisements.tenants"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(5), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.advertisements.screen_type,
-      expression: "advertisements.screen_type"
-    }],
-    staticClass: "custom-select",
-    on: {
-      change: [function ($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.advertisements, "screen_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }, function ($event) {
-        return _vm.getScreens($event.target.value);
-      }]
-    }
-  }, [_c("option", {
-    attrs: {
-      value: ""
-    }
-  }, [_vm._v("Select Screen Type")]), _vm._v(" "), _vm._l(_vm.screen_types, function (screen_type) {
-    return _c("option", {
-      domProps: {
-        value: screen_type
-      }
-    }, [_vm._v(" " + _vm._s(screen_type))]);
-  })], 2)])]), _vm._v(" "), _vm.advertisements.screen_type != "LED funnel" ? _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(6), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.screens,
-      multiple: true,
-      "close-on-select": true,
-      placeholder: "All Screens",
-      label: "screen_type_name",
-      "track-by": "screen_type_name"
-    },
-    on: {
-      select: _vm.toggleSelectedScreen,
-      remove: _vm.toggleUnSelectedScreen
-    },
-    model: {
-      value: _vm.advertisements.screens,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "screens", $$v);
-      },
-      expression: "advertisements.screens"
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "noOptions"
-    },
-    slot: "noOptions"
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\tPlease select a associate sites and screen type.\n\t\t\t\t\t\t\t\t\t\t")])])], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
-    staticClass: "form-group row"
-  }, [_vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "col-sm-5"
   }, [_c("input", {
     ref: "material",
@@ -15051,7 +14838,7 @@ var render = function render() {
     }
   }), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\tYour browser does not support the video tag.\n\t\t\t\t\t\t\t\t\t\t")])]) : _vm._e()])]), _vm._v(" "), _c("div", {
     staticClass: "form-group row"
-  }, [_vm._m(8), _vm._v(" "), _c("div", {
+  }, [_vm._m(5), _vm._v(" "), _c("div", {
     staticClass: "col-sm-2"
   }, [_c("input", {
     directives: [{
@@ -15076,37 +14863,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("footer", {
     staticClass: "blockquote-footer"
-  }, [_vm._v("In Seconds")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-3"
-  }, [_c("date-picker", {
-    attrs: {
-      placeholder: "YYYY/MM/DD",
-      config: _vm.options,
-      autocomplete: "off"
-    },
-    model: {
-      value: _vm.advertisements.start_date,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "start_date", $$v);
-      },
-      expression: "advertisements.start_date"
-    }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-3 text-center"
-  }, [_c("date-picker", {
-    attrs: {
-      placeholder: "YYYY/MM/DD",
-      config: _vm.options,
-      autocomplete: "off"
-    },
-    model: {
-      value: _vm.advertisements.end_date,
-      callback: function callback($$v) {
-        _vm.$set(_vm.advertisements, "end_date", $$v);
-      },
-      expression: "advertisements.end_date"
-    }
-  })], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("In Seconds")])])]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -15220,17 +14977,6 @@ var staticRenderFns = [function () {
   return _c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
-      "for": "firstName"
-    }
-  }, [_vm._v("Name "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
       "for": "lastName"
     }
   }, [_vm._v("Company "), _c("span", {
@@ -15242,20 +14988,9 @@ var staticRenderFns = [function () {
   return _c("label", {
     staticClass: "col-sm-4 col-form-label",
     attrs: {
-      "for": "inputPassword3"
+      "for": "firstName"
     }
-  }, [_vm._v("Associate Sites "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Tenants "), _c("span", {
+  }, [_vm._v("Brands "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -15266,18 +15001,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "firstName"
     }
-  }, [_vm._v("Screen Type "), _c("span", {
-    staticClass: "font-italic text-danger"
-  }, [_vm._v(" *")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("label", {
-    staticClass: "col-sm-4 col-form-label",
-    attrs: {
-      "for": "inputPassword3"
-    }
-  }, [_vm._v("Available Screens "), _c("span", {
+  }, [_vm._v("Name "), _c("span", {
     staticClass: "font-italic text-danger"
   }, [_vm._v(" *")])]);
 }, function () {
@@ -24936,8 +24660,13 @@ var render = function render() {
         "data-id": banner.id,
         "data-interval": banner.display_duration * 1000
       }
-    }, [_vm.helper.getFileExtension(banner.file_type) == "video" ? _c("span", [_c("video", {
-      staticClass: "logs",
+    }, [_vm.helper.getFileExtension(banner.file_type) == "video" ? _c("span", {
+      on: {
+        click: function click($event) {
+          return _vm.helper.saveLogs(banner.id, "Banner Ad");
+        }
+      }
+    }, [_c("video", {
       staticStyle: {
         "border-radius": "20px",
         margin: "0px",
@@ -24946,9 +24675,7 @@ var render = function render() {
       },
       attrs: {
         muted: "muted",
-        autoplay: "true",
-        "data-id": banner.id,
-        "data-type": "Banner Ad"
+        autoplay: "true"
       },
       domProps: {
         muted: true
@@ -24958,8 +24685,13 @@ var render = function render() {
         src: banner.material_image_path,
         type: "video/ogg"
       }
-    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.helper.getFileExtension(banner.file_type) == "image" ? _c("span", [_c("img", {
-      staticClass: "logs",
+    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.helper.getFileExtension(banner.file_type) == "image" ? _c("span", {
+      on: {
+        click: function click($event) {
+          return _vm.helper.saveLogs(banner.id, "Banner Ad");
+        }
+      }
+    }, [_c("img", {
       staticStyle: {
         "border-radius": "20px",
         margin: "0px",
@@ -24967,9 +24699,7 @@ var render = function render() {
         width: "100%"
       },
       attrs: {
-        src: banner.material_image_path,
-        "data-id": banner.id,
-        "data-type": "Banner Ad"
+        src: banner.material_image_path
       }
     })]) : _vm._e()]);
   }), 0)])]);
@@ -25546,13 +25276,16 @@ var render = function render() {
       "class": [category.class_name, "hc-button"],
       on: {
         click: function click($event) {
-          return _vm.showChildren(category);
+          _vm.helper.saveLogs({
+            category_id: category.id,
+            action: "click"
+          });
+          _vm.showChildren(category);
         }
       }
     }, [_c("img", {
       attrs: {
-        src: category.kiosk_image_primary_path,
-        click: "logs.setLogs();"
+        src: category.kiosk_image_primary_path
       }
     }), _vm._v(" "), _c("div", {
       staticClass: "hc-button-align",
@@ -25578,7 +25311,12 @@ var render = function render() {
       staticClass: "col-12 col-sm-6 text-left mt-3",
       on: {
         click: function click($event) {
-          return _vm.getTenantsByCategory(category);
+          _vm.helper.saveLogs({
+            category_id: category.parent_id,
+            sub_category_id: category.id,
+            action: "click"
+          });
+          _vm.getTenantsByCategory(category);
         }
       }
     }, [_c("div", {
@@ -25638,7 +25376,12 @@ var render = function render() {
         staticClass: "col-12 col-sm-4 text-left mt-3",
         on: {
           click: function click($event) {
-            return _vm.getTenantsBySupplementals(supplemental);
+            _vm.helper.saveLogs({
+              category_id: supplemental.parent_id,
+              sub_category_id: supplemental.id,
+              action: "click"
+            });
+            _vm.getTenantsBySupplementals(supplemental);
           }
         }
       }, [_c("div", {
@@ -25713,7 +25456,15 @@ var render = function render() {
         staticClass: "tenant-store bg-white text-center box-shadowed ml-3",
         on: {
           click: function click($event) {
-            return _vm.showTenant(tenant);
+            _vm.helper.saveLogs({
+              category_id: tenant.category_parent_id,
+              sub_category_id: tenant.category_id,
+              brand_id: tenant.brand_id,
+              company_id: tenant.company_id,
+              site_tenant_id: tenant.id,
+              action: "click"
+            });
+            _vm.showTenant(tenant);
           }
         }
       }, [_c("div", {
@@ -25891,13 +25642,25 @@ var render = function render() {
     staticClass: "tabs-item store-tabs-item",
     on: {
       click: function click($event) {
-        return _vm.getTenants(_vm.current_category);
+        _vm.helper.saveLogs({
+          category_id: _vm.current_category.id,
+          action: "click",
+          key_words: "Alphabetical"
+        });
+        _vm.getTenants(_vm.current_category);
       }
     }
   }, [_vm._m(16)]), _vm._v(" "), _c("div", {
     staticClass: "tabs-item store-tabs-item",
     on: {
-      click: _vm.showSupplementals
+      click: function click($event) {
+        _vm.helper.saveLogs({
+          category_id: _vm.current_category.supplemental.supplemental_category_id,
+          sub_category_id: _vm.current_category.supplemental.id,
+          action: "click"
+        });
+        _vm.showSupplementals();
+      }
     }
   }, [_c("div", [_vm.current_category.supplemental ? _c("a", {
     staticClass: "tenant-supplementals translateme",
@@ -26183,10 +25946,10 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -27536,10 +27299,6 @@ var routes = [{
   component: _components_Kiosk_About_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
   name: 'about'
 }];
-
-// import HelperClass from '../../public/js/helper.js';
-// Vue.prototype.$helperClass = HelperClass;
-
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: routes
@@ -44059,6 +43818,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".form-check-select[data-v-9c7a2d6e] {\
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".multiselect__tags[data-v-1ae74b8a] {\n  min-height: 40px;\n  display: block;\n  padding: 8px 40px 0 8px;\n  border-radius: 5px;\n  border: none;\n  background: #fff;\n  font-size: 14px;\n}\n.multiselect__select[data-v-1ae74b8a] {\n  position: absolute;\n  width: 0 !important;\n  height: 0 !important;\n  right: 6px !important;\n  top: 40% !important;\n  padding: 6px !important;\n  transition: transform 0.2s ease;\n  border: solid rgb(152, 218, 208) !important;\n  display: inline-block !important;\n  border-width: 0 6px 6px 0 !important;\n  transform: rotate(-225deg) !important;\n  -webkit-transform: rotate(225deg) !important;\n}\n.multiselect--active .multiselect__select[data-v-1ae74b8a] {\n  transform: rotate(-45deg) !important;\n  -webkit-transform: rotate(45deg) !important;\n}\n.multiselect__select[data-v-1ae74b8a]:before {\n  display: none;\n}\n.multiselect__tags[data-v-1ae74b8a] {\n  border: none !important;\n}\n.multiselect__placeholder[data-v-1ae74b8a] {\n  color: #000 !important;\n  font-size: 1rem;\n}\n.multiselect--above .multiselect__content-wrapper[data-v-1ae74b8a] {\n  margin-left: -13px;\n}\n.is-pwd-button[data-v-1ae74b8a] {\n  color: rgb(152, 218, 208);\n  border-color: #000;\n  border-top-right-radius: 10px;\n  border-bottom-right-radius: 10px;\n}\n.input-group > .custom-select[data-v-1ae74b8a]:not(:last-child), .input-group > .form-control[data-v-1ae74b8a]:not(:last-child) {\n  border-top-left-radius: 10px;\n  border-bottom-left-radius: 10px;\n  border-color: #000;\n}\n.custom-select[data-v-1ae74b8a] {\n  background: none !important;\n}\n.custom-color[data-v-1ae74b8a] {\n  color: rgb(152, 218, 208);\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css ***!
@@ -44101,30 +43884,6 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "/*!\n * Datetimepicker for Bootstrap 3\n * version : 4.17.47\n * https://github.com/Eonasdan/bootstrap-datetimepicker/\n */\n.bootstrap-datetimepicker-widget {\n  list-style: none;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu {\n  display: block;\n  margin: 2px 0;\n  padding: 4px;\n  width: 19em;\n}\n@media (min-width: 576px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n@media (min-width: 768px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n@media (min-width: 992px) {\n  .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {\n    width: 38em;\n  }\n}\n.bootstrap-datetimepicker-widget.dropdown-menu:before,\n.bootstrap-datetimepicker-widget.dropdown-menu:after {\n  content: '';\n  display: inline-block;\n  position: absolute;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.bottom:before {\n  border-left: 7px solid transparent;\n  border-right: 7px solid transparent;\n  border-bottom: 7px solid #ccc;\n  border-bottom-color: rgba(0, 0, 0, 0.2);\n  top: -7px;\n  left: 7px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.bottom:after {\n  border-left: 6px solid transparent;\n  border-right: 6px solid transparent;\n  border-bottom: 6px solid white;\n  top: -6px;\n  left: 8px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.top:before {\n  border-left: 7px solid transparent;\n  border-right: 7px solid transparent;\n  border-top: 7px solid #ccc;\n  border-top-color: rgba(0, 0, 0, 0.2);\n  bottom: -7px;\n  left: 6px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.top:after {\n  border-left: 6px solid transparent;\n  border-right: 6px solid transparent;\n  border-top: 6px solid white;\n  bottom: -6px;\n  left: 7px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.pull-right:before {\n  left: auto;\n  right: 6px;\n}\n.bootstrap-datetimepicker-widget.dropdown-menu.pull-right:after {\n  left: auto;\n  right: 7px;\n}\n.bootstrap-datetimepicker-widget .list-unstyled {\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget a[data-action] {\n  padding: 6px 0;\n}\n.bootstrap-datetimepicker-widget a[data-action]:active {\n  box-shadow: none;\n}\n.bootstrap-datetimepicker-widget .timepicker-hour,\n.bootstrap-datetimepicker-widget .timepicker-minute,\n.bootstrap-datetimepicker-widget .timepicker-second {\n  width: 54px;\n  font-weight: bold;\n  font-size: 1.2em;\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget button[data-action] {\n  padding: 6px;\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"incrementHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Increment Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"incrementMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Increment Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"decrementHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Decrement Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"decrementMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Decrement Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"showHours\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Show Hours\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"showMinutes\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Show Minutes\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"togglePeriod\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Toggle AM/PM\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"clear\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Clear the picker\";\n}\n.bootstrap-datetimepicker-widget .btn[data-action=\"today\"]::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Set the date to today\";\n}\n.bootstrap-datetimepicker-widget .picker-switch {\n  text-align: center;\n}\n.bootstrap-datetimepicker-widget .picker-switch::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Toggle Date and Time Screens\";\n}\n.bootstrap-datetimepicker-widget .picker-switch td {\n  padding: 0;\n  margin: 0;\n  height: auto;\n  width: auto;\n  line-height: inherit;\n}\n.bootstrap-datetimepicker-widget .picker-switch td span,\n.bootstrap-datetimepicker-widget .picker-switch td i {\n  line-height: 2.5;\n  height: 2.5em;\n  width: 100%;\n}\n.bootstrap-datetimepicker-widget table {\n  width: 100%;\n  margin: 0;\n}\n.bootstrap-datetimepicker-widget table td,\n.bootstrap-datetimepicker-widget table th {\n  text-align: center;\n  border-radius: 0.25rem;\n  padding: 0.5em;\n}\n.bootstrap-datetimepicker-widget table th {\n  height: 20px;\n  line-height: 20px;\n  width: 20px;\n}\n.bootstrap-datetimepicker-widget table th.picker-switch {\n  width: 145px;\n}\n.bootstrap-datetimepicker-widget table th.disabled,\n.bootstrap-datetimepicker-widget table th.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget table th.prev::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Previous Month\";\n}\n.bootstrap-datetimepicker-widget table th.next::after {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n  content: \"Next Month\";\n}\n.bootstrap-datetimepicker-widget table thead tr:first-child th {\n  cursor: pointer;\n}\n.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {\n  background: #f8f9fa;\n}\n.bootstrap-datetimepicker-widget table td {\n  height: 54px;\n  line-height: 54px;\n  width: 54px;\n}\n.bootstrap-datetimepicker-widget table td.cw {\n  font-size: 0.8em;\n  height: 20px;\n  line-height: 20px;\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td.day {\n  height: 20px;\n  line-height: 20px;\n  width: 20px;\n}\n.bootstrap-datetimepicker-widget table td.day:hover,\n.bootstrap-datetimepicker-widget table td.hour:hover,\n.bootstrap-datetimepicker-widget table td.minute:hover,\n.bootstrap-datetimepicker-widget table td.second:hover {\n  background: #f8f9fa;\n  cursor: pointer;\n}\n.bootstrap-datetimepicker-widget table td.old,\n.bootstrap-datetimepicker-widget table td.new {\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td.today {\n  position: relative;\n}\n.bootstrap-datetimepicker-widget table td.today:before {\n  content: '';\n  display: inline-block;\n  border: solid transparent;\n  border-width: 0 0 7px 7px;\n  border-bottom-color: #dee2e6;\n  border-top-color: rgba(0, 0, 0, 0.2);\n  position: absolute;\n  bottom: 4px;\n  right: 4px;\n}\n.bootstrap-datetimepicker-widget table td.active,\n.bootstrap-datetimepicker-widget table td.active:hover {\n  background-color: #dee2e6;\n  color: #007bff;\n  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);\n}\n.bootstrap-datetimepicker-widget table td.active.today:before {\n  border-bottom-color: #fff;\n}\n.bootstrap-datetimepicker-widget table td.disabled,\n.bootstrap-datetimepicker-widget table td.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget table td span,\n.bootstrap-datetimepicker-widget table td i {\n  display: inline-block;\n  width: 54px;\n  height: 54px;\n  line-height: 54px;\n  margin: 2px 1.5px;\n  cursor: pointer;\n  border-radius: 0.25rem;\n}\n.bootstrap-datetimepicker-widget table td span:hover,\n.bootstrap-datetimepicker-widget table td i:hover {\n  background: #f8f9fa;\n}\n.bootstrap-datetimepicker-widget table td span.active,\n.bootstrap-datetimepicker-widget table td i.active {\n  background-color: #dee2e6;\n  color: #007bff;\n  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);\n}\n.bootstrap-datetimepicker-widget table td span.old,\n.bootstrap-datetimepicker-widget table td i.old {\n  color: #dee2e6;\n}\n.bootstrap-datetimepicker-widget table td span.disabled,\n.bootstrap-datetimepicker-widget table td i.disabled,\n.bootstrap-datetimepicker-widget table td span.disabled:hover,\n.bootstrap-datetimepicker-widget table td i.disabled:hover {\n  background: none;\n  color: #dee2e6;\n  cursor: not-allowed;\n}\n.bootstrap-datetimepicker-widget.usetwentyfour td.hour {\n  height: 27px;\n  line-height: 27px;\n}\n.bootstrap-datetimepicker-widget.wider {\n  width: 21em;\n}\n.bootstrap-datetimepicker-widget .datepicker-decades .decade {\n  line-height: 1.8em !important;\n}\n.input-group.date .input-group-addon {\n  cursor: pointer;\n}\n.input-group.date .input-group-text {\n  cursor: pointer;\n}\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n", ""]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
-/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
-// Imports
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.multiselect__tags {\n    min-height: 40px;\n    display: block;\n    padding: 8px 40px 0 8px;\n    border-radius: 5px;\n    border: none;\n    background: #fff;\n    font-size: 14px;\n}\n.multiselect__select {\n    position: absolute;\n    width: 0 !important;\n    height: 0 !important;\n    right: 6px !important;\n    top: 40% !important;\n    padding: 6px !important;\n    transition: transform .2s ease;\n    border: solid rgb(152, 218, 208) !important;\n    display: inline-block !important;\n    border-width: 0 6px 6px 0 !important;\n    transform: rotate(-225deg) !important;\n    -webkit-transform: rotate(225deg) !important;\n}\n.multiselect--active .multiselect__select {\n    transform: rotate(-45deg) !important;\n    -webkit-transform: rotate(45deg) !important;\n}\n.multiselect__select:before {\n    display: none;\n}\n.multiselect__tags {\n    border: none !important;\n}\n.multiselect__placeholder {\n    color: #000 !important;\n    font-size: 1rem;\n}\n.multiselect--above .multiselect__content-wrapper {\n    margin-left: -13px;\n}\n.is-pwd-button {\n    color: rgb(152, 218, 208);\n    border-color: #000;\n    border-top-right-radius: 10px;\n    border-bottom-right-radius: 10px;\n}\n.input-group>.custom-select:not(:last-child), .input-group>.form-control:not(:last-child) {\n    border-top-left-radius: 10px;\n    border-bottom-left-radius: 10px;\n    border-color: #000;\n}\n.custom-select {\n    background: none !important;\n}\n.custom-color {\n    color: rgb(152, 218, 208);\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -87071,6 +86830,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css":
 /*!**********************************************************************!*\
   !*** ./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css ***!
@@ -87128,36 +86917,6 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_bootstrap_datetimepicker_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&");
-
-            
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -89083,9 +88842,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Map.vue?vue&type=template&id=1ae74b8a& */ "./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&");
+/* harmony import */ var _Map_vue_vue_type_template_id_1ae74b8a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Map.vue?vue&type=template&id=1ae74b8a&scoped=true& */ "./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&scoped=true&");
 /* harmony import */ var _Map_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Map.vue?vue&type=script&lang=js& */ "./resources/js/components/Kiosk/Map.vue?vue&type=script&lang=js&");
-/* harmony import */ var _Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& */ "./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&");
+/* harmony import */ var _Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true& */ "./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -89097,11 +88856,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _Map_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _Map_vue_vue_type_template_id_1ae74b8a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Map_vue_vue_type_template_id_1ae74b8a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  null,
+  "1ae74b8a",
   null
   
 )
@@ -90339,19 +90098,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&":
-/*!******************************************************************************!*\
-  !*** ./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a& ***!
-  \******************************************************************************/
+/***/ "./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&scoped=true&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&scoped=true& ***!
+  \******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=template&id=1ae74b8a& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_template_id_1ae74b8a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=template&id=1ae74b8a&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=template&id=1ae74b8a&scoped=true&");
 
 
 /***/ }),
@@ -90515,6 +90274,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true& ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=scss&scoped=true&");
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css&":
 /*!****************************************************************************************************!*\
   !*** ./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css& ***!
@@ -90524,19 +90296,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_loader_dist_cjs_js_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_vue_multiselect_min_css_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../style-loader/dist/cjs.js!../../laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../vue-loader/lib/loaders/stylePostLoader.js!../../postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./vue-multiselect.min.css?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css&");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& ***!
-  \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Map_vue_vue_type_style_index_0_id_1ae74b8a_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Kiosk/Map.vue?vue&type=style&index=0&id=1ae74b8a&lang=css&");
 
 
 /***/ }),

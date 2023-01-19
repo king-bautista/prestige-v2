@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Log extends Model
+class Advertisement extends Model
 {
     use SoftDeletes;
 
@@ -15,18 +15,18 @@ class Log extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'site_id',
-        'site_screen_id',
-        'category_id',
-        'sub_category_id',
-        'brand_id',
         'company_id',
-        'site_tenant_id',
-        'site_ad_id',
-        'action',
-        'page',
-        'key_words',
-        'results',
+        'brand_id',
+        'ad_type',
+        'name',
+        'file_path',
+        'file_type',
+        'file_size',
+        'dimension',
+        'width',
+        'height',
+        'display_duration',
+        'active',
     ];
 
     /**
@@ -45,7 +45,7 @@ class Log extends Model
      *
      * @var string
     */
-    protected $table = 'logs';
+    protected $table = 'advertisements';
 
     /**
      * The primary key associated with the table.

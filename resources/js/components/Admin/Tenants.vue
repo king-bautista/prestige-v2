@@ -648,6 +648,4 @@
 			Treeselect
  	    }
     };
-
-	
-</script> 
+</script>

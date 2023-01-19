@@ -55,6 +55,8 @@ class SiteTenantViewModel extends Model
         'floor_name',
         'site_name',
         'brand_site_name',
+        'category_id',
+        'category_parent_id',
         'category_name',
         'tenant_details',
         'subscriber_logo',
@@ -77,7 +79,7 @@ class SiteTenantViewModel extends Model
     ****************************************/
     public function getBranddetailsAttribute() 
     {
-        return Brand::find($this->brand_id);
+        return BrandViewModel::find($this->brand_id);
     }
 
     public function getBrandLogoAttribute() 
@@ -115,6 +117,22 @@ class SiteTenantViewModel extends Model
         return $brand_name.' - '.$site_name;
     }
 
+    public function getCategoryIdAttribute() 
+    {
+        $brand_category_id = Brand::find($this->brand_id)->category_id;
+        if($brand_category_id)
+            return $brand_category_id;
+        return null;
+    }
+
+    public function getCategoryParentIdAttribute() 
+    {
+        $brand_category_id = Brand::find($this->brand_id)->category_id;
+        $category = Category::find($brand_category_id);
+        if($category)
+            return $category['parent_id'];
+        return null;
+    }    
     public function getCategoryNameAttribute() 
     {
         $brand_category_id = Brand::find($this->brand_id)->category_id;

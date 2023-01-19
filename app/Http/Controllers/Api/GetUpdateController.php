@@ -244,8 +244,10 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($brand_products) {
             foreach($brand_products as $product) {
 
-                $this->saveMaterial('uploads/media/brand/products/', $product->thumbnail);
-                $this->saveMaterial('uploads/media/brand/products/', $product->image_url);
+                if($product->thumbnail)
+                    $this->saveMaterial('uploads/media/brand/products/', $product->thumbnail);
+                if($product->image_url)
+                    $this->saveMaterial('uploads/media/brand/products/', $product->image_url);
 
                 $this->data[] = BrandProductPromos::on('mysql')->updateOrCreate(
                     [
@@ -315,7 +317,9 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($sites) {
             foreach($sites as $site) {
 
-                $this->saveMaterial('uploads/media/sites/logos/', $site->site_logo);
+                if($site->site_logo)
+                    $this->saveMaterial('uploads/media/sites/logos/', $site->site_logo);
+                if($site->site_banner)
                 $this->saveMaterial('uploads/media/sites/banners/', $site->site_banner);
 
                 $this->data[] = Site::on('mysql')->updateOrCreate(
@@ -540,8 +544,10 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($company_categories) {
             foreach($company_categories as $category) {
 
-                $this->saveMaterial('uploads/media/category/', $category->kiosk_image_primary);
-                $this->saveMaterial('uploads/media/category/strips/', $category->kiosk_image_top);
+                if($category->kiosk_image_primary)
+                    $this->saveMaterial('uploads/media/category/', $category->kiosk_image_primary);
+                if($category->kiosk_image_top)
+                    $this->saveMaterial('uploads/media/category/strips/', $category->kiosk_image_top);
 
                 $this->data[] = CompanyCategory::on('mysql')->updateOrCreate(
                     [
@@ -667,7 +673,8 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_ads) {
             foreach($site_ads as $ad) {
 
-                $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
+                if($ad->file_path)
+                    $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
 
                 $this->data[] = SiteAd::on('mysql')->updateOrCreate(
                     [
