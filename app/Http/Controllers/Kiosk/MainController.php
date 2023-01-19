@@ -548,6 +548,4 @@ class MainController extends AppBaseController
         }
     }
 
-
-
 }

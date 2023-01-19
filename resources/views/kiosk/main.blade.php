@@ -59,6 +59,7 @@
 @push('scripts')
 <script>
     var screensaver_handle = null;
+    var helper_home = new Helpers();
     // PRELOADER
     $('body').append("<div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>");
 
@@ -112,9 +113,14 @@
             $(this).addClass('active');
         });
 
+        $('.widget-button').on('click', function(){
+            var page = $(this).data('link');
+            helper_home.saveLogs({action: 'click', page: page });
+        });
+
         $('.search-button').on('click', function() {
             $('#pills-profile-tab').tab('show');
-        });
+        });        
 
     });
 

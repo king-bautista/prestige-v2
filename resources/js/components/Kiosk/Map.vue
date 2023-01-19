@@ -240,7 +240,7 @@
     };
     
 </script>
-<style>
+<style lang="scss" scoped>
     .multiselect__tags {
         min-height: 40px;
         display: block;

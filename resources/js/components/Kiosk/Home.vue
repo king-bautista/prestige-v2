@@ -20,8 +20,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category)">
-                        <img :src="category.kiosk_image_primary_path" click="logs.setLogs();">
+                    <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="helper.saveLogs({category_id: category.id, action: 'click'}); showChildren(category);">
+                        <img :src="category.kiosk_image_primary_path">
                         <div id="hc-button1" class="hc-button-align">{{ category.label }}</div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="row col-md-6 offset-md-3 mb-3">
-                <div v-for="category in current_category.children" class="col-12 col-sm-6 text-left mt-3" @click="getTenantsByCategory(category)">			
+                <div v-for="category in current_category.children" class="col-12 col-sm-6 text-left mt-3" @click="helper.saveLogs({category_id: category.parent_id, sub_category_id: category.id, action: 'click' }); getTenantsByCategory(category)">			
                     <div class="c-button">						
                         <img class="tenant-category" :src="category.kiosk_image_primary_path" style="max-width:100%">
                         <div class="c-button-align c-button-color2 translateme">{{category.label}}</div>                        
@@ -63,7 +63,7 @@
 
                         <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
-                                <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="getTenantsBySupplementals(supplemental)">			
+                                <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs({category_id: supplemental.parent_id, sub_category_id: supplemental.id, action: 'click' }); getTenantsBySupplementals(supplemental)">			
                                     <div class="c-button">						
                                         <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
                                         <div class="c-button-align c-button-color2 translateme">{{supplemental.label}}</div>                        
@@ -107,7 +107,7 @@
                         <div class="carousel-item" v-for="(tenants, index) in tenant_list" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
                                 <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                    <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="showTenant(tenant)">
+                                    <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs({category_id: tenant.category_parent_id, sub_category_id: tenant.category_id, brand_id: tenant.brand_id, company_id: tenant.company_id, site_tenant_id: tenant.id, action: 'click' }); showTenant(tenant)">
                                         <div class="image-holder h-100">
                                             <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                         </div>
@@ -241,12 +241,12 @@
                         <a class="translateme tenant-category">Category</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="getTenants(current_category)">
+                <div class="tabs-item store-tabs-item" @click="helper.saveLogs({category_id: current_category.id, action: 'click', key_words: 'Alphabetical' }); getTenants(current_category)">
                     <div>
                         <a class="translateme tenant-alphabet">Alphabetical</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="showSupplementals">
+                <div class="tabs-item store-tabs-item" @click="helper.saveLogs({category_id: current_category.supplemental.supplemental_category_id, sub_category_id: current_category.supplemental.id, action: 'click' }); showSupplementals();">
                     <div>
                         <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
                     </div>
@@ -294,6 +294,7 @@
                 show_tenant: false,
                 product_image: '',
                 previous_page: '',
+                helper: new Helpers(),
             };
         },
 
@@ -467,6 +468,11 @@
 
                 $(".btn-close-trailer").on('click',function(){
                     $("#myProduct").hide();
+                });
+
+                $(".hc-button").on('click', function() {
+                    var category_id = $(this).data('category_id');
+                    alert(category_id);
                 });
             });
         },

@@ -1,33 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Log extends Model
+class AdvertisementViewModel extends Model
 {
     use SoftDeletes;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'site_id',
-        'site_screen_id',
-        'category_id',
-        'sub_category_id',
-        'brand_id',
-        'company_id',
-        'site_tenant_id',
-        'site_ad_id',
-        'action',
-        'page',
-        'key_words',
-        'results',
-    ];
 
     /**
      * The attributes that should be cast.
@@ -45,7 +25,7 @@ class Log extends Model
      *
      * @var string
     */
-    protected $table = 'logs';
+    protected $table = 'advertisements';
 
     /**
      * The primary key associated with the table.
