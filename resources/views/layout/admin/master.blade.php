@@ -50,6 +50,7 @@
         <script src="{{ URL::to('plugins/toastr/toastr.min.js') }}"></script>
         <!-- AdminLTE App -->
         <script src="{{ URL::to('dist/js/adminlte.min.js') }}"></script>
+        <script src="{{ URL::to('js/helper.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>

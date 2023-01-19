@@ -86,6 +86,13 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
+            $site_background = $request->file('site_background');
+            $site_background_path = '';
+            if($site_background) {
+                $originalname = $site_background->getClientOriginalName();
+                $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ','-', $originalname)); 
+            }
+
             if($request->is_default == 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
@@ -95,6 +102,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'descriptions' => $request->descriptions,
                 'site_logo' => str_replace('\\', '/', $site_logo_path),
                 'site_banner' => str_replace('\\', '/', $site_banner_path),
+                'site_background' => str_replace('\\', '/', $site_background_path),
                 'active' => 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
@@ -144,6 +152,13 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
             }
 
+            $site_background = $request->file('site_background');
+            $site_background_path = '';
+            if($site_background) {
+                $originalname = $site_background->getClientOriginalName();
+                $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ','-', $originalname)); 
+            }
+
             if($request->is_default == 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
@@ -153,6 +168,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'descriptions' => $request->descriptions,
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
+                'site_background' => ($site_background_path) ? str_replace('\\', '/', $site_background_path) : $site->site_background,
                 'active' => ($request->active == 'false') ? 0 : 1,
                 'is_default' => ($request->is_default == 'true') ? 1 : 0,
             ];

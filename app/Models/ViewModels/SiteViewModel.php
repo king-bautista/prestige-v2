@@ -45,6 +45,7 @@ class SiteViewModel extends Model
         'details',
         'site_logo_path',
         'site_banner_path',
+        'site_background_path',
     ];
 
     public function getSiteDetails()
@@ -73,6 +74,13 @@ class SiteViewModel extends Model
             return asset($this->site_banner);
         return asset('/images/no-image-available.png');
     }  
+
+    public function getSiteBackgroundPathAttribute()
+    {
+        if($this->site_background)
+            return asset($this->site_background);
+        return asset('/images/no-image-available.png');
+    } 
 
     public function getDescriptionsEllipsisAttribute()
     {

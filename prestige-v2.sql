@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~0 rows (approximately)
+-- Dumping data for table prestige.advertisements: ~1 rows (approximately)
 INSERT INTO `advertisements` (`id`, `company_id`, `brand_id`, `ad_type`, `name`, `file_path`, `file_type`, `file_size`, `dimension`, `width`, `height`, `display_duration`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 4840, 'Banners', 'MEGA - FACADE BA', 'uploads/media/advertisements/banners/70c97549-9230-3481.jpg', 'image', '45642', '470 x 1060', '470', '1060', 10, 1, '2023-01-19 02:11:00', '2023-01-19 02:11:00', NULL);
+	(1, 1, 4840, 'Banners', 'MEGA - FACADE BA', 'uploads/media/advertisements/banners/70c97549-9230-3481.jpg', 'image', '45642', '470 x 1060', '470', '1060', 12, 1, '2023-01-19 02:11:00', '2023-01-19 03:52:01', NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7709 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,396 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,440 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -6689,7 +6689,7 @@ CREATE TABLE IF NOT EXISTS `brand_tags` (
   CONSTRAINT `brand_tags_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brand_tags: ~3,884 rows (approximately)
+-- Dumping data for table prestige.brand_tags: ~3,906 rows (approximately)
 INSERT INTO `brand_tags` (`brand_id`, `tag_id`) VALUES
 	(28, 1046),
 	(43, 1047),
@@ -10853,7 +10853,7 @@ CREATE TABLE IF NOT EXISTS `category_labels` (
   CONSTRAINT `category_labels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.category_labels: ~2 rows (approximately)
+-- Dumping data for table prestige.category_labels: ~3 rows (approximately)
 INSERT INTO `category_labels` (`id`, `category_id`, `company_id`, `site_id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, NULL, 1, 'Food Court', '2022-10-20 17:20:34', '2022-10-20 17:27:41', '2022-10-20 17:27:41'),
 	(2, 1, NULL, 2, 'Food Set', '2022-10-20 17:27:36', '2022-10-20 17:27:36', NULL),
@@ -11079,7 +11079,7 @@ CREATE TABLE IF NOT EXISTS `cinema_sites` (
   CONSTRAINT `cinema_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.cinema_sites: ~0 rows (approximately)
+-- Dumping data for table prestige.cinema_sites: ~1 rows (approximately)
 INSERT INTO `cinema_sites` (`id`, `site_id`, `cinema_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, '2102', '2022-11-20 22:48:43', '2022-11-20 22:54:57', NULL);
 
@@ -11424,7 +11424,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.logs: ~83 rows (approximately)
+-- Dumping data for table prestige.logs: ~89 rows (approximately)
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `sub_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `site_ad_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, 'click', NULL, NULL, NULL, '2023-01-16 02:16:00', '2023-01-16 02:16:00', NULL),
 	(2, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, 'click', NULL, NULL, NULL, '2023-01-16 05:18:56', '2023-01-16 05:18:56', NULL),
@@ -11576,7 +11576,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `modules_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~40 rows (approximately)
+-- Dumping data for table prestige.modules: ~41 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin Management', '#', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2022-08-08 01:26:43', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -11654,7 +11654,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~69 rows (approximately)
+-- Dumping data for table prestige.permissions: ~70 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -11776,6 +11776,7 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `descriptions` mediumtext COLLATE utf8mb4_unicode_ci,
   `site_logo` mediumtext COLLATE utf8mb4_unicode_ci,
   `site_banner` mediumtext COLLATE utf8mb4_unicode_ci,
+  `site_background` mediumtext COLLATE utf8mb4_unicode_ci,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `is_default` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -11786,9 +11787,9 @@ CREATE TABLE IF NOT EXISTS `sites` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.sites: ~2 rows (approximately)
-INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nItÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s Fun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 1, 1, '2022-10-24 00:54:28', '2023-01-10 04:19:17', NULL),
-	(2, 'SM Tuguegarao', 'KING\r\nSM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. \r\n\r\nIt\'s Fun and Festive Malling at SM City Tuguegarao!\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', '', 'uploads/media/sites/banners/about-us-smtu.jpg', 1, 0, '2022-10-25 17:14:19', '2023-01-17 07:34:58', NULL);
+INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `site_background`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nItÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s Fun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 'uploads/media/sites/background/SMMG-BG.jpg', 1, 0, '2022-10-24 00:54:28', '2023-01-19 05:55:20', NULL),
+	(2, 'SM Tuguegarao', 'KING\r\nSM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. \r\n\r\nIt\'s Fun and Festive Malling at SM City Tuguegarao!\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', '', 'uploads/media/sites/banners/about-us-smtu.jpg', NULL, 1, 0, '2022-10-25 17:14:19', '2023-01-17 07:34:58', NULL);
 
 -- Dumping structure for table prestige.sites_meta
 DROP TABLE IF EXISTS `sites_meta`;
@@ -11843,9 +11844,9 @@ CREATE TABLE IF NOT EXISTS `site_ads` (
   KEY `site_ads_company_id_index` (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ads: ~24 rows (approximately)
+-- Dumping data for table prestige.site_ads: ~29 rows (approximately)
 INSERT INTO `site_ads` (`id`, `company_id`, `name`, `ad_type`, `screen_type`, `file_path`, `file_type`, `display_order`, `display_duration`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 'MEGA - FACADE BA', 'Banners', 'Directory', 'uploads/media/advertisements/Banners/70c97549-3e15-9cda.jpg', 'jpg', 0, 11, '2022-11-01', '2023-12-31', 1, '2022-11-03 01:07:15', '2023-01-06 03:33:34', NULL),
+	(1, 1, 'MEGA - FACADE BA', 'Banners', NULL, 'uploads/media/advertisements/Banners/70c97549-3e15-9cda.jpg', 'jpg', 0, 12, NULL, NULL, 1, '2022-11-03 01:07:15', '2023-01-19 03:42:52', NULL),
 	(2, 1, 'SM - You\'re always welcome here BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-9230-3481.jpg', 'jpg', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 19:45:51', '2022-11-07 19:45:51', NULL),
 	(3, 2, 'Powered By PRESTIGE BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-92b5-38f2.ogv', 'ogv', 0, 10, '2022-11-01', '2023-12-31', 1, '2022-11-07 19:47:07', '2022-11-09 00:08:52', NULL),
 	(4, 1, 'SMMG SWATCH BA', 'Banners', 'Directory', 'uploads/media/advertisements/banners/70c97549-9385-9d11.jpg', 'jpg', 0, 11, '2022-11-11', '2022-11-15', 1, '2022-11-07 22:32:58', '2023-01-05 05:42:42', NULL),
@@ -11899,7 +11900,7 @@ CREATE TABLE IF NOT EXISTS `site_ad_sites` (
   CONSTRAINT `site_ad_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ad_sites: ~22 rows (approximately)
+-- Dumping data for table prestige.site_ad_sites: ~25 rows (approximately)
 INSERT INTO `site_ad_sites` (`site_ad_id`, `site_id`) VALUES
 	(2, 1),
 	(5, 1),
@@ -11920,7 +11921,6 @@ INSERT INTO `site_ad_sites` (`site_ad_id`, `site_id`) VALUES
 	(13, 1),
 	(10, 1),
 	(4, 1),
-	(1, 1),
 	(21, 1),
 	(22, 1),
 	(23, 1),
@@ -11939,7 +11939,7 @@ CREATE TABLE IF NOT EXISTS `site_ad_tenants` (
   CONSTRAINT `site_ad_tenants_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_ad_tenants: ~19 rows (approximately)
+-- Dumping data for table prestige.site_ad_tenants: ~20 rows (approximately)
 INSERT INTO `site_ad_tenants` (`site_ad_id`, `site_tenant_id`) VALUES
 	(5, 124),
 	(6, 908),
@@ -12720,7 +12720,7 @@ CREATE TABLE IF NOT EXISTS `site_points` (
   CONSTRAINT `site_points_site_map_id_foreign` FOREIGN KEY (`site_map_id`) REFERENCES `site_maps` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=704 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_points: ~639 rows (approximately)
+-- Dumping data for table prestige.site_points: ~638 rows (approximately)
 INSERT INTO `site_points` (`id`, `site_map_id`, `tenant_id`, `point_type`, `point_x`, `point_y`, `point_z`, `rotation_z`, `text_size`, `text_width`, `is_pwd`, `point_label`, `wrap_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 118, 0, 1073.13, 1733.59, 0.00, 0.00, 1.25, 0.00, 1, NULL, 0, '2022-11-28 08:01:00', '2022-12-01 16:15:41', NULL),
 	(2, 1, 117, 0, 1200.09, 1729.58, 0.00, 0.00, 1.25, 0.00, 1, NULL, 0, '2022-11-28 08:01:02', '2022-12-01 16:22:45', NULL),
@@ -13376,7 +13376,7 @@ CREATE TABLE IF NOT EXISTS `site_point_links` (
   CONSTRAINT `site_point_links_site_map_id_foreign` FOREIGN KEY (`site_map_id`) REFERENCES `site_maps` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=786 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_point_links: ~658 rows (approximately)
+-- Dumping data for table prestige.site_point_links: ~659 rows (approximately)
 INSERT INTO `site_point_links` (`id`, `site_map_id`, `point_a`, `point_b`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(2, 1, 108, 109, '2022-11-29 15:27:46', '2022-11-29 15:27:46', NULL),
 	(4, 1, 108, 109, '2022-11-29 15:28:47', '2022-11-29 15:28:47', NULL),
@@ -14067,7 +14067,7 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screens: ~6 rows (approximately)
+-- Dumping data for table prestige.site_screens: ~7 rows (approximately)
 INSERT INTO `site_screens` (`id`, `screen_type`, `orientation`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `kiosk_id`, `token_key`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Directory', 'Landscape', 1, 1, 2, 0, '789101', NULL, 'National Book Store', 24, 1, 1, 0, '2022-10-25 01:28:36', '2023-01-05 06:34:41', NULL),
 	(2, 'Directory', 'Landscape', 1, 1, 2, 0, '123456', NULL, 'Kenny Rogers', 24, 1, 0, 0, '2022-10-25 01:39:22', '2022-11-08 18:25:30', NULL),
@@ -14119,7 +14119,7 @@ CREATE TABLE IF NOT EXISTS `site_tenants` (
   CONSTRAINT `site_tenants_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenants: ~1,149 rows (approximately)
+-- Dumping data for table prestige.site_tenants: ~1,150 rows (approximately)
 INSERT INTO `site_tenants` (`id`, `brand_id`, `site_id`, `site_building_id`, `site_building_level_id`, `company_id`, `view_count`, `like_count`, `active`, `is_subscriber`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 7446, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:35', '2022-10-25 22:19:35', NULL),
 	(4, 6483, 1, 1, 1, NULL, 0, 0, 1, 0, '2022-10-25 22:19:35', '2022-10-25 22:19:35', NULL),
@@ -15288,7 +15288,7 @@ CREATE TABLE IF NOT EXISTS `site_tenant_metas` (
   CONSTRAINT `site_tenant_metas_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=729 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenant_metas: ~695 rows (approximately)
+-- Dumping data for table prestige.site_tenant_metas: ~728 rows (approximately)
 INSERT INTO `site_tenant_metas` (`id`, `site_tenant_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1144, 'schedules', '[{"schedules":"       Wed, Tue","start_time":"09:00","end_time":"22:00"},{"schedules":"Thu, Fri, Sat, Sun, Mon","start_time":"10:00","end_time":"22:00"}]', '2022-11-06 22:33:34', '2022-11-07 01:41:21', NULL),
 	(2, 1144, 'subscriber_logo', 'uploads/media/subscriber/70c972c5-7b83-dfbd.jpg', '2022-11-06 22:33:34', '2022-11-06 22:58:21', NULL),
@@ -16146,7 +16146,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   KEY `tags_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1748 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.tags: ~1,515 rows (approximately)
+-- Dumping data for table prestige.tags: ~1,516 rows (approximately)
 INSERT INTO `tags` (`id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'A&w', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),
 	(2, 'A4tech', 1, '2022-08-22 18:35:37', '2022-08-22 18:35:37', NULL),

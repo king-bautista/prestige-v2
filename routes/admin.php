@@ -299,9 +299,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     Route::get('/admin/advertisement/list/{ad_type}', 'Admin\AdvertisementController@list')->name('admin.advertisement.list');
     Route::post('/admin/advertisement/store', 'Admin\AdvertisementController@store')->name('admin.advertisement.store');
-    Route::get('/admin/advertisement/{id}', 'Admin\SiteAdsController@details')->where('id', '[0-9]+')->name('admin.advertisement.details');
-    Route::post('/admin/advertisement/update', 'Admin\SiteAdsController@update')->name('admin.advertisement.update');
-    Route::get('/admin/advertisement/delete/{id}', 'Admin\SiteAdsController@delete')->where('id', '[0-9]+')->name('admin.advertisement.delete');
+    Route::get('/admin/advertisement/{id}', 'Admin\AdvertisementController@details')->where('id', '[0-9]+')->name('admin.advertisement.details');
+    Route::post('/admin/advertisement/update', 'Admin\AdvertisementController@update')->name('admin.advertisement.update');
+    Route::get('/admin/advertisement/delete/{id}', 'Admin\AdvertisementController@delete')->where('id', '[0-9]+')->name('admin.advertisement.delete');
 
     /*
     |--------------------------------------------------------------------------
