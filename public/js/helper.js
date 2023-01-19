@@ -1,8 +1,15 @@
 var Helpers = function() {}
 
 Helpers.prototype = {
-    getFileExtension: function(fileType) {			
-        switch(fileType) {
+    getFileExtension: function(fileType) {	
+        if(fileType) {
+            fileExt = fileType.split('.').pop();    
+        }
+        else {
+            fileExt = fileType;
+        }
+        
+        switch(fileExt) {
             case 'ogg':
             case 'ogv':
             case 'mp4':

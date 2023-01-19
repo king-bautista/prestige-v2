@@ -71,6 +71,16 @@
                                     <img v-if="site_banner" :src="site_banner" class="img-thumbnail" />
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Background Image</label>
+								<div class="col-sm-5">
+                                    <input type="file" accept="image/*" ref="site_background" @change="siteBackgroundChange">
+									<footer class="blockquote-footer">image max size is 1920 x 1080 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+                                    <img v-if="site_background" :src="site_background" class="img-thumbnail" />
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -182,6 +192,7 @@
 					descriptions: '',
                     site_logo: '',
                     site_banner: '',
+                    site_background: '',
 					facebook: '',
 					instagram: '',
 					twitter: '',
@@ -193,6 +204,7 @@
 				},
                 site_logo: '/images/no-image-available.png',
                 site_banner: '/images/no-image-available.png',
+                site_background: '/images/no-image-available.png',
 				add_record: true,
                 edit_record: false,
 				is_default: '',
@@ -209,6 +221,10 @@
             		},
                     site_banner_path: {
             			name: "Banner", 
+            			type:"image", 
+            		},
+					site_background_path: {
+            			name: "Background", 
             			type:"image", 
             		},
             		active: {
@@ -295,6 +311,12 @@
 				this.site.site_banner = file;
 			},
 
+			siteBackgroundChange: function(e) {
+				const file = e.target.files[0];
+      			this.site_background = URL.createObjectURL(file);
+				this.site.site_background = file;
+			},
+
 			AddNewSite: function() {
 				this.add_record = true;
 				this.edit_record = false;
@@ -302,9 +324,11 @@
 				this.site.descriptions = '';
                 this.site.site_logo = '/images/no-image-available.png';
                 this.site.site_banner = '/images/no-image-available.png';
+                this.site.site_background = '/images/no-image-available.png';
                 this.site.active = false;				
                 this.site_logo = '/images/no-image-available.png';		
                 this.site_banner = '/images/no-image-available.png';				
+                this.site_background = '/images/no-image-available.png';				
 				this.$refs.site_logo.value = null;
 				this.$refs.site_banner.value = null;
 
@@ -317,6 +341,7 @@
 				formData.append("descriptions", this.site.descriptions);
 				formData.append("site_logo", this.site.site_logo);
 				formData.append("site_banner", this.site.site_banner);
+				formData.append("site_background", this.site.site_background);
 				formData.append("facebook", this.site.facebook);
 				formData.append("instagram", this.site.instagram);
 				formData.append("twitter", this.site.twitter);
@@ -347,6 +372,7 @@
                     this.site.descriptions = site.descriptions;
                     this.site.site_logo = site.site_logo;
                     this.site.site_banner = site.site_banner;
+                    this.site.site_background = site.site_background;
                     this.site.facebook = site.details.facebook;
                     this.site.instagram = site.details.instagram;
                     this.site.twitter = site.details.twitter;
@@ -357,6 +383,7 @@
 					this.site.is_default = site.is_default;
 					this.add_record = false;
 					this.edit_record = true;
+
 					if(site.site_logo) {
 						this.site_logo = site.site_logo_path;
 					}
@@ -369,6 +396,13 @@
 					}
 					else {
 						this.site_banner = this.site.site_banner;
+					}
+
+					if(site.site_background) {
+						this.site_background = site.site_background_path;
+					}
+					else {
+						this.site_background = this.site.site_background;
 					}
 
                     this.$refs.site_logo.value = null;
@@ -385,6 +419,7 @@
 				formData.append("descriptions", this.site.descriptions);
 				formData.append("site_logo", this.site.site_logo);
 				formData.append("site_banner", this.site.site_banner);
+				formData.append("site_background", this.site.site_background);
 				formData.append("facebook", this.site.facebook);
 				formData.append("instagram", this.site.instagram);
 				formData.append("twitter", this.site.twitter);

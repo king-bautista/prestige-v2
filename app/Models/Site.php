@@ -19,6 +19,7 @@ class Site extends Model
         'descriptions',
         'site_logo',
         'site_banner',
+        'site_background',
         'active',
         'is_default',
     ];

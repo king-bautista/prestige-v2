@@ -58,13 +58,30 @@ class AdvertisementController extends AppBaseController implements Advertisement
         try
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-            $site_ads = AdvertisementViewModel::when(request('search'), function($query){
+            $advertisements = AdvertisementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
             ->where('ad_type', $ad_type)
             ->latest()
             ->paginate(request('perPage'));
-            return $this->responsePaginate($site_ads, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function details($id)
+    {
+        try
+        {
+            $advertisement = AdvertisementViewModel::find($id);
+            return $this->response($advertisement, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -151,6 +168,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $dimension = null;
             $width = null;
             $height = null;
+            $file_type = null;
 
             if($file_path) {
                 $originalname = $file_path->getClientOriginalName();
@@ -172,12 +190,12 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 'brand_id' => $brand_id->id,
                 'ad_type' => $request->ad_type,
                 'name' => $request->name,
-                'file_path' => str_replace('\\', '/', $file_path_path),
-                'file_type' => $file_type,
-                'file_size' => $file_size,
-                'dimension' => $dimension,
-                'width' => $width,
-                'height' => $height,
+                'file_path' => ($file_path_path) ? str_replace('\\', '/', $file_path_path) : $advertisement->file_path,
+                'file_type' => ($file_type) ? $file_type : $advertisement->file_type,
+                'file_size' => ($file_size) ? $file_size : $advertisement->file_size,
+                'dimension' => ($dimension) ? $dimension : $advertisement->dimension,
+                'width' => ($width) ? $width : $advertisement->width,
+                'height' => ($height) ? $height : $advertisement->height,
                 'display_duration' => $request->display_duration,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];

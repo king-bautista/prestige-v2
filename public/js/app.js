@@ -9302,6 +9302,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      helper: new Helpers(),
       advertisements: {
         id: '',
         company_id: '',
@@ -9325,9 +9326,10 @@ __webpack_require__.r(__webpack_exports__);
           type: "logo"
         },
         name: "Name",
-        company_name: "Company",
-        screen_type: "Screen Type",
-        duration: "Duration",
+        company_name: "Company Name",
+        brand_name: "Brand Name",
+        display_duration: "Duration (in sec)",
+        dimension: "Dimension",
         active: {
           name: "Status",
           type: "Boolean",
@@ -9374,42 +9376,6 @@ __webpack_require__.r(__webpack_exports__);
     this.getBrands();
   },
   methods: {
-    getFileExtension: function getFileExtension(filename) {
-      var fileExt = '';
-      if (this.material_type) {
-        fileExt = this.material_type;
-      } else {
-        fileExt = filename.split('.').pop();
-      }
-      switch (fileExt) {
-        case 'ogv':
-        case 'mp4':
-        case 'wmv':
-        case 'avi':
-        case 'mkv':
-        case 'video/ogg':
-        case 'video/ogv':
-        case 'video/mp4':
-        case 'video/wmv':
-        case 'video/avi':
-        case 'video/mkv':
-          return 'video';
-          break;
-        case 'jpeg':
-        case 'jpg':
-        case 'png':
-        case 'gif':
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-        case 'image/gif':
-          return 'image';
-          break;
-        default:
-          return false;
-          break;
-      }
-    },
     getCompany: function getCompany() {
       var _this = this;
       axios.get('/admin/company/get-all').then(function (response) {
@@ -12277,6 +12243,7 @@ __webpack_require__.r(__webpack_exports__);
         descriptions: '',
         site_logo: '',
         site_banner: '',
+        site_background: '',
         facebook: '',
         instagram: '',
         twitter: '',
@@ -12288,6 +12255,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       site_logo: '/images/no-image-available.png',
       site_banner: '/images/no-image-available.png',
+      site_background: '/images/no-image-available.png',
       add_record: true,
       edit_record: false,
       is_default: '',
@@ -12304,6 +12272,10 @@ __webpack_require__.r(__webpack_exports__);
         },
         site_banner_path: {
           name: "Banner",
+          type: "image"
+        },
+        site_background_path: {
+          name: "Background",
           type: "image"
         },
         active: {
@@ -12384,6 +12356,11 @@ __webpack_require__.r(__webpack_exports__);
       this.site_banner = URL.createObjectURL(file);
       this.site.site_banner = file;
     },
+    siteBackgroundChange: function siteBackgroundChange(e) {
+      var file = e.target.files[0];
+      this.site_background = URL.createObjectURL(file);
+      this.site.site_background = file;
+    },
     AddNewSite: function AddNewSite() {
       this.add_record = true;
       this.edit_record = false;
@@ -12391,9 +12368,11 @@ __webpack_require__.r(__webpack_exports__);
       this.site.descriptions = '';
       this.site.site_logo = '/images/no-image-available.png';
       this.site.site_banner = '/images/no-image-available.png';
+      this.site.site_background = '/images/no-image-available.png';
       this.site.active = false;
       this.site_logo = '/images/no-image-available.png';
       this.site_banner = '/images/no-image-available.png';
+      this.site_background = '/images/no-image-available.png';
       this.$refs.site_logo.value = null;
       this.$refs.site_banner.value = null;
       $('#site-form').modal('show');
@@ -12405,6 +12384,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("descriptions", this.site.descriptions);
       formData.append("site_logo", this.site.site_logo);
       formData.append("site_banner", this.site.site_banner);
+      formData.append("site_background", this.site.site_background);
       formData.append("facebook", this.site.facebook);
       formData.append("instagram", this.site.instagram);
       formData.append("twitter", this.site.twitter);
@@ -12431,6 +12411,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.site.descriptions = site.descriptions;
         _this2.site.site_logo = site.site_logo;
         _this2.site.site_banner = site.site_banner;
+        _this2.site.site_background = site.site_background;
         _this2.site.facebook = site.details.facebook;
         _this2.site.instagram = site.details.instagram;
         _this2.site.twitter = site.details.twitter;
@@ -12451,6 +12432,11 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           _this2.site_banner = _this2.site.site_banner;
         }
+        if (site.site_background) {
+          _this2.site_background = site.site_background_path;
+        } else {
+          _this2.site_background = _this2.site.site_background;
+        }
         _this2.$refs.site_logo.value = null;
         _this2.$refs.site_logo.value = null;
         $('#site-form').modal('show');
@@ -12464,6 +12450,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("descriptions", this.site.descriptions);
       formData.append("site_logo", this.site.site_logo);
       formData.append("site_banner", this.site.site_banner);
+      formData.append("site_background", this.site.site_background);
       formData.append("facebook", this.site.facebook);
       formData.append("instagram", this.site.instagram);
       formData.append("twitter", this.site.twitter);
@@ -13575,34 +13562,14 @@ __webpack_require__.r(__webpack_exports__);
       itemSelected: [],
       deleteUrl: '',
       tobeDeleted: 0,
-      filters: []
+      filters: [],
+      helper: new Helpers()
     };
   },
   created: function created() {
     this.fetchData();
   },
   methods: {
-    getFileExtension: function getFileExtension(filename) {
-      var fileExt = filename.split('.').pop();
-      switch (fileExt) {
-        case 'ogv':
-        case 'mp4':
-        case 'wmv':
-        case 'avi':
-        case 'mkv':
-          return 'video';
-          break;
-        case 'jpeg':
-        case 'jpg':
-        case 'png':
-        case 'gif':
-          return 'image';
-          break;
-        default:
-          return false;
-          break;
-      }
-    },
     condition: function condition(action, permission, data) {
       if (!permission) return false;
       if (action.conditions) {
@@ -14818,12 +14785,12 @@ var render = function render() {
     staticClass: "blockquote-footer"
   }, [_vm._v("image/video max size is 286 x 286 pixels")]) : _vm._e()]), _vm._v(" "), _c("div", {
     staticClass: "col-sm-3 text-center"
-  }, [_vm.material && _vm.getFileExtension(_vm.material) == "image" ? _c("span", [_vm.material ? _c("img", {
+  }, [_vm.material && _vm.helper.getFileExtension(_vm.material_type) == "image" ? _c("span", [_vm.material ? _c("img", {
     staticClass: "img-thumbnail",
     attrs: {
       src: _vm.material
     }
-  }) : _vm._e()]) : _vm.material && _vm.getFileExtension(_vm.material) == "video" ? _c("span", [_c("video", {
+  }) : _vm._e()]) : _vm.material && _vm.helper.getFileExtension(_vm.material_type) == "video" ? _c("span", [_c("video", {
     staticClass: "img-thumbnail",
     attrs: {
       muted: "muted"
@@ -21427,6 +21394,33 @@ var render = function render() {
       src: _vm.site_banner
     }
   }) : _vm._e()])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group row"
+  }, [_c("label", {
+    staticClass: "col-sm-4 col-form-label",
+    attrs: {
+      "for": "firstName"
+    }
+  }, [_vm._v("Background Image")]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-5"
+  }, [_c("input", {
+    ref: "site_background",
+    attrs: {
+      type: "file",
+      accept: "image/*"
+    },
+    on: {
+      change: _vm.siteBackgroundChange
+    }
+  }), _vm._v(" "), _c("footer", {
+    staticClass: "blockquote-footer"
+  }, [_vm._v("image max size is 1920 x 1080 pixels")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-sm-3 text-center"
+  }, [_vm.site_background ? _c("img", {
+    staticClass: "img-thumbnail",
+    attrs: {
+      src: _vm.site_background
+    }
+  }) : _vm._e()])]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -24327,17 +24321,17 @@ var render = function render() {
         domProps: {
           innerHTML: _vm._s(tHeader.status[data[key]])
         }
-      })]) : tHeader.type == "image" && _vm.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
+      })]) : tHeader.type == "image" && _vm.helper.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
         staticClass: "img-thumbnail",
         attrs: {
           src: data[key]
         }
-      })]) : tHeader.type == "logo" && _vm.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
+      })]) : tHeader.type == "logo" && _vm.helper.getFileExtension(data[key]) == "image" ? _c("span", [_c("img", {
         staticClass: "img-logo",
         attrs: {
           src: data[key]
         }
-      })]) : tHeader.type == "image" && _vm.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
+      })]) : tHeader.type == "image" && _vm.helper.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
         staticClass: "img-thumbnail",
         attrs: {
           muted: "muted"
@@ -24350,7 +24344,7 @@ var render = function render() {
           src: data[key],
           type: "video/ogg"
         }
-      }), _vm._v("\n                                    Your browser does not support the video tag.\n                                ")])]) : tHeader.type == "logo" && _vm.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
+      }), _vm._v("\n                                    Your browser does not support the video tag.\n                                ")])]) : tHeader.type == "logo" && _vm.helper.getFileExtension(data[key]) == "video" ? _c("span", [_c("video", {
         staticClass: "img-logo",
         attrs: {
           muted: "muted"

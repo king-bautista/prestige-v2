@@ -83,10 +83,10 @@
 									<footer class="blockquote-footer" v-if="ad_type=='Events'">image/video max size is 286 x 286 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
-									<span v-if="material && getFileExtension(material) == 'image'">
+									<span v-if="material && helper.getFileExtension(material_type) == 'image'">
 										<img v-if="material" :src="material" class="img-thumbnail" />
 									</span>
-									<span v-else-if="material && getFileExtension(material) == 'video'">
+									<span v-else-if="material && helper.getFileExtension(material_type) == 'video'">
 										<video muted="muted" class="img-thumbnail">
 											<source :src="material" type="video/ogg">
 											Your browser does not support the video tag.
@@ -140,6 +140,7 @@
         },
         data() {
             return {
+                helper: new Helpers(),
                 advertisements: {
                     id: '',
 					company_id: '',
@@ -160,12 +161,13 @@
             	dataFields: {
 					material_image_path: {
             			name: "Preview", 
-            			type:"logo", 
+            			type: "logo", 
             		},
             		name: "Name", 
-					company_name: "Company",
-					screen_type: "Screen Type",
-					duration: "Duration",
+					company_name: "Company Name",
+					brand_name: "Brand Name",
+					display_duration: "Duration (in sec)",
+					dimension: "Dimension",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -214,46 +216,6 @@
         },
 
         methods: {
-			getFileExtension(filename) {
-                var fileExt = '';
-				
-				if(this.material_type) {
-					fileExt = this.material_type;
-				}
-				else {
-					fileExt = filename.split('.').pop();
-				}
-				
-                switch(fileExt) {
-                    case 'ogv':
-                    case 'mp4':
-                    case 'wmv':
-                    case 'avi':
-                    case 'mkv':
-                    case 'video/ogg':
-                    case 'video/ogv':
-                    case 'video/mp4':
-                    case 'video/wmv':
-                    case 'video/avi':
-                    case 'video/mkv':
-                        return 'video';
-                        break;
-                    case 'jpeg':
-                    case 'jpg':
-                    case 'png':
-                    case 'gif':
-                    case 'image/jpeg':
-                    case 'image/jpg':
-                    case 'image/png':
-                    case 'image/gif':
-                        return 'image';
-                        break;
-                    default:
-						return false;
-                        break;
-                }
-            },
-
 			getCompany: function() {
 				axios.get('/admin/company/get-all')
                 .then(response => this.companies = response.data.data);
