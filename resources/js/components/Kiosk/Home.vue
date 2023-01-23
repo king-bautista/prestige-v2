@@ -2,7 +2,7 @@
     <div style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
-                <div id="page-title">{{ page_title }}</div>
+                <div id="page-title" v-if="page_title != 'Home'">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
                 <router-link to="/about-us">
@@ -13,7 +13,7 @@
 
         <!-- MAIN CATEGORY -->
         <div v-show="home_category">
-            <div class="row mt-5 mb-5">
+            <div class="row mt-15 mb-55">
                 <div class="col-md-12 home-title text-center">
                     Search your favorite stores
                 </div>
