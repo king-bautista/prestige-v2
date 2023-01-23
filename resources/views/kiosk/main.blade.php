@@ -1,8 +1,8 @@
 @extends('layout.kiosk_default.master')
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="background-image: url('{{ $site_background }}')">
     <div class="row">
-        <div class="col-md-3 p-1">
+        <div class="col-md-3 custom-p-1">
             <div class="banner-ads">
                 <rotating-banners></rotating-banners>               
             </div>
@@ -14,7 +14,7 @@
                 </div>
             </div>            
             <div class="row">
-                <div class="col-md-12 text-center">
+                <div class="col-md-12 text-center pt-2 pr-136">
                     <router-link to="/">
                         <div class="h-button widget-button home-button active logs" data-link='Home'>
                             <div class="button-text-align">Home</div>
