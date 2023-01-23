@@ -13,19 +13,16 @@ body,html {
     overflow: hidden;
 }
 
-body{
-    background-image: url('../assets/images/SMMG-BG.jpg');
-}
-
 .banner-ads {
     height: 1080px;
+    width: 470px;
     display: block;
     z-index: 1000;
 }
 
 .logo-holder {
     height: 60px;
-    margin: 20px 20px 0 0;
+    margin: 38px 40px 0 0;
 }
 
 .main-content-holder {
@@ -44,7 +41,7 @@ body{
 .h-button {
     position: relative;
     display: inline-flex;
-    width: 225px;
+    width: 210px;
     height: 80px;
 }
 
@@ -54,7 +51,7 @@ body{
     text-align: center;
     width: 94px;
     top: 23px;
-    left: 92px;
+    left: 80px;
     font-size: 24px;
 }
 
@@ -62,6 +59,7 @@ body{
     background-size: 225px auto;
     background-repeat: no-repeat;
     font-family: 'Henry Sans Medium';
+    background-position-x: -12px;
 }
 
 .widget-button:hover {
@@ -70,6 +68,10 @@ body{
 
 .widget-button.active {
     text-transform: uppercase;
+}
+
+.widget-button.active div {
+    font-family: 'Henry Sans Medium';
 }
 
 .home-button {
@@ -88,6 +90,7 @@ body{
 .search-button {
     background-image: url('../assets/images/Search.png');
     color: black;
+    margin-right: -3px;
 }
 
 .search-button:hover {
@@ -101,6 +104,7 @@ body{
 .map-button {
     background-image: url('../assets/images/Map.png');
     color: black;
+    margin-right: -5px;
 }
 
 .map-button:hover {
@@ -114,6 +118,7 @@ body{
 .promos-button {
     background-image: url('../assets/images/Promos.png');
     color: black;
+    margin-right: -1px;
 }
 
 .promos-button:hover {
@@ -155,6 +160,7 @@ body{
     font-size: 40px;
     padding: 15px 0 15px 0;
     color: #2a2a2a;
+    padding-right: 10px;
 }
 
 .hc-button {
@@ -164,27 +170,51 @@ body{
 }
 
 .food {
-    margin-top:15px;
-    margin-left:82px;
+    margin-top:16px;
+    margin-left:72px;
     width:350px;
 }
 
+.food div {
+    top: 46px;
+    left: 35px;
+    color: black;
+}
+
 .fashion {
-    margin-top:15px;
+    margin-top:16px;
     margin-left:44px;
     width:350px;
 }
 
+.fashion div {
+    top: 46px;
+    left: 38px;
+    color: black;
+}
+
 .electronics {
-    margin-top:15px;
+    margin-top:16px;
     margin-left:46px;
     width:228px;   
 }
 
+.electronics div {
+    top: 46px;
+    left: 24px;
+    color: black; 
+}
+
 .function {
-    margin-top:15px;
+    margin-top:16px;
     margin-left:48px;
     width:228px;
+}
+
+.function div {
+    top: 46px;
+    left: 23px;
+    color: black; 
 }
 
 .finds {
@@ -193,10 +223,10 @@ body{
     width:509px;    
 }
 
-#hc-button1 {
-    top: 46px;
-    left: 35px;
-    color: black;
+.finds div {
+    top: 55px;
+    left: 24px;
+    color: black; 
 }
 
 .hc-button-align {
@@ -488,7 +518,7 @@ body{
 
 .assistance_tooltip {
     position:absolute;
-    top:870px;
+    top:880px;
     right:0px;
 }
 
@@ -791,4 +821,24 @@ div.alist {
 #tenant-details .card-footer {
     border-radius: 0 0 15px 15px;
     background-color: rgb(152, 218, 208);
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+
+.mb-55 {
+    margin-bottom: 55px;
+}
+
+.pt-2 {
+    padding-top: 2px !important;
+}
+
+.pr-136 {
+    padding-right: 136px;
+}
+
+.custom-p-1 {
+    padding: 9px 0 !important;
 }
