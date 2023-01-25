@@ -84,17 +84,21 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $kiosk_id = Str::random(16);
-            $token_key = Str::random(30);
 
             $data = [
-                'screen_type' => $request->screen_type,
-                'orientation' => $request->orientation,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'kiosk_id' => $kiosk_id,
-                'token_key' => $token_key,
                 'name' => $request->name,
+                'screen_type' => $request->screen_type,
+                'orientation' => $request->orientation,
+                'physical_size_diagonal' => $request->physical_size_diagonal,
+                'physical_size_width' => $request->physical_size_width,
+                'physical_size_height' => $request->physical_size_height,
+                'dimension' => $request->dimension,
+                'width' => $request->width,
+                'height' => $request->height,
+                'kiosk_id' => $kiosk_id,
                 'slots' => $request->slots,
                 'active' => 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
@@ -126,12 +130,18 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $data = [
-                'screen_type' => $request->screen_type,
-                'orientation' => $request->orientation,
+                'name' => $request->name,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'name' => $request->name,
+                'screen_type' => $request->screen_type,
+                'orientation' => $request->orientation,
+                'physical_size_diagonal' => $request->physical_size_diagonal,
+                'physical_size_width' => $request->physical_size_width,
+                'physical_size_height' => $request->physical_size_height,
+                'dimension' => $request->dimension,
+                'width' => $request->width,
+                'height' => $request->height,
                 'slots' => $request->slots,
                 'active' => ($request->active == 0) ? 0 : 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
@@ -174,7 +184,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try
     	{
-            $ids = explode(",", substr($ids, 0, -1));
+            $ids = explode(",", rtrim($ids, ","));
             $site_screens = SiteScreenViewModel::whereIn('site_id', $ids)
             ->when($type, function($query) use ($type) { 
                 return $query->where('screen_type', $type);

@@ -74,15 +74,21 @@ class CreateSitesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->enum('screen_type', ['Directory', 'LED', 'LFD', 'LED funnel']);
-            $table->enum('orientation', ['Landscape', 'Portrait']);
             $table->bigInteger('site_id')->unsigned();
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();
             $table->bigInteger('site_point_id')->unsigned();
+            $table->string('name');
+            $table->enum('screen_type', ['Directory', 'LED', 'LFD', 'LED Panel']);
+            $table->enum('orientation', ['Landscape', 'Portrait']);
+            $table->string('physical_size_diagonal')->nullable();
+            $table->string('physical_size_width')->nullable();
+            $table->string('physical_size_height')->nullable();
+            $table->string('dimension')->nullable();
+            $table->string('width')->nullable();
+            $table->string('height')->nullable();
             $table->string('kiosk_id')->nullable();     
             $table->string('token_key')->nullable();     
-            $table->string('name');
             $table->integer('slots')->default(0);
             $table->boolean('active')->default(true);
             $table->boolean('is_default')->default(false);

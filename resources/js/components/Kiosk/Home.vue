@@ -30,16 +30,21 @@
 
         <!-- SUB CATEGORY -->
         <div v-show="child_category">
-            <div class="row mt-5 mb-5">
-                <div class="col-md-12 home-title text-center">
+            <div v-if="child_category_count< 7" class="row mt-120 mb-41">
+                <div class="col-md-12 home-title-sub text-center">
                     {{ current_category.label}}
                 </div>
             </div>
-            <div class="row col-md-6 offset-md-3 mb-3">
-                <div v-for="category in current_category.children" class="col-12 col-sm-6 text-left mt-3" @click="helper.saveLogs({category_id: category.parent_id, sub_category_id: category.id, action: 'click' }); getTenantsByCategory(category)">			
-                    <div class="c-button">						
+            <div v-else class="row mb-27">
+                <div class="col-md-12 home-title-sub text-center">
+                    {{ current_category.label}}
+                </div>
+            </div>
+            <div class="row col-md-6 offset-md-3 mb-3 mw-51p">
+                <div v-for="category in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="helper.saveLogs({category_id: category.parent_id, sub_category_id: category.id, action: 'click' }); getTenantsByCategory(category)">			
+                    <div class="c-button ml-0">						
                         <img class="tenant-category" :src="category.kiosk_image_primary_path" style="max-width:100%">
-                        <div class="c-button-align c-button-color2 translateme">{{category.label}}</div>                        
+                        <div class="c-button-align c-button-color2 translateme"><p>{{category.label}}</p></div>                        
                     </div>					
                 </div>
             </div>
@@ -47,14 +52,14 @@
 
         <!-- SUPPLEMENTALS -->
         <div v-show="supplementals">
-            <div class="row mt-5 mb-5">
-                <div class="col-md-12 home-title text-center">
+            <div class="row mb-27">
+                <div class="col-md-12 home-title-sub text-center">
                     {{ current_category.label}}
                 </div>
             </div>
-            <div class="row col-md-10 offset-md-1 mb-3">
+            <div class="row col-md-10 offset-md-1 mb-3 w-1152">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner mh-627">
                         
                         <!-- Control dots -->
                         <ol class="carousel-indicators">
@@ -66,7 +71,7 @@
                                 <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs({category_id: supplemental.parent_id, sub_category_id: supplemental.id, action: 'click' }); getTenantsBySupplementals(supplemental)">			
                                     <div class="c-button">						
                                         <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
-                                        <div class="c-button-align c-button-color2 translateme">{{supplemental.label}}</div>                        
+                                        <div class="c-button-align c-button-color2 translateme"><p>{{supplemental.label}}</p></div>                        
                                     </div>					
                                 </div>
                             </div>
@@ -86,8 +91,8 @@
 
         <!-- ALPHABETICAL -->
         <div v-show="alphabetical">
-            <div class="row mt-5 mb-5">
-                <div class="col-md-12 home-title text-center">
+            <div class="row mb-41">
+                <div class="col-md-12 home-title-sub text-center">
                     <div v-if="!category_top_banner">{{ category_label }}</div>
                     <div class="hts-strip" v-if="category_top_banner">
                         <img class="tenant-category-strip" :src="category_top_banner" style="width:100%">
@@ -97,7 +102,7 @@
             </div>
             <div class="row col-md-10 offset-md-1">
                 <div id="myTenants" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-if="tenant_list.length > 0">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner mh-627">
                         
                         <!-- Control dots -->
                         <ol class="carousel-indicators">
@@ -253,7 +258,7 @@
                 </div>
             </div>
         </div>
-        <img v-show="!home_category" :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <img v-show="!home_category" :src="back_button" class="back-button" @click="goBack">
 
         <!-- MODAL -->
         <div class="custom-modal" id="myProduct">
@@ -283,6 +288,7 @@
                 page_title: 'Home',
                 home_category: true,
                 child_category: false,
+                child_category_count: 0,
                 alphabetical: false,
                 supplementals: false,
                 current_category: '',
@@ -397,6 +403,7 @@
                 $('#category-tab').click();
                 this.previous_page = 'Sub Category';
                 this.current_category = category;
+                this.child_category_count = category.children.length;
                 this.current_supplementals = category.supplemental;
                 this.page_title = 'Store List';
                 this.category_label = category.label;

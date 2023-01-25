@@ -214,7 +214,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
     	{
-            $ids = explode(",", substr($ids, 0, -1));
+            $ids = explode(",", rtrim($ids, ","));
             $site_tenants = SiteTenantViewModel::whereIn('site_id', $ids)->get();
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
         }

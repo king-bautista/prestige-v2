@@ -13,9 +13,9 @@ use App\Models\ViewModels\AdminViewModel;
 
 class CompaniesController extends AppBaseController implements CompaniesControllerInterface
 {
-    /************************************
-    * 			BRANDS MANAGEMENT	 	*
-    ************************************/
+    /****************************************
+    * 			COMPANIES MANAGEMENT	 	*
+    ****************************************/
     public function __construct()
     {
         $this->module_id = 33; 

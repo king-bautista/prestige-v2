@@ -45,6 +45,7 @@ Vue.component('admin-tenant-products', require('./components/Admin/TenantProduct
 Vue.component('admin-genres', require('./components/Admin/Genre.vue').default);
 Vue.component('admin-site-codes', require('./components/Admin/SiteCode.vue').default);
 Vue.component('admin-schedules', require('./components/Admin/CinemaSchedules.vue').default);
+Vue.component('admin-content', require('./components/Admin/Content.vue').default);
 
 /**
  * KIOSK PART
