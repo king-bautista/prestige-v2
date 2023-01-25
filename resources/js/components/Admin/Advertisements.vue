@@ -168,7 +168,21 @@
 					brand_name: "Brand Name",
 					display_duration: "Duration (in sec)",
 					dimension: "Dimension",
-            		active: {
+            		status_id: {
+            			name: "Transaction Status", 
+            			type:"Boolean", 
+            			status: { 
+            				1: '<span class="badge badge-primary">Draft</span>',
+            				2: '<span class="badge badge-primary">New</span>',
+            				3: '<span class="badge badge-info">Pending approval</span>',
+            				4: '<span class="badge badge-danger">Disapprove</span>',
+            				5: '<span class="badge badge-success">Approved</span>',
+            				6: '<span class="badge badge-secondary">For review</span>',
+            				7: '<span class="badge badge-info">Archive</span>',
+            				8: '<span class="badge badge-success">Saved</span>',
+            			}
+            		},
+					active: {
             			name: "Status", 
             			type:"Boolean", 
             			status: { 

@@ -50,7 +50,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
     public function promos()
     {
-        return view('admin.advertisements_events');
+        return view('admin.advertisements_promos');
     }
 
     public function list($ad_type, Request $request)
@@ -124,8 +124,8 @@ class AdvertisementController extends AppBaseController implements Advertisement
             }
 
             $data = [
-                'company_id' => $company_id->id,
-                'brand_id' => $brand_id->id,
+                'company_id' => ($company_id) ? $company_id->id : null,
+                'brand_id' => ($brand_id) ? $brand_id->id : null,
                 'ad_type' => $request->ad_type,
                 'name' => $request->name,
                 'file_path' => str_replace('\\', '/', $file_path_path),
@@ -136,6 +136,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 'height' => $height,
                 'display_duration' => $request->display_duration,
                 'active' => ($request->active == 'false') ? 0 : 1,
+                'status_id' => 5,
             ];
 
             $advertisement = Advertisement::create($data);
@@ -186,8 +187,8 @@ class AdvertisementController extends AppBaseController implements Advertisement
             }
 
             $data = [
-                'company_id' => $company_id->id,
-                'brand_id' => $brand_id->id,
+                'company_id' => ($company_id) ? $company_id->id : $advertisement->brand_id,
+                'brand_id' => ($brand_id) ? $brand_id->id : $advertisement->brand_id,
                 'ad_type' => $request->ad_type,
                 'name' => $request->name,
                 'file_path' => ($file_path_path) ? str_replace('\\', '/', $file_path_path) : $advertisement->file_path,
@@ -222,6 +223,28 @@ class AdvertisementController extends AppBaseController implements Advertisement
             return $this->response($advertisement, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getAllType(Request $request)
+    {
+        try
+        {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $advertisements = AdvertisementViewModel::when(request('search'), function($query){
+                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->latest()
+            ->paginate(request('perPage'));
+            return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),

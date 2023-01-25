@@ -229,8 +229,8 @@ class MainController extends AppBaseController
 
     public function getBanners()
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             
             $banners = SiteAdViewModel::where('site_ad_sites.site_id', $site->id)
@@ -242,14 +242,14 @@ class MainController extends AppBaseController
             ->get()->toArray();
 
             return $this->response($banners, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Banner to display!',
-                'status_code' => 200,
-            ], 200);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Banner to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }
     }
 
     public function getFullscreen()

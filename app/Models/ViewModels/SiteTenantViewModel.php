@@ -114,7 +114,7 @@ class SiteTenantViewModel extends Model
     {
         $brand_name = Brand::find($this->brand_id)->name;
         $site_name = Site::find($this->site_id)->name;
-        return $brand_name.' - '.$site_name;
+        return $site_name.' - '.$brand_name;
     }
 
     public function getCategoryIdAttribute() 

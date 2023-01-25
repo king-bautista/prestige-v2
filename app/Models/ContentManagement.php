@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SiteScreen extends Model
+class ContentManagement extends Model
 {
     use SoftDeletes;
 
@@ -15,24 +15,15 @@ class SiteScreen extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'advertisement_id',
         'site_id',
-        'site_building_id',
-        'site_building_level_id',
-        'site_point_id',
-        'screen_type',
-        'orientation',
-        'physical_size_diagonal',
-        'physical_size_width',
-        'physical_size_height',
-        'dimension',
-        'width',
-        'height',
-        'kiosk_id',
-        'name',
-        'slots',
+        'site_screen_id',
+        'site_tenant_id',
+        'start_date',
+        'end_date',
+        'uom',
+        'status_id',
         'active',
-        'is_default',
-        'is_exclusive',
     ];
 
     /**
@@ -51,7 +42,7 @@ class SiteScreen extends Model
      *
      * @var string
     */
-    protected $table = 'site_screens';
+    protected $table = 'content_management';
 
     /**
      * The primary key associated with the table.

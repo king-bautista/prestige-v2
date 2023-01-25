@@ -19,6 +19,7 @@ class CreateAdvertisementsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('company_id')->unsigned()->nullable()->index();
             $table->bigInteger('brand_id')->unsigned()->nullable()->index();
+            $table->bigInteger('status_id')->unsigned()->nullable()->index();
             $table->enum('ad_type', ['Events', 'Online', 'Banners', 'Fullscreen', 'Pop-Up', 'Promos']);
             $table->string('name');
             $table->mediumText('file_path')->nullable();
@@ -34,6 +35,7 @@ class CreateAdvertisementsTable extends Migration
 
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreign('status_id')->references('id')->on('transaction_statuses');
 
         });
     }

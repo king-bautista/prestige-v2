@@ -33,7 +33,7 @@
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="screen-form" tabindex="-1" aria-labelledby="screen-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Screen</h5>
@@ -93,6 +93,42 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Physical size diagonal</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.physical_size_diagonal" placeholder="43 inc" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Physical size width</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.physical_size_width" placeholder="43 inc" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Physical size height</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.physical_size_height" placeholder="43 inc" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Dimension</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.dimension" placeholder="1920 x 1080" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Width</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.width" placeholder="1920" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Height</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.height" placeholder="1080" required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -190,12 +226,18 @@
             return {
                 screen: {
                     id: '',
-                    screen_type: '',
-                    orientation: '',
 					site_id: '',
                     site_building_id: '',
                     site_building_level_id: '',
                     name: '',
+                    screen_type: '',
+                    orientation: '',
+                    physical_size_diagonal: '',
+                    physical_size_width: '',
+                    physical_size_height: '',
+                    dimension: '',
+                    width: '',
+                    height: '',
                     slots: '',
 					active: false,
 					is_default: false,
@@ -208,7 +250,7 @@
                 sites: [],
                 buildings: [],
                 floors: [],
-                screen_types: ['Directory','LED','LFD','LED funnel'],
+                screen_types: ['Directory','LED','LFD','LED Panel'],
                 orientations: ['Landscape','Portrait'],
             	dataFields: {
             		name: "Name", 
@@ -320,12 +362,18 @@
 				this.add_record = true;
 				this.edit_record = false;
 
-				this.screen.screen_type = '';
-				this.screen.orientation = '';
                 this.screen.site_id = '';
                 this.screen.site_building_id = '';
                 this.screen.site_building_level_id = '';
+				this.screen.screen_type = '';
                 this.screen.name = '';         
+				this.screen.orientation = '';
+				this.screen.physical_size_diagonal = '';
+				this.screen.physical_size_width = '';
+				this.screen.physical_size_height = '';
+				this.screen.dimension = '';
+				this.screen.width = '';
+				this.screen.height = '';
                 this.screen.slots = '';         
                 this.screen.active = false;         
                 this.screen.is_default = false;         
@@ -354,12 +402,18 @@
                     this.getFloorLevel(screen.site_building_id);
 
 					this.screen.id = screen.id;
-                    this.screen.screen_type = screen.screen_type;
-					this.screen.orientation = screen.orientation;
                     this.screen.site_id = screen.site_id;
 					this.screen.site_building_id = screen.site_building_id;
                     this.screen.site_building_level_id = screen.site_building_level_id;
 					this.screen.name = screen.name; 
+                    this.screen.screen_type = screen.screen_type;
+					this.screen.orientation = screen.orientation;
+					this.screen.physical_size_diagonal = screen.physical_size_diagonal;
+					this.screen.physical_size_width = screen.physical_size_width;
+					this.screen.physical_size_height = screen.physical_size_height;
+					this.screen.dimension = screen.dimension;
+					this.screen.width = screen.width;
+					this.screen.height = screen.height;
 					this.screen.slots = screen.slots;   
 					this.screen.active = screen.active;    
 					this.screen.is_default = screen.is_default; 

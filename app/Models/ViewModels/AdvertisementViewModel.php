@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Brand;
 use App\Models\Company;
 use App\Models\Category;
+use App\Models\TransactionStatus;
 
 class AdvertisementViewModel extends Model
 {
@@ -44,10 +45,10 @@ class AdvertisementViewModel extends Model
         'company_details',
         'brand_name',
         'brand_details',
-        'category_id',
         'category_name',
         'parent_category_id',
         'parent_category_name',
+        'transaction_status',
     ]; 
 
     public function getCompany()
@@ -66,9 +67,20 @@ class AdvertisementViewModel extends Model
         return null;
     }
 
+    public function getTransactionStatus()
+    {   
+        $transaction_status = TransactionStatus::find($this->status_id);
+        if($transaction_status)
+            return $transaction_status;
+        return null;
+    }
+
     public function getCategory()
     {   
         $brand = Brand::find($this->brand_id);
+        if(!$brand)
+            return null;
+
         $category = Category::find($brand->category_id);
         if($category)
             return $category;
@@ -78,6 +90,9 @@ class AdvertisementViewModel extends Model
     public function getParentCategory()
     {   
         $category = $this->getCategory();
+        if(!$category)
+            return null;
+
         $parent_category = Category::where('parent_id', $category->parent_id)->first();
         if($parent_category)
             return $parent_category;
@@ -96,7 +111,9 @@ class AdvertisementViewModel extends Model
 
     public function getCompanyNameAttribute()
     {
-        return $this->getCompany()->name; 
+        if($this->getCompany())
+            return $this->getCompany()->name; 
+        return null;
     }
 
     public function getCompanyDetailsAttribute()
@@ -106,7 +123,9 @@ class AdvertisementViewModel extends Model
 
     public function getBrandNameAttribute()
     {
-        return $this->getBrand()->name; 
+        if($this->getBrand())
+            return $this->getBrand()->name; 
+        return null;
     }
 
     public function getBrandDetailsAttribute()
@@ -114,14 +133,11 @@ class AdvertisementViewModel extends Model
         return $this->getBrand(); 
     }
 
-    public function getCategoryIdAttribute()
-    {
-        return $this->getCategory()->id; 
-    }
-
     public function getCategoryNameAttribute()
     {
-        return $this->getCategory()->name; 
+        if($this->getCategory())
+            return $this->getCategory()->name;
+        return null; 
     }
 
     public function getParentCategoryIdAttribute()
@@ -137,4 +153,12 @@ class AdvertisementViewModel extends Model
             return $this->getParentCategory()->name;
         return null;
     }
+
+    public function getTransactionStatusAttribute()
+    {
+        if($this->getTransactionStatus())
+            return $this->getTransactionStatus()->name;
+        return null;
+    }
+
 }

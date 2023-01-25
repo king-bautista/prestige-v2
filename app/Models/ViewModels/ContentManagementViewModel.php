@@ -1,34 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Advertisement extends Model
+class ContentManagementViewModel extends Model
 {
     use SoftDeletes;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'company_id',
-        'brand_id',
-        'ad_type',
-        'name',
-        'file_path',
-        'file_type',
-        'file_size',
-        'dimension',
-        'width',
-        'height',
-        'display_duration',
-        'active',
-        'status_id',
-    ];
 
     /**
      * The attributes that should be cast.
@@ -46,7 +25,7 @@ class Advertisement extends Model
      *
      * @var string
     */
-    protected $table = 'advertisements';
+    protected $table = 'content_management';
 
     /**
      * The primary key associated with the table.
