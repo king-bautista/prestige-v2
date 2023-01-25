@@ -102,7 +102,7 @@
                 </div>
             </div>
         </div>
-        <img :src="back_button" style="z-index:1;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <img :src="back_button" class="back-button" @click="goBack">
 
         <div class="custom-modal" id="schedule-modal">
 		    <div class="custom-modal-body">
