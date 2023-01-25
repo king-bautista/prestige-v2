@@ -14288,6 +14288,7 @@ __webpack_require__.r(__webpack_exports__);
       page_title: 'Home',
       home_category: true,
       child_category: false,
+      child_category_count: 0,
       alphabetical: false,
       supplementals: false,
       current_category: '',
@@ -14392,6 +14393,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#category-tab').click();
       this.previous_page = 'Sub Category';
       this.current_category = category;
+      this.child_category_count = category.children.length;
       this.current_supplementals = category.supplemental;
       this.page_title = 'Store List';
       this.category_label = category.label;
@@ -25928,13 +25930,7 @@ var render = function render() {
       }
     }
   }, [_vm._m(6)])])]), _vm._v(" "), _c("img", {
-    staticStyle: {
-      "z-index": "1",
-      position: "absolute",
-      top: "780px",
-      right: "15px",
-      cursor: "pointer"
-    },
+    staticClass: "back-button",
     attrs: {
       src: _vm.back_button
     },
@@ -26298,15 +26294,19 @@ var render = function render() {
       value: _vm.child_category,
       expression: "child_category"
     }]
+  }, [_vm.child_category_count < 7 ? _c("div", {
+    staticClass: "row mt-120 mb-41"
   }, [_c("div", {
-    staticClass: "row mt-5 mb-5"
+    staticClass: "col-md-12 home-title-sub text-center"
+  }, [_vm._v("\n                    " + _vm._s(_vm.current_category.label) + "\n                ")])]) : _c("div", {
+    staticClass: "row mb-27"
   }, [_c("div", {
-    staticClass: "col-md-12 home-title text-center"
+    staticClass: "col-md-12 home-title-sub text-center"
   }, [_vm._v("\n                    " + _vm._s(_vm.current_category.label) + "\n                ")])]), _vm._v(" "), _c("div", {
-    staticClass: "row col-md-6 offset-md-3 mb-3"
+    staticClass: "row col-md-6 offset-md-3 mb-3 mw-51p"
   }, _vm._l(_vm.current_category.children, function (category) {
     return _c("div", {
-      staticClass: "col-12 col-sm-6 text-left mt-3",
+      staticClass: "col-12 col-sm-6 text-left mt-3 p-0-5",
       on: {
         click: function click($event) {
           _vm.helper.saveLogs({
@@ -26318,7 +26318,7 @@ var render = function render() {
         }
       }
     }, [_c("div", {
-      staticClass: "c-button"
+      staticClass: "c-button ml-0"
     }, [_c("img", {
       staticClass: "tenant-category",
       staticStyle: {
@@ -26329,7 +26329,7 @@ var render = function render() {
       }
     }), _vm._v(" "), _c("div", {
       staticClass: "c-button-align c-button-color2 translateme"
-    }, [_vm._v(_vm._s(category.label))])])]);
+    }, [_c("p", [_vm._v(_vm._s(category.label))])])])]);
   }), 0)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
@@ -26338,11 +26338,11 @@ var render = function render() {
       expression: "supplementals"
     }]
   }, [_c("div", {
-    staticClass: "row mt-5 mb-5"
+    staticClass: "row mb-27"
   }, [_c("div", {
-    staticClass: "col-md-12 home-title text-center"
+    staticClass: "col-md-12 home-title-sub text-center"
   }, [_vm._v("\n                    " + _vm._s(_vm.current_category.label) + "\n                ")])]), _vm._v(" "), _c("div", {
-    staticClass: "row col-md-10 offset-md-1 mb-3"
+    staticClass: "row col-md-10 offset-md-1 mb-3 w-1152"
   }, [_c("div", {
     staticClass: "carousel slide",
     attrs: {
@@ -26352,7 +26352,7 @@ var render = function render() {
       "data-touch": "true"
     }
   }, [_c("div", {
-    staticClass: "carousel-inner"
+    staticClass: "carousel-inner mh-627"
   }, [_c("ol", {
     staticClass: "carousel-indicators"
   }, _vm._l(_vm.current_supplementals.children, function (supplementals, index) {
@@ -26394,7 +26394,7 @@ var render = function render() {
         }
       }), _vm._v(" "), _c("div", {
         staticClass: "c-button-align c-button-color2 translateme"
-      }, [_vm._v(_vm._s(supplemental.label))])])]);
+      }, [_c("p", [_vm._v(_vm._s(supplemental.label))])])])]);
     }), 0)]);
   })], 2), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])])]), _vm._v(" "), _c("div", {
     directives: [{
@@ -26404,9 +26404,9 @@ var render = function render() {
       expression: "alphabetical"
     }]
   }, [_c("div", {
-    staticClass: "row mt-5 mb-5"
+    staticClass: "row mb-41"
   }, [_c("div", {
-    staticClass: "col-md-12 home-title text-center"
+    staticClass: "col-md-12 home-title-sub text-center"
   }, [!_vm.category_top_banner ? _c("div", [_vm._v(_vm._s(_vm.category_label))]) : _vm._e(), _vm._v(" "), _vm.category_top_banner ? _c("div", {
     staticClass: "hts-strip"
   }, [_c("img", {
@@ -26430,7 +26430,7 @@ var render = function render() {
       "data-touch": "true"
     }
   }, [_c("div", {
-    staticClass: "carousel-inner"
+    staticClass: "carousel-inner mh-627"
   }, [_c("ol", {
     staticClass: "carousel-indicators"
   }, _vm._l(_vm.tenant_list, function (tenants, index) {
@@ -26676,13 +26676,7 @@ var render = function render() {
       value: !_vm.home_category,
       expression: "!home_category"
     }],
-    staticStyle: {
-      "z-index": "999",
-      position: "absolute",
-      top: "780px",
-      right: "15px",
-      cursor: "pointer"
-    },
+    staticClass: "back-button",
     attrs: {
       src: _vm.back_button
     },
@@ -94740,7 +94734,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "watchSyncEffect": () => (/* binding */ watchSyncEffect)
 /* harmony export */ });
 /*!
- * Vue.js v2.7.13
+ * Vue.js v2.7.14
  * (c) 2014-2022 Evan You
  * Released under the MIT License.
  */
@@ -95617,77 +95611,6 @@ methodsToPatch.forEach(function (method) {
     });
 });
 
-var rawMap = new WeakMap();
-function reactive(target) {
-    makeReactive(target, false);
-    return target;
-}
-/**
- * Return a shallowly-reactive copy of the original object, where only the root
- * level properties are reactive. It also does not auto-unwrap refs (even at the
- * root level).
- */
-function shallowReactive(target) {
-    makeReactive(target, true);
-    def(target, "__v_isShallow" /* ReactiveFlags.IS_SHALLOW */, true);
-    return target;
-}
-function makeReactive(target, shallow) {
-    // if trying to observe a readonly proxy, return the readonly version.
-    if (!isReadonly(target)) {
-        if (true) {
-            if (isArray(target)) {
-                warn$2("Avoid using Array as root value for ".concat(shallow ? "shallowReactive()" : "reactive()", " as it cannot be tracked in watch() or watchEffect(). Use ").concat(shallow ? "shallowRef()" : "ref()", " instead. This is a Vue-2-only limitation."));
-            }
-            var existingOb = target && target.__ob__;
-            if (existingOb && existingOb.shallow !== shallow) {
-                warn$2("Target is already a ".concat(existingOb.shallow ? "" : "non-", "shallow reactive object, and cannot be converted to ").concat(shallow ? "" : "non-", "shallow."));
-            }
-        }
-        var ob = observe(target, shallow, isServerRendering() /* ssr mock reactivity */);
-        if ( true && !ob) {
-            if (target == null || isPrimitive(target)) {
-                warn$2("value cannot be made reactive: ".concat(String(target)));
-            }
-            if (isCollectionType(target)) {
-                warn$2("Vue 2 does not support reactive collection types such as Map or Set.");
-            }
-        }
-    }
-}
-function isReactive(value) {
-    if (isReadonly(value)) {
-        return isReactive(value["__v_raw" /* ReactiveFlags.RAW */]);
-    }
-    return !!(value && value.__ob__);
-}
-function isShallow(value) {
-    return !!(value && value.__v_isShallow);
-}
-function isReadonly(value) {
-    return !!(value && value.__v_isReadonly);
-}
-function isProxy(value) {
-    return isReactive(value) || isReadonly(value);
-}
-function toRaw(observed) {
-    var raw = observed && observed["__v_raw" /* ReactiveFlags.RAW */];
-    return raw ? toRaw(raw) : observed;
-}
-function markRaw(value) {
-    if (isObject(value)) {
-        rawMap.set(value, true);
-    }
-    return value;
-}
-/**
- * @internal
- */
-function isCollectionType(value) {
-    var type = toRawType(value);
-    return (type === 'Map' || type === 'WeakMap' || type === 'Set' || type === 'WeakSet');
-}
-
 var arrayKeys = Object.getOwnPropertyNames(arrayMethods);
 var NO_INIITIAL_VALUE = {};
 /**
@@ -95777,7 +95700,6 @@ function observe(value, shallow, ssrMockReactivity) {
         (isArray(value) || isPlainObject(value)) &&
         Object.isExtensible(value) &&
         !value.__v_skip /* ReactiveFlags.SKIP */ &&
-        !rawMap.has(value) &&
         !isRef(value) &&
         !(value instanceof VNode)) {
         return new Observer(value, shallow, ssrMockReactivity);
@@ -95957,6 +95879,77 @@ function dependArray(value) {
     }
 }
 
+function reactive(target) {
+    makeReactive(target, false);
+    return target;
+}
+/**
+ * Return a shallowly-reactive copy of the original object, where only the root
+ * level properties are reactive. It also does not auto-unwrap refs (even at the
+ * root level).
+ */
+function shallowReactive(target) {
+    makeReactive(target, true);
+    def(target, "__v_isShallow" /* ReactiveFlags.IS_SHALLOW */, true);
+    return target;
+}
+function makeReactive(target, shallow) {
+    // if trying to observe a readonly proxy, return the readonly version.
+    if (!isReadonly(target)) {
+        if (true) {
+            if (isArray(target)) {
+                warn$2("Avoid using Array as root value for ".concat(shallow ? "shallowReactive()" : "reactive()", " as it cannot be tracked in watch() or watchEffect(). Use ").concat(shallow ? "shallowRef()" : "ref()", " instead. This is a Vue-2-only limitation."));
+            }
+            var existingOb = target && target.__ob__;
+            if (existingOb && existingOb.shallow !== shallow) {
+                warn$2("Target is already a ".concat(existingOb.shallow ? "" : "non-", "shallow reactive object, and cannot be converted to ").concat(shallow ? "" : "non-", "shallow."));
+            }
+        }
+        var ob = observe(target, shallow, isServerRendering() /* ssr mock reactivity */);
+        if ( true && !ob) {
+            if (target == null || isPrimitive(target)) {
+                warn$2("value cannot be made reactive: ".concat(String(target)));
+            }
+            if (isCollectionType(target)) {
+                warn$2("Vue 2 does not support reactive collection types such as Map or Set.");
+            }
+        }
+    }
+}
+function isReactive(value) {
+    if (isReadonly(value)) {
+        return isReactive(value["__v_raw" /* ReactiveFlags.RAW */]);
+    }
+    return !!(value && value.__ob__);
+}
+function isShallow(value) {
+    return !!(value && value.__v_isShallow);
+}
+function isReadonly(value) {
+    return !!(value && value.__v_isReadonly);
+}
+function isProxy(value) {
+    return isReactive(value) || isReadonly(value);
+}
+function toRaw(observed) {
+    var raw = observed && observed["__v_raw" /* ReactiveFlags.RAW */];
+    return raw ? toRaw(raw) : observed;
+}
+function markRaw(value) {
+    // non-extensible objects won't be observed anyway
+    if (Object.isExtensible(value)) {
+        def(value, "__v_skip" /* ReactiveFlags.SKIP */, true);
+    }
+    return value;
+}
+/**
+ * @internal
+ */
+function isCollectionType(value) {
+    var type = toRawType(value);
+    return (type === 'Map' || type === 'WeakMap' || type === 'Set' || type === 'WeakSet');
+}
+
 /**
  * @internal
  */
@@ -96095,8 +96088,8 @@ function toRef(object, key, defaultValue) {
     return ref;
 }
 
-var rawToReadonlyMap = new WeakMap();
-var rawToShallowReadonlyMap = new WeakMap();
+var rawToReadonlyFlag = "__v_rawToReadonly";
+var rawToShallowReadonlyFlag = "__v_rawToShallowReadonly";
 function readonly(target) {
     return createReadonly(target, false);
 }
@@ -96115,18 +96108,21 @@ function createReadonly(target, shallow) {
         }
         return target;
     }
+    if ( true && !Object.isExtensible(target)) {
+        warn$2("Vue 2 does not support creating readonly proxy for non-extensible object.");
+    }
     // already a readonly object
     if (isReadonly(target)) {
         return target;
     }
     // already has a readonly proxy
-    var map = shallow ? rawToShallowReadonlyMap : rawToReadonlyMap;
-    var existingProxy = map.get(target);
+    var existingFlag = shallow ? rawToShallowReadonlyFlag : rawToReadonlyFlag;
+    var existingProxy = target[existingFlag];
     if (existingProxy) {
         return existingProxy;
     }
     var proxy = Object.create(Object.getPrototypeOf(target));
-    map.set(target, proxy);
+    def(target, existingFlag, proxy);
     def(proxy, "__v_isReadonly" /* ReactiveFlags.IS_READONLY */, true);
     def(proxy, "__v_raw" /* ReactiveFlags.RAW */, target);
     if (isRef(target)) {
@@ -98761,7 +98757,7 @@ function onErrorCaptured(hook, target) {
 /**
  * Note: also update dist/vue.runtime.mjs when adding new exports to this file.
  */
-var version = '2.7.13';
+var version = '2.7.14';
 /**
  * @internal type is manually declared in <root>/types/v3-define-component.d.ts
  */
@@ -99909,7 +99905,8 @@ if (true) {
 /**
  * Helper that recursively merges two data objects together.
  */
-function mergeData(to, from) {
+function mergeData(to, from, recursive) {
+    if (recursive === void 0) { recursive = true; }
     if (!from)
         return to;
     var key, toVal, fromVal;
@@ -99923,7 +99920,7 @@ function mergeData(to, from) {
             continue;
         toVal = to[key];
         fromVal = from[key];
-        if (!hasOwn(to, key)) {
+        if (!recursive || !hasOwn(to, key)) {
             set(to, key, fromVal);
         }
         else if (toVal !== fromVal &&
@@ -100084,7 +100081,19 @@ strats.props =
                         extend(ret, childVal);
                     return ret;
                 };
-strats.provide = mergeDataOrFn;
+strats.provide = function (parentVal, childVal) {
+    if (!parentVal)
+        return childVal;
+    return function () {
+        var ret = Object.create(null);
+        mergeData(ret, isFunction(parentVal) ? parentVal.call(this) : parentVal);
+        if (childVal) {
+            mergeData(ret, isFunction(childVal) ? childVal.call(this) : childVal, false // non-recursive
+            );
+        }
+        return ret;
+    };
+};
 /**
  * Default strategy.
  */
@@ -105845,7 +105854,7 @@ function genFor(el, state, altGen, altHelper) {
         !el.key) {
         state.warn("<".concat(el.tag, " v-for=\"").concat(alias, " in ").concat(exp, "\">: component lists rendered with ") +
             "v-for should have explicit keys. " +
-            "See https://vuejs.org/guide/list.html#key for more info.", el.rawAttrsMap['v-for'], true /* tip */);
+            "See https://v2.vuejs.org/v2/guide/list.html#key for more info.", el.rawAttrsMap['v-for'], true /* tip */);
     }
     el.forProcessed = true; // avoid recursion
     return ("".concat(altHelper || '_l', "((").concat(exp, "),") +
