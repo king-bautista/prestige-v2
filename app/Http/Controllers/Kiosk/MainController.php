@@ -15,6 +15,7 @@ use App\Models\ViewModels\SiteBuildingLevelViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
+use App\Models\Site;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
 use App\Models\SiteBuilding;
@@ -23,7 +24,8 @@ class MainController extends AppBaseController
 {
     public function index()
     {
-        return view('kiosk.main');
+        $site = Site::where('is_default', 1)->where('active', 1)->first();
+        return view('kiosk.main',$site);
     }
 
     public function getSite()

@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <img src="/assets/images/touchheretostart.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">
+            <img src="/assets/images/7f000001-8357-dc26.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">
         </div>
     </div>
 </template>
