@@ -26243,11 +26243,11 @@ var render = function render() {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-6"
-  }, [_c("div", {
+  }, [_vm.page_title != "Home" ? _c("div", {
     attrs: {
       id: "page-title"
     }
-  }, [_vm._v(_vm._s(_vm.page_title))])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.page_title))]) : _vm._e()]), _vm._v(" "), _c("div", {
     staticClass: "col-md-6 text-right"
   }, [_c("router-link", {
     attrs: {
@@ -26723,7 +26723,7 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "row mt-5 mb-5"
+    staticClass: "row mt-15 mb-55"
   }, [_c("div", {
     staticClass: "col-md-12 home-title text-center"
   }, [_vm._v("\n                    Search your favorite stores\n                ")])]);
@@ -27483,7 +27483,7 @@ var render = function render() {
       "z-index": "9999"
     },
     attrs: {
-      src: "/assets/images/touchheretostart.png"
+      src: "/assets/images/7f000001-8357-dc26.png"
     }
   })])]);
 };
