@@ -314,6 +314,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/content-management/{id}', 'Admin\ContentManagementController@details')->where('id', '[0-9]+')->name('admin.content-management.details');
     Route::put('/admin/content-management/update', 'Admin\ContentManagementController@update')->name('admin.content-management.update');
     Route::get('/admin/content-management/delete/{id}', 'Admin\ContentManagementController@delete')->where('id', '[0-9]+')->name('admin.content-management.delete');
+    Route::get('/admin/content-management/transaction-statuses', 'Admin\ContentManagementController@getTransactionStatuses')->where('id', '[0-9]+')->name('admin.content-management.transaction-statuses');
 
     /*
     |--------------------------------------------------------------------------

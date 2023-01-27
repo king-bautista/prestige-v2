@@ -19,7 +19,6 @@ class CreateContentManagementTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_id')->unsigned()->nullable()->index();
-            $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_tenant_id')->unsigned()->nullable()->index();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
@@ -31,9 +30,19 @@ class CreateContentManagementTable extends Migration
 
             $table->foreign('advertisement_id')->references('id')->on('advertisements');
             $table->foreign('site_id')->references('id')->on('sites');
-            $table->foreign('site_screen_id')->references('id')->on('site_screens');
             $table->foreign('site_tenant_id')->references('id')->on('site_tenants');
             $table->foreign('status_id')->references('id')->on('transaction_statuses');
+        });
+
+        Schema::create('content_screens', function (Blueprint $table) {
+            $table->engine = "InnoDB";
+            
+            $table->bigIncrements('id');
+            $table->bigInteger('content_id')->unsigned()->nullable()->index();
+            $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
+
+            $table->foreign('content_id')->references('id')->on('content_management');
+            $table->foreign('site_screen_id')->references('id')->on('site_screens');
         });
     }
 
@@ -44,6 +53,7 @@ class CreateContentManagementTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('content_screens');
         Schema::dropIfExists('content_management');
     }
 }
