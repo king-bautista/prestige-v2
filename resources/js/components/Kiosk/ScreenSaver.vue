@@ -3,14 +3,14 @@
         <div style="width:0;height:0;position:absolute; top: 0; z-index: 9999;" id="screensaverwidget" @click="reload_page">
             <div id="fullscreen-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel">
                 <div class="carousel-inner" id="carousel-fullscreen">
-                    <div v-for="(screen, index) in fullscreen.slice(0,2)" :data-index="index" :data-id="screen.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(screen.display_duration*1000)">
-                        <span v-if="helper.getFileExtension(screen.file_type) == 'video'">
+                    <div v-for="(screen, index) in fullscreens.slice(0,2)" :data-index="index" :data-id="screen.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(screen.display_duration*1000)">
+                        <span v-if="screen.file_type == 'video'">
                             <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
                                 <source :src="screen.material_image_path" type="video/ogg">
                                 Your browser does not support the video tag.
                             </video>
                         </span>
-                        <span v-else-if="helper.getFileExtension(screen.file_type) == 'image'">
+                        <span v-else>
                             <img :src="screen.material_image_path" style="margin: 0px; height: 100%; width: 100%;">
                         </span>
                     </div>
@@ -28,7 +28,7 @@
         name: "Fullscreen",
         data() {
             return {
-                fullscreen: [],
+                fullscreens: [],
                 helper: new Helpers(),
             };
         },
@@ -41,7 +41,7 @@
             getFullscreen: function() {
                 axios.get('/api/v1/advertisements/fullscreen')
                 .then(response => {
-                    this.fullscreen = response.data.data;
+                    this.fullscreens = response.data.data;
                     fullscreen_array = response.data.data;
                 });
             },
@@ -57,12 +57,9 @@
 
                 if((fullscreen_array.length) >= countscreen) {
 
-                    var type = 'image';
-                    type = helper.getFileExtension(fullscreen_array[countscreen].file_type);
-
                     var carousel_item = '';
                     carousel_item += '<div data-interval="'+fullscreen_array[countscreen].display_duration*1000+'" data-index="'+countscreen+'" data-id="'+fullscreen_array[countscreen].id+'" class="'+class_name+'">';
-                        if(type == 'video') {
+                        if(fullscreen_array[countscreen].file_type == 'video') {
                             carousel_item += '<span>';
                             carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
                             carousel_item += '<source src="'+fullscreen_array[countscreen].material_image_path+'" type="video/ogg">';

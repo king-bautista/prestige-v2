@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ViewModels\SiteViewModel;
 use App\Models\ViewModels\CategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
-use App\Models\ViewModels\SiteAdViewModel;
+use App\Models\ViewModels\ContentManagementViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
 use App\Models\ViewModels\CinemaScheduleViewModel;
 use App\Models\ViewModels\SiteBuildingLevelViewModel;
@@ -229,29 +229,41 @@ class MainController extends AppBaseController
         }    
     }
 
+    public function listToArray($list)
+    {
+        $arrays = [];
+        if($list) {
+            foreach($list as $index => $data) {
+                $arrays[] = $data;
+            }
+        }
+        return $arrays;
+        
+    }
+
     public function getBanners()
     {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            
-            $banners = SiteAdViewModel::where('site_ad_sites.site_id', $site->id)
-            ->where('site_ads.screen_type', 'Directory')
-            ->where('site_ads.ad_type', 'Banners')
-            ->where('active', 1)
-            ->join('site_ad_sites', 'site_ad_sites.site_ad_id', '=', 'site_ads.id')
-            ->select('site_ads.*')
-            ->get()->toArray();
+
+            $current_date = date('Y-m-d');
+            $contents = ContentManagementViewModel::where('site_id', $site->id)
+            ->whereDate('start_date', '<=', $current_date)
+            ->whereDate('end_date', '>=', $current_date)
+            ->get();
+
+            $banners = $this->listToArray($contents->where('ad_type', 'Banners'));
 
             return $this->response($banners, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Banner to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Banner to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
 
     public function getFullscreen()
@@ -260,15 +272,15 @@ class MainController extends AppBaseController
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             
-            $fullscreens = SiteAdViewModel::where('site_ad_sites.site_id', $site->id)
-            ->where('site_ads.screen_type', 'Directory')
-            ->where('site_ads.ad_type', 'Fullscreen')
-            ->where('active', 1)
-            ->join('site_ad_sites', 'site_ad_sites.site_ad_id', '=', 'site_ads.id')
-            ->select('site_ads.*')
-            ->get()->toArray();
-            
+            $current_date = date('Y-m-d');
+            $contents = ContentManagementViewModel::where('site_id', $site->id)
+            ->whereDate('start_date', '<=', $current_date)
+            ->whereDate('end_date', '>=', $current_date)
+            ->get();
+
+            $fullscreens = $this->listToArray($contents->where('ad_type', 'Fullscreen'));
             return $this->response($fullscreens, 'Successfully Retreived!', 200);
+            
         }
         catch (\Exception $e)
         {

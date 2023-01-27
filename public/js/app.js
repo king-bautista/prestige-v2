@@ -14086,28 +14086,26 @@ var banner_array = [];
         class_name = 'carousel-item active';
       }
       if (banner_array.length >= count) {
-        var type = 'image';
-        type = helper.getFileExtension(banner_array[count].file_type);
         var carousel_item = '';
-        carousel_item += '<div data-interval="' + banner_array[count].display_duration * 1000 + '" data-index="' + count + '" data-id="' + banner_array[count].id + '" class="' + class_name + '">';
-        if (type == 'video') {
+        carousel_item += '<div data-interval="' + banner_array[count].display_duration * 1000 + '" data-index="' + count + '" class="' + class_name + '">';
+        if (banner_array[count].file_type == 'video') {
           carousel_item += '<span>';
-          carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" id="logs_' + banner_array[count].id + '" data-id="' + banner_array[count].id + '">';
+          carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" id="logs_' + banner_array[count].id + '" data-id="' + count + '">';
           carousel_item += '<source src="' + banner_array[count].material_image_path + '" type="video/ogg">';
           carousel_item += 'Your browser does not support the video tag.';
           carousel_item += '</video>';
           carousel_item += '</span>';
         } else {
           carousel_item += '<span>';
-          carousel_item += '<img src="' + banner_array[count].material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;"  id="logs_' + banner_array[count].id + '" data-id="' + banner_array[count].id + '">';
+          carousel_item += '<img src="' + banner_array[count].material_image_path + '" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;"  id="logs_' + banner_array[count].id + '" data-id="' + count + '">';
           carousel_item += '</span>';
         }
         carousel_item += '</div>';
         $("#carousel-banner").append(carousel_item);
-        // $('#logs_'+banner_array[count].id).on('click', function() {
-        //     var id = $(this).data('id');
-        //     helper.saveLogs(id, 'Banner Ad');
-        // });
+        $('#logs_' + banner_array[count].id).on('click', function () {
+          var id = $(this).data('id');
+          helper.saveLogs(banner_array[id]);
+        });
         count++;
       }
     }
@@ -14657,7 +14655,7 @@ var fullscreen_array = [];
   name: "Fullscreen",
   data: function data() {
     return {
-      fullscreen: [],
+      fullscreens: [],
       helper: new Helpers()
     };
   },
@@ -14668,7 +14666,7 @@ var fullscreen_array = [];
     getFullscreen: function getFullscreen() {
       var _this = this;
       axios.get('/api/v1/advertisements/fullscreen').then(function (response) {
-        _this.fullscreen = response.data.data;
+        _this.fullscreens = response.data.data;
         fullscreen_array = response.data.data;
       });
     },
@@ -14682,11 +14680,9 @@ var fullscreen_array = [];
         class_name = 'carousel-item active';
       }
       if (fullscreen_array.length >= countscreen) {
-        var type = 'image';
-        type = helper.getFileExtension(fullscreen_array[countscreen].file_type);
         var carousel_item = '';
         carousel_item += '<div data-interval="' + fullscreen_array[countscreen].display_duration * 1000 + '" data-index="' + countscreen + '" data-id="' + fullscreen_array[countscreen].id + '" class="' + class_name + '">';
-        if (type == 'video') {
+        if (fullscreen_array[countscreen].file_type == 'video') {
           carousel_item += '<span>';
           carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
           carousel_item += '<source src="' + fullscreen_array[countscreen].material_image_path + '" type="video/ogg">';
@@ -25631,10 +25627,10 @@ var render = function render() {
         "data-id": banner.id,
         "data-interval": banner.display_duration * 1000
       }
-    }, [_vm.helper.getFileExtension(banner.file_type) == "video" ? _c("span", {
+    }, [banner.file_type == "video" ? _c("span", {
       on: {
         click: function click($event) {
-          return _vm.helper.saveLogs(banner.id, "Banner Ad");
+          return _vm.helper.saveLogs(banner);
         }
       }
     }, [_c("video", {
@@ -25656,10 +25652,10 @@ var render = function render() {
         src: banner.material_image_path,
         type: "video/ogg"
       }
-    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _vm.helper.getFileExtension(banner.file_type) == "image" ? _c("span", {
+    }), _vm._v("\n                        Your browser does not support the video tag.\n                    ")])]) : _c("span", {
       on: {
         click: function click($event) {
-          return _vm.helper.saveLogs(banner.id, "Banner Ad");
+          return _vm.helper.saveLogs(banner);
         }
       }
     }, [_c("img", {
@@ -25672,7 +25668,7 @@ var render = function render() {
       attrs: {
         src: banner.material_image_path
       }
-    })]) : _vm._e()]);
+    })])]);
   }), 0)])]);
 };
 var staticRenderFns = [];
@@ -27402,7 +27398,7 @@ var render = function render() {
     attrs: {
       id: "carousel-fullscreen"
     }
-  }, _vm._l(_vm.fullscreen.slice(0, 2), function (screen, index) {
+  }, _vm._l(_vm.fullscreens.slice(0, 2), function (screen, index) {
     return _c("div", {
       "class": index == 0 ? "carousel-item active" : "carousel-item",
       attrs: {
@@ -27410,7 +27406,7 @@ var render = function render() {
         "data-id": screen.id,
         "data-interval": screen.display_duration * 1000
       }
-    }, [_vm.helper.getFileExtension(screen.file_type) == "video" ? _c("span", [_c("video", {
+    }, [screen.file_type == "video" ? _c("span", [_c("video", {
       staticStyle: {
         margin: "0px",
         height: "100%",
@@ -27428,7 +27424,7 @@ var render = function render() {
         src: screen.material_image_path,
         type: "video/ogg"
       }
-    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _vm.helper.getFileExtension(screen.file_type) == "image" ? _c("span", [_c("img", {
+    }), _vm._v("\n                            Your browser does not support the video tag.\n                        ")])]) : _c("span", [_c("img", {
       staticStyle: {
         margin: "0px",
         height: "100%",
@@ -27437,7 +27433,7 @@ var render = function render() {
       attrs: {
         src: screen.material_image_path
       }
-    })]) : _vm._e()]);
+    })])]);
   }), 0)]), _vm._v(" "), _c("img", {
     staticStyle: {
       width: "100%",

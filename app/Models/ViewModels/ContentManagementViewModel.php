@@ -63,6 +63,8 @@ class ContentManagementViewModel extends Model
         'display_duration',
         'dimension',
         'site_name',
+        'ad_type',
+        'file_type',
     ];
 
     public function getAdvertisementDetails()
@@ -245,6 +247,23 @@ class ContentManagementViewModel extends Model
             return $status;
         return null;
     }
+    
+    public function getAdTypeAttribute() 
+    {
+        $ad_details = $this->getAdvertisementDetails();
+        if($ad_details)
+            return $ad_details->ad_type;
+        return null;
+    }
+
+    public function getFileTypeAttribute() 
+    {
+        $ad_details = $this->getAdvertisementDetails();
+        if($ad_details)
+            return $ad_details->file_type;
+        return null;
+    }
+
     
 
 }
