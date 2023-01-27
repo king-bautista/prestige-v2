@@ -50,4 +50,21 @@ class ContentManagement extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveScreens($screens)
+    {
+        ContentScreen::where('content_id', $this->id)->delete();
+
+        if($screens) {
+            foreach ($screens as $index => $data) {
+                ContentScreen::updateOrCreate(
+                    [
+                       'content_id' => $this->id,
+                       'site_screen_id' => $data['id'],
+                    ],
+                );
+            }
+        }
+    }
+
 }

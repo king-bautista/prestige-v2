@@ -17,20 +17,21 @@ class CreateLogsTable extends Migration
             $table->engine = "InnoDB";
 
             $table->bigIncrements('id');
-            $table->bigInteger('site_id')->unsigned();
-            $table->bigInteger('site_screen_id')->unsigned();
-            $table->bigInteger('category_id')->unsigned()->nullable();
-            $table->bigInteger('sub_category_id')->unsigned()->nullable();
-            $table->bigInteger('brand_id')->unsigned()->nullable();
-            $table->bigInteger('company_id')->unsigned()->nullable();
-            $table->bigInteger('site_tenant_id')->unsigned()->nullable();
-            $table->bigInteger('site_ad_id')->unsigned()->nullable();
+            $table->bigInteger('site_id')->unsigned()->nullable()->index();
+            $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
+            $table->bigInteger('category_id')->unsigned()->nullable()->index();
+            $table->bigInteger('sub_category_id')->unsigned()->nullable()->index();
+            $table->bigInteger('brand_id')->unsigned()->nullable()->index();
+            $table->bigInteger('company_id')->unsigned()->nullable()->index();
+            $table->bigInteger('site_tenant_id')->unsigned()->nullable()->index();
+            $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
             $table->string('action')->nullable();
             $table->string('page')->nullable();    
             $table->string('key_words')->nullable();    
             $table->mediumText('results')->nullable();    
             $table->timestamps();
             $table->softDeletes();            
+            
         });
     }
 

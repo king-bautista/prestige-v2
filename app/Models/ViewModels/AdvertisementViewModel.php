@@ -45,6 +45,7 @@ class AdvertisementViewModel extends Model
         'company_details',
         'brand_name',
         'brand_details',
+        'category_id',
         'category_name',
         'parent_category_id',
         'parent_category_name',
@@ -131,6 +132,13 @@ class AdvertisementViewModel extends Model
     public function getBrandDetailsAttribute()
     {
         return $this->getBrand(); 
+    }
+
+    public function getCategoryIdAttribute()
+    {
+        if($this->getCategory())
+            return $this->getCategory()->id;
+        return null; 
     }
 
     public function getCategoryNameAttribute()

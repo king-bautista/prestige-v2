@@ -22,7 +22,7 @@ class Log extends Model
         'brand_id',
         'company_id',
         'site_tenant_id',
-        'site_ad_id',
+        'advertisement_id',
         'action',
         'page',
         'key_words',

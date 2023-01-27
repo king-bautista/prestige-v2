@@ -41,9 +41,8 @@ Helpers.prototype = {
     },
 
     saveLogs: function(params) {
-        // $.post( "/api/v1/save-logs", params ,function(response) {
-        //     console.log(response);
-        // });
-        return null
+        $.post( "/api/v1/save-logs", params ,function(response) {
+            console.log(response);
+        });
     }
 };

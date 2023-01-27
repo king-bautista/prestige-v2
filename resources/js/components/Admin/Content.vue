@@ -54,7 +54,7 @@
 							<div v-if="content.advertisement_id">
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Material</label>
-									<div class="col-sm-3 text-center">
+									<div class="col-sm-3 text-center" id="ad-holder">
 										<span v-if="helper.getFileExtension(content.advertisement_id.material_image_path) == 'image'">
 											<img :src="content.advertisement_id.material_image_path" class="img-thumbnail" />
 										</span>
@@ -64,6 +64,8 @@
 												Your browser does not support the video tag.
 											</video>
 										</span>
+
+										<div class="edit-button"><a @click="content.advertisement_id = null" class="bg-success"><i class="fas fa-edit"></i> CHANGE </a></div>
 									</div>
 								</div>
 								<div class="form-group row">
@@ -140,31 +142,36 @@
 									</div>
 								</div>
 								<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" v-model="content.display_duration" placeholder="Duration" readonly> 
-									<footer class="blockquote-footer">In Seconds</footer>
+									<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-2">
+										<input type="text" class="form-control" v-model="content.display_duration" placeholder="Duration" readonly> 
+										<footer class="blockquote-footer">In Seconds</footer>
+									</div>
+									<div class="col-sm-3">
+										<date-picker v-model="content.start_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
+									</div>
+									<div class="col-sm-3 text-center">
+										<date-picker v-model="content.end_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
+									</div>
 								</div>
-								<div class="col-sm-3">
-                                    <date-picker v-model="content.start_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
-								</div>
-								<div class="col-sm-3 text-center">
-                                    <date-picker v-model="content.end_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
-								</div>
-							</div>
 								<div class="form-group row">
 									<label for="uom" class="col-sm-4 col-form-label">No. of Slots <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-2">
 										<input type="number" class="form-control" v-model="content.uom">
 									</div>
 								</div>
-								<div class="form-group row" v-show="edit_record">
-									<label for="Status" class="col-sm-4 col-form-label">Status</label>
+								<div class="form-group row">
+									<label for="Status" class="col-sm-4 col-form-label">Change Status</label>
 									<div class="col-sm-8">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="active" v-model="content.active">
-											<label class="custom-control-label" for="active"></label>
-										</div>
+										<multiselect v-model="content.status_id" 
+										track-by="name" 
+										label="name" 
+										placeholder="Change Status" 
+										:multiple="false"
+										:options="transaction_statuses" 
+										:searchable="true" 
+										:allow-empty="false">
+										</multiselect>
 									</div>
 								</div>
 								<div class="form-group row" v-show="edit_record">
@@ -222,6 +229,7 @@
                 sites: [],
                 tenants: [],
                 screens: [],
+                transaction_statuses: [],
 				options: {
                     format: 'YYYY/MM/DD',
                     useCurrent: false,
@@ -233,9 +241,11 @@
             			name: "Preview", 
             			type: "logo", 
             		},
-            		name: "Name", 
+            		ad_name: "Name", 
 					company_name: "Company Name",
 					brand_name: "Brand Name",
+					site_name: "Site Name",
+					uom: "No. of Slots",
 					display_duration: "Duration (in sec)",
 					dimension: "Dimension",
             		status_id: {
@@ -276,7 +286,7 @@
             		delete: {
             			title: 'Delete this Content',
             			name: 'Delete',
-            			apiUrl: '/admin/content/delete',
+            			apiUrl: '/admin/content-management/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
@@ -320,6 +330,7 @@
 
         created(){
 			this.getSites();
+			this.getStatuses();
         },
 
         methods: {
@@ -340,6 +351,11 @@
                 .then(response => this.screens = response.data.data);
             },
 
+			getStatuses: function(id) {
+                axios.get('/admin/content-management/transaction-statuses')
+                .then(response => this.transaction_statuses = response.data.data);
+            },
+
 			AddNewContent: function() {
 				this.add_record = true;
 				this.edit_record = false;
@@ -356,19 +372,7 @@
             },
 
             storeContent: function() {
-				let formData = new FormData();
-				formData.append("company_id", JSON.stringify(this.content.company_id));
-				formData.append("brand_id", JSON.stringify(this.content.brand_id));
-				formData.append("name", this.content.name);
-				formData.append("ad_type", this.content.ad_type);
-				formData.append("file_path", this.content.material);
-				formData.append("display_duration", this.content.display_duration);
-				formData.append("active", this.content.active);
-                axios.post('/admin/advertisement/store', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
+                axios.post('/admin/content-management/store', this.content)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -377,20 +381,23 @@
             },
 
 			editContent: function(id) {
-                axios.get('/admin/advertisement/'+id)
+                axios.get('/admin/content-management/'+id)
                 .then(response => {
                     var content = response.data.data;
+
+					this.getTenants(content.site_details);
 					this.content.id = content.id;
-					this.content.company_id = content.company_details;
-					this.content.brand_id = content.brand_details;
-					this.content.ad_type = this.ad_type;
-					this.content.name = content.name;
-					this.content.file_path = content.name;
-					this.content.display_duration = content.display_duration;
+					this.content.advertisement_id = content.advertisement_details;
+					this.content.site_id = content.site_details;
+					this.content.site_screen_id = content.screens;
+					this.content.site_tenant_id = content.tenant_details;
+					this.content.start_date = content.start_date;
+					this.content.end_date = content.end_date;
+					this.content.uom = content.uom;
+					this.content.display_duration = content.advertisement_details.display_duration;
+					this.content.status_id = content.status_details;
 					this.content.active = content.active;
-					this.$refs.material.value = null;
-					this.content.material = '';
-					this.material = content.material_image_path;
+
 					this.add_record = false;
 					this.edit_record = true;
 
@@ -399,20 +406,7 @@
             },
 
             updateContent: function() {
-				let formData = new FormData();
-				formData.append("id", this.content.id);
-				formData.append("company_id", JSON.stringify(this.content.company_id));
-				formData.append("brand_id", JSON.stringify(this.content.brand_id));
-				formData.append("ad_type", this.content.ad_type);
-				formData.append("name", this.content.name);
-				formData.append("file_path", this.content.material);
-				formData.append("display_duration", this.content.display_duration);
-				formData.append("active", this.content.active);
-                axios.post('/admin/advertisement/update', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
+                axios.put('/admin/content-management/update', this.content)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -437,4 +431,33 @@
 			datePicker
  	   }
     };
-</script> 
+</script>
+<style scoped>
+	#ad-holder {
+		position: relative;
+	}
+
+	.edit-button {
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 45%;
+		text-align: center;
+		opacity: 0;
+		transition: opacity .35s ease;
+	}
+
+	.edit-button a {
+		width: 200px;
+		padding: 12px 16px;
+		text-align: center;
+		color: white;
+		border: solid 2px white;
+		border-radius: 5px;
+		z-index: 1;
+	}
+
+	#ad-holder:hover .edit-button {
+		opacity: 1;
+	}
+</style>

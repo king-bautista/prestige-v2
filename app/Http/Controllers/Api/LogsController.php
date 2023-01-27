@@ -39,27 +39,16 @@ class LogsController extends AppBaseController implements LogsControllerInterfac
         $log_data = $request;
         $log_data['site_id'] = $site->id;
         $log_data['site_screen_id'] = $site_screen->id;
-
-        // switch($request->type) {
-        //     case 'Banner Ad':
-        //         return null;
-        //         // return $data = SiteAdViewModel::find($request->id);
-        //         // $log_data['site_id'] = $site->id;
-        //         // $log_data['site_screen_id'] = $site_screen->id;
-        //         // $log_data['category_id'] = $data->id;
-        //         // $log_data['brand_id'] = $data->tenant_brand_ids;
-        //         // $log_data['company_id'] = $data->company_id;
-        //         // $log_data['site_tenant_id'] = $data->tenant_ids;
-        //         // $log_data['site_ad_id'] = $data->id;
-        //         // $log_data['action'] = 'click';
-        //         // $log_data['key_words'] = null;
-        //         // $log_data['results'] = null;
-        //     break;
-
-        //     case '':
-        //     break;
-        // }
-
+        $log_data['category_id'] = ($request->parent_category_id) ? $request->parent_category_id : $request->category_id;
+        $log_data['sub_category_id'] = $request->category_id;
+        $log_data['brand_id'] = $request->brand_id;
+        $log_data['company_id'] = $request->company_id;
+        $log_data['site_tenant_id'] = $request->site_tenant_id;
+        $log_data['advertisement_id'] = $request->advertisement_id;
+        $log_data['action'] = 'click';
+        $log_data['page'] = null;
+        $log_data['key_words'] = null;
+        $log_data['results'] = null;
         return $log_data->toArray();
     }
 }
