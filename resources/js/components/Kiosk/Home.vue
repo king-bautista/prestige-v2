@@ -35,6 +35,11 @@
                     {{ current_category.label}}
                 </div>
             </div>
+            <div v-else-if="child_category_count< 11" class="row mb-27 mt-29">
+                <div class="col-md-12 home-title-sub text-center">
+                    {{ current_category.label}}
+                </div>
+            </div>
             <div v-else class="row mb-27">
                 <div class="col-md-12 home-title-sub text-center">
                     {{ current_category.label}}
@@ -58,15 +63,15 @@
                 </div>
             </div>
             <div class="row col-md-10 offset-md-1 mb-3 w-1152">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
-                    <div class="carousel-inner mh-627">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" data-wrap="false">
+                    <div class="carousel-inner carousel-mh-626">
                         
                         <!-- Control dots -->
                         <ol class="carousel-indicators">
-                            <li data-target="#myCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"></li>
+                            <li class="current" data-target="#myCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"></li>
                         </ol>
 
-                        <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" v-bind:class = "(index == 0) ? 'active':''">
+                        <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" :id="(index == 0) ? 'first-item':''" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
                                 <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs({category_id: supplemental.parent_id, sub_category_id: supplemental.id, action: 'click' }); getTenantsBySupplementals(supplemental)">			
                                     <div class="c-button">						
@@ -77,11 +82,11 @@
                             </div>
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-target="#myCarousel" data-slide="prev">
+                    <button class="carousel-control-prev carousel-control-prev-pos" type="button" data-target="#myCarousel" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-target="#myCarousel" data-slide="next">
+                    <button class="carousel-control-next carousel-control-next-pos" type="button" data-target="#myCarousel" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </button>                
@@ -91,7 +96,7 @@
 
         <!-- ALPHABETICAL -->
         <div v-show="alphabetical">
-            <div class="row mb-41">
+            <div :class="(category_top_banner) ? 'row mt-14 mb-18' : 'row mt-14 mb-13' ">
                 <div class="col-md-12 home-title-sub text-center">
                     <div v-if="!category_top_banner">{{ category_label }}</div>
                     <div class="hts-strip" v-if="category_top_banner">
@@ -102,14 +107,14 @@
             </div>
             <div class="row col-md-10 offset-md-1">
                 <div id="myTenants" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-if="tenant_list.length > 0">
-                    <div class="carousel-inner mh-627">
+                    <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
                         
                         <!-- Control dots -->
                         <ol class="carousel-indicators">
                             <li data-target="#myTenants" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"></li>
                         </ol>
 
-                        <div class="carousel-item" v-for="(tenants, index) in tenant_list" v-bind:class = "(index == 0) ? 'active':''">
+                        <div class="carousel-item tenant-store-carousel" v-for="(tenants, index) in tenant_list" :data-index="index" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
                                 <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
                                     <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs({category_id: tenant.category_parent_id, sub_category_id: tenant.category_id, brand_id: tenant.brand_id, company_id: tenant.company_id, site_tenant_id: tenant.id, action: 'click' }); showTenant(tenant)">
@@ -117,7 +122,7 @@
                                             <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                         </div>
                                         <div class="text-left pta-2 brand-name">
-                                            <div class="shop_name">{{ tenant.brand_name }}</div>
+                                            <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
                                             <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.building_name }}, {{ tenant.floor_name }} </div>
                                             <div style="font-weight: bold;font-size: 0.7em">
                                                 <span class="translateme text-success" v-if="tenant.active==1">Open</span>
@@ -129,11 +134,11 @@
                             </div>
                         </div>                        
                     </div>
-                    <button class="carousel-control-prev" type="button" data-target="#myTenants" data-slide="prev">
+                    <button class="carousel-control-prev carousel-control-prev-pos-alphabet" type="button" data-target="#myTenants" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-target="#myTenants" data-slide="next">
+                    <button class="carousel-control-next carousel-control-next-pos-alphabet" type="button" data-target="#myTenants" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </button>
@@ -257,6 +262,11 @@
                     </div>
                 </div>
             </div>
+            <div class="p-a">
+                <ol class="navigation-letters" v-show="alphabetical">
+                    <li v-for="letter in navigation_letters" @click="moveTo(letter)">{{letter}}</li>
+                </ol>
+            </div>
         </div>
         <img v-show="!home_category" :src="back_button" class="back-button" @click="goBack">
 
@@ -277,6 +287,8 @@
     </div>
 </template>
 <script>
+import { isTemplateElement } from '@babel/types';
+
 	export default {
         name: "MainCategories",
         data() {
@@ -301,15 +313,49 @@
                 product_image: '',
                 previous_page: '',
                 helper: new Helpers(),
+                navigation_letters: ['#'],
             };
         },
 
         created() {
             this.getSite();
             this.getCategories();
+            this.generateLetters();
         },
 
         methods: {
+            resetCarousel: function() {
+                $('.carousel-indicators li').removeClass('active'); 
+                $('.carousel-item').removeClass('active');      
+                $('#first-item').addClass('active');
+                $('.carousel-indicators li').first().addClass('active');             
+            },
+
+            moveTo: function(letter) {      
+                let index = 0;
+                $(".shop_name").each(function(){
+                    // console.log($(this).attr('parent-index'));
+                    if($(this).html().startsWith(letter, 0)){
+
+                        $(this).addClass('letter-selected');
+                        setTimeout(() => {
+                            $(this).removeClass('letter-selected');
+                        }, 1000);
+                        index = $(this).attr('parent-index');
+                    };
+                });
+                console.log(parseInt(index));
+                
+                if (parseInt(index)){
+                    // $('.carousel').carousel(parseInt(index));
+                }  
+                $(".carousel-indicators li").each(function(){
+                    if ($(this).attr('data-slide-to') == parseInt(index)){
+                        $(this).click();
+                    }
+                });         
+            },
+
 			getSite: function() {
 				axios.get('/api/v1/site')
                 .then(response => this.site_logo = response.data.data.site_logo);
@@ -397,7 +443,8 @@
                 this.alphabetical = false;
                 this.supplementals = true;
                 this.show_tenant = false;
-            },
+                this.resetCarousel();       
+            },     
 
             showChildren: function(category) {
                 $('#category-tab').click();
@@ -458,6 +505,12 @@
                 this.product_image = product;
                 $("#myProduct").show();
             },
+
+            generateLetters: function () {
+                for (let i = 65; i <= 90; i++) {
+                    this.navigation_letters.push(String.fromCharCode(i))
+                }
+            }
         },
 
         mounted() {
@@ -465,12 +518,6 @@
                 $('.store-tabs-item').click(function () {
                     $('.store-tabs-item').removeClass('tab-item-selected');
                     $(this).addClass('tab-item-selected');
-                });
-
-                $(".carousel").carousel({
-                    interval: false,
-                    pause: true,
-                    touch:true,
                 });
 
                 $(".btn-close-trailer").on('click',function(){
