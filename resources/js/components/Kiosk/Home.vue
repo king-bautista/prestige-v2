@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="helper.saveLogs({category_id: category.id, action: 'click'}); showChildren(category);">
+                    <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="helper.saveLogs(category, 'Home'); showChildren(category);">
                         <img :src="category.kiosk_image_primary_path">
                         <div id="hc-button1" class="hc-button-align">{{ category.label }}</div>
                     </div>
@@ -46,10 +46,10 @@
                 </div>
             </div>
             <div class="row col-md-6 offset-md-3 mb-3 mw-51p">
-                <div v-for="category in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="helper.saveLogs({category_id: category.parent_id, sub_category_id: category.id, action: 'click' }); getTenantsByCategory(category)">			
+                <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="helper.saveLogs(subcategory, 'Home'); getTenantsByCategory(subcategory)">			
                     <div class="c-button ml-0">						
-                        <img class="tenant-category" :src="category.kiosk_image_primary_path" style="max-width:100%">
-                        <div class="c-button-align c-button-color2 translateme"><p>{{category.label}}</p></div>                        
+                        <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
+                        <div class="c-button-align c-button-color2 translateme"><p>{{subcategory.label}}</p></div>                        
                     </div>					
                 </div>
             </div>
@@ -73,7 +73,7 @@
 
                         <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" :id="(index == 0) ? 'first-item':''" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
-                                <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs({category_id: supplemental.parent_id, sub_category_id: supplemental.id, action: 'click' }); getTenantsBySupplementals(supplemental)">			
+                                <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Home'); getTenantsBySupplementals(supplemental)">			
                                     <div class="c-button">						
                                         <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
                                         <div class="c-button-align c-button-color2 translateme"><p>{{supplemental.label}}</p></div>                        
@@ -117,7 +117,7 @@
                         <div class="carousel-item tenant-store-carousel" v-for="(tenants, index) in tenant_list" :data-index="index" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
                                 <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                    <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs({category_id: tenant.category_parent_id, sub_category_id: tenant.category_id, brand_id: tenant.brand_id, company_id: tenant.company_id, site_tenant_id: tenant.id, action: 'click' }); showTenant(tenant)">
+                                    <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Home'); showTenant(tenant)">
                                         <div class="image-holder h-100">
                                             <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                         </div>
@@ -251,12 +251,12 @@
                         <a class="translateme tenant-category">Category</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="helper.saveLogs({category_id: current_category.id, action: 'click', key_words: 'Alphabetical' }); getTenants(current_category)">
+                <div class="tabs-item store-tabs-item" @click="getTenants(current_category)">
                     <div>
                         <a class="translateme tenant-alphabet">Alphabetical</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="helper.saveLogs({category_id: current_category.supplemental.supplemental_category_id, sub_category_id: current_category.supplemental.id, action: 'click' }); showSupplementals();">
+                <div class="tabs-item store-tabs-item" @click="showSupplementals();">
                     <div>
                         <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
                     </div>
@@ -325,16 +325,15 @@ import { isTemplateElement } from '@babel/types';
 
         methods: {
             resetCarousel: function() {
-                $('.carousel-indicators li').removeClass('active'); 
-                $('.carousel-item').removeClass('active');      
+                $('#myTenants.carousel-indicators li').removeClass('active'); 
+                $('#myTenants.carousel-item').removeClass('active');      
                 $('#first-item').addClass('active');
-                $('.carousel-indicators li').first().addClass('active');             
+                $('#myTenants.carousel-indicators li').first().addClass('active');             
             },
 
             moveTo: function(letter) {      
                 let index = 0;
                 $(".shop_name").each(function(){
-                    // console.log($(this).attr('parent-index'));
                     if($(this).html().startsWith(letter, 0)){
 
                         $(this).addClass('letter-selected');
@@ -344,11 +343,7 @@ import { isTemplateElement } from '@babel/types';
                         index = $(this).attr('parent-index');
                     };
                 });
-                console.log(parseInt(index));
                 
-                if (parseInt(index)){
-                    // $('.carousel').carousel(parseInt(index));
-                }  
                 $(".carousel-indicators li").each(function(){
                     if ($(this).attr('data-slide-to') == parseInt(index)){
                         $(this).click();
@@ -373,18 +368,16 @@ import { isTemplateElement } from '@babel/types';
                 this.tenant_list = [];
                 this.category_label = category.label;
                 this.category_top_banner = '';
-                axios.get('/api/v1/tenants/alphabetical/'+category.id)
-                .then(response => {
-                    this.tenant_list = response.data.data
-                    this.home_category = false;
-                    this.child_category = false;
-                    this.alphabetical = true;
-                    this.supplementals = false;
-                    this.show_tenant = false;
-                    if(this.tenant_list.length == 0) {
-                        this.no_record_found = true;         
-                    }
-                });
+
+                this.tenant_list = category.alphabetical;
+                this.home_category = false;
+                this.child_category = false;
+                this.alphabetical = true;
+                this.supplementals = false;
+                this.show_tenant = false;
+                if(this.tenant_list.length == 0) {
+                    this.no_record_found = true;         
+                }
             },
 
             getTenantsByCategory: function(category) {

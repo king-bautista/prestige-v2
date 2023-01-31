@@ -15,6 +15,8 @@ use App\Models\ViewModels\SiteBuildingLevelViewModel;
 use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
+use App\Models\ViewModels\DirectoryCategoryViewModel;
+use App\Models\ViewModels\DirectorySiteTenantViewModel;
 use App\Models\Site;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
@@ -49,8 +51,7 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $categories = CategoryViewModel::getMainCategory($site->id);
-            
+            $categories = DirectoryCategoryViewModel::getMainCategory($site->id);            
             return $this->response($categories, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -62,38 +63,38 @@ class MainController extends AppBaseController
         }
     }
 
-    public function getTenantsAlphabetical($category_id)
-    {
-        try
-        {
-            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
-            ->where('categories.parent_id', $category_id)
-            ->where('site_tenants.site_id', $site->id)
-            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-            ->select('site_tenants.*')
-            ->orderBy('brands.name', 'ASC')
-            ->get()->toArray();
+    // public function getTenantsAlphabetical($category_id)
+    // {
+    //     try
+    //     {
+    //         $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+    //         $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+    //         ->where('categories.parent_id', $category_id)
+    //         ->where('site_tenants.site_id', $site->id)
+    //         ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+    //         ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+    //         ->select('site_tenants.*')
+    //         ->orderBy('brands.name', 'ASC')
+    //         ->get()->toArray();
             
-            $site_tenants = array_chunk($site_tenants, 15);
-            return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        }    
-    }
+    //         $site_tenants = array_chunk($site_tenants, 15);
+    //         return $this->response($site_tenants, 'Successfully Retreived!', 200);
+    //     }
+    //     catch (\Exception $e)
+    //     {
+    //         return response([
+    //             'message' => 'No Tenants to display!',
+    //             'status_code' => 200,
+    //         ], 200);
+    //     }    
+    // }
 
     public function getTenantsByCategory($category_id)
     {
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.category_id', $category_id)
             ->where('site_tenants.site_id', $site->id)
             ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
