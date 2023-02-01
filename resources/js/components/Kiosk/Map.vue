@@ -141,7 +141,8 @@
                 tenant_list: [],
                 site_floors: [],
                 wayfindings: '',
-                current_time: Date.now()
+                current_time: Date.now(),
+                helper: new Helpers(),
             };
         },
 
@@ -190,6 +191,7 @@
 			},
 
             find_store: function(value, id) {
+                this.helper.saveLogs(value, 'Map');
                 $(function() {
                     this.wayfindings.clearTextlayer();
                     this.wayfindings.clearEscalator();

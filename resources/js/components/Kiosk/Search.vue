@@ -40,7 +40,7 @@
                             <div class="carousel-item" v-for="(tenants, index) in tenant_list" v-bind:class = "(index == 0) ? 'active':''">
                                 <div class="row mb-3">
                                     <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                        <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="showTenant(tenant)">
+                                        <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
                                             <div class="image-holder h-100">
                                                 <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                             </div>
@@ -176,6 +176,7 @@
             return {
                 search: {
                     key_words: '',
+                    results: '',
                 },
                 tenant_list: [],
                 suggestion_list: [],
@@ -188,6 +189,7 @@
                 tenant_details: '',
                 show_tenant: false,
                 product_image: '',
+                helper: new Helpers(),
             };
         },
 
@@ -212,6 +214,9 @@
                     }else {
                         this.search_results = true;
                     }
+
+                    this.search.results = response.data.data_count;
+                    this.helper.saveLogs(this.search, 'Search');
 				})
             },
 

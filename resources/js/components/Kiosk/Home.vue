@@ -519,7 +519,6 @@ import { isTemplateElement } from '@babel/types';
 
                 $(".hc-button").on('click', function() {
                     var category_id = $(this).data('category_id');
-                    alert(category_id);
                 });
             });
         },

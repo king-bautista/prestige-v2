@@ -16,10 +16,11 @@ class AppBaseController extends Controller
 {
     public $permissions; 
 
-    public function response($data = [], $message = '', $code = 200)
+    public function response($data = [], $message = '', $code = 200, $count = 0)
     {
         $response = array(
             'data' => $data,
+            'data_count' => $count,
             'message' => $message,
             'status_code' => $code,
             'status' => true,

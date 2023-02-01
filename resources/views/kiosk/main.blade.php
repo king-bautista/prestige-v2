@@ -115,7 +115,7 @@
 
         $('.widget-button').on('click', function(){
             var page = $(this).data('link');
-            helper_home.saveLogs({action: 'click', page: page });
+            helper_home.saveLogs({action: 'click'}, page);
         });
 
         $('.search-button').on('click', function() {
