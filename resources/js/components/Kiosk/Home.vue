@@ -12,7 +12,7 @@
         </div>
 
         <!-- MAIN CATEGORY -->
-        <div v-show="home_category">
+        <div v-show="home_category"> 
             <div class="row mt-15 mb-55">
                 <div class="col-md-12 home-title text-center">
                     Search your favorite stores
@@ -246,12 +246,12 @@
         <div class="tabs-container" v-show="!home_category">
             <div class="tabs">
                 <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">View stores by</span>: </span>
-                <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" @click="showCategories">
+                <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" @click="showCategories()">
                     <div>
                         <a class="translateme tenant-category">Category</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="getTenants(current_category)">
+                <div class="tabs-item store-tabs-item" @click="getTenants(current_category);">
                     <div>
                         <a class="translateme tenant-alphabet">Alphabetical</a>
                     </div>
@@ -519,7 +519,6 @@ import { isTemplateElement } from '@babel/types';
 
                 $(".hc-button").on('click', function() {
                     var category_id = $(this).data('category_id');
-                    alert(category_id);
                 });
             });
         },

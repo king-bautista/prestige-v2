@@ -169,7 +169,7 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
@@ -216,10 +216,12 @@ class MainController extends AppBaseController
             ->select('site_tenants.*')
             ->distinct()
             ->orderBy('brands.name', 'ASC')
-            ->get()->toArray();
+            ->get();
             
-            $site_tenants = array_chunk($site_tenants, 15);
-            return $this->response($site_tenants, 'Successfully Retreived!', 200);
+            $counts = $site_tenants->count();
+            $site_tenants = array_chunk($site_tenants->toArray(), 15);
+
+            return $this->response($site_tenants, 'Successfully Retreived!', 200, $counts);
         }
         catch (\Exception $e)
         {
