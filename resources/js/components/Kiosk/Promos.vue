@@ -24,8 +24,8 @@
                             <div class="row mb-3">
                                 <div v-for="promo in promos" class="col-12 col-sm-4 text-left mt-3">
                                     <div class="bg-white text-center">
-                                        <a @click="showPromo(promo.image_url_path)">
-                                            <img :src="promo.image_url_path" :alt="promo.name" style="width:70%; border: solid 2px; border-radius: 15px;" />
+                                        <a @click="helper.saveLogs(promo, 'Promos'); showPromo(promo.material_image_path)">
+                                            <img :src="promo.material_image_path" :alt="promo.name" style="width:70%; border: solid 2px; border-radius: 15px;" />
                                         </a>
                                     </div>
                                 </div>
@@ -72,6 +72,7 @@
                 page_title: 'Promos',
                 no_record_found: false,
                 promo_image: '',
+                helper: new Helpers(),
             };
         },
 

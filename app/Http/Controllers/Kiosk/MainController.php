@@ -252,6 +252,8 @@ class MainController extends AppBaseController
 
             $current_date = date('Y-m-d');
             $contents = ContentManagementViewModel::where('site_id', $site->id)
+            ->where('status_id', 5)
+            ->where('active', 1)
             ->whereDate('start_date', '<=', $current_date)
             ->whereDate('end_date', '>=', $current_date)
             ->get();
@@ -277,6 +279,8 @@ class MainController extends AppBaseController
             
             $current_date = date('Y-m-d');
             $contents = ContentManagementViewModel::where('site_id', $site->id)
+            ->where('status_id', 5)
+            ->where('active', 1)
             ->whereDate('start_date', '<=', $current_date)
             ->whereDate('end_date', '>=', $current_date)
             ->get();
@@ -300,15 +304,15 @@ class MainController extends AppBaseController
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             
-            $promos = BrandProductViewModel::where('brand_products_promos.type', 'promo')
-            ->where('brand_products_promos.active', 1)
-            ->where('site_tenants.is_subscriber', 1)
-            ->where('site_tenants.site_id', $site->id)
-            ->join('site_tenant_products', 'brand_products_promos.id', '=', 'site_tenant_products.brand_product_promo_id')
-            ->join('site_tenants', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
-            ->select('brand_products_promos.*')
-            ->get()->toArray();
+            $current_date = date('Y-m-d');
+            $contents = ContentManagementViewModel::where('site_id', $site->id)
+            ->where('status_id', 5)
+            ->where('active', 1)
+            ->whereDate('start_date', '<=', $current_date)
+            ->whereDate('end_date', '>=', $current_date)
+            ->get();
 
+            $promos = $this->listToArray($contents->where('ad_type', 'Promos'));
             $promos = array_chunk($promos, 6);
             
             return $this->response($promos, 'Successfully Retreived!', 200);
@@ -327,7 +331,7 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.name', 'like', '%CINEMA%')
             ->where('categories.name', 'like', '%Amusement & Exhibitions%')
             ->where('site_tenants.site_id', $site->id)

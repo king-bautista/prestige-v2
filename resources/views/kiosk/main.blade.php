@@ -65,7 +65,7 @@
 
     // PRELOADER TIME INTERVAL
     $(window).on('load', function(){
-        setTimeout(removeLoader, 10000); //wait for page load PLUS two seconds.
+        setTimeout(removeLoader, 20000); //wait for page load PLUS two seconds.
     });
 
     setInterval(function(){ 
