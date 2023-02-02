@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="helper.saveLogs(category, 'Home'); showChildren(category);">
+                    <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
                         <img :src="category.kiosk_image_primary_path">
                         <div id="hc-button1" class="hc-button-align">{{ category.label }}</div>
                     </div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="row col-md-6 offset-md-3 mb-3 mw-51p">
-                <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="helper.saveLogs(subcategory, 'Home'); getTenantsByCategory(subcategory)">			
+                <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="getTenantsByCategory(subcategory)">			
                     <div class="c-button ml-0">						
                         <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
                         <div class="c-button-align c-button-color2 translateme"><p>{{subcategory.label}}</p></div>                        
@@ -246,17 +246,17 @@
         <div class="tabs-container" v-show="!home_category">
             <div class="tabs">
                 <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">View stores by</span>: </span>
-                <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" @click="showCategories()">
+                <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" data-link="Category" @click="showCategories()">
                     <div>
                         <a class="translateme tenant-category">Category</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="getTenants(current_category);">
+                <div class="tabs-item store-tabs-item" data-link="Alphabetical" @click="getTenants(current_category);">
                     <div>
                         <a class="translateme tenant-alphabet">Alphabetical</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="showSupplementals();">
+                <div class="tabs-item store-tabs-item" data-link="Supplementals" @click="showSupplementals();">
                     <div>
                         <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
                     </div>
@@ -385,6 +385,7 @@ import { isTemplateElement } from '@babel/types';
                 this.tenant_list = [];
                 this.category_label = category.label;
                 this.category_top_banner = category.kiosk_image_top_path;
+                this.helper.saveLogs(category, 'Home');
 
                 axios.get('/api/v1/tenants/category/'+category.id)
                 .then(response => {
@@ -452,6 +453,7 @@ import { isTemplateElement } from '@babel/types';
                 this.alphabetical = false;
                 this.supplementals = false;
                 this.show_tenant = false;
+                this.helper.saveLogs({category_id: category.id}, 'Home');
             },
 
             goBack: function() {
@@ -507,6 +509,7 @@ import { isTemplateElement } from '@babel/types';
         },
 
         mounted() {
+            var obj = this;
             $(function() {
                 $('.store-tabs-item').click(function () {
                     $('.store-tabs-item').removeClass('tab-item-selected');
@@ -520,6 +523,11 @@ import { isTemplateElement } from '@babel/types';
                 $(".hc-button").on('click', function() {
                     var category_id = $(this).data('category_id');
                 });
+
+                // $('.store-tabs-item').on('click', function(){
+                //     var page = $(this).data('link');
+                //     obj.helper.saveLogs({action: 'click'}, 'Home');
+                // });
             });
         },
     };

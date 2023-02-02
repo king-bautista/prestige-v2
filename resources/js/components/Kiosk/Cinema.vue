@@ -27,7 +27,7 @@
 
                         <div class="carousel-item" v-for="(cinemas, index) in cinema_list" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
-                                <div v-for="cinema in cinemas" class="col-12 col-sm-6 text-left mt-3">
+                                <div v-for="cinema in cinemas" class="col-12 col-sm-6 text-left mt-3" @click="helper.saveLogs(cinema, 'Cinema');">
                                     <div class="cinema-store bg-white text-center box-shadowed ml-3">
                                         <div class="image-holder h-100">
                                             <img :src="cinema.brand_logo" :alt="cinema.brand_name">
@@ -191,6 +191,7 @@
                 no_record_found_movies: false,
                 movie_details: '',
                 schedules: false,
+                helper: new Helpers(),
             };
         },
 
