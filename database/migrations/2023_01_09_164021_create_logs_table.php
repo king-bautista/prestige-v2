@@ -31,7 +31,6 @@ class CreateLogsTable extends Migration
             $table->mediumText('results')->nullable();    
             $table->timestamps();
             $table->softDeletes();            
-            
         });
     }
 

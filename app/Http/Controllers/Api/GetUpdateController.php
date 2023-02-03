@@ -38,6 +38,7 @@ use App\Models\Tag;
 use App\Models\Log;
 use App\Models\Advertisement;
 use App\Models\ContentManagement;
+use App\Models\ContentScreen;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
@@ -743,7 +744,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
     {
         $content_screens = ContentScreen::on('mysql_server')->where('content_id', $content_id)->get();
         if($content_screens) {
-            ContentScreen::on('mysql')->where('content_id', $ad_id)->delete();
+            ContentScreen::on('mysql')->where('content_id', $content_id)->delete();
 
             foreach($content_screens as $screen) {
                 $this->data[] = ContentScreen::on('mysql')->updateOrCreate(
@@ -869,7 +870,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $logs = Log::on('mysql')->where('updated_at', '>=',$last_updated_at)->get();
         if($logs) {
             foreach($logs as $log) {
-                $this->data[] = Log::on('mysql_server')->updateOrCreate(
+                $data = Log::on('mysql_server')->updateOrCreate(
                     [
                         'id' => $log->id
                     ],
