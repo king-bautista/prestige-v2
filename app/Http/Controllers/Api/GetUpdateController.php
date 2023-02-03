@@ -35,6 +35,9 @@ use App\Models\SiteTenant;
 use App\Models\SiteTenantMeta;
 use App\Models\SiteTenantProduct;
 use App\Models\Tag;
+use App\Models\Log;
+use App\Models\Advertisement;
+use App\Models\ContentManagement;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
@@ -63,11 +66,15 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         $this->updateCinemaGenre($last_updated_at);
         $this->updateCinemaSites($last_updated_at);
         $this->updateSiteScreens($last_updated_at);
-        $this->updateSiteAds($last_updated_at);
+        //$this->updateSiteAds($last_updated_at);
+        $this->updateAdvertisement($last_updated_at);
+        $this->updateContentManagement($last_updated_at);
         $this->updateSiteTenants($last_updated_at);
         $this->updateSiteTenantMetas($last_updated_at);
+        $this->updateLogs($last_updated_at);
         return $this->updateDate();        
     }
+
     public function getLastUpdate()
     {
         $last_updated_at = LastUpdateAt::first();
@@ -666,54 +673,82 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         }
     }
 
-    public function updateSiteAds($last_updated_at)
+    public function updateAdvertisement($last_updated_at)
     {
         $data = [];
-        $site_ads = SiteAd::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
-        if($site_ads) {
-            foreach($site_ads as $ad) {
+        $advertisements = Advertisement::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        if($advertisements) {
+            foreach($advertisements as $ad) {
 
                 if($ad->file_path)
                     $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
 
-                $this->data[] = SiteAd::on('mysql')->updateOrCreate(
+                $this->data[] = Advertisement::on('mysql')->updateOrCreate(
                     [
                         'id' => $ad->id
                     ],
                     [
                         'company_id' => $ad->company_id,
-                        'name' => $ad->name,
+                        'brand_id' => $ad->brand_id,
+                        'status_id' => $ad->status_id,
                         'ad_type' => $ad->ad_type,
-                        'screen_type' => $ad->screen_type,
+                        'name' => $ad->name,
                         'file_path' => $ad->file_path,
                         'file_type' => $ad->file_type,
-                        'display_order' => $ad->display_order,
+                        'file_size' => $ad->file_size,
+                        'dimension' => $ad->dimension,
+                        'width' => $ad->width,
+                        'height' => $ad->height,
                         'display_duration' => $ad->display_duration,
-                        'start_date' => $ad->start_date,
-                        'end_date' => $ad->end_date,
                         'active' => $ad->active,
-                        'deleted_at' => $ad->deleted_at
+                        'deleted_at' => $ad->deleted_at,
                     ]
                 );
-
-                $this->updateAdScreens($ad->id);
-                $this->updateAdSites($ad->id);
-                $this->updateAdTenants($ad->id);
             }
             return $data;
         }
     }
 
-    public function updateAdScreens($ad_id)
+    public function updateContentManagement($last_updated_at)
     {
-        $site_ad_screens = SiteAdScreen::on('mysql_server')->where('site_ad_id', $ad_id)->get();
-        if($site_ad_screens) {
-            SiteAdScreen::on('mysql')->where('site_ad_id', $ad_id)->delete();
+        $data = [];
+        $content_management = ContentManagement::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+        if($content_management) {
+            foreach($content_management as $content) {
 
-            foreach($site_ad_screens as $screen) {
-                $this->data[] = SiteAdScreen::on('mysql')->updateOrCreate(
+                $this->data[] = ContentManagement::on('mysql')->updateOrCreate(
                     [
-                        'site_ad_id' => $screen->site_ad_id,
+                        'id' => $content->id
+                    ],
+                    [
+                        'advertisement_id' => $content->advertisement_id,
+                        'site_id' => $content->site_id,
+                        'site_tenant_id' => $content->site_tenant_id,
+                        'start_date' => $content->start_date,
+                        'end_date' => $content->end_date,
+                        'uom' => $content->uom,
+                        'status_id' => $content->status_id,
+                        'active' => $content->active,
+                        'deleted_at' => $content->deleted_at,
+                    ]
+                );
+
+                $this->updateContentScreens($content->id);
+            }
+            return $data;
+        }
+    }
+
+    public function updateContentScreens($content_id)
+    {
+        $content_screens = ContentScreen::on('mysql_server')->where('content_id', $content_id)->get();
+        if($content_screens) {
+            ContentScreen::on('mysql')->where('content_id', $ad_id)->delete();
+
+            foreach($content_screens as $screen) {
+                $this->data[] = ContentScreen::on('mysql')->updateOrCreate(
+                    [
+                        'content_id' => $screen->content_id,
                         'site_screen_id' => $screen->site_screen_id
                     ],
                 );
@@ -721,39 +756,94 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         }
     }
 
-    public function updateAdSites($ad_id)
-    {
-        $site_ad_sites = SiteAdSite::on('mysql_server')->where('site_ad_id', $ad_id)->get();
-        if($site_ad_sites) {
-            SiteAdSite::on('mysql')->where('site_ad_id', $ad_id)->delete();
+    // public function updateSiteAds($last_updated_at)
+    // {
+    //     $data = [];
+    //     $site_ads = SiteAd::on('mysql_server')->where('updated_at', '>=',$last_updated_at)->get();
+    //     if($site_ads) {
+    //         foreach($site_ads as $ad) {
 
-            foreach($site_ad_sites as $site) {
-                $this->data[] = SiteAdSite::on('mysql')->updateOrCreate(
-                    [
-                        'site_ad_id' => $site->site_ad_id,
-                        'site_id' => $site->site_id
-                    ],
-                );
-            }
-        }
-    }
+    //             if($ad->file_path)
+    //                 $this->saveMaterial('uploads/media/advertisements/'.strtolower($ad->ad_type).'/', $ad->file_path);
 
-    public function updateAdTenants($ad_id)
-    {
-        $site_ad_sites = SiteAdTenant::on('mysql_server')->where('site_ad_id', $ad_id)->get();
-        if($site_ad_sites) {
-            SiteAdTenant::on('mysql')->where('site_ad_id', $ad_id)->delete();
+    //             $this->data[] = SiteAd::on('mysql')->updateOrCreate(
+    //                 [
+    //                     'id' => $ad->id
+    //                 ],
+    //                 [
+    //                     'company_id' => $ad->company_id,
+    //                     'name' => $ad->name,
+    //                     'ad_type' => $ad->ad_type,
+    //                     'screen_type' => $ad->screen_type,
+    //                     'file_path' => $ad->file_path,
+    //                     'file_type' => $ad->file_type,
+    //                     'display_order' => $ad->display_order,
+    //                     'display_duration' => $ad->display_duration,
+    //                     'start_date' => $ad->start_date,
+    //                     'end_date' => $ad->end_date,
+    //                     'active' => $ad->active,
+    //                     'deleted_at' => $ad->deleted_at
+    //                 ]
+    //             );
 
-            foreach($site_ad_sites as $site) {
-                $this->data[] = SiteAdTenant::on('mysql')->updateOrCreate(
-                    [
-                        'site_ad_id' => $site->site_ad_id,
-                        'site_tenant_id' => $site->site_tenant_id
-                    ],
-                );
-            }
-        }
-    }
+    //             $this->updateAdScreens($ad->id);
+    //             $this->updateAdSites($ad->id);
+    //             $this->updateAdTenants($ad->id);
+    //         }
+    //         return $data;
+    //     }
+    // }
+
+    // public function updateAdScreens($ad_id)
+    // {
+    //     $site_ad_screens = SiteAdScreen::on('mysql_server')->where('site_ad_id', $ad_id)->get();
+    //     if($site_ad_screens) {
+    //         SiteAdScreen::on('mysql')->where('site_ad_id', $ad_id)->delete();
+
+    //         foreach($site_ad_screens as $screen) {
+    //             $this->data[] = SiteAdScreen::on('mysql')->updateOrCreate(
+    //                 [
+    //                     'site_ad_id' => $screen->site_ad_id,
+    //                     'site_screen_id' => $screen->site_screen_id
+    //                 ],
+    //             );
+    //         }
+    //     }
+    // }
+
+    // public function updateAdSites($ad_id)
+    // {
+    //     $site_ad_sites = SiteAdSite::on('mysql_server')->where('site_ad_id', $ad_id)->get();
+    //     if($site_ad_sites) {
+    //         SiteAdSite::on('mysql')->where('site_ad_id', $ad_id)->delete();
+
+    //         foreach($site_ad_sites as $site) {
+    //             $this->data[] = SiteAdSite::on('mysql')->updateOrCreate(
+    //                 [
+    //                     'site_ad_id' => $site->site_ad_id,
+    //                     'site_id' => $site->site_id
+    //                 ],
+    //             );
+    //         }
+    //     }
+    // }
+
+    // public function updateAdTenants($ad_id)
+    // {
+    //     $site_ad_sites = SiteAdTenant::on('mysql_server')->where('site_ad_id', $ad_id)->get();
+    //     if($site_ad_sites) {
+    //         SiteAdTenant::on('mysql')->where('site_ad_id', $ad_id)->delete();
+
+    //         foreach($site_ad_sites as $site) {
+    //             $this->data[] = SiteAdTenant::on('mysql')->updateOrCreate(
+    //                 [
+    //                     'site_ad_id' => $site->site_ad_id,
+    //                     'site_tenant_id' => $site->site_tenant_id
+    //                 ],
+    //             );
+    //         }
+    //     }
+    // }
 
     public function updateTags($last_updated_at)
     {
@@ -768,6 +858,35 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                         'name' => $tag->name,
                         'active' => $tag->active,
                         'deleted_at' => $tag->deleted_at
+                    ]
+                );
+            }
+        }
+    }
+
+    public function updateLogs($last_updated_at)
+    {
+        $logs = Log::on('mysql')->where('updated_at', '>=',$last_updated_at)->get();
+        if($logs) {
+            foreach($logs as $log) {
+                $this->data[] = Log::on('mysql_server')->updateOrCreate(
+                    [
+                        'id' => $log->id
+                    ],
+                    [
+                        'site_id' => $log->site_id,
+                        'site_screen_id' => $log->site_screen_id,
+                        'category_id' => $log->category_id,
+                        'parent_category_id' => $log->parent_category_id,
+                        'brand_id' => $log->brand_id,
+                        'company_id' => $log->company_id,
+                        'site_tenant_id' => $log->site_tenant_id,
+                        'advertisement_id' => $log->advertisement_id,
+                        'action' => $log->action,
+                        'page' => $log->page,
+                        'key_words' => $log->key_words,
+                        'results' => $log->results,
+                        'deleted_at' => $log->deleted_at
                     ]
                 );
             }
