@@ -13,6 +13,7 @@ use App\Models\SiteTenantProduct;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\ViewModels\TenantsDropdownViewModel;
 
 use App\Imports\SiteTenantsImport;
 
@@ -215,7 +216,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         try
     	{
             $ids = explode(",", rtrim($ids, ","));
-            $site_tenants = SiteTenantViewModel::whereIn('site_id', $ids)->get();
+            $site_tenants = TenantsDropdownViewModel::whereIn('site_id', $ids)->get();
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
