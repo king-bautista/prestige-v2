@@ -68,13 +68,13 @@
         setTimeout(removeLoader, 20000); //wait for page load PLUS two seconds.
     });
 
-    setInterval(function(){ 
-        $.get( "/api/v1/get-update", function( data ) {
-            if(data.data.length > 0) {
-                location.reload();
-            }
-        });
-    },(60000*5)) 
+    // setInterval(function(){ 
+    //     $.get( "/api/v1/get-update", function( data ) {
+    //         if(data.data.length > 0) {
+    //             location.reload();
+    //         }
+    //     });
+    // },(60000*5)) 
 
     // REMOVED PRELOADER
     function removeLoader(){
@@ -93,6 +93,11 @@
 
         screensaver_handle = setTimeout(() => {
             $("#screensaverwidget").height('100%').width('100%');
+            $.get( "/api/v1/get-update", function( data ) {
+                if(data.data.length > 0) {
+                    location.reload();
+                }
+            });
 		}, 2000 * 60 * 2);
     });
 
