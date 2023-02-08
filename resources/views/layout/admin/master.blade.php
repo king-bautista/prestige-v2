@@ -48,6 +48,9 @@
         <!-- <script src="{{ URL::to('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
         <!-- Toastr -->
         <script src="{{ URL::to('plugins/toastr/toastr.min.js') }}"></script>
+        <!-- ChartJS -->
+        <script src="{{ URL::to('plugins/chart.js/Chart.min.js') }}"></script>
+
         <!-- AdminLTE App -->
         <script src="{{ URL::to('dist/js/adminlte.min.js') }}"></script>
         <script src="{{ URL::to('js/helper.js') }}"></script>

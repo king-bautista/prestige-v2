@@ -46,6 +46,7 @@ Vue.component('admin-genres', require('./components/Admin/Genre.vue').default);
 Vue.component('admin-site-codes', require('./components/Admin/SiteCode.vue').default);
 Vue.component('admin-schedules', require('./components/Admin/CinemaSchedules.vue').default);
 Vue.component('admin-content', require('./components/Admin/Content.vue').default);
+Vue.component('admin-reports_population', require('./components/Admin/ReportPopulation.vue').default);
 
 /**
  * KIOSK PART

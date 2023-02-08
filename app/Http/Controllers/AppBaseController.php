@@ -19,6 +19,9 @@ class AppBaseController extends Controller
     public function response($data = [], $message = '', $code = 200, $count = 0)
     {
         $response = array(
+            'meta' => [
+                'permissions' => $this->permissions,
+            ],
             'data' => $data,
             'data_count' => $count,
             'message' => $message,

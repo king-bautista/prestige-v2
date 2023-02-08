@@ -3,7 +3,7 @@
 		<div class="row mt-2">
 	        <div class="col-md-3 d-flex align-items-center mb-2">
 	            Show
-	            <select v-model="perPage" @change="fetchData" class="custom-select custom-select-sm form-control form-control-sm" style="margin-left: 0.5em; margin-right: 0.5em;">
+	            <select v-model="perPage" @change="fetchData" class="custom-select custom-select-sm form-control form-control-sm" style="margin-left: 0.5em; margin-right: 0.5em;" :disabled="!meta.total">
 	                <option value="15" selected>15</option>
 	                <option value="30">30</option>
 	                <option value="50">50</option>
@@ -21,7 +21,7 @@
 	        <div class="col-md-4 mb-2">
 	            <div class="input-group d-flex align-items-center justify-content-end">
 	                Search:
-	                <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search" v-on:keyup="onEnterSearch" style="margin-left: 0.5em;"/>
+	                <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search" v-on:keyup="onEnterSearch" style="margin-left: 0.5em;" :disabled="!meta.total"/>
 	                <div class="input-group-append">
 	                    <button type="button" class="btn btn-info btn-sm" @click="fetchData"><i class="fas fa-search"></i></button>
 	                </div>
@@ -111,7 +111,7 @@
         </div>
 
         <!-- Pagination  -->
-        <div class="row">
+        <div class="row" v-if="meta.total > 0">
             <div class="col-md-5 col-12">
                 <div v-if="dataTable.length">
                     Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} entries
