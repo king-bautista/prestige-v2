@@ -133,6 +133,7 @@ class SiteTenantViewModel extends Model
             return $category['parent_id'];
         return null;
     }    
+    
     public function getCategoryNameAttribute() 
     {
         $brand_category_id = Brand::find($this->brand_id)->category_id;

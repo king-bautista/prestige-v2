@@ -352,5 +352,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/cinema/schedule/delete/{id}', 'Admin\CinemasScheduleController@delete')->where('id', '[0-9]+')->name('admin.schedule.delete');
     Route::get('/admin/cinema/schedule/site-codes', 'Admin\CinemasScheduleController@getSiteCodes')->name('admin.cinema.site-codes');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Reports Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/reports/merchant-population', 'Admin\ReportsController@index')->name('admin.reports.merchant-population');
+    Route::get('/admin/reports/merchant-population/list', 'Admin\ReportsController@getPopulationReport')->name('admin.reports.merchant-population-list');
+    Route::post('/admin/reports/store', 'Admin\ReportsController@store')->name('admin.reports.store');
+    Route::get('/admin/reports/{id}', 'Admin\ReportsController@details')->where('id', '[0-9]+')->name('admin.reports.details');
+    Route::get('/admin/reports/{id}', 'Admin\ReportsController@delete')->where('id', '[0-9]+')->name('admin.reports.delete');
+    Route::get('/admin/reports/site-codes', 'Admin\ReportsController@getSiteCodes')->name('admin.reports.site-codes');
+
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
