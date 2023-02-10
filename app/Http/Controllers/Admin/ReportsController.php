@@ -30,10 +30,17 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try
         {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $logs = LogsViewModel::when(request('search'), function($query){
-                return $query->where('site_id', request('search'));
+            $logs = LogsViewModel::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
             })
             ->whereNotNull('site_tenant_id')
             ->selectRaw('logs.*, count(*) as tenant_count')
@@ -53,6 +60,51 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             }
     
             return $this->response($percentage, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvPopulation(Request $request)
+    {
+        try
+        {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
+            $logs = LogsViewModel::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->whereNotNull('site_tenant_id')
+            ->selectRaw('logs.*, count(*) as tenant_count')
+            ->groupBy('parent_category_id')
+            ->orderBy('tenant_count', 'DESC')
+            ->get();
+    
+            $total = $logs->sum('tenant_count');
+    
+            $percentage = [];
+            foreach($logs as $index => $log) {
+                $percentage[] = [
+                    'category_parent_name' => $log->category_parent_name,
+                    'tenant_count' => $log->tenant_count,
+                    'percentage_share' => round(($log->tenant_count / $total) * 100, 2) .'%'
+                ];
+            }
+    
+            
         }
         catch (\Exception $e)
         {
