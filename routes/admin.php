@@ -359,6 +359,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     */
     Route::get('/admin/reports/merchant-population', 'Admin\ReportsController@index')->name('admin.reports.merchant-population');
     Route::get('/admin/reports/merchant-population/list', 'Admin\ReportsController@getPopulationReport')->name('admin.reports.merchant-population-list');
+    Route::get('/admin/reports/merchant-population/download-csv', 'Admin\ReportsController@downloadCsvPopulation')->name('admin.reports.merchant-population-download-csv');
     Route::post('/admin/reports/store', 'Admin\ReportsController@store')->name('admin.reports.store');
     Route::get('/admin/reports/{id}', 'Admin\ReportsController@details')->where('id', '[0-9]+')->name('admin.reports.details');
     Route::get('/admin/reports/{id}', 'Admin\ReportsController@delete')->where('id', '[0-9]+')->name('admin.reports.delete');

@@ -15,6 +15,7 @@
 								:otherButtons="otherButtons"
 								:primaryKey="primaryKey"
 								v-on:reportModal="reportModal"
+								v-on:downloadCsv="downloadCsv"
 								ref="dataTable">
 								</Table>
 							</div>
@@ -100,7 +101,7 @@
 					},
 					download: {
 						title: 'Download',
-						v_on: 'reportModal',
+						v_on: 'downloadCsv',
 						icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
@@ -125,72 +126,81 @@
             },
 
 			filterReport: function() {
+				this.$refs.dataTable.filters = this.filter;
+				this.$refs.dataTable.fetchData();
+				this.filterChart();
+				$('#filterModal').modal('hide');
+			},
 
+			filterChart: function() {
+				var filter = this.filter;
+				$(function() {
+					$.get( "/admin/reports/merchant-population/list", filter, function( data ) {
+						let labels = [];
+						let data_value = [];
+						let randomBackgroundColor = [];
+						let usedColors = new Set();
+
+						let dynamicColors = function() {
+							let r = Math.floor(Math.random() * 255);
+							let g = Math.floor(Math.random() * 255);
+							let b = Math.floor(Math.random() * 255);
+							let color = "rgb(" + r + "," + g + "," + b + ")";
+
+							if (!usedColors.has(color)) {
+								usedColors.add(color);
+								return color;
+							} else {
+								return dynamicColors();
+							}
+						};
+
+						$.each(data.data, function(key,value) {
+							labels.push(value.category_parent_name);
+							data_value.push(value.tenant_count);
+							randomBackgroundColor.push(dynamicColors());
+						});
+
+						var donutData = {
+							labels: labels,
+							datasets: [
+								{
+									data: data_value,
+									backgroundColor : randomBackgroundColor,
+								}
+							]
+						}
+
+						var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+						var pieData        = donutData;
+						var pieOptions     = {
+							maintainAspectRatio : false,
+							responsive : true,
+						}
+
+						new Chart(pieChartCanvas, {
+							type: 'pie',
+							data: pieData,
+							options: pieOptions
+						})
+					});
+				});
 			},
 
             downloadCsv: function() {
-                axios.put('/admin/cinema/genre/update', this.genre)
-                    .then(response => {
-                        toastr.success(response.data.message);
-                        this.$refs.dataTable.fetchData();
-                        $('#genres-form').modal('hide');
-                    })
+              axios.get('/admin/reports/merchant-population/download-csv', this.filter)
+              .then(response => {
+                const link = document.createElement('a');
+                link.href = response.data.data.filepath;
+                link.setAttribute('download', response.data.data.filename); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+              })
             },
         },
 
 		mounted() {
-            $(document).ready(function(){
-				$.get( "/admin/reports/merchant-population/list", function( data ) {
-					let labels = [];
-					let data_value = [];
-					let randomBackgroundColor = [];
-					let usedColors = new Set();
-
-					let dynamicColors = function() {
-						let r = Math.floor(Math.random() * 255);
-						let g = Math.floor(Math.random() * 255);
-						let b = Math.floor(Math.random() * 255);
-						let color = "rgb(" + r + "," + g + "," + b + ")";
-
-						if (!usedColors.has(color)) {
-							usedColors.add(color);
-							return color;
-						} else {
-							return dynamicColors();
-						}
-					};
-
-					$.each(data.data, function(key,value) {
-						labels.push(value.category_parent_name);
-						data_value.push(value.tenant_count);
-						randomBackgroundColor.push(dynamicColors());
-					});
-
-					var donutData = {
-						labels: labels,
-						datasets: [
-							{
-								data: data_value,
-								backgroundColor : randomBackgroundColor,
-							}
-						]
-					}
-
-					var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-					var pieData        = donutData;
-					var pieOptions     = {
-						maintainAspectRatio : false,
-						responsive : true,
-					}
-
-					new Chart(pieChartCanvas, {
-						type: 'pie',
-						data: pieData,
-						options: pieOptions
-					})
-				});
-
-            });
+           this.filterChart();
         },
 
         components: {

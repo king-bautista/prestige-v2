@@ -328,7 +328,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 if($site->site_logo)
                     $this->saveMaterial('uploads/media/sites/logos/', $site->site_logo);
                 if($site->site_banner)
-                $this->saveMaterial('uploads/media/sites/banners/', $site->site_banner);
+                    $this->saveMaterial('uploads/media/sites/banners/', $site->site_banner);
 
                 $this->data[] = Site::on('mysql')->updateOrCreate(
                     [
