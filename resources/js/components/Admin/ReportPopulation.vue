@@ -188,7 +188,8 @@
 			},
 
             downloadCsv: function() {
-              axios.get('/admin/reports/merchant-population/download-csv', this.filter)
+				console.log(this.filter);
+              axios.get('/admin/reports/merchant-population/download-csv', {params: {filters: this.filter}})
               .then(response => {
                 const link = document.createElement('a');
                 link.href = response.data.data.filepath;
