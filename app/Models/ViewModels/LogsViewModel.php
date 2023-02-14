@@ -48,8 +48,10 @@ class LogsViewModel extends Model
         'site_name',
         'category_name',
         'category_parent_name',
+        'brand_logo',
         'brand_name',
         'advertisement_name',
+        'main_category_name',
     ];
     
     public function getCategoryNameAttribute() 
@@ -65,6 +67,11 @@ class LogsViewModel extends Model
         $category = Category::find($this->parent_category_id);
         if($category)
             return $category['name'];
+
+        $category = Category::where('supplemental_category_id', $this->parent_category_id)->first();
+        if($category)
+            return $category['name'];
+
         return null;
     }    
 
@@ -74,6 +81,14 @@ class LogsViewModel extends Model
         if($site)
             return $site['name'];
         return null;
+    }
+
+    public function getBrandLogoAttribute() 
+    {
+        $logo = Brand::find($this->brand_id)->logo;
+        if($logo)
+            return asset($logo);
+        return asset('/images/no-image-available.png');
     }
 
     public function getBrandNameAttribute() 
@@ -89,6 +104,44 @@ class LogsViewModel extends Model
         $advertisement = Advertisement::find($this->advertisement_id);
         if($advertisement)
             return $advertisement['name'];
+        return null;
+    }
+
+    // public function getMainCategoryIdAttribute() 
+    // {
+    //     $main_category = Category::find($this->parent_category_id);
+    //     if($main_category)
+    //         return $main_category['id'];
+        
+    //     $main_category = Category::where('supplemental_category_id', $this->parent_category_id)->first();
+    //     if($main_category)
+    //         return $main_category['id'];
+
+    //     return null;
+    // }
+
+    public function getMainCategoryNameAttribute() 
+    {
+        $main_category = null;
+        $category = Category::find($this->parent_category_id);
+        if($category)
+            $main_category = Category::find($category->parent_id);
+
+        if($category && $main_category)
+            return $main_category['name'];
+        
+        if($category && !$main_category)
+            return $category['name'];
+        
+        // $supplemental_category = Category::find($this->parent_category_id)->first();
+        // $main_supplemental_category = Category::where('supplemental_category_id', $supplemental_category->parent_category_id)->first();
+
+        // if($supplemental_category && $main_supplemental_category)
+        //     return $main_supplemental_category['name'];
+
+        // if($supplemental_category && !$main_supplemental_category)
+        //     return $supplemental_category['name'];            
+            
         return null;
     }
 }

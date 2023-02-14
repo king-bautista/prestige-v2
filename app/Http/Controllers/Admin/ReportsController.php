@@ -30,7 +30,64 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         return view('admin.report_population');
     }
 
+    public function topTenantSearch()
+    {
+        return view('admin.report_tenant_search');
+    }
+
+    public function getPercentage($request)
+    {
+        $site_id = '';
+        $filters = json_decode($request->filters);
+        if($filters) 
+            $site_id = $filters->site_id;
+        if($request->site_id)
+            $site_id = $request->site_id;
+
+        $logs = LogsViewModel::when($site_id, function($query) use ($site_id){
+            return $query->where('site_id', $site_id);
+        })
+        ->whereNotNull('site_tenant_id')
+        ->selectRaw('logs.*, count(*) as tenant_count')
+        ->groupBy('parent_category_id')
+        ->orderBy('tenant_count', 'DESC')
+        ->take(5)
+        ->get();
+
+        $total = $logs->sum('tenant_count');
+
+        $percentage = [];
+        foreach($logs as $index => $log) {
+            $percentage[] = [
+                'category_parent_name' => $log->category_parent_name,
+                'tenant_count' => $log->tenant_count,
+                'percentage_share' => round(($log->tenant_count / $total) * 100, 2) .'%'
+            ];
+        }
+
+        return $percentage;
+    }
+
     public function getPopulationReport(Request $request)
+    {
+        try
+        {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $percentage = $this->getPercentage($request);
+
+            return $this->response($percentage, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getTenantSearch(Request $request)
     {
         try
         {
@@ -46,24 +103,13 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $logs = LogsViewModel::when($site_id, function($query) use ($site_id){
                 return $query->where('site_id', $site_id);
             })
-            ->whereNotNull('site_tenant_id')
+            ->whereNotNull('brand_id')
             ->selectRaw('logs.*, count(*) as tenant_count')
-            ->groupBy('parent_category_id')
+            ->groupBy('brand_id')
             ->orderBy('tenant_count', 'DESC')
-            ->get();
-    
-            $total = $logs->sum('tenant_count');
-    
-            $percentage = [];
-            foreach($logs as $index => $log) {
-                $percentage[] = [
-                    'category_parent_name' => $log->category_parent_name,
-                    'tenant_count' => $log->tenant_count,
-                    'percentage_share' => round(($log->tenant_count / $total) * 100, 2) .'%'
-                ];
-            }
-    
-            return $this->response($percentage, 'Successfully Retreived!', 200);
+            ->paginate(request('perPage'));
+            return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
+
         }
         catch (\Exception $e)
         {
@@ -75,38 +121,11 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         }
     }
 
-    public function downloadCsvPopulation(Request $request)
+    public function downloadCsv(Request $request)
     {
-        // try
-        // {
-            $site_id = '';
-            $filters = json_decode($request->filters);
-
-            if($filters) 
-                $site_id = $filters->site_id;
-
-            if($request->site_id)
-                $site_id = $request->site_id;
-
-            $logs = LogsViewModel::when($site_id, function($query) use ($site_id){
-                return $query->where('site_id', $site_id);
-            })
-            ->whereNotNull('site_tenant_id')
-            ->selectRaw('logs.*, count(*) as tenant_count')
-            ->groupBy('parent_category_id')
-            ->orderBy('tenant_count', 'DESC')
-            ->get();
-    
-            $total = $logs->sum('tenant_count');
-    
-            $percentage = [];
-            foreach($logs as $index => $log) {
-                $percentage[] = [
-                    'category_parent_name' => $log->category_parent_name,
-                    'tenant_count' => $log->tenant_count,
-                    'percentage_share' => round(($log->tenant_count / $total) * 100, 2) .'%'
-                ];
-            }
+        try
+        {
+            $percentage = $this->getPercentage($request);
 
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
@@ -127,14 +146,16 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 return $this->response($data, 'Successfully Retreived!', 200); 
 
             return $this->response(false, 'Successfully Retreived!', 200);             
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
+
+
 }
