@@ -7,7 +7,7 @@
         <link rel="shortcut icon" href="https://dashboard.prestigeinteractive.com.ph/images/prestige-favicon.png">
         <link rel="stylesheet" href="https://dashboard.prestigeinteractive.com.ph/assets/css/bootstrap.min.css">
         <!-- CSRF Token -->
-        <meta name="csrf-token" content="GrBMAFmiA60fURtT2dwKgZhIqtMXW6CurAGwNjMc">
+        <meta name="csrf-token" content="qFk3WoW6x3dwOyi7wuQEH1mWZfODBoop8IBZoqY4">
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome Icons -->
@@ -109,6 +109,14 @@
     $(window).on('load', function(){
         setTimeout(removeLoader, 10000); //wait for page load PLUS two seconds.
     });
+
+    setInterval(function(){ 
+        $.get( "/api/v1/get-update", function( data ) {
+            if(data.data.length > 0) {
+                location.reload();
+            }
+        });
+    },(60000*5)) 
 
     // REMOVED PRELOADER
     function removeLoader(){

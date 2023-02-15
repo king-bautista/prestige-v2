@@ -94,7 +94,7 @@ class AdvertisementViewModel extends Model
         if(!$category)
             return null;
 
-        $parent_category = Category::where('parent_id', $category->parent_id)->first();
+        $parent_category = Category::find($category->parent_id);
         if($parent_category)
             return $parent_category;
         return null;

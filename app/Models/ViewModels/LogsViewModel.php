@@ -85,9 +85,9 @@ class LogsViewModel extends Model
 
     public function getBrandLogoAttribute() 
     {
-        $logo = Brand::find($this->brand_id)->logo;
+        $logo = Brand::find($this->brand_id);
         if($logo)
-            return asset($logo);
+            return asset($logo->logo);
         return asset('/images/no-image-available.png');
     }
 
