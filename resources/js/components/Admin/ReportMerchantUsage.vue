@@ -77,7 +77,9 @@
                     search_count: "Search",
                     tenant_count: "Category",
                     banner_count: "Banner Ad",
-                    promo_count: "Promo Wall",
+                    // promo_count: "Promos",
+                    // pop_ups_count: "Pop-Ups",
+                    // event_count: "Events",
                     total_count: "Total",
 					category_percentage: "% Total Over Category",
 					tenant_percentage: "% Total Over Tenant"
