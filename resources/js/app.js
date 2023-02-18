@@ -47,6 +47,10 @@ Vue.component('admin-site-codes', require('./components/Admin/SiteCode.vue').def
 Vue.component('admin-schedules', require('./components/Admin/CinemaSchedules.vue').default);
 Vue.component('admin-content', require('./components/Admin/Content.vue').default);
 Vue.component('admin-reports_population', require('./components/Admin/ReportPopulation.vue').default);
+Vue.component('admin-reports_tenant_search', require('./components/Admin/ReportTenantSearch.vue').default);
+Vue.component('admin-report_top_keywords', require('./components/Admin/ReportTopKeywords.vue').default);
+Vue.component('admin-report_merchant_usage', require('./components/Admin/ReportMerchantUsage.vue').default);
+
 
 /**
  * KIOSK PART
