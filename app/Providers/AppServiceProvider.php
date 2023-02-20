@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\UserViewModel;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,30 @@ class AppServiceProvider extends ServiceProvider
             function ($view) {
                 if(Auth::user()) {
                     $user = AdminViewModel::find(Auth::user()->id);
+                    $view->with('user', $user);
+                }else {
+                    $view->with('user', null);
+                }
+            }
+        );
+
+        view()->composer(
+            'layout.portal.left-nav', 
+            function ($view) {
+                if(Auth::user()) {
+                    $user = UserViewModel::find(Auth::user()->id);
+                    $view->with('user', $user);
+                }else {
+                    $view->with('user', null);
+                }
+            }
+        );
+
+        view()->composer(
+            'portal.testdashboard', 
+            function ($view) {
+                if(Auth::user()) {
+                    $user = UserViewModel::find(Auth::user()->id);
                     $view->with('user', $user);
                 }else {
                     $view->with('user', null);

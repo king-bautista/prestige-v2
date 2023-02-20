@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, SoftDeletes;
 
+    protected $guard = 'user';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,13 +22,16 @@ class User extends Authenticatable
     protected $fillable = [
         'full_name',
         'email',
-        'username',
+        'email_verified_at',
         'password',
+        'api_token',
         'salt',
         'login_attempt',
         'is_blocked',
-        'is_active',
+        'active',
         'activation_token',
+        'created_by',
+        'updated_by',
         'remember_token'
     ];
 
@@ -52,7 +57,10 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'deleted_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     /**
@@ -68,4 +76,38 @@ class User extends Authenticatable
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public static function getSalt($email)
+    {
+        $user_user = static::where('email', '=', $email)->first();
+        return $user_user->salt;
+    }
+
+    public function saveMeta($meta_data)
+    {
+        foreach ($meta_data as $key => $data) {
+            UserMeta::updateOrCreate(
+                [
+                   'user_id' => $this->id,
+                   'meta_key' => $key
+                ],
+                [
+                   'meta_value' => $data,
+                ],
+            );
+        }
+    }
+
+    public function saveRoles($roles)
+    {
+        UserRoles::where('user_id', $this->id)->delete();
+        foreach ($roles as $key => $role) {
+            UserRoles::updateOrCreate(
+                [
+                   'user_id' => $this->id,
+                   'role_id' => $role['id']
+                ]
+            );
+        }
+    }
 }
