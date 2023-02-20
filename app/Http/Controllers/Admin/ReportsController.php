@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\LogsViewModel;
+use App\Models\ViewModels\LogsMonthlyUsageViewModel;
 use App\Models\Log;
 
 use App\Exports\MerchantPopulationExport;
@@ -47,6 +48,11 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     public function merchantUsage()
     {
         return view('admin.report_merchant_usage');
+    }
+
+    public function monthlyUsage()
+    {
+        return view('admin.report_monthly_usage');
     }
 
     public function getPercentage($request)
@@ -242,6 +248,40 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             ->paginate(request('perPage'));    
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getMonthlyUsage(Request $request)
+    {
+        try
+        {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+            
+            LogsMonthlyUsageViewModel::setSiteId($site_id);
+            $logs = LogsMonthlyUsageViewModel::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->selectRaw('logs.*, page, count(*) as total_count')
+            ->groupBy('page')
+            ->orderBy('page', 'ASC')
+            ->get();
+
+            return $this->response($logs, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
