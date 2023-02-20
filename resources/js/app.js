@@ -48,6 +48,11 @@ Vue.component('admin-schedules', require('./components/Admin/CinemaSchedules.vue
 Vue.component('admin-content', require('./components/Admin/Content.vue').default);
 Vue.component('admin-reports_population', require('./components/Admin/ReportPopulation.vue').default);
 Vue.component('admin-reports_tenant_search', require('./components/Admin/ReportTenantSearch.vue').default);
+/**
+ * Portal Part
+ */
+Vue.component('portal-users', require('./components/Portal/Users.vue').default);
+Vue.component('portal-roles', require('./components/Portal/Roles.vue').default);
 
 
 /**
