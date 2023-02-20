@@ -16,16 +16,19 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->engine = "InnoDB";
 
-            $table->id();
-            $table->string('full_name');
-            $table->string('email')->unique();
-            $table->string('user_name')->unique();
+            $table->bigIncrements('id');
+            $table->string('full_name')->index();
+            $table->string('email')->unique()->index();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('api_token')->nullable();
             $table->string('salt')->nullable();
             $table->integer('login_attempt')->default(0);
             $table->integer('is_blocked')->default(0);
-            $table->boolean('status')->default(0);
+            $table->boolean('active')->default(false);
             $table->string('activation_token')->nullable();
+            $table->integer('created_by')->default(0);
+            $table->integer('updated_by')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -35,7 +38,7 @@ class CreateUsersTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('user_id')->nullable()->unsigned();
             $table->string('meta_key')->nullable()->index();
             $table->longText('meta_value')->nullable();
             $table->timestamps();

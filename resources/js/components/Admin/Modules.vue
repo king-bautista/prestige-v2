@@ -66,6 +66,15 @@
 								    </select>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="role" class="col-sm-4 col-form-label">Role <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="module.role">
+									    <option value="">Select role</option>
+									    <option v-for="role in roles" :value="role"> {{ role }}</option>
+								    </select>
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -99,6 +108,7 @@
                 module: {
                     id: '',
                     parent_id: '',
+					role: '',
                     name: '',
                     link: '',                   
                     class_name: '',                   
@@ -107,13 +117,15 @@
                 parent_links: [],
                 add_record: true,
                 edit_record: false,
+				roles: ['Admin','Portal'],
             	dataFields: {
             		name: "Name", 
                     class_name: {
             			name: "Icon Class Name", 
             			type:"icon", 
             		},            		
-                    parent_link: "Parent Link", 
+                    parent_link: "Parent Link",
+					role: "Role",  
                     link: "Link", 
             		active: {
             			name: "Status", 
@@ -174,6 +186,7 @@
                 this.module.parent_id = '';
                 this.module.class_name = '';
                 this.module.link = '';
+				this.module.role = '';
                 this.module.isActive = false;				
               	$('#module-form').modal('show');
             },
@@ -197,6 +210,7 @@
                     this.module.parent_id = module.parent_id;
                     this.module.class_name = module.class_name;
                     this.module.link = module.link;
+					this.module.role = module.role;
                     this.module.isActive = module.active;
 					this.add_record = false;
 					this.edit_record = true;
