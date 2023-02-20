@@ -104,7 +104,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 return $query->where('site_id', $site_id);
             })
             ->whereNotNull('brand_id')
-            ->selectRaw('logs.*, count(*) as tenant_count')
+            ->selectRaw('logs.*, count(*) as tenant_count, select()')
             ->groupBy('brand_id')
             ->orderBy('tenant_count', 'DESC')
             ->paginate(request('perPage'));
