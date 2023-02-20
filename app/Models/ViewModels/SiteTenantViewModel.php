@@ -56,7 +56,7 @@ class SiteTenantViewModel extends Model
         'site_name',
         'brand_site_name',
         'category_id',
-        'category_parent_id',
+        'parent_category_id',
         'category_name',
         'tenant_details',
         'subscriber_logo',
@@ -125,7 +125,7 @@ class SiteTenantViewModel extends Model
         return null;
     }
 
-    public function getCategoryParentIdAttribute() 
+    public function getParentCategoryIdAttribute() 
     {
         $brand_category_id = Brand::find($this->brand_id)->category_id;
         $category = Category::find($brand_category_id);

@@ -9,6 +9,7 @@ use App\Models\Site;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Advertisement;
+use App\Models\Log;
 
 class LogsViewModel extends Model
 {
@@ -52,7 +53,17 @@ class LogsViewModel extends Model
         'brand_name',
         'advertisement_name',
         'main_category_name',
+        'search_count',
+        'banner_count',
+        'total_count',
     ];
+
+    static $current_site_id = null;
+
+    static function setSiteId($id=null)
+    {
+        self::$current_site_id = $id;
+    }
     
     public function getCategoryNameAttribute() 
     {
@@ -85,9 +96,9 @@ class LogsViewModel extends Model
 
     public function getBrandLogoAttribute() 
     {
-        $logo = Brand::find($this->brand_id)->logo;
+        $logo = Brand::find($this->brand_id);
         if($logo)
-            return asset($logo);
+            return asset($logo->logo);
         return asset('/images/no-image-available.png');
     }
 
@@ -143,5 +154,38 @@ class LogsViewModel extends Model
         //     return $supplemental_category['name'];            
             
         return null;
+    }
+
+    public function getSearchCountAttribute() 
+    {
+        $site_id = self::$current_site_id;
+        $brand = Brand::find($this->brand_id);
+        if($brand) {
+            return Log::where('key_words', 'LIKE', '%'.$brand['name'].'%')
+            ->when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->get()
+            ->count();
+        }
+        return 0;
+
+    }
+
+    public function getBannerCountAttribute() 
+    {
+        $site_id = self::$current_site_id;
+        return Log::where('brand_id', $this->brand_id)
+        ->whereNotNull('advertisement_id')
+        ->when($site_id, function($query) use ($site_id){
+            return $query->where('site_id', $site_id);
+        })
+        ->get()
+        ->count();
+    }
+
+    public function getTotalCountAttribute() 
+    {
+        return $this->tenant_count + $this->search_count + $this->banner_count;
     }
 }

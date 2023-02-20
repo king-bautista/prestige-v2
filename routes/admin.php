@@ -359,11 +359,16 @@ Route::group(['middleware' => 'auth:admin'], function () {
     */
     Route::get('/admin/reports/merchant-population', 'Admin\ReportsController@index')->name('admin.reports.merchant-population');
     Route::get('/admin/reports/merchant-population/list', 'Admin\ReportsController@getPopulationReport')->name('admin.reports.merchant-population.list');
-    Route::get('/admin/reports/merchant-population/download-csv', 'Admin\ReportsController@downloadCsv')->name('admin.reports.merchant-population.download-csv');
+    Route::get('/admin/reports/merchant-population/download-csv', 'Admin\ReportsController@downloadCsvPopulation')->name('admin.reports.merchant-population.download-csv');
     Route::get('/admin/reports/top-tenant-search', 'Admin\ReportsController@topTenantSearch')->name('admin.reports.top-tenant-search');
     Route::get('/admin/reports/top-tenant-search/list', 'Admin\ReportsController@getTenantSearch')->where('id', '[0-9]+')->name('admin.reports.top-tenant-search.list');
-    Route::get('/admin/reports/top-tenant-search/download-csv', 'Admin\ReportsController@downloadCsv')->where('id', '[0-9]+')->name('admin.reports.top-tenant-search.download-csv');
-
+    Route::get('/admin/reports/top-tenant-search/download-csv', 'Admin\ReportsController@downloadCsvTenantSearch')->where('id', '[0-9]+')->name('admin.reports.top-tenant-search.download-csv');
+    Route::get('/admin/reports/most-search-keywords', 'Admin\ReportsController@mostSearchKeywords')->name('admin.reports.most-search-keywords');
+    Route::get('/admin/reports/most-search-keywords/list', 'Admin\ReportsController@getSearchKeywords')->where('id', '[0-9]+')->name('admin.reports.most-search-keywords.list');
+    Route::get('/admin/reports/most-search-keywords/download-csv', 'Admin\ReportsController@downloadCsvSearchKeywords')->where('id', '[0-9]+')->name('admin.reports.most-search-keywords.download-csv');
+    Route::get('/admin/reports/merchant-usage', 'Admin\ReportsController@merchantUsage')->name('admin.reports.merchant-usage');
+    Route::get('/admin/reports/merchant-usage/list', 'Admin\ReportsController@getMerchantUsage')->where('id', '[0-9]+')->name('admin.reports.merchant-usage.list');
+    Route::get('/admin/reports/merchant-usage/download-csv', 'Admin\ReportsController@downloadCsvmerchantUsage')->where('id', '[0-9]+')->name('admin.reports.merchant-usage.download-csv');
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
