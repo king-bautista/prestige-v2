@@ -2,7 +2,7 @@
     <div style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
-                <div id="page-title" v-if="page_title != 'Home'">{{ page_title }}</div>
+                <div id="page-title" v-if="page_title != 'Category'">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
                 <router-link to="/about-us">
@@ -73,7 +73,7 @@
 
                         <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" :id="(index == 0) ? 'first-item':''" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
-                                <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Home'); getTenantsBySupplementals(supplemental)">			
+                                <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">			
                                     <div class="c-button">						
                                         <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
                                         <div class="c-button-align c-button-color2 translateme"><p>{{supplemental.label}}</p></div>                        
@@ -117,7 +117,7 @@
                         <div class="carousel-item tenant-store-carousel" v-for="(tenants, index) in tenant_list" :data-index="index" v-bind:class = "(index == 0) ? 'active':''">
                             <div class="row mb-3">
                                 <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                    <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Home'); showTenant(tenant)">
+                                    <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
                                         <div class="image-holder h-100">
                                             <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                         </div>
@@ -297,7 +297,7 @@ import { isTemplateElement } from '@babel/types';
                 tenant_list: [],
                 site_logo: '',
                 back_button: 'assets/images/English/Back.png',
-                page_title: 'Home',
+                page_title: 'Category',
                 home_category: true,
                 child_category: false,
                 child_category_count: 0,
@@ -385,7 +385,7 @@ import { isTemplateElement } from '@babel/types';
                 this.tenant_list = [];
                 this.category_label = category.label;
                 this.category_top_banner = category.kiosk_image_top_path;
-                this.helper.saveLogs(category, 'Home');
+                this.helper.saveLogs(category, 'Category');
 
                 axios.get('/api/v1/tenants/category/'+category.id)
                 .then(response => {
@@ -453,7 +453,7 @@ import { isTemplateElement } from '@babel/types';
                 this.alphabetical = false;
                 this.supplementals = false;
                 this.show_tenant = false;
-                this.helper.saveLogs({category_id: category.id}, 'Home');
+                this.helper.saveLogs({category_id: category.id}, 'Category');
             },
 
             goBack: function() {
@@ -463,7 +463,7 @@ import { isTemplateElement } from '@babel/types';
                     this.show_tenant = false;
                 }
                 else if(this.child_category == true) {
-                    this.page_title = 'Home';
+                    this.page_title = 'Category';
                     this.home_category = true;
                     this.child_category = false;
                 }
@@ -478,12 +478,12 @@ import { isTemplateElement } from '@babel/types';
                     this.alphabetical = false;
                 } 
                 else if(this.alphabetical == true) {
-                    this.page_title = 'Home';
+                    this.page_title = 'Category';
                     this.home_category = true;
                     this.alphabetical = false;
                 }         
                 else if(this.supplementals == true) {
-                    this.page_title = 'Home';
+                    this.page_title = 'Category';
                     this.home_category = true;
                     this.supplementals = false;
                 }
@@ -526,7 +526,7 @@ import { isTemplateElement } from '@babel/types';
 
                 // $('.store-tabs-item').on('click', function(){
                 //     var page = $(this).data('link');
-                //     obj.helper.saveLogs({action: 'click'}, 'Home');
+                //     obj.helper.saveLogs({action: 'click'}, 'Category');
                 // });
             });
         },

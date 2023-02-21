@@ -3,13 +3,13 @@
         <div id="banner-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel">
             <div class="carousel-inner" id="carousel-banner">
                 <div v-for="(banner, index) in banners.slice(0,2)" :data-index="index" :data-id="banner.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(banner.display_duration*1000)">
-                    <span v-if="banner.file_type == 'video'" @click="helper.saveLogs(banner)">
+                    <span v-if="banner.file_type == 'video'" @click="helper.saveLogs(banner, 'Banner Ad')">
                         <video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                             <source :src="banner.material_image_path" type="video/ogg">
                             Your browser does not support the video tag.
                         </video>
                     </span>
-                    <span v-else @click="helper.saveLogs(banner)">
+                    <span v-else @click="helper.saveLogs(banner, 'Banner Ad')">
                         <img :src="banner.material_image_path" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                     </span>
                 </div>
@@ -73,7 +73,7 @@
                     $("#carousel-banner").append(carousel_item);
                     $('#logs_'+banner_array[count].id).on('click', function() {
                         var id = $(this).data('id');
-                        helper.saveLogs(banner_array[id]);
+                        helper.saveLogs(banner_array[id], 'Banner Ad');
                     });
                     count++;
                 }
