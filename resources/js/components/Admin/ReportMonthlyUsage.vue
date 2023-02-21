@@ -149,65 +149,78 @@
 			filterChart: function() {
 				var filter = this.filter;
 				$(function() {
-					var areaChartData = {
-						labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-						datasets: [
-							{
-							label               : 'Digital Goods',
-							backgroundColor     : 'rgba(60,141,188,0.9)',
-							borderColor         : 'rgba(60,141,188,0.8)',
-							pointRadius          : false,
-							pointColor          : '#3b8bba',
-							pointStrokeColor    : 'rgba(60,141,188,1)',
-							pointHighlightFill  : '#fff',
-							pointHighlightStroke: 'rgba(60,141,188,1)',
-							data                : [28, 48, 40, 19, 86, 27, 90, 65, 59, 80, 81, 56]
-							},
-							{
-							label               : 'Electronics',
-							backgroundColor     : 'rgba(210, 214, 222, 1)',
-							borderColor         : 'rgba(210, 214, 222, 1)',
-							pointRadius         : false,
-							pointColor          : 'rgba(210, 214, 222, 1)',
-							pointStrokeColor    : '#c1c7d1',
-							pointHighlightFill  : '#fff',
-							pointHighlightStroke: 'rgba(220,220,220,1)',
-							data                : [65, 59, 80, 81, 56, 55, 40, 28, 48, 40, 19, 86]
-							},
-						]
-					};
-						
-					var barChartData = $.extend(true, {}, areaChartData);
-					//---------------------
-					//- STACKED BAR CHART -
-					//---------------------
-					var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-					var stackedBarChartData = $.extend(true, {}, barChartData)
+					$.get( "/admin/reports/monthly-usage/list", filter, function( data ) {
+						let datasets = [];
+						let randomBackgroundColor = [];
+						let usedColors = new Set();
 
-					var stackedBarChartOptions = {
-					responsive              : true,
-					maintainAspectRatio     : false,
-					scales: {
-						xAxes: [{
-						stacked: true,
-						}],
-						yAxes: [{
-						stacked: true
-						}]
-					}
-					}
+						let dynamicColors = function() {
+							let r = Math.floor(Math.random() * 255);
+							let g = Math.floor(Math.random() * 255);
+							let b = Math.floor(Math.random() * 255);
+							let color = "rgb(" + r + "," + g + "," + b + ")";
 
-					new Chart(stackedBarChartCanvas, {
-					type: 'bar',
-					data: stackedBarChartData,
-					options: stackedBarChartOptions
-					})
+							if (!usedColors.has(color)) {
+								usedColors.add(color);
+								return color;
+							} else {
+								return dynamicColors();
+							}
+						};
+
+						$.each(data.data, function(key,value) {
+							let background_color = dynamicColors();
+							datasets.push({
+								label               : value.page,
+								backgroundColor     : background_color,
+								borderColor         : background_color,
+								pointRadius         : false,
+								pointColor          : '#3b8bba',
+								pointStrokeColor    : background_color,
+								pointHighlightFill  : '#fff',
+								pointHighlightStroke: background_color,
+								data                : [value.jan_count, value.feb_count, value.mar_count, value.apr_count, value.may_count, value.jun_count, value.jul_count, value.aug_count, value.sep_count, value.oct_count, value.nov_count, value.dec_count]
+							});
+						});
+
+						var areaChartData = {
+							labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+							datasets: datasets
+						};
+
+						var barChartData = $.extend(true, {}, areaChartData);
+						//---------------------
+						//- STACKED BAR CHART -
+						//---------------------
+						var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
+						var stackedBarChartData = $.extend(true, {}, barChartData)
+
+						var stackedBarChartOptions = {
+							responsive              : true,
+							maintainAspectRatio     : false,
+							scales: {
+								xAxes: [{
+									stacked: true,
+								}],
+								yAxes: [{
+									stacked: true
+								}]
+							}
+						}
+
+						new Chart(stackedBarChartCanvas, {
+							type: 'bar',
+							data: stackedBarChartData,
+							options: stackedBarChartOptions
+						})
+
+					});
+					
 				});
 			},
 
             downloadCsv: function() {
-				console.log(this.filter);
-              axios.get('/admin/reports/merchant-population/download-csv', {params: {filters: this.filter}})
+              axios.get('/admin/reports/monthly-usage/download-csv', {params: {filters: this.filter}})
               .then(response => {
                 const link = document.createElement('a');
                 link.href = response.data.data.filepath;

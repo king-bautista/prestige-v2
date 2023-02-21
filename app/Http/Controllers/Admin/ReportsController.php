@@ -17,6 +17,7 @@ use App\Exports\MerchantPopulationExport;
 use App\Exports\TopTenantExport;
 use App\Exports\TopKeywordsExport;
 use App\Exports\MerchantUsageExport;
+use App\Exports\MonthlyUsageExport;
 use Storage;
 
 class ReportsController extends AppBaseController implements ReportsControllerInterface
@@ -271,11 +272,15 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 $site_id = $filters->site_id;
             if($request->site_id)
                 $site_id = $request->site_id;
+
+            $current_year = date("Y");
             
-            LogsMonthlyUsageViewModel::setSiteId($site_id);
+            LogsMonthlyUsageViewModel::setSiteId($site_id, $current_year);            
+
             $logs = LogsMonthlyUsageViewModel::when($site_id, function($query) use ($site_id){
                 return $query->where('site_id', $site_id);
             })
+            ->whereYear('created_at', $current_year)
             ->selectRaw('logs.*, page, count(*) as total_count')
             ->groupBy('page')
             ->orderBy('page', 'ASC')
@@ -509,6 +514,60 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $filename = "merchant-usage.csv";
             // Store on default disk
             Excel::store(new MerchantUsageExport($logs), $directory.$filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/'.$filename,
+                'filename' => $filename
+            ];
+            
+            if(Storage::exists($directory.$filename))
+                return $this->response($data, 'Successfully Retreived!', 200); 
+
+            return $this->response(false, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvMonthlyUsage(Request $request)
+    {
+        try
+        {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+
+            $current_year = date("Y");
+            
+            LogsMonthlyUsageViewModel::setSiteId($site_id, $current_year);            
+
+            $logs = LogsMonthlyUsageViewModel::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->whereYear('created_at', $current_year)
+            ->selectRaw('logs.*, page, count(*) as total_count')
+            ->groupBy('page')
+            ->orderBy('page', 'ASC')
+            ->get();
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "monthly-usage.csv";
+            // Store on default disk
+            Excel::store(new MonthlyUsageExport($logs), $directory.$filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/'.$filename,
