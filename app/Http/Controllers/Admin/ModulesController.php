@@ -36,6 +36,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
             $modules = ModuleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('link', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('role', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('class_name', 'LIKE', '%' . request('search') . '%');
             })
             ->latest()
@@ -77,6 +78,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
                 'name' => $request->name,
                 'parent_id' => $request->parent_id,
                 'link' => $request->link,
+                'role' => $request->role,
                 'class_name' => $request->class_name,
                 'active' => 1
             ];
@@ -105,13 +107,14 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
                 'name' => $request->name,
                 'parent_id' => $request->parent_id,
                 'link' => $request->link,
+                'role' => $request->role,
                 'class_name' => $request->class_name,
                 'active' => $request->isActive
             ];
 
             $module->update($data);
 
-            return $this->response($module, 'Successfully Modified!', 200);
+            return $this->response($module, 'Successfully Modified!!!!', 200);
         }
         catch (\Exception $e) 
         {

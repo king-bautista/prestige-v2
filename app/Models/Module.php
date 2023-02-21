@@ -17,6 +17,7 @@ class Module extends Model
         'name',
         'parent_id',
         'link',
+        'role',
         'class_name',
         'active',
     ];

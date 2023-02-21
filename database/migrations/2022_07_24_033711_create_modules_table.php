@@ -20,6 +20,7 @@ class CreateModulesTable extends Migration
             $table->bigInteger('parent_id')->nullable()->unsigned();
             $table->string('name')->index();
             $table->string('link');
+            $table->enum('role', ['Admin', 'Portal']);
             $table->string('class_name')->nullable();
             $table->boolean('active')->default(false);
             $table->timestamps();
