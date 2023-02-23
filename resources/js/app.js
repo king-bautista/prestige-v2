@@ -51,7 +51,11 @@ Vue.component('admin-reports_tenant_search', require('./components/Admin/ReportT
 Vue.component('admin-report_top_keywords', require('./components/Admin/ReportTopKeywords.vue').default);
 Vue.component('admin-report_merchant_usage', require('./components/Admin/ReportMerchantUsage.vue').default);
 Vue.component('admin-report_monthly_usage', require('./components/Admin/ReportMonthlyUsage.vue').default);
-
+/**
+ * PORTAL PART
+ */
+Vue.component('portal-users', require('./components/Portal/Users.vue').default);
+Vue.component('portal-roles', require('./components/Portal/Roles.vue').default);
 
 /**
  * KIOSK PART

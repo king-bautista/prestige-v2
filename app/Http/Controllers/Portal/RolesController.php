@@ -29,7 +29,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     }
 
     public function list(Request $request)
-    {
+    { 
         try
         {
             $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
