@@ -205,31 +205,31 @@
         },
         {
             "name": "darkaonline/l5-swagger",
-            "version": "8.4.1",
+            "version": "8.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DarkaOnLine/L5-Swagger.git",
-                "reference": "0b1c3f5aca80fc710877bf7fdbab6d28d9b54f4c"
+                "reference": "8e61ce632fb90eb9d78cf34918d133c46baa93b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DarkaOnLine/L5-Swagger/zipball/0b1c3f5aca80fc710877bf7fdbab6d28d9b54f4c",
-                "reference": "0b1c3f5aca80fc710877bf7fdbab6d28d9b54f4c",
+                "url": "https://api.github.com/repos/DarkaOnLine/L5-Swagger/zipball/8e61ce632fb90eb9d78cf34918d133c46baa93b4",
+                "reference": "8e61ce632fb90eb9d78cf34918d133c46baa93b4",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "laravel/framework": "^9.0 || >=8.40.0 || ^7.0",
+                "laravel/framework": "^10.0 || ^9.0 || >=8.40.0 || ^7.0",
                 "php": "^7.2 || ^8.0",
                 "swagger-api/swagger-ui": "^3.0 || ^4.0",
                 "symfony/yaml": "^5.0 || ^6.0",
-                "zircote/swagger-php": "^3.2 || ^4.0"
+                "zircote/swagger-php": "^3.2.0 || ^4.0.0"
             },
             "require-dev": {
                 "mockery/mockery": "1.*",
-                "orchestra/testbench": "7.* || ^6.15 || 5.*",
+                "orchestra/testbench": "^8.0 || 7.* || ^6.15 || 5.*",
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^9.5"
+                "phpunit/phpunit": "^10.0 || ^9.5"
             },
             "type": "library",
             "extra": {
@@ -272,7 +272,7 @@
             ],
             "support": {
                 "issues": "https://github.com/DarkaOnLine/L5-Swagger/issues",
-                "source": "https://github.com/DarkaOnLine/L5-Swagger/tree/8.4.1"
+                "source": "https://github.com/DarkaOnLine/L5-Swagger/tree/8.5.0"
             },
             "funding": [
                 {
@@ -280,7 +280,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-22T05:16:35+00:00"
+            "time": "2023-02-15T07:29:49+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -867,6 +867,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2022-02-23T14:25:13+00:00"
         },
         {
@@ -1691,16 +1692,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.8",
+            "version": "2.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47"
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c493585c130544c4e91d2e0e131e6d35cb0cbc47",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c1e114f74e518daca2729ea8c4bf1167038fa4b5",
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5",
                 "shasum": ""
             },
             "require": {
@@ -1793,7 +1794,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-10T16:02:17+00:00"
+            "time": "2023-02-15T14:07:24+00:00"
         },
         {
             "name": "league/config",
@@ -2029,16 +2030,16 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "3.1.46",
+            "version": "3.1.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SpartnerNL/Laravel-Excel.git",
-                "reference": "ba0b9b9305d5b603c3938d4d1d4a13025c92c241"
+                "reference": "fd928d68a1422d6abce73255b4406b3c5659e197"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SpartnerNL/Laravel-Excel/zipball/ba0b9b9305d5b603c3938d4d1d4a13025c92c241",
-                "reference": "ba0b9b9305d5b603c3938d4d1d4a13025c92c241",
+                "url": "https://api.github.com/repos/SpartnerNL/Laravel-Excel/zipball/fd928d68a1422d6abce73255b4406b3c5659e197",
+                "reference": "fd928d68a1422d6abce73255b4406b3c5659e197",
                 "shasum": ""
             },
             "require": {
@@ -2093,7 +2094,7 @@
             ],
             "support": {
                 "issues": "https://github.com/SpartnerNL/Laravel-Excel/issues",
-                "source": "https://github.com/SpartnerNL/Laravel-Excel/tree/3.1.46"
+                "source": "https://github.com/SpartnerNL/Laravel-Excel/tree/3.1.47"
             },
             "funding": [
                 {
@@ -2105,7 +2106,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-26T20:40:09+00:00"
+            "time": "2023-02-16T15:09:07+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -6411,16 +6412,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.6.2",
+            "version": "4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "14d6c5e2bde957e03a3a5496a3b18419a0480199"
+                "reference": "f2bcbd5aa9d838d28bf5665c70f88eda6adc22cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/14d6c5e2bde957e03a3a5496a3b18419a0480199",
-                "reference": "14d6c5e2bde957e03a3a5496a3b18419a0480199",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/f2bcbd5aa9d838d28bf5665c70f88eda6adc22cb",
+                "reference": "f2bcbd5aa9d838d28bf5665c70f88eda6adc22cb",
                 "shasum": ""
             },
             "require": {
@@ -6483,9 +6484,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.6.2"
+                "source": "https://github.com/zircote/swagger-php/tree/4.7.0"
             },
-            "time": "2023-02-14T22:54:06+00:00"
+            "time": "2023-02-20T23:05:35+00:00"
         }
     ],
     "packages-dev": [

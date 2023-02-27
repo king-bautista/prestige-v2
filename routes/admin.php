@@ -372,6 +372,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/reports/monthly-usage', 'Admin\ReportsController@monthlyUsage')->name('admin.reports.monthly-usage');
     Route::get('/admin/reports/monthly-usage/list', 'Admin\ReportsController@getMonthlyUsage')->where('id', '[0-9]+')->name('admin.reports.monthly-usage.list');
     Route::get('/admin/reports/monthly-usage/download-csv', 'Admin\ReportsController@downloadCsvMonthlyUsage')->where('id', '[0-9]+')->name('admin.reports.monthly-usage.download-csv');
+    Route::get('/admin/reports/yearly-usage', 'Admin\ReportsController@yearlyUsage')->name('admin.reports.yearly-usage');
+    Route::get('/admin/reports/yearly-usage/list', 'Admin\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.list');
+    Route::get('/admin/reports/yearly-usage/download-csv', 'Admin\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.download-csv');
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

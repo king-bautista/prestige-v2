@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="row mt-2">
+		<div class="row mt-2"  v-if="showHeader">
 	        <div class="col-md-3 d-flex align-items-center mb-2">
 	            Show
 	            <select v-model="perPage" @change="fetchData" class="custom-select custom-select-sm form-control form-control-sm" style="margin-left: 0.5em; margin-right: 0.5em;" :disabled="!meta.total">
@@ -186,13 +186,23 @@
             otherButtons: {
                 type: Object,
                 required: false
+            },
+            showHeader: {
+                type: Boolean,
+                required: false,
+                default: true
+            },
+            rowPerPage: {
+                type: Number,
+                required: false,
+                default: 15
             }
         },
 
         data() {
         	return {
             	page: 1,
-            	perPage: 15,
+            	perPage: this.rowPerPage,
         		search: '',
         		dataTable: [],
         		meta: [],

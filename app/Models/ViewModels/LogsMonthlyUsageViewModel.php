@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Log;
+use App\Models\Site;
 
 class LogsMonthlyUsageViewModel extends Model
 {
@@ -42,6 +43,7 @@ class LogsMonthlyUsageViewModel extends Model
      * @var string
      */
 	public $appends = [
+        'site_name', 
         'jan_count', 
         'feb_count', 
         'mar_count', 
@@ -64,6 +66,14 @@ class LogsMonthlyUsageViewModel extends Model
     {
         self::$current_site_id = $id;
         self::$current_year = $year;
+    }
+
+    public function getSiteNameAttribute() 
+    {
+        $site = Site::find($this->site_id);
+        if($site)
+            return $site->name;
+        return null;
     }
 
     public function getJanCountAttribute() 
