@@ -4,7 +4,7 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\Role;
+use App\Models\UserRole;
 use App\Models\Permission;
 
 class UserViewModel extends Model
@@ -91,9 +91,9 @@ class UserViewModel extends Model
     }
 
     public function getRolesAttribute() 
-    {
+    { 
         $role_ids = $this->getRoles()->pluck('role_id')->toArray();
-        return Role::whereIn('id', $role_ids)->get();
+        return UserRole::whereIn('id', $role_ids)->get();
     }
 
     public function getPermissionsAttribute() 

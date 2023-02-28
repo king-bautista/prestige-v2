@@ -7,19 +7,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\RolesControllerInterface;
 use Illuminate\Http\Request;
 
-use App\Models\Role;
+use App\Models\UserRole;
 use App\Models\ViewModels\ModuleViewModel;
-use App\Models\ViewModels\RoleViewModel;
+use App\Models\ViewModels\UserRoleViewModel;
 use App\Models\ViewModels\UserViewModel;
 
 class RolesController extends AppBaseController implements RolesControllerInterface
 {
     /************************************
-    * 			ROLES MANAGEMENT		*
+    * 			Portal ROLES MANAGEMENT		*
     ************************************/
     public function __construct()
     {
-        $this->module_id = 3; 
+        $this->module_id = 47; 
         $this->module_name = 'Roles';
     }
 
@@ -29,12 +29,12 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     }
 
     public function list(Request $request)
-    { 
+    {  
         try
         {
             $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
-            $roles = Role::when(request('search'), function($query){
+            $roles = UserRole::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('description', 'LIKE', '%' . request('search') . '%');
             })
@@ -56,7 +56,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
         {
-            $role = RoleViewModel::find($id);
+            $role = UserRoleViewModel::find($id);
             return $this->response($role, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -79,7 +79,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
                 'active' => 1
             ];
 
-            $role = Role::create($data);
+            $role = UserRole::create($data);
 
             return $this->response($role, 'Successfully Created!', 200);
         }
@@ -97,7 +97,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
     	{
-            $role = Role::find($request->id);
+            $role = UserRole::find($request->id);
 
             $data = [
                 'name' => $request->name,
@@ -124,7 +124,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
     	{
-            $role = Role::find($id);
+            $role = UserRole::find($id);
             $role->delete();
             return $this->response($role, 'Successfully Deleted!', 200);
         }
@@ -159,7 +159,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
     	{
-            $roles = Role::get();
+            $roles = UserRole::get();
             return $this->response($roles, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 

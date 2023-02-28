@@ -10,13 +10,13 @@
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome Icons -->
-        <link rel="stylesheet" href="{{ URL::to('plugins/fontawesome-free/css/all.min.css') }}">
+        <!-- <link rel="stylesheet" href="{{ URL::to('plugins/fontawesome-free/css/all.min.css') }}"> -->
         <!-- Toastr -->
-        <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}">
+        <!-- <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}"> -->
         <!-- Theme style -->
-        <link rel="stylesheet" href="{{ URL::to('dist/css/adminlte.min.css') }}">
-        <link rel="stylesheet" href="{{ URL::to('js/jquery-ui/jquery-ui.min.css') }}">
-        <link rel="stylesheet" href="{{ URL::to('css/custom.css') }}">
+        <!-- <link rel="stylesheet" href="{{ URL::to('dist/css/adminlte.min.css') }}"> -->
+        <!-- <link rel="stylesheet" href="{{ URL::to('js/jquery-ui/jquery-ui.min.css') }}"> -->
+        <!-- <link rel="stylesheet" href="{{ URL::to('css/custom.css') }}"> -->
 
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{ URL::to('client/assets/images/favicon.ico') }}">
@@ -77,9 +77,6 @@
                                     </form>
                                 </div>
                             </div>
-
-                
-    
                             <div class="dropdown d-inline-block ms-1">
                                 <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -193,8 +190,7 @@
                                     </div>
                                 </div>
                             </div>
-    
-                            <div class="dropdown d-inline-block">
+                               <div class="dropdown d-inline-block">
                                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="rounded-circle header-profile-user" src="{{ URL::to('client/assets/images/users/user-4.jpg') }}"
@@ -217,7 +213,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="top-navigation">
                     <div class="page-title-content">
                         <div class="container-fluid">
@@ -246,17 +241,23 @@
                                                 <i class="ti-dashboard"></i>Dashboard
                                             </a>
                                         </li>
+                                        @foreach($user->permissions as $permission)
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-client-management" role="button"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="ti-user"></i>Client Management 
+                                                <i class="ti-user"></i>{{ $permission->name }}
                                             </a>
+                                            @if(count($permission->sub_permissions) > 0)
                                             <div class="dropdown-menu dropdown-menu-left" aria-labelledby="client-management">
-                                                <a href='{{ url("portal/roles") }}' class="dropdown-item">Roles</a>
-                                                <!-- <a href='{{ url("portal/modules") }}' class="dropdown-item">Modules</a> -->
-                                                <a href='{{ url("portal/users") }}' class="dropdown-item">User</a>
+                                                @foreach($permission->sub_permissions as $sub_menu)
+                                                    @if($sub_menu->can_view)
+                                                    <a href="{{ $sub_menu->link }}" class="dropdown-item">{{ $sub_menu->name }}</a>
+                                                    @endif    
+                                                @endforeach    
                                             </div>
+                                            @endif
                                         </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </nav>
@@ -268,23 +269,18 @@
 
                 <div class="page-content">
                     <div class="container-fluid">
-                        <div class="row">
+                        <!-- <div class="row"> -->
                             <div>
                                 @yield('content')
                             </div>
-                        </div> 
+                        <!-- </div>  -->
                         <!-- end row -->
                     </div> <!-- container-fluid -->
                 </div>
                 <!-- End Page-content -->
             </div>
             <!-- Main Footer -->
-            
-
             <loader :is-visible="isLoading"></loader> @include('layout.portal.footer')
-        </div>
-        <div>
-            @include('layout.portal.footer')   
         </div>
         <!-- ./wrapper -->
         <!-- REQUIRED SCRIPTS -->
@@ -297,7 +293,7 @@
         <!-- ChartJS -->
         <script src="{{ URL::to('plugins/chart.js/Chart.min.js') }}"></script>
         <!-- AdminLTE App -->
-        <script src="{{ URL::to('dist/js/portallte.min.js') }}"></script>
+        <!-- <script src="{{ URL::to('dist/js/portallte.min.js') }}"></script> -->
         <script src="{{ URL::to('js/helper.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}"></script>
         <script src="{{ URL::to('client/assets/libs/metismenu/metisMenu.min.js') }}"></script>

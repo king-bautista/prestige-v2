@@ -54,6 +54,7 @@ Vue.component('admin-report_monthly_usage', require('./components/Admin/ReportMo
 /**
  * PORTAL PART
  */
+Vue.component('portal-dashboard', require('./components/Portal/Dashboard.vue').default);
 Vue.component('portal-users', require('./components/Portal/Users.vue').default);
 Vue.component('portal-roles', require('./components/Portal/Roles.vue').default);
 
