@@ -25,7 +25,7 @@
 						:dataUrl="dataUrl"
 						:primaryKey="primaryKey"
                         :showHeader=false
-                        :rowPerPage=5
+                        :rowPerPage=10
 						ref="dataTable">
                     </Table>
                 </div>
