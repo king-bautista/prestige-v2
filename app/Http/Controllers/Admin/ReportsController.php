@@ -77,7 +77,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         })
         ->whereNotNull('site_tenant_id')
         ->selectRaw('logs.*, count(*) as tenant_count')
-        ->groupBy('parent_category_id')
+        ->groupBy('main_category_id')
         ->orderBy('tenant_count', 'DESC')
         ->get();
 
@@ -116,8 +116,8 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
 
     public function getTenantSearch(Request $request)
     {
-        try
-        {
+        // try
+        // {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_id = '';
@@ -132,13 +132,13 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $totals = Log::when($site_id, function($query) use ($site_id){
                 return $query->where('site_id', $site_id);
             })
-            ->selectRaw('logs.parent_category_id, count(*) as tenant_count')
+            ->selectRaw('logs.main_category_id, count(*) as tenant_count')
             ->whereNotNull('brand_id')
-            ->groupBy('parent_category_id')
+            ->groupBy('main_category_id')
             ->get();
 
             foreach($totals as $index => $total) {
-                $category_totals[$total->parent_category_id] = $total->tenant_count;
+                $category_totals[$total->main_category_id] = $total->tenant_count;
             }
 
             $overall_total = $totals->sum('tenant_count');
@@ -162,15 +162,15 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             ->paginate(request('perPage'));    
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function getSearchKeywords(Request $request)

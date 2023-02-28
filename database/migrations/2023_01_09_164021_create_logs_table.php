@@ -21,6 +21,7 @@ class CreateLogsTable extends Migration
             $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
             $table->bigInteger('category_id')->unsigned()->nullable()->index();
             $table->bigInteger('parent_category_id')->unsigned()->nullable()->index();
+            $table->bigInteger('main_category_id')->unsigned()->nullable()->index();
             $table->bigInteger('brand_id')->unsigned()->nullable()->index();
             $table->bigInteger('company_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_tenant_id')->unsigned()->nullable()->index();
