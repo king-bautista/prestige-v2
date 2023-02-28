@@ -41,6 +41,7 @@ class LogsController extends AppBaseController implements LogsControllerInterfac
         $log_data['site_screen_id'] = $site_screen->id;
         $log_data['category_id'] = $request->category_id;
         $log_data['parent_category_id'] = $request->parent_category_id;
+        $log_data['main_category_id'] = $request->main_category_id;
         $log_data['brand_id'] = $request->brand_id;
         $log_data['company_id'] = $request->company_id;
         $log_data['site_tenant_id'] = $request->site_tenant_id;

@@ -55,6 +55,7 @@ class DirectoryCategoryViewModel extends Model
         'category_name',
         'parent_category_id',
         'parent_category_name',
+        'main_category_id',
         'kiosk_image_primary_path',
         'kiosk_image_top_path',
         'children',
@@ -156,6 +157,20 @@ class DirectoryCategoryViewModel extends Model
         $parent_category = $this->getParentCategory();
         if($parent_category)
             return $parent_category['name'];
+        return null;
+    }
+
+    public function getMainCategoryIdAttribute() 
+    {
+        $parent_category = $this->getParentCategory();
+        $parent_category_id = null;
+
+        if($parent_category && !isset($parent_category['supplemental_category_id']))
+            return $parent_category['id'];
+
+        if(isset($parent_category['supplemental_category_id']))
+            return Category::find($parent_category['supplemental_category_id'])->id;
+
         return null;
     }
 
