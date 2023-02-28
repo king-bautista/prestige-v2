@@ -879,6 +879,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                         'site_screen_id' => $log->site_screen_id,
                         'category_id' => $log->category_id,
                         'parent_category_id' => $log->parent_category_id,
+                        'main_category_id' => $log->main_category_id,
                         'brand_id' => $log->brand_id,
                         'company_id' => $log->company_id,
                         'site_tenant_id' => $log->site_tenant_id,
