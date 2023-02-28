@@ -68,7 +68,6 @@
                 },
                 sites: [],
             	dataFields: {
-
             		key_words: "Word", 
                     tenant_count: "Total",
             	},
