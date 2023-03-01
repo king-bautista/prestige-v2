@@ -3,7 +3,7 @@
         <!-- Main content -->
 	    <section class="content">
 	      <div class="container-fluid">
-	        <div class="row">
+	        <div class="row" v-show="data_list">
 	          <div class="col-md-12">
 	          	<div class="card">
 	    			<div class="card-body">
@@ -21,23 +21,13 @@
 		        </div>
 	          </div>
 	        </div>
-	        <!-- /.row -->
-	      </div><!-- /.container-fluid -->
-	    </section>
-	    <!-- /.content -->
-
-		<!-- Modal Add New / Edit User -->
-		<div class="modal fade" id="company-form" tabindex="-1" aria-labelledby="company-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Company</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Company</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
+			<div class="row" v-show="data_form">
+				<div class="col-md-6">
+					<div class="card m-3">
+						<div class="card-header">
+							<h5 class="card-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Company</h5>
+							<h5 class="card-title" v-show="edit_record"><i class="fas fa-edit"></i> Edit Company</h5>
+						</div>
 						<div class="card-body">
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Company Name <span class="font-italic text-danger"> *</span></label>
@@ -45,37 +35,37 @@
 									<input type="text" class="form-control" v-model="company.name" placeholder="Company Name" required>
 								</div>
 							</div>
-                            <div class="form-group row">
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Address <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="company.address" placeholder="Company Address" required></textarea>
+									<textarea class="form-control" v-model="company.address" placeholder="Company Address" required></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Email <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <input type="email" class="form-control" v-model="company.email" placeholder="Email" required>
+									<input type="email" class="form-control" v-model="company.email" placeholder="Email" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Contact Number <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <input type="email" class="form-control" v-model="company.contact_number" placeholder="Contact Number" required>
+									<input type="email" class="form-control" v-model="company.contact_number" placeholder="Contact Number" required>
 								</div>
 							</div>
-                            <div class="form-group row">
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">TIN Number <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="company.tin" placeholder="TIN Number" required>
 								</div>
 							</div>							
-                            <div class="form-group row">
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Classification <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="company.classification_id">
-									    <option value="">Select Classification</option>
-									    <option v-for="classification in classifications" :value="classification.id"> {{ classification.name }}</option>
-								    </select>
+									<select class="custom-select" v-model="company.classification_id">
+										<option value="">Select Classification</option>
+										<option v-for="classification in classifications" :value="classification.id"> {{ classification.name }}</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -94,17 +84,69 @@
 								</div>
 							</div>
 						</div>
-					<!-- /.card-body -->
+						<div class="card-footer text-right">
+							<button type="button" class="btn btn-secondary btn-sm" @click="backToList"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+							<button type="button" class="btn btn-primary btn-sm" v-show="add_record" @click="storeCompany">Add New Company</button>
+							<button type="button" class="btn btn-primary btn-sm" v-show="edit_record" @click="updateCompany">Save Changes</button>
+						</div>
 					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card mt-3 mr-3">
+						<div class="card-header">
+							<h5 class="card-title"><i class="fa fa-tags" aria-hidden="true"></i> Brands</h5>
+							<button type="button" class="btn btn-primary btn-sm m-0 float-right" data-bs-toggle="modal" data-bs-target="#brand-list"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive mt-2">
+								<table class="table table-hover" style="width:100%">
+									<tr v-for="(data, index) in company.brands" v-bind:key="index">
+										<td><img class="img-thumbnail" :src="data.logo_image_path" /></td>
+										<td class="align-middle">{{ data.name }}</td>
+										<td class="align-middle"><button type="button" class="btn btn-outline-danger" @click="removeBrand(index)"><i class="fas fa-trash-alt"></i> Remove</button></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>			
+			</div>
+	        <!-- /.row -->
+	      </div><!-- /.container-fluid -->
+	    </section>
+	    <!-- /.content -->
+
+		<!-- Modal Add New / Edit User -->
+		<div class="modal fade" id="brand-list" tabindex="-1" aria-labelledby="brand-list" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"><i class="fa fa-tags" aria-hidden="true"></i> Brands</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="card-body">
+							<Table 
+							:dataFields="brandsDataFields"
+							:dataUrl="brandDataUrl"
+							:primaryKey="brandPrimaryKey"
+							:actionButtons="brandsActionButtons"
+							v-on:editButton="selectedBrand"
+							:rowPerPage=5
+							ref="brandsDataTable">
+							</Table>
+						</div>
+					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeCompany">Add New Company</button>
-						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateCompany">Save Changes</button>
+						<button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
       <!-- End Modal Add New User -->
+
     </div>
 </template>
 <script> 
@@ -127,8 +169,11 @@
                     contact_number: '',
                     address: '',
                     tin: '',
-                    active: false,           
+                    active: false,
+					brands: [],
                 },
+				data_list: true,
+				data_form: false,
                 parent_company: [],
                 classifications: [],
                 add_record: true,
@@ -179,7 +224,34 @@
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
-				}
+				},
+				brandsDataFields: {
+            		logo_image_path: {
+            			name: "Logo", 
+            			type:"logo", 
+            		},
+            		name: "Name", 
+            		active: {
+            			name: "Status", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">Deactivated</span>', 
+            				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+            	},
+				brandsActionButtons: {
+            		edit: {
+            			title: 'Add',
+            			name: 'Edit',
+            			apiUrl: '',
+            			routeName: 'content.edit',
+            			button: '<i class="far fa-check-circle"></i> Add',
+            			method: 'view'
+            		},
+            	},
+            	brandPrimaryKey: "id",
+            	brandDataUrl: "/admin/brand/list",
             };
         },
 
@@ -210,7 +282,9 @@
                 this.company.address = '';
                 this.company.tin = '';
                 this.company.active = false;				
-              	$('#company-form').modal('show');
+				this.company.brands = [];
+				this.data_list = false;
+				this.data_form = true;
             },
 
             storeCompany: function() {
@@ -218,7 +292,8 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-					$('#company-form').modal('hide');
+					this.data_list = true;
+					this.data_form = false;
 				})
             },
 
@@ -235,9 +310,11 @@
                     this.company.address = company.address;
                     this.company.tin = company.tin;
                     this.company.active = company.active;
+					this.company.brands = company.brands;
 					this.add_record = false;
 					this.edit_record = true;
-                    $('#company-form').modal('show');
+					this.data_list = false;
+					this.data_form = true;
                 });
             },
 
@@ -246,15 +323,35 @@
                     .then(response => {
                         toastr.success(response.data.message);
                         this.$refs.dataTable.fetchData();
-                        $('#company-form').modal('hide');
+						this.data_list = true;
+						this.data_form = false;
                     })
             },
+
+			backToList: function() {
+				this.data_list = true;
+				this.data_form = false;
+			},
+			
+			selectedBrand: function(data) {
+				this.company.brands.push(data);
+			},
+
+			removeBrand: function(index) {
+				this.company.brands.splice(index, 1);
+			}
 
         },
 
         components: {
         	Table,
 			Treeselect
- 	   }
+ 	    }
     };
 </script> 
+<style lang="scss" scoped>
+    .img-thumbnail {
+        max-width: 5rem;
+    }
+
+</style>

@@ -85,6 +85,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             ];
 
             $company = Company::create($data);
+            $company->saveBrands($request->brands);
 
             return $this->response($company, 'Successfully Created!', 200);
         }
@@ -116,6 +117,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             ];
 
             $company->update($data);
+            $company->saveBrands($request->brands);
 
             return $this->response($company, 'Successfully Modified!', 200);
         }

@@ -4,6 +4,8 @@
 	        <div class="col-md-3 d-flex align-items-center mb-2">
 	            Show
 	            <select v-model="perPage" @change="fetchData" class="custom-select custom-select-sm form-control form-control-sm" style="margin-left: 0.5em; margin-right: 0.5em;" :disabled="!meta.total">
+	                <option value="5" selected>5</option>
+	                <option value="10" selected>10</option>
 	                <option value="15" selected>15</option>
 	                <option value="30">30</option>
 	                <option value="50">50</option>
