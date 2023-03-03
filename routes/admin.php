@@ -376,5 +376,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/reports/yearly-usage/list', 'Admin\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.list');
     Route::get('/admin/reports/yearly-usage/download-csv', 'Admin\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.download-csv');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Client User Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/client/users', 'Admin\ClientUserController@index')->name('admin.client.user');
+    Route::get('/admin/client/users/list', 'Admin\ClientUserController@list')->name('admin.client.user.list');
+    Route::post('/admin/client/users/store', 'Admin\ClientUserController@store')->name('admin.client.user.store');
+    Route::get('/admin/client/users/{id}', 'Admin\ClientUserController@details')->where('id', '[0-9]+')->name('admin.client.user.details');
+    Route::put('/admin/client/users/update', 'Admin\ClientUserController@update')->name('admin.client.user.update');
+    Route::get('/admin/client/users/delete/{id}', 'Admin\ClientUserController@delete')->where('id', '[0-9]+')->name('admin.client.user.delete');
+
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
