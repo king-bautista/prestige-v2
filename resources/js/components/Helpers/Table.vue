@@ -23,7 +23,7 @@
 	        <div class="col-md-4 mb-2">
 	            <div class="input-group d-flex align-items-center justify-content-end">
 	                Search:
-	                <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search" v-on:keyup="onEnterSearch" style="margin-left: 0.5em;" :disabled="!meta.total"/>
+	                <input type="text" class="form-control form-control-sm search-box" placeholder="Search" v-on:keyup="onEnterSearch($event)" style="margin-left: 0.5em;"/>
 	                <div class="input-group-append">
 	                    <button type="button" class="btn btn-info btn-sm" @click="fetchData"><i class="fas fa-search"></i></button>
 	                </div>
@@ -291,6 +291,7 @@
         	},
 
         	onEnterSearch(e) {
+                this.search = e.target.value;
                 if (e.keyCode === 13) {
                     this.page = 1;
                     this.fetchData()

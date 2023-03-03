@@ -51,6 +51,15 @@
                                     <textarea class="form-control" v-model="role.description" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="role.type" @change="setPermissions($event.target.value)">
+									    <option value="">Select Type</option>
+									    <option v-for="data in types" :value="data"> {{ data }} </option>
+								    </select>
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -112,11 +121,13 @@
                     id: '',
                     name: '',
                     description: '',                   
+                    type: '',                   
                     isActive: false,
 					permissions: [],
                 },
                 add_record: true,
                 edit_record: false,
+				types: ['Admin','Portal'],
             	dataFields: {
             		name: "Name", 
             		description: "Description", 
@@ -191,8 +202,9 @@
 				}
 			},
 			
-			setPermissions: function() {
-				axios.get('/admin/roles/modules')
+			setPermissions: function(type) {
+				this.role.permissions = [];
+				axios.get('/admin/roles/modules', { params: {type: type} })
                 .then(response => {
 					var modules = response.data.data;
 					modules.forEach((key, index) => {
@@ -209,7 +221,6 @@
 
 			addPermissions: function(data, str_class) {
 				this.role.permissions.push({
-					//id: (data.module_id) ? data.module_id : data.id, 
 					id: data.id, 
 					parent_id: data.parent_id, 
 					name: data.name,
@@ -227,9 +238,9 @@
 				this.edit_record = false;
                 this.role.name = '';
                 this.role.description = '';
+                this.role.type = '';
                 this.role.isActive = false;
 				this.role.permissions = [];
-				this.setPermissions();		
               	$('#role-form').modal('show');
             },
 
@@ -249,6 +260,7 @@
                     this.role.id = id;
                     this.role.name = role.name;
                     this.role.description = role.description;
+                    this.role.type = role.type;
                     this.role.isActive = role.active;
 					this.add_record = false;
 					this.edit_record = true;
@@ -269,7 +281,7 @@
 					} 
 					else {
 						this.role.permissions = [];
-						this.setPermissions();
+						this.setPermissions(role.type);
 					}
 
                     $('#role-form').modal('show');

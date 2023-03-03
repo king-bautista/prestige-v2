@@ -58,12 +58,6 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Birth Date <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="user.birth_date" placeholder="Last Name">
-								</div>
-							</div>
-							<div class="form-group row">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Password <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-6">
 									<button type="button" class="btn btn-block btn-outline-info btn-sm" v-show="displayButton" @click="showPassword">Show password</button>

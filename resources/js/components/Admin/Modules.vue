@@ -62,7 +62,7 @@
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="module.parent_id">
 									    <option value="">Select Parent Link</option>
-									    <option v-for="link in parent_links" :value="link.id"> {{ link.name }}</option>
+									    <option v-for="link in parent_links" :value="link.id"> {{ link.role }} - {{ link.name }}</option>
 								    </select>
 								</div>
 							</div>

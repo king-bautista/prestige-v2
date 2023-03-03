@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CompaniesControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\CompanyRequest;
 
 use App\Models\Company;
 use App\Models\ViewModels\CompanyViewModel;
@@ -69,7 +70,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
         }
     }
 
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
         try
     	{
@@ -99,7 +100,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
         }
     }
 
-    public function update(Request $request)
+    public function update(CompanyRequest $request)
     {
         try
     	{

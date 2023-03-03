@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ClassificationControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\ClassificationRequest;
 
 use App\Models\Classification;
 use App\Models\ViewModels\AdminViewModel;
@@ -66,7 +67,7 @@ class ClassificationController extends AppBaseController implements Classificati
         }
     }
 
-    public function store(Request $request)
+    public function store(ClassificationRequest $request)
     {
         try
     	{
@@ -89,7 +90,7 @@ class ClassificationController extends AppBaseController implements Classificati
         }
     }
 
-    public function update(Request $request)
+    public function update(ClassificationRequest $request)
     {
         try
     	{

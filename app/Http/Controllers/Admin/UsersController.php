@@ -6,9 +6,10 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\UsersControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\RegistrationRequest;
+use App\Http\Requests\EditRegistrationeRequest;
 
 use App\Helpers\PasswordHelper;
-use App\Http\Requests\RegistrationRequest;
 use App\Models\Admin;
 use App\Models\ViewModels\AdminViewModel;
 use Hash;
@@ -103,7 +104,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         }
     }
 
-    public function update(Request $request)
+    public function update(EditRegistrationeRequest $request)
     {
         try
     	{
