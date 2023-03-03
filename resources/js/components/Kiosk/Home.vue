@@ -352,9 +352,17 @@
 
                         for (var i = 0; i < splitBrandName.length; i++) {
                             splitBrandName[i] = splitBrandName[i].charAt(0).toUpperCase() + splitBrandName[i].slice(1);
-                        }
+                        }      
 
-                        tenant.brand_name = splitBrandName.join(" ");
+                        if (splitBrandName.join(" ").match(/(\(.*\))/)) {
+                            const text = splitBrandName.join(" ");
+                            
+                            const strToReplace = splitBrandName.join(" ").match(/(\(.*\))/)[0];
+
+                            tenant.brand_name = text.replace(strToReplace, strToReplace.toUpperCase());
+                        } else {
+                            tenant.brand_name = splitBrandName.join(" ");
+                        }
 
                     });
                 });
