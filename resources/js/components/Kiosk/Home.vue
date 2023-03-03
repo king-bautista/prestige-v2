@@ -175,7 +175,7 @@
                         <div class="my-auto p-1">
                             <img :src="tenant_details.brand_logo" class="tenant-details-logo">
                             <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
-                            <div class="tenant-details-floor">{{ tenant_details.floor_name }}</div>
+                            <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                             <div class="tenant-details-views"><span style="color:#000000;">{{ tenant_details.view_count }}</span>&nbsp;<span>Views</span></div>
                             <div>
                                 <span class="btn-schedule" v-if="tenant_details.operational_hours">
@@ -344,6 +344,23 @@
                 }  
             },
 
+            TitleCasePerWord: function() {
+
+                this.tenant_list.forEach(element => {
+                    element.forEach(tenant => {
+                        const splitBrandName = tenant.brand_name.toLocaleLowerCase().split(" ");
+
+                        for (var i = 0; i < splitBrandName.length; i++) {
+                            splitBrandName[i] = splitBrandName[i].charAt(0).toUpperCase() + splitBrandName[i].slice(1);
+                        }
+
+                        tenant.brand_name = splitBrandName.join(" ");
+
+                    });
+                });
+
+            },
+
             moveTo: function(letter) {   
                 $(".shop_name").removeClass('letter-selected'); 
                 let index = 0;
@@ -368,14 +385,14 @@
                 
                 $(".carousel-indicators-a li").each(function(){
                     if ($(this).attr('data-slide-to') == parseInt(index)){
-                        $(this).click();
+                        $(this).trigger('click');
                     }
                 });         
             },
 
             initializeSwipe: function() {
 				setTimeout(() => {
-                    $('.first-item').click();
+                    $('.first-item').trigger('click');
                 }, 500);
 			},
 
@@ -430,7 +447,8 @@
                 this.resetCarousel();
                 setTimeout(() => {
                     this.filterLetterNavigator();
-                }, 500);           
+                }, 500);
+                this.TitleCasePerWord();
             },
 
             getTenantsByCategory: function(category) {
@@ -506,7 +524,7 @@
             },     
 
             showChildren: function(category) {
-                $('#category-tab').click();
+                $('#category-tab').trigger('click');
                 this.previous_page = 'Sub Category';
                 this.current_category = category;
                 this.child_category_count = category.children.length;
@@ -548,14 +566,14 @@
                     this.page_title = 'Store List';
                     this.child_category = true;
                     this.alphabetical = false;
-                    $('#category-tab').click();
+                    $('#category-tab').trigger('click');
                     this.isAlphabeticalClicked = false;
                 } 
                 else if(this.previous_page == 'Sub Category' && this.alphabetical == true) {
                     this.page_title = 'Store List';
                     this.child_category = true;
                     this.alphabetical = false;
-                    $('#category-tab').click();
+                    $('#category-tab').trigger('click');
 
                 } 
                 else if(this.alphabetical == true) {
@@ -567,7 +585,7 @@
                     this.page_title = 'Category';
                     this.home_category = false;
                     this.supplementals = false;
-                    $('#alphabetical-tab').click();
+                    $('#alphabetical-tab').trigger('click');
                     this.previous_page = 'Sub Category';
                 }       
                 else if(this.supplementals == true) {
@@ -575,17 +593,17 @@
                     this.home_category = true;
                     this.supplementals = false;
                     if (this.previous_page == 'Alphabetical'){
-                        $('#category-tab').click();
+                        $('#category-tab').trigger('click');
                     }
                     if (this.previous_page == 'Supplementals'){                   
                         if (this.previous_page == 'Supplementals' && this.isAlphabeticalClicked == false){
-                            $('#category-tab').click();
+                            $('#category-tab').trigger('click');
                         }else{
-                            $('#alphabetical-tab').click();
+                            $('#alphabetical-tab').trigger('click');
                         }
                     }
                     if (this.previous_page == 'Sub Category'){
-                        $('#category-tab').click();
+                        $('#category-tab').trigger('click');
                     }
                     
                 }            
@@ -614,7 +632,7 @@
         mounted() {
             var obj = this;
             $(function() {
-                $('.store-tabs-item').click(function () {
+                $('.store-tabs-item').on('click', function () {
                     $('.store-tabs-item').removeClass('tab-item-selected');
                     $(this).addClass('tab-item-selected');
                 });
