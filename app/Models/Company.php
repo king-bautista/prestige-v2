@@ -49,4 +49,20 @@ class Company extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveBrands($brands)
+    {
+        if(count($brands) > 0) {
+            CompanyBrands::where('company_id', $this->id)->delete();
+
+            foreach ($brands as $index => $data) {
+                CompanyBrands::updateOrCreate(
+                    [
+                       'company_id' => $this->id,
+                       'brand_id' => $data['id'],
+                    ],
+                );
+            }
+        }
+    }
 }

@@ -58,6 +58,7 @@ Vue.component('admin-dashboard_monthly_usage', require('./components/Admin/Dashb
 Vue.component('admin-dashboard_merchant_usage', require('./components/Admin/DashboardMerchantUsage.vue').default);
 Vue.component('admin-dashboard_top_key_words', require('./components/Admin/DashboardTopKeyWords.vue').default);
 Vue.component('admin-dashboard_highest_usage', require('./components/Admin/DashboardHighestUsage.vue').default);
+Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 
 /**
  * KIOSK PART
