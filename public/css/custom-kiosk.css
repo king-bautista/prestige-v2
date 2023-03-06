@@ -722,6 +722,7 @@ div.mall-details {
 }
 
 .tenant-details-views {
+    color: #000000;
     margin-top: -8px;
     margin-bottom: 10px;
     margin-left: 95px;
@@ -732,7 +733,7 @@ div.mall-details {
     color: #6e6c6c;
     border-color: #e2e2e2; 
     width: 100%; 
-    font-size:1.2em;
+    font-size: 0.994em;
     opacity: 30%;
 }
 
@@ -742,6 +743,7 @@ div.mall-details {
 }
 
 .btn-like-display {
+    font-size: 0.994em;
     float: left;
     margin: 8px 0 0 15px;
     color:#000;
@@ -760,7 +762,7 @@ div.mall-details {
 .btn-direction-shop {
     border: 1px solid #6051e3;
     font-family: 'Henry Sans Medium';
-    font-size: 1.2em;
+    font-size: 0.994em;
 }
 
 .btn-direction-shop-pwd {
@@ -774,7 +776,7 @@ div.mall-details {
     opacity: 30%; 
     color: #b6c3ff;
     border: 1px solid #b6c3ff;
-    font-size:1.2em
+    font-size: 0.994em;
 }
 
 .rounded-corner {
@@ -880,6 +882,11 @@ div.alist {
     color: black;
 }
 
+.navigation-letters li.active {
+    text-decoration: underline;
+    color: #005aff;
+}
+
 .featured_shop {
     color: #fff;
     background-color: #ff9800;
@@ -920,6 +927,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     -webkit-border-radius: 5px;
 }
 
+.router-page {
+    height: 980px;
+}
+
 .mt-14 {
     margin-top: 14px;
 }
@@ -948,6 +959,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-top: 29px;
 }
 
+.mt-31 {
+    margin-top: 31px;
+}
+
 .mt-120 {
     margin-top: 120px;
 }
@@ -956,12 +971,20 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-left: 0px;
 }
 
+.ml-36 {
+    margin-left: 36px;
+}
+
 .mb-13 {
     margin-bottom: 13px;
 }
 
 .mb-18 {
     margin-bottom: 18px;
+}
+
+.mb-24 {
+    margin-bottom: 24px;
 }
 
 .mb-27 {
@@ -1027,4 +1050,9 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 
 .z-1 {
     z-index: 1;
+}
+
+.p-r-t-94 {
+    position: relative;
+    top: 94px;
 }
