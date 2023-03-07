@@ -243,15 +243,18 @@
                                         </li>
                                         @foreach($user->permissions as $permission)
                                         <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-client-management" role="button"
+                                            <a class="nav-link dropdown-toggle arrow-none" href="{{ $permission->link }}" id="topnav-client-management" role="button"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="ti-user"></i>{{ $permission->name }}
+                                                <i class="{{ $permission->class_name }}"></i>{{ $permission->name }}
                                             </a>
                                             @if(count($permission->sub_permissions) > 0)
                                             <div class="dropdown-menu dropdown-menu-left" aria-labelledby="client-management">
                                                 @foreach($permission->sub_permissions as $sub_menu)
                                                     @if($sub_menu->can_view)
-                                                    <a href="{{ $sub_menu->link }}" class="dropdown-item">{{ $sub_menu->name }}</a>
+                                                    <a href="{{ $sub_menu->link }}" class="dropdown-item">
+                                                    <i class="{{ $sub_menu->class_name }}"></i>
+                                                    {{ $sub_menu->name }}
+                                                    </a>
                                                     @endif    
                                                 @endforeach    
                                             </div>

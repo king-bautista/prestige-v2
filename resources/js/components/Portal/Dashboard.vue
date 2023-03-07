@@ -21,7 +21,7 @@ export default {
 </script>
 
 <template>
- <div class ="card">
+<div class ="card">
     <div class ="card-body">
     <div class="row">
       <div class="col-12">
