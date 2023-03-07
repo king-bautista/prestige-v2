@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Role;
 use App\Models\Permission;
+use App\Models\UserBrand;
+use App\Models\UserSite;
+use App\Models\UserScreen;
 
 class UserViewModel extends Model
 {
@@ -61,6 +64,10 @@ class UserViewModel extends Model
         'details',
         'roles',
         'permissions',
+        'company',
+        'brands',
+        'sites',
+        'screens',
     ];
 
     public function getUserDetails()
@@ -109,5 +116,35 @@ class UserViewModel extends Model
         return $permissions_group;
     }
 
+    public function getCompanyAttribute() 
+    {
+        $company = CompanyViewModel::find($this->company_id);
+        if($company)
+            return $company;
+    }
+
+    public function getBrandsAttribute() 
+    {
+        $brand_ids = UserBrand::where('user_id', $this->id)->get()->pluck('brand_id');
+        $brands = BrandViewModel::whereIn('id', $brand_ids)->get();
+        if($brands)
+            return $brands;
+    }
+
+    public function getSitesAttribute() 
+    {
+        $site_ids = UserSite::where('user_id', $this->id)->get()->pluck('site_id');
+        $sites = SiteViewModel::whereIn('id', $site_ids)->get();
+        if($sites)
+            return $sites;
+    }
+
+    public function getScreensAttribute() 
+    {
+        $screen_ids = UserScreen::where('user_id', $this->id)->get()->pluck('site_screen_id');
+        $screens = SiteScreenViewModel::whereIn('id', $screen_ids)->get();
+        if($screens)
+            return $screens;
+    }
 
 }

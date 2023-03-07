@@ -190,7 +190,7 @@
         },
 
         created(){
-            axios.get('/admin/roles/get-all')
+            axios.get('/admin/roles/get-admin')
                 .then(response => this.role_list = response.data.data);
         },
 

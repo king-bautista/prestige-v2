@@ -131,6 +131,7 @@
             	dataFields: {
             		name: "Name", 
             		description: "Description", 
+            		type: "Type", 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -265,7 +266,7 @@
 					this.add_record = false;
 					this.edit_record = true;
 					// clear initial permissions
-					if(role.permissions.length > 0) {
+					if(role.permissions != null && role.permissions.length > 0) {
 						this.role.permissions = [];
 						// put new permission with data
 						role.permissions.forEach((key, index) => {

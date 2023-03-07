@@ -158,11 +158,28 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
     }
 
-    public function getAll()
+    public function getAdmin()
     {
         try
     	{
-            $roles = Role::get();
+            $roles = Role::where('type', 'Admin')->get();
+            return $this->response($roles, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getPortal()
+    {
+        try
+    	{
+            $roles = Role::where('type', 'Portal')->get();
             return $this->response($roles, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
