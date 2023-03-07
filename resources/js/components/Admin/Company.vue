@@ -116,7 +116,6 @@
 	    </section>
 	    <!-- /.content -->
 
-		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="brand-list" tabindex="-1" aria-labelledby="brand-list" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
@@ -145,7 +144,6 @@
 				</div>
 			</div>
 		</div>
-      <!-- End Modal Add New User -->
 
     </div>
 </template>

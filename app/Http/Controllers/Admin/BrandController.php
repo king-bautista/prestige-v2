@@ -12,6 +12,7 @@ use App\Models\Brand;
 use App\Models\Tag;
 use App\Models\Supplemental;
 use App\Models\BrandProductPromos;
+use App\Models\CompanyBrands;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\BrandViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
@@ -40,10 +41,21 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
+            $filters = json_decode($request->filters);
+            $company_id = null;
+            $brand_ids = [];
+            if($filters) {
+                $company_id = $filters->company_id;
+                $brand_ids = CompanyBrands::where('company_id', $company_id)->get()->pluck('brand_id');
+            }            
+
             $brands = BrandViewModel::when(request('search'), function($query){
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->when(count($brand_ids) > 0, function($query) use ($brand_ids){
+                return $query->whereIn('brands.id', $brand_ids);
             })
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->select('brands.*')
