@@ -10,7 +10,7 @@
                             <option value="">Select Site</option>
                             <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
                         </select>
-                        <a href="/admin/reports/merchant-population">
+                        <a href="/admin/reports/monthly-usage">
                             <button class="btn btn-outline-primary btn-sm" type="button">View Report</button>
                         </a>
                     </form>
