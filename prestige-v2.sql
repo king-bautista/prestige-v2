@@ -18222,7 +18222,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `company_id`, `full_name`, `email`, `email_verified_at`, `password`, `api_token`, `salt`, `login_attempt`, `is_blocked`, `active`, `activation_token`, `created_by`, `updated_by`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, NULL, 'Bautista, King', 'superportal@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2022-08-10 10:52:17', '2023-03-07 08:46:31', '2023-03-07 08:46:31'),
 	(4, NULL, 'Admin, Admin', 'admin@gmail.com', NULL, '$2y$10$QEY0OLI9HdHbfMsc9igWFuvg17iBIBK9hZ6RzyPzz29SV8Cp77RqK', NULL, 'aTVOhYWuUpIxmrn4cv1G', 0, 0, 1, NULL, 0, 0, NULL, '2022-09-15 10:28:20', '2023-03-07 08:46:34', '2023-03-07 08:46:34'),
-	(5, 1, 'Office, Head', 'headoffice@gmail.com', NULL, '$2y$10$ImAmiDm3RaYMRzO./EKTre7sj/Fv80Zt3xhBBauk/MfuDcJ6uDIhi', NULL, 'fUZFtjw2eOio0l5m4zcK', 0, 0, 1, NULL, 0, 0, NULL, '2023-03-07 07:01:41', '2023-03-07 08:47:07', NULL);
+	(5, 1, 'Office, Head', 'headoffice@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2023-03-07 07:01:41', '2023-03-07 08:47:07', NULL);
 
 -- Dumping structure for table prestige.users_meta
 DROP TABLE IF EXISTS `users_meta`;
