@@ -1,23 +1,15 @@
 @extends('layout.portal.master')
+@section('Page-Title')
+<h4>User</h4>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="javascript: void(0);">Prestige&nbsp;</a></li>
+  <li class="breadcrumb-item"><a href="javascript: void(0);">Interactive</a></li>
+  <li class="breadcrumb-item active">Users</li>
+  </ol>
+</nav>
+@endsection
 @section('content')
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Users Management</h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-          <li class="breadcrumb-item active">Users Management</li>
-        </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-
 <!-- Main content -->
 <portal-users></portal-users>
 <!-- /.content -->

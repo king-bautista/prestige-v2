@@ -20,8 +20,8 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     ************************************/
     public function __construct()
     {
-        $this->module_id = 45; 
-        $this->module_name = 'Portal User';
+        $this->module_id = 46; 
+        $this->module_name = 'Users';
     }
 
     public function index()
@@ -30,9 +30,9 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     }
 
     public function list(Request $request)
-    {
+    {   
         try
-        {
+        { 
             $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $user = UserViewModel::when(request('search'), function($query){

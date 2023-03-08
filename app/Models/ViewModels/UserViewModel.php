@@ -4,7 +4,7 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\Role;
+use App\Models\UserRole;
 use App\Models\Permission;
 use App\Models\UserBrand;
 use App\Models\UserSite;
@@ -83,7 +83,7 @@ class UserViewModel extends Model
     public function getPermissions()
     {
         $role_ids = $this->getRoles()->pluck('role_id')->toArray();
-        return Permission::whereIn('role_id', $role_ids)->where('active', 1)->whereNull('modules.deleted_at')
+        return Permission::whereIn('role_id', $role_ids)->where('active', 1)->whereIn('modules.role',['Portal'])->whereNull('modules.deleted_at')
                         ->selectRaw('modules.id, modules.parent_id, modules.name, modules.link, modules.class_name, max(permissions.can_view) AS can_view, max(permissions.can_add) AS can_add, max(permissions.can_edit) AS can_edit, max(permissions.can_delete) AS can_delete')
                         ->leftJoin('modules', 'permissions.module_id', '=', 'modules.id')
                         ->groupBy('permissions.module_id');
@@ -98,9 +98,9 @@ class UserViewModel extends Model
     }
 
     public function getRolesAttribute() 
-    {
+    { 
         $role_ids = $this->getRoles()->pluck('role_id')->toArray();
-        return Role::whereIn('id', $role_ids)->get();
+        return UserRole::whereIn('id', $role_ids)->get();
     }
 
     public function getPermissionsAttribute() 

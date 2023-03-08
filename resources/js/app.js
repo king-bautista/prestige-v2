@@ -61,6 +61,17 @@ Vue.component('admin-dashboard_highest_usage', require('./components/Admin/Dashb
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 
 /**
+ * PORTAL PART
+ */
+Vue.component('portal-dashboard', require('./components/Portal/Dashboard.vue').default);
+Vue.component('portal-users', require('./components/Portal/Users.vue').default);
+Vue.component('portal-roles', require('./components/Portal/Roles.vue').default);
+Vue.component('portal-brands', require('./components/Portal/PortalBrands.vue').default);
+Vue.component('portal-building-tenants', require('./components/Portal/PortalTenants.vue').default);
+Vue.component('portal-content', require('./components/Portal/Content.vue').default);
+Vue.component('portal-advertisements', require('./components/Portal/PortalAdvertisements.vue').default);
+
+/**
  * KIOSK PART
  */
 Vue.component('rotating-banners', require('./components/Kiosk/Banners.vue').default);

@@ -41,24 +41,12 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         );
-
+       
         view()->composer(
-            'layout.portal.left-nav', 
+            'layout.portal.master', 
             function ($view) {
                 if(Auth::user()) {
-                    $user = UserViewModel::find(Auth::user()->id);
-                    $view->with('user', $user);
-                }else {
-                    $view->with('user', null);
-                }
-            }
-        );
-
-        view()->composer(
-            'portal.testdashboard', 
-            function ($view) {
-                if(Auth::user()) {
-                    $user = UserViewModel::find(Auth::user()->id);
+                    $user = UserViewModel::find(Auth::user()->id); 
                     $view->with('user', $user);
                 }else {
                     $view->with('user', null);
