@@ -158,12 +158,12 @@
                         <div v-if="tenant_details.is_subscriber && tenant_details.products">
                             <div class="row ml-1 mt-16" v-if="tenant_details.products.banners.length">
                                 <div class="col-12 p-0">
-                                    <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img">
+                                    <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                 </div>
                             </div>
                             <div class="row subscriber-products mt-15 ml-0">
                                 <div v-for="product in tenant_details.products.products" class="m-15-18">
-                                    <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path)">
+                                    <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path,'product')">
                                 </div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                 <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                 <div class="tenant-details-views"><span>{{ tenant_details.view_count }}</span>&nbsp;<span>Views</span></div>
                                 <div>
-                                    <span class="btn-schedule" v-if="tenant_details.operational_hours">
+                                    <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                         <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                                         <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
                                         <span v-else class="text-danger"><strong>Closed</strong></span>
@@ -201,9 +201,9 @@
                                     </a>
                                 </div>
                                 <div class="col-6">
-                                    <span class="text-danger ml-2 btn-like">
+                                    <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
                                         <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
-                                        <a class="btn-like-display">0 
+                                        <a class="btn-like-display">{{ tenant_details.like_count }}
                                             <span>Likes</span>
                                         </a>
                                     </span>
@@ -214,9 +214,9 @@
                                     <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
                                 </div>
                                 <div class="col-6 mt-3">
-                                    <span class="text-danger ml-2 btn-like">
+                                    <span class="text-danger ml-2 btn-like"  @click="updateLikeCount(tenant_details.id, tenant_details.like_count)">
                                         <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
-                                        <a class="btn-like-display">0 
+                                        <a class="btn-like-display">{{ tenant_details.like_count }}
                                             <span>Likes</span>
                                         </a>
                                     </span>
@@ -275,20 +275,38 @@
             <img v-show="!home_category" :src="back_button" class="back-button" @click="goBack">
 
             <!-- MODAL -->
-            <div class="custom-modal" id="myProduct">
-                <div style="position: relative;top: 40%;transform: translateY(-50%);width: 540px; left: 50%; color:transparent;">
+            <div class="custom-modal p-l-490" id="myProduct">
+                <div class="custom-modal-position set-width">                    
                     <div class="text-right text-white">
-                        <span style="font-size:1.5em;margin-right:-10px" class="btn-close-trailer">X</span>
+                        <span class="btn-close-modal">X</span>
                     </div>
-                    <div class="modal-content" style="border-radius:20px;">
+                    <img class="my-product-image" :src="product_image">
+                </div>
+            </div>
+
+            <div class="custom-modal p-l-490" id="modal-schedule">
+                <div class="custom-modal-position set-width-schedule">                    
+                    <div class="text-right text-white">
+                        <span class="btn-close-modal">X</span>
+                    </div>
+                    <div class="modal-content">
                         <div class="modal-body">
-                            <img :src="product_image" style="width:508px;">
-                        </div>
-                    </div>
+                            <div class="label-1">Operating Hours</div>
+                            <div class="modal-body-schedule-days">
+                                <div class="m-15-0" v-for="day in days">{{day}}</div>
+                            </div>
+                            <div class="modal-body-schedule-time">
+                                <div class="m-15-0" v-for="schedule in tenantSchedule">{{schedule}}</div>
+                            </div>   
+                        </div>                   
+                    </div>       
                 </div>
             </div>
         </div>
         <search-page v-show="searchIsShown"></search-page>
+        <map-page v-show="mapIsShown"></map-page>
+        <promos-page v-show="promosIsShown"></promos-page>
+        <cinema-page v-show="cinemaIsShown"></cinema-page>
         <div class="row">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
@@ -297,13 +315,13 @@
                 <div class="h-button widget-button search-button logs" data-link='Search' @click="searchButton">
                     <div class="button-text-align">Search</div>
                 </div>
-                <div class="h-button widget-button map-button logs" data-link='Map'>
+                <div class="h-button widget-button map-button logs" data-link='Map' @click="mapButton">
                     <div class="button-text-align">Map</div>    
                 </div>
-                <div class="h-button widget-button promos-button logs" data-link='Promos'>
+                <div class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
                     <div class="button-text-align">Promos</div>
                 </div>
-                <div class="h-button widget-button cinema-button logs" data-link='Cinema'>
+                <div class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
                     <div class="button-text-align">Cinema</div>
                 </div>
             </div>
@@ -313,11 +331,17 @@
 <script>
     import { isTemplateElement } from '@babel/types';
     import search from './Search.vue';
+    import map from './Map.vue';
+    import promos from './Promos.vue';
+    import cinema from './Cinema.vue';
 
 	export default {
         name: "MainCategories",
         components: {
-            'search-page': search
+            'search-page': search,
+            'map-page': map,
+            'promos-page': promos,
+            'cinema-page': cinema
         },
         data() {
             return {
@@ -350,6 +374,11 @@
                 isAlphabeticalClicked: false,
                 homeIsShown: true,
                 searchIsShown: false,
+                mapIsShown: false,
+                promosIsShown: false,
+                cinemaIsShown: false,
+                days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
+                tenantSchedule :[],
             };
         },
 
@@ -361,15 +390,93 @@
 
         methods: {
             homeButton: function (event) {
-                console.log(event.target.getAttribute("data-link"));
+                this.home_category = true;
+                this.child_category = false;
+                this.tabs_container = false;
+                this.isAlphabeticalClicked = false;
+                this.show_tenant = false;
+                this.alphabetical = false;
+                this.supplementals = false;
                 this.homeIsShown = true;
                 this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
             },
 
             searchButton: function (event) {
-                console.log(event.target.getAttribute("data-link"));
+                // console.log(event.target.getAttribute("data-link"));
                 this.homeIsShown = false;
                 this.searchIsShown = true;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+            },
+
+            mapButton: function (event) {
+                // console.log(event.target.getAttribute("data-link"));
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = true;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+            },
+
+            promosButton: function (event) {
+                // console.log(event.target.getAttribute("data-link"));
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = true;
+                this.cinemaIsShown = false;
+            },
+
+            cinemaButton: function (event) {
+                // console.log(event.target.getAttribute("data-link"));
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = true;
+            },
+
+            buildSchedule: function (data) {
+                let tempSchedule = [];
+                const currentSchedule = eval(data.tenant_details['schedules']);
+
+                Object.keys(this.days).forEach(day => {
+                    currentSchedule.forEach(obj => {
+                        Object.keys(obj).forEach(key => {
+                            if (key == 'schedules') {
+                                if (obj['schedules'].match(day)) {
+                                    tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
+                                }                               
+                            }
+                        });
+                    });
+                });
+
+                this.tenantSchedule = tempSchedule;
+            },
+
+            updateLikeCount: function(id) {
+                this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
+
+                let params = {
+                    id: this.tenant_details.id,
+                    like_count: this.tenant_details.like_count
+                }
+
+                // this.helper.putLikeCount(params);
+
+                // $.post( "/api/v1/like-count", params ,function(response) {
+                //     console.log(response);
+                // });
+
+                // axios.get('/api/v1/like-count/' + this.tenant_details.id)
+                // .then(response =>{
+                    
+                // });
             },
 
             resetCarousel: function() {
@@ -671,11 +778,24 @@
                 this.alphabetical = false;
                 this.show_tenant = true;
                 this.tabs_container = false;
+                this.buildSchedule(this.tenant_details);
             },
 
-            showProduct: function(product) {
+            showSchedule: function() {
+                $("#modal-schedule").show();
+            },
+
+            showProduct: function(product,type) {
                 this.product_image = product;
                 $("#myProduct").show();
+                $('.set-width').removeClass('banner-size');
+                $('.set-width').removeClass('product-size');
+                if (type == 'banner'){
+                    $('.set-width').addClass('banner-size');
+                }
+                if (type == 'product'){
+                    $('.set-width').addClass('product-size');
+                } 
             },
 
             generateLetters: function () {
@@ -693,8 +813,8 @@
                     $(this).addClass('tab-item-selected');
                 });
 
-                $(".btn-close-trailer").on('click',function(){
-                    $("#myProduct").hide();
+                $("#myProduct,#modal-schedule").on('click',function(){
+                    $("#myProduct,#modal-schedule").hide();
                 });
 
                 $(".hc-button").on('click', function() {

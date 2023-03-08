@@ -423,15 +423,15 @@ body,html {
     left: 423px;
 }
 
-.serach-box {
+.search-box {
     font-family: 'Henry Sans Medium';
     font-size: 24px; 
     width: 65%; 
     padding-left: 10px; 
     padding-top: 8px; 
     padding-bottom: 8px; 
-    border-color: #000; 
-    border-width: 2px;
+    border-color: #000000;
+    border-width: 1px;
     margin: auto;
     border-radius: 10px;
     border-top-right-radius: 10px !important;
@@ -465,15 +465,18 @@ body,html {
     padding: 5px 20px;
     background-color: #98dad0;
     border-radius: 10px;
-    border: solid 2px #000;
     margin-left: 5px;
 }
 
 .softkeys__btn {
     color: #000;
     font-size: 1.5em !important;
-    border: 0.1em solid #000 !important;
+    border: 1px solid #000 !important;
     border-radius: 15px !important;
+    width: 72px !important;
+    height: 72px !important;
+    line-height: 2.8em !important;
+    padding: 0 !important;
 }
 
 .softkeys__btn:hover, .softkeys__btn:focus {
@@ -490,6 +493,29 @@ body,html {
 .softkeys--alt .softkeys__btn[data-type=shift] {
     background-color: #98dad0 !important;
     color: #fff;
+}
+
+.delete-key {
+    background-image: url('../assets/images/key-delete.png');
+    color: transparent;
+}
+
+.delete-key:hover, .delete-key:focus {
+    outline: none;
+    background-color: #98dad0 !important;
+    color: transparent !important;
+}
+
+.softkeys__btn--space {
+    width: 410px !important;
+}
+
+.softkeys__btn--enter {
+    width: 105px !important;
+}
+
+.hidden-on-alt{
+    /* display: none !important; */
 }
 
 .ui-widget-content {
@@ -643,6 +669,11 @@ body,html {
 
 .btn-close-cinema, .btn-close-trailer {
     cursor: pointer;
+}
+
+.btn-close-modal {
+    font-size:2em;
+    margin-right:-10px
 }
 
 span.movie-rating {
@@ -931,6 +962,51 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     height: 980px;
 }
 
+.custom-modal-position {
+    position: relative;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.product-size {
+    width: 700px;
+    height: 700px;
+}
+
+.banner-size {
+    width: 1024px;
+    height: 280px;
+}
+
+.my-product-image {
+    border-radius: 20px;
+    width: inherit;
+    height: inherit;
+}
+
+.modal-body-schedule-days {
+    display: inline-block;
+    text-align: left;
+    width: 40%;
+}
+
+.modal-body-schedule-time {
+    display: inline-block;
+    color: #000000;
+    font-weight: bolder;
+}
+
+.set-width-schedule {
+    width: 700px;
+    top:41%;
+}
+
+.label-1 {
+    color: #000000;
+    font-weight: bolder;
+}
+
 .mt-14 {
     margin-top: 14px;
 }
@@ -961,6 +1037,14 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 
 .mt-31 {
     margin-top: 31px;
+}
+
+.mt-67 {
+    margin-top: 67px !important;
+}
+
+.mt-83 {
+    margin-top: 83px;
 }
 
 .mt-120 {
@@ -999,6 +1083,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-bottom: 55px;
 }
 
+.m-15-0 {
+    margin: 15px 0;
+}
+
 .m-15-18 {
     margin: 15px 18px;
 }
@@ -1026,6 +1114,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 .p-0-5 {
     padding: 0 5px;
 }
+
+.p-l-490 {
+    padding-left: 490px;
+} 
 
 .carousel-mh-626 {
     min-height: 626px;
