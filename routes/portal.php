@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/portal/login', 'PortalAuth\AuthController@login')->name('portal.login');
 Route::post('/portal/login', 'PortalAuth\AuthController@portalLogin')->name('portal.portal-login');
 
-Route::group(['middleware' => 'auth:web'], function () {
+Route::group(['middleware' => 'isClient:portal'], function () {
     
     Route::get('/portal', 'Portal\DashboardController@index')->name('portal.dashboard');
     
@@ -68,33 +68,33 @@ Route::group(['middleware' => 'auth:web'], function () {
     | Categories Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/categories', 'Admin\CategoriesController@index')->name('admin.category');
-    Route::get('/admin/category/list', 'Admin\CategoriesController@list')->name('admin.category.list');
-    Route::post('/admin/category/store', 'Admin\CategoriesController@store')->name('admin.category.store');
-    Route::get('/admin/category/{id}', 'Admin\CategoriesController@details')->where('id', '[0-9]+')->name('admin.category.details');
-    Route::post('/admin/category/update', 'Admin\CategoriesController@update')->name('admin.category.update');
-    Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('admin.category.delete');
-    Route::get('/portal/category/get-parent', 'Admin\CategoriesController@getParent')->where('id', '[0-9]+')->name('admin.category.get-parent');
-    Route::get('/admin/category/get-all', 'Admin\CategoriesController@getAll')->name('admin.category.get-all');
-    Route::get('/admin/category/get-all/{id}', 'Admin\CategoriesController@getAll')->where('id', '[0-9]+')->name('admin.category.get-sub-category');
-    // Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('admin.category.delete-image');
-    Route::get('/admin/category/labels/{id}', 'Admin\CategoriesController@getLabels')->where('id', '[0-9]+')->name('admin.category.labels');
-    Route::post('/admin/category/label/store', 'Admin\CategoriesController@saveLabels')->name('admin.category.label.store');
-    Route::get('/admin/category/label/delete/{id}', 'Admin\CategoriesController@deleteLabel')->where('id', '[0-9]+')->name('admin.category.label.delete');
+    Route::get('/admin/categories', 'Admin\CategoriesController@index')->name('portal.category');
+    Route::get('/admin/category/list', 'Admin\CategoriesController@list')->name('portal.category.list');
+    Route::post('/admin/category/store', 'Admin\CategoriesController@store')->name('portal.category.store');
+    Route::get('/admin/category/{id}', 'Admin\CategoriesController@details')->where('id', '[0-9]+')->name('portal.category.details');
+    Route::post('/admin/category/update', 'Admin\CategoriesController@update')->name('portal.category.update');
+    Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('portal.category.delete');
+    Route::get('/portal/category/get-parent', 'Admin\CategoriesController@getParent')->where('id', '[0-9]+')->name('portal.category.get-parent');
+    Route::get('/admin/category/get-all', 'Admin\CategoriesController@getAll')->name('portal.category.get-all');
+    Route::get('/admin/category/get-all/{id}', 'Admin\CategoriesController@getAll')->where('id', '[0-9]+')->name('portal.category.get-sub-category');
+    // Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('portal.category.delete-image');
+    Route::get('/admin/category/labels/{id}', 'Admin\CategoriesController@getLabels')->where('id', '[0-9]+')->name('portal.category.labels');
+    Route::post('/admin/category/label/store', 'Admin\CategoriesController@saveLabels')->name('portal.category.label.store');
+    Route::get('/admin/category/label/delete/{id}', 'Admin\CategoriesController@deleteLabel')->where('id', '[0-9]+')->name('portal.category.label.delete');
 
     /*
     |--------------------------------------------------------------------------
     | Supplemental Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/supplementals', 'Admin\SupplementalController@index')->name('admin.supplemental');
-    Route::get('/portal/supplemental/list', 'Admin\SupplementalController@list')->name('admin.supplemental.list');
-    Route::post('/portal/supplemental/store', 'Admin\SupplementalController@store')->name('admin.supplemental.store');
-    Route::get('/portal/supplemental/{id}', 'Admin\SupplementalController@details')->where('id', '[0-9]+')->name('admin.supplemental.details');
-    Route::post('/portal/supplemental/update', 'Admin\SupplementalController@update')->name('admin.supplemental.update');
-    Route::get('/portal/supplemental/delete/{id}', 'Admin\SupplementalController@delete')->where('id', '[0-9]+')->name('admin.supplemental.delete');
-    Route::get('/portal/supplemental/get-parent', 'Admin\SupplementalController@getParent')->where('id', '[0-9]+')->name('admin.supplemental.get-parent');
-    Route::get('/portal/supplemental/get-child', 'Admin\SupplementalController@getChild')->where('id', '[0-9]+')->name('admin.supplemental.get-child');
+    Route::get('/portal/supplementals', 'Admin\SupplementalController@index')->name('portal.supplemental');
+    Route::get('/portal/supplemental/list', 'Admin\SupplementalController@list')->name('portal.supplemental.list');
+    Route::post('/portal/supplemental/store', 'Admin\SupplementalController@store')->name('portal.supplemental.store');
+    Route::get('/portal/supplemental/{id}', 'Admin\SupplementalController@details')->where('id', '[0-9]+')->name('portal.supplemental.details');
+    Route::post('/portal/supplemental/update', 'Admin\SupplementalController@update')->name('portal.supplemental.update');
+    Route::get('/portal/supplemental/delete/{id}', 'Admin\SupplementalController@delete')->where('id', '[0-9]+')->name('portal.supplemental.delete');
+    Route::get('/portal/supplemental/get-parent', 'Admin\SupplementalController@getParent')->where('id', '[0-9]+')->name('portal.supplemental.get-parent');
+    Route::get('/portal/supplemental/get-child', 'Admin\SupplementalController@getChild')->where('id', '[0-9]+')->name('portal.supplemental.get-child');
 
     /*
     |--------------------------------------------------------------------------
@@ -151,13 +151,13 @@ Route::group(['middleware' => 'auth:web'], function () {
     | Brands Products Routes
     |--------------------------------------------------------------------------
     */    
-    Route::get('/portal/brand/products/{id}', 'Admin\ProductsController@index')->where('id', '[0-9]+')->name('admin.brand.products');
-    Route::get('/portal/brand/product/list', 'Admin\ProductsController@list')->name('admin.brand.product.list');
-    Route::get('/portal/brand/product/{id}', 'Admin\ProductsController@details')->where('id', '[0-9]+')->name('admin.brand.product.details');
-    Route::post('/portal/brand/product/store', 'Admin\ProductsController@store')->name('admin.brand.product.store');
-    Route::post('/portal/brand/product/update', 'Admin\ProductsController@update')->name('admin.brand.product.update');
-    Route::get('/portal/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('admin.brand.product.delete');
-    Route::get('/portal/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('admin.brand.product.by-brand');
+    Route::get('/portal/brand/products/{id}', 'Admin\ProductsController@index')->where('id', '[0-9]+')->name('portal.brand.products');
+    Route::get('/portal/brand/product/list', 'Admin\ProductsController@list')->name('portal.brand.product.list');
+    Route::get('/portal/brand/product/{id}', 'Admin\ProductsController@details')->where('id', '[0-9]+')->name('portal.brand.product.details');
+    Route::post('/portal/brand/product/store', 'Admin\ProductsController@store')->name('portal.brand.product.store');
+    Route::post('/portal/brand/product/update', 'Admin\ProductsController@update')->name('portal.brand.product.update');
+    Route::get('/portal/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('portal.brand.product.delete');
+    Route::get('/portal/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('portal.brand.product.by-brand');
 
     /*
     |--------------------------------------------------------------------------
