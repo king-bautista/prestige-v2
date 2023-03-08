@@ -9,18 +9,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-        <!-- Font Awesome Icons -->
-        <!-- <link rel="stylesheet" href="{{ URL::to('plugins/fontawesome-free/css/all.min.css') }}"> -->
-        <!-- Toastr -->
-        <!-- <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}"> -->
-        <!-- Theme style -->
-        <!-- <link rel="stylesheet" href="{{ URL::to('dist/css/adminlte.min.css') }}"> -->
-        <!-- <link rel="stylesheet" href="{{ URL::to('js/jquery-ui/jquery-ui.min.css') }}"> -->
-        <!-- <link rel="stylesheet" href="{{ URL::to('css/custom.css') }}"> -->
-
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{ URL::to('client/assets/images/favicon.ico') }}">
-        
         <!-- Bootstrap Css -->
         <link href="{{ URL::to('client/assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
         <!-- Icons Css -->
