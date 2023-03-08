@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CategoriesControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 
 use App\Models\Category;
 use App\Models\CategoryLabel;
@@ -70,7 +71,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         }
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         try
     	{
@@ -97,7 +98,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         }
     }
 
-    public function update(Request $request)
+    public function update(CategoryRequest $request)
     {
         try
     	{

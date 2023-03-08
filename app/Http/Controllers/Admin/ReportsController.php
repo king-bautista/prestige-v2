@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ReportsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Models\ViewModels\AdminViewModel;
@@ -18,6 +19,7 @@ use App\Exports\TopTenantExport;
 use App\Exports\TopKeywordsExport;
 use App\Exports\MerchantUsageExport;
 use App\Exports\MonthlyUsageExport;
+use App\Exports\YearlyUsageExport;
 use Storage;
 
 class ReportsController extends AppBaseController implements ReportsControllerInterface
@@ -56,6 +58,11 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         return view('admin.report_monthly_usage');
     }
 
+    public function yearlyUsage()
+    {
+        return view('admin.report_yearly_usage');
+    }
+
     public function getPercentage($request)
     {
         $site_id = '';
@@ -70,7 +77,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         })
         ->whereNotNull('site_tenant_id')
         ->selectRaw('logs.*, count(*) as tenant_count')
-        ->groupBy('parent_category_id')
+        ->groupBy('main_category_id')
         ->orderBy('tenant_count', 'DESC')
         ->get();
 
@@ -109,8 +116,8 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
 
     public function getTenantSearch(Request $request)
     {
-        try
-        {
+        // try
+        // {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_id = '';
@@ -125,13 +132,13 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $totals = Log::when($site_id, function($query) use ($site_id){
                 return $query->where('site_id', $site_id);
             })
-            ->selectRaw('logs.parent_category_id, count(*) as tenant_count')
+            ->selectRaw('logs.main_category_id, count(*) as tenant_count')
             ->whereNotNull('brand_id')
-            ->groupBy('parent_category_id')
+            ->groupBy('main_category_id')
             ->get();
 
             foreach($totals as $index => $total) {
-                $category_totals[$total->parent_category_id] = $total->tenant_count;
+                $category_totals[$total->main_category_id] = $total->tenant_count;
             }
 
             $overall_total = $totals->sum('tenant_count');
@@ -155,15 +162,15 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             ->paginate(request('perPage'));    
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function getSearchKeywords(Request $request)
@@ -284,6 +291,46 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             ->selectRaw('logs.*, page, count(*) as total_count')
             ->groupBy('page')
             ->orderBy('page', 'ASC')
+            ->get();
+
+            return $this->response($logs, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getYearlyUsage(Request $request)
+    {
+        try
+        {
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
+            $year = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $year = $filters->year;
+            if($request->year)
+                $year = $request->year;
+
+            $current_year = date("Y");
+
+            if($year)
+                $current_year = $year;
+
+            $total_count = Log::whereYear('created_at', $current_year)
+            ->selectRaw('count(*) as total_count')
+            ->groupBy(DB::raw('YEAR(created_at)'))
+            ->get()->count();
+            
+            $logs = LogsMonthlyUsageViewModel::whereYear('created_at', $current_year)
+            ->selectRaw('logs.*, count(*) as total_count, ROUND((count(*)/'.$total_count.'), 2) as total_average')
+            ->groupBy(DB::raw('YEAR(created_at)'))
             ->get();
 
             return $this->response($logs, 'Successfully Retreived!', 200);
@@ -568,6 +615,62 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $filename = "monthly-usage.csv";
             // Store on default disk
             Excel::store(new MonthlyUsageExport($logs), $directory.$filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/'.$filename,
+                'filename' => $filename
+            ];
+            
+            if(Storage::exists($directory.$filename))
+                return $this->response($data, 'Successfully Retreived!', 200); 
+
+            return $this->response(false, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvYearlyUsage(Request $request)
+    {
+        try
+        {
+            $year = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $year = $filters->year;
+            if($request->year)
+                $year = $request->year;
+
+            $current_year = date("Y");
+
+            if($year)
+                $current_year = $year;
+
+            $total_count = Log::whereYear('created_at', $current_year)
+            ->selectRaw('count(*) as total_count')
+            ->groupBy(DB::raw('YEAR(created_at)'))
+            ->get()->count();
+            
+            $logs = LogsMonthlyUsageViewModel::whereYear('created_at', $current_year)
+            ->selectRaw('logs.*, count(*) as total_count, ROUND((count(*)/'.$total_count.'), 2) as total_average')
+            ->groupBy(DB::raw('YEAR(created_at)'))
+            ->get();
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "yearly-usage.csv";
+            // Store on default disk
+            Excel::store(new YearlyUsageExport($logs), $directory.$filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/'.$filename,

@@ -45,7 +45,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/roles/update', 'Admin\RolesController@update')->name('admin.roles.update');
     Route::get('/admin/roles/delete/{id}', 'Admin\RolesController@delete')->where('id', '[0-9]+')->name('admin.roles.delete');
     Route::get('/admin/roles/modules', 'Admin\RolesController@getModules')->name('admin.roles.modules');
-    Route::get('/admin/roles/get-all', 'Admin\RolesController@getAll')->name('admin.roles.get-all');
+    Route::get('/admin/roles/get-admin', 'Admin\RolesController@getAdmin')->name('admin.roles.get-admin');
+    Route::get('/admin/roles/get-portal', 'Admin\RolesController@getPortal')->name('admin.roles.get-portal');
 
     /*
     |--------------------------------------------------------------------------
@@ -372,6 +373,22 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/reports/monthly-usage', 'Admin\ReportsController@monthlyUsage')->name('admin.reports.monthly-usage');
     Route::get('/admin/reports/monthly-usage/list', 'Admin\ReportsController@getMonthlyUsage')->where('id', '[0-9]+')->name('admin.reports.monthly-usage.list');
     Route::get('/admin/reports/monthly-usage/download-csv', 'Admin\ReportsController@downloadCsvMonthlyUsage')->where('id', '[0-9]+')->name('admin.reports.monthly-usage.download-csv');
+    Route::get('/admin/reports/yearly-usage', 'Admin\ReportsController@yearlyUsage')->name('admin.reports.yearly-usage');
+    Route::get('/admin/reports/yearly-usage/list', 'Admin\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.list');
+    Route::get('/admin/reports/yearly-usage/download-csv', 'Admin\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.download-csv');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Client User Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/client/users', 'Admin\ClientUserController@index')->name('admin.client.user');
+    Route::get('/admin/client/users/list', 'Admin\ClientUserController@list')->name('admin.client.user.list');
+    Route::post('/admin/client/users/store', 'Admin\ClientUserController@store')->name('admin.client.user.store');
+    Route::get('/admin/client/users/{id}', 'Admin\ClientUserController@details')->where('id', '[0-9]+')->name('admin.client.user.details');
+    Route::put('/admin/client/users/update', 'Admin\ClientUserController@update')->name('admin.client.user.update');
+    Route::get('/admin/client/users/delete/{id}', 'Admin\ClientUserController@delete')->where('id', '[0-9]+')->name('admin.client.user.delete');
+
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ModulesControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\ModuleRequest;
 
 use App\Models\Module;
 use App\Models\ViewModels\ModuleViewModel;
@@ -70,7 +71,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
         }
     }
 
-    public function store(Request $request)
+    public function store(ModuleRequest $request)
     {
         try
     	{
@@ -97,7 +98,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
         }
     }
 
-    public function update(Request $request)
+    public function update(ModuleRequest $request)
     {
         try
     	{

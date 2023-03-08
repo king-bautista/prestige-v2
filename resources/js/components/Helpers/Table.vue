@@ -1,9 +1,11 @@
 <template>
 	<div>
-		<div class="row mt-2">
+		<div class="row mt-2"  v-if="showHeader">
 	        <div class="col-md-3 d-flex align-items-center mb-2">
 	            Show
 	            <select v-model="perPage" @change="fetchData" class="custom-select custom-select-sm form-control form-control-sm" style="margin-left: 0.5em; margin-right: 0.5em;" :disabled="!meta.total">
+	                <option value="5" selected>5</option>
+	                <option value="10" selected>10</option>
 	                <option value="15" selected>15</option>
 	                <option value="30">30</option>
 	                <option value="50">50</option>
@@ -21,7 +23,7 @@
 	        <div class="col-md-4 mb-2">
 	            <div class="input-group d-flex align-items-center justify-content-end">
 	                Search:
-	                <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search" v-on:keyup="onEnterSearch" style="margin-left: 0.5em;" :disabled="!meta.total"/>
+	                <input type="text" class="form-control form-control-sm search-box" placeholder="Search" v-on:keyup="onEnterSearch($event)" style="margin-left: 0.5em;"/>
 	                <div class="input-group-append">
 	                    <button type="button" class="btn btn-info btn-sm" @click="fetchData"><i class="fas fa-search"></i></button>
 	                </div>
@@ -186,13 +188,23 @@
             otherButtons: {
                 type: Object,
                 required: false
+            },
+            showHeader: {
+                type: Boolean,
+                required: false,
+                default: true
+            },
+            rowPerPage: {
+                type: Number,
+                required: false,
+                default: 15
             }
         },
 
         data() {
         	return {
             	page: 1,
-            	perPage: 15,
+            	perPage: this.rowPerPage,
         		search: '',
         		dataTable: [],
         		meta: [],
@@ -279,6 +291,7 @@
         	},
 
         	onEnterSearch(e) {
+                this.search = e.target.value;
                 if (e.keyCode === 13) {
                     this.page = 1;
                     this.fetchData()

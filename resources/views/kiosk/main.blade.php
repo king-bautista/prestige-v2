@@ -13,10 +13,10 @@
                     <router-view></router-view>
                 </div>
             </div>            
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-12 text-center pt-2 pr-136">
                     <router-link to="/">
-                        <div class="h-button widget-button home-button active logs" data-link='Home'>
+                        <div class="h-button widget-button home-button active logs" data-link='Category'>
                             <div class="button-text-align">Home</div>
                         </div>
                     </router-link>
@@ -41,7 +41,7 @@
                         </div>
                     </router-link>
                 </div>
-            </div>
+            </div> -->
             <div id="popover-content" class="hide d-none" style="z-index:1">
                 Need help? Touch here.
             </div>
@@ -129,7 +129,7 @@
 
     });
 
-    $('.home-button').click();
+    // $('.home-button').click();
     
 </script>
 @endpush

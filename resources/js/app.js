@@ -51,6 +51,15 @@ Vue.component('admin-reports_tenant_search', require('./components/Admin/ReportT
 Vue.component('admin-report_top_keywords', require('./components/Admin/ReportTopKeywords.vue').default);
 Vue.component('admin-report_merchant_usage', require('./components/Admin/ReportMerchantUsage.vue').default);
 Vue.component('admin-report_monthly_usage', require('./components/Admin/ReportMonthlyUsage.vue').default);
+Vue.component('admin-report_yearly_usage', require('./components/Admin/ReportYearlyUsage.vue').default);
+Vue.component('admin-dashboard_population', require('./components/Admin/DashboardMerchantPopulation.vue').default);
+Vue.component('admin-dashboard_tenant_search', require('./components/Admin/DashboardTopTenantSearch.vue').default);
+Vue.component('admin-dashboard_monthly_usage', require('./components/Admin/DashboardMonthlyUsage.vue').default);
+Vue.component('admin-dashboard_merchant_usage', require('./components/Admin/DashboardMerchantUsage.vue').default);
+Vue.component('admin-dashboard_top_key_words', require('./components/Admin/DashboardTopKeyWords.vue').default);
+Vue.component('admin-dashboard_highest_usage', require('./components/Admin/DashboardHighestUsage.vue').default);
+Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
+
 /**
  * PORTAL PART
  */

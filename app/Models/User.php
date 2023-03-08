@@ -20,6 +20,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'company_id',
         'full_name',
         'email',
         'email_verified_at',
@@ -110,4 +111,44 @@ class User extends Authenticatable
             );
         }
     }
+
+    public function saveBrands($brands)
+    {
+        UserBrand::where('user_id', $this->id)->delete();
+        foreach ($brands as $key => $brand) {
+            UserBrand::updateOrCreate(
+                [
+                   'user_id' => $this->id,
+                   'brand_id' => $brand['id']
+                ]
+            );
+        }
+    }
+
+    public function saveSites($sites)
+    {
+        UserSite::where('user_id', $this->id)->delete();
+        foreach ($sites as $key => $site) {
+            UserSite::updateOrCreate(
+                [
+                   'user_id' => $this->id,
+                   'site_id' => $site['id']
+                ]
+            );
+        }
+    }
+
+    public function saveScreens($screens)
+    {
+        UserScreen::where('user_id', $this->id)->delete();
+        foreach ($screens as $key => $screen) {
+            UserScreen::updateOrCreate(
+                [
+                   'user_id' => $this->id,
+                   'site_screen_id' => $screen['id']
+                ]
+            );
+        }
+    }
+
 }

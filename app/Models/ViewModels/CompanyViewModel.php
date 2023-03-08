@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Company;
+use App\Models\Brand;
 use App\Models\Classification;
 
 class CompanyViewModel extends Model
@@ -46,7 +47,13 @@ class CompanyViewModel extends Model
         'parent_company',
         'classification_name',
         'label',
+        'brands',
     ]; 
+
+    public function getBrands()
+    {   
+        return $this->hasMany('App\Models\CompanyBrands', 'company_id', 'id');
+    }
 
     /****************************************
     *           ATTRIBUTES PARTS            *
@@ -71,5 +78,11 @@ class CompanyViewModel extends Model
     public function getLabelAttribute() 
     {
         return $this->name;
+    }
+
+    public function getBrandsAttribute() 
+    {
+        $ids = $this->getBrands()->pluck('brand_id');
+        return BrandViewModel::whereIn('id', $ids)->get();
     }
 }
