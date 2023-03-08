@@ -236,11 +236,7 @@
 
                                 <div class="collapse navbar-collapse" id="topnav-menu-content">
                                     <ul class="navbar-nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href='{{ url("portal") }}'>
-                                                <i class="ti-dashboard"></i>Dashboard
-                                            </a>
-                                        </li>
+                                        
                                         @foreach($user->permissions as $permission)
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle arrow-none" href="{{ $permission->link }}" id="topnav-client-management" role="button"
