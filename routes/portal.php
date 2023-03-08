@@ -133,7 +133,7 @@ Route::group(['middleware' => 'auth:web'], function () {
     | Advertisements Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/advertisements/online', 'Portal\AdvertisementController@index')->name('portal.advertisement.online');
+    Route::get('/portal/advertisements', 'Portal\AdvertisementController@index')->name('portal.advertisement.online');
     Route::get('/portal/advertisements/banner', 'Portal\AdvertisementController@banner')->name('portal.advertisement.banner');
     Route::get('/portal/advertisements/fullscreen', 'Portal\AdvertisementController@fullscreen')->name('portal.advertisement.fullscreen');
     Route::get('/portal/advertisements/popups', 'Portal\AdvertisementController@popups')->name('portal.advertisement.popups');
@@ -158,6 +158,20 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::post('/portal/brand/product/update', 'Admin\ProductsController@update')->name('admin.brand.product.update');
     Route::get('/portal/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('admin.brand.product.delete');
     Route::get('/portal/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('admin.brand.product.by-brand');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Companies Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/portal/companies', 'Admin\CompaniesController@index')->name('admin.companies');
+    Route::get('/portal/company/list', 'Admin\CompaniesController@list')->name('admin.company.list');
+    Route::post('/portal/company/store', 'Admin\CompaniesController@store')->name('admin.company.store');
+    Route::get('/portal/company/{id}', 'Admin\CompaniesController@details')->where('id', '[0-9]+')->name('admin.company.details');
+    Route::put('/portal/company/update', 'Admin\CompaniesController@update')->name('admin.company.update');
+    Route::get('/portal/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('admin.company.delete');
+    Route::get('/portal/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('admin.company.get-all');
+    Route::get('/portal/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('admin.company.get-parent');
 
 
     Route::post('/portal/logout', 'PortalAuth\AuthController@portalLogout')->name('portal.logout');
