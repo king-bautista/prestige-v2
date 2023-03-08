@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%;">
+    <div class="router-page" style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
                 <div id="page-title">{{ page_title }}</div>

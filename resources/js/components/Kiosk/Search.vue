@@ -11,18 +11,18 @@
             </div>
         </div>
         <div v-if="search_page">
-            <div class="row" v-if="!search_results">
-                <div class="col-md-10 offset-md-1 mt-5 pt-5">
+            <div class="row keyboard-section" v-show="!search_results">
+                <div class="col-md-10 offset-md-1 mt-83 pt-5">
                     <form class="row form text-center" v-on:submit.prevent="onEnter">
                         <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
-                            <input type="text" id="code" name="code" class="form-control input-mg serach-box">
+                            <input type="text" id="code" name="code" class="form-control input-mg search-box">
                             <button class="btn search-box-button" type="button" @click="onEnter">Search</button>
                         </div>                    
-                        <div class="softkeys" data-target="input[name='code']"></div>
+                        <div class="softkeys mt-67" data-target="input[name='code']"></div>
                     </form>
                 </div>
             </div>
-            <div v-show="search_results">
+            <div class="result-section" v-show="search_results">
                 <div class="row">
                     <div class="col-md-12 home-title text-center">
                         <div>Results</div>                  
@@ -231,7 +231,6 @@
                     this.search.key_words = '';
                     this.search_page = true;
                     this.search_results = false;
-                    this.softkeys();
                     this.getSuggestionList();
                 }
                 else {
@@ -247,7 +246,7 @@
                     var suggestion_list = response.data.data;
                     $(function() {
                         $('#code').autocomplete({
-                            minLength: 4,
+                            minLength: 2,
                             source: suggestion_list,
                         });
                     })
@@ -260,41 +259,49 @@
                         target : $('.softkeys').data('target'),
                         layout : [
                             [
-                                ['`','~'],
-                                ['1','!'],
-                                ['2','@'],
-                                ['3','#'],
-                                ['4','$'],
-                                ['5','%'],
-                                ['6','^'],
-                                ['7','&'],
-                                ['8','*'],
-                                ['9','('],
-                                ['0',')'],
-                                ['-', '_'],
-                                ['=','+'],
-                                'delete',
+                                '1','2','3','4','5','6','7','8','9','0',
                             ],
                             [
-                                'q','w','e','r','t','y','u','i','o','p',
-                                ['[','{'],
-                                [']','}']
+                                ['Q','~'],
+                                ['W','!'],
+                                ['E','@'],
+                                ['R','#'],
+                                ['T','$'],
+                                ['Y','%'],
+                                ['U','^'],
+                                ['I','&'],
+                                ['O','*'],
+                                ['P','('],
+                                ['-',')'],
                             ],
                             [
-                                'capslock',
-                                'a','s','d','f','g','h','j','k','l',
-                                [';',':'],
-                                ["'",'&quot;'],
-                                ['\\','|']
+                                ['A','['],
+                                ['S',']'],
+                                ['D','-'],
+                                ['F','+'],
+                                ['G','='],
+                                ['H',':'],
+                                ['J',';'],
+                                ['K','\''],
+                                ['L','&#34;'],
+                                ['\'','null'],
                             ],
                             [
                                 'shift',
-                                'z','x','c','v','b','n','m',
-                                [',','&lt;'],
-                                ['.','&gt;'],
-                                ['/','?'],
-                                ['@'],
+                                ['Z','['],
+                                ['X',']'],
+                                ['C','-'],
+                                ['V','+'],
+                                ['B','?'],
+                                ['N',':'],
+                                ['M',';'],
+                                'delete',
+                            ],
+                            [
+                                [',','null'],
                                 'space',
+                                ['.','null'],
+                                ['Enter','Enter'],
                             ]
                         ]
                     });
@@ -318,6 +325,26 @@
         mounted() {
             this.softkeys();
             $(function() {
+                $(".softkeys__btn").each(function(){
+                    if($(this).attr('data-type') === "shift"){                  
+                        $(this).first().addClass('ABC');
+                        $(this).first().html("#+=");
+                    };
+                    if($(this).attr('data-type') === "delete"){
+                        $(this).addClass('delete');
+                    };
+                    if($(this).attr('data-type') === "space"){
+                        $(this).addClass('space-key');
+                        $(this).first().html("SPACE");
+                    };
+                    if($(this).attr('data-type') === "delete"){
+                            $(this).addClass('delete-key');
+                        };
+                    if($(this).children().eq(1).html() === "null"){
+                        $(this).addClass('hidden-on-alt');
+                    }
+                });
+
                 $(".softkeys__btn").on('mousedown',function(){
                 
                 }).on('mouseup',function(){
@@ -328,6 +355,15 @@
                     $("#myProduct").hide();
                 });
 
+                $(".ABC").on('click',function(){
+                    if ($(this).html() === "ABC") {
+                        $(this).html("#+=");
+                        $(".hidden-on-alt").show();
+                    } else {
+                        $(this).html("ABC");
+                        $(".hidden-on-alt").hide();
+                    }
+                });
             })
         },
     };
