@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7709 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,582 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,440 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -11218,7 +11218,7 @@ CREATE TABLE IF NOT EXISTS `cinema_sites` (
   CONSTRAINT `cinema_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.cinema_sites: ~0 rows (approximately)
+-- Dumping data for table prestige.cinema_sites: ~1 rows (approximately)
 INSERT INTO `cinema_sites` (`id`, `site_id`, `cinema_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, '2102', '2022-11-20 22:48:43', '2022-11-20 22:54:57', NULL);
 
@@ -12035,9 +12035,9 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, 
 	(43, 14, 'Promos', '/admin/advertisements/promos', 'Admin', 'nav-icon fa fa-tags', 1, '2023-01-19 07:10:54', '2023-02-17 09:44:48', NULL),
 	(44, NULL, 'Content Management', '/admin/content-management', 'Admin', 'nav-icon fas fa-photo-video', 1, '2023-01-19 09:09:57', '2023-02-17 09:44:42', NULL),
 	(46, NULL, 'Users Management', '/admin/client/users', 'Admin', 'nav-icon fas fa-users', 1, '2023-03-02 08:57:46', '2023-03-03 08:29:05', NULL),
-	(47, NULL, 'Dashboard', '#', 'Portal', 'nav-icon fas fa-th', 1, '2023-03-02 09:04:33', '2023-03-02 09:09:59', NULL),
+	(47, NULL, 'Dashboard', '/portal', 'Portal', 'nav-icon fas fa-th', 1, '2023-03-02 09:04:33', '2023-03-09 07:27:55', NULL),
 	(48, NULL, 'Manage Account', '#', 'Portal', 'nav-icon fas fa-users', 1, '2023-03-02 09:10:55', '2023-03-09 05:55:21', NULL),
-	(49, 48, 'Roles', '#', 'Portal', 'nav-icon fas fa-user-tie', 1, '2023-03-02 09:11:24', '2023-03-02 09:12:23', NULL),
+	(49, 48, 'Roles', '/portal/roles', 'Portal', 'nav-icon fas fa-user-tie', 1, '2023-03-02 09:11:24', '2023-03-09 09:03:22', NULL),
 	(50, 48, 'Users', '#', 'Portal', 'nav-icon fas fa-users', 1, '2023-03-02 09:13:20', '2023-03-02 09:14:38', NULL),
 	(51, NULL, 'Manage Property', '#', 'Portal', 'nav-icon fa fa-building', 1, '2023-03-02 09:34:57', '2023-03-09 05:59:13', NULL),
 	(52, 51, 'Kiosk Status', '#', 'Portal', 'nav-icon fa fa-signal', 1, '2023-03-02 09:37:16', '2023-03-09 06:03:31', NULL),
