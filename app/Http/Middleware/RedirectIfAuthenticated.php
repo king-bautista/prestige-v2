@@ -22,12 +22,13 @@ class RedirectIfAuthenticated
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
-            // if (Auth::guard($guard)->check()) {
-            //     return redirect(RouteServiceProvider::HOME);
-            // }
             
             if ($guard == "admin" && Auth::guard($guard)->check() && $request->getRequestUri() != "/admin/logout") {
                 return redirect('/admin');
+            }
+
+            if ($guard == "portal" && Auth::guard($guard)->check() && $request->getRequestUri() != "/portal/logout") {
+                return redirect('/portal');
             }
 
         }
