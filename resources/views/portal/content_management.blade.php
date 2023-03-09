@@ -1,6 +1,6 @@
 @extends('layout.portal.master')
 @section('Page-Title')
-<h4>User</h4>
+<h4>Content Management</h4>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="javascript: void(0);">Prestige&nbsp;</a></li>

@@ -55,7 +55,7 @@ class AuthController extends AppBaseController implements AuthControllerInterfac
         try
         {   
             $portal_user = User::where('email', '=', $request->email)->where('active', true)->first();
-            
+           echo 'test';  
             if ($portal_user && Hash::check($portal_user->salt.env("PEPPER_HASH").$request->password, $portal_user->password)) {
                 Auth::guard('web')->login($portal_user);
                 return redirect()->intended(url('/portal'));

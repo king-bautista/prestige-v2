@@ -125,7 +125,7 @@
 		
     </div>
 </template>
-<script> 
+<script>
 	import Table from '../Helpers/Table';
     // Import this component
     import Multiselect from 'vue-multiselect';
@@ -306,7 +306,7 @@
             },
 
             updateAdvertisements: function() {
-				let formData = new FormData();
+				let formData = new FormData(); a
 				formData.append("id", this.advertisements.id);
 				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
 				formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));

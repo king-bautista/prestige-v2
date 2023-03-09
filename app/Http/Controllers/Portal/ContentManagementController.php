@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Models\ContentManagement;
 use App\Models\TransactionStatus;
-use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\UserViewModel;
 use App\Models\ViewModels\ContentManagementViewModel;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
@@ -19,7 +19,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
     ****************************************/
     public function __construct()
     {
-        $this->module_id = 51; 
+        $this->module_id = 54; 
         $this->module_name = 'Content Management';
     }
 
@@ -32,7 +32,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             
             $contents = ContentManagementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');

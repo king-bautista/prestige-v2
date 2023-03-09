@@ -69,7 +69,8 @@ Vue.component('portal-roles', require('./components/Portal/Roles.vue').default);
 Vue.component('portal-brands', require('./components/Portal/PortalBrands.vue').default);
 Vue.component('portal-building-tenants', require('./components/Portal/PortalTenants.vue').default);
 Vue.component('portal-content', require('./components/Portal/Content.vue').default);
-Vue.component('portal-advertisements', require('./components/Portal/PortalAdvertisements.vue').default);
+Vue.component('portal-advertisements-online', require('./components/Portal/PortalAdvertisementsOnline.vue').default);
+Vue.component('portal-advertisements-banner', require('./components/Portal/PortalAdvertisementsBanner.vue').default);
 
 /**
  * KIOSK PART

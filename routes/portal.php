@@ -164,14 +164,14 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Companies Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/companies', 'Admin\CompaniesController@index')->name('admin.companies');
-    Route::get('/portal/company/list', 'Admin\CompaniesController@list')->name('admin.company.list');
-    Route::post('/portal/company/store', 'Admin\CompaniesController@store')->name('admin.company.store');
-    Route::get('/portal/company/{id}', 'Admin\CompaniesController@details')->where('id', '[0-9]+')->name('admin.company.details');
-    Route::put('/portal/company/update', 'Admin\CompaniesController@update')->name('admin.company.update');
-    Route::get('/portal/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('admin.company.delete');
-    Route::get('/portal/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('admin.company.get-all');
-    Route::get('/portal/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('admin.company.get-parent');
+    Route::get('/portal/companies', 'Admin\CompaniesController@index')->name('portal.companies');
+    Route::get('/portal/company/list', 'Admin\CompaniesController@list')->name('portal.company.list');
+    Route::post('/portal/company/store', 'Admin\CompaniesController@store')->name('portal.company.store');
+    Route::get('/portal/company/{id}', 'Admin\CompaniesController@details')->where('id', '[0-9]+')->name('portal.company.details');
+    Route::put('/portal/company/update', 'Admin\CompaniesController@update')->name('portal.company.update');
+    Route::get('/portal/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('portal.company.delete');
+    Route::get('/portal/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('portal.company.get-all');
+    Route::get('/portal/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('portal.company.get-parent');
 
 
     Route::post('/portal/logout', 'PortalAuth\AuthController@portalLogout')->name('portal.logout');
