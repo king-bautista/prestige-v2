@@ -1,0 +1,21 @@
+body[data-topbar=dark] .noti-icon i {
+    color: #555b6d;
+}
+
+.navbar-header {
+    height: 55px !important;
+}
+
+.header-item {
+    height: 55px !important;
+}
+
+.brand-link img {
+    opacity: 0.8;
+    height: 55px;
+    margin-top: 5px;
+}
+
+#page-header-user-dropdown {
+    margin-top: 5px;
+}
