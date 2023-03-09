@@ -1,7 +1,7 @@
 <template>
 	<div>
         <!-- Main content -->
-	    <section class="content">
+	    <section class="">
 	      <div class="container-fluid">
 	        <div class="row">
 	          <div class="col-md-12">
