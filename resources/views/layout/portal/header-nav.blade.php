@@ -6,8 +6,7 @@
                 <div class="navbar-brand-box">
                     <!-- Brand Logo -->
                     <a href='{{ url("portal") }}' class="brand-link">
-                        <img src="{{ URL::to('images/prestige-interactive-logo.png') }}" alt="Prestige Logo"
-                            class="brand-image" style="opacity: .8">
+                        <img src="{{ URL::to('images/prestige-interactive-logo.png') }}" alt="Prestige Logo" class="brand-image">
                     </a>
                 </div>
 
@@ -19,38 +18,6 @@
             </div>
 
             <div class="float-end">
-
-                <!-- App Search-->
-                <form class="app-search d-none d-lg-inline-block">
-                    <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="fa fa-search"></span>
-                    </div>
-                </form>
-
-                <div class="dropdown d-inline-block d-lg-none ms-2">
-                    <button type="button" class="btn header-item noti-icon waves-effect"
-                        id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        <i class="mdi mdi-magnify"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                        aria-labelledby="page-header-search-dropdown">
-
-                        <form class="p-3">
-                            <div class="form-group m-0">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search ..."
-                                        aria-label="Recipient's username">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit"><i
-                                                class="mdi mdi-magnify"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
                 <div class="dropdown d-inline-block ms-1">
                     <button type="button" class="btn header-item noti-icon waves-effect"
                         id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
