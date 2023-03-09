@@ -60,18 +60,18 @@
         <div class="tab-pane p-3" id="banner" role="tabpanel">
           <portal-advertisements-banner :ad_type="'Banners'"></portal-advertisements-banner>
         </div>
-        <!-- <div class="tab-pane p-3" id="fullscreen" role="tabpanel">
-          <portal-advertisements :ad_type="'Fullscreen'"></portal-advertisements>
+        <div class="tab-pane p-3" id="fullscreen" role="tabpanel">
+          <portal-advertisements-fullscreen :ad_type="'Fullscreen'"></portal-advertisements-fullscreen>
         </div>
         <div class="tab-pane p-3" id="pop-up" role="tabpanel">
-          <portal-advertisements :ad_type="'Pop-Up'"></portal-advertisements>
+          <portal-advertisements-pop-up :ad_type="'Pop-Up'"></portal-advertisements-pop-up>
         </div>
         <div class="tab-pane p-3" id="event" role="tabpanel">
-          <portal-advertisements :ad_type="'Events'"></portal-advertisements>
+          <portal-advertisements-event :ad_type="'Events'"></portal-advertisements-event>
         </div>
         <div class="tab-pane p-3" id="promo" role="tabpanel">
-          <portal-advertisements :ad_type="'Promos'"></portal-advertisements>
-        </div> -->
+          <portal-advertisements-promo :ad_type="'Promos'"></portal-advertisements-promo>
+        </div>
     </div>
   </div>
 </div>

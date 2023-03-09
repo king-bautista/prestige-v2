@@ -21,148 +21,84 @@ export default {
 </script>
 
 <template>
-<div class ="card">
-    <div class ="card-body">
-    <div class="row">
-      <div class="col-12">
-      <h4>
-      <i class="fas fa-globe"></i> Company Name:
-      <small>Date: 2/10/2014</small>
-      </h4>
-      </div>
-    </div>  
-	  <div class="row">
-      <div class="col-sm-4 ">
-                  From
-                  <address>
-                    <strong>Admin, Inc.</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (804) 123-5432<br>
-                    Email: info@almasaeedstudio.com
-                  </address>
-      </div>
-      <div class="col-sm-4">
-        To
-        <address>
-        <strong>John Doe</strong><br>
-        795 Folsom Ave, Suite 600<br>
-        San Francisco, CA 94107<br>
-        Phone: (555) 539-1037<br>
-        Email: john.doe@example.com
-        </address>
-      </div>
-               
-      <div class="col-sm-4">
-        <b>Invoice #007612</b><br>
-        <br>
-        <b>Order ID:</b> 4F3S8J<br>
-        <b>Payment Due:</b> 2/22/2014<br>
-        <b>Account:</b> 968-34567
-      </div>
+<div class="card">
+    <div class="card-body">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" data-bs-toggle="tab" href="#online" role="tab" aria-selected="true">
+            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+            <span class="d-none d-sm-block">Online</span>
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" data-bs-toggle="tab" href="#banner" role="tab" aria-selected="false" tabindex="-1">
+            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+            <span class="d-none d-sm-block">Banners</span>
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" data-bs-toggle="tab" href="#fullscreen" role="tab" aria-selected="false" tabindex="-1">
+            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+            <span class="d-none d-sm-block">Fullscreens</span>
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" data-bs-toggle="tab" href="#pop-up" role="tab" aria-selected="false" tabindex="-1">
+            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+            <span class="d-none d-sm-block">Pop-Ups</span>
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" data-bs-toggle="tab" href="#event" role="tab" aria-selected="false" tabindex="-1">
+            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+            <span class="d-none d-sm-block">Events</span>
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" data-bs-toggle="tab" href="#promo" role="tab" aria-selected="false" tabindex="-1">
+            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+            <span class="d-none d-sm-block">Promos</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane p-3 active show" id="online" role="tabpanel">
+          <p class="mb-0">
+            Online
+          </p>
+        </div>
+        <div class="tab-pane p-3" id="banner" role="tabpanel">
+          <p class="mb-0">
+            Banner
+          </p>
+        </div>
+        <div class="tab-pane p-3" id="fullscreen" role="tabpanel">
+          <p class="mb-0">
+            Fullscreens
+          </p>
+        </div>
+        <div class="tab-pane p-3" id="pop-up" role="tabpanel">
+          <p class="mb-0">
+            Pop-Ups
+          </p>
+        </div>
+        <div class="tab-pane p-3" id="event" role="tabpanel">
+          <p class="mb-0">
+            Events
+          </p>
+        </div>
+        <div class="tab-pane p-3" id="promo" role="tabpanel">
+          <p class="mb-0">
+            Promos
+          </p>
+        </div>
+        
+      
     </div>
-     <div class="row">
-      <div class="col-6 table-responsive card">
-        <div class = "card-body">  
-                  <table class="table table-striped">
-                    <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Description</th>
-                      <th>Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td>Juan I One</td>
-                      <td>Description Description</td>
-                      <td>03-04-23</td>
-                    </tr>
-                    <tr>
-                      <td>Pedro P. Peter</td>
-                      <td>Description Description</td>
-                      <td>03-04-23</td>
-                    </tr>
-                    <tr>
-                      <td>James s. Tiago</td>
-                      <td>Description Description</td>
-                      <td>03-04-23</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                  </div>
-      </div>
-      <div class="col-6 card">
-        <div class="card">
-                                    <div class="card-body">
-        
-                                        <h4 class="card-title">Range validation</h4>
-                                        <p class="card-title-desc">Parsley is a javascript form validation
-                                            library. It helps you provide your users with feedback on their form
-                                            submission before sending it to your server.</p>
-        
-                                        <form action="#" class="custom-validation" novalidate="">
-        
-                                            <div class="mb-3">
-                                                <label class="form-label">Min Length</label>
-                                                <div>
-                                                    <input type="text" class="form-control" required="" data-parsley-minlength="6" placeholder="Min 6 chars.">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Max Length</label>
-                                                <div>
-                                                    <input type="text" class="form-control" required="" data-parsley-maxlength="6" placeholder="Max 6 chars.">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Range Length</label>
-                                                <div>
-                                                    <input type="text" class="form-control" required="" data-parsley-length="[5,10]" placeholder="Text between 5 - 10 chars length">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Min Value</label>
-                                                <div>
-                                                    <input type="text" class="form-control" required="" data-parsley-min="6" placeholder="Min value is 6">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Max Value</label>
-                                                <div>
-                                                    <input type="text" class="form-control" required="" data-parsley-max="6" placeholder="Max value is 6">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Range Value</label>
-                                                <div>
-                                                    <input class="form-control" required="" type="text" min="6" max="100" placeholder="Number between 6 - 100">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Regular Exp</label>
-                                                <div>
-                                                    <input type="text" class="form-control" required="" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="Hex. Color">
-                                                </div>
-                                            </div>
-        
-                                            <div class="mb-0">
-                                                <div>
-                                                    <button type="submit" class="btn btn-primary waves-effect waves-light me-1">
-                                                        Submit
-                                                    </button>
-                                                    <button type="reset" class="btn btn-secondary waves-effect">
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <!-- end form -->
-                                    </div>
-                                </div>
-      </div>
-      </div>  
-    </div>
- </div>
- 
+
+  </div>
+</div>
 </template>

@@ -22,13 +22,13 @@
 
     <body data-topbar="dark" data-layout="horizontal">
         <div class="wrapper" id="app">
-            <!-- Navbar -->
-            @include('portal.admin.header-nav')
+            <!-- Header Navbar -->
+            @include('layout.portal.header-nav')
             <!-- /.navbar -->
             <div class="main-content">
 
                 <div class="page-content">
-                    <div class="container-fluid">
+                    <div class="container-fluid">   
                         <!-- <div class="row"> -->
                             <div>
                                 @yield('content')

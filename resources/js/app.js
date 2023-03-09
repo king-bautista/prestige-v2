@@ -71,6 +71,10 @@ Vue.component('portal-building-tenants', require('./components/Portal/PortalTena
 Vue.component('portal-content', require('./components/Portal/Content.vue').default);
 Vue.component('portal-advertisements-online', require('./components/Portal/PortalAdvertisementsOnline.vue').default);
 Vue.component('portal-advertisements-banner', require('./components/Portal/PortalAdvertisementsBanner.vue').default);
+Vue.component('portal-advertisements-fullscreen', require('./components/Portal/PortalAdvertisementsFullscreens.vue').default);
+Vue.component('portal-advertisements-pop-up', require('./components/Portal/PortalAdvertisementsPop-Ups.vue').default);
+Vue.component('portal-advertisements-event', require('./components/Portal/PortalAdvertisementsEvents.vue').default);
+Vue.component('portal-advertisements-promo', require('./components/Portal/PortalAdvertisementsPromos.vue').default);
 
 /**
  * KIOSK PART
