@@ -19,3 +19,7 @@ body[data-topbar=dark] .noti-icon i {
 #page-header-user-dropdown {
     margin-top: 5px;
 }
+
+.nav-link a {
+    color: #555b6d;
+}

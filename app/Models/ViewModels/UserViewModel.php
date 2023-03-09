@@ -77,7 +77,7 @@ class UserViewModel extends Model
 
     public function getRoles()
     {
-        return $this->hasMany('App\Models\UserRoles', 'user_id', 'id');
+        return $this->hasMany('App\Models\UserRole', 'user_id', 'id');
     }
 
     public function getPermissions()
@@ -100,7 +100,7 @@ class UserViewModel extends Model
     public function getRolesAttribute() 
     { 
         $role_ids = $this->getRoles()->pluck('role_id')->toArray();
-        return UserRole::whereIn('id', $role_ids)->get();
+        return RoleViewModel::whereIn('id', $role_ids)->get();
     }
 
     public function getPermissionsAttribute() 

@@ -76,6 +76,14 @@ Vue.component('portal-advertisements-pop-up', require('./components/Portal/Porta
 Vue.component('portal-advertisements-event', require('./components/Portal/PortalAdvertisementsEvents.vue').default);
 Vue.component('portal-advertisements-promo', require('./components/Portal/PortalAdvertisementsPromos.vue').default);
 
+Vue.component('portal-dashboard_population', require('./components/Portal/DashboardMerchantPopulation.vue').default);
+Vue.component('portal-dashboard_tenant_search', require('./components/Portal/DashboardTopTenantSearch.vue').default);
+Vue.component('portal-dashboard_monthly_usage', require('./components/Portal/DashboardMonthlyUsage.vue').default);
+Vue.component('portal-dashboard_merchant_usage', require('./components/Portal/DashboardMerchantUsage.vue').default);
+Vue.component('portal-dashboard_top_key_words', require('./components/Portal/DashboardTopKeyWords.vue').default);
+Vue.component('portal-dashboard_highest_usage', require('./components/Portal/DashboardHighestUsage.vue').default);
+
+
 /**
  * KIOSK PART
  */

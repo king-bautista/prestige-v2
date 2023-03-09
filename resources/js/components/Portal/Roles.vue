@@ -1,30 +1,24 @@
 <template>
 	<div>
-        <!-- Main content -->
-	    <section class="content">
-	      <div class="container-fluid">
-	        <div class="row">
-	          <div class="col-md-12">
-	          	<div class="card">
-	    			<div class="card-body">
-			          	<Table 
-                        :dataFields="dataFields"
-                        :dataUrl="dataUrl"
-                        :actionButtons="actionButtons"
-						:otherButtons="otherButtons"
-                        :primaryKey="primaryKey"
-						v-on:addNewRole="addNewRole"
-						v-on:editButton="editRole"
-                        ref="dataTable">
-			          	</Table>
-		          	</div>
-		        </div>
-	          </div>
-	        </div>
-	        <!-- /.row -->
-	      </div><!-- /.container-fluid -->
-	    </section>
-	    <!-- /.content -->
+	    <div class="row">
+			<div class="col-md-12">
+			<div class="card">
+				<div class="card-body">
+					<Table 
+					:dataFields="dataFields"
+					:dataUrl="dataUrl"
+					:actionButtons="actionButtons"
+					:otherButtons="otherButtons"
+					:primaryKey="primaryKey"
+					v-on:addNewRole="addNewRole"
+					v-on:editButton="editRole"
+					ref="dataTable">
+					</Table>
+				</div>
+			</div>
+			</div>
+		</div>
+		<!-- /.row -->
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="role-form" tabindex="-1" aria-labelledby="role-form" aria-hidden="true">

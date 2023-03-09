@@ -116,8 +116,8 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
 
     public function getTenantSearch(Request $request)
     {
-        // try
-        // {
+        try
+        {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_id = '';
@@ -162,15 +162,15 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             ->paginate(request('perPage'));    
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function getSearchKeywords(Request $request)
