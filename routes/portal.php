@@ -151,13 +151,13 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Brands Products Routes
     |--------------------------------------------------------------------------
     */    
-    Route::get('/portal/brand/products/{id}', 'Admin\ProductsController@index')->where('id', '[0-9]+')->name('portal.brand.products');
-    Route::get('/portal/brand/product/list', 'Admin\ProductsController@list')->name('portal.brand.product.list');
-    Route::get('/portal/brand/product/{id}', 'Admin\ProductsController@details')->where('id', '[0-9]+')->name('portal.brand.product.details');
-    Route::post('/portal/brand/product/store', 'Admin\ProductsController@store')->name('portal.brand.product.store');
-    Route::post('/portal/brand/product/update', 'Admin\ProductsController@update')->name('portal.brand.product.update');
-    Route::get('/portal/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('portal.brand.product.delete');
-    Route::get('/portal/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('portal.brand.product.by-brand');
+    Route::get('/portal/brand/products/{id}', 'Portal\ProductsController@index')->where('id', '[0-9]+')->name('portal.brand.products');
+    Route::get('/portal/brand/product/list', 'Portal\ProductsController@list')->name('portal.brand.product.list');
+    Route::get('/portal/brand/product/{id}', 'Portal\ProductsController@details')->where('id', '[0-9]+')->name('portal.brand.product.details');
+    Route::post('/portal/brand/product/store', 'Portal\ProductsController@store')->name('portal.brand.product.store');
+    Route::post('/portal/brand/product/update', 'Portal\ProductsController@update')->name('portal.brand.product.update');
+    Route::get('/portal/brand/product/delete/{id}', 'Portal\ProductsController@delete')->where('id', '[0-9]+')->name('portal.brand.product.delete');
+    Route::get('/portal/brand/product-by-id/{id}', 'Portal\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('portal.brand.product.by-brand');
 
     /*
     |--------------------------------------------------------------------------

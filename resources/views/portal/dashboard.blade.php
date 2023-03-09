@@ -11,7 +11,7 @@
 @endsection
 @section('content')
 <!-- Main content -->
-<portal-dashboard></portal-dashboard>
+<portal-under-construction></portal-under-construction>
 <!-- /.content -->
 @stop
 

@@ -33,25 +33,24 @@
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Role</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Role</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+						
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-4 col-form-label">Role Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="role.name" placeholder="Role Name">
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <textarea class="form-control" v-model="role.description" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
-							<div class="form-group row" v-show="edit_record">
+							<div class="form-group row mb-4" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
