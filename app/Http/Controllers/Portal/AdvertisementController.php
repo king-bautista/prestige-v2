@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Advertisement;
 use App\Models\ViewModels\AdvertisementViewModel;
-use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\UserViewModel;
 
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {
@@ -19,49 +19,24 @@ class AdvertisementController extends AppBaseController implements Advertisement
     ************************************************/
     public function __construct()
     {
-        $this->module_id = 50; 
+        $this->module_id = 53; 
         $this->module_name = 'Content Master';
     }
 
     public function index()
     {
-        return view('portal.advertisements_online');
+        return view('portal.advertisements');
     }
-
-    public function banner()
-    {
-        return view('portal.advertisements_banner');
-    }
-
-    public function fullscreen()
-    {
-        return view('portal.advertisements_fullscreen');
-    }
-
-    public function popups()
-    {
-        return view('portal.advertisements_popups');
-    }
-
-    public function events()
-    {
-        return view('portal.advertisements_events');
-    }
-
-    public function promos()
-    {
-        return view('admin.advertisements_promos');
-    }
-
+    
     public function list($ad_type, Request $request)
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             $advertisements = AdvertisementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            // ->where('ad_type', $ad_type)
+            ->where('ad_type', $ad_type)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
@@ -236,7 +211,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             $advertisements = AdvertisementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })

@@ -16,7 +16,7 @@ class DashboardController extends AppBaseController
     public function index()
     {
         //return $user = AdminViewModel::find(Auth::user()->id);
-        
+        echo 'test'; ///////////////
         return view('portal.dashboard');
         //return view('portal.testdashboard');
     }

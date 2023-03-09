@@ -12,7 +12,7 @@ use App\Models\Brand;
 use App\Models\Tag;
 use App\Models\Supplemental;
 use App\Models\BrandProductPromos;
-use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\UserViewModel;
 use App\Models\ViewModels\BrandViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
 
@@ -25,7 +25,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     ************************************/
     public function __construct()
     {
-        $this->module_id = 48; 
+        $this->module_id = 51; 
         $this->module_name = 'Brand Management';
     }
 
@@ -38,7 +38,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $brands = BrandViewModel::when(request('search'), function($query){
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')

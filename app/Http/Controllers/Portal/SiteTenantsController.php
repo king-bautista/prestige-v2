@@ -10,8 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Models\SiteTenant;
 use App\Models\SiteTenantProduct;
-use App\Models\ViewModels\AdminViewModel;
-//use App\Models\ViewModels\UserViewModel;
+use App\Models\ViewModels\UserViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
 use App\Models\ViewModels\TenantsDropdownViewModel;
@@ -25,8 +24,8 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 49;
-        $this->module_name = 'Tenants';
+        $this->module_id = 54;
+        $this->module_name = 'Tenant Management';
     }
 
     public function index()
@@ -44,7 +43,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
                 return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
@@ -268,7 +267,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $products = BrandProductViewModel::when(request('search'), function($query){
                 return $query->where('brand_products_promos.name', 'LIKE', '%' . request('search') . '%')
