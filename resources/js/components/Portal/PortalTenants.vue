@@ -35,53 +35,51 @@
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Tenant</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Tenant</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-                            <div class="form-group row">
+                            <div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
                                     <multiselect v-model="tenant.brand_id" track-by="name" label="name" placeholder="Select Brand" :options="brands" :searchable="true" :allow-empty="false">
                                     </multiselect> 
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-                                    <select class="custom-select" v-model="tenant.site_id" @change="getBuildings($event.target.value)">
+                                    <select class="form-control custom-select" v-model="tenant.site_id" @change="getBuildings($event.target.value)">
 									    <option value="">Select Site</option>
 									    <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
 								    </select>
 								</div>
 							</div>
-                            <div class="form-group row">
+                            <div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-                                    <select class="custom-select" v-model="tenant.site_building_id" @change="getFloorLevel($event.target.value)">
+                                    <select class="form-control custom-select" v-model="tenant.site_building_id" @change="getFloorLevel($event.target.value)">
 									    <option value="">Select Building</option>
 									    <option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
 								    </select>
 								</div>
 							</div>
-                            <div class="form-group row">
+                            <div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-                                    <select class="custom-select" v-model="tenant.site_building_level_id">
+                                    <select class="form-control custom-select" v-model="tenant.site_building_level_id">
 									    <option value="">Select Floor</option>
 									    <option v-for="floor in floors" :value="floor.id"> {{ floor.name }}</option>
 								    </select>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="lastName" class="col-sm-3 col-form-label">Company</label>
 								<div class="col-sm-9">
 									<treeselect v-model="tenant.company_id" :options="companies" placeholder="Select Company"/>
 								</div>
 							</div>					
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="is_subscriber" class="col-sm-3 col-form-label">Operational Hours</label>
 								<div class="col-sm-9">
 									<div class="row mb-3 mx-0" v-for="(operational, index)  in tenant.operational_hours ">
@@ -110,70 +108,70 @@
                                     </div>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Store Address</label>
 								<div class="col-sm-9">
 									<textarea class="form-control" v-model="tenant.address" placeholder="Store Address"></textarea>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Store E-mail</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.email" placeholder="Store E-mail">
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Store Contact Number</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.contact_number" placeholder="Store Contact No.">
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Store Facebook</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.facebook" placeholder="Store Facebook">
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Store Twitter</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.twitter" placeholder="Store Twitter">
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Store Instagram</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.instagram" placeholder="Store Instagram">
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-3 col-form-label">Store Website</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.website" placeholder="Store Website">
 								</div>
 							</div>
-							<div class="form-group row" >
+							<div class="form-group row mb-4">
 								<label for="tennat_active" class="col-sm-3 col-form-label">Active</label>
 								<div class="col-sm-3">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="tennat_active" v-model="tenant.active">
+									<div class="form-check form-switch form-switch-md mb-3">
+										<input type="checkbox" class="custom-control-input form-check-input" id="tennat_active" v-model="tenant.active">
 										<label class="custom-control-label" for="tennat_active"></label>
 									</div>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="is_subscriber" class="col-sm-3 col-form-label">Is Subscriber</label>
 								<div class="col-sm-3">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_subscriber" v-model="tenant.is_subscriber">
+									<div class="form-check form-switch form-switch-md mb-3">
+										<input type="checkbox" class="custom-control-input form-check-input" id="is_subscriber" v-model="tenant.is_subscriber">
 										<label class="custom-control-label" for="is_subscriber"></label>
 									</div>
 								</div>
 							</div>
-							<div class="form-group row" v-if="tenant.is_subscriber == 1">
+							<div class="form-group row mb-4" v-if="tenant.is_subscriber == 1">
 								<label for="firstName" class="col-sm-3 col-form-label">Subscriber Logo <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-3">
-                                    <input type="file" accept="image/*" ref="subscriber_logo" @change="subscriberLogoChange">
+                                    <div class="mb-4"><input type="file" accept="image/*" ref="subscriber_logo" @change="subscriberLogoChange"></div>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer">image max size is 550 x 550 pixels</footer>
 								</div>
@@ -217,9 +215,7 @@
 		      <div class="modal-content">
 		      <div class="modal-header">
 		          <h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
-		          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		          </button>
+		          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      <div class="modal-body">
 		          <form>
@@ -295,16 +291,16 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info">Active</span>'
             			}
             		},
             		is_subscriber: {
             			name: "Is Subscriber", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">No</span>', 
-            				1: '<span class="badge badge-info">Yes</span>'
+            				0: '<span class="badge bg-danger">No</span>', 
+            				1: '<span class="badge bg-info">Yes</span>'
             			}
             		},                    
 					updated_at: "Last Updated"

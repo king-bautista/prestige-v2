@@ -163,8 +163,8 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"
