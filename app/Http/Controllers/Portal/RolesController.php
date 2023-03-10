@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\RolesControllerInterface;
 use Illuminate\Http\Request;
 
-use App\Models\UserRole;
+use App\Models\Role;
 use App\Models\ViewModels\ModuleViewModel;
-use App\Models\ViewModels\UserRoleViewModel;
+use App\Models\ViewModels\RoleViewModel;
 use App\Models\ViewModels\UserViewModel;
 
 class RolesController extends AppBaseController implements RolesControllerInterface
 {
     /************************************
-    * 			Portal ROLES MANAGEMENT		*
+    * 			ROLES MANAGEMENT		*
     ************************************/
     public function __construct()
     {
@@ -32,12 +32,14 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {  
         try
         {
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
-            $roles = UserRole::when(request('search'), function($query){
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id);
+            $company_id = ($user->company_id) ? $user->company_id : 0;
+    
+            $roles = RoleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('description', 'LIKE', '%' . request('search') . '%');
             })
+            ->where('company_id', $company_id)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($roles, 'Successfully Retreived!', 200);
@@ -56,7 +58,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
         {
-            $role = UserRoleViewModel::find($id);
+            $role = RoleViewModel::find($id);
             return $this->response($role, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -73,13 +75,17 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
     	{
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id);
+            $company_id = ($user->company_id) ? $user->company_id : 0;
+
             $data = [
                 'name' => $request->name,
                 'description' => $request->description,
+                'company_id' => $company_id,
                 'active' => 1
             ];
 
-            $role = UserRole::create($data);
+            $role = Role::create($data);
 
             return $this->response($role, 'Successfully Created!', 200);
         }
@@ -97,7 +103,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
     	{
-            $role = UserRole::find($request->id);
+            $role = Role::find($request->id);
 
             $data = [
                 'name' => $request->name,

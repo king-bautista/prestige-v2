@@ -2,22 +2,26 @@
 	<div>
 	    <div class="row">
 			<div class="col-md-12">
-			<div class="card">
-				<div class="card-body">
-					<Table 
-					:dataFields="dataFields"
-					:dataUrl="dataUrl"
-					:actionButtons="actionButtons"
-					:otherButtons="otherButtons"
-					:primaryKey="primaryKey"
-					v-on:addNewRole="addNewRole"
-					v-on:editButton="editRole"
-					ref="dataTable">
-					</Table>
+				<div class="card">
+					<div class="card-header">
+						<h4><i class="nav-icon fas fa-user-tag"></i>&nbsp;&nbsp;Roles</h4>
+					</div>
+					<div class="card-body">
+						<Table 
+						:dataFields="dataFields"
+						:dataUrl="dataUrl"
+						:actionButtons="actionButtons"
+						:otherButtons="otherButtons"
+						:primaryKey="primaryKey"
+						v-on:addNewRole="addNewRole"
+						v-on:editButton="editRole"
+						ref="dataTable">
+						</Table>
+					</div>
 				</div>
 			</div>
-			</div>
 		</div>
+
 		<!-- /.row -->
 
 		<!-- Modal Add New / Edit User -->
@@ -109,6 +113,8 @@
                     isActive: false,
 					permissions: [],
                 },
+				data_list: true,
+				data_form: false,
                 add_record: true,
                 edit_record: false,
             	dataFields: {

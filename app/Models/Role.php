@@ -18,6 +18,7 @@ class Role extends Model
         'name',
         'description',
         'type',
+        'company_id',
         'active',
     ];
 

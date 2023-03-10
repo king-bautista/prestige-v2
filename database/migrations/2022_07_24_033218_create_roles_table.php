@@ -20,6 +20,7 @@ class CreateRolesTable extends Migration
             $table->string('name')->index();
             $table->string('description');
             $table->enum('type', ['Admin', 'Portal'])->nullable();
+            $table->bigInteger('company_id')->nullable()->unsigned();
             $table->boolean('active')->default(false);
             $table->timestamps();
             $table->softDeletes()->index();
