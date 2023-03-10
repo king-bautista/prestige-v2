@@ -68,19 +68,19 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Categories Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/categories', 'Admin\CategoriesController@index')->name('portal.category');
-    Route::get('/admin/category/list', 'Admin\CategoriesController@list')->name('portal.category.list');
-    Route::post('/admin/category/store', 'Admin\CategoriesController@store')->name('portal.category.store');
-    Route::get('/admin/category/{id}', 'Admin\CategoriesController@details')->where('id', '[0-9]+')->name('portal.category.details');
-    Route::post('/admin/category/update', 'Admin\CategoriesController@update')->name('portal.category.update');
-    Route::get('/admin/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('portal.category.delete');
+    Route::get('/portal/categories', 'Admin\CategoriesController@index')->name('portal.category');
+    Route::get('/portal/category/list', 'Admin\CategoriesController@list')->name('portal.category.list');
+    Route::post('/portal/category/store', 'Admin\CategoriesController@store')->name('portal.category.store');
+    Route::get('/portal/category/{id}', 'Admin\CategoriesController@details')->where('id', '[0-9]+')->name('portal.category.details');
+    Route::post('/portal/category/update', 'Admin\CategoriesController@update')->name('portal.category.update');
+    Route::get('/portal/category/delete/{id}', 'Admin\CategoriesController@delete')->where('id', '[0-9]+')->name('portal.category.delete');
     Route::get('/portal/category/get-parent', 'Admin\CategoriesController@getParent')->where('id', '[0-9]+')->name('portal.category.get-parent');
-    Route::get('/admin/category/get-all', 'Admin\CategoriesController@getAll')->name('portal.category.get-all');
-    Route::get('/admin/category/get-all/{id}', 'Admin\CategoriesController@getAll')->where('id', '[0-9]+')->name('portal.category.get-sub-category');
-    // Route::post('/admin/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('portal.category.delete-image');
-    Route::get('/admin/category/labels/{id}', 'Admin\CategoriesController@getLabels')->where('id', '[0-9]+')->name('portal.category.labels');
-    Route::post('/admin/category/label/store', 'Admin\CategoriesController@saveLabels')->name('portal.category.label.store');
-    Route::get('/admin/category/label/delete/{id}', 'Admin\CategoriesController@deleteLabel')->where('id', '[0-9]+')->name('portal.category.label.delete');
+    Route::get('/portal/category/get-all', 'Admin\CategoriesController@getAll')->name('portal.category.get-all');
+    Route::get('/portal/category/get-all/{id}', 'Admin\CategoriesController@getAll')->where('id', '[0-9]+')->name('portal.category.get-sub-category');
+    // Route::post('/portal/category/delete-image', 'Admin\CategoriesController@deleteImage')->name('portal.category.delete-image');
+    Route::get('/portal/category/labels/{id}', 'Admin\CategoriesController@getLabels')->where('id', '[0-9]+')->name('portal.category.labels');
+    Route::post('/portal/category/label/store', 'Admin\CategoriesController@saveLabels')->name('portal.category.label.store');
+    Route::get('/portal/category/label/delete/{id}', 'Admin\CategoriesController@deleteLabel')->where('id', '[0-9]+')->name('portal.category.label.delete');
 
     /*
     |--------------------------------------------------------------------------
@@ -212,6 +212,30 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('portal.company.get-all');
     Route::get('/portal/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('portal.company.get-parent');
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reports Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/portal/reports/merchant-population', 'Portal\ReportsController@index')->name('portal.reports.merchant-population');
+    Route::get('/portal/reports/merchant-population/list', 'Portal\ReportsController@getPopulationReport')->name('portal.reports.merchant-population.list');
+    Route::get('/portal/reports/merchant-population/download-csv', 'Portal\ReportsController@downloadCsvPopulation')->name('portal.reports.merchant-population.download-csv');
+    Route::get('/portal/reports/top-tenant-search', 'Portal\ReportsController@topTenantSearch')->name('portal.reports.top-tenant-search');
+    Route::get('/portal/reports/top-tenant-search/list', 'Portal\ReportsController@getTenantSearch')->where('id', '[0-9]+')->name('portal.reports.top-tenant-search.list');
+    Route::get('/portal/reports/top-tenant-search/download-csv', 'Portal\ReportsController@downloadCsvTenantSearch')->where('id', '[0-9]+')->name('portal.reports.top-tenant-search.download-csv');
+    Route::get('/portal/reports/most-search-keywords', 'Portal\ReportsController@mostSearchKeywords')->name('portal.reports.most-search-keywords');
+    Route::get('/portal/reports/most-search-keywords/list', 'Portal\ReportsController@getSearchKeywords')->where('id', '[0-9]+')->name('portal.reports.most-search-keywords.list');
+    Route::get('/portal/reports/most-search-keywords/download-csv', 'Portal\ReportsController@downloadCsvSearchKeywords')->where('id', '[0-9]+')->name('portal.reports.most-search-keywords.download-csv');
+    Route::get('/portal/reports/merchant-usage', 'Portal\ReportsController@merchantUsage')->name('portal.reports.merchant-usage');
+    Route::get('/portal/reports/merchant-usage/list', 'Portal\ReportsController@getMerchantUsage')->where('id', '[0-9]+')->name('portal.reports.merchant-usage.list');
+    Route::get('/portal/reports/merchant-usage/download-csv', 'Portal\ReportsController@downloadCsvmerchantUsage')->where('id', '[0-9]+')->name('portal.reports.merchant-usage.download-csv');
+    Route::get('/portal/reports/monthly-usage', 'Portal\ReportsController@monthlyUsage')->name('portal.reports.monthly-usage');
+    Route::get('/portal/reports/monthly-usage/list', 'Portal\ReportsController@getMonthlyUsage')->where('id', '[0-9]+')->name('portal.reports.monthly-usage.list');
+    Route::get('/portal/reports/monthly-usage/download-csv', 'Portal\ReportsController@downloadCsvMonthlyUsage')->where('id', '[0-9]+')->name('portal.reports.monthly-usage.download-csv');
+    Route::get('/portal/reports/yearly-usage', 'Portal\ReportsController@yearlyUsage')->name('portal.reports.yearly-usage');
+    Route::get('/portal/reports/yearly-usage/list', 'Portal\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.list');
+    Route::get('/portal/reports/yearly-usage/download-csv', 'Portal\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.download-csv');
 
     Route::post('/portal/logout', 'PortalAuth\AuthController@portalLogout')->name('portal.logout');
 });

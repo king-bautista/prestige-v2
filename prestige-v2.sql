@@ -11690,7 +11690,7 @@ CREATE TABLE IF NOT EXISTS `last_update_ats` (
 -- Dumping data for table prestige.last_update_ats: 1 rows
 /*!40000 ALTER TABLE `last_update_ats` DISABLE KEYS */;
 INSERT INTO `last_update_ats` (`last_updated_at`) VALUES
-	('2023-03-06 09:24:40');
+	('2023-03-08 14:13:15');
 /*!40000 ALTER TABLE `last_update_ats` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.logs
@@ -11987,9 +11987,9 @@ CREATE TABLE IF NOT EXISTS `modules` (
   PRIMARY KEY (`id`),
   KEY `modules_name_index` (`name`),
   KEY `modules_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~58 rows (approximately)
+-- Dumping data for table prestige.modules: ~64 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin Management', '#', 'Admin', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2022-08-08 01:26:43', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'Admin', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -12036,19 +12036,25 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, 
 	(44, NULL, 'Content Management', '/admin/content-management', 'Admin', 'nav-icon fas fa-photo-video', 1, '2023-01-19 09:09:57', '2023-02-17 09:44:42', NULL),
 	(46, NULL, 'Users Management', '/admin/client/users', 'Admin', 'nav-icon fas fa-users', 1, '2023-03-02 08:57:46', '2023-03-03 08:29:05', NULL),
 	(47, NULL, 'Dashboard', '#', 'Portal', 'nav-icon fas fa-th', 1, '2023-03-02 09:04:33', '2023-03-02 09:09:59', NULL),
-	(48, NULL, 'User Management', '#', 'Portal', 'nav-icon fas fa-users', 1, '2023-03-02 09:10:55', '2023-03-02 09:11:04', NULL),
+	(48, NULL, 'Manage Account', '#', 'Portal', 'nav-icon fas fa-users', 1, '2023-03-02 09:10:55', '2023-03-09 05:55:21', NULL),
 	(49, 48, 'Roles', '#', 'Portal', 'nav-icon fas fa-user-tie', 1, '2023-03-02 09:11:24', '2023-03-02 09:12:23', NULL),
 	(50, 48, 'Users', '#', 'Portal', 'nav-icon fas fa-users', 1, '2023-03-02 09:13:20', '2023-03-02 09:14:38', NULL),
-	(51, NULL, 'Brands', '#', 'Portal', 'nav-icon fa fa-tags', 1, '2023-03-02 09:34:57', '2023-03-02 09:34:57', NULL),
-	(52, NULL, 'Tenant Management', '#', 'Portal', 'nav-icon fa fa-address-card', 1, '2023-03-02 09:37:16', '2023-03-02 09:37:16', NULL),
-	(53, NULL, 'Content Master', '#', 'Portal', 'nav-icon fas fa-photo-video', 1, '2023-03-02 09:39:39', '2023-03-02 09:39:39', NULL),
-	(54, NULL, 'Content Management', '#', 'Portal', 'nav-icon fas fa-photo-video', 1, '2023-03-02 09:40:09', '2023-03-02 09:40:09', NULL),
-	(55, NULL, 'Reports', '#', 'Portal', 'nav-icon fas fa-chart-area', 1, '2023-03-02 09:41:03', '2023-03-02 09:41:03', NULL),
-	(56, 55, 'Merchant Population', '#', 'Portal', 'nav-icon fas fa-chart-pie', 1, '2023-03-02 09:43:30', '2023-03-02 09:43:30', NULL),
-	(57, 55, 'Top Tenant Search', '#', 'Portal', 'nav-icon fas fa-list', 1, '2023-03-02 09:44:58', '2023-03-02 09:45:12', NULL),
-	(58, 55, 'Most Search Keywords', '#', 'Portal', 'nav-icon fas fa-search', 1, '2023-03-02 09:46:37', '2023-03-02 09:46:37', NULL),
-	(59, 55, 'Monthly Usage', '#', 'Portal', 'nav-icon fas fa-chart-bar', 1, '2023-03-02 09:48:32', '2023-03-02 09:48:32', NULL),
-	(60, 55, 'Kiosk Uptime History', '#', 'Portal', 'nav-icon fas fa-table', 1, '2023-03-02 10:08:15', '2023-03-02 10:08:15', NULL);
+	(51, NULL, 'Manage Property', '#', 'Portal', 'nav-icon fa fa-building', 1, '2023-03-02 09:34:57', '2023-03-09 05:59:13', NULL),
+	(52, 51, 'Kiosk Status', '#', 'Portal', 'nav-icon fa fa-signal', 1, '2023-03-02 09:37:16', '2023-03-09 06:03:31', NULL),
+	(53, 51, 'Property Details', '#', 'Portal', 'nav-icon fa fa-building', 1, '2023-03-02 09:39:39', '2023-03-09 06:08:51', NULL),
+	(54, 51, 'Map', '#', 'Portal', 'nav-icon fa fa-map', 1, '2023-03-02 09:40:09', '2023-03-09 06:09:41', NULL),
+	(55, 51, 'Tenant List', '#', 'Portal', 'nav-icon fa fa-tag', 1, '2023-03-02 09:41:03', '2023-03-09 06:11:32', NULL),
+	(56, 51, 'Amenities List', '#', 'Portal', 'nav-icon fa fa-info-circle', 1, '2023-03-02 09:43:30', '2023-03-09 06:12:39', NULL),
+	(57, NULL, 'Manage Ads', '#', 'Portal', 'nav-icon fas fa-photo-video', 1, '2023-03-02 09:44:58', '2023-03-09 06:14:07', NULL),
+	(58, 57, 'Upload Content', '#', 'Portal', 'nav-icon fas fa-photo-video', 1, '2023-03-02 09:46:37', '2023-03-09 06:15:10', NULL),
+	(59, 57, 'Create ad Ad', '#', 'Portal', 'nav-icon fas fa-photo-video', 1, '2023-03-02 09:48:32', '2023-03-09 06:15:31', NULL),
+	(60, 57, 'View Ads', '#', 'Portal', 'nav-icon fas fa-photo-video', 1, '2023-03-02 10:08:15', '2023-03-09 06:15:49', NULL),
+	(61, NULL, 'Insights', '#', 'Portal', 'nav-icon fas fa-chart-area', 1, '2023-03-09 06:17:10', '2023-03-09 06:17:10', NULL),
+	(62, 61, 'Screen Usage', '#', 'Portal', 'nav-icon fas fa-chart-line', 1, '2023-03-09 06:21:04', '2023-03-09 06:25:56', NULL),
+	(63, 61, 'Merchant Usage', '#', 'Portal', 'nav-icon  fas fa-chart-bar', 1, '2023-03-09 06:26:42', '2023-03-09 06:26:54', NULL),
+	(64, 61, 'Ads Report', '#', 'Portal', 'nav-icon fas fa-chart-line', 1, '2023-03-09 06:29:07', '2023-03-09 06:35:27', NULL),
+	(65, 61, 'Activity Logs', '#', 'Portal', 'nav-icon fas fa-chart-area', 1, '2023-03-09 06:46:36', '2023-03-09 06:46:36', NULL),
+	(66, 61, 'Google Analytics', '#', 'Portal', 'nav-icon fas fa-chart-line', 1, '2023-03-09 06:47:50', '2023-03-09 06:47:50', NULL);
 
 -- Dumping structure for table prestige.password_resets
 DROP TABLE IF EXISTS `password_resets`;
@@ -12082,9 +12088,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   KEY `permissions_deleted_at_index` (`deleted_at`),
   CONSTRAINT `permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`),
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~115 rows (approximately)
+-- Dumping data for table prestige.permissions: ~121 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -12159,20 +12165,20 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(76, 1, 43, 1, 1, 1, 1, '2023-01-19 07:11:36', '2023-01-19 07:11:36', NULL),
 	(77, 1, 44, 1, 1, 1, 1, '2023-01-19 10:01:38', '2023-01-19 10:01:38', NULL),
 	(78, 1, 46, 1, 1, 1, 1, '2023-03-02 09:01:50', '2023-03-02 09:01:50', NULL),
-	(79, 3, 47, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(80, 3, 48, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-03 01:53:22', NULL),
-	(81, 3, 49, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-03 01:53:22', NULL),
-	(82, 3, 50, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-03 01:53:22', NULL),
-	(83, 3, 51, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(84, 3, 52, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(85, 3, 53, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(86, 3, 54, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(87, 3, 55, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(88, 3, 56, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(89, 3, 57, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(90, 3, 58, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(91, 3, 59, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
-	(92, 3, 60, 0, 0, 0, 0, '2023-03-02 10:20:23', '2023-03-02 10:20:23', NULL),
+	(79, 3, 47, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(80, 3, 48, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(81, 3, 49, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(82, 3, 50, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(83, 3, 51, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(84, 3, 52, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(85, 3, 53, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(86, 3, 54, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(87, 3, 55, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(88, 3, 56, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(89, 3, 57, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(90, 3, 58, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(91, 3, 59, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
+	(92, 3, 60, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
 	(93, 4, 47, 1, 1, 1, 1, '2023-03-07 03:38:23', '2023-03-07 03:38:23', NULL),
 	(94, 4, 48, 0, 0, 0, 0, '2023-03-07 03:38:23', '2023-03-07 03:38:23', NULL),
 	(95, 4, 49, 0, 0, 0, 0, '2023-03-07 03:38:23', '2023-03-07 03:38:23', NULL),
@@ -12200,7 +12206,13 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(117, 5, 57, 0, 0, 0, 0, '2023-03-07 03:40:55', '2023-03-07 03:40:55', NULL),
 	(118, 5, 58, 0, 0, 0, 0, '2023-03-07 03:40:55', '2023-03-07 03:40:55', NULL),
 	(119, 5, 59, 0, 0, 0, 0, '2023-03-07 03:40:55', '2023-03-07 03:40:55', NULL),
-	(120, 5, 60, 0, 0, 0, 0, '2023-03-07 03:40:55', '2023-03-07 03:40:55', NULL);
+	(120, 5, 60, 0, 0, 0, 0, '2023-03-07 03:40:55', '2023-03-07 03:40:55', NULL),
+	(121, 3, 61, 1, 1, 1, 1, '2023-03-09 06:49:14', '2023-03-09 06:49:14', NULL),
+	(122, 3, 62, 1, 1, 1, 1, '2023-03-09 06:49:14', '2023-03-09 06:49:14', NULL),
+	(123, 3, 63, 1, 1, 1, 1, '2023-03-09 06:49:14', '2023-03-09 06:49:14', NULL),
+	(124, 3, 64, 1, 1, 1, 1, '2023-03-09 06:49:14', '2023-03-09 06:49:14', NULL),
+	(125, 3, 65, 1, 1, 1, 1, '2023-03-09 06:49:14', '2023-03-09 06:49:14', NULL),
+	(126, 3, 66, 1, 1, 1, 1, '2023-03-09 06:49:14', '2023-03-09 06:49:14', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
 DROP TABLE IF EXISTS `personal_access_tokens`;

@@ -142,8 +142,7 @@
                         <!-- item-->
                         <a class="dropdown-item" href="#"><i class="fa fa-user" aria-hidden="true"></i></i> Profile</a>
                         <a class="dropdown-item d-flex align-items-center" href="#"><i class="fa fa-cog"
-                                aria-hidden="true"></i> Settings<span class="badge bg-success ms-auto">11</span></a>
-                        <a class="dropdown-item" href="#"><i class="fa fa-lock" aria-hidden="true"></i> Lock screen</a>
+                                aria-hidden="true"></i> Settings</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
