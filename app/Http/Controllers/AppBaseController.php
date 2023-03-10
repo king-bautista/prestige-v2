@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\ViewModels\AdminViewModel;
 
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
+use App\Models\ViewModels\AdminViewModel;
+use App\Models\ViewModels\UserViewModel;
 
 /**
  * @OA\Info(
@@ -15,9 +18,15 @@ use Illuminate\Http\Request;
 class AppBaseController extends Controller
 {
     public $permissions; 
+    public $module_id; 
 
     public function response($data = [], $message = '', $code = 200, $count = 0)
     {
+        if(Auth::guard('portal')->check())
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+        else
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
         $response = array(
             'meta' => [
                 'permissions' => $this->permissions,
@@ -34,7 +43,12 @@ class AppBaseController extends Controller
     }
 
     public function responsePaginate($data = [], $message = '', $code = 200)
-    {       
+    {
+        if(Auth::guard('portal')->check())
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+        else
+            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+
         $response = [
             'meta' => [
                 'total' => $data->total(),
