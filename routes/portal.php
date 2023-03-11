@@ -98,6 +98,45 @@ Route::group(['middleware' => 'isClient:portal'], function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Sites Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/portal/sites', 'Admin\SiteController@index')->name('portal.sites');
+    Route::get('/portal/site/list', 'Admin\SiteController@list')->name('portal.site.list');
+    Route::post('/portal/site/store', 'Admin\SiteController@store')->name('portal.site.store');
+    Route::get('/portal/site/{id}', 'Admin\SiteController@details')->where('id', '[0-9]+')->name('portal.site.details');
+    Route::post('/portal/site/update', 'Admin\SiteController@update')->name('portal.site.update');
+    Route::get('/portal/site/delete/{id}', 'Admin\SiteController@delete')->where('id', '[0-9]+')->name('portal.site.delete');
+    Route::get('/portal/site/get-all', 'Admin\SiteController@getAll')->where('id', '[0-9]+')->name('portal.site.get-all');
+    Route::get('/portal/site/set-default/{id}', 'Admin\SiteController@setDefault')->where('id', '[0-9]+')->name('portal.site.set-default');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sites Building Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/portal/site/buildings/{id}', 'Admin\BuildingsController@index')->name('portal.site.buildings');
+    Route::get('/portal/site/building/list', 'Admin\BuildingsController@list')->name('portal.site.building.list');
+    Route::post('/portal/site/building/store', 'Admin\BuildingsController@store')->name('portal.site.building.store');
+    Route::get('/portal/site/building/{id}', 'Admin\BuildingsController@details')->where('id', '[0-9]+')->name('portal.site.building.details');
+    Route::put('/portal/site/building/update', 'Admin\BuildingsController@update')->name('portal.site.building.update');
+    Route::get('/portal/site/building/delete/{id}', 'Admin\BuildingsController@delete')->where('id', '[0-9]+')->name('portal.site.building.delete');
+    Route::get('/portal/site/buildings', 'Admin\BuildingsController@getAll')->where('id', '[0-9]+')->name('portal.site.buildings.all');
+    Route::get('/portal/site/get-buildings/{id}', 'Admin\BuildingsController@getBuildings')->where('id', '[0-9]+')->name('portal.site.buildings.get-buildings');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sites Building Floors Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/portal/site/floor/list', 'Admin\FloorsController@list')->name('portal.site.floor.list');
+    Route::post('/portal/site/floor/store', 'Admin\FloorsController@store')->name('portal.site.floor.store');
+    Route::get('/portal/site/floor/{id}', 'Admin\FloorsController@details')->where('id', '[0-9]+')->name('portal.site.floor.details');
+    Route::post('/portal/site/floor/update', 'Admin\FloorsController@update')->name('admin.site.floor.update');
+    Route::get('/portal/site/floor/delete/{id}', 'Admin\FloorsController@delete')->where('id', '[0-9]+')->name('portal.site.floor.delete');
+    Route::get('/portal/site/floors/{id}', 'Admin\FloorsController@getFloors')->where('id', '[0-9]+')->name('portal.site.floors');
+    /*
+    |--------------------------------------------------------------------------
     | Sites Tenants Routes
     |--------------------------------------------------------------------------
     */
@@ -151,13 +190,13 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Brands Products Routes
     |--------------------------------------------------------------------------
     */    
-    Route::get('/portal/brand/products/{id}', 'Admin\ProductsController@index')->where('id', '[0-9]+')->name('portal.brand.products');
-    Route::get('/portal/brand/product/list', 'Admin\ProductsController@list')->name('portal.brand.product.list');
-    Route::get('/portal/brand/product/{id}', 'Admin\ProductsController@details')->where('id', '[0-9]+')->name('portal.brand.product.details');
-    Route::post('/portal/brand/product/store', 'Admin\ProductsController@store')->name('portal.brand.product.store');
-    Route::post('/portal/brand/product/update', 'Admin\ProductsController@update')->name('portal.brand.product.update');
-    Route::get('/portal/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('portal.brand.product.delete');
-    Route::get('/portal/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('portal.brand.product.by-brand');
+    Route::get('/portal/brand/products/{id}', 'Portal\ProductsController@index')->where('id', '[0-9]+')->name('portal.brand.products');
+    Route::get('/portal/brand/product/list', 'Portal\ProductsController@list')->name('portal.brand.product.list');
+    Route::get('/portal/brand/product/{id}', 'Portal\ProductsController@details')->where('id', '[0-9]+')->name('portal.brand.product.details');
+    Route::post('/portal/brand/product/store', 'Portal\ProductsController@store')->name('portal.brand.product.store');
+    Route::post('/portal/brand/product/update', 'Portal\ProductsController@update')->name('portal.brand.product.update');
+    Route::get('/portal/brand/product/delete/{id}', 'Portal\ProductsController@delete')->where('id', '[0-9]+')->name('portal.brand.product.delete');
+    Route::get('/portal/brand/product-by-id/{id}', 'Portal\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('portal.brand.product.by-brand');
 
     /*
     |--------------------------------------------------------------------------

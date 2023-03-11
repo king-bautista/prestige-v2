@@ -1,7 +1,7 @@
 <template>
 	<div>
         <!-- Main content -->
-	    <section class="content">
+	    <section class="">
 	      <div class="container-fluid">
 	        <div class="row">
 	          <div class="col-md-12">
@@ -38,10 +38,10 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="form-group row mb-4">
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Logo</label>
 								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="logo" @change="logoChange">
+                                    <div class="mb-4"><input type="file" accept="image/*" ref="logo" @change="logoChange"></div>
 									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -195,8 +195,8 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge b-info">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"

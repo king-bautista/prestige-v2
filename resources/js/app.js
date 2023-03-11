@@ -67,6 +67,7 @@ Vue.component('portal-dashboard', require('./components/Portal/Dashboard.vue').d
 Vue.component('portal-users', require('./components/Portal/Users.vue').default);
 Vue.component('portal-roles', require('./components/Portal/Roles.vue').default);
 Vue.component('portal-brands', require('./components/Portal/PortalBrands.vue').default);
+Vue.component('portal-products', require('./components/Portal/PortalProducts.vue').default);
 Vue.component('portal-building-tenants', require('./components/Portal/PortalTenants.vue').default);
 Vue.component('portal-content', require('./components/Portal/Content.vue').default);
 Vue.component('portal-advertisements-online', require('./components/Portal/PortalAdvertisementsOnline.vue').default);
@@ -75,6 +76,7 @@ Vue.component('portal-advertisements-fullscreen', require('./components/Portal/P
 Vue.component('portal-advertisements-pop-up', require('./components/Portal/PortalAdvertisementsPop-Ups.vue').default);
 Vue.component('portal-advertisements-event', require('./components/Portal/PortalAdvertisementsEvents.vue').default);
 Vue.component('portal-advertisements-promo', require('./components/Portal/PortalAdvertisementsPromos.vue').default);
+Vue.component('portal-under-construction', require('./components/Portal/UnderConstruction.vue').default);
 
 Vue.component('portal-dashboard_population', require('./components/Portal/DashboardMerchantPopulation.vue').default);
 Vue.component('portal-dashboard_tenant_search', require('./components/Portal/DashboardTopTenantSearch.vue').default);
