@@ -23,3 +23,42 @@ body[data-topbar=dark] .noti-icon i {
 .nav-link a {
     color: #555b6d;
 }
+
+.img-thumbnail {
+    width: 20%;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.profile-user-img {
+    border: 3px solid #adb5bd;
+    margin: 0 auto;
+    padding: 3px;
+    width: 100px;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.list-group {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    border-radius: 0.25rem;
+}
+
+.list-group-unbordered > .list-group-item {
+    border-left: 0;
+    border-radius: 0;
+    border-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .list-group-unbordered > .list-group-item a{
+    margin-left: 10px;
+  }
