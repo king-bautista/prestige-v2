@@ -85,6 +85,11 @@ Vue.component('portal-dashboard_merchant_usage', require('./components/Portal/Da
 Vue.component('portal-dashboard_top_key_words', require('./components/Portal/DashboardTopKeyWords.vue').default);
 Vue.component('portal-dashboard_highest_usage', require('./components/Portal/DashboardHighestUsage.vue').default);
 
+Vue.component('portal-sites', require('./components/Portal/Sites.vue').default);
+Vue.component('portal-amenities', require('./components/Portal/Amenities.vue').default);
+Vue.component('portal-building-tenants', require('./components/Portal/Tenants.vue').default);
+Vue.component('portal-building-screens', require('./components/Portal/Screens.vue').default);
+
 
 /**
  * KIOSK PART

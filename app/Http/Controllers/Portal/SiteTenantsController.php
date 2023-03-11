@@ -43,8 +43,6 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
         {
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
                 return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
