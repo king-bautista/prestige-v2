@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\SiteTenantsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\TenantRequest;
 
 use App\Models\SiteTenant;
 use App\Models\SiteTenantProduct;
@@ -43,7 +44,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
         {
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
                 return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
@@ -87,7 +88,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         }
     }
 
-    public function store(Request $request)
+    public function store(TenantRequest $request)
     {
         try
     	{
@@ -136,7 +137,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         }
     }
 
-    public function update(Request $request)
+    public function update(TenantRequest $request)
     {
         try
     	{
@@ -267,7 +268,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
         {
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $products = BrandProductViewModel::when(request('search'), function($query){
                 return $query->where('brand_products_promos.name', 'LIKE', '%' . request('search') . '%')

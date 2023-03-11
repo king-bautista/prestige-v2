@@ -25,7 +25,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     ************************************/
     public function __construct()
     {
-        $this->module_id = 51; 
+        $this->module_id = 67; 
         $this->module_name = 'Brand Management';
     }
 
@@ -38,7 +38,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     {
         try
         {
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $brands = BrandViewModel::when(request('search'), function($query){
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')

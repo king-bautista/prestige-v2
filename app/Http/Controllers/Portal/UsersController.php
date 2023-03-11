@@ -33,7 +33,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     {   
         try
         { 
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $user = UserViewModel::when(request('search'), function($query){
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
