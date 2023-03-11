@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7709 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,440 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,582 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -11218,7 +11218,7 @@ CREATE TABLE IF NOT EXISTS `cinema_sites` (
   CONSTRAINT `cinema_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.cinema_sites: ~1 rows (approximately)
+-- Dumping data for table prestige.cinema_sites: ~0 rows (approximately)
 INSERT INTO `cinema_sites` (`id`, `site_id`, `cinema_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, '2102', '2022-11-20 22:48:43', '2022-11-20 22:54:57', NULL);
 
@@ -12242,6 +12242,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` enum('Admin','Portal') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company_id` bigint(20) unsigned DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -12252,15 +12253,15 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.roles: ~8 rows (approximately)
-INSERT INTO `roles` (`id`, `name`, `description`, `type`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Super Admin', 'Mga Alien lang ang may access dito', 'Admin', 1, '2022-08-08 19:13:33', '2022-08-08 19:13:33', NULL),
-	(2, 'Admin', 'Corporate access', 'Admin', 1, '2022-08-08 19:13:57', '2023-03-02 10:16:18', '2023-03-02 10:16:18'),
-	(3, 'Site - Head Office', 'Site - Head Office', 'Portal', 1, '2023-03-02 10:17:26', '2023-03-02 10:17:26', NULL),
-	(4, 'Site - Local', 'Site - Local', 'Portal', 1, '2023-03-07 03:29:25', '2023-03-07 03:29:25', NULL),
-	(5, 'Advertiser Brand', 'Advertiser Brand', 'Portal', 1, '2023-03-07 03:40:16', '2023-03-07 03:40:16', NULL),
-	(6, 'Advertiser Site', 'Advertiser Site', 'Portal', 1, '2023-03-07 04:01:25', '2023-03-07 04:01:25', NULL),
-	(7, 'Advertiser Franchisee', 'Advertiser Franchisee', 'Portal', 1, '2023-03-07 05:27:33', '2023-03-07 05:27:33', NULL),
-	(8, 'Advertiser Agency', 'Advertiser Agency', 'Portal', 1, '2023-03-07 05:27:47', '2023-03-07 05:27:47', NULL);
+INSERT INTO `roles` (`id`, `name`, `description`, `type`, `company_id`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Super Admin', 'Mga Alien lang ang may access dito', 'Admin', NULL, 1, '2022-08-08 19:13:33', '2022-08-08 19:13:33', NULL),
+	(2, 'Admin', 'Corporate access', 'Admin', NULL, 1, '2022-08-08 19:13:57', '2023-03-02 10:16:18', '2023-03-02 10:16:18'),
+	(3, 'Site - Head Office', 'Site - Head Office', 'Portal', NULL, 1, '2023-03-02 10:17:26', '2023-03-02 10:17:26', NULL),
+	(4, 'Site - Local', 'Site - Local', 'Portal', NULL, 1, '2023-03-07 03:29:25', '2023-03-07 03:29:25', NULL),
+	(5, 'Advertiser Brand', 'Advertiser Brand', 'Portal', NULL, 1, '2023-03-07 03:40:16', '2023-03-07 03:40:16', NULL),
+	(6, 'Advertiser Site', 'Advertiser Site', 'Portal', NULL, 1, '2023-03-07 04:01:25', '2023-03-07 04:01:25', NULL),
+	(7, 'Advertiser Franchisee', 'Advertiser Franchisee', 'Portal', NULL, 1, '2023-03-07 05:27:33', '2023-03-07 05:27:33', NULL),
+	(8, 'Advertiser Agency', 'Advertiser Agency', 'Portal', NULL, 1, '2023-03-07 05:27:47', '2023-03-07 05:27:47', NULL);
 
 -- Dumping structure for table prestige.sites
 DROP TABLE IF EXISTS `sites`;
