@@ -19,6 +19,8 @@
         <link href="{{ URL::to('client/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
         <link href="{{ URL::to('client/assets/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="{{ URL::to('css/custom-portal.css') }}">
+        <!-- Toastr --> 
+        <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}">
     </head>
 
     <body data-topbar="dark" data-layout="horizontal">

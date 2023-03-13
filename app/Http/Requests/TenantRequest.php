@@ -24,10 +24,10 @@ class TenantRequest extends FormRequest
     public function rules()
     {
         return [
-            "brand_id" => "required|string",
-            "site_id" => "required|string",
-            "site_building_id" => "required|string",
-            "site_building_level_id" => "required|string",
+            "brand_id" => "required|not_in:0",
+            "site_id" => "required|not_in:0",
+            "site_building_id" => "required|not_in:0",
+            "site_building_level_id" => "required|not_in:0",
         ];
     }
 }
