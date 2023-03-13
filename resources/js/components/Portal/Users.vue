@@ -1,13 +1,13 @@
 <template>
 	<div>
-        <!-- Main content -->
-	    <section class="">
-	      <div class="container-fluid">
-	        <div class="row">
-	          <div class="col-md-12">
-	          	<div class="card">
-	    			<div class="card-body">
-			          	<Table 
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h4><i class="nav-icon fas fa-user-tag"></i>&nbsp;&nbsp;Manage Account</h4>
+					</div>
+					<div class="card-body">
+						<Table 
                         :dataFields="dataFields"
                         :dataUrl="dataUrl"
                         :actionButtons="actionButtons"
@@ -16,15 +16,11 @@
 						v-on:AddNewUser="AddNewUser"
 						v-on:editButton="editUser"
                         ref="dataTable">
-			          	</Table>
-		          	</div>
-		        </div>
-	          </div>
-	        </div>
-	        <!-- /.row -->
-	      </div><!-- /.container-fluid -->
-	    </section>
-	    <!-- /.content -->
+						</Table>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="user-form" tabindex="-1" aria-labelledby="user-form" aria-hidden="true">
