@@ -273,7 +273,7 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/portal/content-management/list",
+            	dataUrl: "/portal/upload-content/list",
             	actionButtons: {
             		edit: {
             			title: 'Edit this Content',
@@ -286,7 +286,7 @@
             		delete: {
             			title: 'Delete this Content',
             			name: 'Delete',
-            			apiUrl: '/portal/content-management/delete',
+            			apiUrl: '/portal/upload-content/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
@@ -352,7 +352,7 @@
             },
 
 			getStatuses: function(id) {
-                axios.get('/portal/content-management/transaction-statuses')
+                axios.get('/portal/upload-content/transaction-statuses')
                 .then(response => this.transaction_statuses = response.data.data);
             },
 
@@ -372,7 +372,7 @@
             },
 
             storeContent: function() {
-                axios.post('/portal/content-management/store', this.content)
+                axios.post('/portal/upload-content/store', this.content)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -381,7 +381,7 @@
             },
 
 			editContent: function(id) {
-                axios.get('/portal/content-management/'+id)
+                axios.get('/portal/upload-content/'+id)
                 .then(response => {
                     var content = response.data.data;
 
@@ -406,7 +406,7 @@
             },
 
             updateContent: function() {
-                axios.put('/portal/content-management/update', this.content)
+                axios.put('/portal/upload-content/update', this.content)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();

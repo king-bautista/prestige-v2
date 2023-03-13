@@ -11,7 +11,14 @@
 @endsection
 @section('content')
 <!-- Main content -->
-<portal-content></portal-content>
+<div class="row">
+  <div class="col-md-2">
+    @include('layout.portal.company-profile')
+  </div>
+  <div class="col-md-10">
+    <portal-content></portal-content>
+  </div>
+</div>
 <!-- /.content -->
 @stop
 
