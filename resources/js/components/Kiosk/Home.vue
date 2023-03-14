@@ -303,10 +303,10 @@
                 </div>
             </div>
         </div>
-        <search-page v-show="searchIsShown"></search-page>
-        <map-page v-show="mapIsShown"></map-page>
+        <search-page v-show="searchIsShown" ref="hello"></search-page>
+        <!-- <map-page v-show="mapIsShown"></map-page>
         <promos-page v-show="promosIsShown"></promos-page>
-        <cinema-page v-show="cinemaIsShown"></cinema-page>
+        <cinema-page v-show="cinemaIsShown"></cinema-page> -->
         <div class="row">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
@@ -383,9 +383,9 @@
         },
 
         created() {
-            this.getSite();
-            this.getCategories();
-            this.generateLetters();
+            // this.getSite();
+            // this.getCategories();
+            // this.generateLetters();
         },
 
         methods: {
@@ -411,6 +411,7 @@
                 this.mapIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
+                this.$refs.hello.resetPage();
             },
 
             mapButton: function (event) {
@@ -467,16 +468,9 @@
                     like_count: this.tenant_details.like_count
                 }
 
-                // this.helper.putLikeCount(params);
-
-                // $.post( "/api/v1/like-count", params ,function(response) {
-                //     console.log(response);
-                // });
-
-                // axios.get('/api/v1/like-count/' + this.tenant_details.id)
-                // .then(response =>{
-                    
-                // });
+                $.post( "/api/v1/like-count", params ,function(response) {
+                    console.log(response);
+                });
             },
 
             resetCarousel: function() {

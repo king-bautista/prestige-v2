@@ -330,7 +330,7 @@ body,html {
     cursor: pointer;
 }
 
-#myCarousel, #myTenants, #myCinemas, #myMovies, #supplementalCarousel, #alphabeticalCarousel {
+#myCarousel, #myTenants, #myCinemas, #myMovies, #supplementalCarousel, #alphabeticalCarousel, #searchCarousel {
     width: 100%;
 }
 
@@ -361,7 +361,23 @@ body,html {
     width:330px;
 }
 
+.tenant-search {
+    border: 1px solid #efefef; 
+    padding: 5px;
+    border-radius:10px;
+    height:90px;
+    width:355px;
+}
+
 .tenant-store .image-holder {
+    width: 100px; 
+    margin-bottom:5px;
+    float:left;
+    margin-right:10px;
+    position:relative;
+}
+
+.tenant-search .image-holder {
     width: 100px; 
     margin-bottom:5px;
     float:left;
@@ -436,6 +452,7 @@ body,html {
     border-radius: 10px;
     border-top-right-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
+    height: calc(1.5em + 0.75rem + 6px) !important;
 }
 
 .btn-prestige-rounded {
@@ -453,10 +470,11 @@ body,html {
     font-weight: bold;
     font-size: 18px;
     float: left;
-    margin-left: 45px;
-    margin-top: 5px;
+    margin: 0 510px 0 15px;
     border-width: 2px;
     color: #bc5b68;
+    position: absolute;
+    top: 53px;
     display: none;
 }
 
@@ -470,13 +488,15 @@ body,html {
 
 .softkeys__btn {
     color: #000;
-    font-size: 1.5em !important;
+    font-size: 1.6em !important;
+    font-weight: bold;
     border: 1px solid #000 !important;
     border-radius: 15px !important;
-    width: 72px !important;
-    height: 72px !important;
+    width: 75px !important;
+    height: 75px !important;
     line-height: 2.8em !important;
     padding: 0 !important;
+    margin-bottom: 16px !important;
 }
 
 .softkeys__btn:hover, .softkeys__btn:focus {
@@ -518,16 +538,53 @@ body,html {
     /* display: none !important; */
 }
 
+/* ul#ui-id-1::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px;
+}
+
+ul#ui-id-1::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .5);
+} */
+
+.shop-logo {
+    max-width:160px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
 .ui-widget-content {
     border: 1px solid #ddd;
-    background: #98dad0;
+    background: #ffffff;
     color: #333;
     height: 135px !important;
     overflow: hidden;
     overflow-y: scroll;
     z-index: 1;
-    border-radius: 5px !important;
+    border-radius: 10px !important;
     margin-top: 2px !important;
+}
+
+.ui-autocomplete {
+    top: 330px !important;
+    height: 105px !important;
+    width: 743px !important;
+}
+
+.ui-widget-content {
+    font-family: 'Henry Sans Regular' !important;
+    font-size: 1.3rem !important;
+}
+
+.prestige-text-color {
+    color:#6051E3;
+}
+
+input[type="text"]:focus
+{
+    box-shadow: none !important;
+    border-color: #000000;
 }
 
 #loadingDiv {
@@ -816,7 +873,7 @@ div.mall-details {
 
 .subscriber-products {
     overflow-y: auto;
-    max-height: 522px;
+    max-height: 565px;
     width: 988px;
 }
 
@@ -1007,6 +1064,15 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     font-weight: bolder;
 }
 
+.label-2 {
+    color: #2a2a2a;
+    font-size: 1.5em;
+}
+
+.m-a {
+    margin: auto;
+}
+
 .mt-14 {
     margin-top: 14px;
 }
@@ -1039,8 +1105,12 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-top: 31px;
 }
 
-.mt-67 {
-    margin-top: 67px !important;
+.mt-42 {
+    margin-top: 42px;
+}
+
+.mt-63 {
+    margin-top: 63px !important;
 }
 
 .mt-83 {
@@ -1049,6 +1119,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 
 .mt-120 {
     margin-top: 120px;
+}
+
+.mr-10 {
+    margin-right: 10px;
 }
 
 .ml-0 {
@@ -1067,6 +1141,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-bottom: 18px;
 }
 
+.mb-23 {
+    margin-bottom: 23px;
+}
+
 .mb-24 {
     margin-bottom: 24px;
 }
@@ -1081,6 +1159,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 
 .mb-55 {
     margin-bottom: 55px;
+}
+
+.mb-206 {
+    margin-bottom: 206px;
 }
 
 .m-15-0 {
@@ -1103,6 +1185,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     padding: 9px 0 !important;
 }
 
+.custom-p-0-18 {
+    padding: 0 18px;
+}
+
 .mw-51p {
     max-width: 50.7% !important;
 }
@@ -1118,6 +1204,14 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 .p-l-490 {
     padding-left: 490px;
 } 
+
+.carousel-mh-528 {
+    min-height: 528px;
+}
+
+.carousel-mh-605 {
+    min-height: 605px;
+}
 
 .carousel-mh-626 {
     min-height: 626px;
