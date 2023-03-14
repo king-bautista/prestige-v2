@@ -28,7 +28,7 @@
 	    </section>
 	    <!-- /.content -->
 
-		<!-- Modal Add New / Edit User -->
+		<!--Add New / Edit User -->
 		<div  class="row" v-show="data_form">
 			<div class="col-md-12">
 				<div class="card m-3">
@@ -371,7 +371,7 @@
 			},
 
 			getSites: function() {
-                axios.get('/portal/site/get-all')
+                axios.get('/portal/property-details/get-all')
                 .then(response => this.sites = response.data.data);
             },
 
@@ -386,12 +386,12 @@
 			},
 
             getBuildings: function(id) {
-				axios.get('/portal/site/get-buildings/'+id)
+				axios.get('/portal/property-details/get-buildings/'+id)
                 .then(response => this.buildings = response.data.data);
 			},
 
             getFloorLevel: function(id) {
-				axios.get('/portal/site/floors/'+id)
+				axios.get('/portal/property-details/floors/'+id)
                 .then(response => this.floors = response.data.data);
             },
 

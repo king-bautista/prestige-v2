@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\AdvertisementControllerInterface;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateAdvertisementRequest;
 
 use App\Models\Advertisement;
 use App\Models\ViewModels\AdvertisementViewModel;
@@ -19,7 +20,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
     ************************************************/
     public function __construct()
     {
-        $this->module_id = 53; 
+        $this->module_id = 59; 
         $this->module_name = 'Content Master';
     }
 
@@ -68,7 +69,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
         }
     }
 
-    public function store(Request $request)
+    public function store(CreateAdvertisementRequest $request)
     {
         try
     	{
@@ -127,7 +128,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
         }
     }
 
-    public function update(Request $request)
+    public function update(CreateAdvertisementRequest $request)
     {
         try
     	{

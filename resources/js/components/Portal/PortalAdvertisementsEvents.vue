@@ -3,7 +3,7 @@
         <!-- Main content -->
 	    <section class="">
 	      <div class="container-fluid">
-	        <div class="row">
+	        <div class="row" v-show="data_list">
 	          <div class="col-md-12">
 	          	<div class="card">
 	    			<div class="card-body">
@@ -27,19 +27,16 @@
 	    <!-- /.content -->
 
 		<!-- Modal Add New / Edit User -->
-		<div class="modal fade" id="site-ad-events-form" data-backdrop="static" tabindex="-1" aria-labelledby="site_ad-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Advertisements</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Advertisements</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+		<div class="row" v-show="data_form">
+			<div class="col-md-12">
+				<div class="card m-3"></div>
+					<div class="card-header">
+						<h5 class="card-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Advertisements</h5>
+						<h5 class="card-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Advertisements</h5>
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.company_id"
@@ -52,7 +49,7 @@
 									</multiselect>
 								</div>
 							</div>
-                            <div class="form-group row">
+                            <div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <multiselect v-model="advertisements.brand_id" 
@@ -65,16 +62,16 @@
                                     </multiselect> 
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
 								</div>
 							</div>
-                            <div class="form-group row">
+                            <div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="material" @change="materialChange">
+                                    <div class="mb-4"><input type="file" accept="image/*" ref="material" @change="materialChange"></div>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer" v-if="ad_type=='Online'">image/video max size is 1140 x 140 pixels</footer>
 									<footer class="blockquote-footer" v-if="ad_type=='Banners'">image/video max size is 470 x 1060 pixels</footer>
@@ -94,14 +91,14 @@
 									</span>
 								</div>
 							</div>
-                            <div class="form-group row">
+                            <div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"> 
+									<div class="mb-4"><input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"></div>
 									<footer class="blockquote-footer">In Seconds</footer>
 								</div>
 							</div>
-							<div class="form-group row" v-show="edit_record">
+							<div class="form-group row mb-4" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
@@ -111,10 +108,10 @@
 								</div>
 							</div>
 						</div>
-						<div class="modal-footer">
+						<div class="card-footer text-right">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary pull-right" v-show="add_record" @click="storeAdvertisements">Add New Advertisements</button>
-							<button type="button" class="btn btn-primary pull-right" v-show="edit_record" @click="updateAdvertisements">Save Changes</button>
+							<button type="button" class="btn btn-primary" v-show="add_record" @click="storeAdvertisements">Add New Advertisements</button>
+							<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateAdvertisements">Save Changes</button>
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -152,6 +149,8 @@
 					display_duration: '',
                     active: true,           
                 },
+				data_list: true,
+				data_form: false,
 				material: '',
 				material_type: '',
                 companies: [],
@@ -193,7 +192,7 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/portal/advertisement/list/"+this.ad_type,
+            	dataUrl: "/portal/create-ad/list/"+this.ad_type,
             	actionButtons: {
             		edit: {
             			title: 'Edit this Advertisements',
@@ -259,7 +258,8 @@
                 this.advertisements.active = true;				
 				this.$refs.material.value = null;
 				this.material = null;
-              	$('#site-ad-events-form').modal('show');
+				this.data_list = false;
+			    this.data_form = true;
             },
 
             storeAdvertisements: function() {
@@ -271,7 +271,7 @@
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
 				formData.append("active", this.advertisements.active);
-                axios.post('/portal/advertisement/store', formData, {
+                axios.post('/portal/create-ad/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -279,12 +279,14 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-	              	$('#site-ad-events-form').modal('hide');
+					this.data_list = true;
+					this.data_form = false;
+	              	
 				});				
             },
 
 			editAdvertisements: function(id) {
-                axios.get('/portal/advertisement/'+id)
+                axios.get('/portal/create-ad/'+id)
                 .then(response => {
                     var advertisements = response.data.data;
 					this.advertisements.id = advertisements.id;
@@ -300,8 +302,8 @@
 					this.material = advertisements.material_image_path;
 					this.add_record = false;
 					this.edit_record = true;
-
-                    $('#site-ad-events-form').modal('show');
+					this.data_list = false;
+					this.data_form = true;
                 });
             },
 
@@ -315,7 +317,7 @@
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
 				formData.append("active", this.advertisements.active);
-                axios.post('/portal/advertisement/update', formData, {
+                axios.post('/portal/create-ad/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -323,11 +325,17 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-	              	$('#site-ad-events-form').modal('hide');
+					this.data_list = true;
+					this.data_form = false;
+	              	
 				})
             },
 
         },
+		backToList: function () {
+				this.data_list = true;
+				this.data_form = false;
+		},
 
         components: {
         	Table,

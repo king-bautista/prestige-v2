@@ -25,12 +25,12 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 54;
-        $this->module_name = 'Tenant Management';
+        $this->module_id = 55;
+        $this->module_name = 'Tenant List';
     }
 
     public function index()
-    {
+    {    
         return view('portal.tenants');
     }
 
@@ -42,8 +42,6 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
 
     public function list(Request $request)
     {      
-       // $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
         try
         {
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){

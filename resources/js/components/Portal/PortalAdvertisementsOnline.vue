@@ -39,7 +39,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="form-group row">
+							<div class="form-group row md">
 								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.company_id"
