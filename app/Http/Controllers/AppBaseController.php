@@ -36,7 +36,7 @@ class AppBaseController extends Controller
             'message' => $message,
             'status_code' => $code,
             'status' => true,
-            'resource' => request()->getBasePath() . '/' . request()->path() . ((count(request()->all()) > 0) ? '?' . http_build_query(request()->all()) : '')
+            //'resource' => request()->getBasePath() . '/' . request()->path() . ((count(request()->all()) > 0) ? '?' . http_build_query(request()->all()) : '')
         );
 
         return response($response, $code);
@@ -68,7 +68,7 @@ class AppBaseController extends Controller
             'message' => $message,
             'status_code' => $code,
             'status' => true,
-            'resource' => request()->getBasePath() . '/' . request()->path() . ((count(request()->all()) > 0) ? '?' . http_build_query(request()->all()) : '')
+            //'resource' => request()->getBasePath() . '/' . request()->path() . ((count(request()->all()) > 0) ? '?' . http_build_query(request()->all()) : '')
         ];
 
         return response($response, $code);

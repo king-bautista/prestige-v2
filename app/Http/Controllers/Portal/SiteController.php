@@ -17,8 +17,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     ************************************/
     public function __construct()
     {
-        $this->module_id = 13; 
-        $this->module_name = 'Sites Management';
+        $this->module_id = 53; 
+        $this->module_name = 'Property Details';
     }
 
     public function index()
@@ -100,8 +100,6 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_logo' => str_replace('\\', '/', $site_logo_path),
                 'site_banner' => str_replace('\\', '/', $site_banner_path),
                 'site_background' => str_replace('\\', '/', $site_background_path),
-                'active' => 1,
-                'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
 
             $meta_value = [
@@ -166,8 +164,6 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
                 'site_background' => ($site_background_path) ? str_replace('\\', '/', $site_background_path) : $site->site_background,
-                'active' => ($request->active == 'false') ? 0 : 1,
-                'is_default' => ($request->is_default == 'true') ? 1 : 0,
             ];
 
             $meta_value = [

@@ -4,9 +4,11 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h4><i class="nav-icon fa fa-building"></i>&nbsp;&nbsp;Property Details</h4>
+						<h4 v-show="data_list"><i class="nav-icon fas fa-user-tag"></i>&nbsp;&nbsp;Property Details</h4>
+						<h4 v-show="add_record && data_form"><i class="nav-icon fas fa-user-plus"></i> Add New Site</h4>
+						<h4 v-show="edit_record && data_form"><i class="nav-icon fas fa-user-edit"></i> Edit Site</h4>
 					</div>
-					<div class="card-body">
+					<div class="card-body" v-show="data_list">
 						<Table 
                         :dataFields="dataFields"
                         :dataUrl="dataUrl"
@@ -19,36 +21,21 @@
                         ref="dataTable">
 			          	</Table>
 					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal fade" id="site-form" tabindex="-1" aria-labelledby="site-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Site</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Site</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="card-body">
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site Name <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+					<div class="card-body" v-show="data_form">
+						<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Site Name <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.name" placeholder="Site Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="site.descriptions" placeholder="Descriptions" rows="5"></textarea>
+								<label for="lastName" class="col-sm-3 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+                                    <textarea class="form-control" v-model="site.descriptions" placeholder="Descriptions" rows="8"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Logo</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Logo</label>
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="site_logo" @change="siteLogoChange">
 									<footer class="blockquote-footer">image max size is 155 x 155 pixels</footer>
@@ -58,7 +45,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Image</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Banner Image</label>
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="site_banner" @change="siteBannerChange">
 									<footer class="blockquote-footer">image max size is 1451 x 440 pixels</footer>
@@ -68,7 +55,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Background Image</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Background Image</label>
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="site_background" @change="siteBackgroundChange">
 									<footer class="blockquote-footer">image max size is 1920 x 1080 pixels</footer>
@@ -77,43 +64,25 @@
                                     <img v-if="site_background" :src="site_background" class="img-thumbnail" />
 								</div>
 							</div>
-							<div class="form-group row" v-show="edit_record">
-								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="isActive" v-model="site.active">
-										<label class="custom-control-label" for="isActive"></label>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_default" v-model="site.is_default">
-										<label class="custom-control-label" for="is_default"></label>
-									</div>
-								</div>
-							</div>
 							<hr/> 
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-12 col-form-label"><strong>Social Media:</strong></label>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Facebook</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Facebook</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.facebook" placeholder="Facebook link">
 								</div>
 							</div>       
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Instagram</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Instagram</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.instagram" placeholder="Instagram link">
 								</div>
 							</div>   
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Twitter</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Twitter</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.twitter" placeholder="Twitter link">
 								</div>
 							</div>            
@@ -122,7 +91,7 @@
 								<label for="firstName" class="col-sm-12 col-form-label"><strong>Mall Information:</strong></label>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Mall Hours</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Mall Hours</label>
 								<label class="col-sm-1 col-form-label text-center">From:</label>
 								<div class="col-sm-3">
 									<date-picker v-model="site.time_from" placeholder="HH:MM" :config="options" autocomplete="off"></date-picker>
@@ -133,41 +102,22 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Website</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Website</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.website" placeholder="Website">
 								</div>
-							</div> 
-						</div>
-					<!-- /.card-body -->
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeSite">Add New Site</button>
-						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateSite">Save Changes</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Confirm modal -->
-		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header bg-primary">
-						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
-					</div>
-					<div class="modal-body">
-						<h6>Do you really want to set this site as default?</h6>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary" @click="setDefault">OK</button>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-12 text-right">
+									<button type="button" class="btn btn-secondary btn-sm" @click="backToList"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+									<button type="button" class="btn btn-primary btn-sm" v-show="add_record" @click="storeSite">Add New Site</button>
+									<button type="button" class="btn btn-primary btn-sm" v-show="edit_record" @click="updateSite">Save Changes</button>
+								</div>
+							</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Confirm modal -->
 		
     </div>
 </template>
@@ -201,7 +151,9 @@
                 site_logo: '/images/no-image-available.png',
                 site_banner: '/images/no-image-available.png',
                 site_background: '/images/no-image-available.png',
-				add_record: true,
+                data_list: true,
+				data_form: false,
+                add_record: true,
                 edit_record: false,
 				is_default: '',
 				options: {
@@ -215,34 +167,18 @@
             			name: "Logo", 
             			type:"image", 
             		},
-                    site_banner_path: {
-            			name: "Banner", 
-            			type:"image", 
-            		},
-					site_background_path: {
-            			name: "Background", 
-            			type:"image", 
-            		},
             		active: {
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
-            			}
-            		},
-					is_default: {
-            			name: "Is Default", 
-            			type:"Boolean", 
-            			status: { 
-            				0: '<span class="badge badge-danger">No</span>', 
-            				1: '<span class="badge badge-info">Yes</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info text-dark">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/site/list",
+            	dataUrl: "/portal/property-details/list",
             	actionButtons: {
             		edit: {
             			title: 'Edit this Site',
@@ -255,7 +191,7 @@
             		delete: {
             			title: 'Delete this Site',
             			name: 'Delete',
-            			apiUrl: '/admin/site/delete',
+            			apiUrl: '/portal/property-details/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
@@ -263,19 +199,10 @@
 					link: {
             			title: 'Manage Site',
             			name: 'Link',
-            			apiUrl: '/admin/site/buildings',
+            			apiUrl: '/portal/property-details/buildings',
             			routeName: '',
             			button: '<i class="fa fa-link"></i> Manage Site',
             			method: 'link'
-            		},
-					view: {
-            			title: 'Set as Default',
-            			name: 'Link',
-            			apiUrl: '/admin/site/buildings',
-            			routeName: '',
-            			button: '<i class="fa fa-tag"></i> Set as Default',
-            			method: 'view',
-						v_on: 'DefaultScreen',
             		},
             	},
 				otherButtons: {
@@ -327,8 +254,8 @@
                 this.site_background = '/images/no-image-available.png';				
 				this.$refs.site_logo.value = null;
 				this.$refs.site_banner.value = null;
-
-              	$('#site-form').modal('show');
+				this.data_list = false;
+				this.data_form = true;
             },
 
             storeSite: function() {
@@ -344,9 +271,8 @@
 				formData.append("time_from", this.site.time_from);
 				formData.append("time_to", this.site.time_to);
 				formData.append("website", this.site.website);
-				formData.append("is_default", this.site.is_default);
 
-                axios.post('/admin/site/store', formData, {
+                axios.post('/portal/property-details/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -354,13 +280,14 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-                    $('#site-form').modal('hide');
+                    this.data_list = true;
+					this.data_form = false;
 				})
 				
             },
 
 			editSite: function(id) {
-                axios.get('/admin/site/'+id)
+                axios.get('/portal/property-details/'+id)
                 .then(response => {
                     var site = response.data.data;
                     this.site.id = id;
@@ -404,7 +331,8 @@
                     this.$refs.site_logo.value = null;
                     this.$refs.site_logo.value = null;
 					
-                    $('#site-form').modal('show');
+					this.data_list = false;
+					this.data_form = true;
                 });
             },
 
@@ -422,10 +350,8 @@
 				formData.append("time_from", this.site.time_from);
 				formData.append("time_to", this.site.time_to);
 				formData.append("website", this.site.website);
-				formData.append("active", this.site.active);
-				formData.append("is_default", this.site.is_default);				
 
-                axios.post('/admin/site/update', formData, {
+                axios.post('/portal/property-details/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -433,23 +359,15 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-                    $('#site-form').modal('hide');
+                    this.data_list = true;
+					this.data_form = false;
 				})
             },
 
-			DefaultScreen: function(data) {
-				this.is_default = data.id;
-				$('#confirmModal').modal('show');
+			backToList: function() {
+				this.data_list = true;
+				this.data_form = false;
 			},
-
-			setDefault: function() {
-				axios.get('/admin/site/set-default/'+this.is_default)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-                    $('#confirmModal').modal('hide');
-				})
-			}
 
         },
 

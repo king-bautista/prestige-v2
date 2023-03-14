@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Portal\Interfaces;
 use Illuminate\Http\Request;
-use App\Http\Requests\RegistrationRequest;
+use App\Http\Requests\PortalUserRequest;
 
 interface UsersControllerInterface
 {
@@ -104,7 +104,7 @@ interface UsersControllerInterface
      *     )
      * )
      */
-    public function store(RegistrationRequest $request);
+    public function store(PortalUserRequest $request);
 
     /**
      * @OA\Put(
@@ -174,7 +174,7 @@ interface UsersControllerInterface
      *     )
      * )
      */
-    public function update(Request $request);
+    public function update(PortalUserRequest $request);
 
     /**
      * @OA\Get(

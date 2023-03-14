@@ -17,8 +17,8 @@ class BuildingsController extends AppBaseController implements BuildingsControll
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 13; 
-        $this->module_name = 'Sites Management';
+        $this->module_id = 53; 
+        $this->module_name = 'Property Details';
     }
 
     public function index($id)
@@ -26,7 +26,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         session()->forget('site_id');
         session()->put('site_id', $id);
         $site_details = SiteViewModel::find($id);
-        return view('admin.site_details', compact("site_details"));
+        return view('portal.site_details', compact("site_details"));
     }
 
     public function list(Request $request)

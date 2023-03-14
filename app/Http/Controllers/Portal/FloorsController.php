@@ -18,8 +18,8 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 13; 
-        $this->module_name = 'Sites Management';
+        $this->module_id = 53; 
+        $this->module_name = 'Property Details';
     }
 
     public function list(Request $request)
