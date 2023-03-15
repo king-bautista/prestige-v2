@@ -21,7 +21,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
     public function __construct()
     {
         $this->module_id = 59; 
-        $this->module_name = 'Content Master';
+        $this->module_name = 'Create Ad';
     }
 
     public function index()
@@ -29,15 +29,16 @@ class AdvertisementController extends AppBaseController implements Advertisement
         return view('portal.advertisements');
     }
     
-    public function list($ad_type, Request $request)
+   // public function list($ad_type, Request $request)
+    public function list(Request $request)
     {
         try
         {
-            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            //$this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             $advertisements = AdvertisementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('ad_type', $ad_type)
+            //->where('ad_type', $ad_type)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
@@ -70,7 +71,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
     }
 
     public function store(CreateAdvertisementRequest $request)
-    {
+    {   
         try
     	{
             $company_id = json_decode($request->company_id);
