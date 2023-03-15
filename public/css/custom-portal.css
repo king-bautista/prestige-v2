@@ -83,3 +83,22 @@ margin-left: 10px;
 .border-left {
     border-left: solid 1px;
 }
+
+.profile-card {
+    position: fixed;
+    width: 225px;
+}
+
+.page-title-content {
+    padding: 15px 0 0 0 !important;
+}
+
+.page-content {
+    margin-top: 40px !important;
+}
+
+.custom-btn {
+    color: #fff;
+    background-color: #545b62;
+    border-color: #4e555b;
+}

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\SiteTenantsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\TenantRequest;
 
 use App\Models\SiteTenant;
 use App\Models\SiteTenantProduct;
@@ -87,7 +88,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         }
     }
 
-    public function store(Request $request)
+    public function store(TenantRequest $request)
     {
         try
     	{
@@ -136,7 +137,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         }
     }
 
-    public function update(Request $request)
+    public function update(TenantRequest $request)
     {
         try
     	{

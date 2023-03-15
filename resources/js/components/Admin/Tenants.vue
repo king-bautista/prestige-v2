@@ -504,29 +504,15 @@
 					this.tenant.instagram = (tenant.tenant_details.instagram != 'undefined') ? tenant.tenant_details.instagram : '';
 					this.tenant.website = (tenant.tenant_details.website != 'undefined') ? tenant.tenant_details.website : '';
 
-					this.subscriber_logo = '';
-
-					if(tenant.is_subscriber == true) {
-						this.tenant.subscriber_logo = '';
-						this.subscriber_logo = tenant.subscriber_logo;
-					}
-
-					if(tenant.operational_hours) {
-						for (let i = 0; i < tenant.operational_hours.length; i++) {
-							let operational = tenant.operational_hours[i];
-
-							this.tenant.operational_hours.push({
-								schedules: operational.schedules,
-								start_time: operational.start_time,
-								end_time: operational.end_time
-							});
-
-							schedules[i] = operational.schedules;
-						}
-					}
-					else {
+					if(tenant.tenant_details.length == 0 || tenant.tenant_details.schedules === 'undefined') {
+						this.tenant.operational_hours = [];
 						this.addOperationalHours();
 					}
+					else {
+						this.tenant.operational_hours = JSON.parse(tenant.tenant_details.schedules);
+					}
+
+					this.subscriber_logo = '';
 
 					this.add_record = false;
 					this.edit_record = true;

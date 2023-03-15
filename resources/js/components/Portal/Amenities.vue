@@ -29,9 +29,7 @@
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Amenities</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Amenities</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
@@ -44,9 +42,9 @@
 							<div class="form-group row" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="active" v-model="amenity.active">
-										<label class="custom-control-label" for="active"></label>
+									<div class="form-check form-switch">
+										<input class="form-check-input" type="checkbox" role="switch" id="active" v-model="amenity.active">
+										<label class="form-check-label" for="active"></label>
 									</div>
 								</div>
 							</div>
@@ -85,14 +83,14 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info text-dark">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/amenity/list",
+            	dataUrl: "/portal/amenity/list",
             	actionButtons: {
             		edit: {
             			title: 'Edit this Amenities',
@@ -105,7 +103,7 @@
             		delete: {
             			title: 'Delete this Amenities',
             			name: 'Delete',
-            			apiUrl: '/admin/amenity/delete',
+            			apiUrl: '/portal/amenity/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
@@ -136,7 +134,7 @@
             },
 
             storeAmenities: function() {
-                axios.post('/admin/amenity/store', this.amenity)
+                axios.post('/portal/amenity/store', this.amenity)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -145,7 +143,7 @@
             },
 
 			editAmenities: function(id) {
-                axios.get('/admin/amenity/'+id)
+                axios.get('/portal/amenity/'+id)
                 .then(response => {
                     var amenity = response.data.data;
                     this.amenity.id = id;
@@ -158,7 +156,7 @@
             },
 
             updateAmenities: function() {
-                axios.put('/admin/amenity/update', this.amenity)
+                axios.put('/portal/amenity/update', this.amenity)
                     .then(response => {
                         toastr.success(response.data.message);
                         this.$refs.dataTable.fetchData();
