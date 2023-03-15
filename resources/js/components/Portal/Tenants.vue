@@ -39,8 +39,23 @@
 						<div class="card-body">
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-9">
-                                    <multiselect v-model="tenant.brand_id" track-by="name" label="name" placeholder="Select Brand" :options="brands" :searchable="true" :allow-empty="false">
+								<!-- <div class="col-sm-9"><div>
+									<multiselect 
+										:multiple="true" 
+										:selected="selected" 
+										:options="options" 
+										group-values="instruments" 
+										group-label="name" 
+										track-by="name" 
+										label="name"></multiselect></div>', -->
+                                    <multiselect v-model="tenant.brand_id" 
+										track-by="name" 
+										label="name" 
+										placeholder="Select Brand"
+										:selected="selected" 
+										:options="brands" 
+										:searchable="true" 
+										:allow-empty="required">
                                     </multiselect> 
 								</div>
 							</div>
@@ -374,7 +389,7 @@
 
             GetBrands: function() {
 				axios.get('/admin/brand/get-all')
-                .then(response => this.brands = response.data.data);
+                .then(response => this.brands = JSON.stringify(response.data.data));
 			},
 
 			getCompany: function() {
