@@ -37,7 +37,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     public function products($id)
     {
         $tenant_details = SiteTenantViewModel::find($id);
-        return view('admin.tenant_product', compact("tenant_details"));
+        return view('portal.tenant_product', compact("tenant_details"));
     }
 
     public function list(Request $request)

@@ -185,7 +185,7 @@
 					<!-- /.card-body -->
 					</div>
 					<div class="card-footer text-right">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary" @click="closeTenant">Close</button>
 						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeTenant">Add New Tenant</button>
 						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateTenant">Save Changes</button>
 					</div>
@@ -230,8 +230,8 @@
 		          </form>
 		      </div>
 		      <div class="modal-footer justify-content-between">
-		          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-		          <button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+		          <button type="button" class="btn btn-secondary" @click="closeTenant">Close</button>
+		          <button type="button" class="btn btn-primary" @click="storeBatch">Save Changes</button>
 		      </div>
 		      </div>
 		  </div>
@@ -644,6 +644,10 @@
 					return 'btn custom-btn';
 				}
 			},
+
+			closeTenant: function() {
+				window.location.reload();
+            },
 
         },
 
