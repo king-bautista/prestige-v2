@@ -185,13 +185,14 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Advertisements Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/create-ad', 'Portal\AdvertisementController@index')->name('portal.create-ad.online');
-    Route::get('/portal/create-ad/banner', 'Portal\AdvertisementController@banner')->name('portal.create-ad.banner');
-    Route::get('/portal/create-ad/fullscreen', 'Portal\AdvertisementController@fullscreen')->name('portal.create-ad.fullscreen');
-    Route::get('/portal/create-ad/popups', 'Portal\AdvertisementController@popups')->name('portal.create-ad.popups');
-    Route::get('/portal/create-ad/events', 'Portal\AdvertisementController@events')->name('portal.create-ad.events');
-    Route::get('/portal/create-ad/promos', 'Portal\AdvertisementController@promos')->name('portal.create-ad.promos');
-    Route::get('/portal/create-ad/list/{ad_type}', 'Portal\AdvertisementController@list')->name('portal.create-ad.list');
+    Route::get('/portal/create-ad', 'Portal\AdvertisementController@index')->name('portal.create-ad');
+    // Route::get('/portal/create-ad/banner', 'Portal\AdvertisementController@banner')->name('portal.create-ad.banner');
+    // Route::get('/portal/create-ad/fullscreen', 'Portal\AdvertisementController@fullscreen')->name('portal.create-ad.fullscreen');
+    // Route::get('/portal/create-ad/popups', 'Portal\AdvertisementController@popups')->name('portal.create-ad.popups');
+    // Route::get('/portal/create-ad/events', 'Portal\AdvertisementController@events')->name('portal.create-ad.events');
+    // Route::get('/portal/create-ad/promos', 'Portal\AdvertisementController@promos')->name('portal.create-ad.promos');
+    // Route::get('/portal/create-ad/list/{ad_type}', 'Portal\AdvertisementController@list')->name('portal.create-ad.list');
+    Route::get('/portal/create-ad/list', 'Portal\AdvertisementController@list')->name('portal.create-ad.list');
     Route::post('/portal/create-ad/store', 'Portal\AdvertisementController@store')->name('portal.create-ad.store');
     Route::get('/portal/create-ad/{id}', 'Portal\AdvertisementController@details')->where('id', '[0-9]+')->name('portal.create-ad.details');
     Route::post('/portal/create-ad/update', 'Portal\AdvertisementController@update')->name('portal.create-ad.update');
