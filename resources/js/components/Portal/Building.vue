@@ -5,8 +5,7 @@
 			<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
-					<h3 class="card-title">Buildings</h3>
-					
+					<h4 class="card-title"><i class="nav-icon fa fa-building"></i>&nbsp;&nbsp;Buildings</h4>					
 				</div>
 				<div class="card-body">
 					<Table 
@@ -33,9 +32,7 @@
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Building</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Building</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
@@ -96,8 +93,8 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info text-dark">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"
