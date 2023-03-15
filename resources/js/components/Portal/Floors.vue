@@ -5,7 +5,7 @@
 			<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
-					<h3 class="card-title">Building Floors</h3>
+					<h4 class="card-title"><i class="nav-icon fas fa-layer-group"></i>&nbsp;&nbsp;Building Floors</h4>
 				</div>
 				<div class="card-body">
 					<Table 
@@ -32,16 +32,14 @@
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Floor</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Floor</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="floor.site_building_id">
+                                    <select class="form-select" v-model="floor.site_building_id">
 									    <option value="">Select Building</option>
 									    <option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
 								    </select>
@@ -120,8 +118,8 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info text-dark">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"

@@ -17,6 +17,7 @@
   </div>
   <div class="col-md-10">
     <portal-buildings></portal-buildings>
+    <portal-building-floors></portal-building-floors>
   </div>
 </div>
 
