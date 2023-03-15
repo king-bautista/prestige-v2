@@ -16,7 +16,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     ****************************************/
     public function __construct()
     {
-        $this->module_id = 31; 
+        $this->module_id = 54; 
         $this->module_name = 'Amenities';
     }
 
