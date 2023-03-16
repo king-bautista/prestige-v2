@@ -33,6 +33,13 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/manage-account/{id}', 'Portal\UsersController@details')->where('id', '[0-9]+')->name('portal.manage-account.details');
     Route::put('/portal/manage-account/update', 'Portal\UsersController@update')->name('portal.manage-account.update');
     Route::get('/portal/manage-account/delete/{id}', 'Portal\UsersController@delete')->where('id', '[0-9]+')->name('portal.manage-account.delete');
+    Route::get('/portal/manage-account/profile', 'Portal\UsersController@profile')->name('portal.manage-account.profile');
+    Route::post('/portal/manage-account/update-profile', 'Portal\UsersController@updateProfile')->name('portal.manage-account.update-profile');
+    Route::get('/portal/manage-account/brands', 'Portal\UsersController@brands')->name('portal.manage-account.brands');
+    Route::get('/portal/manage-account/brand/list', 'Portal\UsersController@userBrands')->name('portal.manage-account.brand.list');
+    // Route::get('/portal/manage-account/sites', 'Portal\UsersController@sites')->name('portal.manage-account.sites');
+    // Route::get('/portal/manage-account/sites/list', 'Portal\UsersController@userSites')->name('portal.manage-account.sites.list');
+
 
     /*
     |--------------------------------------------------------------------------
@@ -150,15 +157,6 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Brands Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/brands', 'Portal\BrandController@index')->name('portal.brands');
-    Route::get('/portal/brand/list', 'Portal\BrandController@list')->name('portal.brand.list');
-    Route::post('/portal/brand/store', 'Portal\BrandController@store')->name('portal.brand.store');
-    Route::get('/portal/brand/{id}', 'Portal\BrandController@details')->where('id', '[0-9]+')->name('portal.brand.details');
-    Route::post('/portal/brand/update', 'Portal\BrandController@update')->name('portal.brand.update');
-    Route::get('/portal/brand/delete/{id}', 'Portal\BrandController@delete')->where('id', '[0-9]+')->name('portal.brand.delete');
-    Route::post('/portal/brand/batch-upload', 'Portal\BrandController@batchUpload')->name('portal.brand.batch-upload');
-    Route::get('/portal/brand/get-supplementals', 'Portal\BrandController@getSupplementals')->where('id', '[0-9]+')->name('portal.brand.get-supplementals');
-    Route::get('/portal/brand/get-tags', 'Portal\BrandController@getTags')->where('id', '[0-9]+')->name('portal.brand.get-tags');
     Route::get('/portal/brand/get-all', 'Portal\BrandController@allBrands')->where('id', '[0-9]+')->name('portal.brand.get-all');
 
     /*
@@ -244,12 +242,12 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Companies Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/companies', 'Admin\CompaniesController@index')->name('portal.companies');
-    Route::get('/portal/company/list', 'Admin\CompaniesController@list')->name('portal.company.list');
-    Route::post('/portal/company/store', 'Admin\CompaniesController@store')->name('portal.company.store');
-    Route::get('/portal/company/{id}', 'Admin\CompaniesController@details')->where('id', '[0-9]+')->name('portal.company.details');
-    Route::put('/portal/company/update', 'Admin\CompaniesController@update')->name('portal.company.update');
-    Route::get('/portal/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('portal.company.delete');
+    // Route::get('/portal/companies', 'Admin\CompaniesController@index')->name('portal.companies');
+    // Route::get('/portal/company/list', 'Admin\CompaniesController@list')->name('portal.company.list');
+    // Route::post('/portal/company/store', 'Admin\CompaniesController@store')->name('portal.company.store');
+    // Route::get('/portal/company/{id}', 'Admin\CompaniesController@details')->where('id', '[0-9]+')->name('portal.company.details');
+    // Route::put('/portal/company/update', 'Admin\CompaniesController@update')->name('portal.company.update');
+    // Route::get('/portal/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('portal.company.delete');
     Route::get('/portal/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('portal.company.get-all');
     Route::get('/portal/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('portal.company.get-parent');
 

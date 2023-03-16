@@ -101,9 +101,9 @@ class User extends Authenticatable
 
     public function saveRoles($roles)
     {
-        UserRoles::where('user_id', $this->id)->delete();
+        UserRole::where('user_id', $this->id)->delete();
         foreach ($roles as $key => $role) {
-            UserRoles::updateOrCreate(
+            UserRole::updateOrCreate(
                 [
                    'user_id' => $this->id,
                    'role_id' => $role['id']

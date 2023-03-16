@@ -8,7 +8,7 @@ use App\Http\Controllers\Portal\Interfaces\UsersControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Helpers\PasswordHelper;
-use App\Http\Requests\RegistrationRequest;
+use App\Http\Requests\PortalUserRequest;
 use App\Models\User;
 use App\Models\ViewModels\UserViewModel;
 use Hash;
@@ -20,8 +20,8 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     ************************************/
     public function __construct()
     {
-        $this->module_id = 46; 
-        $this->module_name = 'Users';
+        $this->module_id = 48; 
+        $this->module_name = 'Manage Account';
     }
 
     public function index()
@@ -29,20 +29,41 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         return view('portal.users');
     }
 
+    public function profile()
+    {
+        return view('portal.profile');
+    }
+
+    public function brands()
+    {
+        return view('portal.brands');
+    }
+
+    public function sites()
+    {
+        return view('portal.user_sites');
+    }
+
     public function list(Request $request)
     {   
         try
         { 
+<<<<<<< HEAD
             $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+=======
+            // GET CURRENT LOGIN USER
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id);
+>>>>>>> 8b4946256cf55e5381e1b3d70a4eb572cceec3d6
 
-            $user = UserViewModel::when(request('search'), function($query){
+            $user_list = UserViewModel::when(request('search'), function($query){
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('email', 'LIKE', '%' . request('search') . '%');
             })
             ->where('full_name', '<>', 'Administrator')
+            ->where('company_id', $user->company_id)
             ->latest()
             ->paginate(request('perPage'));
-            return $this->responsePaginate($user, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($user_list, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -58,6 +79,9 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     {
         try
         {
+            if(!$id)
+                $id = Auth::guard('portal')->user()->id;
+
             $user = UserViewModel::find($id);
             return $this->response($user, 'Successfully Retreived!', 200);
         }
@@ -71,13 +95,16 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         }
     }
 
-    public function store(RegistrationRequest $request)
+    public function store(PortalUserRequest $request)
     {
         try
     	{
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id);
+
             $salt = PasswordHelper::generateSalt();
             $password = PasswordHelper::generatePassword($salt, $request->password);
             $data = [
+                'company_id' => $user->company_id,
                 'full_name' => $request->last_name.', '.$request->first_name,
                 'email' => $request->email,
                 'salt' => $salt,
@@ -89,7 +116,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
             $meta_details = ["first_name" => $request->first_name, "last_name" => $request->last_name];
             $portal_user->saveMeta($meta_details);
-            $portal_user->saveRoles($request->roles);
+            $portal_user->saveRoles($user->roles);
 
             return $this->response($portal_user, 'Successfully Created!', 200);
         }
@@ -103,10 +130,12 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         }
     }
 
-    public function update(Request $request)
+    public function update(PortalUserRequest $request)
     {
         try
     	{
+            $current_user = UserViewModel::find(Auth::guard('portal')->user()->id);
+
             $user = User::find($request->id);
             $password = PasswordHelper::generatePassword($user->salt, $request->password);
             $data = [
@@ -122,8 +151,55 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
             $meta_details = ["first_name" => $request->first_name, "last_name" => $request->last_name];
             $user->saveMeta($meta_details);
-            $user->saveRoles($request->roles);
+            $user->saveRoles($current_user->roles);
 
+            return $this->response($user, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function updateProfile(PortalUserRequest $request)
+    {
+        try
+    	{
+            $profile_image = $request->file('profile_image');
+            $file_path_path = null;
+
+            if($profile_image) {
+                $originalname = $profile_image->getClientOriginalName();
+                $file_path_path = $profile_image->move('uploads/media/profile/', str_replace(' ','-', $originalname));
+            }
+
+            $user = User::find($request->id);
+            $password = PasswordHelper::generatePassword($user->salt, $request->password);
+            $data = [
+                'full_name' => $request->last_name.', '.$request->first_name,
+                'email' => $request->email
+            ];
+
+            if($request->password)
+                $data['password'] = $password;
+
+            $user->update($data);
+
+            $meta_details = [
+                "first_name" => $request->first_name, 
+                "last_name" => $request->last_name,
+                "mobile" => $request->mobile,
+                "address" => $request->address,
+            ];
+
+            if($file_path_path)
+                $meta_details["profile_image"] = $file_path_path;
+
+            $user->saveMeta($meta_details);
             return $this->response($user, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
@@ -145,6 +221,40 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             return $this->response($user, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function userBrands()
+    {
+        try
+        {
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id);
+            return $this->response($user->brands, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function userSites()
+    {
+        try
+        {
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id);
+            return $this->response($user->sites, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),

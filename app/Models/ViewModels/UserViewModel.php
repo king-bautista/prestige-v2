@@ -68,6 +68,7 @@ class UserViewModel extends Model
         'brands',
         'sites',
         'screens',
+        'profile_image',
     ];
 
     public function getUserDetails()
@@ -145,6 +146,13 @@ class UserViewModel extends Model
         $screens = SiteScreenViewModel::whereIn('id', $screen_ids)->get();
         if($screens)
             return $screens;
+    }
+
+    public function getProfileImageAttribute() 
+    {
+        $profile_image = $this->getUserDetails()->where('meta_key', 'profile_image')->pluck('meta_value')->toArray();
+        if(count($profile_image) > 0)
+            return asset($profile_image[0]);
     }
 
 }

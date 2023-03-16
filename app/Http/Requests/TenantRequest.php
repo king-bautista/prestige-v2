@@ -24,23 +24,22 @@ class TenantRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand_id' => 'required|array|min:1',
-            'site_id' => 'required|not_in:0',
-            'site_building_id' => 'required|not_in:0',
-            'site_building_level_id' => 'required|not_in:0',
-            'company_id' => 'required',
+            "brand_id" => "required|string",
+            "site_id" => "required|numeric",
+            "site_building_id" => "required|numeric",
+            "site_building_level_id" => "required|numeric",
+            "subscriber_logo" => "required_if:is_subscriber,1"
         ];
     }
+
+    /**
+     * @return array
+     */
     public function messages()
     {
         return [
-            'brand_id.required' => 'Brand is required.',
-            'site_id.required' => 'Site is required.',
-            'site_building_id.required' => 'Building is required.',
-            'site_building_level_id.required' => 'Floor is required.',
-            'company_id.required' => 'Company is required.',
-
+            'subscriber_logo.required_if' => ':attribute field is required.',
         ];
-    
     }
+
 }

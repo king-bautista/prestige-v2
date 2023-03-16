@@ -136,13 +136,11 @@
                     <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="rounded-circle header-profile-user"
-                            src="{{ URL::to('client/assets/images/users/user-4.jpg') }}" alt="Header Avatar">
+                            src="{{ URL::to('images/user-icon.png') }}" alt="Header Avatar">
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <a class="dropdown-item" href="#"><i class="fa fa-user" aria-hidden="true"></i></i> Profile</a>
-                        <a class="dropdown-item d-flex align-items-center" href="#"><i class="fa fa-cog"
-                                aria-hidden="true"></i> Settings</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-address-card" aria-hidden="true"></i></i> Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i

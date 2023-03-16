@@ -25,8 +25,13 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     ************************************/
     public function __construct()
     {
+<<<<<<< HEAD
         $this->module_id = 67; 
         $this->module_name = 'Brand Management';
+=======
+        $this->module_id = 48; 
+        $this->module_name = 'User Brands';
+>>>>>>> 8b4946256cf55e5381e1b3d70a4eb572cceec3d6
     }
 
     public function index()
@@ -34,6 +39,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         return view('portal.brands');
     }
 
+<<<<<<< HEAD
     public function list(Request $request)
     {
         try
@@ -223,6 +229,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         }
     }
 
+=======
+>>>>>>> 8b4946256cf55e5381e1b3d70a4eb572cceec3d6
     public function allBrands()
     {
         try
@@ -231,23 +239,6 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             return $this->response($brands, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
-    public function batchUpload(Request $request)
-    {
-        try
-        {
-            Excel::import(new BrandsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),
