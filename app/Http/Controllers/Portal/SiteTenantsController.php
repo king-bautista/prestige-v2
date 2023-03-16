@@ -25,23 +25,23 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 54;
-        $this->module_name = 'Tenant Management';
+        $this->module_id = 55;
+        $this->module_name = 'Tenant List';
     }
 
     public function index()
-    {
+    {    
         return view('portal.tenants');
     }
 
     public function products($id)
     {
         $tenant_details = SiteTenantViewModel::find($id);
-        return view('admin.tenant_product', compact("tenant_details"));
+        return view('portal.tenant_product', compact("tenant_details"));
     }
 
     public function list(Request $request)
-    {
+    {      
         try
         {
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
@@ -266,7 +266,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try
         {
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $products = BrandProductViewModel::when(request('search'), function($query){
                 return $query->where('brand_products_promos.name', 'LIKE', '%' . request('search') . '%')

@@ -48,8 +48,12 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     {   
         try
         { 
+<<<<<<< HEAD
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+=======
             // GET CURRENT LOGIN USER
             $user = UserViewModel::find(Auth::guard('portal')->user()->id);
+>>>>>>> 8b4946256cf55e5381e1b3d70a4eb572cceec3d6
 
             $user_list = UserViewModel::when(request('search'), function($query){
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')

@@ -193,7 +193,7 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/portal/advertisement/list/"+this.ad_type,
+            	dataUrl: "/portal/create-ad/list/"+this.ad_type,
             	actionButtons: {
             		edit: {
             			title: 'Edit this Advertisements',
@@ -271,7 +271,7 @@
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
 				formData.append("active", this.advertisements.active);
-                axios.post('/portal/advertisement/store', formData, {
+                axios.post('/portal/create-ad/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -284,7 +284,7 @@
             },
 
 			editAdvertisements: function(id) {
-                axios.get('/portal/advertisement/'+id)
+                axios.get('/portal/create-ad/'+id)
                 .then(response => {
                     var advertisements = response.data.data;
 					this.advertisements.id = advertisements.id;
@@ -315,7 +315,7 @@
 				formData.append("file_path", this.advertisements.material);
 				formData.append("display_duration", this.advertisements.display_duration);
 				formData.append("active", this.advertisements.active);
-                axios.post('/portal/advertisement/update', formData, {
+                axios.post('/portal/create-ad/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},

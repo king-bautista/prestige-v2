@@ -37,7 +37,7 @@ class ProductsController extends AppBaseController implements ProductsController
         try
         {
             $brand_id = session()->get('brand_id');
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+            $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $products = BrandProductViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')

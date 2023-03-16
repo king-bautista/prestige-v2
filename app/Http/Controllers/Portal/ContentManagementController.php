@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\ContentManagementControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\UploadContentRequest;
 
 use App\Models\ContentManagement;
 use App\Models\TransactionStatus;
@@ -19,8 +20,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
     ****************************************/
     public function __construct()
     {
-        $this->module_id = 54; 
-        $this->module_name = 'Content Management';
+        $this->module_id = 58; 
+        $this->module_name = 'Upload Content';
     }
 
     public function index()
@@ -32,8 +33,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
     {
         try
         {
-            $this->permissions = UserViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-            
             $contents = ContentManagementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -68,8 +67,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function store(Request $request)
-    {
+    public function store(UploadContentRequest $request)
+    {  
         try
     	{
             $data = [
@@ -98,7 +97,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function update(Request $request)
+    public function update(UploadContentRequest $request)
     {
         try
     	{

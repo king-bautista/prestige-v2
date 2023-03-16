@@ -3,7 +3,7 @@
         <!-- Main content -->
 	    <section class="">
 	      <div class="container-fluid">
-	        <div class="row">
+	        <div class="row" v-show="data_list">
 	          <div class="col-md-12">
 	          	<div class="card">
 	    			<div class="card-body">
@@ -28,14 +28,15 @@
 	    </section>
 	    <!-- /.content -->
 
-		<!-- Modal Add New / Edit User -->
-		<div class="modal fade" id="tenant-form" tabindex="-1" aria-labelledby="tenant-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-xl">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Tenant</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Tenant</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		<!--Add New / Edit User -->
+		<div  class="row" v-show="data_form">
+			<div class="col-md-12">
+				<div class="card m-3">
+					<div class="card-header">
+						<h5 class="card-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New
+							Tenant</h5>
+						<h5 class="card-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							Edit Tenant</h5>
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
@@ -183,8 +184,8 @@
 						</div>
 					<!-- /.card-body -->
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<div class="card-footer text-right">
+						<button type="button" class="btn btn-secondary" @click="closeTenant">Close</button>
 						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeTenant">Add New Tenant</button>
 						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateTenant">Save Changes</button>
 					</div>
@@ -229,8 +230,8 @@
 		          </form>
 		      </div>
 		      <div class="modal-footer justify-content-between">
-		          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-		          <button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+		          <button type="button" class="btn btn-secondary" @click="closeTenant">Close</button>
+		          <button type="button" class="btn btn-primary" @click="storeBatch">Save Changes</button>
 		      </div>
 		      </div>
 		  </div>
@@ -269,6 +270,8 @@
                     instagram: '',
                     website: '',
                 },
+				data_list: true,
+				data_form: false,
 				id_to_deleted: 0,
                 add_record: true,
                 edit_record: false,
@@ -368,7 +371,7 @@
 			},
 
 			getSites: function() {
-                axios.get('/portal/site/get-all')
+                axios.get('/portal/property-details/get-all')
                 .then(response => this.sites = response.data.data);
             },
 
@@ -383,12 +386,12 @@
 			},
 
             getBuildings: function(id) {
-				axios.get('/portal/site/get-buildings/'+id)
+				axios.get('/portal/property-details/get-buildings/'+id)
                 .then(response => this.buildings = response.data.data);
 			},
 
             getFloorLevel: function(id) {
-				axios.get('/portal/site/floors/'+id)
+				axios.get('/portal/property-details/floors/'+id)
                 .then(response => this.floors = response.data.data);
             },
 
@@ -440,7 +443,8 @@
 				this.tenant.instagram = '';
 				this.tenant.website = '';			
 				this.addOperationalHours();
-              	$('#tenant-form').modal('show');
+				this.data_list = false;
+			    this.data_form = true;
             },
 
             storeTenant: function() {
@@ -469,7 +473,8 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.tenantsDataTable.fetchData();
-					$('#tenant-form').modal('hide');
+					this.data_list = true;
+					this.data_form = false;
 				});
             },
 
@@ -499,6 +504,8 @@
 					this.tenant.twitter = (tenant.tenant_details.twitter != 'undefined') ? tenant.tenant_details.twitter : '';
 					this.tenant.instagram = (tenant.tenant_details.instagram != 'undefined') ? tenant.tenant_details.instagram : '';
 					this.tenant.website = (tenant.tenant_details.website != 'undefined') ? tenant.tenant_details.website : '';
+					this.data_list = false;
+					this.data_form = true;
 
 					this.subscriber_logo = '';
 
@@ -558,9 +565,15 @@
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.tenantsDataTable.fetchData();
-					$('#tenant-form').modal('hide');
+					this.data_list = true;
+					this.data_form = false;
 				});
             },
+
+			backToList: function () {
+				this.data_list = true;
+				this.data_form = false;
+			},
 
 			DeleteTenant: function(data) {
 				this.id_to_deleted = data.id;
@@ -631,6 +644,10 @@
 					return 'btn custom-btn';
 				}
 			},
+
+			closeTenant: function() {
+				window.location.reload();
+            },
 
         },
 

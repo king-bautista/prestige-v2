@@ -61,7 +61,7 @@ Vue.component('admin-dashboard_highest_usage', require('./components/Admin/Dashb
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 
 /**
- * PORTAL PART
+ * PORTAL PART test
  */
 Vue.component('portal-dashboard', require('./components/Portal/Dashboard.vue').default);
 Vue.component('portal-users', require('./components/Portal/Users.vue').default);
