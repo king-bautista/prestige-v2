@@ -2,17 +2,19 @@
 	<div>
         <div class="card">
           <div class="card-header border-0">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <h3 class="card-title">Merchant Population</h3>
-                    <form class="form-inline ml-auto input-group-sm">
-                        <select class="custom-select mr-2" v-model="filter.site_id" @change="filterChart()">
-                            <option value="">Select Site</option>
-                            <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
-                        </select>
-                        <a href="/portal/reports/merchant-population">
-                            <button class="btn btn-outline-primary btn-sm" type="button">View Report</button>
-                        </a>
+            <nav class="navbar">
+                <div class="container-xl m-0 p-0">
+                    <h3 class="card-title"><i class="nav-icon fas fa-chart-pie"></i> Merchant Population</h3>
+                    <form class="form-inline ml-auto input-group-sm m-0">
+                        <div class="input-group m-0">
+                            <select class="form-select form-select-sm me-2" v-model="filter.site_id" @change="filterChart()">
+                                <option value="">Select Site</option>
+                                <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
+                            </select>
+                            <a href="/portal/reports/merchant-population">
+                                <button class="btn btn-outline-primary btn-sm" type="button">View Report</button>
+                            </a>
+                        </div>
                     </form>
                 </div>
             </nav>
@@ -48,7 +50,7 @@
 
         methods: {
             getSites: function() {
-                axios.get('/portal/site/get-all')
+                axios.get('/portal/property-details/get-all')
                 .then(response => this.sites = response.data.data);
             },
 
