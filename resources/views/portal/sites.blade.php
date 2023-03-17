@@ -3,7 +3,6 @@
 <h4>Property Details</h4>
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
-  <li class="breadcrumb-item"><a href="#"></a></li>
   <li class="breadcrumb-item"><a href="#">Manage Property</a></li>
   <li class="breadcrumb-item active">Property Details</li>
 </ol>

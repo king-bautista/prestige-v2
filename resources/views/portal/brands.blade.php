@@ -3,7 +3,6 @@
 <h4>User Brands</h4>
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
-  <li class="breadcrumb-item"><a href="#"></a></li>
   <li class="breadcrumb-item active">User Brands</li>
 </ol>
 @endsection
