@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h4 v-show="data_list"><i class="nav-icon fa fa-building"></i>&nbsp;&nbsp;Advertisements</h4>
+						<h4 v-show="data_list"><i class="nav-icon fas fa-photo-video"></i>&nbsp;&nbsp;Advertisements</h4>
 						<h4 v-show="add_record && data_form"><i class="nav-icon fas fa-user-plus"></i> Add New Advertisement</h4>
 						<h4 v-show="edit_record && data_form"><i class="nav-icon fas fa-user-edit"></i> Edit Advertisement</h4>
 					</div>
