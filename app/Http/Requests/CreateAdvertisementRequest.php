@@ -24,11 +24,23 @@ class CreateAdvertisementRequest extends FormRequest
     public function rules()
     {
         return [
-            "company_id" => "required|not_in:0",
-            "brand_id" => "required|not_in:0",
-           // "name" => "required",
-            // "ad_type" => "required",
-            // "display_duration" => "required|numeric",
+            "display_duration" => "required|numeric",
+            "file_type" => "mimes:png,jpg,jpeg|max:2048",
+            "ad_type" => "required|string",
+            "name" => "required",
+            "brand_id" => "required|string",
+            "company_id" => "required|string",
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            "brand_id.required" => "Brand is required",
+            "company_id.required" => "Company is required",
+            "name.required" => "Name is required",
+            "ad_type.required" => "Ad Type is required",
+            "display_duration.required" => "Duration is required",
         ];
     }
 }
