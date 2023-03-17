@@ -1,11 +1,11 @@
 @extends('layout.portal.master')
 @section('Page-Title')
-<h4>Content Management</h4>
+<h4>Upload Content</h4>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="javascript: void(0);">Prestige&nbsp;</a></li>
   <li class="breadcrumb-item"><a href="javascript: void(0);">Interactive</a></li>
-  <li class="breadcrumb-item active">Content Management</li>
+  <li class="breadcrumb-item active">Upload Content</li>
   </ol>
 </nav>
 @endsection
