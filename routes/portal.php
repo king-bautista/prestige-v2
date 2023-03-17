@@ -98,19 +98,19 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Sites Tenants Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/site/tenants', 'Portal\SiteTenantsController@index')->name('portal.tenants');
-    Route::get('/portal/site/tenant/list', 'Portal\SiteTenantsController@list')->name('portal.tenant.list');
-    Route::post('/portal/site/tenant/store', 'Portal\SiteTenantsController@store')->name('portal.tenant.store');
-    Route::get('/portal/site/tenant/{id}', 'Portal\SiteTenantsController@details')->where('id', '[0-9]+')->name('portal.tenant.details');
-    Route::post('/portal/site/tenant/update', 'Portal\SiteTenantsController@update')->name('portal.tenant.update');
-    Route::get('/portal/site/tenant/delete/{id}', 'Portal\SiteTenantsController@delete')->where('id', '[0-9]+')->name('portal.tenant.delete');
-    Route::get('/portal/site/tenant/get-tenants/{ids}', 'Portal\SiteTenantsController@getTenants')->name('portal.tenant.get-tenants');
-    Route::get('/portal/site/tenant/get-tenants-per-floor/{id}', 'Portal\SiteTenantsController@getTenantPerFloor')->where('id', '[0-9]+')->name('portal.tenant.get-tenants-floor');
-    Route::post('/portal/site/tenant/batch-upload', 'Portal\SiteTenantsController@batchUpload')->name('portal.tenant.batch-upload');
-    Route::get('/portal/site/tenant/products/{id}', 'Portal\SiteTenantsController@products')->where('id', '[0-9]+')->name('portal.tenant-products');
-    Route::post('/portal/site/tenant/store-brand-products', 'Portal\SiteTenantsController@saveBrandProduct')->name('portal.tenant.brand-products');
-    Route::get('/portal/site/tenant/product/list/{id}', 'Portal\SiteTenantsController@tenantProducts')->where('id', '[0-9]+')->name('portal.tenant.product-list');
-    Route::get('/portal/site/tenant/product/delete/{tid}/{id}', 'Portal\SiteTenantsController@deleteProduct')->where('tid', '[0-9]+')->where('id', '[0-9]+')->name('portal.tenant.delete-product');
+    Route::get('/portal/tenants', 'Portal\SiteTenantsController@index')->name('portal.tenants');
+    Route::get('/portal/tenant/list', 'Portal\SiteTenantsController@list')->name('portal.tenant.list');
+    Route::post('/portal/tenant/store', 'Portal\SiteTenantsController@store')->name('portal.tenant.store');
+    Route::get('/portal/tenant/{id}', 'Portal\SiteTenantsController@details')->where('id', '[0-9]+')->name('portal.tenant.details');
+    Route::post('/portal/tenant/update', 'Portal\SiteTenantsController@update')->name('portal.tenant.update');
+    Route::get('/portal/tenant/delete/{id}', 'Portal\SiteTenantsController@delete')->where('id', '[0-9]+')->name('portal.tenant.delete');
+    Route::get('/portal/tenant/get-tenants/{ids}', 'Portal\SiteTenantsController@getTenants')->name('portal.tenant.get-tenants');
+    Route::get('/portal/tenant/get-tenants-per-floor/{id}', 'Portal\SiteTenantsController@getTenantPerFloor')->where('id', '[0-9]+')->name('portal.tenant.get-tenants-floor');
+    Route::post('/portal/tenant/batch-upload', 'Portal\SiteTenantsController@batchUpload')->name('portal.tenant.batch-upload');
+    Route::get('/portal/tenant/products/{id}', 'Portal\SiteTenantsController@products')->where('id', '[0-9]+')->name('portal.tenant-products');
+    Route::post('/portal/tenant/store-brand-products', 'Portal\SiteTenantsController@saveBrandProduct')->name('portal.tenant.brand-products');
+    Route::get('/portal/tenant/product/list/{id}', 'Portal\SiteTenantsController@tenantProducts')->where('id', '[0-9]+')->name('portal.tenant.product-list');
+    Route::get('/portal/tenant/product/delete/{tid}/{id}', 'Portal\SiteTenantsController@deleteProduct')->where('tid', '[0-9]+')->where('id', '[0-9]+')->name('portal.tenant.delete-product');
 
     /*
     |--------------------------------------------------------------------------
@@ -184,12 +184,6 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/portal/create-ad', 'Portal\AdvertisementController@index')->name('portal.create-ad');
-    // Route::get('/portal/create-ad/banner', 'Portal\AdvertisementController@banner')->name('portal.create-ad.banner');
-    // Route::get('/portal/create-ad/fullscreen', 'Portal\AdvertisementController@fullscreen')->name('portal.create-ad.fullscreen');
-    // Route::get('/portal/create-ad/popups', 'Portal\AdvertisementController@popups')->name('portal.create-ad.popups');
-    // Route::get('/portal/create-ad/events', 'Portal\AdvertisementController@events')->name('portal.create-ad.events');
-    // Route::get('/portal/create-ad/promos', 'Portal\AdvertisementController@promos')->name('portal.create-ad.promos');
-    // Route::get('/portal/create-ad/list/{ad_type}', 'Portal\AdvertisementController@list')->name('portal.create-ad.list');
     Route::get('/portal/create-ad/list', 'Portal\AdvertisementController@list')->name('portal.create-ad.list');
     Route::post('/portal/create-ad/store', 'Portal\AdvertisementController@store')->name('portal.create-ad.store');
     Route::get('/portal/create-ad/{id}', 'Portal\AdvertisementController@details')->where('id', '[0-9]+')->name('portal.create-ad.details');
@@ -202,7 +196,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Content Management
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/upload-content', 'Portal\ContentManagementController@index')->name('portal.upload-content');
+    Route::get('/portal/upload-contents', 'Portal\ContentManagementController@index')->name('portal.upload-content');
     Route::get('/portal/upload-content/list', 'Portal\ContentManagementController@list')->name('portal.upload-content.list');
     Route::post('/portal/upload-content/store', 'Portal\ContentManagementController@store')->name('portal.upload-content.store');
     Route::get('/portal/upload-content/{id}', 'Portal\ContentManagementController@details')->where('id', '[0-9]+')->name('portal.upload-content.details');
