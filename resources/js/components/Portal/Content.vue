@@ -1,68 +1,48 @@
 <template>
 	<div>
-		<!-- Main content -->
-		<section class="">
-			<div class="container-fluid">
-				<div class="row" v-show="data_list">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-body">
-								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
-									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewContent="AddNewContent"
-									v-on:editButton="editContent" ref="dataTable">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 v-show="data_list"><i class="nav-icon fa fa-building"></i>&nbsp;&nbsp;Upload Content</h4>
+						<h4 v-show="add_record && data_form"><i class="nav-icon fas fa-user-plus"></i> Add New Content</h4>
+						<h4 v-show="edit_record && data_form"><i class="nav-icon fas fa-user-edit"></i> Edit Content</h4>
+					</div>
+					<div class="card-body" v-show="data_list">
+						<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
+							:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewContent="AddNewContent"
+							v-on:editButton="editContent" ref="dataTable">
+						</Table>
+					</div>
+					<div class="card-body" v-show="data_form">
+						<!-- <div class="form-group row">
+							
+						</div> -->
+						<div class="row" v-if="!content.advertisement_id">
+							<div class="col-sm-12">
+								<Table :dataFields="adsDataFields" :dataUrl="adsDataUrl" :actionButtons="adsActionButtons"
+									:primaryKey="adsPrimaryKey" v-on:editButton="selectedAd" ref="AdvertisementdataTable">
 								</Table>
 							</div>
 						</div>
-					</div>
-				</div>
-				<!-- /.row -->
-			</div><!-- /.container-fluid -->
-		</section>
-		<!-- /.content -->
-
-		<!-- Add New / Edit User -->
-		<div class="row" v-show="data_form">
-			<div class="col-md-12">
-				<div class="card m-3">
-					<div class="card-header">
-						<h5 class="card-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New
-							Content</h5>
-						<h5 class="card-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-							Edit Content</h5>
-					</div>
-					<div class="modal-body">
-						<div class="card-body">
-							<div class="row" v-if="!content.advertisement_id">
-								<div class="col-sm-12">
-									<Table :dataFields="adsDataFields" :dataUrl="adsDataUrl"
-										:actionButtons="adsActionButtons" :primaryKey="adsPrimaryKey"
-										v-on:editButton="selectedAd" ref="AdvertisementdataTable">
-									</Table>
-								</div>
-							</div>
-							<div v-if="content.advertisement_id">
-								<div class="form-group row mb-4">
+						<div v-if="content.advertisement_id">
+								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Material</label>
 									<div class="col-sm-3 text-center" id="ad-holder">
-										<span
-											v-if="helper.getFileExtension(content.advertisement_id.material_image_path) == 'image'">
-											<img :src="content.advertisement_id.material_image_path"
-												class="img-thumbnail" />
+										<span v-if="helper.getFileExtension(content.advertisement_id.material_image_path) == 'image'">
+											<img :src="content.advertisement_id.material_image_path" class="img-thumbnail" />
 										</span>
-										<span
-											v-else-if="helper.getFileExtension(content.advertisement_id.material_image_path) == 'video'">
+										<span v-else-if="helper.getFileExtension(content.advertisement_id.material_image_path) == 'video'">
 											<video muted="muted" class="img-thumbnail">
-												<source :src="content.advertisement_id.material_image_path"
-													type="video/ogg">
+												<source :src="content.advertisement_id.material_image_path" type="video/ogg">
 												Your browser does not support the video tag.
 											</video>
 										</span>
 
-										<div class="edit-button"><a @click="content.advertisement_id = null"
-												class="bg-success"><i class="fas fa-edit"></i> CHANGE </a></div>
+										<div class="edit-button"><a @click="content.advertisement_id = null" class="bg-success"><i class="fas fa-edit"></i> CHANGE </a></div>
 									</div>
 								</div>
-								<div class="form-group row mb-4">
+								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Ad Name</label>
 									<div class="col-sm-8">
 										<span>
@@ -70,7 +50,7 @@
 										</span>
 									</div>
 								</div>
-								<div class="form-group row mb-4">
+								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Brand Name</label>
 									<div class="col-sm-8">
 										<span>
@@ -78,7 +58,7 @@
 										</span>
 									</div>
 								</div>
-								<div class="form-group row mb-4">
+								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Company Name</label>
 									<div class="col-sm-8">
 										<span>
@@ -86,7 +66,7 @@
 										</span>
 									</div>
 								</div>
-								<div class="form-group row mb-4">
+								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Dimension</label>
 									<div class="col-sm-8">
 										<span>
@@ -94,93 +74,106 @@
 										</span>
 									</div>
 								</div>
-								<div class="form-group row mb-4">
-									<label for="Site" class="col-sm-4 col-form-label">Site <span
-											class="font-italic text-danger"> *</span></label>
+								<div class="form-group row">
+									<label for="Site" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.site_id" :options="sites" :multiple="false"
-											:close-on-select="true" placeholder="Select Site" label="name" track-by="name"
+										<multiselect v-model="content.site_id"
+											:options="sites"
+											:multiple="false"
+											:close-on-select="true"
+											placeholder="Select Site"
+											label="name"
+											track-by="name"
 											@select="getTenants">
 										</multiselect>
 									</div>
 								</div>
-								<div class="form-group row mb-4">
-									<label for="Tenant" class="col-sm-4 col-form-label">Tenant <span
-											class="font-italic text-danger"> *</span></label>
+								<div class="form-group row">
+									<label for="Tenant" class="col-sm-4 col-form-label">Tenant <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.site_tenant_id" track-by="brand_site_name"
-											label="brand_site_name" placeholder="Select Tenant" :options="tenants"
-											:searchable="true" :allow-empty="false">
-										</multiselect>
+										<multiselect v-model="content.site_tenant_id" 
+										track-by="brand_site_name" 
+										label="brand_site_name" 
+										placeholder="Select Tenant" 
+										:options="tenants" 
+										:searchable="true" 
+										:allow-empty="false">
+										</multiselect> 
 									</div>
 								</div>
-								<div class="form-group row mb-4">
-									<label for="Screen" class="col-sm-4 col-form-label">Screen <span
-											class="font-italic text-danger"> *</span></label>
+								<div class="form-group row">
+									<label for="Screen" class="col-sm-4 col-form-label">Screen <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.site_screen_id" track-by="screen_type_name"
-											label="screen_type_name" placeholder="Select Screen" :multiple="true"
-											:options="screens" :searchable="true" :allow-empty="false">
-										</multiselect>
+										<multiselect v-model="content.site_screen_id" 
+										track-by="screen_type_name" 
+										label="screen_type_name" 
+										placeholder="Select Screen" 
+										:multiple="true"
+										:options="screens" 
+										:searchable="true" 
+										:allow-empty="false">
+										</multiselect> 
 									</div>
 								</div>
-								<div class="form-group row mb-4">
-									<label for="firstName" class="col-sm-4 col-form-label">Duration <span
-											class="font-italic text-danger"> *</span></label>
+								<div class="form-group row">
+									<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-2">
-										<div class="mb-4"><input type="text" class="form-control" v-model="content.display_duration"
-											placeholder="Duration" readonly></div>
+										<input type="text" class="form-control" v-model="content.display_duration" placeholder="Duration" readonly> 
 										<footer class="blockquote-footer">In Seconds</footer>
 									</div>
 									<div class="col-sm-3">
-										<date-picker v-model="content.start_date" placeholder="YYYY/MM/DD" :config="options"
-											autocomplete="off"></date-picker>
+										<date-picker v-model="content.start_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
 									</div>
 									<div class="col-sm-3 text-center">
-										<date-picker v-model="content.end_date" placeholder="YYYY/MM/DD" :config="options"
-											autocomplete="off"></date-picker>
+										<date-picker v-model="content.end_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
 									</div>
 								</div>
-								<div class="form-group row mb-4">
-									<label for="uom" class="col-sm-4 col-form-label">No. of Slots <span
-											class="font-italic text-danger"> *</span></label>
+								<div class="form-group row">
+									<label for="uom" class="col-sm-4 col-form-label">No. of Slots <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-2">
 										<input type="number" class="form-control" v-model="content.uom">
 									</div>
 								</div>
-								<div class="form-group row mb-4">
+								<div class="form-group row">
 									<label for="Status" class="col-sm-4 col-form-label">Change Status</label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.status_id" track-by="name" label="name"
-											placeholder="Change Status" :multiple="false" :options="transaction_statuses"
-											:searchable="true" :allow-empty="false">
+										<multiselect v-model="content.status_id" 
+										track-by="name" 
+										label="name" 
+										placeholder="Change Status" 
+										:multiple="false"
+										:options="transaction_statuses" 
+										:searchable="true" 
+										:allow-empty="false">
 										</multiselect>
 									</div>
 								</div>
 								<div class="form-group row" v-show="edit_record">
 									<label for="Active" class="col-sm-4 col-form-label">Active</label>
 									<div class="col-sm-8">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="active"
-												v-model="content.active">
+										<div class="form-check form-switch form-switch-md mb-3">
+											<input type="checkbox" class="custom-control-input form-check-input" id="active" v-model="content.active">
 											<label class="custom-control-label" for="active"></label>
 										</div>
 									</div>
 								</div>
 							</div>
 
+						<div class="form-group row">
+							<div class="col-sm-12 text-right">
+								<button type="button" class="btn btn-secondary btn-sm" @click="backToList"><i
+										class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+								<button type="button" class="btn btn-primary btn-sm" v-if="content.advertisement_id"  v-show="add_record"
+									@click="storeContent">Add New Content</button>
+								<button type="button" class="btn btn-primary btn-sm" v-if="content.advertisement_id"  v-show="edit_record"
+									@click="updateContent">Save Changes</button>
+							</div>
 						</div>
-						<div class="card-footer text-right">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeContent">Add New Content</button>
-						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateContent">Save Changes</button>
-					</div>
-						<!-- /.card-body -->
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- End Modal Add New User -->
+
 
 	</div>
 </template>
@@ -326,12 +319,12 @@ export default {
 		},
 
 		getTenants: function (value, id) {
-			axios.get('/portal/site/tenant/get-tenants/' + value.id)
+			axios.get('/portal/tenant/get-tenants/' + value.id)
 				.then(response => this.tenants = response.data.data);
 			this.getScreens(value.id)
 		},
 
-		getScreens: function (id) { 
+		getScreens: function (id) {
 			axios.get('/portal/maps/get-screens/' + id)
 				.then(response => this.screens = response.data.data);
 		},
@@ -354,8 +347,8 @@ export default {
 			this.content.status_id = '';
 			this.content.active = true;
 			this.data_list = false;
-			this.data_form = true;
-			
+			this.data_form = true; 
+
 		},
 
 		storeContent: function () {
@@ -405,9 +398,9 @@ export default {
 		},
 
 		backToList: function () {
-				this.data_list = true;
-				this.data_form = false;
-			},
+			this.data_list = true;
+			this.data_form = false;
+		},
 
 		selectedAd: function (id) {
 			axios.get('/portal/upload-content/' + id)
