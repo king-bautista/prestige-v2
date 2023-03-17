@@ -1,13 +1,15 @@
 <template>
-	<div>
-        <!-- Main content -->
-	    <section class="">
-	      <div class="container-fluid">
-	        <div class="row" v-show="data_list">
-	          <div class="col-md-12">
-	          	<div class="card">
-	    			<div class="card-body">
-			          	<Table 
+<div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 v-show="data_list"><i class="nav-icon fa fa-building"></i>&nbsp;&nbsp;Advertisements</h4>
+						<h4 v-show="add_record && data_form"><i class="nav-icon fas fa-user-plus"></i> Add New Advertisement</h4>
+						<h4 v-show="edit_record && data_form"><i class="nav-icon fas fa-user-edit"></i> Edit Advertisement</h4>
+					</div>
+					<div class="card-body" v-show="data_list">
+						<Table 
                         :dataFields="dataFields"
                         :dataUrl="dataUrl"
                         :actionButtons="actionButtons"
@@ -17,28 +19,11 @@
 						v-on:editButton="editAdvertisements"
                         ref="dataTable">
 			          	</Table>
-		          	</div>
-		        </div>
-	          </div>
-	        </div>
-	        <!-- /.row -->
-	      </div><!-- /.container-fluid -->
-	    </section>
-	    <!-- /.content -->
-
-		<!-- Modal Add New / Edit User -->
-		<div class="row" v-show="data_form">
-			<div class="col-md-12">
-				<div class="card m-3">
-					<div class="card-header">
-						<h5 class="card-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Advertisements</h5>
-						<h5 class="card-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Advertisements</h5>
 					</div>
-					<div class="modal-body">
-						<div class="card-body">
-							<div class="form-group row mb-4">
-								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+					<div class="card-body" v-show="data_form">
+						<div class="form-group row">
+							<label for="lastName" class="col-sm-3 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
 									<multiselect v-model="advertisements.company_id"
 										:options="companies"
 										:multiple="false"
@@ -48,10 +33,10 @@
 										track-by="name">
 									</multiselect>
 								</div>
-							</div>
-                            <div class="form-group row mb-4">
-								<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
                                     <multiselect v-model="advertisements.brand_id" 
 									track-by="name" 
 									label="name" 
@@ -61,16 +46,17 @@
 									:allow-empty="false">
                                     </multiselect> 
 								</div>
-							</div>
-							<div class="form-group row mb-4">
-								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
 								</div>
-							</div>
-							<div class="form-group row mb-4">
-								<label for="firstName" class="col-sm-4 col-form-label">Ad Type <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Ad Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
 									<multiselect v-model="advertisements.ad_type" 
 									:options="ad_types" 
 									:searchable="false" 
@@ -79,11 +65,23 @@
 									placeholder="Select Type">
 								    </multiselect>
 								</div>
-							</div>
-							<div class="form-group row mb-4">
-								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-5">
-                                    <div class="mb-4"><input type="file" accept="image/*" ref="material" @change="materialChange"></div>
+								<!-- <div class="col-sm-3 text-center">
+									<span v-if="material && helper.getFileExtension(material_type) == 'image'">
+										<img v-if="material" :src="material" class="img-thumbnail" /> 
+									</span>
+									<span v-else-if="material && helper.getFileExtension(material_type) == 'video'">
+										<video muted="muted" class="img-thumbnail">
+											<source :src="material" type="video/ogg">
+											Your browser does not support the video tag.
+										</video>
+									</span>
+								</div> -->
+							
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-3">
+                                	<input type="file" accept="image/*" ref="material" @change="materialChange">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<!-- <footer class="blockquote-footer" v-if="ad_type=='Online'">image/video max size is 1140 x 140 pixels</footer>
 									<footer class="blockquote-footer" v-if="ad_type=='Banners'">image/video max size is 470 x 1060 pixels</footer>
@@ -92,48 +90,50 @@
 									<footer class="blockquote-footer" v-if="ad_type=='Events'">image/video max size is 286 x 286 pixels</footer> -->
 									<footer class="blockquote-footer" >image/video max size is 1920 x 1080 pixels</footer>
 								</div>
-								<div class="col-sm-3 text-center">
-									<span v-if="material && helper.getFileExtension(material_type) == 'image'">
-										<img v-if="material" :src="material" class="img-thumbnail" />
-									</span>
-									<span v-else-if="material && helper.getFileExtension(material_type) == 'video'">
-										<video muted="muted" class="img-thumbnail">
-											<source :src="material" type="video/ogg">
-											Your browser does not support the video tag.
-										</video>
-									</span>
-								</div>
-							</div>
-                            <div class="form-group row mb-4">
-								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
+								<!-- <div class="col-sm-3">
+									<input type="file" accept="image/*" ref="subscriber_logo" @change="subscriberLogoChange">
+									<footer class="blockquote-footer">Max file size is 15MB</footer>
+									<footer class="blockquote-footer" v-if="ad_type=='Online'">image/video max size is 1140 x 140 pixels</footer>
+										<footer class="blockquote-footer" v-if="ad_type=='Banners'">image/video max size is 470 x 1060 pixels</footer>
+										<footer class="blockquote-footer" v-if="ad_type=='Fullscreen'">image/video max size is 1920 x 1080 pixels</footer>
+										<footer class="blockquote-footer" v-if="ad_type=='Pop-Up'">image/video max size is 470 x 1060 pixels</footer>
+										<footer class="blockquote-footer" v-if="ad_type=='Events'">image/video max size is 286 x 286 pixels</footer>
+									<footer class="blockquote-footer">image max size is 550 x 550 pixels</footer>
+								</div> -->
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
                                 <div class="col-sm-2">
 									<div class="mb-4"><input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"></div>
 									<footer class="blockquote-footer">In Seconds</footer>
 								</div>
-							</div>
-							<div class="form-group row mb-4" v-show="edit_record">
-								<label for="active" class="col-sm-4 col-form-label">Active</label>
-								<div class="col-sm-8">
+							
+						</div>
+						<div class="form-group row">
+							<label for="active" class="col-sm-3 col-form-label">Active</label>
+								<div class="col-sm-9">
 									<div class="form-check form-switch form-switch-md mb-3">
 										<input type="checkbox" class="custom-control-input form-check-input" id="active" v-model="advertisements.active">
 										<label class="custom-control-label" for="active"></label>
 									</div>
 								</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-sm-12 text-right">
+								<button type="button" class="btn btn-secondary btn-sm" @click="backToList"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+								<button type="button" class="btn btn-primary btn-sm" v-show="add_record" @click="storeAdvertisements">Add New Advertisement</button>
+								<button type="button" class="btn btn-primary btn-sm" v-show="edit_record" @click="updateAdvertisements">Save Changes</button>
 							</div>
 						</div>
-						<div class="card-footer text-right">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" v-show="add_record" @click="storeAdvertisements">Add New Advertisements</button>
-							<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateAdvertisements">Save Changes</button>
-						</div>
-					<!-- /.card-body -->
 					</div>
 				</div>
 			</div>
 		</div>
-      <!-- End Modal Add New User -->
-		
+	
+
     </div>
+
+	
 </template>
 <script> 
 	import Table from '../Helpers/Table';
@@ -254,7 +254,7 @@
                 .then(response => this.brands = response.data.data);
 			},
 
-			materialChange: function(e) {
+			materialChange: function(e) { 
 				const file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.material = URL.createObjectURL(file);
@@ -262,8 +262,6 @@
 			},
 
 			AddNewAdvertisements: function() {
-				this.add_record = true;
-				this.edit_record = false;
 				this.advertisements.company_id = null;
 				this.advertisements.brand_id = null;
                 this.advertisements.name = '';
@@ -274,13 +272,15 @@
 				this.$refs.material.value = null;
 				this.material = null;
 				this.data_list = false;
-			    this.data_form = true;
+				this.data_form = true;
+				this.add_record = true;
+				this.edit_record = false;
             },
 
             storeAdvertisements: function() { 
 				let formData = new FormData();
-				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
-				formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));
+				formData.append("company_id", (this.advertisements.company_id) ? JSON.stringify(this.advertisements.company_id) : '');
+				formData.append("brand_id", (this.advertisements.brand_id) ? JSON.stringify(this.advertisements.brand_id) : '');
 				formData.append("name", this.advertisements.name);
 				formData.append("ad_type", this.advertisements.ad_type);
 				formData.append("file_path", this.advertisements.material);
@@ -345,13 +345,13 @@
 	              	
 				})
             },
-
-        },
-		backToList: function () {
+			backToList: function () {
 				this.data_list = true;
 				this.data_form = false;
-		},
+			},
 
+        },
+		
         components: {
         	Table,
             Multiselect,
