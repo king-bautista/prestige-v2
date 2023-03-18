@@ -88,6 +88,7 @@ Vue.component('portal-building-floors', require('./components/Portal/Floors.vue'
 Vue.component('portal-amenities', require('./components/Portal/Amenities.vue').default);
 Vue.component('portal-building-tenants', require('./components/Portal/Tenants.vue').default);
 Vue.component('portal-building-screens', require('./components/Portal/Screens.vue').default);
+Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
 
 
 /**
