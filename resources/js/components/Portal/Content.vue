@@ -407,6 +407,7 @@ export default {
 				.then(response => {
 					this.content.advertisement_id = response.data.data;
 					this.content.display_duration = this.content.advertisement_id.display_duration;
+					console.log(this.content.advertisement_id.screens);
 					console.log(this.content.advertisement_id);
 				});
 		}
