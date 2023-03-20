@@ -142,15 +142,13 @@
                         <!-- item-->
                         <a class="dropdown-item" href="#"><i class="fa fa-address-card" aria-hidden="true"></i></i> Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
-                                class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
-                        <a href="#" class="nav-link"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <form id="logout-form" action='{{ url("portal/logout") }}' method="POST"
-                                style="display: none;">
-                                @csrf
-                            </form>
+                        <a class="dropdown-item text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">\
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                        </a>
+                        <form id="logout-form" action='{{ url("portal/logout") }}' method="POST"
+                            style="display: none;">
+                            @csrf
+                        </form>
                     </div>
                 </div>
 

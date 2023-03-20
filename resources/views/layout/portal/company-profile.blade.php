@@ -18,7 +18,7 @@
                 <a href="/portal/property-details"><strong><i class="fa fa-sitemap mr-1"></i>&nbsp;&nbsp;Sites</strong></a>
             </li>
             <li class="list-group-item">
-                <a href="/portal/manage-account/screens"><strong><i class="fa fa-desktop mr-1"></i>&nbsp;&nbsp;Screens</strong></a>
+                <a href="/portal/maps"><strong><i class="fa fa-desktop mr-1"></i>&nbsp;&nbsp;Screens</strong></a>
             </li>
             <li class="list-group-item">
                 <a href="#"><strong><i class="fas fa-bell"></i>&nbsp;&nbsp;Notifications</strong></a>
