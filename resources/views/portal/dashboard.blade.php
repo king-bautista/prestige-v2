@@ -3,7 +3,6 @@
 <h4>Dashboard</h4>
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
-  <li class="breadcrumb-item"><a href="#"></a></li>
   <li class="breadcrumb-item active">Dashboard</li>
 </ol>
 @endsection

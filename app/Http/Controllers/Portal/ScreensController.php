@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Portal;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\ScreensControllerInterface;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\ScreenRequest;
 
 use App\Models\SiteScreen;
 use App\Models\ViewModels\SiteScreenViewModel;
@@ -18,8 +20,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     ********************************************/
     public function __construct()
     {
-        $this->module_id = 42; 
-        $this->module_name = 'Screens';
+        $this->module_id = 56; 
+        $this->module_name = 'Maps';
     }
 
     public function index()
@@ -31,7 +33,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try
         {
-
             $filters = json_decode($request->filters);
             $site_ids = []; 
             if($filters)
@@ -81,7 +82,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function store(Request $request)
+    public function store(ScreenRequest $request)
     {
         try
     	{
@@ -98,6 +99,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'name' => $request->name,
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
+                'product_application' => $request->product_application,
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
@@ -112,6 +114,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen = SiteScreen::create($data);
+            $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Created!', 200);
         }
@@ -125,7 +128,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function update(Request $request)
+    public function update(ScreenRequest $request)
     {
         try
     	{
@@ -142,6 +145,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'site_building_level_id' => $request->site_building_level_id,
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
+                'product_application' => $request->product_application,
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
@@ -155,6 +159,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen->update($data);
+            $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Modified!', 200);
         }
