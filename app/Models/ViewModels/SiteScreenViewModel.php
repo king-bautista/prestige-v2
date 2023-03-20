@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Site;
 use App\Models\SiteBuilding;
 use App\Models\SiteBuildingLevel;
+use App\Models\ExclusiveScreen;
 
 class SiteScreenViewModel extends Model
 {
@@ -48,6 +49,9 @@ class SiteScreenViewModel extends Model
         'building_name',
         'floor_name',
         'screen_type_name',
+        'screen_location',
+        'company_details',
+        'brand_id',
     ];
 
     /****************************************
@@ -72,6 +76,27 @@ class SiteScreenViewModel extends Model
     {
         $site_name = Site::find($this->site_id)->name;
         return $site_name.' - '.$this->name . ' ( '.$this->screen_type.' )';
+    }
+
+    public function getScreenLocationAttribute() 
+    {
+        return $this->name.', '.$this->building_name.', '.$this->floor_name;
+    }
+
+    public function getCompanyDetailsAttribute() 
+    {
+        $is_exclusive = ExclusiveScreen::where('site_screen_id', $this->id)->first();
+        if($is_exclusive) 
+            return CompanyViewModel::find($is_exclusive->company_id);
+        return null;
+    }
+
+    public function getBrandIdAttribute() 
+    {
+        $is_exclusive = ExclusiveScreen::where('site_screen_id', $this->id)->first();
+        if($is_exclusive) 
+            return $is_exclusive->brand_id;
+        return null;
     }
 
 }
