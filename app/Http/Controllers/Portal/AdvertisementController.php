@@ -28,13 +28,11 @@ class AdvertisementController extends AppBaseController implements Advertisement
     {
         return view('portal.advertisements');
     }
-    
-   // public function list($ad_type, Request $request)
+   
     public function list(Request $request)
     {
         try
         {
-            //$this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             $advertisements = AdvertisementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -84,6 +82,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $dimension = null;
             $width = null;
             $height = null;
+            $file_type = null;
 
             if($file_path) {
                 $originalname = $file_path->getClientOriginalName();
@@ -106,7 +105,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 'ad_type' => $request->ad_type,
                 'name' => $request->name,
                 'file_path' => str_replace('\\', '/', $file_path_path),
-                'file_type' => $file_type,
+                //'file_type' => $file_type,
                 'file_size' => $file_size,
                 'dimension' => $dimension,
                 'width' => $width,

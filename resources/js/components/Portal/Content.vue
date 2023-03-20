@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h4 v-show="data_list"><i class="nav-icon fa fa-building"></i>&nbsp;&nbsp;Upload Content</h4>
+						<h4 v-show="data_list"><i class="nav-icon fas fa-photo-video"></i>&nbsp;&nbsp;Upload Content</h4>
 						<h4 v-show="add_record && data_form"><i class="nav-icon fas fa-user-plus"></i> Add New Content</h4>
 						<h4 v-show="edit_record && data_form"><i class="nav-icon fas fa-user-edit"></i> Edit Content</h4>
 					</div>
@@ -407,6 +407,7 @@ export default {
 				.then(response => {
 					this.content.advertisement_id = response.data.data;
 					this.content.display_duration = this.content.advertisement_id.display_duration;
+					console.log(this.content.advertisement_id.screens);
 					console.log(this.content.advertisement_id);
 				});
 		}

@@ -26,7 +26,13 @@
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-9">
-								<multiselect v-model="tenant.brand_id" track-by="name" label="name" placeholder="Select Brand" :options="brands" :searchable="true" :allow-empty="false">
+								<multiselect v-model="tenant.brand_id" 
+								track-by="name" 
+								label="name" 
+								placeholder="Select Brand" 
+								:options="brands" 
+								:searchable="true" 
+								:allow-empty="false">
 								</multiselect> 
 							</div>
 						</div>
