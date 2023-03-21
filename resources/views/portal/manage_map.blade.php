@@ -1,27 +1,22 @@
-@extends('layout.admin.master')
+@extends('layout.portal.master')
+@section('Page-Title')
+<h4>Maps</h4>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
+  <li class="breadcrumb-item"><a href="#">Manage Property</a></li>
+  <li class="breadcrumb-item"><a href="#">Screens Maps</a></li>
+  <li class="breadcrumb-item active">Maps : {{$site_screen->name}}</li>
+</ol>
+@endsection
 @section('content')
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Manage Maps : {{$site_screen->name}}
-            <a type="button" href="/admin/site/screens" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back to Site Details</a>
-        </h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-          <li class="breadcrumb-item active">Management Maps : {{$site_screen->name}}</li>
-        </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
+<div class="row">
+  <div class="col-md-2">
+    @include('layout.portal.company-profile')
+  </div>
+  <div class="col-md-10">
+    <portal-manage-maps :site_id="{{$site_screen->site_id}}" :site_screen_id="{{$site_screen->id}}"></portal-manage-maps>
+  </div>
 </div>
-<!-- /.content-header -->
-
-<!-- Main content -->
-<admin-manage-maps :site_id="{{$site_screen->site_id}}" :site_screen_id="{{$site_screen->id}}"></admin-manage-maps>
 <!-- /.content -->
 @stop
 

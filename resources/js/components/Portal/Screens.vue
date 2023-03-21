@@ -308,21 +308,11 @@
 					link: {
             			title: 'Manage Maps',
             			name: 'Manage Maps',
-            			apiUrl: '/admin/site/manage-map',
+            			apiUrl: '/portal/manage-map',
             			routeName: '',
             			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
             			method: 'link',
 						conditions: { product_application: 'Directory' }
-            		},
-					view: {
-            			title: 'Set as Default',
-            			name: 'Set as Default',
-            			apiUrl: '',
-            			routeName: '',
-            			button: '<i class="fa fa-tag"></i> Set as Default',
-            			method: 'view',
-						v_on: 'DefaultScreen',
-						conditions: { screen_type: 'Directory' }
             		},
             	},
 				otherButtons: {

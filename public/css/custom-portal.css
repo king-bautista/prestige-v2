@@ -102,3 +102,130 @@ margin-left: 10px;
     background-color: #545b62;
     border-color: #4e555b;
 }
+
+.sticky-nav {
+    position: sticky;
+    top: 0px;
+    z-index: 9;
+    background-color: #fff;
+}
+
+.map-holder {
+    overflow-x: scroll;
+    width: 100%;
+    height: auto;
+}
+
+.map-holder canvas {
+    display: block;
+}
+
+.map-list-holder {
+    width: 100%;
+    overflow-y: auto;
+    height: 300px;
+    padding: 15px;
+}
+
+.map-form-holder {
+    position:fixed;
+    top: 19rem;
+    right: 6.2rem;
+    width: 300px;
+    height: auto;
+    max-height: 600px;
+    padding: 15px 15px 0px 25px;
+    background-color: #343a40;
+    z-index: 9999;
+}
+
+.toggle-right-button {
+    position: absolute;
+    top:45%;
+    left: 3px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.toggle-right-button:hover {
+    color: #c2c7d0;
+}
+
+.map-form-arrow-left {
+    position:fixed;
+    top: 28rem;
+    right: 6.2rem;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    background-color: #343a40;
+    color: #fff;
+    z-index: 9999;
+    cursor: pointer;
+    display: none;
+}
+
+.map-form-arrow-left:hover {
+    color: #c2c7d0;
+}
+
+.mouseaction {
+    cursor: pointer;
+    padding: 3px 5px;
+    border-radius: 5px;
+}
+
+.mouseaction-selected {
+    background-color: #bfcaff;
+    color: #2b3b88;
+}
+
+#map_path {
+    z-index: 2;
+}
+
+#selectable {
+    width: 7500px;
+    height: 6000px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.point {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    padding: 0px;
+    background-color: red;
+    border-radius: 50px;
+    border: 1px solid red;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.point-text {
+    color:#000;
+    display: inline-block; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    text-align: center;
+    line-height: 18px;
+    text-shadow: -1px -1px 0 rgb(255 255 255 / 50%), 1px -1px 0 rgb(255 255 255 / 50%), -1px 1px 0 rgb(255 255 255 / 50%), 1px 1px 0 rgb(255 255 255 / 50%);
+}
+
+.line {
+    width: 100%;
+    color: red;
+    height: 2px;
+    background-color: red;
+    cursor: pointer;
+}
+
+.tenant-main-display {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+}
