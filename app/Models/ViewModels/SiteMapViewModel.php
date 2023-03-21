@@ -85,6 +85,6 @@ class SiteMapViewModel extends Model
 
     public function getBuildingFloorNameAttribute() 
     {
-        return $this->building_name.' - '.$this->floor_name;
+        return $this->floor_name.', '.$this->building_name;
     }
 }

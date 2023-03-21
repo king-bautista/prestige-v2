@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,6 +44,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/tenants/supplemental/{id}', 'Kiosk\MainController@getTenantsBySupplementals')->where('id', '[0-9]+')->name('kiosk.tenants.by-supplemental');
     Route::get('/tenants/suggestion/list', 'Kiosk\MainController@getSuggestionList')->where('id', '[0-9]+')->name('kiosk.tenants.suggestion');
     Route::post('/search', 'Kiosk\MainController@search')->name('kiosk.search');
+    Route::post('/like-count', 'Kiosk\MainController@putLikeCount')->name('kiosk.like-count');
 
     Route::get('/advertisements/banners', 'Kiosk\MainController@getBanners')->name('kiosk.banners');
     Route::get('/advertisements/fullscreen', 'Kiosk\MainController@getFullscreen')->name('kiosk.fullscreen');

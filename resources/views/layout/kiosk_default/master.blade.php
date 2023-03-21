@@ -19,7 +19,8 @@
         <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
     </head>
 
-    <body>       
+    <body>   
+    <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>    
         <div id="app">
         
             @yield('content')
@@ -32,6 +33,7 @@
         <script src="{{ URL::to('plugins/jquery/jquery.min.js') }}"></script>
         <script src="{{ URL::to('js/jquery.mousewheel.min.js') }}"></script>
         <script src="{{ URL::to('js/zoom.jquery.js') }}"></script>
+        <script src="{{ URL::to('js/panzoom.js') }}"></script>
         <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/popper-v2.min.js') }}"></script>	
