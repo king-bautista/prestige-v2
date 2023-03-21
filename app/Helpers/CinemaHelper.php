@@ -51,6 +51,14 @@ class CinemaHelper
         }
         curl_close($ch);
 
+        if(count($movies->value)) {
+            foreach ($movies->value as $movie) {
+                $url = 'https://www.smcinema.com/CDN/media/entity/get/FilmPosterGraphic/h-'.$movie->ScheduledFilmId.'?width=198&amp;height=247';
+                $img = public_path().'/uploads/media/cinema/'.$movie->ScheduledFilmId.'.jpg';
+                file_put_contents($img, file_get_contents($url));
+            }
+        }
+
         return $movies;
     }
 }
