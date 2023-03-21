@@ -183,7 +183,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Advertisements Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/create-ad', 'Portal\AdvertisementController@index')->name('portal.create-ad');
+    Route::get('/portal/create-ads', 'Portal\AdvertisementController@index')->name('portal.create-ad');
     Route::get('/portal/create-ad/list', 'Portal\AdvertisementController@list')->name('portal.create-ad.list');
     Route::post('/portal/create-ad/store', 'Portal\AdvertisementController@store')->name('portal.create-ad.store');
     Route::get('/portal/create-ad/{id}', 'Portal\AdvertisementController@details')->where('id', '[0-9]+')->name('portal.create-ad.details');
