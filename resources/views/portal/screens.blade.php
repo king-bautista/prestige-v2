@@ -1,11 +1,10 @@
 @extends('layout.portal.master')
 @section('Page-Title')
-<h4>Roles</h4>
+<h4>Screens / Maps</h4>
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
-  <li class="breadcrumb-item"><a href="#"></a></li>
   <li class="breadcrumb-item"><a href="#">Manage Property</a></li>
-  <li class="breadcrumb-item active">Maps</li>
+  <li class="breadcrumb-item active">Screens / Maps</li>
 </ol>
 @endsection
 @section('content')

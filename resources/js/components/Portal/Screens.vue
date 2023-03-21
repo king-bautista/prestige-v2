@@ -4,9 +4,11 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h4><i class="nav-icon fas fa-map"></i>&nbsp;&nbsp;Maps</h4>
+						<h4 v-show="data_list"><i class="nav-icon fas fa-map"></i>&nbsp;&nbsp;Screens / Maps</h4>
+						<h4 v-show="add_record && data_form"><i class="nav-icon fas fa-plus"></i> Add New Screen</h4>
+						<h4 v-show="edit_record && data_form"><i class="nav-icon fas fa-user-edit"></i> Edit Sreen</h4>
 					</div>
-					<div class="card-body">
+					<div class="card-body" v-show="data_list">
 						<Table 
                         :dataFields="dataFields"
                         :dataUrl="dataUrl"
@@ -20,155 +22,159 @@
                         ref="screensDataTable">
 			          	</Table>
 					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Modal Add New / Edit User -->
-		<div class="modal fade" id="screen-form" tabindex="-1" aria-labelledby="screen-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Screen</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Screen</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="card-body">
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.screen_type">
-									    <option value="">Select Screen Type</option>
-									    <option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
-								    </select>
-								</div>
+					<div class="card-body" v-show="data_form">
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Orientation <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.orientation">
-									    <option value="">Select Orientation</option>
-									    <option v-for="orientation in orientations" :value="orientation"> {{ orientation }}</option>
-								    </select>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="screen.screen_type">
+									<option value="">Select Screen Type</option>
+									<option v-for="screen_type in screen_types" :value="screen_type"> {{ screen_type }}</option>
+								</select>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.site_id" @change="getBuildings($event.target.value)">
-									    <option value="">Select Site</option>
-									    <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
-								    </select>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Orientation <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="screen.orientation">
+									<option value="">Select Orientation</option>
+									<option v-for="orientation in orientations" :value="orientation"> {{ orientation }}</option>
+								</select>
 							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.site_building_id" @change="getFloorLevel($event.target.value)">
-									    <option value="">Select Building</option>
-									    <option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
-								    </select>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Product Application <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="screen.product_application">
+									<option value="">Select Product Application</option>
+									<option v-for="application in product_applications" :value="application"> {{ application }}</option>
+								</select>
 							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="screen.site_building_level_id">
-									    <option value="">Select Floor</option>
-									    <option v-for="floor in floors" :value="floor.id"> {{ floor.name }}</option>
-								    </select>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="screen.site_id" @change="getBuildings($event.target.value)">
+									<option value="">Select Site</option>
+									<option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
+								</select>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="screen.site_building_id" @change="getFloorLevel($event.target.value)">
+									<option value="">Select Building</option>
+									<option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
+								</select>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Physical size diagonal</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.physical_size_diagonal" placeholder="43 inc" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="screen.site_building_level_id">
+									<option value="">Select Floor</option>
+									<option v-for="floor in floors" :value="floor.id"> {{ floor.name }}</option>
+								</select>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Physical size width</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.physical_size_width" placeholder="43 inc" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Physical size diagonal</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="screen.physical_size_diagonal" placeholder="43 inc" required>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Physical size height</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.physical_size_height" placeholder="43 inc" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Physical size width</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="screen.physical_size_width" placeholder="43 inc" required>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Dimension</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.dimension" placeholder="1920 x 1080" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Physical size height</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="screen.physical_size_height" placeholder="43 inc" required>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Width</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.width" placeholder="1920" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Width</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="screen.width" placeholder="1920" required>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Height</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.height" placeholder="1080" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Height</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="screen.height" placeholder="1080" required>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Slots <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.slots" placeholder="Slots" required>
-								</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Slots <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="screen.slots" placeholder="Slots" required>
 							</div>
-							<div class="form-group row" v-if="screen.screen_type == 'LED' || screen.screen_type == 'LFD'">
-								<label for="isExclusive" class="col-sm-4 col-form-label">Is Exclusive </label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_exclusive" v-model="screen.is_exclusive">
-										<label class="custom-control-label" for="is_exclusive"></label>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row" v-if="screen.screen_type == 'Directory'">
-								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_default" v-model="screen.is_default">
-										<label class="custom-control-label" for="is_default"></label>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row" v-show="edit_record">
-								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="isActive" v-model="screen.active">
-										<label class="custom-control-label" for="isActive"></label>
-									</div>
+						</div>
+						<div class="form-group row" v-if="(screen.screen_type == 'LED' || screen.screen_type == 'LFD') && screen.product_application == 'Digital Signage'">
+							<label for="isExclusive" class="col-sm-3 col-form-label">Is Exclusive </label>
+							<div class="col-sm-9">
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" role="switch" id="is_exclusive" v-model="screen.is_exclusive">
+									<label class="form-check-label" for="is_exclusive"></label>
 								</div>
 							</div>
 						</div>
-					<!-- /.card-body -->
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeScreen">Add New Screen</button>
-						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateScreen">Save Changes</button>
+						<div class="form-group row" v-if="screen.is_exclusive">
+							<label for="firstName" class="col-sm-3 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="company_index" @change="getBrands($event.target.value)">
+									<option value="">Select Company</option>
+									<option v-for="(company, index) in companies" :value="index"> {{ company.name }}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row" v-if="screen.is_exclusive">
+							<label for="firstName" class="col-sm-3 col-form-label">Brand <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="screen.brand">
+									<option value="">Select Brand</option>
+									<option v-for="brand in brands" :value="brand.id"> {{ brand.name }}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row" v-if="screen.product_application == 'Directory'">
+							<label for="isActive" class="col-sm-3 col-form-label">Is Default</label>
+							<div class="col-sm-9">
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" role="switch" id="is_default" v-model="screen.is_default">
+									<label class="form-check-label" for="is_default"></label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row" v-show="edit_record">
+							<label for="isActive" class="col-sm-3 col-form-label">Active</label>
+							<div class="col-sm-9">
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" role="switch" id="isActive" v-model="screen.active">
+									<label class="form-check-label" for="isActive"></label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-sm-12 text-right">
+								<button type="button" class="btn btn-secondary btn-sm" @click="backToList"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+								<button type="button" class="btn btn-primary btn-sm" v-show="add_record" @click="storeScreen">Add New Screen</button>
+								<button type="button" class="btn btn-primary btn-sm" v-show="edit_record" @click="updateScreen">Save Changes</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-      	<!-- End Modal Add New User -->
 
 		<!-- Delete modal -->
 	  	<div class="modal fade" id="screenDeleteModal" tabindex="-1" aria-labelledby="screenDeleteModal" aria-hidden="true">
@@ -225,6 +231,7 @@
                     name: '',
                     screen_type: '',
                     orientation: '',
+					product_application: '',
                     physical_size_diagonal: '',
                     physical_size_width: '',
                     physical_size_height: '',
@@ -235,52 +242,51 @@
 					active: false,
 					is_default: false,
 					is_exclusive: false,
+					company: '',
+					brand: '',
                 },
 				id_to_deleted: 0,
 				is_default: '',
+                data_list: true,
+				data_form: false,
                 add_record: true,
                 edit_record: false,
                 sites: [],
                 buildings: [],
                 floors: [],
-                screen_types: ['Directory','LED','LFD','LED Panel'],
+				companies: [],
+				brands: [],
+				company_index: '',
+                screen_types: ['LED','LFD','LCD'],
                 orientations: ['Landscape','Portrait'],
+                product_applications: ['Directory','Digital Signage'],
             	dataFields: {
-            		name: "Name", 
+                    screen_location: "Location",
                     site_name: "Site Name",
-                    building_name: "Building Name",
-                    floor_name: "Floor Name",
-            		slots: "Slots", 
-            		screen_type: "Screen Type", 
+            		screen_type: "Physical Configuration", 
             		orientation: "Orientation", 
+            		product_application: "Product Application", 
+            		slots: "Slots", 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info text-dark">Active</span>'
             			}
             		},
 					is_exclusive: {
             			name: "Is exclusive", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">No</span>', 
-            				1: '<span class="badge badge-info">Yes</span>'
-            			}
-            		},
-					is_default: {
-            			name: "Is Default", 
-            			type:"Boolean", 
-            			status: { 
-            				0: '<span class="badge badge-danger">No</span>', 
-            				1: '<span class="badge badge-info">Yes</span>'
+							0: '<span class="badge bg-danger">No</span>', 
+            				1: '<span class="badge bg-info text-dark">Yes</span>'
             			}
             		},
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/site/screen/list",
+            	dataUrl: "/portal/maps/list",
             	actionButtons: {
             		edit: {
             			title: 'Edit this Screen',
@@ -293,7 +299,7 @@
             		delete: {
             			title: 'Delete this Screen',
             			name: 'Delete',
-            			apiUrl: '/admin/site/screen/delete',
+            			apiUrl: '/portal/maps/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'custom_delete',
@@ -306,7 +312,7 @@
             			routeName: '',
             			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
             			method: 'link',
-						conditions: { screen_type: 'Directory' }
+						conditions: { product_application: 'Directory' }
             		},
 					view: {
             			title: 'Set as Default',
@@ -333,34 +339,44 @@
 
         created(){
 			this.getSites();
+			this.getCompany();
         },
 
         methods: {
 			getSites: function() {
-                axios.get('/admin/site/get-all')
+                axios.get('/portal/property-details/get-all')
                 .then(response => this.sites = response.data.data);
             },
 
             getBuildings: function(id) {
-				axios.get('/admin/site/get-buildings/'+id)
+				axios.get('/portal/property-details/get-buildings/'+id)
                 .then(response => this.buildings = response.data.data);
 			},
 
             getFloorLevel: function(id) {
-				axios.get('/admin/site/floors/'+id)
+				axios.get('/portal/property-details/floors/'+id)
                 .then(response => this.floors = response.data.data);
             },
 
-			AddNewScreen: function() {
-				this.add_record = true;
-				this.edit_record = false;
+			getCompany: function() {
+				axios.get('/portal/company/get-all')
+                .then(response => this.companies = response.data.data);
+			},
 
+			getBrands: function(index) {
+				this.screen.company = this.companies[index].id;
+				this.brands = this.companies[index].brands;
+				this.screen.brand = '';
+			},
+
+			AddNewScreen: function() {
                 this.screen.site_id = '';
                 this.screen.site_building_id = '';
                 this.screen.site_building_level_id = '';
 				this.screen.screen_type = '';
                 this.screen.name = '';         
 				this.screen.orientation = '';
+				this.screen.product_application = '';
 				this.screen.physical_size_diagonal = '';
 				this.screen.physical_size_width = '';
 				this.screen.physical_size_height = '';
@@ -371,24 +387,28 @@
                 this.screen.active = false;         
                 this.screen.is_default = false;         
                 this.screen.is_exclusive = false;      
+				this.screen.company = '';
+				this.screen.brand = '';
 
-              	$('#screen-form').modal('show');
+				this.add_record = true;
+				this.edit_record = false;
+				this.data_list = false;
+				this.data_form = true;
             },
 
             storeScreen: function() {
-                axios.post('/admin/site/screen/store', this.screen)
+                axios.post('/portal/maps/store', this.screen)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.screensDataTable.fetchData();
-					$('#screen-form').modal('hide');
+					this.data_list = true;
+					this.data_form = false;
 				})
             },
 
 			editScreen: function(id) {
-                axios.get('/admin/site/screen/'+id)
+                axios.get('/portal/maps/'+id)
                 .then(response => {
-					this.add_record = false;
-					this.edit_record = true;
 
                     var screen = response.data.data;
 					this.getBuildings(screen.site_id);
@@ -401,6 +421,7 @@
 					this.screen.name = screen.name; 
                     this.screen.screen_type = screen.screen_type;
 					this.screen.orientation = screen.orientation;
+					this.screen.product_application = screen.product_application;
 					this.screen.physical_size_diagonal = screen.physical_size_diagonal;
 					this.screen.physical_size_width = screen.physical_size_width;
 					this.screen.physical_size_height = screen.physical_size_height;
@@ -412,16 +433,26 @@
 					this.screen.is_default = screen.is_default; 
 					this.screen.is_exclusive = screen.is_exclusive;
 
-                    $('#screen-form').modal('show');
+					var index = this.companies.findIndex(company => company.id === screen.company_details.id);
+
+					this.company_index = index;
+					this.brands = screen.company_details.brands;
+					this.screen.brand = screen.brand_id;
+
+					this.add_record = false;
+					this.edit_record = true;
+					this.data_list = false;
+					this.data_form = true;
                 });
             },
 
             updateScreen: function() {
-                axios.put('/admin/site/screen/update', this.screen)
+                axios.put('/portal/maps/update', this.screen)
                     .then(response => {
                         toastr.success(response.data.message);
                         this.$refs.screensDataTable.fetchData();
-                        $('#screen-form').modal('hide');
+                        this.data_list = true;
+						this.data_form = false;
                     })
             },
 
@@ -431,7 +462,7 @@
 			},
 
 			removeScreen: function() {
-				axios.get('/admin/site/screen/delete/'+this.id_to_deleted)
+				axios.get('/portal/maps/delete/'+this.id_to_deleted)
                 .then(response => {
                     this.$refs.screensDataTable.fetchData();
                     this.id_to_deleted = 0;
@@ -445,13 +476,18 @@
 			},
 
 			setDefault: function() {
-				axios.get('/admin/site/screen/set-default/'+this.is_default)
+				axios.get('/portal/maps/set-default/'+this.is_default)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.screensDataTable.fetchData();
                     $('#confirmModal').modal('hide');
 				})
-			}
+			},
+
+			backToList: function() {
+				this.data_list = true;
+				this.data_form = false;
+			},
 
         },
 
