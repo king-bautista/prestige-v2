@@ -78,7 +78,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'uom' => $request->uom,
-                'status_id' => $request->status_id['id'],
+                'status_id' => 2,
                 'active' => 1,
             ];
 
@@ -110,7 +110,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'uom' => $request->uom,
-                'status_id' => $request->status_id['id'],
+                'status_id' => 3,
                 'active' => ($request->active) ? 1 : 0,
             ];
 
