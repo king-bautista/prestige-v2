@@ -24,12 +24,13 @@ class CreateAdvertisementRequest extends FormRequest
     public function rules()
     {
         return [
-            "display_duration" => "required|numeric",
-            "file_type" => "mimes:png,jpg,jpeg|max:2048",
-            "ad_type" => "required|string",
-            "name" => "required",
-            "brand_id" => "required|string",
-            "company_id" => "required|string",
+            'display_duration' => 'required|numeric',
+            //'file_type' => 'required|image|mimes:jpeg,jpg',//'required|image|mimes:png,jpeg,jpg',//'required|mimes:png,jpg,jpeg|max:2048',
+            //'image' => 'required|image|mimes:png,jpeg,jpg',
+            'ad_type' => 'required|string',
+            'name' => 'required',
+            'brand_id' => 'required|string',
+            'company_id' => 'required|string',
         ];
     }
 

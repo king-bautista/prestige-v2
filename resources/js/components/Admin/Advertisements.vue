@@ -74,7 +74,7 @@
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="material" @change="materialChange">
+                                    <input type="file" accept="image/*" ref="material" @change="materialChange"  multiple>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer" v-if="ad_type=='Online'">image/video max size is 1140 x 140 pixels</footer>
 									<footer class="blockquote-footer" v-if="ad_type=='Banners'">image/video max size is 470 x 1060 pixels</footer>
@@ -240,7 +240,7 @@
                 .then(response => this.brands = response.data.data);
 			},
 
-			materialChange: function(e) {
+			materialChange: function(e) { alert('eddd');
 				const file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.material = URL.createObjectURL(file);

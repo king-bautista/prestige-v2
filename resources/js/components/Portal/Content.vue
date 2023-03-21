@@ -167,8 +167,8 @@
 								<div class="form-group row" v-show="edit_record">
 									<label for="Active" class="col-sm-4 col-form-label">Active</label>
 									<div class="col-sm-8">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="active" v-model="content.active">
+										<div  class="form-check form-switch">
+											<input type="checkbox" class="form-check-input" id="active" v-model="content.active">
 											<label class="custom-control-label" for="active"></label>
 										</div>
 									</div>
@@ -242,22 +242,22 @@
             			name: "Transaction Status", 
             			type:"Boolean", 
             			status: { 
-            				1: '<span class="badge badge-primary">Draft</span>',
-            				2: '<span class="badge badge-primary">New</span>',
-            				3: '<span class="badge badge-info">Pending approval</span>',
-            				4: '<span class="badge badge-danger">Disapprove</span>',
-            				5: '<span class="badge badge-success">Approved</span>',
-            				6: '<span class="badge badge-secondary">For review</span>',
-            				7: '<span class="badge badge-info">Archive</span>',
-            				8: '<span class="badge badge-success">Saved</span>',
+            				1: '<span class="badge bg-primary">Draft</span>',
+            				2: '<span class="badge bg-primary">New</span>',
+            				3: '<span class="badge bg-info">Pending approval</span>',
+            				4: '<span class="badge bg-danger">Disapprove</span>',
+            				5: '<span class="badge bg-success">Approved</span>',
+            				6: '<span class="badge bg-secondary">For review</span>',
+            				7: '<span class="badge bg-info">Archive</span>',
+            				8: '<span class="badge bg-success">Saved</span>',
             			}
             		},
 					active: {
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"
