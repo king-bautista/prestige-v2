@@ -61,12 +61,14 @@
     var screensaver_handle = null;
     var helper_home = new Helpers();
     // PRELOADER
-    $('body').append("<div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>");
+    // $('body').append("<div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>");
 
     // PRELOADER TIME INTERVAL
     $(window).on('load', function(){
-        setTimeout(removeLoader, 20000); //wait for page load PLUS two seconds.
+
     });
+
+    setTimeout(removeLoader, 20000);
 
     // setInterval(function(){ 
     //     $.get( "/api/v1/get-update", function( data ) {
@@ -84,22 +86,23 @@
         });  
     }
 
-    $(document).on('click',function(){
-        $("#screensaverwidget").height('0').width('0');
-        if(screensaver_handle) {
-			clearTimeout(screensaver_handle);	
-			screensaver_handle = null;
-		}
+    // $(document).on('click',function(){
+    //     $("#screensaverwidget").height('0').width('0');
+    //     if(screensaver_handle) {
+	// 		clearTimeout(screensaver_handle);	
+	// 		screensaver_handle = null;
+	// 	}
 
-        screensaver_handle = setTimeout(() => {
-            $("#screensaverwidget").height('100%').width('100%');
-            $.get( "/api/v1/get-update", function( data ) {
-                if(data.data.length > 0) {
-                    location.reload();
-                }
-            });
-		}, 2000 * 60 * 2);
-    });
+    //     screensaver_handle = setTimeout(() => {
+    //         $("#screensaverwidget").height('100%').width('100%');
+    //         $.get( "/api/v1/get-update", function( data ) {
+    //             if(data.data.length > 0) {
+    //                 location.reload();
+    //             }
+    //         });
+	// 	}, 5000);
+    //     // }, 2000 * 60 * 2);
+    // });
 
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover({

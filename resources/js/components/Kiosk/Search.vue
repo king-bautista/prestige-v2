@@ -65,7 +65,7 @@
                         <a class="carousel-control-prev control-prev-sp p-l-z-a" href="#searchCarousel" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
-                        <a class="carousel-control-next control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>1">
+                        <a class="carousel-control-next control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>=1">
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
@@ -90,7 +90,7 @@
                                 <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                             </div>
                         </div>
-                        <div class="row subscriber-products mt-15 ml-0">
+                        <div class="row subscriber-products mt-15 ml-0" v-bind:class = "(tenant_details.products.banners.length > 0) ? 'with-banner-height':'with-out-banner-height'">
                             <div v-for="product in tenant_details.products.products" class="m-15-18">
                                 <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path,'product')">
                             </div>
@@ -348,6 +348,7 @@
                     $('.home-button').addClass('active');
                     this.$router.push("/").catch(()=>{});
                     $("#code").val('');
+                    $(".home-button").trigger('click');
                 }
             },
 
@@ -497,11 +498,6 @@
                 this.buildSchedule(this.tenant_details);
             },
 
-            showProduct: function(product) {
-                this.product_image = product;
-                $("#myProductSearch").show();
-            },
-
             updateLikeCount: function(id) {
                 this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
 
@@ -515,13 +511,29 @@
                 });
             },
 
+            showSchedule: function() {
+                $("#modal-schedule-search").show();
+            },
+
+            showProduct: function(product,type) {
+                this.product_image = product;
+                $("#myProductSearch").show();
+                $('.set-width').removeClass('banner-size');
+                $('.set-width').removeClass('product-size');
+                if (type == 'banner'){
+                    $('.set-width').addClass('banner-size');
+                }
+                if (type == 'product'){
+                    $('.set-width').addClass('product-size');
+                } 
+            },
+
             resetPage: function() {
                 $('#code').val("");
                 $('.notification').hide();
-            },
-
-            showSchedule: function() {
-                $("#modal-schedule-search").show();
+                this.search_page = true;
+                this.search_results = false;
+                this.page_title = 'Search';
             },
 
         },
@@ -535,11 +547,10 @@
                 $('#searchCarousel').on('slid.bs.carousel', function () {
                     if($(this).find('.active').hasClass('last-item')){
                         $(".control-next-sp").hide();
+                        $(".control-prev-sp").show();
                     }else if($(this).find('.active').hasClass('first-item')){
                         $(".control-prev-sp").hide();
-                        if(this.current_tenant_list_count>1){
-                            $(".control-next-sp").show();
-                        }
+                        $(".control-next-sp").show();
                     }else{
                         $(".control-prev-sp").show();
                         $(".control-next-sp").show();

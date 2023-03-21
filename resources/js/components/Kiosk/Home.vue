@@ -89,7 +89,7 @@
                         <a class="carousel-control-prev control-prev-s p-l-z-a" href="#alphabeticalCarousel" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
-                        <a class="carousel-control-next control-next-s n-l-z-a" href="#alphabeticalCarousel" data-slide="next" v-show="current_supplementals_count>1">
+                        <a class="carousel-control-next control-next-s n-l-z-a" href="#alphabeticalCarousel" data-slide="next" v-show="current_supplementals_count>=1">
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
@@ -155,20 +155,20 @@
             <div v-show="show_tenant">
                 <div class="row">
                     <div class="col-12 col-sm-8 text-center">
-                        <div v-if="tenant_details.is_subscriber && tenant_details.products">
-                            <div class="row ml-1 mt-16" v-if="tenant_details.products.banners.length">
+                        <div v-if="tenant_details.is_subscriber && tenant_details.products.length != 0">
+                            <div class="row ml-1 mt-16" v-if="tenant_details.products.banners.length > 0">
                                 <div class="col-12 p-0">
                                     <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                 </div>
                             </div>
-                            <div class="row subscriber-products mt-15 ml-0">
+                            <div class="row subscriber-products mt-15 ml-0" v-bind:class = "(tenant_details.products.banners.length > 0) ? 'with-banner-height':'with-out-banner-height'">
                                 <div v-for="product in tenant_details.products.products" class="m-15-18">
                                     <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path,'product')">
                                 </div>
                             </div>
                         </div>
                         <div v-else>
-                            <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo box-shadowed">
+                            <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo box-shadowed mt-82 ml-94">
                         </div>
                     </div>
                     <div class="col-12 col-sm-4 p-3">
@@ -194,7 +194,7 @@
                                     <div class="mb-24"><img src="assets/images/social-media-ig.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                 </div>
                             </div>
-                            <div v-else class="row mt-3" style="margin-bottom: 180px;">
+                            <div v-else class="row mt-3 mb-206">
                                 <div class="col-6">
                                     <a type="button" class="btn btn-share" disabled>
                                         <i class="fa fa-share-alt" aria-hidden="true"></i> Share
@@ -303,10 +303,10 @@
                 </div>
             </div>
         </div>
-        <search-page v-show="searchIsShown" ref="hello"></search-page>
-        <!-- <map-page v-show="mapIsShown"></map-page>
-        <promos-page v-show="promosIsShown"></promos-page>
-        <cinema-page v-show="cinemaIsShown"></cinema-page> -->
+        <search-page v-show="searchIsShown" ref="callSearch"></search-page>
+        <map-page v-show="mapIsShown" ref="callMap"></map-page>
+        <promos-page v-show="promosIsShown" ref="callPromo"></promos-page>
+        <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
         <div class="row">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
@@ -383,9 +383,9 @@
         },
 
         created() {
-            // this.getSite();
-            // this.getCategories();
-            // this.generateLetters();
+            this.getSite();
+            this.getCategories();
+            this.generateLetters();
         },
 
         methods: {
@@ -411,7 +411,9 @@
                 this.mapIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
-                this.$refs.hello.resetPage();
+                this.$refs.callSearch.resetPage();
+                this.$refs.callPromo.resetPage();
+                this.$refs.callCinema.resetPage();
             },
 
             mapButton: function (event) {
@@ -421,6 +423,7 @@
                 this.mapIsShown = true;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
+                this.$refs.callMap.resetPage();
             },
 
             promosButton: function (event) {
@@ -430,6 +433,7 @@
                 this.mapIsShown = false;
                 this.promosIsShown = true;
                 this.cinemaIsShown = false;
+                this.$refs.callPromo.resetPage();
             },
 
             cinemaButton: function (event) {
@@ -439,6 +443,7 @@
                 this.mapIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = true;
+                this.$refs.callCinema.resetPage();
             },
 
             buildSchedule: function (data) {
@@ -469,7 +474,7 @@
                 }
 
                 $.post( "/api/v1/like-count", params ,function(response) {
-                    console.log(response);
+                    
                 });
             },
 
@@ -801,7 +806,12 @@
 
         mounted() {
             var obj = this;
+
             $(function() {
+                obj.$root.$on('MainCategories', () => {
+                    obj.homeButton();
+                });
+
                 $('.store-tabs-item').on('click', function () {
                     $('.store-tabs-item').removeClass('tab-item-selected');
                     $(this).addClass('tab-item-selected');
@@ -820,11 +830,10 @@
                 $('#alphabeticalCarousel').on('slid.bs.carousel', function () {
                     if($(this).find('.active').hasClass('last-item')){
                         $(".control-next-s").hide();
+                        $(".control-prev-s").show();
                     }else if($(this).find('.active').hasClass('first-item')){
                         $(".control-prev-s").hide();
-                        if(this.current_supplementals_count>1){
-                            $(".control-next-s").show();
-                        }
+                        $(".control-next-s").show();
                     }else{
                         $(".control-prev-s").show();
                         $(".control-next-s").show();
@@ -834,11 +843,10 @@
                 $('#supplementalCarousel').on('slid.bs.carousel', function () {
                     if($(this).find('.active').hasClass('last-item')){
                         $(".control-next-a").hide();
+                        $(".control-prev-a").show();
                     }else if($(this).find('.active').hasClass('first-item')){
                         $(".control-prev-a").hide();
-                        if(this.tenant_list_count>1){
-                            $(".control-next-a").show();
-                        }
+                        $(".control-next-a").show();
                     }else{
                         $(".control-prev-a").show();
                         $(".control-next-a").show();

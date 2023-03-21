@@ -458,7 +458,7 @@ class MainController extends AppBaseController
             ->orderBy('brands.name', 'ASC')
             ->get()->toArray();
             
-            $site_tenants = array_chunk($site_tenants, 10);
+            $site_tenants = array_chunk($site_tenants, 12);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
