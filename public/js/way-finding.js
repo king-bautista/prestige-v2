@@ -24,6 +24,7 @@ var defaults = {
     store_progress: 0,
     frame_store: 0,
     destination: 0,
+    tenant_details: '',
     showescalator: 0,
     points: {linePoint : []},
     inter: 0,
@@ -138,7 +139,8 @@ WayFinding.prototype = {
             $("#" + canvas.id).addClass('my-map').attr('level', map_details.site_building_level_id);
             
             // add points to map
-            $(".zoomable-container").css({'width':image.width,'height':image.height,'position':'relative'});
+            // $(".zoomable-container").css({'width':image.width,'height':image.height,'position':'relative'});
+            $("#zoomable-container").css({'width':'inherit','height':'inherit','position':'relative'});
         };
 
         image.src = map_details.map_file_path + '?' + Math.random();
@@ -534,8 +536,8 @@ WayFinding.prototype = {
         this.settings.frame_store +=1 ;
         this.settings.store_progress = 0;
 
-        var scale = 0.60;
-        $('.zoomable-container').css({'transform':'scale(' + scale + ')'});
+        // var scale = 0.60;
+        // $('.zoomable-container').css({'transform':'scale(' + scale + ')'});
 
     },
 
@@ -552,6 +554,8 @@ WayFinding.prototype = {
     drawline: function(id, tenant) {
         this.showmap(this.settings.defaultmap);
         $('#tenant-details').show();
+        $('#repeatButton').hide();
+        $('#zoomResetButton').addClass('last-border-radius');
         var tenant_name = tenant.brand_name;
         var tenant_location = tenant.floor_name + ', '+tenant.building_name;
         var tenant_category = tenant.category_name;
@@ -566,6 +570,7 @@ WayFinding.prototype = {
         this.show_tenant_details(id);
 
         this.settings.destination = id;
+        this.settings.tenant_details = tenant;
         this.settings.showescalator = 1;
         var obj = this;
 
@@ -643,6 +648,14 @@ WayFinding.prototype = {
         });
     },
 
+    replay: function(){
+        this.stopall();
+        this.clearLine();
+        this.clearTextlayer();
+        this.clearEscalator();
+        this.drawline(this.settings.destination,this.settings.tenant_details);
+    },
+
     drawpoints_stop: function() {
         clearInterval(this.settings.inter);
         this.settings.inter = 0;
@@ -717,6 +730,9 @@ WayFinding.prototype = {
             node.innerHTML = '<ul><li>Follow the <font color="red">red path</font> to your destination</li></ul>';  
             $('.assist').append(node);   
 
+            $('#repeatButton').show();
+            $('#zoomResetButton').removeClass('last-border-radius');
+
             if(!this.settings.store_id)
             {
                 var obj = this;
@@ -756,6 +772,7 @@ WayFinding.prototype = {
 
         $.get( "/api/v1/site/maps/get-map-id/"+flr_build[0]+"/"+flr_build[1], function(response) {
             obj.showmap(response);
+            $('.map-floor-option .multiselect__tags .multiselect__single').html(response.building_floor_name);
         });
 
         this.settings.mapchange = 1;

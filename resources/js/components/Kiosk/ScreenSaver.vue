@@ -83,6 +83,10 @@
                 $('.home-button').addClass('active');
                 this.$router.push("/").catch(()=>{});
             },
+
+            callHomeMethod: function(){
+                this.$root.$emit('MainCategories') //like this
+            }
         },
 
         mounted() {
@@ -95,6 +99,27 @@
                     if(fullscreen_array.length == countscreen) {
                         countscreen = 0;                        
                     }
+                });
+
+                $(document).on('click',function(){
+                    $("#screensaverwidget").height('0').width('0');
+                    if(screensaver_handle) {
+                        clearTimeout(screensaver_handle);	
+                        screensaver_handle = null;
+                    }
+
+                    screensaver_handle = setTimeout(() => {
+                        screensaver_handle = setTimeout(() => {
+                            $("#screensaverwidget").height('100%').width('100%');
+                            $.get( "/api/v1/get-update", function( data ) {
+                                if(data.data.length > 0) {
+                                    location.reload();
+                                }
+                            });
+                        }, 5000); // 5 sec delay before showing screensaver
+                        obj.callHomeMethod();
+                    // }, 5000); // SPEED TEST
+                    }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
                 });
             });
         },
