@@ -190,7 +190,9 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::post('/portal/create-ad/update', 'Portal\AdvertisementController@update')->name('portal.create-ad.update');
     Route::get('/portal/create-ad/delete/{id}', 'Portal\AdvertisementController@delete')->where('id', '[0-9]+')->name('portal.create-ad.delete');
     Route::get('/portal/create-ad/all', 'Portal\AdvertisementController@getAllType')->name('portal.create-ad.all');
-
+    
+    Route::get('/portal/test', 'Portal\TestController@index')->name('portal.test');
+     
     /*
     |--------------------------------------------------------------------------
     | Content Management
@@ -269,6 +271,8 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/reports/yearly-usage', 'Portal\ReportsController@yearlyUsage')->name('portal.reports.yearly-usage');
     Route::get('/portal/reports/yearly-usage/list', 'Portal\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.list');
     Route::get('/portal/reports/yearly-usage/download-csv', 'Portal\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.download-csv');
+
+    
 
     Route::post('/portal/logout', 'PortalAuth\AuthController@portalLogout')->name('portal.logout');
 });
