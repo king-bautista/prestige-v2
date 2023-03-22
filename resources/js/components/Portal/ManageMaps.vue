@@ -1,32 +1,31 @@
 <template>
 	<div>
         <!-- Main content -->
-	    <section class="content">
-	      <div class="container-fluid">
-	        <div class="row">
-	          <div class="col-md-12">
-	          	<div class="card">
-	    			<div class="card-body">
-			          	<Table 
-                        :dataFields="dataFields"
-                        :dataUrl="dataUrl"
-                        :actionButtons="actionButtons"
-						:otherButtons="otherButtons"
-                        :primaryKey="primaryKey"
-						v-on:AddNewMap="AddNewMap"
-						v-on:GenRoutes="GenRoutes"
-						v-on:editButton="editMap"
-						v-on:DefaultMap="DefaultMap"
-                        ref="dataTable">
-			          	</Table>
-		          	</div>
-		        </div>
-	          </div>
-	        </div>
-	        <!-- /.row -->
-	      </div><!-- /.container-fluid -->
-	    </section>
-	    <!-- /.content -->
+		<div class="row">
+			<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title"><i class="nav-icon fas fa-map"></i>&nbsp;&nbsp;Maps
+						<a type="button" href="/portal/maps" class="btn btn-outline-primary btn-sm float-end"><i class="fas fa-arrow-left"></i>&nbsp;Back to Screens Maps</a>
+					</h4>
+				</div>
+				<div class="card-body">
+					<Table 
+					:dataFields="dataFields"
+					:dataUrl="dataUrl"
+					:actionButtons="actionButtons"
+					:primaryKey="primaryKey"
+					v-on:AddNewMap="AddNewMap"
+					v-on:GenRoutes="GenRoutes"
+					v-on:editButton="editMap"
+					v-on:DefaultMap="DefaultMap"
+					ref="dataTable">
+					</Table>
+				</div>
+			</div>
+			</div>
+		</div>
+		<!-- /.row -->
 
         <!-- Manage map -->
 		<div class="modal fade" id="map-form" tabindex="-1" aria-labelledby="map-form" aria-hidden="true">
@@ -219,73 +218,24 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
-            			}
-            		},
-                    is_default: {
-            			name: "Is Default", 
-            			type:"Boolean", 
-            			status: { 
-            				0: '<span class="badge badge-danger">No</span>', 
-            				1: '<span class="badge badge-info">Yes</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info text-dark">Active</span>'
             			}
             		},
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/site/manage-map/list/"+this.site_screen_id,
+            	dataUrl: "/portal/manage-map/list/"+this.site_screen_id,
             	actionButtons: {
-            		edit: {
-            			title: 'Edit this Map',
-            			name: 'Edit',
-            			apiUrl: '',
-            			routeName: 'building.edit',
-            			button: '<i class="fas fa-edit"></i> Edit',
-            			method: 'edit'
-            		},
-            		delete: {
-            			title: 'Delete this Map',
-            			name: 'Delete',
-            			apiUrl: '/admin/site/manage-map/delete',
-            			routeName: '',
-            			button: '<i class="fas fa-trash-alt"></i> Delete',
-            			method: 'delete',
-            		},
 					link: {
-            			title: 'Manage Maps',
+            			title: 'Edit Maps',
             			name: 'Manage Maps',
-            			apiUrl: '/admin/site/map',
+            			apiUrl: '/portal/map',
             			routeName: '',
-            			button: '<i class="fa fa-map-marker" aria-hidden="true"></i> Manage',
+            			button: '<i class="fas fa-edit"></i> Edit Map',
             			method: 'link',
             		},
-					view: {
-            			title: 'Set as Default',
-            			name: 'Set as Default',
-            			apiUrl: '',
-            			routeName: '',
-            			button: '<i class="fa fa-tag"></i> Set as Default',
-            			method: 'view',
-						v_on: 'DefaultMap',
-            		},
             	},
-				otherButtons: {
-					addNew: {
-						title: 'New Map',
-						v_on: 'AddNewMap',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Map',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-					genRoutes: {
-						title: 'Generate Routes',
-						v_on: 'GenRoutes',
-						icon: '<i class="fab fa-connectdevelop"></i> Generate Routes',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-				}
             };
         },
 

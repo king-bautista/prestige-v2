@@ -28,14 +28,14 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     ********************************/
     public function __construct()
     {
-        $this->module_id = 13; 
-        $this->module_name = 'Sites Management';
+        $this->module_id = 56; 
+        $this->module_name = 'Maps';
     }
 
     public function index($id)
     {
         $site_screen = SiteScreenViewModel::find($id);
-        return view('admin.manage_map', compact("site_screen"));
+        return view('portal.manage_map', compact("site_screen"));
     }
 
     public function list($id)
@@ -59,6 +59,18 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function getMapDetails($id)
+    {
+        $current_map = SiteMapViewModel::find($id);
+        $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->get();
+        $site_details = SiteViewModel::find($current_map->site_id);
+        
+        $amenities = Amenity::get();
+        $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
+        
+        return view('portal.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));
     }
 
     public function details($id)
@@ -223,17 +235,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         }
     }
 
-    public function getMapDetails($id)
-    {
-        $current_map = SiteMapViewModel::find($id);
-        $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->get();
-        $site_details = SiteViewModel::find($current_map->site_id);
-        
-        $amenities = Amenity::get();
-        $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
-        
-        return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));
-    }
+    
 
     public function getSitePoints($id)
     {
@@ -396,15 +398,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point = SitePoint::find($request->pid);
             $data = [
                 'tenant_id' => ($request->tenant_id) ? $request->tenant_id : 0,
-                'point_x' => ($request->position_x) ? $request->position_x : 0,
-                'point_y' => ($request->position_y) ? $request->position_y : 0,
-                'point_type' => ($request->point_type) ? $request->point_type : 0,
-                'rotation_z' => ($request->text_y_position) ? $request->text_y_position : 0,
-                'text_size' => ($request->text_size) ? $request->text_size : 0,
-                'text_width' => ($request->text_width) ? $request->text_width : 0,
-                'is_pwd' => ($request->is_pwd) ? $request->is_pwd : 0,
                 'point_label' => ($request->point_label) ? $request->point_label : null,
-                'wrap_at' => ($request->wrap_at == "on") ? 1 : 0,
             ];
 
             $site_point->update($data);
