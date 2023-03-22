@@ -104,6 +104,8 @@ Vue.component('cinema', require('./components/Kiosk/Cinema.vue').default);
 Vue.component('about', require('./components/Kiosk/About.vue').default);
 Vue.component('wayfinding', require('./components/Kiosk/Map.vue').default);
 
+Vue.component('portal-test', require('./components/Portal/Test.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
