@@ -22,10 +22,12 @@ class AppBaseController extends Controller
 
     public function response($data = [], $message = '', $code = 200, $count = 0)
     {
-        if(Auth::guard('portal')->check())
+        if(Auth::guard('portal')->check()) {
             $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-        else
+        }
+        else if(Auth::user()) {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+        }
 
         $response = array(
             'meta' => [
@@ -44,10 +46,12 @@ class AppBaseController extends Controller
 
     public function responsePaginate($data = [], $message = '', $code = 200)
     {
-        if(Auth::guard('portal')->check())
+        if(Auth::guard('portal')->check()) {
             $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-        else 
+        }
+        else if(Auth::user()) {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
+        }
 
         $response = [
             'meta' => [
