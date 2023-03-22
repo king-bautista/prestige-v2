@@ -219,16 +219,16 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
+            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				1: '<span class="badge bg-info">Active</span>'
             			}
             		},
                     is_default: {
             			name: "Is Default", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge badge-danger">No</span>', 
-            				1: '<span class="badge badge-info">Yes</span>'
+            				0: '<span class="badge bg-danger">No</span>', 
+            				1: '<span class="badge bg-info">Yes</span>'
             			}
             		},
                     updated_at: "Last Updated"

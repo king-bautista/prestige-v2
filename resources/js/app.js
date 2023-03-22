@@ -61,7 +61,7 @@ Vue.component('admin-dashboard_highest_usage', require('./components/Admin/Dashb
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 
 /**
- * PORTAL PART test
+ * PORTAL PART
  */
 Vue.component('portal-dashboard', require('./components/Portal/Dashboard.vue').default);
 Vue.component('portal-users', require('./components/Portal/Users.vue').default);
@@ -90,6 +90,8 @@ Vue.component('portal-building-tenants', require('./components/Portal/Tenants.vu
 Vue.component('portal-building-screens', require('./components/Portal/Screens.vue').default);
 Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
 
+Vue.component('portal-test', require('./components/Portal/Test.vue').default);
+
 
 /**
  * KIOSK PART
@@ -104,7 +106,7 @@ Vue.component('cinema', require('./components/Kiosk/Cinema.vue').default);
 Vue.component('about', require('./components/Kiosk/About.vue').default);
 Vue.component('wayfinding', require('./components/Kiosk/Map.vue').default);
 
-Vue.component('portal-test', require('./components/Portal/Test.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
