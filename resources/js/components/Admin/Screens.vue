@@ -172,7 +172,7 @@
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="is_default" v-model="screen.is_default">
-										<label class="custom-control-label" for="is_exclusive"></label>
+										<label class="custom-control-label" for="is_default"></label>
 									</div>
 								</div>
 							</div>
@@ -460,12 +460,14 @@
 					this.screen.is_default = screen.is_default; 
 					this.screen.is_exclusive = screen.is_exclusive;
 
-					var index = this.companies.findIndex(company => company.id === screen.company_details.id);
+					if(screen.company_details) {
+						var index = this.companies.findIndex(company => company.id === screen.company_details.id);
 
-					this.company_index = index;
-					this.screen.company = screen.company_details.id;
-					this.brands = screen.company_details.brands;
-					this.screen.brand = screen.brand_id;
+						this.company_index = index;
+						this.screen.company = screen.company_details.id;
+						this.brands = screen.company_details.brands;
+						this.screen.brand = screen.brand_id;
+					}
 
                     $('#screen-form').modal('show');
                 });

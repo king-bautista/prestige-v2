@@ -424,12 +424,14 @@
 					this.screen.is_exclusive = screen.is_exclusive;
 					this.screen.company = screen.company_details.id;
 
-					var index = this.companies.findIndex(company => company.id === screen.company_details.id);
+					if(screen.company_details) {
+						var index = this.companies.findIndex(company => company.id === screen.company_details.id);
 
-					this.company_index = index;
-					this.screen.company = screen.company_details.id;
-					this.brands = screen.company_details.brands;
-					this.screen.brand = screen.brand_id;
+						this.company_index = index;
+						this.screen.company = screen.company_details.id;
+						this.brands = screen.company_details.brands;
+						this.screen.brand = screen.brand_id;
+					}
 
 					this.add_record = false;
 					this.edit_record = true;
