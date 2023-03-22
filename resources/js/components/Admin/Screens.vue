@@ -313,7 +313,7 @@
             			routeName: '',
             			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
             			method: 'link',
-						conditions: { screen_type: 'Directory' }
+						conditions: { product_application: 'Directory' }
             		},
 					view: {
             			title: 'Set as Default',
@@ -323,7 +323,7 @@
             			button: '<i class="fa fa-tag"></i> Set as Default',
             			method: 'view',
 						v_on: 'DefaultScreen',
-						conditions: { screen_type: 'Directory' }
+						conditions: { product_application: 'Directory' }
             		},
             	},
 				otherButtons: {

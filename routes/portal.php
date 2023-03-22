@@ -132,18 +132,18 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Sites Maps Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/manage-map/{id}', 'Portal\MapsController@index')->where('id', '[0-9]+')->name('portalmanage.map');
-    Route::get('/portal/manage-map/list/{id}', 'Portal\MapsController@list')->where('id', '[0-9]+')->name('portalmanage.map.list');
-    Route::get('/portal/manage-map/details/{id}', 'Portal\MapsController@details')->where('id', '[0-9]+')->name('portalmanage.map.details');
-    Route::post('/portal/manage-map/store', 'Portal\MapsController@store')->name('portalmanage.map.store');
-    Route::post('/portal/manage-map/update', 'Portal\MapsController@update')->name('portalmanage.map.update');
-    Route::get('/portal/manage-map/delete/{id}', 'Portal\MapsController@delete')->where('id', '[0-9]+')->name('portalmanage.map.delete');
+    Route::get('/portal/manage-map/{id}', 'Portal\MapsController@index')->where('id', '[0-9]+')->name('portal-manage.map');
+    Route::get('/portal/manage-map/list/{id}', 'Portal\MapsController@list')->where('id', '[0-9]+')->name('portal-manage.map.list');
     Route::get('/portal/map/{id}', 'Portal\MapsController@getMapDetails')->where('id', '[0-9]+')->name('portalmap');
+    Route::post('/portal/map/update-details', 'Portal\MapsController@updatePointDetails')->name('portalmap.update-details');
+    Route::get('/portal/manage-map/details/{id}', 'Portal\MapsController@details')->where('id', '[0-9]+')->name('portal-manage.map.details');
+    Route::post('/portal/manage-map/store', 'Portal\MapsController@store')->name('portal-manage.map.store');
+    Route::post('/portal/manage-map/update', 'Portal\MapsController@update')->name('portal-manage.map.update');
+    Route::get('/portal/manage-map/delete/{id}', 'Portal\MapsController@delete')->where('id', '[0-9]+')->name('portal-manage.map.delete');
     Route::get('/portal/map/get-points/{id}', 'Portal\MapsController@getSitePoints')->where('id', '[0-9]+')->name('portalmap.get-points');
     Route::get('/portal/map/get-links/{id}', 'Portal\MapsController@getSiteLinks')->where('id', '[0-9]+')->name('portalmap.get-links');
     Route::post('/portal/map/create-point', 'Portal\MapsController@createPoint')->name('portalmap.create-point');
     Route::post('/portal/map/update-point', 'Portal\MapsController@updatePoint')->name('portalmap.update-point');
-    Route::post('/portal/map/update-details', 'Portal\MapsController@updatePointDetails')->name('portalmap.update-details');
     Route::get('/portal/map/delete-point/{id}', 'Portal\MapsController@deletePoint')->where('id', '[0-9]+')->name('portalmap.delete-point');
     Route::get('/portal/map/point-info/{id}', 'Portal\MapsController@pointInfo')->where('id', '[0-9]+')->name('portalmap.point-info');
     Route::post('/portal/map/connect-point', 'Portal\MapsController@connectPoints')->name('portalmap.connect-point');

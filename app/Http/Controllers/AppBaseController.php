@@ -46,7 +46,7 @@ class AppBaseController extends Controller
     {
         if(Auth::guard('portal')->check())
             $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-        else
+        else 
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
         $response = [

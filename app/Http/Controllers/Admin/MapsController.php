@@ -43,8 +43,6 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $site_maps = SiteMapViewModel::when(request('search'), function($query){
                 return $query->where('map_file', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
