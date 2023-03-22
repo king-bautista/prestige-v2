@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ScreensControllerInterface;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\ScreenRequest;
 
 use App\Models\SiteScreen;
 use App\Models\ViewModels\AdminViewModel;
@@ -30,8 +32,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function list(Request $request)
     {
-        // try
-        // {
+        try
+        {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $filters = json_decode($request->filters);
@@ -55,15 +57,15 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function details($id)
@@ -83,7 +85,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function store(Request $request)
+    public function store(ScreenRequest $request)
     {
         try
     	{
@@ -100,6 +102,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'name' => $request->name,
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
+                'product_application' => $request->product_application,
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
@@ -114,6 +117,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen = SiteScreen::create($data);
+            $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Created!', 200);
         }
@@ -127,7 +131,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function update(Request $request)
+    public function update(ScreenRequest $request)
     {
         try
     	{
@@ -144,6 +148,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'site_building_level_id' => $request->site_building_level_id,
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
+                'product_application' => $request->product_application,
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
@@ -157,6 +162,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen->update($data);
+            $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Modified!', 200);
         }

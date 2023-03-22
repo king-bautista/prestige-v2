@@ -45,6 +45,12 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Screen Type <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <select class="custom-select" v-model="screen.screen_type">
@@ -60,6 +66,15 @@
 									    <option value="">Select Orientation</option>
 									    <option v-for="orientation in orientations" :value="orientation"> {{ orientation }}</option>
 								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Product Application <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<select class="custom-select" v-model="screen.product_application">
+										<option value="">Select Product Application</option>
+										<option v-for="application in product_applications" :value="application"> {{ application }}</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -90,12 +105,6 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.name" placeholder="Screen Name" required>
-								</div>
-							</div>
-							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size diagonal</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_diagonal" placeholder="43 inc" required>
@@ -111,12 +120,6 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size height</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_height" placeholder="43 inc" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Dimension</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.dimension" placeholder="1920 x 1080" required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -137,7 +140,7 @@
 									<input type="text" class="form-control" v-model="screen.slots" placeholder="Slots" required>
 								</div>
 							</div>
-							<div class="form-group row" v-if="screen.screen_type == 'LED' || screen.screen_type == 'LFD'">
+							<div class="form-group row" v-if="(screen.screen_type == 'LED' || screen.screen_type == 'LFD') && screen.product_application == 'Digital Signage'">
 								<label for="isExclusive" class="col-sm-4 col-form-label">Is Exclusive </label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
@@ -146,12 +149,30 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row" v-if="screen.screen_type == 'Directory'">
+							<div class="form-group row" v-if="screen.is_exclusive">
+								<label for="firstName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<select class="custom-select" v-model="company_index" @change="getBrands($event.target.value)">
+										<option value="">Select Company</option>
+										<option v-for="(company, index) in companies" :value="index"> {{ company.name }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row" v-if="screen.is_exclusive">
+								<label for="firstName" class="col-sm-4 col-form-label">Brand <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<select class="custom-select" v-model="screen.brand">
+										<option value="">Select Brand</option>
+										<option v-for="brand in brands" :value="brand.id"> {{ brand.name }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row" v-if="screen.product_application == 'Directory'">
 								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="is_default" v-model="screen.is_default">
-										<label class="custom-control-label" for="is_default"></label>
+										<label class="custom-control-label" for="is_exclusive"></label>
 									</div>
 								</div>
 							</div>
@@ -232,6 +253,7 @@
                     name: '',
                     screen_type: '',
                     orientation: '',
+					product_application: '',
                     physical_size_diagonal: '',
                     physical_size_width: '',
                     physical_size_height: '',
@@ -242,6 +264,8 @@
 					active: false,
 					is_default: false,
 					is_exclusive: false,
+					company: '',
+					brand: '',
                 },
 				id_to_deleted: 0,
 				is_default: '',
@@ -250,16 +274,19 @@
                 sites: [],
                 buildings: [],
                 floors: [],
-                screen_types: ['Directory','LED','LFD','LED Panel'],
+				companies: [],
+				brands: [],
+				company_index: '',
+                screen_types: ['LED','LFD','LCD'],
                 orientations: ['Landscape','Portrait'],
+                product_applications: ['Directory','Digital Signage'],
             	dataFields: {
-            		name: "Name", 
+            		screen_location: "Location",
                     site_name: "Site Name",
-                    building_name: "Building Name",
-                    floor_name: "Floor Name",
-            		slots: "Slots", 
-            		screen_type: "Screen Type", 
+            		screen_type: "Physical Configuration", 
             		orientation: "Orientation", 
+            		product_application: "Product Application", 
+            		slots: "Slots",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -340,6 +367,7 @@
 
         created(){
 			this.getSites();
+			this.getCompany();
         },
 
         methods: {
@@ -358,6 +386,17 @@
                 .then(response => this.floors = response.data.data);
             },
 
+			getCompany: function() {
+				axios.get('/admin/company/get-all')
+                .then(response => this.companies = response.data.data);
+			},
+
+			getBrands: function(index) {
+				this.screen.company = this.companies[index].id;
+				this.brands = this.companies[index].brands;
+				this.screen.brand = '';
+			},
+
 			AddNewScreen: function() {
 				this.add_record = true;
 				this.edit_record = false;
@@ -368,6 +407,7 @@
 				this.screen.screen_type = '';
                 this.screen.name = '';         
 				this.screen.orientation = '';
+				this.screen.product_application = '';
 				this.screen.physical_size_diagonal = '';
 				this.screen.physical_size_width = '';
 				this.screen.physical_size_height = '';
@@ -408,6 +448,7 @@
 					this.screen.name = screen.name; 
                     this.screen.screen_type = screen.screen_type;
 					this.screen.orientation = screen.orientation;
+					this.screen.product_application = screen.product_application;
 					this.screen.physical_size_diagonal = screen.physical_size_diagonal;
 					this.screen.physical_size_width = screen.physical_size_width;
 					this.screen.physical_size_height = screen.physical_size_height;
@@ -418,6 +459,13 @@
 					this.screen.active = screen.active;    
 					this.screen.is_default = screen.is_default; 
 					this.screen.is_exclusive = screen.is_exclusive;
+
+					var index = this.companies.findIndex(company => company.id === screen.company_details.id);
+
+					this.company_index = index;
+					this.screen.company = screen.company_details.id;
+					this.brands = screen.company_details.brands;
+					this.screen.brand = screen.brand_id;
 
                     $('#screen-form').modal('show');
                 });
