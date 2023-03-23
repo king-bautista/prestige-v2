@@ -84,6 +84,7 @@ Vue.component('portal-dashboard_monthly_usage', require('./components/Portal/Das
 Vue.component('portal-dashboard_merchant_usage', require('./components/Portal/DashboardMerchantUsage.vue').default);
 Vue.component('portal-dashboard_top_key_words', require('./components/Portal/DashboardTopKeyWords.vue').default);
 Vue.component('portal-dashboard_highest_usage', require('./components/Portal/DashboardHighestUsage.vue').default);
+Vue.component('portal-dashboard_is_helpful', require('./components/Portal/DashboardIsHelpful.vue').default);
 
 Vue.component('portal-sites', require('./components/Portal/Sites.vue').default);
 Vue.component('portal-buildings', require('./components/Portal/Building.vue').default);
