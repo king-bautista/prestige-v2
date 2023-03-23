@@ -91,8 +91,8 @@ Vue.component('portal-building-screens', require('./components/Portal/Screens.vu
 Vue.component('portal-manage-maps', require('./components/Portal/ManageMaps.vue').default);
 
 Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
-
-Vue.component('portal-test', require('./components/Portal/Test.vue').default);
+Vue.component('portal-customer-care', require('./components/Portal/PortalCustomerCare.vue').default);
+//Vue.component('portal-test', require('./components/Portal/Test.vue').default);
 
 
 /**
