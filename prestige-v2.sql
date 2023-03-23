@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7709 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,440 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,531 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -11673,11 +11673,12 @@ CREATE TABLE IF NOT EXISTS `exclusive_screens` (
   CONSTRAINT `exclusive_screens_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
   CONSTRAINT `exclusive_screens_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `exclusive_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.exclusive_screens: ~1 rows (approximately)
+-- Dumping data for table prestige.exclusive_screens: ~2 rows (approximately)
 INSERT INTO `exclusive_screens` (`id`, `site_screen_id`, `brand_id`, `company_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 8, 7698, 3, '2023-03-20 09:00:02', '2023-03-20 09:00:02', NULL);
+	(1, 8, 7698, 3, '2023-03-20 09:00:02', '2023-03-20 09:00:02', NULL),
+	(2, 1, 7701, 3, '2023-03-22 06:47:05', '2023-03-22 06:47:05', NULL);
 
 -- Dumping structure for table prestige.failed_jobs
 DROP TABLE IF EXISTS `failed_jobs`;
@@ -11943,9 +11944,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=173 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.migrations: 38 rows
+-- Dumping data for table prestige.migrations: 39 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(160, '2014_10_12_000000_create_users_table', 35),
@@ -11985,7 +11986,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(165, '2023_03_07_142323_create_user_sites_table', 40),
 	(167, '2023_03_07_143519_create_user_screens_table', 41),
 	(168, '2023_03_07_151904_add_company_id_to_users_table', 42),
-	(169, '2023_03_17_163738_create_exclusive_screens_table', 43);
+	(169, '2023_03_17_163738_create_exclusive_screens_table', 43),
+	(172, '2023_03_22_151752_create_site_feedback_table', 44);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.modules
@@ -12034,7 +12036,7 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, 
 	(25, 20, 'Monthly Usage', '/admin/reports/monthly-usage', 'Admin', 'nav-icon fas fa-chart-bar', 1, '2022-08-11 23:05:14', '2023-03-02 09:47:39', NULL),
 	(26, 20, 'Sites with Highest Usage', '/admin/reports/yearly-usage', 'Admin', 'nav-icon fas fa-list', 1, '2022-08-11 23:05:33', '2023-03-02 09:48:58', NULL),
 	(27, 20, 'Kiosk Uptime History', '#', 'Admin', 'nav-icon fas fa-table', 1, '2022-08-11 23:05:50', '2023-03-02 10:07:02', NULL),
-	(28, 20, 'System activity logs', '#', 'Admin', 'nav-icon fas fa-chart-area', 1, '2022-08-11 23:06:05', '2022-08-11 23:06:05', NULL),
+	(28, 20, 'Is this Helpful', '/admin/reports/is-helpful', 'Admin', 'nav-icon fas fa-chart-area', 1, '2022-08-11 23:06:05', '2023-03-22 08:28:54', NULL),
 	(29, 20, 'Sales and Revenue', '#', 'Admin', 'nav-icon fas fa-chart-area', 1, '2022-08-11 23:06:21', '2022-08-11 23:06:21', NULL),
 	(30, 20, 'Earnings overview', '#', 'Admin', 'nav-icon fas fa-chart-area', 1, '2022-08-11 23:06:37', '2022-08-11 23:06:37', NULL),
 	(31, 6, 'Amenities', '/admin/amenities', 'Admin', 'nav-icon fas fa-restroom', 1, '2022-08-18 22:50:23', '2022-08-18 22:51:50', NULL),
@@ -12108,9 +12110,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   KEY `permissions_deleted_at_index` (`deleted_at`),
   CONSTRAINT `permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`),
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~121 rows (approximately)
+-- Dumping data for table prestige.permissions: ~124 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -12306,7 +12308,7 @@ CREATE TABLE IF NOT EXISTS `sites` (
 
 -- Dumping data for table prestige.sites: ~2 rows (approximately)
 INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `site_background`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nFun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 'uploads/media/sites/background/SMMG-BG.jpg', 1, 1, '2022-10-24 00:54:28', '2023-03-15 03:04:38', NULL),
+	(1, 'Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nFun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 'uploads/media/sites/background/SMMG-BG.jpg', 1, 1, '2022-10-24 00:54:28', '2023-03-22 03:36:48', NULL),
 	(2, 'SM Tuguegarao', 'KING\r\nSM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. \r\n\r\nIt\'s Fun and Festive Malling at SM City Tuguegarao!\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', '', 'uploads/media/sites/banners/about-us-smtu.jpg', NULL, 1, 0, '2022-10-25 17:14:19', '2023-03-14 06:11:42', NULL);
 
 -- Dumping structure for table prestige.sites_meta
@@ -12544,6 +12546,44 @@ INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`,
 	(19, 2, 4, 'GF', 1, '2022-10-25 17:21:01', '2022-10-25 17:21:01', NULL),
 	(20, 2, 4, '2F', 1, '2022-10-25 17:21:10', '2022-10-25 17:21:10', NULL),
 	(21, 1, 3, 'test', 1, '2023-03-15 03:05:17', '2023-03-15 03:05:28', '2023-03-15 03:05:28');
+
+-- Dumping structure for table prestige.site_feedback
+DROP TABLE IF EXISTS `site_feedback`;
+CREATE TABLE IF NOT EXISTS `site_feedback` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` bigint(20) unsigned NOT NULL,
+  `site_screen_id` bigint(20) unsigned NOT NULL,
+  `helpful` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reason` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reason_other` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `site_feedback_site_id_index` (`site_id`),
+  KEY `site_feedback_site_screen_id_index` (`site_screen_id`),
+  CONSTRAINT `site_feedback_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`),
+  CONSTRAINT `site_feedback_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.site_feedback: ~16 rows (approximately)
+INSERT INTO `site_feedback` (`id`, `site_id`, `site_screen_id`, `helpful`, `reason`, `reason_other`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:56:23', '2023-03-22 07:56:24', NULL),
+	(2, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:57:10', '2023-03-22 07:57:10', NULL),
+	(3, 1, 1, 'No', 'Incorrect info', NULL, '2023-03-22 07:57:33', '2023-03-22 07:57:33', NULL),
+	(4, 1, 1, 'No', 'Confusing direction', NULL, '2023-03-22 07:57:51', '2023-03-22 07:57:51', NULL),
+	(5, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:58:22', '2023-03-22 07:58:23', NULL),
+	(6, 1, 1, 'No', 'Not what I\'m looking for\r\n', NULL, '2023-03-22 07:58:41', '2023-03-22 07:58:41', NULL),
+	(7, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:58:53', '2023-03-22 07:58:53', NULL),
+	(8, 1, 1, 'No', 'Others', 'Test', '2023-03-22 07:59:23', '2023-03-22 07:59:26', NULL),
+	(9, 1, 1, 'No', 'Others', 'Test\'3', '2023-03-22 07:59:49', '2023-03-22 07:59:50', NULL),
+	(10, 1, 1, 'Yes', NULL, NULL, '2023-03-22 08:00:01', '2023-03-22 08:00:01', NULL),
+	(11, 1, 1, 'No', 'Incorrect info', NULL, '2023-03-22 08:00:15', '2023-03-22 08:00:15', NULL),
+	(12, 1, 1, 'No', 'Confusing direction', NULL, '2023-03-22 08:00:34', '2023-03-22 08:00:34', NULL),
+	(13, 1, 1, 'No', 'Confusing direction', NULL, '2023-03-22 08:00:49', '2023-03-22 08:00:49', NULL),
+	(14, 1, 1, 'No', 'Others', 'Test 2', '2023-03-22 08:01:26', '2023-03-22 08:01:27', NULL),
+	(15, 1, 1, 'Yes', NULL, NULL, '2023-03-22 08:01:35', '2023-03-22 08:01:36', NULL),
+	(16, 1, 1, 'Yes', NULL, NULL, '2023-03-22 08:01:55', '2023-03-22 08:01:55', NULL);
 
 -- Dumping structure for table prestige.site_maps
 DROP TABLE IF EXISTS `site_maps`;
@@ -14600,7 +14640,7 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
 
 -- Dumping data for table prestige.site_screens: ~8 rows (approximately)
 INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `orientation`, `product_application`, `physical_size_diagonal`, `physical_size_width`, `physical_size_height`, `dimension`, `width`, `height`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 1, 2, 0, 'LED', 'Landscape', 'Directory', '43 INC', '43 INC', '43 INC', '1920 x 1080', '1920', '1080', '789101', 'National Book Store', 24, 1, 1, 0, '2022-10-25 01:28:36', '2023-02-17 09:11:42', NULL),
+	(1, 1, 1, 2, 0, 'LED', 'Landscape', 'Directory', '43 INC', '43 INC', '43 INC', '1920 x 1080', '1920', '1080', '789101', 'National Book Store', 24, 1, 0, 0, '2022-10-25 01:28:36', '2023-03-22 06:22:28', NULL),
 	(2, 1, 1, 2, 0, 'LED', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '123456', 'Kenny Rogers', 24, 1, 0, 0, '2022-10-25 01:39:22', '2022-11-08 18:25:30', NULL),
 	(3, 2, 4, 19, 0, 'LED', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '1549', 'Admin Test', 0, 1, 1, 0, '2022-10-25 17:21:39', '2022-11-08 18:10:58', '2022-11-08 18:10:58'),
 	(4, 2, 4, 20, 0, 'LED', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sample', 0, 1, 0, 0, '2022-10-25 17:22:01', '2022-11-08 18:10:56', '2022-11-08 18:10:56'),
