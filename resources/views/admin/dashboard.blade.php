@@ -22,11 +22,14 @@
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-3">
+        <admin-dashboard_is_helpful></admin-dashboard_is_helpful>
+      </div>
+      <div class="col-lg-4">
         <admin-dashboard_population></admin-dashboard_population>
       </div>
       <!-- /.col-md-6 -->
-      <div class="col-lg-6">
+      <div class="col-lg-5">
         <admin-dashboard_monthly_usage></admin-dashboard_monthly_usage>
       </div>
       <!-- /.col-md-6 -->

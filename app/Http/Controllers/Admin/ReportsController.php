@@ -9,9 +9,11 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+use App\Models\SiteFeedback;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\LogsViewModel;
 use App\Models\ViewModels\LogsMonthlyUsageViewModel;
+use App\Models\ViewModels\SiteFeedbackViewModel;
 use App\Models\Log;
 
 use App\Exports\MerchantPopulationExport;
@@ -20,6 +22,7 @@ use App\Exports\TopKeywordsExport;
 use App\Exports\MerchantUsageExport;
 use App\Exports\MonthlyUsageExport;
 use App\Exports\YearlyUsageExport;
+use App\Exports\IsHelpfulExport;
 use Storage;
 
 class ReportsController extends AppBaseController implements ReportsControllerInterface
@@ -61,6 +64,11 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     public function yearlyUsage()
     {
         return view('admin.report_yearly_usage');
+    }
+
+    public function isHelpful()
+    {
+        return view('admin.report_is_helpful');
     }
 
     public function getPercentage($request)
@@ -671,6 +679,106 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $filename = "yearly-usage.csv";
             // Store on default disk
             Excel::store(new YearlyUsageExport($logs), $directory.$filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/'.$filename,
+                'filename' => $filename
+            ];
+            
+            if(Storage::exists($directory.$filename))
+                return $this->response($data, 'Successfully Retreived!', 200); 
+
+            return $this->response(false, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getIsHelpful(Request $request)
+    {
+        try
+        {
+            $total_count = SiteFeedback::get()->count();
+
+            $is_helpful = SiteFeedback::selectRaw('helpful, count(*) as count, ROUND((count(*)/'.$total_count.')*100, 2) as percentage')
+            ->groupBy('helpful')
+            ->orderBy('count', 'DESC')
+            ->get();
+
+            return $this->response($is_helpful, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getResponseNo()
+    {
+        try
+        {
+            $total_count = SiteFeedback::where('helpful', 'No')->get()->count();
+
+            $is_helpful = SiteFeedback::selectRaw('reason, count(*) as count, ROUND((count(*)/'.$total_count.')*100, 2) as percentage')
+            ->where('helpful', 'No')
+            ->groupBy('reason')
+            ->orderBy('count', 'DESC')
+            ->get();
+
+            return $this->response($is_helpful, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getOtherResponse()
+    {
+        try
+        {
+            $is_helpful = SiteFeedback::whereNotNull('reason_other')->get();
+            return $this->response($is_helpful, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvIsHelpful(Request $request)
+    {
+        try
+        {
+            $is_helpful = SiteFeedbackViewModel::get();
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "is_helpful.csv";
+            // Store on default disk
+            Excel::store(new IsHelpfulExport($is_helpful), $directory.$filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/'.$filename,

@@ -376,6 +376,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/reports/yearly-usage', 'Admin\ReportsController@yearlyUsage')->name('admin.reports.yearly-usage');
     Route::get('/admin/reports/yearly-usage/list', 'Admin\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.list');
     Route::get('/admin/reports/yearly-usage/download-csv', 'Admin\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.download-csv');
+    Route::get('/admin/reports/is-helpful', 'Admin\ReportsController@isHelpful')->name('admin.reports.is-helpful');
+    Route::get('/admin/reports/is-helpful/list', 'Admin\ReportsController@getIsHelpful')->name('admin.reports.is-helpful.list');
+    Route::get('/admin/reports/is-helpful/response', 'Admin\ReportsController@getResponseNo')->name('admin.reports.is-helpful.response');
+    Route::get('/admin/reports/is-helpful/other-response', 'Admin\ReportsController@getOtherResponse')->name('admin.reports.is-helpful.other-response');
+    Route::get('/admin/reports/is-helpful/download-csv', 'Admin\ReportsController@downloadCsvIsHelpful')->name('admin.reports.is-helpful.download-csv');
 
     /*
     |--------------------------------------------------------------------------
