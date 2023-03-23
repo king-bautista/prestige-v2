@@ -64,7 +64,7 @@ Vue.component('admin-dashboard_is_helpful', require('./components/Admin/Dashboar
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 
 /**
- * PORTAL PART test
+ * PORTAL PART
  */
 Vue.component('portal-dashboard', require('./components/Portal/Dashboard.vue').default);
 Vue.component('portal-users', require('./components/Portal/Users.vue').default);
@@ -94,6 +94,8 @@ Vue.component('portal-building-screens', require('./components/Portal/Screens.vu
 Vue.component('portal-manage-maps', require('./components/Portal/ManageMaps.vue').default);
 
 Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
+Vue.component('portal-customer-care', require('./components/Portal/PortalCustomerCare.vue').default);
+//Vue.component('portal-test', require('./components/Portal/Test.vue').default);
 
 
 /**
@@ -108,6 +110,8 @@ Vue.component('promos', require('./components/Kiosk/Promos.vue').default);
 Vue.component('cinema', require('./components/Kiosk/Cinema.vue').default);
 Vue.component('about', require('./components/Kiosk/About.vue').default);
 Vue.component('wayfinding', require('./components/Kiosk/Map.vue').default);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
