@@ -22,13 +22,17 @@ use App\Models\Site;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
 use App\Models\SiteBuilding;
+use App\Models\SiteScreen;
 
 class MainController extends AppBaseController
 {
     public function index()
     {
         $site = Site::where('is_default', 1)->where('active', 1)->first();
-        return view('kiosk.main',$site);
+        $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;            
+        $site['site_screen_id'] = $site_screen_id;
+
+        return view('kiosk.main', $site);
     }
 
     public function getSite()

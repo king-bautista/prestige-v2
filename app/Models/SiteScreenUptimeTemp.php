@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SiteScreenUptime extends Model
+class SiteScreenUptimeTemp extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -14,10 +14,7 @@ class SiteScreenUptime extends Model
     protected $fillable = [
         'site_screen_id',
         'up_time_date',
-        'total_hours',
-        'opening_hour',
-        'closing_hour',
-        'hours_up',
+        'up_time_hours',
     ];
 
     /**
@@ -36,7 +33,7 @@ class SiteScreenUptime extends Model
      *
      * @var string
     */
-    protected $table = 'site_screen_uptimes';
+    protected $table = 'site_screen_uptimes_temp';
 
     /**
      * The primary key associated with the table.
