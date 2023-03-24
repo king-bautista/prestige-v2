@@ -12,17 +12,36 @@
         </div>
         <div class="row col-md-12 mb-3">
             
-            <div id="tenant-details" class="card border-info mb-3">
-                <div class="card-header"></div>
+            <div id="tenant-details" class="card mb-3 label-3">
                 <div class="card-body text-info text-center">
-                    <h2 class="card-title tenant-name">Info card title</h2>
-                    <p class="card-text tenant-floor">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <p class="card-text tenant-category">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <div style="color:#6051e3;"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
+                    <div style="padding-left: 10px;margin-top: 19px;color:#6051e3;">
+                        <img src="images/man-walk.svg" style="width:20px;">
+                        <span style="font-weight: bold;">
+                            <span class="map-minutes">0 minutes</span>,
+                            <span class="map-steps">0 steps,</span>,
+                        </span>
+                        <span class="map-distance my-auto" style="color:#8c8d8d;font-size: .7em;">0m distance</span>			
+                    </div>
                 </div>
-                <div class="card-body assist">
-                    
+                <div class="card-body">
+                    <ul class="assist">
+
+                    </ul>              
                 </div>
-                <div class="card-footer"></div>
+
+                <div>
+                    <div class="" style="text-align: left;padding-left: 45px;margin-top: 48px;">
+                        <span class="translateme">Was this helpful?</span>
+                        <a href="#" class="custom-p-0-8 btn-helpful" style="font-size:1rem;color:#6051e3;">
+                            <span class="fa fa-thumbs-up"></span>
+                        </a> 
+                        <a href="#" class="custom-p-0-8 btn-nothelpful" style="font-size:1rem;color:#6051e3;">
+                            <span class="fa fa-thumbs-down"></span>
+                        </a> 
+                        <span class="response-thanks translateme">Thank you!</span>
+                    </div>             
+                </div>
             </div>
 
             <div class="map-holder">
@@ -57,18 +76,22 @@
 
         </div>
         <!-- TABS -->
-        <div class="tabs-container cb-0">
+        <div class="tabs-container cb-0 z-1">
             <div class="row">
                 <div class="col-12 col-sm-4 offset-md-2">
                     <div class="input-group map-input-group">
                         <multiselect v-model="map_form.tenant"
                             class="custom-select map-tenant-option" 
+                            ref="multiselectTenant"
+                            :max-height="180"
                             :options="tenant_list"
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
                             :reset-after="true"
                             @select="find_store"
+                            id="search-input"
+                            name="tenant-search"
                             placeholder="Input Destination"
                             label="name"
                             track-by="name">
@@ -79,7 +102,7 @@
                                 List is empty
                             </span>
                         </multiselect>
-                        <div class="input-group-append">
+                        <div class="input-group-append" v-show="false">
                             <button class="btn btn-outline-secondary is-pwd-button" type="button">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
@@ -90,12 +113,17 @@
                     <div class="input-group map-input-group">
                         <multiselect v-model="map_form.floor_id"
                             class="custom-select map-floor-option" 
+                            ref="multiselectFloor"
+                            :max-height="180"
                             :options="site_floors"
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
                             :allow-empty="false"
+                            :searchable="false"
                             @select="toggleSelectedMap"
+                            id="floor-input"
+                            name="floor-search"
                             placeholder="Select Floor"
                             label="building_floor_name"
                             track-by="building_floor_name">
@@ -124,7 +152,23 @@
                 </div>
             </div>
         </div>
-        <img :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <div id="guide-button" v-show="guide_button">
+            <div class="toggle-arrow mt-7"><i class="arrow up"></i></div>   
+            <div id="toggle-updown-text" class="translateme">Show Text Guide</div>
+        </div>
+
+        <!-- MODAL -->
+        <div class="custom-modal p-l-490 map-search-modal">
+            <div class="map-search-modal-position">                    
+                <div class="text-right text-white custom-w-1140">
+                    <span class="btn-close-modal">X</span>
+                </div>        
+                <div class="softkeys-tenant mt-20" data-target="input[name=tenant-search]" v-show="softkeysTenant"></div>
+                <div class="softkeys-feedback mt-20" data-target="input[name=feedback-search]" v-show="softkeysFeedback"></div>
+            </div>
+        </div>
+
+        <img class="back-button" :src="back_button" @click="goBack">
     </div>
 </template>
 <script>
@@ -149,6 +193,9 @@
                 current_time: Date.now(),
                 helper: new Helpers(),
                 active_map_details: '',
+                guide_button: false,
+                softkeysTenant: false,
+                softkeysFeedback: false,
             };
         },
 
@@ -195,6 +242,7 @@
 
             toggleSelectedMap: function(value, id) {
                 $(function() {
+                    this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
                     this.wayfindings.clearEscalator();
                     this.wayfindings.clearLine();
@@ -213,15 +261,12 @@
                     this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
                     this.wayfindings.drawline(value.id, value);
+                    $('#guide-button').show();
+                    $('.map-search-modal').hide();
                 });
             },
 
             resetPage: function() {
-                $(".pinch").show();
-                $('#repeatButton').hide();
-                $('#tenant-details').hide();
-                $('#zoomResetButton').addClass('last-border-radius');
-                $('#zoomResetButton').trigger('click');
                 var obj = this;
                 $(function() {
                     this.wayfindings.stopall();
@@ -230,17 +275,72 @@
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.showmap(obj.active_map_details);
-                });
+                });              
+                $('#repeatButton').hide();
+                $('#tenant-details').hide();
+                $('#zoomResetButton').addClass('last-border-radius');
+                $('#zoomResetButton').trigger('click');
+                $(".map-search-modal").hide();
+                $('#guide-button .toggle-arrow .arrow').removeClass('down');
+                $('#guide-button .toggle-arrow .arrow').addClass('up');
+                $('#guide-button').hide();
+                $(".pinch").show();
             },
-   
+
+            softkeys: function() {
+                $(function() {
+                    $('.softkeys-tenant').softkeys({
+                        target : $('.softkeys-tenant').data('target'),
+                        layout : [
+                            [
+                                '1','2','3','4','5','6','7','8','9','0',
+                            ],
+                            [
+                                ['Q','~'],['W','!'],['E','@'],['R','#'],['T','$'],['Y','%'],['U','^'],['I','&'],['O','*'],['P','('],['-',')'],
+                            ],
+                            [
+                                ['A','['],['S',']'],['D','-'],['F','+'],['G','='],['H',':'],['J',';'],['K','\''],['L','&#34;'],['\'','null'],
+                            ],
+                            [
+                                'shift',['Z','['],['X',']'],['C','-'],['V','+'],['B','?'],['N',':'],['M',';'],'delete',
+                            ],
+                            [
+                                [',','null'],'space',['.','null'],['Enter','Enter'],
+                            ]
+                        ]
+                    });
+                    $('.softkeys-feedback').softkeys({
+                        target : $('.softkeys-feedback').data('target'),
+                        layout : [
+                            [
+                                '1','2','3','4','5','6','7','8','9','0',
+                            ],
+                            [
+                                ['Q','~'],['W','!'],['E','@'],['R','#'],['T','$'],['Y','%'],['U','^'],['I','&'],['O','*'],['P','('],['-',')'],
+                            ],
+                            [
+                                ['A','['],['S',']'],['D','-'],['F','+'],['G','='],['H',':'],['J',';'],['K','\''],['L','&#34;'],['\'','null'],
+                            ],
+                            [
+                                'shift',['Z','['],['X',']'],['C','-'],['V','+'],['B','?'],['N',':'],['M',';'],'delete',
+                            ],
+                            [
+                                [',','null'],'space',['.','null'],['Enter','Enter'],
+                            ]
+                        ]
+                    });
+                })
+            },
         },
 
         mounted() {
+            this.softkeys();
             var vm = this;
             $(function() {    
                 var obj = this;        
                 this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
                 this.wayfindings.animate_marker_here_stop();
+                $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
 
                 axios.get('/api/v1/site/maps')
                 .then(response => {
@@ -290,14 +390,30 @@
     			});
 
                 $(".map-tenant-option").on('focusin',function(){
-                    $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '0px'});
+                    $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '0px','border-top-right-radius': '0px'});
+                    $('.map-search-modal').show();
+                    $(".pinch").hide();
+                    $('#tenant-details').hide();
+                    $('#guide-button .toggle-arrow .arrow').removeClass('down');
+                    $('#guide-button .toggle-arrow .arrow').addClass('up');
+                    $('#guide-button').hide();
+                    vm.softkeysTenant = true;
+                    vm.softkeysFeedback = false;
                 });
                 $(".map-tenant-option").on('focusout',function(){
-                    $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '18px'});
+                    $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '18px','border-top-right-radius': '18px'});
                 });
 
                 $(".map-floor-option").on('focusin',function(){
                     $('.map-floor-option:not(:last-child)').css({'border-top-left-radius': '0px'});
+                    $('.map-search-modal').hide();
+                    $(".pinch").hide();
+                    $('#tenant-details').hide();
+                    $('#guide-button .toggle-arrow .arrow').removeClass('down');
+                    $('#guide-button .toggle-arrow .arrow').addClass('up');
+                    $('#guide-button').hide();
+                    $('#repeatButton').hide();
+                    $('#zoomResetButton').addClass('last-border-radius');
                 });
                 $(".map-floor-option").on('focusout',function(){
                     $('.map-floor-option:not(:last-child)').css({'border-top-left-radius': '18px'});
@@ -308,6 +424,39 @@
                     obj.wayfindings.replay();
     			});
 
+                $('#guide-button').on('click',function(){
+                    if ($('.arrow').hasClass('up')){
+                        $('#guide-button .toggle-arrow .arrow').removeClass('up');
+                        $('#guide-button .toggle-arrow .arrow').addClass('down');
+                        $('#tenant-details').show();
+                    }else{
+                        $('#guide-button .toggle-arrow .arrow').removeClass('down');
+                        $('#guide-button .toggle-arrow .arrow').addClass('up');
+                        $('#tenant-details').hide();
+                    }
+                    
+    			});
+
+                $(".btn-close-modal").on('click',function(){
+                    $(".map-search-modal").hide();
+                });
+
+                // $(".softkeys__btn").on('mousedown',function(){
+                
+                // }).on('mouseup',function(){
+                //     $('.multiselect__input').trigger('keydown');
+                // }).on('touchend',function(){
+                //     $('.multiselect__input').trigger('keydown');
+                // });
+
+                $(".softkeys__btn").on('touchstart',function(){
+                    // console.log(vm.$refs.multiselect._data.search);
+                    if (vm.softkeysTenant) {
+                        vm.$refs.multiselectTenant._data.search = $("#search-input").val();
+                    }else if (vm.softkeysFeedback) {
+                        // vm.$refs.multiselectFloor._data.search = $("#floor-input").val();
+                    }              
+                });
             });
         },
 

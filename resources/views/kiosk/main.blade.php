@@ -86,24 +86,6 @@
         });  
     }
 
-    // $(document).on('click',function(){
-    //     $("#screensaverwidget").height('0').width('0');
-    //     if(screensaver_handle) {
-	// 		clearTimeout(screensaver_handle);	
-	// 		screensaver_handle = null;
-	// 	}
-
-    //     screensaver_handle = setTimeout(() => {
-    //         $("#screensaverwidget").height('100%').width('100%');
-    //         $.get( "/api/v1/get-update", function( data ) {
-    //             if(data.data.length > 0) {
-    //                 location.reload();
-    //             }
-    //         });
-	// 	}, 5000);
-    //     // }, 2000 * 60 * 2);
-    // });
-
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover({
             html: true,

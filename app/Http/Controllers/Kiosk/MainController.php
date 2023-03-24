@@ -583,6 +583,7 @@ class MainController extends AppBaseController
                 
                 foreach($points as $point)
                 {
+                    array_push($latlng[$point],$map_paths[0]['distance']);
                     $coordinates[] = $latlng[$point];
                 }
             }
@@ -689,5 +690,4 @@ class MainController extends AppBaseController
     {
         DB::statement("UPDATE site_tenants SET site_tenants.like_count = $request->like_count  where site_tenants.id = $request->id");
     }
-
 }
