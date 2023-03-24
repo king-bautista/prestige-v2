@@ -49,19 +49,19 @@ class MainController extends AppBaseController
 
     public function getCategories()
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $categories = DirectoryCategoryViewModel::getMainCategory($site->id);            
             return $this->response($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Categories to display!',
-                'status_code' => 200,
-            ], 200);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Categories to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }
     }
 
     // public function getTenantsAlphabetical($category_id)
@@ -583,6 +583,7 @@ class MainController extends AppBaseController
                 
                 foreach($points as $point)
                 {
+                    array_push($latlng[$point],$map_paths[0]['distance']);
                     $coordinates[] = $latlng[$point];
                 }
             }
@@ -689,5 +690,4 @@ class MainController extends AppBaseController
     {
         DB::statement("UPDATE site_tenants SET site_tenants.like_count = $request->like_count  where site_tenants.id = $request->id");
     }
-
 }

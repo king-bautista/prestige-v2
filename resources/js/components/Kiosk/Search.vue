@@ -204,7 +204,7 @@
             </div>
         </div>
 
-        <img :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <img class="back-button" :src="back_button" @click="goBack">
     </div>
 </template>
 <script> 
@@ -298,7 +298,6 @@
             },
 
             onClickSuggestedSubsriber: function(id) {
-                // this.search.key_words = $('#code').val();
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {

@@ -16,7 +16,7 @@
             <!-- <div class="row">
                 <div class="col-md-12 text-center pt-2 pr-136">
                     <router-link to="/">
-                        <div class="h-button widget-button home-button active logs" data-link='Home'>
+                        <div class="h-button widget-button home-button active logs" data-link='Category'>
                             <div class="button-text-align">Home</div>
                         </div>
                     </router-link>
@@ -85,24 +85,6 @@
             $( "#loadingDiv" ).remove(); //makes page more lightweight 
         });  
     }
-
-    // $(document).on('click',function(){
-    //     $("#screensaverwidget").height('0').width('0');
-    //     if(screensaver_handle) {
-	// 		clearTimeout(screensaver_handle);	
-	// 		screensaver_handle = null;
-	// 	}
-
-    //     screensaver_handle = setTimeout(() => {
-    //         $("#screensaverwidget").height('100%').width('100%');
-    //         $.get( "/api/v1/get-update", function( data ) {
-    //             if(data.data.length > 0) {
-    //                 location.reload();
-    //             }
-    //         });
-	// 	}, 5000);
-    //     // }, 2000 * 60 * 2);
-    // });
 
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover({

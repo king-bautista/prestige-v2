@@ -111,7 +111,7 @@
                     <div id="supplementalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false" v-show="!no_record_found">
 
                         <!-- Indicators -->
-                        <ul class="carousel-indicators carousel-indicators-a z-1">
+                        <ul class="carousel-indicators carousel-indicators-a z-1" v-show="tenant_list_count>0">
                             <li data-target="#supplementalCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'first-item active':''"></li>                    
                         </ul>
 
@@ -143,7 +143,7 @@
                         <a class="carousel-control-prev control-prev-a p-l-z-a" href="#supplementalCarousel" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
-                        <a class="carousel-control-next control-next-a n-l-z-a" href="#supplementalCarousel" data-slide="next">
+                        <a class="carousel-control-next control-next-a n-l-z-a" href="#supplementalCarousel" data-slide="next" v-show="tenant_list_count>=1">
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
@@ -658,7 +658,6 @@
                     if(this.tenant_list.length == 0) {
                         this.no_record_found = true;         
                     }
-                    this.initializeSwipe();
                     this.TitleCasePerWord();
                     this.resetCarousel();
                 });               

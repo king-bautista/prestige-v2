@@ -404,16 +404,16 @@ WayFinding.prototype = {
         var text = "";
         var bldg_name = "";
 
-        var node = document.createElement("div");
-        node.innerHTML = '<ul><li>Proceed to <img src="images/services/smcg_escalator.png" align="middle"></li></ul>';
+        var node = document.createElement("li");
+        node.innerHTML = 'Proceed to <img src="images/services/smcg_escalator.png" align="middle">';
         $('.assist').append(node);
 
         $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
             text = response.name;
             bldg_name = response.building_name;
 
-            var node = document.createElement("div");
-            node.innerHTML = '<ul><li>Go to ' + text + ', ' + bldg_name + '</li></ul>';
+            var node = document.createElement("li");
+            node.innerHTML = 'Go to ' + text + ', ' + bldg_name + '';
             $('.assist').append(node);            
         });
 
@@ -431,8 +431,8 @@ WayFinding.prototype = {
         $.get( "/api/v1/site/maps/get-building-name/"+bldg, function(response) {
             bldg_name = response.name;
 
-            var node = document.createElement("div");
-            node.innerHTML = '<ul><li>Transfer to ' + bldg_name + '</li></ul>';   
+            var node = document.createElement("li");
+            node.innerHTML = 'Transfer to ' + bldg_name + '';   
             $('.assist').append(node);            
         });
 
@@ -548,19 +548,17 @@ WayFinding.prototype = {
     },
 
     show_tenant_details: function(id) {
-
     },
 
     drawline: function(id, tenant) {
         this.showmap(this.settings.defaultmap);
-        $('#tenant-details').show();
         $('#repeatButton').hide();
         $('#zoomResetButton').addClass('last-border-radius');
         var tenant_name = tenant.brand_name;
         var tenant_location = tenant.floor_name + ', '+tenant.building_name;
         var tenant_category = tenant.category_name;
 
-        $('.tenant-name').html(tenant_name);
+        $('.tenant-name').html(tenant_name + ', ' +tenant_location);
         $('.tenant-floor').html(tenant_location);
         $('.tenant-category').html(tenant_category);
         $('.assist').html('');
@@ -573,6 +571,7 @@ WayFinding.prototype = {
         this.settings.tenant_details = tenant;
         this.settings.showescalator = 1;
         var obj = this;
+        var distance = '';
 
         $.get( "/api/v1/site/maps/get-routes/"+id, function(response) {
             if(response.data.length) {
@@ -584,6 +583,7 @@ WayFinding.prototype = {
                     var z = parseFloat(response.data[index][2]); //floor level
                     var z2 = parseFloat(response.data[index][3]); //building
                     var map_id = parseFloat(response.data[index][4]); //building
+                    distance = parseFloat(response.data[index][5]); //distance
 
                     if(index == 0) {
                         obj.settings.points.linePoint.push(new Point(x,y,z,z2,map_id));
@@ -636,6 +636,12 @@ WayFinding.prototype = {
                         }
                     }
                 });
+
+                var steps = (distance / 10).toFixed(0);
+                var mins = (steps / 90).toFixed(0);
+                $(".map-distance").html((steps * 0.74).toFixed(0)  + 'm');
+                $(".map-steps").html( steps + ' steps');
+                $(".map-minutes").html( mins + ' min' + (mins > 1 ? 's' : ''));
 
                 clearInterval(obj.settings.inter);
                 obj.settings.inter = 0;
@@ -726,8 +732,8 @@ WayFinding.prototype = {
             this.drawpoints_stop();
             this.settings.storefound = 1;
 
-            var node = document.createElement("div");
-            node.innerHTML = '<ul><li>Follow the <font color="red">red path</font> to your destination</li></ul>';  
+            var node = document.createElement("li");
+            node.innerHTML = 'Follow the <font color="red">red path</font> to your destination';  
             $('.assist').append(node);   
 
             $('#repeatButton').show();

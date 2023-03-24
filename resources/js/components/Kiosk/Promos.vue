@@ -315,10 +315,8 @@
             showTenant: function(tenant) {
                 this.page_title = 'Store Page';
                 this.tenant_details = tenant;
-                // this.alphabetical = false;
                 this.show_tenant = true;
                 this.promo_page = false;
-                // this.tabs_container = false;
                 this.buildSchedule(this.tenant_details);
             },
 
