@@ -16,6 +16,11 @@ class UpTimeController extends AppBaseController implements UpTimeControllerInte
     {
         try
         {
+            // checking last day logs
+            // summarize last day logs
+            // deleting last day logs
+
+            // inset new day logs            
             $data = [
                 'site_screen_id' => $request->site_screen_id,
                 'up_time_date' => date('Y-m-d'),
@@ -31,5 +36,10 @@ class UpTimeController extends AppBaseController implements UpTimeControllerInte
                 'status_code' => 200,
             ], 200);
         }
+    }
+
+    public function summirize(Type $var = null)
+    {
+        # code...
     }
 }
