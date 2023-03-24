@@ -187,16 +187,6 @@ class CreateSitesTable extends Migration
 
             $table->foreign('site_map_id')->references('id')->on('site_maps');
         });
-
-        Schema::create('site_screen_uptime', function (Blueprint $table) {
-            $table->engine = "InnoDB";
-            
-            $table->bigIncrements('id');
-            $table->bigInteger('site_screen_id')->unsigned();
-            $table->timestamps();
-
-            $table->foreign('site_screen_id')->references('id')->on('site_screens');
-        });
     }
 
     /**

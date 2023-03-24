@@ -69,6 +69,7 @@
     });
 
     setTimeout(removeLoader, 20000);
+    setInterval(screenUpTime, (60*60*100));
 
     // setInterval(function(){ 
     //     $.get( "/api/v1/get-update", function( data ) {
@@ -84,6 +85,12 @@
             // fadeOut complete. Remove the loading div
             $( "#loadingDiv" ).remove(); //makes page more lightweight 
         });  
+    }
+
+    function screenUpTime(){
+        $.post( "/api/v1/screen-uptime", { site_screen_id: "{{$site_screen_id}}" } , function( data ) {
+            console.log(data);
+        }); 
     }
 
     $(document).ready(function(){
