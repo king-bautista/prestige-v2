@@ -72,7 +72,7 @@
 
                     <div class="tabs m-a mt-42" v-show="current_subscriber_list_count>0">
                         <span class="mr-10 my-auto translateme label-2">You might want to try : </span>
-                        <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.meta_value" @click="onClickSuggestedSubsriber(subscriber.id)">
+                        <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.subscriber_logo" @click="onClickSuggestedSubsriber(subscriber.id)">
                     </div>
 
                     <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
@@ -301,10 +301,9 @@
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
-                    this.tenant_list_temp = response.data.data;
-                    Object.keys(this.tenant_list_temp).forEach(list => {    
-                        this.tenant_details = this.tenant_list_temp[list][0];
-                    });
+                    console.log(response.data.data);
+                    this.tenant_list_temp = response.data.data;   
+                    this.tenant_details = this.tenant_list_temp[0];
                     this.page_title = 'Store Page';
                     this.search_page = false;
                     this.show_tenant = true;

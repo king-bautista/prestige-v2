@@ -45,6 +45,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/tenants/suggestion/list', 'Kiosk\MainController@getSuggestionList')->where('id', '[0-9]+')->name('kiosk.tenants.suggestion');
     Route::post('/search', 'Kiosk\MainController@search')->name('kiosk.search');
     Route::post('/like-count', 'Kiosk\MainController@putLikeCount')->name('kiosk.like-count');
+    Route::post('/feedback', 'Kiosk\MainController@putFeedback')->name('kiosk.feedback');
 
     Route::get('/advertisements/banners', 'Kiosk\MainController@getBanners')->name('kiosk.banners');
     Route::get('/advertisements/fullscreen', 'Kiosk\MainController@getFullscreen')->name('kiosk.fullscreen');
@@ -67,6 +68,7 @@ Route::group(['prefix' => 'v1'], function ()
     */
     Route::get('/get-update', 'Api\GetUpdateController@updateContent')->name('api.get-update');
     Route::post('/save-logs', 'Api\LogsController@storeLogs')->name('api.save-logs');
+    Route::post('/screen-uptime', 'Api\UpTimeController@storeUpTime')->name('api.screen-uptime');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

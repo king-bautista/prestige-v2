@@ -22,13 +22,18 @@ use App\Models\Site;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
 use App\Models\SiteBuilding;
+use App\Models\SiteFeedback;
+use App\Models\SiteScreen;
 
 class MainController extends AppBaseController
 {
     public function index()
     {
         $site = Site::where('is_default', 1)->where('active', 1)->first();
-        return view('kiosk.main',$site);
+        $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;            
+        $site['site_screen_id'] = $site_screen_id;
+
+        return view('kiosk.main', $site);
     }
 
     public function getSite()
@@ -296,13 +301,12 @@ class MainController extends AppBaseController
 
                 $suggest_cat =(array_unique($suggest_cat));
 
-                $suggest_subscribers = DB::table('site_tenants')
+                $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
                 ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->where('site_tenants.is_subscriber',  1)
-                ->where('site_tenant_metas.meta_key',  'subscriber_logo')
                 ->whereIn('brands.category_id',  $suggest_cat)
-                ->select('site_tenants.id','brands.category_id','site_tenant_metas.meta_value')
+                ->select('site_tenants.*')
+                ->distinct()
                 ->get();
                 
                 $counts = $site_tenants->count();
@@ -317,7 +321,6 @@ class MainController extends AppBaseController
                 return $this->response([$site_tenants,$suggest_subscribers], 'Successfully Retreived!', 200, $counts);
             //FIND BY ID and display as Tenant Page
             } else {
-                $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
                 $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('site_tenants.id', $request->id)
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
@@ -332,7 +335,7 @@ class MainController extends AppBaseController
                 ->get();
                 
                 $counts = $site_tenants->count();
-                $site_tenants = array_chunk($site_tenants->toArray(), 12);
+                // $site_tenants = array_chunk($site_tenants->toArray(), 12);
 
                 return $this->response($site_tenants, 'Successfully Retreived!', 200, $counts);
             }
@@ -689,5 +692,20 @@ class MainController extends AppBaseController
     public function putLikeCount(Request $request)
     {
         DB::statement("UPDATE site_tenants SET site_tenants.like_count = $request->like_count  where site_tenants.id = $request->id");
+    }
+
+    public function putFeedback(Request $request)
+    {
+        $site = Site::where('is_default', 1)->where('active', 1)->first();
+        $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;     
+        SiteFeedback::Create(
+            [
+               'site_id' => $site->id,
+               'site_screen_id' => $site_screen_id,
+               'helpful' => $request->helpful,
+               'reason' => $request->reason,
+               'reason_other' => $request->reason_other
+            ]
+        );
     }
 }

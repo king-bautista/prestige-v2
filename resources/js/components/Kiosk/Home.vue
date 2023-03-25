@@ -383,9 +383,9 @@
         },
 
         created() {
-            this.getSite();
-            this.getCategories();
-            this.generateLetters();
+            // this.getSite();
+            // this.getCategories();
+            // this.generateLetters();
         },
 
         methods: {

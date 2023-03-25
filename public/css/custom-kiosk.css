@@ -1028,6 +1028,17 @@ div.alist {
     pointer-events: none;
 }
 
+.disabled-btn {
+    background-color: #a9a9a9 !important;
+    border: 1px solid #a9a9a9 !important;
+    color: #efefef !important;
+    pointer-events: none;
+}
+
+.disabled-response {
+    pointer-events: none;
+}
+
 .tenant_page_banner_img {
     width: 946px;
     height: 260px;
@@ -1108,6 +1119,11 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-top: -4px;
     margin-bottom: 2rem;
     color: #2a2a2a;
+}
+
+.label-0 {
+    color: #2a2a2a;
+    font-size: 1em;
 }
 
 .label-1 {
@@ -1209,6 +1225,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-left: 0px;
 }
 
+.ml-10 {
+    margin-left: 10px;
+}
+
 .ml-36 {
     margin-left: 36px;
 }
@@ -1277,10 +1297,6 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     padding: 9px 0 !important;
 }
 
-.custom-p-0-8 {
-    padding: 0px 8px;
-}
-
 .custom-p-0-18 {
     padding: 0 18px;
 }
@@ -1320,7 +1336,11 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 
 .p-l-490 {
     padding-left: 490px;
-} 
+}
+
+.po-a {
+    position: absolute;
+}
 
 .pta-2 {
     top: 50%;
@@ -1634,6 +1654,57 @@ ul.assist{
     transform: translate(-50%, -50%);
 }
 
-.response-thanks {
-    display: none;
+.feedback-search-modal {
+    display: inherit;
+}
+
+.feedback-search-modal-position {
+    position: relative;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.feedback-section {
+    width: 670px;
+    height: 300px;
+    padding: 40px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 18px;
+}
+
+.c-submit {
+    padding: 8px 50px 8px 50px;
+    border-radius: 10px;
+    border: 1px solid #6051e3;
+    background-color: #6051e3;
+    color: #fff;
+    box-shadow: none;
+    outline: none;
+}
+
+.feedback-flex {
+    display: flex;
+    justify-content: space-evenly;
+    text-align: left;
+}
+
+.feedback-child {
+    min-width: 200px;
+}
+
+.softkeys-feedback {
+    height: 450px;
+}
+
+.response-active-color {
+    background-color: #6051e3;
+    color: #fff !important;
+}
+
+.response-btn {
+    padding: 10px;
+    border-radius: 10px;
+    vertical-align: text-bottom;
 }
