@@ -43,6 +43,7 @@ class SitePointViewModel extends Model
 	public $appends = [
         'brand_name',
         'amenity_name',
+        'icon_path',
     ];
 
     /****************************************
@@ -64,6 +65,13 @@ class SitePointViewModel extends Model
     {
         if($this->point_type) 
             return Amenity::find($this->point_type)->name;
+        return null;
+    }
+
+    public function getIconPathAttribute() 
+    {
+        if($this->icon)
+            return asset($this->icon);
         return null;
     }
 }
