@@ -74,22 +74,17 @@
 						<div class="form-group row">
 							<label for="Status" class="col-sm-3 col-form-label">Change Status</label>
 							<div class="col-sm-9">
-								<multiselect v-model="customer_care.status_id" 
-								track-by="name" 
-								label="name"
-								placeholder="Change Status" 
-								:multiple="false" 
-								:options="transaction_statuses"
-								:searchable="true" 
-								:allow-empty="false">
+								<multiselect v-model="customer_care.status_id" track-by="name" label="name"
+									placeholder="Change Status" :multiple="false" :options="transaction_statuses"
+									:searchable="true" :allow-empty="false">
 								</multiselect>
 							</div>
 						</div>
-						<div class="form-group row">
-							<label for="active" class="col-sm-3 col-form-label">Active</label>
-							<div class="col-sm-9">
-								<div class="form-check form-switch form-switch-md mb-3">
-									<input type="checkbox" class="custom-control-input form-check-input" id="active"
+						<div class="form-group row" v-show="edit_record">
+							<label for="Active" class="col-sm-4 col-form-label">Active</label>
+							<div class="col-sm-8">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="active"
 										v-model="customer_care.active">
 									<label class="custom-control-label" for="active"></label>
 								</div>
@@ -227,7 +222,7 @@ export default {
 		getStatuses: function (id) {
 			//axios.get('/admin/content-management/transaction-statuses')
 			axios.get('/portal/upload-content/transaction-statuses')
-				.then(response => this.transaction_statuses = response.data.data);
+			.then(response => this.transaction_statuses = response.data.data);
 		},
 
 		AddNewCustomerCare: function () {
@@ -248,7 +243,7 @@ export default {
 
 		storeCustomerCare: function () {
 			var status_id = this.customer_care.status_id.id;
-			let formData = new FormData(); 
+			let formData = new FormData();
 			formData.append("first_name", this.customer_care.first_name);
 			formData.append("last_name", this.customer_care.last_name);
 			formData.append("ticket_subject", this.customer_care.ticket_subject);
@@ -265,9 +260,7 @@ export default {
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-					this.data_list = true;
-					this.data_form = false;
-
+					$('#customer-care-form').modal('hide');
 				});
 		},
 
@@ -288,6 +281,7 @@ export default {
 					this.edit_record = true;
 					this.data_list = false;
 					this.data_form = true;
+					$('#customer-care-form').modal('show');
 				});
 		},
 
@@ -309,8 +303,7 @@ export default {
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-					this.data_list = true;
-					this.data_form = false;
+					$('#customer-care-form').modal('hide');
 
 				})
 		},

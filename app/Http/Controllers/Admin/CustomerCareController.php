@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Portal;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
@@ -10,8 +10,9 @@ use Illuminate\Http\Request;
 //use App\Http\Requests\CreateCustomerCareRequest;
 
 use App\Models\CustomerCare;
+use App\Models\User;
 use App\Models\ViewModels\CustomerCareViewModel;
-use App\Models\ViewModels\UserViewModel;
+use App\Models\ViewModels\AdminViewModel;
 
 class CustomerCareController extends AppBaseController implements CustomerCareControllerInterface
 {
@@ -20,13 +21,13 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     ************************************************/
     public function __construct()
     {
-        $this->module_id = 68; 
-        $this->module_name = 'Create Ad';
+        $this->module_id = 71; 
+        $this->module_name = 'Customer Care';
     }
 
     public function index()
     {
-        return view('portal.customer_care');
+        return view('admin.customer_care');
     }
    
     public function list(Request $request)
@@ -71,10 +72,9 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     {   
         try
     	{ 
-            $user = UserViewModel::find(Auth::guard('portal')->user()->id); print_r($user->id);
-            
             $data = [
-                'user_id' => $user->id,
+                
+                'user_id' => $request->user_id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
@@ -111,6 +111,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $customer_care->touch();
         
             $data = [
+                'user_id' => $request->user_id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
@@ -141,6 +142,23 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $customer_care = CustomerCare::find($id);
             $customer_care->delete();
             return $this->response($customer_care, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getUsers()
+    { 
+        try
+    	{
+            $users = User::get(); 
+            return $this->response($users, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
         {

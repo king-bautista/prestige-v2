@@ -60,6 +60,7 @@ Vue.component('admin-dashboard_top_key_words', require('./components/Admin/Dashb
 Vue.component('admin-dashboard_highest_usage', require('./components/Admin/DashboardHighestUsage.vue').default);
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 Vue.component('admin-faqs', require('./components/Admin/FAQs.vue').default);
+Vue.component('admin-customer-care', require('./components/Admin/CustomerCare.vue').default);
 
 /**
  * PORTAL PART

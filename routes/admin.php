@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
     Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
     
+    
     /*
     |--------------------------------------------------------------------------
     | Roles Routes
@@ -321,7 +322,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     | Genre Routes
     |--------------------------------------------------------------------------
-    */
+    *
     Route::get('/admin/cinema/genres', 'Admin\GenresController@index')->name('admin.genres');
     Route::get('/admin/cinema/genre/list', 'Admin\GenresController@list')->name('admin.genre.list');
     Route::post('/admin/cinema/genre/store', 'Admin\GenresController@store')->name('admin.genre.store');
@@ -401,5 +402,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/faq/update', 'Admin\FAQController@update')->name('admin.faq.update');
     Route::get('/admin/faq/delete/{id}', 'Admin\FAQController@delete')->where('id', '[0-9]+')->name('admin.faq.delete');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Customer Care Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/customer-cares', 'Admin\CustomerCareController@index')->name('admin.customer-care');
+    Route::get('/admin/customer-care/list', 'Admin\CustomerCareController@list')->name('admin.customer-care.list');
+    Route::post('/admin/customer-care/store', 'Admin\CustomerCareController@store')->name('admin.customer-care.store');
+    Route::get('/admin/customer-care/{id}', 'Admin\CustomerCareController@details')->where('id', '[0-9]+')->name('admin.customer-care.details');
+    Route::post('/admin/customer-care/update', 'Admin\CustomerCareController@update')->name('admin.customer-care.update');
+    Route::get('/admin/customer-care/delete/{id}', 'Admin\CustomerCareController@delete')->where('id', '[0-9]+')->name('admin.customer-care.delete');
+    Route::get('/admin/customer-care/users', 'Admin\CustomerCareController@getUsers')->where('id', '[0-9]+')->name('admin.customer-care.users');
+    
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
