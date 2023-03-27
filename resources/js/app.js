@@ -62,6 +62,7 @@ Vue.component('admin-dashboard_top_key_words', require('./components/Admin/Dashb
 Vue.component('admin-dashboard_highest_usage', require('./components/Admin/DashboardHighestUsage.vue').default);
 Vue.component('admin-dashboard_is_helpful', require('./components/Admin/DashboardIsHelpful.vue').default);
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
+Vue.component('admin-faqs', require('./components/Admin/FAQs.vue').default);
 
 /**
  * PORTAL PART
@@ -96,6 +97,8 @@ Vue.component('portal-manage-maps', require('./components/Portal/ManageMaps.vue'
 
 Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
 Vue.component('portal-customer-care', require('./components/Portal/PortalCustomerCare.vue').default);
+Vue.component('portal-faqs', require('./components/Portal/FAQs.vue').default);
+
 //Vue.component('portal-test', require('./components/Portal/Test.vue').default);
 
 

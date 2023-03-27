@@ -394,6 +394,17 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/client/users/update', 'Admin\ClientUserController@update')->name('admin.client.user.update');
     Route::get('/admin/client/users/delete/{id}', 'Admin\ClientUserController@delete')->where('id', '[0-9]+')->name('admin.client.user.delete');
 
+    /*
+    |--------------------------------------------------------------------------
+    | FAQ's Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/faqs', 'Admin\FAQController@index')->name('admin.faqs');
+    Route::get('/admin/faq/list', 'Admin\FAQController@list')->name('admin.faq.list');
+    Route::post('/admin/faq/store', 'Admin\FAQController@store')->name('admin.faq.store');
+    Route::get('/admin/faq/{id}', 'Admin\FAQController@details')->where('id', '[0-9]+')->name('admin.faq.details');
+    Route::post('/admin/faq/update', 'Admin\FAQController@update')->name('admin.faq.update');
+    Route::get('/admin/faq/delete/{id}', 'Admin\FAQController@delete')->where('id', '[0-9]+')->name('admin.faq.delete');
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

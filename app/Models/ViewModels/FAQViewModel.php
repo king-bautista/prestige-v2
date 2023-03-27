@@ -1,31 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CustomerCare extends Model
+class FAQViewModel extends Model
 {
     use SoftDeletes;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'ticket_id',
-        'user_id',
-        'first_name',
-        'last_name',
-        'ticket_subject',
-        'ticket_description',
-        'status_id',
-        'assigned_to_id',
-        'assigned_to_alias',
-        'active',
-    ];
 
     /**
      * The attributes that should be cast.
@@ -43,7 +25,16 @@ class CustomerCare extends Model
      *
      * @var string
     */
-    protected $table = 'customer_care';
+    protected $table = 'faqs';
 
-    
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    public $appends = [
+        
+    ]; 
 }

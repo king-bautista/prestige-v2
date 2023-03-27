@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 // use App\Models\Brand;
 // use App\Models\Company;
 // use App\Models\Category;
-// use App\Models\TransactionStatus;
+ use App\Models\TransactionStatus;
 
 class CustomerCareViewModel extends Model
 {
@@ -40,132 +40,46 @@ class CustomerCareViewModel extends Model
     protected $primaryKey = 'id';
 
     public $appends = [
-        // 'material_image_path',
-        // 'company_name',
-        // 'company_details',
-        // 'brand_name',
-        // 'brand_details',
-        // 'category_id',
-        // 'category_name',
-        // 'parent_category_id',
-        // 'parent_category_name',
-        // 'transaction_status',
-    ]; 
+        'advertisement_details',
+        'status_details',
+        'transaction_status'
+    ];
 
-    public function getCompany()
+    public function getAdvertisementDetails()
     {   
-        $company = Company::find($this->company_id);
-        if($company)
-            return $company;
-        return null;
-    }
-
-    public function getBrand()
-    {   
-        $brand = Brand::find($this->brand_id);
-        if($brand)
-            return $brand;
-        return null;
+        return AdvertisementViewModel::find($this->advertisement_id);
     }
 
     public function getTransactionStatus()
-    {   
-        $transaction_status = TransactionStatus::find($this->status_id);
-        if($transaction_status)
-            return $transaction_status;
-        return null;
-    }
-
-    public function getCategory()
-    {   
-        $brand = Brand::find($this->brand_id);
-        if(!$brand)
-            return null;
-
-        $category = Category::find($brand->category_id);
-        if($category)
-            return $category;
-        return null;
-    }
-
-    public function getParentCategory()
-    {   
-        $category = $this->getCategory();
-        if(!$category)
-            return null;
-
-        $parent_category = Category::find($category->parent_id);
-        if($parent_category)
-            return $parent_category;
-        return null;
+    {
+        return TransactionStatus::find($this->status_id);
     }
 
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    public function getMaterialImagePathAttribute()
+
+    public function getAdvertisementDetailsAttribute() 
     {
-        if($this->file_path)
-            return asset($this->file_path);
-        return asset('/images/no-image-available.png');
+        $ad_details = $this->getAdvertisementDetails();
+        if($ad_details)
+            return $ad_details;
+        return null;
+    }
+
+    public function getTransactionStatusAttribute() 
+    {
+        $ad_details = $this->getAdvertisementDetails();
+        if($ad_details)
+            return $ad_details->transaction_status;
+        return null;
     } 
 
-    public function getCompanyNameAttribute()
+    public function getStatusDetailsAttribute()
     {
-        if($this->getCompany())
-            return $this->getCompany()->name; 
-        return null;
-    }
-
-    public function getCompanyDetailsAttribute()
-    {
-        return $this->getCompany(); 
-    }
-
-    public function getBrandNameAttribute()
-    {
-        if($this->getBrand())
-            return $this->getBrand()->name; 
-        return null;
-    }
-
-    public function getBrandDetailsAttribute()
-    {
-        return $this->getBrand(); 
-    }
-
-    public function getCategoryIdAttribute()
-    {
-        if($this->getCategory())
-            return $this->getCategory()->id;
-        return null; 
-    }
-
-    public function getCategoryNameAttribute()
-    {
-        if($this->getCategory())
-            return $this->getCategory()->name;
-        return null; 
-    }
-
-    public function getParentCategoryIdAttribute()
-    {
-        if($this->getParentCategory())
-            return $this->getParentCategory()->id;
-        return null; 
-    }
-
-    public function getParentCategoryNameAttribute()
-    {
-        if($this->getParentCategory())
-            return $this->getParentCategory()->name;
-        return null;
-    }
-
-    public function getTransactionStatusAttribute()
-    {
-        if($this->getTransactionStatus())
-            return $this->getTransactionStatus()->name;
+        $status = $this->getTransactionStatus();
+        if($status)
+            return $status;
         return null;
     }
 
