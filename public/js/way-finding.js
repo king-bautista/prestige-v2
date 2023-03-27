@@ -157,7 +157,7 @@ WayFinding.prototype = {
             this.settings.currentmap_id = map_details.id;
         }
 
-        obj.load_points();
+        // obj.load_points();
     },
 
     load_points: function() {

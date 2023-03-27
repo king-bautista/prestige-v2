@@ -5,9 +5,7 @@
                 <div id="page-title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
-                <router-link to="/about-us">
-                    <img :src="site_logo" class="logo-holder">
-                </router-link>
+                <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
         <div class="row col-md-12 mb-3">
@@ -33,13 +31,13 @@
                 <div>
                     <div class="" style="text-align: left;padding-left: 45px;margin-top: 48px;">
                         <span class="translateme">Was this helpful?</span>
-                        <a href="#" class="custom-p-0-8 btn-helpful" style="font-size:1rem;color:#6051e3;">
+                        <a href="#" class="response-btn btn-helpful" style="font-size:1rem;color:#6051e3;" @click="updateFeedback()">
                             <span class="fa fa-thumbs-up"></span>
                         </a> 
-                        <a href="#" class="custom-p-0-8 btn-nothelpful" style="font-size:1rem;color:#6051e3;">
+                        <a href="#" class="response-btn btn-nothelpful" style="font-size:1rem;color:#6051e3;">
                             <span class="fa fa-thumbs-down"></span>
                         </a> 
-                        <span class="response-thanks translateme">Thank you!</span>
+                        <span class="translateme" v-show="feedback_response">Thank you!</span>
                     </div>             
                 </div>
             </div>
@@ -164,7 +162,43 @@
                     <span class="btn-close-modal">X</span>
                 </div>        
                 <div class="softkeys-tenant mt-20" data-target="input[name=tenant-search]" v-show="softkeysTenant"></div>
-                <div class="softkeys-feedback mt-20" data-target="input[name=feedback-search]" v-show="softkeysFeedback"></div>
+            </div>
+        </div>
+
+        <!-- MODAL -->
+        <div class="custom-modal p-l-490 feedback-search-modal" v-show="feedback_modal">
+            <div class="feedback-search-modal-position">                    
+                <div class="text-right text-white custom-w-1140">
+                    <span class="btn-close-modal">X</span>
+                </div>   
+                <div class="feedback-section">
+                    <div class="mb-18"><span class="label-2">How can we improve?</span></div>
+                    <div class="feedback-flex mb-18">
+                        <div class="feedback-child">
+                            <input type="radio" id="option1" value="Incorrect info" v-model="feedback_picked" />
+                            <label class="label-0 ml-10" for="option1">Incorrect info</label>
+                        </div>
+                        <div class="feedback-child">
+                            <input type="radio" id="option2" value="Not what I'm looking for" v-model="feedback_picked" />
+                            <label class="label-0 ml-10" for="option2">Not what I'm looking for</label>
+                        </div>         
+                    </div>
+                    <div class="feedback-flex mb-18">
+                        <div class="feedback-child">
+                            <input type="radio" id="option3" value="Confusing direction" v-model="feedback_picked" />
+                            <label class="label-0 ml-10" for="option3">Confusing direction</label>
+                        </div> 
+                        <div class="feedback-child mb-41">
+                            <input type="radio" id="option4" value="Others" v-model="feedback_picked" />
+                            <label class="label-0 ml-10" for="option4"></label>
+                            <textarea name="feedback" id="feedback-textarea" class="po-a" for="option4" v-bind:class="[disable? 'disabled':'']" v-model="feedback_others"  placeholder="Others"></textarea>
+                        </div>                    
+                    </div>
+                    <div>
+                        <button class="c-submit"  v-bind:class="[submit_disable? 'disabled-btn':'']" @click="updateFeedback()">Submit</button>
+                    </div>
+                </div>     
+                <div class="softkeys-feedback mt-20" data-target="textarea[name=feedback]" v-bind:class="[disable? 'disabled':'']" v-show="softkeysFeedback"></div>
             </div>
         </div>
 
@@ -195,7 +229,14 @@
                 active_map_details: '',
                 guide_button: false,
                 softkeysTenant: false,
-                softkeysFeedback: false,
+                softkeysFeedback: true,
+                feedback_helpful: 'Yes',
+                feedback_picked: '',
+                feedback_others: '',
+                disable: true,
+                feedback_modal: false,
+                submit_disable: true,
+                feedback_response: false
             };
         },
 
@@ -203,6 +244,34 @@
             this.getSite();
             this.getTenants();
             this.getFloors();
+        },
+
+        watch: {
+            feedback_picked(value) {
+                if(value == 'Others') {
+                    this.disable = false
+                    this.submit_disable = true
+                }else{
+                    this.disable = true
+                    this.feedback_others = ''
+                    this.submit_disable = false
+                }
+            },
+            feedback_modal(value) {
+                if(value) {
+                    this.submit_disable = true
+                }else{
+                    this.feedback_picked = ''
+                    this.feedback_others = ''
+                }
+            },
+            feedback_others(value) {
+                if (value.length > 0) {
+                    this.submit_disable = false
+                } else {
+                    this.submit_disable = true
+                }
+            },
         },
 
         methods: {
@@ -253,6 +322,7 @@
 
             find_store: function(value, id) {
                 this.helper.saveLogs(value, 'Map');
+                this.feedback_response = false;
                 $(function() {
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
@@ -263,7 +333,25 @@
                     this.wayfindings.drawline(value.id, value);
                     $('#guide-button').show();
                     $('.map-search-modal').hide();
+                    $('.response-btn').removeClass('disabled-response');
+                    $('.response-btn').removeClass('response-active-color');
                 });
+            },
+
+            updateFeedback: function(id) {
+                var obj = this;
+                let payload = {
+                    helpful: this.feedback_helpful,
+                    reason: this.feedback_picked,
+                    reason_other: this.feedback_others
+                }
+
+                $.post( "/api/v1/feedback", payload ,function(response) {
+                    obj.feedback_modal = false
+                    obj.feedback_response = true
+                });
+
+                $('.response-btn').addClass('disabled-response');
             },
 
             resetPage: function() {
@@ -281,9 +369,13 @@
                 $('#zoomResetButton').addClass('last-border-radius');
                 $('#zoomResetButton').trigger('click');
                 $(".map-search-modal").hide();
+                this.feedback_modal = false;
+                this.feedback_response = false;
                 $('#guide-button .toggle-arrow .arrow').removeClass('down');
                 $('#guide-button .toggle-arrow .arrow').addClass('up');
                 $('#guide-button').hide();
+                $('.response-btn').removeClass('disabled-response');
+                $('.response-btn').removeClass('response-active-color');
                 $(".pinch").show();
             },
 
@@ -331,6 +423,11 @@
                     });
                 })
             },
+
+            callHomeMethod: function(){
+                this.$root.$emit('callAboutParent','map')
+            }
+
         },
 
         mounted() {
@@ -433,29 +530,45 @@
                         $('#guide-button .toggle-arrow .arrow').removeClass('down');
                         $('#guide-button .toggle-arrow .arrow').addClass('up');
                         $('#tenant-details').hide();
-                    }
-                    
+                    }            
     			});
 
                 $(".btn-close-modal").on('click',function(){
                     $(".map-search-modal").hide();
+                    vm.feedback_modal = false;
+                    vm.softkeysTenant = true;
+                    vm.softkeysFeedback = false;
+                    $(".btn-nothelpful").removeClass('response-active-color');
                 });
 
-                // $(".softkeys__btn").on('mousedown',function(){
+                $(".softkeys__btn").on('mousedown',function(){
                 
-                // }).on('mouseup',function(){
-                //     $('.multiselect__input').trigger('keydown');
-                // }).on('touchend',function(){
-                //     $('.multiselect__input').trigger('keydown');
-                // });
-
-                $(".softkeys__btn").on('touchstart',function(){
-                    // console.log(vm.$refs.multiselect._data.search);
+                }).on('mouseup',function(){
                     if (vm.softkeysTenant) {
                         vm.$refs.multiselectTenant._data.search = $("#search-input").val();
                     }else if (vm.softkeysFeedback) {
-                        // vm.$refs.multiselectFloor._data.search = $("#floor-input").val();
-                    }              
+                        vm.feedback_others = $("#feedback-textarea").val();
+                    }  
+                }).on('touchend',function(){
+                    if (vm.softkeysTenant) {
+                        vm.$refs.multiselectTenant._data.search = $("#search-input").val();
+                    }else if (vm.softkeysFeedback) {
+                        vm.feedback_others = $("#feedback-textarea").val();
+                    }  
+                });
+
+                $(".btn-helpful").on('click',function(){
+                    vm.feedback_helpful = 'Yes';
+                    $(this).addClass('response-active-color');
+                    $('.response-btn').addClass('disabled-response');
+                });
+
+                $(".btn-nothelpful").on('click',function(){
+                    vm.feedback_modal = true;
+                    vm.softkeysTenant = false;
+                    vm.softkeysFeedback = true;
+                    vm.feedback_helpful = 'No';
+                    $(this).addClass('response-active-color');
                 });
             });
         },

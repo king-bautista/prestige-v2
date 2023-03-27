@@ -6,9 +6,7 @@
                     <div id="page-title" v-if="page_title != 'Category'">{{ page_title }}</div>
                 </div>
                 <div class="col-md-6 text-right">
-                    <router-link to="/about-us">
-                        <img :src="site_logo" class="logo-holder">
-                    </router-link>
+                    <img :src="site_logo" class="logo-holder" @click="aboutButton('home')">
                 </div>
             </div>
 
@@ -303,6 +301,7 @@
                 </div>
             </div>
         </div>
+        <about-page v-show="aboutIsShown" ref="callAbout"></about-page>
         <search-page v-show="searchIsShown" ref="callSearch"></search-page>
         <map-page v-show="mapIsShown" ref="callMap"></map-page>
         <promos-page v-show="promosIsShown" ref="callPromo"></promos-page>
@@ -330,6 +329,7 @@
 </template>
 <script>
     import { isTemplateElement } from '@babel/types';
+    import about from './About.vue';
     import search from './Search.vue';
     import map from './Map.vue';
     import promos from './Promos.vue';
@@ -338,6 +338,7 @@
 	export default {
         name: "MainCategories",
         components: {
+            'about-page': about,
             'search-page': search,
             'map-page': map,
             'promos-page': promos,
@@ -373,12 +374,14 @@
                 tabs_container: false,
                 isAlphabeticalClicked: false,
                 homeIsShown: true,
+                aboutIsShown: false,
                 searchIsShown: false,
                 mapIsShown: false,
                 promosIsShown: false,
                 cinemaIsShown: false,
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
                 tenantSchedule :[],
+                trigger_from: '',
             };
         },
 
@@ -389,6 +392,16 @@
         },
 
         methods: {
+            aboutButton: function (event) {
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.aboutIsShown = true;
+                this.$refs.callAbout.setPage(event);
+            },
+
             homeButton: function (event) {
                 this.home_category = true;
                 this.child_category = false;
@@ -402,6 +415,7 @@
                 this.mapIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
+                this.aboutIsShown = false;
             },
 
             searchButton: function (event) {
@@ -411,6 +425,7 @@
                 this.mapIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
+                this.aboutIsShown = false;
                 this.$refs.callSearch.resetPage();
                 this.$refs.callPromo.resetPage();
                 this.$refs.callCinema.resetPage();
@@ -423,6 +438,7 @@
                 this.mapIsShown = true;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
+                this.aboutIsShown = false;
                 this.$refs.callMap.resetPage();
             },
 
@@ -433,6 +449,7 @@
                 this.mapIsShown = false;
                 this.promosIsShown = true;
                 this.cinemaIsShown = false;
+                this.aboutIsShown = false;
                 this.$refs.callPromo.resetPage();
             },
 
@@ -443,7 +460,32 @@
                 this.mapIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = true;
+                this.aboutIsShown = false;
                 this.$refs.callCinema.resetPage();
+            },
+
+            returnFromAbout: function (event) {
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.aboutIsShown = false;
+                if (event == 'home') {
+                    this.homeIsShown = true;
+                }
+                if (event == 'search') {
+                    this.searchIsShown = true;
+                }
+                if (event == 'map') {
+                    this.mapIsShown = true;
+                }
+                if (event == 'promo') {
+                    this.promosIsShown = true;
+                }
+                if (event == 'cinema') {
+                    this.cinemaIsShown = true;
+                }
             },
 
             buildSchedule: function (data) {
@@ -809,6 +851,15 @@
             $(function() {
                 obj.$root.$on('MainCategories', () => {
                     obj.homeButton();
+                });
+
+                obj.$root.$on('callAboutParent', (value) => {
+                    obj.aboutButton(value);
+                    obj.trigger_from = value
+                });
+
+                obj.$root.$on('callAboutFrom', (value) => {
+                    obj.returnFromAbout(value);
                 });
 
                 $('.store-tabs-item').on('click', function () {
