@@ -18,6 +18,7 @@ class CreateAmenitiesTable extends Migration
             
             $table->bigIncrements('id');
             $table->string('name');
+            $table->mediumText('icon')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes()->index();

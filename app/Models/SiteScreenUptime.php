@@ -18,6 +18,7 @@ class SiteScreenUptime extends Model
         'opening_hour',
         'closing_hour',
         'hours_up',
+        'percentage_uptime'
     ];
 
     /**

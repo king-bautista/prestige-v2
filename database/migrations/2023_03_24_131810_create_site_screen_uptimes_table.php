@@ -23,6 +23,7 @@ class CreateSiteScreenUptimesTable extends Migration
             $table->time('opening_hour')->default(0);
             $table->time('closing_hour')->default(0);
             $table->integer('hours_up')->default(0);
+            $table->decimal('percentage_uptime', 10, 2);            
             $table->timestamps();
             $table->softDeletes();
 

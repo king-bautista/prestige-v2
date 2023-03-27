@@ -16,6 +16,7 @@ class Amenity extends Model
      */
     protected $fillable = [
         'name',
+        'icon',
         'active',
     ];
 
@@ -43,4 +44,20 @@ class Amenity extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * Append additiona info to the return data
+     *
+     * @var string
+     */
+	public $appends = [
+        'icon_path',
+    ]; 
+
+    public function getIconPathAttribute()
+    {
+        if($this->icon)
+            return asset($this->icon);
+        return asset('/images/no-image-available.png');
+    } 
 }

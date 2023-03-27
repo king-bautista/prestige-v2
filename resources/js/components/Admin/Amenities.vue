@@ -45,6 +45,16 @@
 									<input type="text" class="form-control" v-model="amenity.name" placeholder="Amenities Name" required>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Icon <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-5">
+                                    <input type="file" accept="image/*" ref="icon" @change="IconChange">
+									<footer class="blockquote-footer">image max size is 170 x 170 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+                                    <img v-if="icon" :src="icon" class="img-thumbnail" />
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -78,13 +88,19 @@
                 amenity: {
                     id: '',
                     name: '',
+                    icon: '/images/no-image-available.png',
                     active: false,           
                 },
                 parent_links: [],
+				icon: '',
                 add_record: true,
                 edit_record: false,
             	dataFields: {
             		name: "Name", 
+					icon_path: {
+            			name: "Icon", 
+            			type:"logo", 
+            		},
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -131,16 +147,31 @@
         },
 
         methods: {
+			IconChange: function(e) {
+				const file = e.target.files[0];
+      			this.icon = URL.createObjectURL(file);
+				this.amenity.icon = file;
+			},
+
 			AddNewAmenities: function() {
 				this.add_record = true;
 				this.edit_record = false;
                 this.amenity.name = '';
+				this.amenity.icon = '/images/no-image-available.png';
                 this.amenity.active = false;				
               	$('#amenities-form').modal('show');
             },
 
             storeAmenities: function() {
-                axios.post('/admin/amenity/store', this.amenity)
+				let formData = new FormData();
+				formData.append("name", this.amenity.name);
+				formData.append("icon", this.amenity.icon);
+
+                axios.post('/admin/amenity/store', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -155,6 +186,13 @@
                     this.amenity.id = id;
                     this.amenity.name = amenity.name;
                     this.amenity.active = amenity.active;
+					if(amenity.icon) {
+						this.icon = amenity.icon_path;
+					}
+					else {
+						this.icon = this.amenity.icon;
+					}
+					this.$refs.icon.value = null;
 					this.add_record = false;
 					this.edit_record = true;
                     $('#amenities-form').modal('show');
@@ -162,12 +200,21 @@
             },
 
             updateAmenities: function() {
-                axios.put('/admin/amenity/update', this.amenity)
-                    .then(response => {
-                        toastr.success(response.data.message);
-                        this.$refs.dataTable.fetchData();
-                        $('#amenities-form').modal('hide');
-                    })
+				let formData = new FormData();
+				formData.append("id", this.amenity.id);
+				formData.append("name", this.amenity.name);
+				formData.append("icon", this.amenity.icon);
+
+                axios.post('/admin/amenity/update', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#amenities-form').modal('hide');
+				})
             },
 
         },
