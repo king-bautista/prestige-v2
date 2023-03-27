@@ -5,9 +5,7 @@
                 <div id="page-title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
-                <router-link to="/about-us">
-                    <img :src="site_logo" class="logo-holder">
-                </router-link>
+                <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
         <div>
@@ -299,6 +297,10 @@
                 }
                 $('.first-item').trigger('click');
             },
+
+            callHomeMethod: function(){
+                this.$root.$emit('callAboutParent','cinema')
+            }
         },
 
         mounted() {

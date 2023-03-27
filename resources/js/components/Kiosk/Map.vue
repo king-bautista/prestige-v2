@@ -5,9 +5,7 @@
                 <div id="page-title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
-                <router-link to="/about-us">
-                    <img :src="site_logo" class="logo-holder">
-                </router-link>
+                <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
         <div class="row col-md-12 mb-3">
@@ -425,6 +423,11 @@
                     });
                 })
             },
+
+            callHomeMethod: function(){
+                this.$root.$emit('callAboutParent','map')
+            }
+
         },
 
         mounted() {
@@ -538,21 +541,20 @@
                     $(".btn-nothelpful").removeClass('response-active-color');
                 });
 
-                // $(".softkeys__btn").on('mousedown',function(){
+                $(".softkeys__btn").on('mousedown',function(){
                 
-                // }).on('mouseup',function(){
-                //     $('.multiselect__input').trigger('keydown');
-                // }).on('touchend',function(){
-                //     $('.multiselect__input').trigger('keydown');
-                // });
-
-                $(".softkeys__btn").on('touchstart',function(){
-                    // console.log(vm.$refs.multiselect._data.search);
+                }).on('mouseup',function(){
                     if (vm.softkeysTenant) {
                         vm.$refs.multiselectTenant._data.search = $("#search-input").val();
                     }else if (vm.softkeysFeedback) {
                         vm.feedback_others = $("#feedback-textarea").val();
-                    }              
+                    }  
+                }).on('touchend',function(){
+                    if (vm.softkeysTenant) {
+                        vm.$refs.multiselectTenant._data.search = $("#search-input").val();
+                    }else if (vm.softkeysFeedback) {
+                        vm.feedback_others = $("#feedback-textarea").val();
+                    }  
                 });
 
                 $(".btn-helpful").on('click',function(){

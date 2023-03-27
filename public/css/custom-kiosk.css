@@ -796,6 +796,7 @@ div.mall-details {
     max-width: 930px;
     font-size: 18px;
     padding-right: 25px;
+    margin: 80px 140px 0 0;
     height: 408px;
 }
 
@@ -1197,6 +1198,10 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     margin-top: 42px;
 }
 
+.mt-50 {
+    margin-top: 50px;
+}
+
 .mt-63 {
     margin-top: 63px !important;
 }
@@ -1383,6 +1388,11 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 
 .p-a {
     position: absolute;
+}
+
+.p-a-t-0 {
+    position: absolute;
+    top: 0px;
 }
 
 .z-1 {
@@ -1707,4 +1717,31 @@ ul.assist{
     padding: 10px;
     border-radius: 10px;
     vertical-align: text-bottom;
+}
+
+.socmediconcontainer
+{
+    font-size: 1.3em;
+    margin-top: 15px;
+    color: #000000;
+    margin-left: 70px !important;
+}
+
+div.mall-details::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(191,191,191,0.3);
+    border-radius: 18px;
+    background-color: #FFFFFF;
+}
+
+div.mall-details::-webkit-scrollbar
+{
+    width: 12px;
+}
+
+div.mall-details::-webkit-scrollbar-thumb
+{
+    border-radius: 18px;
+    -webkit-box-shadow: inset 0 0 6px rgba(191,191,191,.3);
+    background-color: #c1c5dd;
 }
