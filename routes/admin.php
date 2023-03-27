@@ -130,7 +130,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/amenity/list', 'Admin\AmenitiesController@list')->name('admin.amenity.list');
     Route::post('/admin/amenity/store', 'Admin\AmenitiesController@store')->name('admin.amenity.store');
     Route::get('/admin/amenity/{id}', 'Admin\AmenitiesController@details')->where('id', '[0-9]+')->name('admin.amenity.details');
-    Route::put('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
+    Route::post('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
     Route::get('/admin/amenity/delete/{id}', 'Admin\AmenitiesController@delete')->where('id', '[0-9]+')->name('admin.amenity.delete');
     
     /*

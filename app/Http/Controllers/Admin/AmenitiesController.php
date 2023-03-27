@@ -70,8 +70,16 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
     	{
+            $icon = $request->file('icon');
+            $icon_path = '';
+            if($icon) {
+                $originalname = $icon->getClientOriginalName();
+                $icon_path = $icon->move('uploads/media/services/', str_replace(' ','-', $originalname)); 
+            }
+            
             $data = [
                 'name' => $request->name,
+                'icon' => str_replace('\\', '/', $icon_path),
                 'active' => 1
             ];
 
@@ -95,9 +103,17 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     	{
             $amenities = Amenity::find($request->id);
 
+            $icon = $request->file('icon');
+            $icon_path = '';
+            if($icon) {
+                $originalname = $icon->getClientOriginalName();
+                $icon_path = $icon->move('uploads/media/services/', str_replace(' ','-', $originalname)); 
+            }  
+
             $data = [
                 'name' => $request->name,
-                'active' => $request->active
+                'icon' => ($icon_path) ? str_replace('\\', '/', $icon_path) : $amenities->icon,
+                'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
             $amenities->update($data);
