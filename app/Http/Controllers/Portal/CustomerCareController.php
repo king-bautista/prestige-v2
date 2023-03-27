@@ -70,17 +70,27 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     public function store(Request $request)
     {   
         try
-    	{
+    	{ 
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id); print_r($user->id);
+            
             $data = [
+                'user_id' => $user->id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
                 'assigned_to_id' => $request->assigned_to_id,
                 'assigned_to_alias' => $request->assigned_to_alias,
+                'status_id' => $request->status_id,
+                'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
             $customer_care = CustomerCare::create($data);
+            $insert_ticket_id = CustomerCare::find($customer_care->id);
+            $insert_ticket_id->touch();
+            $ticket_id = ['ticket_id' => 'tid-'.$customer_care->id];
+            $insert_ticket_id->update($ticket_id); 
+
             return $this->response($customer_care, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
@@ -107,6 +117,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'ticket_description' => $request->ticket_description,
                 'assigned_to_id' => $request->assigned_to_id,
                 'assigned_to_alias' => $request->assigned_to_alias,
+                'status_id' => $request->status_id['id'],
+                'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
             $customer_care->update($data);
@@ -125,7 +137,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     public function delete($id)
     {
         try
-    	{ echo '>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<';
+    	{  echo '>>>>>>>>>'.$id;
             $customer_care = CustomerCare::find($id);
             $customer_care->delete();
             return $this->response($customer_care, 'Successfully Deleted!', 200);
@@ -139,27 +151,4 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             ], 422);
         }
     }
-
-    // public function getAllType(Request $request)
-    // {
-    //     try
-    //     {
-    //         $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-    //         $advertisements = CustomerCareViewModel::when(request('search'), function($query){
-    //             return $query->where('name', 'LIKE', '%' . request('search') . '%');
-    //         })
-    //         ->latest()
-    //         ->paginate(request('perPage'));
-    //         return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
-    //     }
-    //     catch (\Exception $e)
-    //     {
-    //         return response([
-    //             'message' => $e->getMessage(),
-    //             'status' => false,
-    //             'status_code' => 422,
-    //         ], 422);
-    //     }
-    // }
-
 }
