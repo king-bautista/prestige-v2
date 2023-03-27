@@ -133,26 +133,9 @@ class LogsViewModel extends Model
 
     public function getMainCategoryNameAttribute() 
     {
-        $main_category = null;
-        $category = Category::find($this->parent_category_id);
+        $category = Category::find($this->main_category_id);
         if($category)
-            $main_category = Category::find($category->parent_id);
-
-        if($category && $main_category)
-            return $main_category['name'];
-        
-        if($category && !$main_category)
-            return $category['name'];
-        
-        // $supplemental_category = Category::find($this->parent_category_id)->first();
-        // $main_supplemental_category = Category::where('supplemental_category_id', $supplemental_category->parent_category_id)->first();
-
-        // if($supplemental_category && $main_supplemental_category)
-        //     return $main_supplemental_category['name'];
-
-        // if($supplemental_category && !$main_supplemental_category)
-        //     return $supplemental_category['name'];            
-            
+            return $category['name'];      
         return null;
     }
 

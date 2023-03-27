@@ -21,6 +21,7 @@ class SiteScreen extends Model
         'site_point_id',
         'screen_type',
         'orientation',
+        'product_application',
         'physical_size_diagonal',
         'physical_size_width',
         'physical_size_height',
@@ -59,4 +60,17 @@ class SiteScreen extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveExclusiveScreen($request)
+    {
+        ExclusiveScreen::updateOrCreate(
+            [
+               'site_screen_id' => $this->id,
+            ],
+            [
+               'company_id' => $request->company,
+               'brand_id' => $request->brand
+            ],
+        );
+    }
 }

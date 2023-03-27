@@ -55,9 +55,9 @@ class AuthController extends AppBaseController implements AuthControllerInterfac
         try
         {   
             $portal_user = User::where('email', '=', $request->email)->where('active', true)->first();
-            
+           
             if ($portal_user && Hash::check($portal_user->salt.env("PEPPER_HASH").$request->password, $portal_user->password)) {
-                Auth::guard('web')->login($portal_user);
+                Auth::guard('portal')->login($portal_user);
                 return redirect()->intended(url('/portal'));
             }
 
@@ -71,7 +71,7 @@ class AuthController extends AppBaseController implements AuthControllerInterfac
 
     public function portalLogout(Request $request)
     {
-        if(Auth::guard('web')->check()) // this means that the portal was logged in.
+        if(Auth::guard('portal')->check()) // this means that the portal was logged in.
         {
             Auth::guard('web')->logout();
             $request->session()->invalidate();

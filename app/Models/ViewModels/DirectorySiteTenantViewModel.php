@@ -51,6 +51,7 @@ class DirectorySiteTenantViewModel extends Model
         'category_name',
         'parent_category_id',
         'parent_category_name',
+        'main_category_id',
         'site_name',
         'building_name',
         'floor_name',
@@ -160,6 +161,20 @@ class DirectorySiteTenantViewModel extends Model
     {
         if($this->getParentCategory())
             return $this->getParentCategory()->name;
+        return null;
+    }
+
+    public function getMainCategoryIdAttribute() 
+    {
+        $parent_category = $this->getParentCategory();
+        $parent_category_id = null;
+
+        if($parent_category && !isset($parent_category['supplemental_category_id']))
+            return $parent_category['id'];
+
+        if(isset($parent_category['supplemental_category_id']))
+            return Category::find($parent_category['supplemental_category_id'])->id;
+
         return null;
     }
 

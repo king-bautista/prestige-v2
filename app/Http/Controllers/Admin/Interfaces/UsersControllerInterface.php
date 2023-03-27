@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Interfaces;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegistrationRequest;
+use App\Http\Requests\EditRegistrationeRequest;
 
 interface UsersControllerInterface
 {
@@ -174,7 +175,7 @@ interface UsersControllerInterface
      *     )
      * )
      */
-    public function update(Request $request);
+    public function update(EditRegistrationeRequest $request);
 
     /**
      * @OA\Get(

@@ -41,12 +41,12 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         );
-
+       
         view()->composer(
-            'layout.portal.left-nav', 
+            'layout.portal.header-nav', 
             function ($view) {
-                if(Auth::user()) {
-                    $user = UserViewModel::find(Auth::user()->id);
+                if(Auth::guard('portal')->check()) {
+                    $user = UserViewModel::find(Auth::guard('portal')->user()->id); 
                     $view->with('user', $user);
                 }else {
                     $view->with('user', null);
@@ -55,10 +55,10 @@ class AppServiceProvider extends ServiceProvider
         );
 
         view()->composer(
-            'portal.testdashboard', 
+            'layout.portal.company-profile', 
             function ($view) {
-                if(Auth::user()) {
-                    $user = UserViewModel::find(Auth::user()->id);
+                if(Auth::guard('portal')->check()) {
+                    $user = UserViewModel::find(Auth::guard('portal')->user()->id); 
                     $view->with('user', $user);
                 }else {
                     $view->with('user', null);

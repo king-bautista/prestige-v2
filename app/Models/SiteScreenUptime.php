@@ -13,6 +13,11 @@ class SiteScreenUptime extends Model
      */
     protected $fillable = [
         'site_screen_id',
+        'up_time_date',
+        'total_hours',
+        'opening_hour',
+        'closing_hour',
+        'hours_up',
     ];
 
     /**
@@ -31,7 +36,7 @@ class SiteScreenUptime extends Model
      *
      * @var string
     */
-    protected $table = 'site_screen_uptime';
+    protected $table = 'site_screen_uptimes';
 
     /**
      * The primary key associated with the table.

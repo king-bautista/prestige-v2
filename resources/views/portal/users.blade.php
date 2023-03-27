@@ -1,25 +1,22 @@
 @extends('layout.portal.master')
+@section('Page-Title')
+<h4>Manage Account</h4>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
+  <li class="breadcrumb-item active">Manage Account</li>
+</ol>
+@endsection
 @section('content')
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Users Management</h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-          <li class="breadcrumb-item active">Users Management</li>
-        </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-
 <!-- Main content -->
-<portal-users></portal-users>
+<div class="row">
+  <div class="col-md-2">
+    @include('layout.portal.company-profile')
+  </div>
+  <div class="col-md-10">
+    <portal-users></portal-users>
+  </div>
+</div>
+
 <!-- /.content -->
 @stop
 

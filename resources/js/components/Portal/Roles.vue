@@ -1,30 +1,28 @@
 <template>
 	<div>
-        <!-- Main content -->
-	    <section class="content">
-	      <div class="container-fluid">
-	        <div class="row">
-	          <div class="col-md-12">
-	          	<div class="card">
-	    			<div class="card-body">
-			          	<Table 
-                        :dataFields="dataFields"
-                        :dataUrl="dataUrl"
-                        :actionButtons="actionButtons"
+	    <div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h4><i class="nav-icon fas fa-user-tag"></i>&nbsp;&nbsp;Roles</h4>
+					</div>
+					<div class="card-body">
+						<Table 
+						:dataFields="dataFields"
+						:dataUrl="dataUrl"
+						:actionButtons="actionButtons"
 						:otherButtons="otherButtons"
-                        :primaryKey="primaryKey"
+						:primaryKey="primaryKey"
 						v-on:addNewRole="addNewRole"
 						v-on:editButton="editRole"
-                        ref="dataTable">
-			          	</Table>
-		          	</div>
-		        </div>
-	          </div>
-	        </div>
-	        <!-- /.row -->
-	      </div><!-- /.container-fluid -->
-	    </section>
-	    <!-- /.content -->
+						ref="dataTable">
+						</Table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- /.row -->
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="role-form" tabindex="-1" aria-labelledby="role-form" aria-hidden="true">
@@ -33,25 +31,24 @@
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Role</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Role</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+						
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="firstName" class="col-sm-4 col-form-label">Role Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="role.name" placeholder="Role Name">
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row mb-4">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <textarea class="form-control" v-model="role.description" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
-							<div class="form-group row" v-show="edit_record">
+							<div class="form-group row mb-4" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
@@ -115,6 +112,8 @@
                     isActive: false,
 					permissions: [],
                 },
+				data_list: true,
+				data_form: false,
                 add_record: true,
                 edit_record: false,
             	dataFields: {

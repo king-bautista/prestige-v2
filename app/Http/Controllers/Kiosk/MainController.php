@@ -22,8 +22,8 @@ use App\Models\Site;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
 use App\Models\SiteBuilding;
-use App\Models\SiteFeedback;
 use App\Models\SiteScreen;
+use App\Models\SiteFeedback;
 
 class MainController extends AppBaseController
 {
@@ -54,19 +54,19 @@ class MainController extends AppBaseController
 
     public function getCategories()
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $categories = DirectoryCategoryViewModel::getMainCategory($site->id);            
             return $this->response($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Categories to display!',
-                'status_code' => 200,
-            ], 200);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Categories to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }
     }
 
     // public function getTenantsAlphabetical($category_id)

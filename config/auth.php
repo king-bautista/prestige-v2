@@ -46,6 +46,11 @@ return [
             'provider' => 'admins',
         ],
 
+        'portal' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
         // 'admins' => [
         //     'driver' => 'sanctum',
         //     'provider' => 'admins',
@@ -80,6 +85,11 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
+        'portal' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -111,6 +121,13 @@ return [
 
         'admin' => [
             'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'portal' => [
+            'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

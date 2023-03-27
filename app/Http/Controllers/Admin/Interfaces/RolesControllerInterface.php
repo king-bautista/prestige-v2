@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Interfaces;
 use Illuminate\Http\Request;
+use App\Http\Requests\RoleRequest;
 
 interface RolesControllerInterface
 {
@@ -82,7 +83,7 @@ interface RolesControllerInterface
      *     )
      * )
      */
-    public function store(Request $request);
+    public function store(RoleRequest $request);
 
     /**
      * @OA\Put(
@@ -124,7 +125,7 @@ interface RolesControllerInterface
      *     )
      * )
      */
-    public function update(Request $request);
+    public function update(RoleRequest $request);
 
     /**
      * @OA\Get(

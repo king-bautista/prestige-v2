@@ -19,6 +19,7 @@ class Log extends Model
         'site_screen_id',
         'category_id',
         'parent_category_id',
+        'main_category_id',
         'brand_id',
         'company_id',
         'site_tenant_id',

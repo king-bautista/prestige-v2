@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Interfaces;
 use Illuminate\Http\Request;
+use App\Http\Requests\ModuleRequest;
 
 interface ModulesControllerInterface
 {
@@ -96,7 +97,7 @@ interface ModulesControllerInterface
      *     )
      * )
      */
-    public function store(Request $request);
+    public function store(ModuleRequest $request);
 
     /**
      * @OA\Put(
@@ -152,7 +153,7 @@ interface ModulesControllerInterface
      *     )
      * )
      */
-    public function update(Request $request);
+    public function update(ModuleRequest $request);
 
     /**
      * @OA\Get(

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ScreensControllerInterface;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\ScreenRequest;
 
 use App\Models\SiteScreen;
 use App\Models\ViewModels\AdminViewModel;
@@ -34,12 +36,20 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
+            $filters = json_decode($request->filters);
+            $site_ids = []; 
+            if($filters)
+                $site_ids = $filters->site_ids;
+
             $site_screens = SiteScreenViewModel::when(request('search'), function($query){
                 return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->when(count($site_ids) > 0, function($query) use ($site_ids){
+                return $query->whereIn('site_screens.site_id', $site_ids);
             })
             ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
             ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
@@ -75,7 +85,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function store(Request $request)
+    public function store(ScreenRequest $request)
     {
         try
     	{
@@ -92,6 +102,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'name' => $request->name,
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
+                'product_application' => $request->product_application,
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
@@ -106,6 +117,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen = SiteScreen::create($data);
+            $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Created!', 200);
         }
@@ -119,7 +131,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function update(Request $request)
+    public function update(ScreenRequest $request)
     {
         try
     	{
@@ -136,6 +148,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'site_building_level_id' => $request->site_building_level_id,
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
+                'product_application' => $request->product_application,
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
@@ -149,6 +162,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen->update($data);
+            $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Modified!', 200);
         }

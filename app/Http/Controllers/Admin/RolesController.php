@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\RolesControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\RoleRequest;
 
 use App\Models\Role;
 use App\Models\ViewModels\ModuleViewModel;
@@ -69,13 +70,14 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
     }
 
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         try
     	{
             $data = [
                 'name' => $request->name,
                 'description' => $request->description,
+                'type' => $request->type,
                 'active' => 1
             ];
 
@@ -93,7 +95,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
     }
 
-    public function update(Request $request)
+    public function update(RoleRequest $request)
     {
         try
     	{
@@ -102,6 +104,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
             $data = [
                 'name' => $request->name,
                 'description' => $request->description,
+                'type' => $request->type,
                 'active' => $request->isActive
             ];
 
@@ -138,11 +141,11 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
     }
 
-    public function getModules()
+    public function getModules(Request $request)
     {
         try
-    	{
-            $modules = ModuleViewModel::whereNull('parent_id')->get();
+    	{            
+            $modules = ModuleViewModel::whereNull('parent_id')->where('role', $request->type)->get();
             return $this->response($modules, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
@@ -155,11 +158,28 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
     }
 
-    public function getAll()
+    public function getAdmin()
     {
         try
     	{
-            $roles = Role::get();
+            $roles = Role::where('type', 'Admin')->get();
+            return $this->response($roles, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getPortal()
+    {
+        try
+    	{
+            $roles = Role::where('type', 'Portal')->get();
             return $this->response($roles, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 

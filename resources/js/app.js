@@ -51,6 +51,52 @@ Vue.component('admin-reports_tenant_search', require('./components/Admin/ReportT
 Vue.component('admin-report_top_keywords', require('./components/Admin/ReportTopKeywords.vue').default);
 Vue.component('admin-report_merchant_usage', require('./components/Admin/ReportMerchantUsage.vue').default);
 Vue.component('admin-report_monthly_usage', require('./components/Admin/ReportMonthlyUsage.vue').default);
+Vue.component('admin-report_yearly_usage', require('./components/Admin/ReportYearlyUsage.vue').default);
+Vue.component('admin-report_is_helpful', require('./components/Admin/ReportIsHelpful.vue').default);
+
+Vue.component('admin-dashboard_population', require('./components/Admin/DashboardMerchantPopulation.vue').default);
+Vue.component('admin-dashboard_tenant_search', require('./components/Admin/DashboardTopTenantSearch.vue').default);
+Vue.component('admin-dashboard_monthly_usage', require('./components/Admin/DashboardMonthlyUsage.vue').default);
+Vue.component('admin-dashboard_merchant_usage', require('./components/Admin/DashboardMerchantUsage.vue').default);
+Vue.component('admin-dashboard_top_key_words', require('./components/Admin/DashboardTopKeyWords.vue').default);
+Vue.component('admin-dashboard_highest_usage', require('./components/Admin/DashboardHighestUsage.vue').default);
+Vue.component('admin-dashboard_is_helpful', require('./components/Admin/DashboardIsHelpful.vue').default);
+Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
+
+/**
+ * PORTAL PART
+ */
+Vue.component('portal-dashboard', require('./components/Portal/Dashboard.vue').default);
+Vue.component('portal-users', require('./components/Portal/Users.vue').default);
+Vue.component('portal-profile', require('./components/Portal/Profile.vue').default);
+Vue.component('portal-brands', require('./components/Portal/Brands.vue').default);
+Vue.component('portal-user-sites', require('./components/Portal/UserSites.vue').default);
+// Vue.component('portal-roles', require('./components/Portal/Roles.vue').default);
+Vue.component('portal-products', require('./components/Portal/PortalProducts.vue').default);
+Vue.component('portal-building-tenants', require('./components/Portal/PortalTenants.vue').default);
+Vue.component('portal-content', require('./components/Portal/Content.vue').default);
+Vue.component('portal-advertisements', require('./components/Portal/PortalAdvertisements.vue').default);
+Vue.component('portal-under-construction', require('./components/Portal/UnderConstruction.vue').default);
+
+Vue.component('portal-dashboard_population', require('./components/Portal/DashboardMerchantPopulation.vue').default);
+Vue.component('portal-dashboard_tenant_search', require('./components/Portal/DashboardTopTenantSearch.vue').default);
+Vue.component('portal-dashboard_monthly_usage', require('./components/Portal/DashboardMonthlyUsage.vue').default);
+Vue.component('portal-dashboard_merchant_usage', require('./components/Portal/DashboardMerchantUsage.vue').default);
+Vue.component('portal-dashboard_top_key_words', require('./components/Portal/DashboardTopKeyWords.vue').default);
+Vue.component('portal-dashboard_highest_usage', require('./components/Portal/DashboardHighestUsage.vue').default);
+Vue.component('portal-dashboard_is_helpful', require('./components/Portal/DashboardIsHelpful.vue').default);
+
+Vue.component('portal-sites', require('./components/Portal/Sites.vue').default);
+Vue.component('portal-buildings', require('./components/Portal/Building.vue').default);
+Vue.component('portal-building-floors', require('./components/Portal/Floors.vue').default);
+Vue.component('portal-amenities', require('./components/Portal/Amenities.vue').default);
+Vue.component('portal-building-tenants', require('./components/Portal/Tenants.vue').default);
+Vue.component('portal-building-screens', require('./components/Portal/Screens.vue').default);
+Vue.component('portal-manage-maps', require('./components/Portal/ManageMaps.vue').default);
+
+Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
+Vue.component('portal-customer-care', require('./components/Portal/PortalCustomerCare.vue').default);
+//Vue.component('portal-test', require('./components/Portal/Test.vue').default);
 
 
 /**
@@ -65,6 +111,8 @@ Vue.component('promos', require('./components/Kiosk/Promos.vue').default);
 Vue.component('cinema', require('./components/Kiosk/Cinema.vue').default);
 Vue.component('about', require('./components/Kiosk/About.vue').default);
 Vue.component('wayfinding', require('./components/Kiosk/Map.vue').default);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

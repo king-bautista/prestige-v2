@@ -48,11 +48,12 @@ class RoleViewModel extends Model
     public function getModules()
     {
         $role_id = $this->id;
+        $role_type = $this->type;
 
         return Module::select('modules.*', 'permissions.role_id', 'permissions.module_id', 'permissions.can_view', 'permissions.can_add', 'permissions.can_edit', 'permissions.can_delete')
-        ->leftJoin('permissions', function($join) use ($role_id) {
+        ->join('permissions', function($join) use ($role_id, $role_type) {
             $join->on('modules.id', '=', 'permissions.module_id');
-            $join->where('permissions.role_id','=', $role_id);
+            $join->where('permissions.role_id','=', $role_id)->where('modules.role', $role_type);
         });
     }
 

@@ -151,9 +151,9 @@ class SiteTenantViewModel extends Model
     public function getSubscriberLogoAttribute() 
     {
         $subscriber_logo = $this->getTenantDetails()->where('meta_key', 'subscriber_logo')->first();
-        if($subscriber_logo)
+        if(isset($subscriber_logo->meta_value))
             return asset($subscriber_logo->meta_value);
-        return asset('/images/no-image-available.png');
+        return null;
     }
 
     public function getOperationalHoursAttribute() 

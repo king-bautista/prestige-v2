@@ -19,22 +19,19 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, $guard =null)
     {
-        // $guards = empty($guards) ? [null] : $guards;
+        $guards = empty($guards) ? [null] : $guards;
 
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         return redirect(RouteServiceProvider::HOME);
-        //     }
-        // }
+        foreach ($guards as $guard) {
+            
+            if ($guard == "admin" && Auth::guard($guard)->check() && $request->getRequestUri() != "/admin/logout") {
+                return redirect('/admin');
+            }
 
-        if ($guard == "admin" && Auth::guard($guard)->check() && $request->getRequestUri() != "/admin/logout") {
-            return redirect('/admin');
+            if ($guard == "portal" && Auth::guard($guard)->check() && $request->getRequestUri() != "/portal/logout") {
+                return redirect('/portal');
+            }
+
         }
-
-        // guard login for client, partners and subscriber here
-        // if (Auth::guard($guard)->check() && $request->getRequestUri() != "/logout") {
-        //     return redirect('/');
-        // }
 
         return $next($request);
     }
