@@ -19,6 +19,7 @@ class SiteFeedback extends Model
         'site_screen_id',
         'helpful',
         'reason',
+        'reason_other'
     ];
 
     /**
@@ -46,3 +47,4 @@ class SiteFeedback extends Model
      */
     protected $primaryKey = 'id';
 }
+
