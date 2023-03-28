@@ -36,7 +36,6 @@ class FAQController extends AppBaseController implements FAQControllerInterface
             $faqs = FAQViewModel::when(request('search'), function($query){
                 
                 return $query->where('faqs.question', 'LIKE', '%' . request('search') . '%');
-                return $query->where('faqs..answer', 'LIKE', '%' . request('search') . '%');
             })
             ->latest()
             ->paginate(request('perPage')); //echo '<pre>'; print_r($faqs); echo '</pre>';

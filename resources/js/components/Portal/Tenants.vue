@@ -480,7 +480,7 @@
                     this.tenant.brand_id = tenant.brand_details;
                     this.tenant.site_id = tenant.site_id;
                     this.tenant.site_building_id = tenant.site_building_id;
-
+					alert(tenant.site_building_id);
                     this.getBuildings(tenant.site_id);
                     this.getFloorLevel(tenant.site_building_id);
 
@@ -495,7 +495,7 @@
 					this.tenant.twitter = (tenant.tenant_details.twitter != 'undefined') ? tenant.tenant_details.twitter : '';
 					this.tenant.instagram = (tenant.tenant_details.instagram != 'undefined') ? tenant.tenant_details.instagram : '';
 					this.tenant.website = (tenant.tenant_details.website != 'undefined') ? tenant.tenant_details.website : '';
-
+					
 					if(tenant.tenant_details.length == 0 || tenant.tenant_details.schedules === 'undefined') {
 						this.tenant.operational_hours = [];
 						this.addOperationalHours();
