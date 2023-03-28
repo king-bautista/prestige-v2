@@ -70,8 +70,8 @@ class SitePointViewModel extends Model
 
     public function getIconPathAttribute() 
     {
-        if($this->icon)
-            return asset($this->icon);
+        if($this->point_type)
+            return asset(Amenity::find($this->point_type)->icon);
         return null;
     }
 }
