@@ -382,6 +382,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/reports/is-helpful/response', 'Admin\ReportsController@getResponseNo')->name('admin.reports.is-helpful.response');
     Route::get('/admin/reports/is-helpful/other-response', 'Admin\ReportsController@getOtherResponse')->name('admin.reports.is-helpful.other-response');
     Route::get('/admin/reports/is-helpful/download-csv', 'Admin\ReportsController@downloadCsvIsHelpful')->name('admin.reports.is-helpful.download-csv');
+    Route::get('/admin/reports/screen-uptime', 'Admin\ReportsController@screenUptime')->name('admin.reports.screen-uptime');
+
+    Route::get('/admin/reports/uptime-history', 'Admin\ReportsController@uptimeHistory')->name('admin.reports.uptime-history');
+    Route::get('/admin/reports/uptime-history/list', 'Admin\ReportsController@getUptimeHistory')->name('admin.reports.uptime-history-list');
+    Route::get('/admin/reports/uptime-history/download-csv', 'Admin\ReportsController@downloadCsvUptimeHistory')->name('admin.reports.uptime-history.download-csv');
 
     /*
     |--------------------------------------------------------------------------
