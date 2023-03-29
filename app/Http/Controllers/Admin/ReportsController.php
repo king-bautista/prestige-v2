@@ -840,7 +840,10 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 return $query->where('site_screens.site_id', $site_id);
             })
             ->select('site_screen_uptimes.*', 'site_screens.name')
-            ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id' )->get();
+            ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id' )
+            ->latest()
+            ->get();
+            
             return $this->response($screens_uptime, 'Successfully Retreived!', 200);             
         }
         catch (\Exception $e)
@@ -869,6 +872,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             })
             ->select('site_screen_uptimes.*', 'site_screens.name')
             ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id' )
+            ->latest()
             ->get();
 
             $directory = 'public/export/reports/';
