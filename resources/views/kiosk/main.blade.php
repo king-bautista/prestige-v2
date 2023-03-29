@@ -69,6 +69,7 @@
     });
 
     setTimeout(removeLoader, 20000);
+    setInterval(screenUpTime, (60*60*100));
 
     // setInterval(function(){ 
     //     $.get( "/api/v1/get-update", function( data ) {
@@ -86,23 +87,11 @@
         });  
     }
 
-    // $(document).on('click',function(){
-    //     $("#screensaverwidget").height('0').width('0');
-    //     if(screensaver_handle) {
-	// 		clearTimeout(screensaver_handle);	
-	// 		screensaver_handle = null;
-	// 	}
-
-    //     screensaver_handle = setTimeout(() => {
-    //         $("#screensaverwidget").height('100%').width('100%');
-    //         $.get( "/api/v1/get-update", function( data ) {
-    //             if(data.data.length > 0) {
-    //                 location.reload();
-    //             }
-    //         });
-	// 	}, 5000);
-    //     // }, 2000 * 60 * 2);
-    // });
+    function screenUpTime(){
+        $.post( "/api/v1/screen-uptime", { site_screen_id: "{{$site_screen_id}}" } , function( data ) {
+            console.log(data);
+        }); 
+    }
 
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover({

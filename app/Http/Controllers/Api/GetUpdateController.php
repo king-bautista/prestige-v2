@@ -39,6 +39,7 @@ use App\Models\Log;
 use App\Models\Advertisement;
 use App\Models\ContentManagement;
 use App\Models\ContentScreen;
+use App\Models\SiteFeedback;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {
@@ -894,4 +895,27 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             }
         }
     }
+
+    public function updateSiteFeedback($last_updated_at)
+    {
+        $feedbacks = SiteFeedback::on('mysql')->where('updated_at', '>=',$last_updated_at)->get();
+        if($feedbacks) {
+            foreach($feedbacks as $feedback) {
+                $data = SiteFeedback::on('mysql_server')->updateOrCreate(
+                    [
+                        'id' => $feedback->id
+                    ],
+                    [
+                        'site_id' => $feedback->site_id,
+                        'site_screen_id' => $feedback->site_screen_id,
+                        'helpful' => $feedback->helpful,
+                        'reason' => $feedback->reason,
+                        'reason_other' => $feedback->reason_other,
+                        'deleted_at' => $feedback->deleted_at
+                    ]
+                );
+            }
+        }
+    }
+
 }

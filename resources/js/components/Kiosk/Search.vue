@@ -5,9 +5,7 @@
                 <div id="page-title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
-                <router-link to="/about-us">
-                    <img :src="site_logo" class="logo-holder">
-                </router-link>
+                <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
         <div v-show="search_page">
@@ -72,7 +70,7 @@
 
                     <div class="tabs m-a mt-42" v-show="current_subscriber_list_count>0">
                         <span class="mr-10 my-auto translateme label-2">You might want to try : </span>
-                        <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.meta_value" @click="onClickSuggestedSubsriber(subscriber.id)">
+                        <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.subscriber_logo" @click="onClickSuggestedSubsriber(subscriber.id)">
                     </div>
 
                     <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
@@ -204,7 +202,7 @@
             </div>
         </div>
 
-        <img :src="back_button" style="z-index:999;position:absolute;top:780px;right:15px; cursor:pointer;" @click="goBack">
+        <img class="back-button" :src="back_button" @click="goBack">
     </div>
 </template>
 <script> 
@@ -298,14 +296,12 @@
             },
 
             onClickSuggestedSubsriber: function(id) {
-                // this.search.key_words = $('#code').val();
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
-                    this.tenant_list_temp = response.data.data;
-                    Object.keys(this.tenant_list_temp).forEach(list => {    
-                        this.tenant_details = this.tenant_list_temp[list][0];
-                    });
+                    console.log(response.data.data);
+                    this.tenant_list_temp = response.data.data;   
+                    this.tenant_details = this.tenant_list_temp[0];
                     this.page_title = 'Store Page';
                     this.search_page = false;
                     this.show_tenant = true;
@@ -535,6 +531,10 @@
                 this.search_results = false;
                 this.page_title = 'Search';
             },
+
+            callHomeMethod: function(){
+                this.$root.$emit('callAboutParent','search')
+            }
 
         },
 

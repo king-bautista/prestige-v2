@@ -5,9 +5,7 @@
                 <div id="page-title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
-                <router-link to="/about-us">
-                    <img :src="site_logo" class="logo-holder">
-                </router-link>
+                <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
         <div v-show="promo_page">
@@ -315,10 +313,8 @@
             showTenant: function(tenant) {
                 this.page_title = 'Store Page';
                 this.tenant_details = tenant;
-                // this.alphabetical = false;
                 this.show_tenant = true;
                 this.promo_page = false;
-                // this.tabs_container = false;
                 this.buildSchedule(this.tenant_details);
             },
 
@@ -334,6 +330,10 @@
                     $(".home-button").trigger('click');
                 }
             },
+
+            callHomeMethod: function(){
+                this.$root.$emit('callAboutParent','promo')
+            }
 
         },
 

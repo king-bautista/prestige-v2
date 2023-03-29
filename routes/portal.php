@@ -271,6 +271,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/reports/yearly-usage', 'Portal\ReportsController@yearlyUsage')->name('portal.reports.yearly-usage');
     Route::get('/portal/reports/yearly-usage/list', 'Portal\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.list');
     Route::get('/portal/reports/yearly-usage/download-csv', 'Portal\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.download-csv');
+    Route::get('/portal/reports/is-helpful/list', 'Admin\ReportsController@getIsHelpful')->name('portal.reports.is-helpful.list');
 
     /*
     |--------------------------------------------------------------------------

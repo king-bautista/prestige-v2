@@ -52,12 +52,17 @@ Vue.component('admin-report_top_keywords', require('./components/Admin/ReportTop
 Vue.component('admin-report_merchant_usage', require('./components/Admin/ReportMerchantUsage.vue').default);
 Vue.component('admin-report_monthly_usage', require('./components/Admin/ReportMonthlyUsage.vue').default);
 Vue.component('admin-report_yearly_usage', require('./components/Admin/ReportYearlyUsage.vue').default);
+Vue.component('admin-report_is_helpful', require('./components/Admin/ReportIsHelpful.vue').default);
+Vue.component('admin-report_uptime_history', require('./components/Admin/ReportUptimeHistory.vue').default);
+Vue.component('admin-sceen_uptime', require('./components/Admin/DashboardScreenUptime.vue').default);
+
 Vue.component('admin-dashboard_population', require('./components/Admin/DashboardMerchantPopulation.vue').default);
 Vue.component('admin-dashboard_tenant_search', require('./components/Admin/DashboardTopTenantSearch.vue').default);
 Vue.component('admin-dashboard_monthly_usage', require('./components/Admin/DashboardMonthlyUsage.vue').default);
 Vue.component('admin-dashboard_merchant_usage', require('./components/Admin/DashboardMerchantUsage.vue').default);
 Vue.component('admin-dashboard_top_key_words', require('./components/Admin/DashboardTopKeyWords.vue').default);
 Vue.component('admin-dashboard_highest_usage', require('./components/Admin/DashboardHighestUsage.vue').default);
+Vue.component('admin-dashboard_is_helpful', require('./components/Admin/DashboardIsHelpful.vue').default);
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 Vue.component('admin-faqs', require('./components/Admin/FAQs.vue').default);
 Vue.component('admin-customer-care', require('./components/Admin/CustomerCare.vue').default);
@@ -83,6 +88,7 @@ Vue.component('portal-dashboard_monthly_usage', require('./components/Portal/Das
 Vue.component('portal-dashboard_merchant_usage', require('./components/Portal/DashboardMerchantUsage.vue').default);
 Vue.component('portal-dashboard_top_key_words', require('./components/Portal/DashboardTopKeyWords.vue').default);
 Vue.component('portal-dashboard_highest_usage', require('./components/Portal/DashboardHighestUsage.vue').default);
+Vue.component('portal-dashboard_is_helpful', require('./components/Portal/DashboardIsHelpful.vue').default);
 
 Vue.component('portal-sites', require('./components/Portal/Sites.vue').default);
 Vue.component('portal-buildings', require('./components/Portal/Building.vue').default);

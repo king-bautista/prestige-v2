@@ -8,11 +8,14 @@
 @endsection
 @section('content')
 <div class="row">
-  <div class="col-lg-6">
+  <div class="col-lg-3">
+    <portal-dashboard_is_helpful></portal-dashboard_is_helpful>
+  </div>
+  <div class="col-lg-4">
     <portal-dashboard_population></portal-dashboard_population>
   </div>
   <!-- /.col-md-6 -->
-  <div class="col-lg-6">
+  <div class="col-lg-5">
     <portal-dashboard_monthly_usage></portal-dashboard_monthly_usage>
   </div>
   <!-- /.col-md-6 -->

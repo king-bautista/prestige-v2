@@ -9,10 +9,14 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+use App\Models\SiteFeedback;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\LogsViewModel;
 use App\Models\ViewModels\LogsMonthlyUsageViewModel;
+use App\Models\ViewModels\SiteFeedbackViewModel;
+use App\Models\ViewModels\SiteScreenUptimeViewModel;
 use App\Models\Log;
+use App\Models\SiteScreenUptime;
 
 use App\Exports\MerchantPopulationExport;
 use App\Exports\TopTenantExport;
@@ -20,6 +24,8 @@ use App\Exports\TopKeywordsExport;
 use App\Exports\MerchantUsageExport;
 use App\Exports\MonthlyUsageExport;
 use App\Exports\YearlyUsageExport;
+use App\Exports\IsHelpfulExport;
+use App\Exports\UptimeHistoryExport;
 use Storage;
 
 class ReportsController extends AppBaseController implements ReportsControllerInterface
@@ -61,6 +67,16 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     public function yearlyUsage()
     {
         return view('admin.report_yearly_usage');
+    }
+
+    public function isHelpful()
+    {
+        return view('admin.report_is_helpful');
+    }
+
+    public function uptimeHistory()
+    {
+        return view('admin.report_uptime_history');
     }
 
     public function getPercentage($request)
@@ -671,6 +687,199 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $filename = "yearly-usage.csv";
             // Store on default disk
             Excel::store(new YearlyUsageExport($logs), $directory.$filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/'.$filename,
+                'filename' => $filename
+            ];
+            
+            if(Storage::exists($directory.$filename))
+                return $this->response($data, 'Successfully Retreived!', 200); 
+
+            return $this->response(false, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getIsHelpful(Request $request)
+    {
+        try
+        {
+            $total_count = SiteFeedback::get()->count();
+
+            $is_helpful = SiteFeedback::selectRaw('helpful, count(*) as count, ROUND((count(*)/'.$total_count.')*100, 2) as percentage')
+            ->groupBy('helpful')
+            ->orderBy('count', 'DESC')
+            ->get();
+
+            return $this->response($is_helpful, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getResponseNo()
+    {
+        try
+        {
+            $total_count = SiteFeedback::where('helpful', 'No')->get()->count();
+
+            $is_helpful = SiteFeedback::selectRaw('reason, count(*) as count, ROUND((count(*)/'.$total_count.')*100, 2) as percentage')
+            ->where('helpful', 'No')
+            ->groupBy('reason')
+            ->orderBy('count', 'DESC')
+            ->get();
+
+            return $this->response($is_helpful, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getOtherResponse()
+    {
+        try
+        {
+            $is_helpful = SiteFeedback::whereNotNull('reason_other')->get();
+            return $this->response($is_helpful, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvIsHelpful(Request $request)
+    {
+        try
+        {
+            $is_helpful = SiteFeedbackViewModel::get();
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "is_helpful.csv";
+            // Store on default disk
+            Excel::store(new IsHelpfulExport($is_helpful), $directory.$filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/'.$filename,
+                'filename' => $filename
+            ];
+            
+            if(Storage::exists($directory.$filename))
+                return $this->response($data, 'Successfully Retreived!', 200); 
+
+            return $this->response(false, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function screenUptime(Request $request)
+    {
+        try
+        {
+            $screens_uptime = SiteScreenUptimeViewModel::get();
+            return $this->response($screens_uptime, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getUptimeHistory(Request $request)
+    {
+        try
+        {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+
+            $screens_uptime = SiteScreenUptime::when($site_id, function($query) use ($site_id){
+                return $query->where('site_screens.site_id', $site_id);
+            })
+            ->select('site_screen_uptimes.*', 'site_screens.name')
+            ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id' )->get();
+            return $this->response($screens_uptime, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvUptimeHistory(Request $request)
+    {
+        try
+        {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+
+            $screens_uptime = SiteScreenUptime::when($site_id, function($query) use ($site_id){
+                return $query->where('site_screens.site_id', $site_id);
+            })
+            ->select('site_screen_uptimes.*', 'site_screens.name')
+            ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id' )
+            ->get();
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "uptime-history.csv";
+            // Store on default disk
+            Excel::store(new UptimeHistoryExport($screens_uptime), $directory.$filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/'.$filename,

@@ -131,7 +131,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/amenity/list', 'Admin\AmenitiesController@list')->name('admin.amenity.list');
     Route::post('/admin/amenity/store', 'Admin\AmenitiesController@store')->name('admin.amenity.store');
     Route::get('/admin/amenity/{id}', 'Admin\AmenitiesController@details')->where('id', '[0-9]+')->name('admin.amenity.details');
-    Route::put('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
+    Route::post('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
     Route::get('/admin/amenity/delete/{id}', 'Admin\AmenitiesController@delete')->where('id', '[0-9]+')->name('admin.amenity.delete');
     
     /*
@@ -377,6 +377,16 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/reports/yearly-usage', 'Admin\ReportsController@yearlyUsage')->name('admin.reports.yearly-usage');
     Route::get('/admin/reports/yearly-usage/list', 'Admin\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.list');
     Route::get('/admin/reports/yearly-usage/download-csv', 'Admin\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('admin.reports.yearly-usage.download-csv');
+    Route::get('/admin/reports/is-helpful', 'Admin\ReportsController@isHelpful')->name('admin.reports.is-helpful');
+    Route::get('/admin/reports/is-helpful/list', 'Admin\ReportsController@getIsHelpful')->name('admin.reports.is-helpful.list');
+    Route::get('/admin/reports/is-helpful/response', 'Admin\ReportsController@getResponseNo')->name('admin.reports.is-helpful.response');
+    Route::get('/admin/reports/is-helpful/other-response', 'Admin\ReportsController@getOtherResponse')->name('admin.reports.is-helpful.other-response');
+    Route::get('/admin/reports/is-helpful/download-csv', 'Admin\ReportsController@downloadCsvIsHelpful')->name('admin.reports.is-helpful.download-csv');
+    Route::get('/admin/reports/screen-uptime', 'Admin\ReportsController@screenUptime')->name('admin.reports.screen-uptime');
+
+    Route::get('/admin/reports/uptime-history', 'Admin\ReportsController@uptimeHistory')->name('admin.reports.uptime-history');
+    Route::get('/admin/reports/uptime-history/list', 'Admin\ReportsController@getUptimeHistory')->name('admin.reports.uptime-history-list');
+    Route::get('/admin/reports/uptime-history/download-csv', 'Admin\ReportsController@downloadCsvUptimeHistory')->name('admin.reports.uptime-history.download-csv');
 
     /*
     |--------------------------------------------------------------------------
