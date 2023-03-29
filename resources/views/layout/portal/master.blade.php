@@ -23,7 +23,6 @@
         <link rel="stylesheet" href="{{ URL::to('css/custom-portal.css') }}">
         <!-- Toastr --> 
         <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}">
-        <!-- Leaflet -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     </head>
 
@@ -73,7 +72,7 @@
         <script src="{{ URL::to('client/assets/libs/morris.js/morris.min.js') }}"></script>
         <script src="{{ URL::to('client/assets/libs/raphael/raphael.min.js') }}"></script>
         <script src="{{ URL::to('client/assets/js/pages/dashboard.init.js') }}"></script>
-        <!-- Leaflet -->
+
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script>
             var map = L.map('map').setView([14.5825416, 121.0612886], 17);
