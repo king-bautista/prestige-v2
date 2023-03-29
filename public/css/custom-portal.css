@@ -229,3 +229,19 @@ margin-left: 10px;
     position: relative;
     overflow-x: hidden;
 }
+
+.screen-holder i{
+    font-size: 2rem;
+}
+
+.screen-holder span{
+    font-size: 0.8rem;    
+}
+
+.online {
+    color: green;
+}
+
+.offline {
+    color: #FE5E80;
+}
