@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 
 use App\Models\ViewModels\LogsViewModel;
 use App\Models\ViewModels\LogsMonthlyUsageViewModel;
+use App\Models\ViewModels\SiteScreenUptimeViewModel;
 use App\Models\Log;
+use App\Models\SiteScreenUptime;
 
 use App\Exports\MerchantPopulationExport;
 use App\Exports\TopTenantExport;
@@ -679,4 +681,22 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             ], 422);
         }
     }
+
+    public function screenUptime(Request $request)
+    {
+        try
+        {
+            $screens_uptime = SiteScreenUptimeViewModel::get();
+            return $this->response($screens_uptime, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
 }

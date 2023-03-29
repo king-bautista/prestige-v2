@@ -26,6 +26,7 @@ use App\Exports\MonthlyUsageExport;
 use App\Exports\YearlyUsageExport;
 use App\Exports\IsHelpfulExport;
 use App\Exports\UptimeHistoryExport;
+use App\Exports\KioskUsageExport;
 use Storage;
 
 class ReportsController extends AppBaseController implements ReportsControllerInterface
@@ -79,6 +80,11 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         return view('admin.report_uptime_history');
     }
 
+    public function kioskUsage()
+    {
+        return view('admin.report_kiosk_usage');
+    }
+
     public function getPercentage($request)
     {
         $site_id = '';
@@ -115,9 +121,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             $percentage = $this->getPercentage($request);
-
             return $this->response($percentage, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -134,8 +138,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $site_id = '';
             $category_totals = [];
 
@@ -193,8 +195,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-            
             $site_id = '';
             $filters = json_decode($request->filters);
             if($filters) 
@@ -227,8 +227,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $site_id = '';
             $category_totals = [];
 
@@ -287,8 +285,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $site_id = '';
             $filters = json_decode($request->filters);
             if($filters) 
@@ -325,8 +321,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $year = '';
             $filters = json_decode($request->filters);
             if($filters) 
@@ -884,6 +878,96 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $filename = "uptime-history.csv";
             // Store on default disk
             Excel::store(new UptimeHistoryExport($screens_uptime), $directory.$filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/'.$filename,
+                'filename' => $filename
+            ];
+            
+            if(Storage::exists($directory.$filename))
+                return $this->response($data, 'Successfully Retreived!', 200); 
+
+            return $this->response(false, 'Successfully Retreived!', 200);             
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getKioskUsage(Request $request)
+    {
+        try
+        {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+
+            $total = Log::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->get()->count();
+            
+            $logs = LogsViewModel::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->selectRaw('logs.*, count(*) as screen_count, ROUND((count(*)/'.$total.'), 2)*100 as total_average')
+            ->groupBy('site_screen_id')
+            ->orderBy('screen_count', 'DESC')
+            ->get();
+
+            return $this->response($logs, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvKioskUsage(Request $request)
+    {
+        try
+        {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if($filters) 
+                $site_id = $filters->site_id;
+            if($request->site_id)
+                $site_id = $request->site_id;
+
+            $total = Log::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->get()->count();
+            
+            $logs = LogsViewModel::when($site_id, function($query) use ($site_id){
+                return $query->where('site_id', $site_id);
+            })
+            ->selectRaw('logs.*, count(*) as screen_count, ROUND((count(*)/'.$total.'), 2)*100 as total_average')
+            ->groupBy('site_screen_id')
+            ->orderBy('screen_count', 'DESC')
+            ->get();
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "kiosk-usage.csv";
+            // Store on default disk
+            Excel::store(new KioskUsageExport($logs), $directory.$filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/'.$filename,
