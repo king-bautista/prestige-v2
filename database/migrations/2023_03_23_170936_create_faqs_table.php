@@ -18,7 +18,7 @@ class CreateFaqsTable extends Migration
             
             $table->bigIncrements('id');
             $table->string('question');
-            $table->string('answer');
+            $table->text('answer');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
