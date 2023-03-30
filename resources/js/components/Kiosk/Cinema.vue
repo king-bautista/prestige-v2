@@ -9,79 +9,84 @@
             </div>
         </div>
         <div>
-            <div class="row mt-77 mb-13">
-                <div class="col-md-12 home-title text-center">
-                    {{ tab_title }}
+            <div v-show="cinema_locator">
+                <div class="row mt-77 mb-13">
+                    <div class="col-md-12 home-title text-center translateme">Cinema Locator</div>
                 </div>
-            </div>
-            <div v-show="cinema_locator" class="row col-md-10 offset-md-1">
-                <div id="myCinemas" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-show="cinema_list.length > 0">
-                    
-                    <!-- Control dots -->
-                    <ul class="carousel-indicators z-1" v-show="curent_cinema_list_count > 0">
-                        <li data-target="#myCinemas" v-for="(cinemas, index) in cinema_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"></li>
-                    </ul>
+                <div class="row col-md-10 offset-md-1">
+                    <div id="myCinemas" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-show="cinema_list.length > 0">
+                        
+                        <!-- Control dots -->
+                        <ul class="carousel-indicators z-1" v-show="curent_cinema_list_count > 0">
+                            <li data-target="#myCinemas" v-for="(cinemas, index) in cinema_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"></li>
+                        </ul>
 
-                    <div class="carousel-inner custom-p-0-65 carousel-mh-605">
-                        <div class="carousel-item custom-p-0-18" v-for="(cinemas, index) in cinema_list" v-bind:class = "(index == 0) ? 'active':''">
-                            <div class="row mb-3">
-                                <div v-for="cinema in cinemas" class="col-12 col-sm-6 text-left mt-3" @click="helper.saveLogs(cinema, 'Cinema');">
-                                    <div class="cinema-store bg-white text-center box-shadowed">
-                                        <div class="image-holder-cinema h-100">
-                                            <img :src="cinema.brand_logo" :alt="cinema.brand_name">
-                                        </div>
-                                        <div class="text-left pta-2 brand-name">
-                                            <div class="shop_name">{{ cinema.brand_name }}</div>
-                                            <div style="font-size: 0.7em;color:#2a2a2a">{{ cinema.floor_name }}, {{ cinema.building_name }} </div>
-                                            <div style="font-weight: bold;font-size: 0.7em">
-                                                <span class="translateme text-success" v-if="cinema.active==1">Open</span>
-                                                <span class="translateme text-success" v-if="cinema.active==0">Close</span>
+                        <div class="carousel-inner custom-p-0-65 carousel-mh-605">
+                            <div class="carousel-item custom-p-0-18" v-for="(cinemas, index) in cinema_list" v-bind:class = "(index == 0) ? 'active':''">
+                                <div class="row mb-3">
+                                    <div v-for="cinema in cinemas" class="col-12 col-sm-6 text-left mt-3" @click="helper.saveLogs(cinema, 'Cinema');">
+                                        <div class="cinema-store bg-white text-center box-shadowed">
+                                            <div class="image-holder-cinema h-100">
+                                                <img :src="cinema.brand_logo" :alt="cinema.brand_name">
+                                            </div>
+                                            <div class="text-left pta-2 brand-name">
+                                                <div class="shop_name">{{ cinema.brand_name }}</div>
+                                                <div style="font-size: 0.7em;color:#2a2a2a">{{ cinema.floor_name }}, {{ cinema.building_name }} </div>
+                                                <div style="font-weight: bold;font-size: 0.7em">
+                                                    <span class="translateme text-success" v-if="cinema.active==1">Open</span>
+                                                    <span class="translateme text-success" v-if="cinema.active==0">Close</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>                        
-                    </div>
+                            </div>                        
+                        </div>
 
-                    <button class="carousel-control-prev control-prev-cpc" type="button" data-target="#myCinemas" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </button>
-                    <button class="carousel-control-next control-next-cpc" type="button" data-target="#myCinemas" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </button>
-                </div>
-                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
-            </div>
-            <div v-show="schedules" class="row col-md-10 offset-md-1">
-                <div id="myMovies" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="schedule_list.length > 0">
-                    <!-- Control dots -->
-                    <ul class="carousel-indicators z-1">
-                        <li data-target="#myMovies" v-for="(movies, index) in schedule_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>
-                    </ul>
-                    <div class="carousel-inner custom-w-818-ma carousel-mh-528">
-                        <div class="carousel-item" v-for="(movies, index) in schedule_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == curent_schedule_list_count? 'last-item':'']">
-                            <div class="row mb-3 justify-content-center">
-                                <div v-for="movie in movies" class="col-12 col-sm-4 text-center mt-3">
-                                    <img class="schedule-image" v-bind:src="'/uploads/media/cinema/'+movie.film_id+'.jpg'" :data-filmid="movie.film_id">
-                                    <div class="text-center click-text" style="font-size:1.3em;color:#000000;padding: 12px 0px;" :data-filmid="movie.film_id">{{ movie.title }}</div>
-                                    <div class="text-center seeDetails"><button class="btn btn-sm btn-cinema-details" :data-filmid="movie.film_id" @click="showModal(movie)">See Details</button></div>
-                                </div>
-                            </div>
-                        </div>                        
+                        <button class="carousel-control-prev control-prev-cpc" type="button" data-target="#myCinemas" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </button>
+                        <button class="carousel-control-next control-next-cpc" type="button" data-target="#myCinemas" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </button>
                     </div>
-                    <button class="carousel-control-prev control-prev-cps" type="button" data-target="#myMovies" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </button>
-                    <button class="carousel-control-next control-next-cps" type="button" data-target="#myMovies" data-slide="next" v-show="curent_schedule_list_count>=1">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </button>
+                    <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
                 </div>
-                <img v-show="no_record_found_movies" src="images/stay-tuned-movie.png" class="no-movies-found">
+            </div>
+            <div v-show="schedules">
+                <div class="row mt-77 mb-13">
+                    <div class="col-md-12 home-title text-center translateme">Now Showing</div>
+                </div>
+                <div class="row col-md-10 offset-md-1">
+                    <div id="myMovies" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="schedule_list.length > 0">
+                        <!-- Control dots -->
+                        <ul class="carousel-indicators z-1">
+                            <li data-target="#myMovies" v-for="(movies, index) in schedule_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>
+                        </ul>
+                        <div class="carousel-inner custom-w-818-ma carousel-mh-528">
+                            <div class="carousel-item" v-for="(movies, index) in schedule_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == curent_schedule_list_count? 'last-item':'']">
+                                <div class="row mb-3 justify-content-center">
+                                    <div v-for="movie in movies" class="col-12 col-sm-4 text-center mt-3">
+                                        <img class="schedule-image" v-bind:src="'/uploads/media/cinema/'+movie.film_id+'.jpg'" :data-filmid="movie.film_id">
+                                        <div class="text-center click-text" style="font-size:1.3em;color:#000000;padding: 12px 0px;" :data-filmid="movie.film_id">{{ movie.title }}</div>
+                                        <div class="text-center seeDetails"><button class="btn btn-sm btn-cinema-details" :data-filmid="movie.film_id" @click="showModal(movie)">See Details</button></div>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                        <button class="carousel-control-prev control-prev-cps" type="button" data-target="#myMovies" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </button>
+                        <button class="carousel-control-next control-next-cps" type="button" data-target="#myMovies" data-slide="next" v-show="curent_schedule_list_count>=1">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </button>
+                    </div>
+                    <img v-show="no_record_found_movies" src="images/stay-tuned-movie.png" class="no-movies-found">
+                </div>
             </div>
         </div>
         <div class="tabs-container">

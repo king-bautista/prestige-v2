@@ -56,6 +56,8 @@ class LogsViewModel extends Model
         'search_count',
         'banner_count',
         'total_count',
+        'screen_name',
+        'screen_location',
     ];
 
     static $current_site_id = null;
@@ -118,19 +120,6 @@ class LogsViewModel extends Model
         return null;
     }
 
-    // public function getMainCategoryIdAttribute() 
-    // {
-    //     $main_category = Category::find($this->parent_category_id);
-    //     if($main_category)
-    //         return $main_category['id'];
-        
-    //     $main_category = Category::where('supplemental_category_id', $this->parent_category_id)->first();
-    //     if($main_category)
-    //         return $main_category['id'];
-
-    //     return null;
-    // }
-
     public function getMainCategoryNameAttribute() 
     {
         $category = Category::find($this->main_category_id);
@@ -170,5 +159,22 @@ class LogsViewModel extends Model
     public function getTotalCountAttribute() 
     {
         return $this->tenant_count + $this->search_count + $this->banner_count;
+    }
+
+    public function getScreenNameAttribute() 
+    {
+        $screen = SiteScreenUptimeViewModel::find($this->site_screen_id);
+        if($screen)
+            return $screen->name;
+        return null;
+    }
+
+    public function getScreenLocationAttribute() 
+    {
+        $screen = SiteScreenUptimeViewModel::find($this->site_screen_id);
+        if($screen) {
+            return $screen->building_name.', '.$screen->floor_name.' ('.$screen->site_name.')';
+        }
+        return null;
     }
 }
