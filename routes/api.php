@@ -46,6 +46,8 @@ Route::group(['prefix' => 'v1'], function ()
     Route::post('/search', 'Kiosk\MainController@search')->name('kiosk.search');
     Route::post('/like-count', 'Kiosk\MainController@putLikeCount')->name('kiosk.like-count');
     Route::post('/feedback', 'Kiosk\MainController@putFeedback')->name('kiosk.feedback');
+    Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');
+    Route::get('/translation', 'Kiosk\MainController@getTranslation')->name('kiosk.translation');
 
     Route::get('/advertisements/banners', 'Kiosk\MainController@getBanners')->name('kiosk.banners');
     Route::get('/advertisements/fullscreen', 'Kiosk\MainController@getFullscreen')->name('kiosk.fullscreen');
