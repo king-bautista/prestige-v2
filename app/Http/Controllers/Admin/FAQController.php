@@ -38,7 +38,7 @@ class FAQController extends AppBaseController implements FAQControllerInterface
                 return $query->where('faqs.question', 'LIKE', '%' . request('search') . '%');
             })
             ->latest()
-            ->paginate(request('perPage')); //echo '<pre>'; print_r($faqs); echo '</pre>';
+            ->paginate(request('perPage')); 
             return $this->responsePaginate($faqs, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

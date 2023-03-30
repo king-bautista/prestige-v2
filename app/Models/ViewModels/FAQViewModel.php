@@ -4,6 +4,7 @@ namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class FAQViewModel extends Model
 {
@@ -34,7 +35,30 @@ class FAQViewModel extends Model
      */
     protected $primaryKey = 'id';
 
-    public $appends = [
-        
+     /**
+     * Append additiona info to the return data
+     *
+     * @var string
+     */
+	public $appends = [
+        'shorten_question',
+        'shorten_answer',
     ]; 
+
+    /****************************************
+    *           ATTRIBUTES PARTS            *
+    ****************************************/
+       
+    public function getShortenQuestionAttribute()
+    {
+       
+        return Str::limit($this->question, 50, '...'); 
+    }
+
+    public function getShortenAnswerAttribute()
+    {
+       
+        return Str::limit($this->answer, 150, '...');
+    }
+
 }
