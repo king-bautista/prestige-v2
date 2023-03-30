@@ -74,8 +74,8 @@
 								<label for="firstName" class="col-sm-3 col-form-label">Ticket Description <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" v-model="customer_care.ticket_description"
-										placeholder="Ticket Description" required>
+									<textarea class="form-control" rows="5" v-model="customer_care.ticket_description" placeholder="Ticket Description"></textarea>
+										
 								</div>
 							</div>
 							<div class="form-group row">

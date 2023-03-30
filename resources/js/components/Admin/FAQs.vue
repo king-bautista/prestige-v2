@@ -45,7 +45,7 @@
 							<div class="form-group row">
 								<label for="answer" class="col-sm-4 col-form-label">Answer <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="faqs.answer" placeholder="Answer"></textarea>
+                                    <textarea class="form-control" rows="5" v-model="faqs.answer" placeholder="Answer"></textarea>
 								</div>
 							</div>
 
