@@ -13,15 +13,13 @@
             <!-- MAIN CATEGORY -->
             <div v-show="home_category"> 
                 <div class="row mt-15 mb-55">
-                    <div class="col-md-12 home-title text-center">
-                        Search your favorite stores
-                    </div>
+                    <div class="col-md-12 main-home-title text-center translateme">Search your favorite stores</div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
                             <img :src="category.kiosk_image_primary_path">
-                            <div id="hc-button1" class="hc-button-align">{{ category.label }}</div>
+                            <div id="hc-button1" class="hc-button-align translateme resize">{{ category.label }}</div>
                         </div>
                     </div>
                 </div>
@@ -30,25 +28,19 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="child_category_count< 7" class="row mt-120 mb-41">
-                    <div class="col-md-12 home-title-sub text-center">
-                        {{ current_category.label}}
-                    </div>
+                    <div class="col-md-12 home-title-sub text-center translateme">{{current_category.label}}</div>
                 </div>
                 <div v-else-if="child_category_count< 11" class="row mb-27 mt-18">
-                    <div class="col-md-12 home-title-sub text-center">
-                        {{ current_category.label}}
-                    </div>
+                    <div class="col-md-12 home-title-sub text-center translateme">{{current_category.label}}</div>
                 </div>
                 <div v-else class="row mb-27">
-                    <div class="col-md-12 home-title-sub text-center">
-                        {{ current_category.label}}
-                    </div>
+                    <div class="col-md-12 home-title-sub text-center translateme">{{current_category.label}}</div>
                 </div>
                 <div class="row col-md-6 offset-md-3 mb-3 mw-51p">
                     <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="getTenantsByCategory(subcategory)">			
                         <div class="c-button ml-0">						
                             <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                            <div class="c-button-align c-button-color2 translateme"><p>{{subcategory.label}}</p></div>                        
+                            <div class="c-button-align c-button-color2"><p class="translateme">{{subcategory.label}}</p></div>                        
                         </div>					
                     </div>
                 </div>
@@ -57,9 +49,7 @@
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
                 <div class="row mb-27">
-                    <div class="col-md-12 home-title-sub text-center">
-                        {{ current_category.label}}
-                    </div>
+                    <div class="col-md-12 home-title-sub text-center translateme">{{ current_category.label}}</div>
                 </div>
                 <div class="row col-md-10 offset-md-1 mb-3 w-1152">
                     <div id="alphabeticalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false">
@@ -76,7 +66,7 @@
                                     <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">			
                                         <div class="c-button">						
                                             <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
-                                            <div class="c-button-align c-button-color2 translateme"><p>{{supplemental.label}}</p></div>                        
+                                            <div class="c-button-align c-button-color2"><p class="translateme">{{supplemental.label}}</p></div>                        
                                         </div>					
                                     </div>
                                 </div>
@@ -306,24 +296,38 @@
         <map-page v-show="mapIsShown" ref="callMap"></map-page>
         <promos-page v-show="promosIsShown" ref="callPromo"></promos-page>
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
+        <assitant-page></assitant-page>
         <div class="row">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
-                    <div class="button-text-align">Home</div>
+                    <div class="button-text-align translateme">Home</div>
                 </div>
                 <div class="h-button widget-button search-button logs" data-link='Search' @click="searchButton">
-                    <div class="button-text-align">Search</div>
+                    <div class="button-text-align translateme">Search</div>
                 </div>
                 <div class="h-button widget-button map-button logs" data-link='Map' @click="mapButton">
-                    <div class="button-text-align">Map</div>    
+                    <div class="button-text-align translateme">Map</div>    
                 </div>
                 <div class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
-                    <div class="button-text-align">Promos</div>
+                    <div class="button-text-align translateme resize">Promos</div>
                 </div>
                 <div class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
-                    <div class="button-text-align">Cinema</div>
+                    <div class="button-text-align translateme">Cinema</div>
                 </div>
             </div>
+        </div>
+
+        <div class="multilanguage">
+            <div class="btn-group dropup">
+                <!-- MULTILANGUAGE -->
+                <button type="button" class="rm-box-shadow btn-language btn btn-prestige dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ current_language }}
+                </button>
+                <div class="dropdown-menu">
+                    <a v-for="(language, index) in languages" class="dropdown-item dropdown-item-language" href="#" :data-language="index" @click="changeLanguage(index,language)">{{ index }}</a>	
+                </div>
+            </div>
+            <div style="font-size:0.58em;">LANGUAGE SELECT</div>
         </div>
     </div>
 </template>
@@ -334,15 +338,17 @@
     import map from './Map.vue';
     import promos from './Promos.vue';
     import cinema from './Cinema.vue';
+    import assitant from './Assistant.vue';
 
 	export default {
-        name: "MainCategories",
+        name: "Home",
         components: {
             'about-page': about,
             'search-page': search,
             'map-page': map,
             'promos-page': promos,
-            'cinema-page': cinema
+            'cinema-page': cinema,
+            'assitant-page': assitant
         },
         data() {
             return {
@@ -382,6 +388,12 @@
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
                 tenantSchedule :[],
                 trigger_from: '',
+                current_language: 'ENGLISH',
+                current_language_set: '',
+                languages: {'한국어':'korean','日本人':'japanese','中文':'chinese','FILIPINO':'filipino','ENGLISH':'english'},
+                translations: '',
+                translated: '',
+                translations_by_language: '',
             };
         },
 
@@ -389,6 +401,7 @@
             this.getSite();
             this.getCategories();
             this.generateLetters();
+            this.getTranslation();
         },
 
         methods: {
@@ -677,7 +690,7 @@
                     this.initializeSwipe();
                     this.resetCarousel();
                     this.TitleCasePerWord();
-                });     
+                });       
             },
 
             getTenantsBySupplementals: function(category) {
@@ -842,13 +855,67 @@
                 for (let i = 65; i <= 90; i++) {
                     this.navigation_letters.push(String.fromCharCode(i))
                 }
-            }
+            },
+
+            changeLanguage: function (index,language) {
+                this.current_language = index
+                this.current_language_set = language
+                this.setTranslation(language);
+            },
+
+            getTranslation: function() {
+				axios.get('/api/v1/translation')
+                .then(response => {
+                    this.translations = response.data.data
+                });   
+			},
+
+            setTranslation: function(language) {
+                if (language != 'english') {
+                    this.translations_by_language = this.translations.filter(option => option.language == language);
+                }
+                
+                var vm = this;
+
+                if (vm.translated == '') {
+                    $(".translateme").each(function(){
+                        let english_word = $(this).html().replace(/&amp;/g, '&');
+                        if (vm.translations_by_language.find(option => option.english == english_word) != null) {
+                            vm.translated = vm.translations_by_language.find(option => option.english == english_word);
+                            $(this).html(vm.translated.translated);
+                        }
+                    });
+                } else if (language == 'english') {
+                    $(".translateme").each(function(){
+                        let english_word = $(this).html().replace(/&amp;/g, '&');
+                        if (vm.translations.find(option => option.translated == english_word) != null) {
+                            vm.translated = vm.translations.find(option => option.translated == english_word);
+                            $(this).html(vm.translated.english);
+                        }
+                    });
+                    this.translated = '';
+                } else {
+                    $(".translateme").each(function(){
+                        let english_word = $(this).html().replace(/&amp;/g, '&');
+                        if (vm.translations.find(option => option.translated == english_word) != null) {
+                            vm.translated = vm.translations.find(option => option.translated == english_word);
+                            vm.translated = vm.translations_by_language.find(option => option.english == vm.translated.english);
+                            $(this).html(vm.translated.translated);
+                        }
+                    });
+                }   
+                $(function() {
+                    $('.resize').autoSizr(24);     
+                });    
+			},
+
         },
 
         mounted() {
             var obj = this;
 
             $(function() {
+                // Call Parent Method from Child Component
                 obj.$root.$on('MainCategories', () => {
                     obj.homeButton();
                 });

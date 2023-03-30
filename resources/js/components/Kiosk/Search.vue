@@ -530,6 +530,8 @@
                 this.search_page = true;
                 this.search_results = false;
                 this.page_title = 'Search';
+
+                this.$root.$emit('callAssistantFrom','searchbox');
             },
 
             callHomeMethod: function(){

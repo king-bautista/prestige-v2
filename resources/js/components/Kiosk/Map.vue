@@ -314,6 +314,7 @@
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
                     this.wayfindings.clearEscalator();
+                    this.wayfindings.clearAmenitiesLayer();
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.showmap(value);
@@ -327,6 +328,7 @@
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
                     this.wayfindings.clearEscalator();
+                    this.wayfindings.clearAmenitiesLayer();
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
@@ -360,6 +362,7 @@
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
                     this.wayfindings.clearEscalator();
+                    this.wayfindings.clearAmenitiesLayer();
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.showmap(obj.active_map_details);

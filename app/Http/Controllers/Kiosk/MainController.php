@@ -18,6 +18,8 @@ use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
 use App\Models\ViewModels\DirectoryCategoryViewModel;
 use App\Models\ViewModels\DirectorySiteTenantViewModel;
+use App\Models\ViewModels\AssistantMessageViewModel;
+use App\Models\ViewModels\TranslationViewModel;
 use App\Models\Site;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
@@ -707,5 +709,37 @@ class MainController extends AppBaseController
                'reason_other' => $request->reason_other
             ]
         );
+    }
+
+    public function getAssistantMessage()
+    {
+        $messages = AssistantMessageViewModel::all();
+
+        $collection = collect([]);
+        foreach ($messages as $value) {
+            $collection->push([
+                'location' => $value->location,
+                'content' => $value->content,
+                'content_language' => $value->content_language,
+            ]);
+        }
+        // dd($collection);
+        return $this->response($collection, 'Successfully Retreived!', 200);
+    }
+
+    public function getTranslation()
+    {
+        $translations = TranslationViewModel::all();
+
+        $collection = collect([]);
+        foreach ($translations as $value) {
+            $collection->push([
+                'language' => $value->language,
+                'english' => $value->english,
+                'translated' => $value->translated,
+            ]);
+        }
+        // dd($collection);
+        return $this->response($collection, 'Successfully Retreived!', 200);
     }
 }
