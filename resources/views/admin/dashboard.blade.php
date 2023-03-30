@@ -22,6 +22,11 @@
 <div class="content">
   <div class="container-fluid">
     <div class="row">
+      <div class="col-lg-12">
+        <admin-sceen_uptime></admin-sceen_uptime>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-lg-3">
         <admin-dashboard_is_helpful></admin-dashboard_is_helpful>
       </div>
@@ -35,14 +40,17 @@
       <!-- /.col-md-6 -->
     </div>
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <admin-dashboard_tenant_search></admin-dashboard_tenant_search>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <admin-dashboard_top_key_words></admin-dashboard_top_key_words>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <admin-dashboard_highest_usage></admin-dashboard_highest_usage>
+      </div>
+      <div class="col-lg-6">
+        <admin-dashboard_kiosk_usage></admin-dashboard_kiosk_usage>
       </div>
     </div>
     <div class="row">

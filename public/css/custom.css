@@ -195,3 +195,19 @@
     z-index: 9;
     background-color: #fff;
 }
+
+.screen-holder i{
+    font-size: 2rem;
+}
+
+.screen-holder span{
+    font-size: 0.8rem;    
+}
+
+.online {
+    color: green;
+}
+
+.offline {
+    color: #FE5E80;
+}

@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\CustomerCareControllerInterface;
 
 use Illuminate\Http\Request;
-//use App\Http\Requests\CreateCustomerCareRequest;
+use App\Http\Requests\PortalCustomerCareRequest;
 
 use App\Models\CustomerCare;
+use App\Models\ViewModels\CompanyViewModel;
 use App\Models\ViewModels\CustomerCareViewModel;
 use App\Models\ViewModels\UserViewModel;
 
@@ -25,62 +26,34 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     }
 
     public function index()
-    {
+    { 
         return view('portal.customer_care');
     }
-   
-    public function list(Request $request)
-    {
-        try
-        {
-            $advertisements = CustomerCareViewModel::when(request('search'), function($query){
-                return $query->where('ticket_id', 'LIKE', '%' . request('search') . '%');
-            })
-            ->latest()
-            ->paginate(request('perPage'));
-            return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
 
-    public function details($id)
-    {
-        try
-        {
-            $customer_care = CustomerCareViewModel::find($id);
-            return $this->response($customer_care, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
-    public function store(Request $request)
+    public function store(PortalCustomerCareRequest $request)
     {   
         try
-    	{
+    	{ 
+            $user = UserViewModel::find(Auth::guard('portal')->user()->id); 
+            
             $data = [
+                'user_id' => $user->id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
-                'assigned_to_id' => $request->assigned_to_id,
-                'assigned_to_alias' => $request->assigned_to_alias,
+                'assigned_to_id' => '',
+                'assigned_to_alias' => '',
+                'status_id' => 2,
+                'active' => 1,
             ];
 
             $customer_care = CustomerCare::create($data);
+            $insert_ticket_id = CustomerCare::find($customer_care->id);
+            $insert_ticket_id->touch();
+            $ticket_id = ['ticket_id' => 'tid-'.$customer_care->id];
+            $insert_ticket_id->update($ticket_id); 
+
             return $this->response($customer_care, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
@@ -93,26 +66,14 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
         }
     }
 
-    public function update(Request $request)
-    {
+    public function getCompany()
+    {    
         try
-    	{
-            $customer_care = CustomerCare::find($request->id);
-            $customer_care->touch();
-        
-            $data = [
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'ticket_subject' => $request->ticket_subject,
-                'ticket_description' => $request->ticket_description,
-                'assigned_to_id' => $request->assigned_to_id,
-                'assigned_to_alias' => $request->assigned_to_alias,
-            ];
-
-            $customer_care->update($data);
-            return $this->response($customer_care, 'Successfully Modified!', 200);
+        { 
+            $company = CompanyViewModel::find(Auth::guard('portal')->user()->company_id);
+            return $this->response($company, 'Successfully Retreived!', 200);
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),
@@ -120,46 +81,9 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'status_code' => 422,
             ], 422);
         }
+    
+    
+    
+    
     }
-
-    public function delete($id)
-    {
-        try
-    	{ echo '>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<';
-            $customer_care = CustomerCare::find($id);
-            $customer_care->delete();
-            return $this->response($customer_care, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
-    // public function getAllType(Request $request)
-    // {
-    //     try
-    //     {
-    //         $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-    //         $advertisements = CustomerCareViewModel::when(request('search'), function($query){
-    //             return $query->where('name', 'LIKE', '%' . request('search') . '%');
-    //         })
-    //         ->latest()
-    //         ->paginate(request('perPage'));
-    //         return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
-    //     }
-    //     catch (\Exception $e)
-    //     {
-    //         return response([
-    //             'message' => $e->getMessage(),
-    //             'status' => false,
-    //             'status_code' => 422,
-    //         ], 422);
-    //     }
-    // }
-
 }

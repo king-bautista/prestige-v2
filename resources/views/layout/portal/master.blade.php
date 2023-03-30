@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="{{ URL::to('css/custom-portal.css') }}">
         <!-- Toastr --> 
         <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     </head>
 
     <body data-topbar="dark" data-layout="horizontal">
@@ -42,6 +43,7 @@
                         <!-- end row -->
                     </div> <!-- container-fluid -->
                 </div>
+                
                 <!-- End Page-content -->
             </div>
             <!-- Main Footer -->
@@ -70,6 +72,25 @@
         <script src="{{ URL::to('client/assets/libs/morris.js/morris.min.js') }}"></script>
         <script src="{{ URL::to('client/assets/libs/raphael/raphael.min.js') }}"></script>
         <script src="{{ URL::to('client/assets/js/pages/dashboard.init.js') }}"></script>
+
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script>
+            var map = L.map('map').setView([14.5825416, 121.0612886], 17);
+            
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicHJlc3RpZ2VtamciLCJhIjoiY2tucHM5OWllMDVocjJ3bnVra2dzNDdycCJ9.h7xcUWzoRtN2FDr0qjRjQw', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoicHJlc3RpZ2VtamciLCJhIjoiY2tucHM5OWllMDVocjJ3bnVra2dzNDdycCJ9.h7xcUWzoRtN2FDr0qjRjQw'
+            }).addTo(map);
+            
+            var marker = L.marker([14.5826416, 121.0612886]).addTo(map);
+            var popup = marker.bindPopup('<b>Prestige Interactive - OPC</b>');
+            popup.openPopup();
+        </script>
+    <!-- End of Leaflet -->
         @stack('scripts') <!-- To include script links -->
     </body>
 </html>

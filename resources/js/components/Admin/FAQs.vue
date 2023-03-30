@@ -1,0 +1,211 @@
+<template>
+	<div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-body">
+								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
+									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewFAQs="AddNewFAQs"
+									v-on:editButton="editFAQs" ref="dataTable">
+								</Table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div><!-- /.container-fluid -->
+		</section>
+		<!-- /.content -->
+
+		<!-- Modal Add New / Edit User -->
+		<div class="modal fade" id="faqs-form" data-backdrop="static" tabindex="-1" aria-labelledby="faqs-form"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New
+							FAQs</h5>
+						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o"
+								aria-hidden="true"></i> Edit FAQs</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="card-body">
+							<div class="form-group row">
+								<label for="question" class="col-sm-4 col-form-label">Question <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="faqs.question" placeholder="Question">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="answer" class="col-sm-4 col-form-label">Answer <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <textarea class="form-control" v-model="faqs.answer" placeholder="Answer"></textarea>
+								</div>
+							</div>
+
+							<div class="form-group row" v-show="edit_record">
+								<label for="active" class="col-sm-4 col-form-label">Active</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="active"
+											v-model="faqs.active">
+										<label class="custom-control-label" for="active"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary pull-right" v-show="add_record"
+								@click="storeFAQs">Add New FAQs</button>
+							<button type="button" class="btn btn-primary pull-right" v-show="edit_record"
+								@click="updateFAQs">Save Changes</button>
+						</div>
+						<!-- /.card-body -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Modal Add New User -->
+
+
+
+	</div>
+</template>
+<script>
+import Table from '../Helpers/Table';
+// Import this component
+import Multiselect from 'vue-multiselect';
+
+export default {
+	name: "FAQs",
+	data() {
+		return {
+			helper: new Helpers(),
+			faqs: {
+				id: '',
+				question: '',
+				answer: '',
+				active: true,
+			},
+			add_record: true,
+			edit_record: false,
+			dataFields: {
+				question:"Question",
+				answer: "Answer",
+				active: {
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
+						1: '<span class="badge badge-info">Active</span>'
+					}
+				},
+				updated_at: "Last Updated"
+			},
+			primaryKey: "id",
+			dataUrl: "/admin/faq/list",
+			actionButtons: {
+				edit: {
+					title: 'Edit this FAQs',
+					name: 'Edit',
+					apiUrl: '',
+					routeName: 'faqs.edit',
+					button: '<i class="fas fa-edit"></i> Edit',
+					method: 'edit'
+				},
+				delete: {
+					title: 'Delete this FAQs',
+					name: 'Delete',
+					apiUrl: '/admin/faq/delete',
+					routeName: '',
+					button: '<i class="fas fa-trash-alt"></i> Delete',
+					method: 'delete'
+				},
+			},
+			otherButtons: {
+				addNew: {
+					title: 'New FAQs',
+					v_on: 'AddNewFAQs',
+					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New FAQs',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+			},
+		};
+	},
+
+	methods: {
+
+		AddNewFAQs: function () {
+			this.add_record = true;
+			this.edit_record = false;
+			this.faqs.question = '';
+			this.faqs.answer = '';
+			this.faqs.active = true;
+			$('#faqs-form').modal('show');
+		},
+
+		storeFAQs: function () {
+			let formData = new FormData();
+			formData.append("question", this.faqs.question);
+			formData.append("answer", this.faqs.answer);
+			formData.append("active", this.faqs.active);
+			axios.post('/admin/faq/store', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				},
+			})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#faqs-form').modal('hide');
+				});
+		},
+
+		editFAQs: function (id) {
+			axios.get('/admin/faq/' + id)
+				.then(response => {
+					var faqs = response.data.data;
+					this.faqs.question = faqs.question;
+					this.faqs.answer = faqs.answer;
+					this.faqs.active = faqs.active;
+					this.add_record = false;
+					this.edit_record = true;
+
+					$('#faqs-form').modal('show');
+				});
+		},
+
+		updateFAQs: function () {
+			let formData = new FormData(); a
+			formData.append("id", this.faqs.id);
+			formData.append("question", this.faqs.question);
+			formData.append("answer", this.faqs.answer);
+			formData.append("active", this.faqs.active);
+			axios.post('/admin/faq/update', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				},
+			})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#faqs-form').modal('hide');
+				})
+		},
+
+	},
+
+	components: {
+		Table,
+		Multiselect,
+	}
+};
+</script> 

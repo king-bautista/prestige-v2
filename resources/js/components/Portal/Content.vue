@@ -1,6 +1,4 @@
 <template>
-	
-
 	<div>
         <!-- Main content -->
 	   
@@ -9,7 +7,7 @@
 	          <div class="col-md-12">
 	          	<div class="card">
 					<div class="card-header">
-						<h4><i class="nav-icon fa fa-building"></i>&nbsp;&nbsp;Tenants</h4>
+						<h4><i class="nav-icon fas fa-photo-video"></i>&nbsp;&nbsp;Upload Content</h4>
 						
 					</div>
 	    			<div class="card-body">

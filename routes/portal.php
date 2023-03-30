@@ -272,6 +272,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/reports/yearly-usage/list', 'Portal\ReportsController@getYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.list');
     Route::get('/portal/reports/yearly-usage/download-csv', 'Portal\ReportsController@downloadCsvYearlyUsage')->where('id', '[0-9]+')->name('portal.reports.yearly-usage.download-csv');
     Route::get('/portal/reports/is-helpful/list', 'Admin\ReportsController@getIsHelpful')->name('portal.reports.is-helpful.list');
+    Route::get('/portal/reports/screen-uptime', 'Portal\ReportsController@screenUptime')->name('portal.reports.screen-uptime');
 
     /*
     |--------------------------------------------------------------------------
@@ -281,10 +282,13 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/customer-cares', 'Portal\CustomerCareController@index')->name('portal.customer-care');
     Route::get('/portal/customer-care/list', 'Portal\CustomerCareController@list')->name('portal.customer-care.list');
     Route::post('/portal/customer-care/store', 'Portal\CustomerCareController@store')->name('portal.customer-care.store');
-    Route::get('/portal/customer-care/{id}', 'Portal\CustomerCareController@details')->where('id', '[0-9]+')->name('portal.customer-care.details');
+    Route::get('/portal/customer-care/details', 'Portal\CustomerCareController@details')->where('id', '[0-9]+')->name('portal.customer-care.details');
     Route::post('/portal/customer-care/update', 'Portal\CustomerCareController@update')->name('portal.customer-care.update');
     Route::get('/portal/customer-care/delete/{id}', 'Portal\CustomerCareController@delete')->where('id', '[0-9]+')->name('portal.customer-care.delete');
-    //Route::get('/portal/customer-care/all', 'Portal\CustomerCareController@getAllType')->name('portal.customer-care.all');
+    Route::get('/portal/customer-care/get-company', 'Portal\CustomerCareController@getCompany')->name('portal.customer-care.get-company');
+
+    Route::get('/portal/faqs', 'Portal\FAQsController@index')->name('portal.faqs');
+    Route::get('/portal/faqs/get-all', 'Portal\FAQsController@getAll')->name('portal.faq.get-all');
 
     Route::post('/portal/logout', 'PortalAuth\AuthController@portalLogout')->name('portal.logout');
 });
