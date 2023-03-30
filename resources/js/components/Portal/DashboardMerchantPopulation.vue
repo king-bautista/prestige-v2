@@ -60,34 +60,34 @@
 					$.get( "/portal/reports/merchant-population/list", filter, function( data ) {
 						let labels = [];
 						let data_value = [];
-						let randomBackgroundColor = [];
-						let usedColors = new Set();
+						// let randomBackgroundColor = [];
+						// let usedColors = new Set();
 
-						let dynamicColors = function() {
-							let r = Math.floor(Math.random() * 255);
-							let g = Math.floor(Math.random() * 255);
-							let b = Math.floor(Math.random() * 255);
-							let color = "rgb(" + r + "," + g + "," + b + ")";
+						// let dynamicColors = function() {
+						// 	let r = Math.floor(Math.random() * 255);
+						// 	let g = Math.floor(Math.random() * 255);
+						// 	let b = Math.floor(Math.random() * 255);
+						// 	let color = "rgb(" + r + "," + g + "," + b + ")";
 
-							if (!usedColors.has(color)) {
-								usedColors.add(color);
-								return color;
-							} else {
-								return dynamicColors();
-							}
-						};
+						// 	if (!usedColors.has(color)) {
+						// 		usedColors.add(color);
+						// 		return color;
+						// 	} else {
+						// 		return dynamicColors();
+						// 	}
+						// };
 
 						if(data.data.length > 0) {
                             $.each(data.data, function(key,value) {
                                 labels.push(value.category_parent_name);
                                 data_value.push(value.tenant_count);
-                                randomBackgroundColor.push(dynamicColors());
+                                //randomBackgroundColor.push(dynamicColors());
                             });
                         }
                         else {
                             labels = ['Empty']
                             data_value = [1];
-                            randomBackgroundColor = ['#d2d6de'];
+                            //randomBackgroundColor = ['#d2d6de'];
                         }
                         
 						var donutData = {
@@ -95,7 +95,7 @@
 							datasets: [
 								{
 									data: data_value,
-									backgroundColor : randomBackgroundColor,
+									backgroundColor : ['#FE5E80', '#899AE8', '#353535', '#d6ddea', '#a59fa2'],
 								}
 							]
 						}
