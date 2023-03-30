@@ -97,8 +97,8 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				question:"Question",
-				answer: "Answer",
+				shorten_question:"Question",
+				shorten_answer: "Answer",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -184,7 +184,7 @@ export default {
 		},
 
 		updateFAQs: function () {
-			let formData = new FormData(); a
+			let formData = new FormData(); 
 			formData.append("id", this.faqs.id);
 			formData.append("question", this.faqs.question);
 			formData.append("answer", this.faqs.answer);

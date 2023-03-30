@@ -4,7 +4,7 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
-						<h4><i class="nav-icon fas fa-photo-video"></i>&nbsp;&nbsp;Customer Care</h4>
+						<h4><i class="nav-icon fa fa-phone-square"></i>&nbsp;&nbsp;Customer Care</h4>
 					</div>
 					<div class="card-body">
 						<div class="form-group row">
