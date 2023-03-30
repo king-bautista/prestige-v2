@@ -19,8 +19,9 @@
         <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
     </head>
 
-    <body>   
-    <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>    
+    <body>
+        <!-- LOADING VIDEO --> 
+        <!-- <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>     -->
         <div id="app">
         
             @yield('content')
@@ -35,11 +36,12 @@
         <script src="{{ URL::to('js/zoom.jquery.js') }}"></script>
         <script src="{{ URL::to('js/panzoom.js') }}"></script>
         <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-        <script src="{{ URL::to('assets/js/bootstrap.min.js') }}"></script>
-        <script src="{{ URL::to('assets/js/popper-v2.min.js') }}"></script>	
+        <script src="{{ URL::to('assets/js/popper.min.js') }}"></script>
+        <script src="{{ URL::to('assets/js/bootstrap.min.js') }}"></script>	
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
         <script src="{{ URL::to('js/way-finding.js') }}"></script>
         <script src="{{ URL::to('js/helper.js') }}"></script>
+        <script src="{{ URL::to('js/autoSizr.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>
