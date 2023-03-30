@@ -42,12 +42,12 @@
                     </router-link>
                 </div>
             </div> -->
-            <div id="popover-content" class="hide d-none" style="z-index:1">
+            <!-- <div id="popover-content" class="hide d-none" style="z-index:1">
                 Need help? Touch here.
             </div>
             <div data-toggle="popover" data-container="body" data-placement="left" data-trigger="manual" type="button" data-html="true"  class="assistance_tooltip">
                 <img src="{{ URL::to('assets/images/English/Help.png') }}" id="helpbutton">
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -94,16 +94,16 @@
     }
 
     $(document).ready(function(){
-        $('[data-toggle="popover"]').popover({
-            html: true,
-            content: function() {
-                return $('#popover-content').html();
-            }
-        }).click();
+        // $('[data-toggle="popover"]').popover({
+        //     html: true,
+        //     content: function() {
+        //         return $('#popover-content').html();
+        //     }
+        // }).click();
 
-        $('.assistance_tooltip').on('click',function(){
-            $("#popover-content").html('To search, input your location and your desired destination. Then, click Get Directions');
-        });
+        // $('.assistance_tooltip').on('click',function(){
+        //     $("#popover-content").html('To search, input your location and your desired destination. Then, click Get Directions');
+        // });
 
         $('.h-button').on('click', function(){
             $('.h-button').removeClass('active');

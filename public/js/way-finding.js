@@ -65,6 +65,14 @@ WayFinding.prototype = {
         canvas.style.position = 'absolute';
         document.getElementById(this.settings.mapcontainer).appendChild(canvas);
 
+        //amenities layer
+        var canvas = document.createElement('canvas');
+        canvas.id = 'amenities-layer';
+        canvas.width  = this.settings.width;
+        canvas.height = this.settings.height;
+        canvas.style.position = 'absolute';
+        document.getElementById(this.settings.mapcontainer).appendChild(canvas);
+
         //text layer
         var canvas = document.createElement('canvas');
         canvas.id = 'text-layer';
@@ -183,7 +191,9 @@ WayFinding.prototype = {
 
     create_point: function(tenant) {
         var canvas = document.getElementById('text-layer');
+        var amenities_canvas = document.getElementById('amenities-layer');
         var ctx = canvas.getContext("2d");
+        var amenities_ctx = amenities_canvas.getContext("2d");
         var text = (tenant.point_label) ? tenant.point_label : tenant.brand_name; 
         var font_size = (tenant.text_size > 0) ? (tenant.text_size*16) : 16;
         var coord_x = tenant.point_x;
@@ -194,9 +204,23 @@ WayFinding.prototype = {
         var labels=[];
         var nextId=tenant.id; //no. of id shown
 
+        //Draw Ameneties Icon
+        if (tenant.point_type > 0) {
+            var imageObj = new Image();
+
+            imageObj.onload = function() {
+                amenities_ctx.drawImage(imageObj, coord_x-30, coord_y-30, 60, 60);
+            };
+            
+            //replace with dynamic value from tenant.point_type_icon
+            imageObj.src = '/../images/services/directory4x.png';
+        }
+
         if(text) {
             var label = addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius);
-            drawLabel(label);
+            if (tenant.point_type == 0) {
+                drawLabel(label);
+            }
         }
 
         function addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius) {
@@ -341,7 +365,14 @@ WayFinding.prototype = {
             return(false);
         }
 
-    },    
+    },  
+    
+    clearAmenitiesLayer: function() {
+        var canvas = document.getElementById('amenities-layer');
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0,canvas.width,canvas.height);
+        context.save();
+    },
 
     clearTextlayer: function() {
         var canvas = document.getElementById('text-layer');
