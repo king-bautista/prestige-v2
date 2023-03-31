@@ -428,5 +428,29 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/customer-care/delete/{id}', 'Admin\CustomerCareController@delete')->where('id', '[0-9]+')->name('admin.customer-care.delete');
     Route::get('/admin/customer-care/users', 'Admin\CustomerCareController@getUsers')->where('id', '[0-9]+')->name('admin.customer-care.users');
     
+    /*
+    |--------------------------------------------------------------------------
+    | Assistant Messages Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/assistant-messages', 'Admin\AssistantMessagesController@index')->name('admin.assistant-message');
+    Route::get('/admin/assistant-message/list', 'Admin\AssistantMessagesController@list')->name('admin.assistant-message.list');
+    Route::post('/admin/assistant-message/store', 'Admin\AssistantMessagesController@store')->name('admin.assistant-message.store');
+    Route::get('/admin/assistant-message/{id}', 'Admin\AssistantMessagesController@details')->where('id', '[0-9]+')->name('admin.assistant-message.details');
+    Route::post('/admin/assistant-message/update', 'Admin\AssistantMessagesController@update')->name('admin.assistant-message.update');
+    Route::get('/admin/assistant-message/delete/{id}', 'Admin\AssistantMessagesController@delete')->where('id', '[0-9]+')->name('admin.assistant-message.delete');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Translations Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/translations', 'Admin\TranslationsController@index')->name('admin.translation');
+    Route::get('/admin/translation/list', 'Admin\TranslationsController@list')->name('admin.translation.list');
+    Route::post('/admin/translation/store', 'Admin\TranslationsController@store')->name('admin.translation.store');
+    Route::get('/admin/translation/{id}', 'Admin\TranslationsController@details')->where('id', '[0-9]+')->name('admin.translation.details');
+    Route::post('/admin/translation/update', 'Admin\TranslationsController@update')->name('admin.translation.update');
+    Route::get('/admin/translation/delete/{id}', 'Admin\TranslationsController@delete')->where('id', '[0-9]+')->name('admin.translation.delete');
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

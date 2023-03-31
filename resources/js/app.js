@@ -69,6 +69,8 @@ Vue.component('admin-sceen_uptime', require('./components/Admin/DashboardScreenU
 Vue.component('admin-client_user', require('./components/Admin/ClientUser.vue').default);
 Vue.component('admin-faqs', require('./components/Admin/FAQs.vue').default);
 Vue.component('admin-customer-care', require('./components/Admin/CustomerCare.vue').default);
+Vue.component('admin-assistant-messages', require('./components/Admin/AssistantMessages.vue').default);
+Vue.component('admin-translations', require('./components/Admin/Translations.vue').default);
 
 /**
  * PORTAL PART

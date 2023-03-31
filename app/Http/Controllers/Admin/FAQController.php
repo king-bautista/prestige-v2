@@ -134,27 +134,4 @@ class FAQController extends AppBaseController implements FAQControllerInterface
             ], 422);
         }
     }
-
-    // public function getAllType(Request $request)
-    // {
-    //     try
-    //     {
-    //         $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-    //         $faqs = FAQViewModel::when(request('search'), function($query){
-    //             return $query->where('name', 'LIKE', '%' . request('search') . '%');
-    //         })
-    //         ->latest()
-    //         ->paginate(request('perPage'));
-    //         return $this->responsePaginate($faqs, 'Successfully Retreived!', 200);
-    //     }
-    //     catch (\Exception $e)
-    //     {
-    //         return response([
-    //             'message' => $e->getMessage(),
-    //             'status' => false,
-    //             'status_code' => 422,
-    //         ], 422);
-    //     }
-    // }
-
 }

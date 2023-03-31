@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Portal\Interfaces\CustomerCareControllerInterface;
-
+use App\Http\Controllers\Admin\Interfaces\CustomerCareControllerInterface;
 use Illuminate\Http\Request;
 //use App\Http\Requests\CreateCustomerCareRequest;
 
@@ -38,7 +37,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 return $query->where('ticket_id', 'LIKE', '%' . request('search') . '%');
             })
             ->latest()
-            ->paginate(request('perPage'));
+            ->paginate(request('perPage'));//echo '<pre>';print_r($advertisements); echo '</pre>'; 
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

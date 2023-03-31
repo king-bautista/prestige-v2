@@ -191,7 +191,6 @@ export default {
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
-			//dataUrl: "/portal/create-ad/list/"+this.ad_type,
 			dataUrl: "/admin/customer-care/list/",
 			actionButtons: {
 				edit: {
