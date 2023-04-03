@@ -45,5 +45,12 @@ class CustomerCare extends Model
     */
     protected $table = 'customer_care';
 
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
     
 }

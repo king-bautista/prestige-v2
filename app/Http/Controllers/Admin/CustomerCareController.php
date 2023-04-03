@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CustomerCareControllerInterface;
 use Illuminate\Http\Request;
-//use App\Http\Requests\CreateCustomerCareRequest;
+use App\Http\Requests\CustomerCareRequest;
 
 use App\Models\CustomerCare;
 use App\Models\User;
@@ -67,7 +67,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
         }
     }
 
-    public function store(Request $request)
+    public function store(CustomerCareRequest $request)
     {   
         try
     	{ 
@@ -83,7 +83,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'status_id' => $request->status_id,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
-
+           
             $customer_care = CustomerCare::create($data);
             $insert_ticket_id = CustomerCare::find($customer_care->id);
             $insert_ticket_id->touch();
@@ -102,7 +102,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
         }
     }
 
-    public function update(Request $request)
+    public function update(CustomerCareRequest $request)
     {
         try
     	{

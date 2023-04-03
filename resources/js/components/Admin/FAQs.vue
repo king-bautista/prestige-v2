@@ -173,6 +173,7 @@ export default {
 			axios.get('/admin/faq/' + id)
 				.then(response => {
 					var faqs = response.data.data;
+					this.faqs.id = faqs.id;
 					this.faqs.question = faqs.question;
 					this.faqs.answer = faqs.answer;
 					this.faqs.active = faqs.active;
@@ -185,7 +186,7 @@ export default {
 
 		updateFAQs: function () {
 			let formData = new FormData(); 
-			formData.append("id", this.faqs.id);
+			formData.append("id", 13);
 			formData.append("question", this.faqs.question);
 			formData.append("answer", this.faqs.answer);
 			formData.append("active", this.faqs.active);

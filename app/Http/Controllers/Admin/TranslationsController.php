@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\TranslationsControllerInterface;
 use Illuminate\Http\Request;
-//use App\Http\Requests\FAQsRequest;
+use App\Http\Requests\TranslationRequest;
 
 use App\Models\Translation;
 use App\Models\ViewModels\TranslationViewModel;
@@ -68,7 +68,7 @@ class TranslationsController extends AppBaseController implements TranslationsCo
         }
     }
 
-    public function store(Request $request)
+    public function store(TranslationRequest $request)
     {
         try
     	{
@@ -91,7 +91,7 @@ class TranslationsController extends AppBaseController implements TranslationsCo
         }
     }
 
-    public function update(Request $request)
+    public function update(TranslationRequest $request)
     {
         try
     	{

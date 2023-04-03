@@ -168,6 +168,7 @@ export default {
 			axios.get('/admin/translation/' + id)
 				.then(response => {
 					var translations = response.data.data;
+					this.translations.id = translations.id;
 					this.translations.language = translations.language;
 					this.translations.english = translations.english;
 					this.translations.translated = translations.translated;

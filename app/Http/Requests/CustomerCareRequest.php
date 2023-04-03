@@ -24,7 +24,14 @@ class CustomerCareRequest extends FormRequest
     public function rules()
     {
         return [
-            
+            "assigned_to_alias" => "required|string",
+            "assigned_to_id" => "required|string",
+            "status_id" => "required",
+            "ticket_description" => "required|string",
+            "ticket_subject" => "required|string",
+            "last_name" => "required|string",
+            "first_name" => "required|string",
+            "user_id" => "required|string",
         ];
     }
 }

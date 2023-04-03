@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\AssistantMessagesControllerInterface;
 use Illuminate\Http\Request;
-//use App\Http\Requests\FAQsRequest;
+use App\Http\Requests\AssistantMessageRequest;
 
 use App\Models\AssistantMessage;
 use App\Models\ViewModels\AssistantMessageViewModel;
@@ -68,7 +68,7 @@ class AssistantMessagesController extends AppBaseController implements Assistant
         }
     }
 
-    public function store(Request $request)
+    public function store(AssistantMessageRequest $request)
     {
         try
     	{
@@ -92,7 +92,7 @@ class AssistantMessagesController extends AppBaseController implements Assistant
         }
     }
 
-    public function update(Request $request)
+    public function update(AssistantMessageRequest $request)
     {
         try
     	{

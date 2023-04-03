@@ -161,6 +161,7 @@ export default {
 			axios.get('/admin/assistant-message/' + id)
 				.then(response => {
 					var assistant_messages = response.data.data;
+					this.assistant_messages.id = assistant_messages.id;
 					this.assistant_messages.location = assistant_messages.location;
 					this.assistant_messages.content = assistant_messages.content;
 					this.assistant_messages.content_language = assistant_messages.content_language;

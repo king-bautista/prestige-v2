@@ -78,7 +78,7 @@ class FAQController extends AppBaseController implements FAQControllerInterface
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
-            $faq = Faq::create($data);
+            $faq = FAQ::create($data);
             return $this->response($faq, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
@@ -92,10 +92,10 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     }
 
     public function update(FAQsRequest $request)
-    {
+    {   
         try
     	{
-            $faq = Faq::find($request->id);
+            $faq = FAQ::find($request->id);
             $faq->touch();
 
             $data = [
@@ -121,7 +121,7 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     {
         try
     	{
-            $faq = Faq::find($id);
+            $faq = FAQ::find($id);
             $faq->delete();
             return $this->response($faq, 'Successfully Deleted!', 200);
         }
