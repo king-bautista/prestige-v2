@@ -18,7 +18,7 @@
 </div>
 <!-- Leaflet Map -->
 <div class="row">
-  <div id="map" style="width: 100%; height: 400px;"></div>
+  <div id="map" style="width: 95%; height: 400px;"></div>
 </div>
 
 <!-- End of Leaflet Map -->

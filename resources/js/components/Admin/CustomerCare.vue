@@ -136,6 +136,7 @@
 
 	</div>
 </template>
+
 <script>
 import Table from '../Helpers/Table';
 // Import this component
@@ -328,4 +329,5 @@ export default {
 		Multiselect,
 	}
 };
-</script> 
+</script>
+ 
