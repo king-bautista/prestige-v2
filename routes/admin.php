@@ -121,6 +121,13 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/company/delete/{id}', 'Admin\CompaniesController@delete')->where('id', '[0-9]+')->name('admin.company.delete');
     Route::get('/admin/company/get-all', 'Admin\CompaniesController@getAll')->where('id', '[0-9]+')->name('admin.company.get-all');
     Route::get('/admin/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('admin.company.get-parent');
+    Route::get('/admin/company/get-brands/{company_id}', 'Admin\CompaniesController@getBrands')->where('id', '[0-9]+')->name('admin.company.get-brands');
+    Route::post('/admin/company/brand/store', 'Admin\CompaniesController@storeBrand')->name('admin.company.brand.store');
+    Route::get('/admin/company/brand/delete/{id}/{company_id}', 'Admin\CompaniesController@deleteBrand')->where('id', '[0-9]+')->where('company_id', '[0-9]+')->name('admin.company.brand.delete');
+    Route::post('/admin/company/contract/store', 'Admin\CompaniesController@storeContract')->name('admin.company.contract.store');
+    Route::get('/admin/company/contract/{id}', 'Admin\CompaniesController@contractDetails')->name('admin.company.contract.details');
+    Route::put('/admin/company/contract/update', 'Admin\CompaniesController@updateContract')->name('admin.company.contract.update');
+    Route::get('/admin/company/contract/delete/{id}', 'Admin\CompaniesController@deleteContract')->where('id', '[0-9]+')->name('admin.company.contract.delete');
 
     /*
     |--------------------------------------------------------------------------
@@ -241,6 +248,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/screen/delete/{id}', 'Admin\ScreensController@delete')->where('id', '[0-9]+')->name('admin.site.screen.delete');
     Route::get('/admin/site/screen/get-screens/{ids}/{type}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens');
     Route::get('/admin/site/screen/get-screens/{ids}', 'Admin\ScreensController@getScreens')->name('admin.site.screen.get-screens-ids');
+    Route::get('/admin/site/screen/get-all', 'Admin\ScreensController@getAllScreens')->name('admin.site.screen.get-all');
     Route::get('/admin/site/screen/set-default/{id}', 'Admin\ScreensController@setDefault')->where('id', '[0-9]+')->name('admin.site.screen.set-default');
 
     /*

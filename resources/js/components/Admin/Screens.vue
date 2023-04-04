@@ -149,24 +149,6 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row" v-if="screen.is_exclusive">
-								<label for="firstName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<select class="custom-select" v-model="company_index" @change="getBrands($event.target.value)">
-										<option value="">Select Company</option>
-										<option v-for="(company, index) in companies" :value="index"> {{ company.name }}</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group row" v-if="screen.is_exclusive">
-								<label for="firstName" class="col-sm-4 col-form-label">Brand <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<select class="custom-select" v-model="screen.brand">
-										<option value="">Select Brand</option>
-										<option v-for="brand in brands" :value="brand.id"> {{ brand.name }}</option>
-									</select>
-								</div>
-							</div>
 							<div class="form-group row" v-if="screen.product_application == 'Directory'">
 								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
 								<div class="col-sm-8">
@@ -264,8 +246,6 @@
 					active: false,
 					is_default: false,
 					is_exclusive: false,
-					company: '',
-					brand: '',
                 },
 				id_to_deleted: 0,
 				is_default: '',
@@ -274,8 +254,6 @@
                 sites: [],
                 buildings: [],
                 floors: [],
-				companies: [],
-				brands: [],
 				company_index: '',
                 screen_types: ['LED','LFD','LCD'],
                 orientations: ['Landscape','Portrait'],
@@ -386,17 +364,6 @@
                 .then(response => this.floors = response.data.data);
             },
 
-			getCompany: function() {
-				axios.get('/admin/company/get-all')
-                .then(response => this.companies = response.data.data);
-			},
-
-			getBrands: function(index) {
-				this.screen.company = this.companies[index].id;
-				this.brands = this.companies[index].brands;
-				this.screen.brand = '';
-			},
-
 			AddNewScreen: function() {
 				this.add_record = true;
 				this.edit_record = false;
@@ -459,16 +426,6 @@
 					this.screen.active = screen.active;    
 					this.screen.is_default = screen.is_default; 
 					this.screen.is_exclusive = screen.is_exclusive;
-
-					if(screen.company_details) {
-						var index = this.companies.findIndex(company => company.id === screen.company_details.id);
-
-						this.company_index = index;
-						this.screen.company = screen.company_details.id;
-						this.brands = screen.company_details.brands;
-						this.screen.brand = screen.brand_id;
-					}
-
                     $('#screen-form').modal('show');
                 });
             },

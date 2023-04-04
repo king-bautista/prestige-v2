@@ -48,6 +48,7 @@ class CompanyViewModel extends Model
         'classification_name',
         'label',
         'brands',
+        'contracts',
     ]; 
 
     public function getBrands()
@@ -84,5 +85,10 @@ class CompanyViewModel extends Model
     {
         $ids = $this->getBrands()->pluck('brand_id');
         return BrandViewModel::whereIn('id', $ids)->get();
+    }
+
+    public function getContractsAttribute() 
+    {
+        return ContractViewModel::where('company_id', $this->id)->get();
     }
 }
