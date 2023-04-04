@@ -59,25 +59,27 @@
 				$(function() {
 					$.get( "/portal/reports/monthly-usage/list", filter, function( data ) {
 						let datasets = [];
-						let randomBackgroundColor = [];
-						let usedColors = new Set();
+						// let randomBackgroundColor = [];
+						// let usedColors = new Set();
 
-						let dynamicColors = function() {
-							let r = Math.floor(Math.random() * 255);
-							let g = Math.floor(Math.random() * 255);
-							let b = Math.floor(Math.random() * 255);
-							let color = "rgb(" + r + "," + g + "," + b + ")";
+						// let dynamicColors = function() {
+						// 	let r = Math.floor(Math.random() * 255);
+						// 	let g = Math.floor(Math.random() * 255);
+						// 	let b = Math.floor(Math.random() * 255);
+						// 	let color = "rgb(" + r + "," + g + "," + b + ")";
 
-							if (!usedColors.has(color)) {
-								usedColors.add(color);
-								return color;
-							} else {
-								return dynamicColors();
-							}
-						};
+						// 	if (!usedColors.has(color)) {
+						// 		usedColors.add(color);
+						// 		return color;
+						// 	} else {
+						// 		return dynamicColors();
+						// 	}
+						// };
+
+						let dynamicColors = ['#FE5E80', '#899AE8', '#353535', '#a9b7d8', '#a59fa2', '#f79fba', '#727272'];
 
 						$.each(data.data, function(key,value) {
-							let background_color = dynamicColors();
+							let background_color =  dynamicColors[key];
 							datasets.push({
 								label               : value.page,
 								backgroundColor     : background_color,

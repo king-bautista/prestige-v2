@@ -32,8 +32,6 @@ class ScreenRequest extends FormRequest
             "orientation" => "required",
             "product_application" => "required",
             "slots" => "required|not_in:0|numeric",
-            "company" => "required_if:is_exclusive,true",
-            "brand" => "required_with:company",
         ];
     }
 
@@ -46,8 +44,6 @@ class ScreenRequest extends FormRequest
             'site_id.required' => 'The site field is required.',
             'site_building_id.required' => 'The building field is required.',
             'site_building_level_id.required' => 'The floor field is required.',
-            'company.required' => 'The company field is required.',
-            'brand.required' => 'The brand field is required.',
         ];
     }
 }

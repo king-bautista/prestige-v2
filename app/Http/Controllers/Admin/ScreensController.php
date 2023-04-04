@@ -117,8 +117,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen = SiteScreen::create($data);
-            $site_screen->saveExclusiveScreen($request);
-
             return $this->response($site_screen, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
@@ -162,8 +160,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen->update($data);
-            $site_screen->saveExclusiveScreen($request);
-
             return $this->response($site_screen, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
@@ -203,6 +199,23 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ->when($type, function($query) use ($type) { 
                 return $query->where('screen_type', $type);
             })->get();
+            return $this->response($site_screens, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getAllScreens()
+    {
+        try
+    	{
+            $site_screens = SiteScreenViewModel::get();
             return $this->response($site_screens, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
