@@ -31,7 +31,7 @@
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-md-5">
 									<div class="form-group row mb-0">
 										<label for="firstName" class="col-sm-4">Company Name</label>
 										<div class="col-sm-8">
@@ -57,7 +57,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-5">
 									<div class="form-group row mb-0">
 										<label for="firstName" class="col-sm-4">TIN Number</label>
 										<div class="col-sm-8">
