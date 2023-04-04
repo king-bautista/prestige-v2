@@ -14,6 +14,7 @@ class TopTenantExport implements FromCollection, WithHeadings
     public function __construct($reports)
     {
         $this->reports = $reports;
+        $this->headers = array_keys($reports[0]);   
     }    
     /**
     * Headings

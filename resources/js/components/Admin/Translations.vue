@@ -9,7 +9,7 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
-									v-on:AddNewTranslations="AddNewTranslations" v-on:editButton="editTranslations"
+									v-on:AddNewTranslations="AddNewTranslations" v-on:editButton="editTranslations" v-on:downloadCsv="downloadCsv" 
 									ref="dataTable">
 								</Table>
 							</div>
@@ -132,6 +132,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 		};
 	},
@@ -196,6 +203,16 @@ export default {
 					this.$refs.dataTable.fetchData();
 					$('#translation-form').modal('hide');
 				})
+		},
+		downloadCsv: function () { 
+			axios.get('/admin/translation/download-csv')
+				 .then(response => {
+                const link = document.createElement('a');
+                link.href = response.data.data.filepath;
+                link.setAttribute('download', response.data.data.filename); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+              })
 		},
 
 	},

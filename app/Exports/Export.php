@@ -11,6 +11,7 @@ class Export implements FromCollection, WithHeadings
 {
     public $headers;
     public $reports;
+    
 
     public function __construct($reports)
     {

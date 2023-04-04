@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\TranslationsControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;  
 use Illuminate\Http\Request;
 use App\Http\Requests\TranslationRequest;
 
 use App\Models\Translation;
 use App\Models\ViewModels\TranslationViewModel;
 use App\Models\ViewModels\AdminViewModel;
+use App\Exports\Export;
+use Storage;
+
 
 class TranslationsController extends AppBaseController implements TranslationsControllerInterface
 {
@@ -127,6 +131,48 @@ class TranslationsController extends AppBaseController implements TranslationsCo
         }
         catch (\Exception $e) 
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $translations = TranslationViewModel::get();
+            $reports = [];
+            foreach ($translations as $translation) {
+                $reports[] = [
+                    'language' => $translation->language,
+                    'english' => $translation->english,
+                    'translated' => $translation->translated
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "customer_care.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

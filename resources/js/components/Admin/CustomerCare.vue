@@ -10,7 +10,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewCustomerCare="AddNewCustomerCare" v-on:editButton="editCustomerCare"
-									ref="dataTable">
+									v-on:downloadCsv="downloadCsv" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -41,8 +41,7 @@
 								<label for="User" class="col-sm-3 col-form-label">User Name</label>
 								<div class="col-sm-9">
 									<multiselect v-model="customer_care.user_id" track-by="full_name" label="full_name"
-										placeholder="User Name" :options="users" :searchable="true"
-										:allow-empty="false">
+										placeholder="User Name" :options="users" :searchable="true" :allow-empty="false">
 									</multiselect>
 									<!-- <multiselect v-model="tenant.brand_id" track-by="name" label="name" 
 										placeholder="Select Brand" :options="brands" :searchable="true" :allow-empty="false">
@@ -223,6 +222,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 			//ad_types: ['Online','Banners','Fullscreens','Pop-Ups','Events','Promos'],
 		};
@@ -320,6 +326,16 @@ export default {
 					this.$refs.dataTable.fetchData();
 					$('#customer-care-form').modal('hide');
 				})
+		},
+		downloadCsv: function () { 
+			axios.get('/admin/customer-care/download-csv')
+				 .then(response => {
+                const link = document.createElement('a');
+                link.href = response.data.data.filepath;
+                link.setAttribute('download', response.data.data.filename); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+              })
 		},
 
 	},

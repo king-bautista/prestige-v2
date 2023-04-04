@@ -414,6 +414,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/faq/{id}', 'Admin\FAQController@details')->where('id', '[0-9]+')->name('admin.faq.details');
     Route::post('/admin/faq/update', 'Admin\FAQController@update')->name('admin.faq.update');
     Route::get('/admin/faq/delete/{id}', 'Admin\FAQController@delete')->where('id', '[0-9]+')->name('admin.faq.delete');
+    Route::get('/admin/faq/download-csv', 'Admin\FAQController@downloadCsv')->name('admin.faq.download-csv');
 
     /*
     |--------------------------------------------------------------------------
@@ -427,6 +428,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/customer-care/update', 'Admin\CustomerCareController@update')->name('admin.customer-care.update');
     Route::get('/admin/customer-care/delete/{id}', 'Admin\CustomerCareController@delete')->where('id', '[0-9]+')->name('admin.customer-care.delete');
     Route::get('/admin/customer-care/users', 'Admin\CustomerCareController@getUsers')->where('id', '[0-9]+')->name('admin.customer-care.users');
+    Route::get('/admin/customer-care/download-csv', 'Admin\CustomerCareController@downloadCsv')->name('admin.customer-care.download-csv');
     
     /*
     |--------------------------------------------------------------------------
@@ -439,7 +441,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/assistant-message/{id}', 'Admin\AssistantMessagesController@details')->where('id', '[0-9]+')->name('admin.assistant-message.details');
     Route::post('/admin/assistant-message/update', 'Admin\AssistantMessagesController@update')->name('admin.assistant-message.update');
     Route::get('/admin/assistant-message/delete/{id}', 'Admin\AssistantMessagesController@delete')->where('id', '[0-9]+')->name('admin.assistant-message.delete');
-
+    Route::get('/admin/assistant-message/download-csv', 'Admin\AssistantMessagesController@downloadCsv')->name('admin.assistant-message.download-csv');
     /*
     |--------------------------------------------------------------------------
     | Translations Routes
@@ -451,6 +453,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/translation/{id}', 'Admin\TranslationsController@details')->where('id', '[0-9]+')->name('admin.translation.details');
     Route::post('/admin/translation/update', 'Admin\TranslationsController@update')->name('admin.translation.update');
     Route::get('/admin/translation/delete/{id}', 'Admin\TranslationsController@delete')->where('id', '[0-9]+')->name('admin.translation.delete');
+    Route::get('/admin/translation/download-csv', 'Admin\TranslationsController@downloadCsv')->name('admin.translation.download-csv');
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

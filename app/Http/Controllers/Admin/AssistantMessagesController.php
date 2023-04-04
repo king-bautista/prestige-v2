@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\AssistantMessagesControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;  
 use Illuminate\Http\Request;
 use App\Http\Requests\AssistantMessageRequest;
 
 use App\Models\AssistantMessage;
 use App\Models\ViewModels\AssistantMessageViewModel;
 use App\Models\ViewModels\AdminViewModel;
+use App\Exports\Export;
+use Storage;
+
 
 class AssistantMessagesController extends AppBaseController implements AssistantMessagesControllerInterface
 {
@@ -128,6 +132,49 @@ class AssistantMessagesController extends AppBaseController implements Assistant
         }
         catch (\Exception $e) 
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $assistant_messages = AssistantMessageViewModel::get();
+            $reports = [];
+            foreach ($assistant_messages as $assistant) {
+                $reports[] = [
+                    'location' => $assistant->location,
+                    'content' => $assistant->content,
+                    'content_language' => $assistant->content_language,
+                    
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "customer_care.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
