@@ -1,10 +1,11 @@
 <template>
     <div class="" style="width: 100%;">
-        <div id="popover-content" class="hide d-none" style="z-index:1">
-            Need help? Touch here.
-        </div>
-        <div tabindex="0" data-toggle="popover" data-container="body" data-placement="left" data-trigger="focus" type="button" data-html="true"  class="assistance_tooltip" data-content="Need help? Touch here.">
-            <img src="assets/images/English/Help.png" id="helpbutton" @click="generateAssist()">
+        <div id="popover-content" class="hide d-none" style="z-index:1">Need help? Touch here.</div>
+        <div @click="generateAssist()">
+            <div tabindex="0" data-toggle="popover" data-container="body" data-placement="left" data-trigger="focus" type="button" data-html="true"  class="assistance_tooltip" data-content="Need help? Touch here.">
+                <img src="assets/images/English/Help.png" id="helpbutton">
+            </div>
+            <div class="help-overlay translateme" data-en="Help">Help</div>
         </div>
     </div>
 </template>
@@ -32,10 +33,21 @@
                     this.location_content = this.assitant_message.filter(option => option.location == this.location && option.content_language == this.content_language);
                 });   
 			},
-            filterAssist: function(value) {
-                this.location = value;
-                // this.content_language = content_language;
-                this.location_content = this.assitant_message.filter(option => option.location == this.location && option.content_language == this.content_language);
+            filterAssist: function(location,content_language) {
+                // alert(location+" : "+content_language);
+                
+                if (location == null) {      
+                    this.content_language = content_language;           
+                    this.location_content = this.assitant_message.filter(option => option.location == this.location && option.content_language == content_language);
+                }else if (content_language == null) {      
+                    this.location = location;           
+                    this.location_content = this.assitant_message.filter(option => option.location == location && option.content_language == this.content_language);
+                }else {
+                    this.location = location;
+                    this.content_language = content_language;
+                    this.location_content = this.assitant_message.filter(option => option.location == this.location && option.content_language == this.content_language);
+                }
+                
 			},
             generateAssist: function() {
                 $("#popover-content").html(this.location_content[0]['content']);
@@ -56,8 +68,11 @@
                     }
                 });
 
-                obj.$root.$on('callAssistantFrom', (value) => {
-                    obj.filterAssist(value);
+                obj.$root.$on('callAssistant', (location,content_language) => {
+                    obj.filterAssist(location,content_language);
+                });
+                obj.$root.$on('callMutateLocation', (location) => {
+                    obj.filterAssist(location,null);
                 });
             });
         }

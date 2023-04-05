@@ -213,7 +213,7 @@ WayFinding.prototype = {
             };
             
             //replace with dynamic value from tenant.point_type_icon
-            imageObj.src = '/../images/services/directory4x.png';
+            imageObj.src = tenant.icon_path;
         }
 
         if(text) {
@@ -688,6 +688,7 @@ WayFinding.prototype = {
     replay: function(){
         this.stopall();
         this.clearLine();
+        this.clearAmenitiesLayer();
         this.clearTextlayer();
         this.clearEscalator();
         this.drawline(this.settings.destination,this.settings.tenant_details);
@@ -801,6 +802,7 @@ WayFinding.prototype = {
     changemap: function(id){
         this.stopall();
         this.clearLine();
+        this.clearAmenitiesLayer();
         this.clearTextlayer();
         this.clearEscalator();
 

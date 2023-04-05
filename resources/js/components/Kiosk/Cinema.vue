@@ -2,7 +2,7 @@
     <div class="router-page" style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
-                <div id="page-title">{{ page_title }}</div>
+                <div id="page-title" class="translateme" :data-en="page_title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
@@ -11,7 +11,7 @@
         <div>
             <div v-show="cinema_locator">
                 <div class="row mt-77 mb-13">
-                    <div class="col-md-12 home-title text-center translateme">Cinema Locator</div>
+                    <div class="col-md-12 home-title text-center translateme" data-en="Cinema Locator">Cinema Locator</div>
                 </div>
                 <div class="row col-md-10 offset-md-1">
                     <div id="myCinemas" class="carousel slide" data-ride="carousel" data-interval="false" data-touch="true" v-show="cinema_list.length > 0">
@@ -24,7 +24,7 @@
                         <div class="carousel-inner custom-p-0-65 carousel-mh-605">
                             <div class="carousel-item custom-p-0-18" v-for="(cinemas, index) in cinema_list" v-bind:class = "(index == 0) ? 'active':''">
                                 <div class="row mb-3">
-                                    <div v-for="cinema in cinemas" class="col-12 col-sm-6 text-left mt-3" @click="helper.saveLogs(cinema, 'Cinema');">
+                                    <div v-for="cinema in cinemas" class="col-12 col-sm-6 text-left mt-3" @click="helper.saveLogs(cinema, 'Cinema');findStore(cinema);">
                                         <div class="cinema-store bg-white text-center box-shadowed">
                                             <div class="image-holder-cinema h-100">
                                                 <img :src="cinema.brand_logo" :alt="cinema.brand_name">
@@ -33,8 +33,8 @@
                                                 <div class="shop_name">{{ cinema.brand_name }}</div>
                                                 <div style="font-size: 0.7em;color:#2a2a2a">{{ cinema.floor_name }}, {{ cinema.building_name }} </div>
                                                 <div style="font-weight: bold;font-size: 0.7em">
-                                                    <span class="translateme text-success" v-if="cinema.active==1">Open</span>
-                                                    <span class="translateme text-success" v-if="cinema.active==0">Close</span>
+                                                    <span class="translateme text-success" v-if="cinema.active==1" data-en="Open">Open</span>
+                                                    <span class="translateme text-success" v-if="cinema.active==0" data-en="Close">Close</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -57,7 +57,7 @@
             </div>
             <div v-show="schedules">
                 <div class="row mt-77 mb-13">
-                    <div class="col-md-12 home-title text-center translateme">Now Showing</div>
+                    <div class="col-md-12 home-title text-center translateme" data-en="Now Showing">Now Showing</div>
                 </div>
                 <div class="row col-md-10 offset-md-1">
                     <div id="myMovies" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="schedule_list.length > 0">
@@ -71,7 +71,7 @@
                                     <div v-for="movie in movies" class="col-12 col-sm-4 text-center mt-3">
                                         <img class="schedule-image" v-bind:src="'/uploads/media/cinema/'+movie.film_id+'.jpg'" :data-filmid="movie.film_id">
                                         <div class="text-center click-text" style="font-size:1.3em;color:#000000;padding: 12px 0px;" :data-filmid="movie.film_id">{{ movie.title }}</div>
-                                        <div class="text-center seeDetails"><button class="btn btn-sm btn-cinema-details" :data-filmid="movie.film_id" @click="showModal(movie)">See Details</button></div>
+                                        <div class="text-center seeDetails"><button class="btn btn-sm btn-cinema-details resize-see-details translateme" :data-filmid="movie.film_id" @click="showModal(movie)" data-en="See Details">See Details</button></div>
                                     </div>
                                 </div>
                             </div>                        
@@ -91,20 +91,21 @@
         </div>
         <div class="tabs-container">
             <div class="tabs">
-                <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">Select to view</span>: </span>
+                <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme" data-en="Select to view">Select to view</span>: </span>
                 <div class="tabs-item store-tabs-item tab-item-selected" @click="tabCinema">
                     <div>
-                        <a class="translateme cinema-locator">Cinema</a>
+                        <a class="translateme cinema-locator" data-en="Cinema">Cinema</a>
                     </div>
                 </div>
                 <div class="tabs-item store-tabs-item" @click="tabSchedule">
                     <div>
-                        <a class="translateme cinema-schedule">Schedule</a>
+                        <a class="translateme cinema-schedule" data-en="Schedule">Schedule</a>
                     </div>
                 </div>
             </div>
         </div>
-        <img :src="back_button" class="back-button" @click="goBack">
+        <img  class="back-button" :src="back_button" @click="goBack">
+        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
         <div class="custom-modal" id="schedule-modal">
 		    <div class="custom-modal-body">
@@ -195,6 +196,7 @@
                 helper: new Helpers(),
                 curent_cinema_list_count: 0,
                 curent_schedule_list_count: 0,
+                content_language: '',
             };
         },
 
@@ -211,10 +213,22 @@
 			},
 
             goBack: function() {
-                $('.h-button').removeClass('active');
-                $('.home-button').addClass('active');
-                this.$router.push("/").catch(()=>{});
-                $(".home-button").trigger('click');
+                if (this.cinema_locator == false) {
+                    if (this.curent_schedule_list_count>0) {
+                        $('.h-button').removeClass('active');
+                        $('.home-button').addClass('active');
+                        this.$root.$emit('MainCategories');
+                    } else {
+                        $(".cinema-locator").trigger('click');
+                        this.tabCinema();
+                    }        
+                } else {
+                    $('.h-button').removeClass('active');
+                    $('.home-button').addClass('active');
+                    this.$router.push("/").catch(()=>{});
+                    this.$root.$emit('MainCategories');
+                } 
+                
             },
 
             getCinemaList: function() {
@@ -257,12 +271,14 @@
                 this.tab_title='Cinema Locator'; 
                 this.cinema_locator = true; 
                 this.schedules = false;
+                this.$root.$emit('callAssistant','cinemalist',this.content_language);
             },
 
             tabSchedule: function() {
                 this.tab_title='Now Showing';
                 this.cinema_locator = false;
                 this.schedules = true;
+                this.$root.$emit('callAssistant','cinemaschedule',this.content_language);
             },
 
             showTrailer: function(trailer_url) {
@@ -292,7 +308,8 @@
                 $("#myTrailerModal").show();
             },
 
-            resetPage: function() {
+            resetPage: function(content_language) {
+                this.content_language = content_language;
                 if (this.curent_schedule_list_count>=0) {
                     $(".cinema-schedule").trigger('click');
                     this.tabSchedule();
@@ -301,11 +318,22 @@
                     this.tabCinema();
                 }
                 $('.first-item').trigger('click');
+
+                setTimeout(() => {
+                    this.$root.$emit('callSetTranslation');
+                }, 100);
+
+                // $('.resize-see-details').autoSizr(21);
             },
 
             callHomeMethod: function(){
                 this.$root.$emit('callAboutParent','cinema')
-            }
+            },
+
+            findStore: function(value) {
+                this.$root.$emit('callFindStore',value,'cinema')
+			},
+
         },
 
         mounted() {
@@ -341,6 +369,7 @@
                 });
 
                 $('#myMovies').on('slid.bs.carousel', function () {
+                    // $('.resize-see-details').autoSizr();
                     if($(this).find('.active').hasClass('last-item')){
                         $(".control-next-cps").hide();
                         $(".control-prev-cps").show();
