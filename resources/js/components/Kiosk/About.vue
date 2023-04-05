@@ -20,7 +20,8 @@
 			    </div>
             </div>
         </div>
-        <img :src="back_button" class="back-button" @click="goBack">
+        <img class="back-button" :src="back_button" @click="goBack">
+        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
     </div>
 </template>

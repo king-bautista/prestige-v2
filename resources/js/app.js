@@ -199,7 +199,7 @@ const app = new Vue({
         enableInterceptor() {
             var self = this
             this.axiosInterceptor = axios.interceptors.request.use((config) => {
-                self.isLoading = true
+                self.isLoading = false
                 return config
             }, (error) => {
                 self.isLoading = false
