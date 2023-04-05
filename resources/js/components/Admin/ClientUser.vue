@@ -747,11 +747,6 @@
 
             modalBrands: function() {
                 if(this.user.company) {
-					// this.filter.brand_ids = [];
-					// for (var i=0; i < this.user.company.brands.length; i++){
-					// 	let brand = this.user.company.brands[i];
-					// 	this.filter.brand_ids.push(brand.id);
-					// }
 					this.filter.company_id = this.user.company.id
                     this.$refs.brandsDataTable.filters = this.filter;
     				this.$refs.brandsDataTable.fetchData();
