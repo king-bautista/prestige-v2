@@ -67,7 +67,12 @@
   
 }
 
+// .gu-transit {
+//     border: 1px dashed var(--#{$variable-prefix}gray-600) !important;
+//     background-color: var(--#{$variable-prefix}gray-200) !important;
+// }
+
 .gu-transit {
-    border: 1px dashed var(--#{$variable-prefix}gray-600) !important;
-    background-color: var(--#{$variable-prefix}gray-200) !important;
+  border: 1px dashed var(--#{$variable-prefix}gray-600);
+  background-color: var(--#{$variable-prefix}gray-200);
 }

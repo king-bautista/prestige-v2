@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CategoriesControllerInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategoryLabelRequest;
 
 use App\Models\Category;
 use App\Models\CategoryLabel;
@@ -202,7 +203,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         }
     }
 
-    public function saveLabels(Request $request)
+    public function saveLabels(CategoryLabelRequest $request)
     {
         try
         {

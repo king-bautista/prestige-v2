@@ -320,13 +320,13 @@ body[data-layout=horizontal] .page-title-content h4{
     color:#fff
 }
 .footer{
-    background-color:#fafafa;
+    background-color:#fd5179;
     bottom:0;
     padding:20px calc(24px / 2);
     position:absolute;
     text-align:center;
     right:0;
-    color:#5b626b;
+    color:#ffffff;
     left:240px;
     height:60px;
     -webkit-box-shadow:0 -1px 2px 0 rgba(0,0,0,.05);
@@ -4033,5 +4033,15 @@ body[data-layout=horizontal] .chat-conversation{
     border:1px dashed var(--bs-gray-600)!important;
     background-color:var(--bs-gray-200)!important
 }
+.footer-color >a{
+    color:#ffffff;
+    font-size: 14px; 
+}
+.footer-color >a:hover{
+    color:#899ae8;  
+}
+.footer-background{
+    background-color:#fd5179;
+}
+
 /*# sourceMappingURL=app.min.css.map */
- 

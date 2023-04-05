@@ -9,7 +9,7 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewFAQs="AddNewFAQs"
-									v-on:editButton="editFAQs" ref="dataTable">
+									v-on:editButton="editFAQs" v-on:downloadCsv="downloadCsv" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -45,7 +45,7 @@
 							<div class="form-group row">
 								<label for="answer" class="col-sm-4 col-form-label">Answer <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="faqs.answer" placeholder="Answer"></textarea>
+                                    <textarea class="form-control" rows="5" v-model="faqs.answer" placeholder="Answer"></textarea>
 								</div>
 							</div>
 
@@ -97,8 +97,8 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				question:"Question",
-				answer: "Answer",
+				shorten_question:"Question",
+				shorten_answer: "Answer",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -134,6 +134,13 @@ export default {
 					title: 'New FAQs',
 					v_on: 'AddNewFAQs',
 					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New FAQs',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -173,6 +180,7 @@ export default {
 			axios.get('/admin/faq/' + id)
 				.then(response => {
 					var faqs = response.data.data;
+					this.faqs.id = faqs.id;
 					this.faqs.question = faqs.question;
 					this.faqs.answer = faqs.answer;
 					this.faqs.active = faqs.active;
@@ -184,8 +192,8 @@ export default {
 		},
 
 		updateFAQs: function () {
-			let formData = new FormData(); a
-			formData.append("id", this.faqs.id);
+			let formData = new FormData(); 
+			formData.append("id", 13);
 			formData.append("question", this.faqs.question);
 			formData.append("answer", this.faqs.answer);
 			formData.append("active", this.faqs.active);
@@ -199,6 +207,16 @@ export default {
 					this.$refs.dataTable.fetchData();
 					$('#faqs-form').modal('hide');
 				})
+		},
+		downloadCsv: function () { 
+			axios.get('/admin/faq/download-csv')
+				 .then(response => {
+                const link = document.createElement('a');
+                link.href = response.data.data.filepath;
+                link.setAttribute('download', response.data.data.filename); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+              })
 		},
 
 	},

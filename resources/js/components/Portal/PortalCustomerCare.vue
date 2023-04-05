@@ -1,82 +1,67 @@
 <template>
 	<div>
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h4><i class="nav-icon fas fa-photo-video"></i>&nbsp;&nbsp;Customer Care</h4>
+						<h4><i class="nav-icon fa fa-copyright"></i>&nbsp;&nbsp;Customer Care</h4>
 					</div>
 					<div class="card-body">
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-3 col-form-label">First Name <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="customer_care.first_name"
-									placeholder="First Name" required>
+						<div class="row">
+							<div class="col-sm-2">
+                                        <img :src="company_image" class="img-fluid" />
+                                    </div>
+							<div class="col-md-4">
+								<p><b style="font-weight: 600;">Office Address:</b> {{ company.address }}<br>
+									<b style="font-weight: 600;">Mobile Number:</b>{{ company.contact_number }}<br>
+									<b style="font-weight: 600;">Email:</b> {{ company.email }}
+								</p>
 							</div>
-						</div>
-						<div class="form-group row">
-							<label for="lastName" class="col-sm-3 col-form-label">Last Name <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="customer_care.last_name"
-									placeholder="Last Name" required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="ticketSubject" class="col-sm-3 col-form-label">Ticket Subject <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="customer_care.ticket_subject"
-									placeholder="Ticket Subject" required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="ticketDescription" class="col-sm-3 col-form-label">Ticket Description <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="customer_care.ticket_description"
-									placeholder="Ticket Description" required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-sm-12 text-right">
-								<button type="button" class="btn btn-primary btn-sm" v-show="add_record"
-									@click="storeCustomerCare">Add New Customer Cares</button>
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label for="firstName" class="col-sm-3 col-form-label">First Name <span
+											class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" v-model="customer_care.first_name"
+											placeholder="First Name" required>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="lastName" class="col-sm-3 col-form-label">Last Name <span
+											class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" v-model="customer_care.last_name"
+											placeholder="Last Name" required>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="ticketSubject" class="col-sm-3 col-form-label">Subject <span
+											class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" v-model="customer_care.ticket_subject"
+											placeholder="Subject" required>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="ticketDescription" class="col-sm-3 col-form-label">Description <span
+											class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-9">
+										<textarea class="form-control" rows="5" v-model="customer_care.ticket_description"
+											placeholder="Description"></textarea>
+									</div>
+								</div>
+								<div class="form-group row">
+									<div class="col-sm-12 text-right">
+										<button type="button" class="btn btn-primary btn-sm" v-show="add_record"
+											@click="storeCustomerCare">Submit</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-header">
-						<h4><i class="nav-icon fa fa-copyright"></i>&nbsp;&nbsp;Company</h4>
-					</div>
-					<div class="card-body">
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-3 col-form-label">Name:</label>
-							<div class="col-sm-9">{{ company.name }}</div>
-						</div>
-						<div class="form-group row">
-							<label for="email" class="col-sm-3 col-form-label">Email:</label>
-							<div class="col-sm-9">{{ company.email }}</div>
-						</div>
-						<div class="form-group row">
-							<label for="contact_number" class="col-sm-3 col-form-label">Contact Number:</label>
-							<div class="col-sm-9">{{ company.contact_number }}</div>
-						</div>
-						<div class="form-group row">
-							<label for="address" class="col-sm-3 col-form-label">Address:</label>
-							<div class="col-sm-9">{{ company.address }}</div>
-						</div>
-					</div>
-					<div></div>
 				</div>
 			</div>
 		</div>
-		
-
 	</div>
 </template>
 <script>
@@ -99,6 +84,7 @@ export default {
 			company: [],
 			add_record: true,
 			primaryKey: "id",
+			company_image: '/images/contact-us.png',
 		};
 	},
 

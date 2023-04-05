@@ -33,10 +33,4 @@ class AssistantMessageViewModel extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    public $appends = [
-        'location',
-        'content',
-        'content_language',
-    ]; 
 }

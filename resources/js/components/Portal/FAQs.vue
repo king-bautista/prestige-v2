@@ -4,7 +4,7 @@
       <div class="card-header border-0">
         <nav class="navbar">
           <div class="container-xl m-0 p-0">
-            <h3 class="card-title"><i class="nav-icon fas fa-chart-pie"></i>FAQ's</h3>
+            <h3 class="card-title"><i class="nav-icon fa fa-question-circle"></i>FAQ's</h3>
           </div>
         </nav>
       </div>

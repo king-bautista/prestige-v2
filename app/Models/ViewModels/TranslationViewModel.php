@@ -34,9 +34,9 @@ class TranslationViewModel extends Model
      */
     protected $primaryKey = 'id';
 
-    public $appends = [
-        'language',
-        'english',
-        'translated',
-    ]; 
+    // public $appends = [
+    //     'language',
+    //     'english',
+    //     'translated',
+    // ]; 
 }

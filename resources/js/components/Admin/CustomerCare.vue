@@ -10,7 +10,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewCustomerCare="AddNewCustomerCare" v-on:editButton="editCustomerCare"
-									ref="dataTable">
+									v-on:downloadCsv="downloadCsv" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -41,9 +41,11 @@
 								<label for="User" class="col-sm-3 col-form-label">User Name</label>
 								<div class="col-sm-9">
 									<multiselect v-model="customer_care.user_id" track-by="full_name" label="full_name"
-										placeholder="User Name" :multiple="false" :options="users"
-										:searchable="true" :allow-empty="false">
+										placeholder="User Name" :options="users" :searchable="true" :allow-empty="false">
 									</multiselect>
+									<!-- <multiselect v-model="tenant.brand_id" track-by="name" label="name" 
+										placeholder="Select Brand" :options="brands" :searchable="true" :allow-empty="false">
+                                    </multiselect>  -->
 								</div>
 							</div>
 							<div class="form-group row">
@@ -74,8 +76,9 @@
 								<label for="firstName" class="col-sm-3 col-form-label">Ticket Description <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" v-model="customer_care.ticket_description"
-										placeholder="Ticket Description" required>
+									<textarea class="form-control" rows="5" v-model="customer_care.ticket_description"
+										placeholder="Ticket Description"></textarea>
+
 								</div>
 							</div>
 							<div class="form-group row">
@@ -132,6 +135,7 @@
 
 	</div>
 </template>
+
 <script>
 import Table from '../Helpers/Table';
 // Import this component
@@ -191,7 +195,6 @@ export default {
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
-			//dataUrl: "/portal/create-ad/list/"+this.ad_type,
 			dataUrl: "/admin/customer-care/list/",
 			actionButtons: {
 				edit: {
@@ -219,6 +222,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 			//ad_types: ['Online','Banners','Fullscreens','Pop-Ups','Events','Promos'],
 		};
@@ -234,7 +244,7 @@ export default {
 			axios.get('/admin/content-management/transaction-statuses')
 				.then(response => this.transaction_statuses = response.data.data);
 		},
-		getUsers: function (id) {
+		getUsers: function () {
 			axios.get('/admin/customer-care/users')
 				.then(response => this.users = response.data.data);
 		},
@@ -283,12 +293,12 @@ export default {
 				.then(response => {
 					var customer_care = response.data.data;
 					this.customer_care.id = customer_care.id;
+					this.getStatuses(customer_care.id);
 					this.customer_care.first_name = customer_care.first_name;
 					this.customer_care.last_name = customer_care.last_name;
 					this.customer_care.ticket_subject = customer_care.ticket_subject;
 					this.customer_care.ticket_description = customer_care.ticket_description;
 					this.customer_care.status_id = customer_care.status_id;
-					this.customer_care.user_id = customer_care.user_id;
 					this.customer_care.assigned_to_id = customer_care.assigned_to_id;
 					this.customer_care.assigned_to_alias = customer_care.assigned_to_alias;
 					this.customer_care.active = customer_care.active;
@@ -317,7 +327,17 @@ export default {
 					$('#customer-care-form').modal('hide');
 				})
 		},
-		
+		downloadCsv: function () { 
+			axios.get('/admin/customer-care/download-csv')
+				 .then(response => {
+                const link = document.createElement('a');
+                link.href = response.data.data.filepath;
+                link.setAttribute('download', response.data.data.filename); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+              })
+		},
+
 	},
 
 	components: {
@@ -325,4 +345,5 @@ export default {
 		Multiselect,
 	}
 };
-</script> 
+</script>
+ 

@@ -85,8 +85,9 @@ margin-left: 10px;
 }
 
 .profile-card {
-    position: fixed;
-    width: 14%;
+
+    height: 50%;
+    width: 100%;
 }
 
 .page-title-content {
