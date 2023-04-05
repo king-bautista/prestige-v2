@@ -3,7 +3,7 @@
         <div class="router-page" v-show="homeIsShown">
             <div class="row">
                 <div class="col-md-6">
-                    <div id="page-title" v-if="page_title != 'Category'">{{ page_title }}</div>
+                    <div id="page-title" v-if="page_title != 'Category'" class="translateme" :data-en="page_title">{{ page_title }}</div>
                 </div>
                 <div class="col-md-6 text-right">
                     <img :src="site_logo" class="logo-holder" @click="aboutButton('home')">
@@ -13,13 +13,13 @@
             <!-- MAIN CATEGORY -->
             <div v-show="home_category"> 
                 <div class="row mt-15 mb-55">
-                    <div class="col-md-12 main-home-title text-center translateme">Search your favorite stores</div>
+                    <div class="col-md-12 main-home-title text-center translateme" data-en="Search your favorite stores">Search your favorite stores</div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
                             <img :src="category.kiosk_image_primary_path">
-                            <div id="hc-button1" class="hc-button-align translateme resize">{{ category.label }}</div>
+                            <div id="hc-button1" class="hc-button-align translateme resize" :data-en="category.label">{{ category.label }}</div>
                         </div>
                     </div>
                 </div>
@@ -28,19 +28,19 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="child_category_count< 7" class="row mt-120 mb-41">
-                    <div class="col-md-12 home-title-sub text-center translateme">{{current_category.label}}</div>
+                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
                 </div>
                 <div v-else-if="child_category_count< 11" class="row mb-27 mt-18">
-                    <div class="col-md-12 home-title-sub text-center translateme">{{current_category.label}}</div>
+                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
                 </div>
                 <div v-else class="row mb-27">
-                    <div class="col-md-12 home-title-sub text-center translateme">{{current_category.label}}</div>
+                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
                 </div>
                 <div class="row col-md-6 offset-md-3 mb-3 mw-51p">
                     <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="getTenantsByCategory(subcategory)">			
                         <div class="c-button ml-0">						
                             <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                            <div class="c-button-align c-button-color2"><p class="translateme">{{subcategory.label}}</p></div>                        
+                            <div class="c-button-align c-button-color2"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>                        
                         </div>					
                     </div>
                 </div>
@@ -49,7 +49,7 @@
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
                 <div class="row mb-27">
-                    <div class="col-md-12 home-title-sub text-center translateme">{{ current_category.label}}</div>
+                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{ current_category.label}}</div>
                 </div>
                 <div class="row col-md-10 offset-md-1 mb-3 w-1152">
                     <div id="alphabeticalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false">
@@ -66,7 +66,7 @@
                                     <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">			
                                         <div class="c-button">						
                                             <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
-                                            <div class="c-button-align c-button-color2"><p class="translateme">{{supplemental.label}}</p></div>                        
+                                            <div class="c-button-align c-button-color2"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>                        
                                         </div>					
                                     </div>
                                 </div>
@@ -88,11 +88,11 @@
             <div v-show="alphabetical">
                 <div :class="(category_top_banner) ? 'row mt-14 mb-18' : 'row mb-27' ">
                     <div class="col-md-12 home-title-sub text-center">
-                        <div v-if="!category_top_banner">{{ category_label }}</div>
-                        <div class="hts-strip" v-if="category_top_banner">
+                        <div v-show="!category_top_banner" class="translateme" :data-en="category_label">{{ category_label }}</div>
+                        <div class="hts-strip" v-show="category_top_banner">
                             <img class="tenant-category-strip" :src="category_top_banner" style="width:100%">
-                            <div class="hts-strip-align hts-strip-color2 translateme">{{ category_label }}</div>                                        
-                        </div>                    
+                            <div class="hts-strip-align hts-strip-color2 translateme" :data-en="category_label">{{ category_label }}</div>                                        
+                        </div>
                     </div>
                 </div>
                 <div class="row col-md-10 offset-md-1">
@@ -116,8 +116,8 @@
                                                 <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
                                                 <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                 <div style="font-weight: bold;font-size: 0.7em">
-                                                    <span class="translateme text-success" v-if="tenant.active==1">Open</span>
-                                                    <span class="translateme text-success" v-if="tenant.active==0">Close</span>
+                                                    <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
+                                                    <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
                                                     <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
                                                 </div>
                                             </div>
@@ -165,7 +165,7 @@
                                 <img :src="tenant_details.brand_logo" class="tenant-details-logo">
                                 <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
                                 <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
-                                <div class="tenant-details-views"><span>{{ tenant_details.view_count }}</span>&nbsp;<span>Views</span></div>
+                                <div class="tenant-details-views"><span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                                 <div>
                                     <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                         <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -185,48 +185,48 @@
                             <div v-else class="row mt-3 mb-206">
                                 <div class="col-6">
                                     <a type="button" class="btn btn-share" disabled>
-                                        <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                                        <i class="fa fa-share-alt mr-10" aria-hidden="true"></i><div class="translateme resize-share" data-en="Share">Share</div>
                                     </a>
                                 </div>
                                 <div class="col-6">
                                     <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
                                         <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
                                         <a class="btn-like-display">{{ tenant_details.like_count }}
-                                            <span>Likes</span>
+                                            <span class="translateme" data-en="Likes">Likes</span>
                                         </a>
                                     </span>
                                 </div>
                             </div>
                             <div v-if="tenant_details.is_subscriber" class="row p-r-t-94">
                                 <div class="col-6 mt-3">
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop resize-get-direction translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page)">Get Directions</button>
                                 </div>
                                 <div class="col-6 mt-3">
                                     <span class="text-danger ml-2 btn-like"  @click="updateLikeCount(tenant_details.id, tenant_details.like_count)">
                                         <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
                                         <a class="btn-like-display">{{ tenant_details.like_count }}
-                                            <span>Likes</span>
+                                            <span class="translateme" data-en="Likes">Likes</span>
                                         </a>
                                     </span>
                                 </div>
                                 <div class="col-6 mt-3">
                                     <a type="button" class="btn btn-share" disabled>
-                                        <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                                        <i class="fa fa-share-alt mr-10" aria-hidden="true"></i><div class="translateme resize-share" data-en="Share">Share</div>
                                     </a>
                                 </div>
                                 <div class="col-6 mt-3">
-                                    <button class="btn w-100 btn-prestige-rounded btn-order-now">Order Now</button>
+                                    <button class="btn w-100 btn-prestige-rounded btn-order-now translateme" data-en="Order Now">Order Now</button>
                                 </div>
                             </div>
                             <div v-else class="row mt-3">
                                 <div class="col-12 mt-3">
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                                 <div class="col-12 mt-3">
-                                    <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd">Get Directions (PWD-friendly)</button>
+                                    <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd translateme" data-en="Get Directions (PWD-friendly)">Get Directions (PWD-friendly)</button>
                                 </div>
                                 <div class="col-12 mt-3">
-                                    <button class="btn w-100 btn-prestige-rounded btn-order-now">Order Now</button>
+                                    <button class="btn w-100 btn-prestige-rounded btn-order-now translateme" data-en="Order Now">Order Now</button>
                                 </div>
                             </div>
                         </div>
@@ -237,20 +237,20 @@
             <!-- TABS -->
             <div class="tabs-container" v-show="tabs_container">
                 <div class="tabs">
-                    <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme">View stores by</span>: </span>
+                    <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme" data-en="View stores by">View stores by</span>: </span>
                     <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" data-link="Category" @click="showCategories()">
                         <div>
-                            <a class="translateme tenant-category">Category</a>
+                            <a class="translateme tenant-category" data-en="Category">Category</a>
                         </div>
                     </div>
                     <div class="tabs-item store-tabs-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category);">
                         <div>
-                            <a class="translateme tenant-alphabet">Alphabetical</a>
+                            <a class="translateme tenant-alphabet" data-en="Alphabetical">Alphabetical</a>
                         </div>
                     </div>
                     <div class="tabs-item store-tabs-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals();">
                         <div>
-                            <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental">{{ current_category.supplemental.name }}</a>
+                            <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental" :data-en="current_category.supplemental.name">{{ current_category.supplemental.name }}</a>
                         </div>
                     </div>
                 </div>
@@ -261,6 +261,7 @@
                 </div>
             </div>
             <img v-show="!home_category" :src="back_button" class="back-button" @click="goBack">
+            <div v-show="!home_category" class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
             <!-- MODAL -->
             <div class="custom-modal p-l-490" id="myProduct">
@@ -296,23 +297,23 @@
         <map-page v-show="mapIsShown" ref="callMap"></map-page>
         <promos-page v-show="promosIsShown" ref="callPromo"></promos-page>
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
-        <assitant-page></assitant-page>
+        <assitant-page ref="callAssist"></assitant-page>
         <div class="row">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
-                    <div class="button-text-align translateme">Home</div>
+                    <div class="button-text-align translateme" data-en="Home">Home</div>
                 </div>
                 <div class="h-button widget-button search-button logs" data-link='Search' @click="searchButton">
-                    <div class="button-text-align translateme">Search</div>
+                    <div class="button-text-align translateme" data-en="Search">Search</div>
                 </div>
                 <div class="h-button widget-button map-button logs" data-link='Map' @click="mapButton">
-                    <div class="button-text-align translateme">Map</div>    
+                    <div class="button-text-align translateme" data-en="Map">Map</div>    
                 </div>
                 <div class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
-                    <div class="button-text-align translateme resize">Promos</div>
+                    <div class="button-text-align translateme resize" data-en="Promos">Promos</div>
                 </div>
                 <div class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
-                    <div class="button-text-align translateme">Cinema</div>
+                    <div class="button-text-align translateme" data-en="Cinema">Cinema</div>
                 </div>
             </div>
         </div>
@@ -389,11 +390,15 @@
                 tenantSchedule :[],
                 trigger_from: '',
                 current_language: 'ENGLISH',
-                current_language_set: '',
+                current_language_set: 'english',
                 languages: {'한국어':'korean','日本人':'japanese','中文':'chinese','FILIPINO':'filipino','ENGLISH':'english'},
                 translations: '',
                 translated: '',
                 translations_by_language: '',
+                current_nav_dot: '',
+                current_page: 'home',
+                current_location: '',
+                see_details_font_size: '',
             };
         },
 
@@ -402,6 +407,34 @@
             this.getCategories();
             this.generateLetters();
             this.getTranslation();
+        },
+
+        watch: {
+            current_language_set(value) {
+                if (value == 'korean') {
+                    $('.resize-see-details').css({'font-size':'19px'});
+                } 
+                if (value == 'japanese') {
+                    $('.resize-see-details').css({'font-size':'19px'});
+                } 
+                if (value == 'chinese') {
+                    $('.resize-see-details').css({'font-size':'16px'});
+                } 
+                if (value == 'filipino') {
+                    $('.resize-see-details').css({'font-size':'12px'});
+                } 
+                if (value == 'english') {
+                    $('.resize-see-details').css({'font-size':'21px'});
+                }
+            },
+            current_nav_dot(value) {
+                if (value > 13) {                
+                    let text_indent = (this.tenant_list_count - 14) * -55;
+                    $(".carousel-indicators-a").css({'text-indent':text_indent+'px'});
+                } else if (value < 13) {     
+                    $(".carousel-indicators-a").css({'text-indent':'0'});
+                }
+            }
         },
 
         methods: {
@@ -429,6 +462,8 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
+                this.page_title = 'Category';
+                this.$refs.callAssist.filterAssist('tenantcategory',this.current_language_set);
             },
 
             searchButton: function (event) {
@@ -439,9 +474,11 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
-                this.$refs.callSearch.resetPage();
+                this.$refs.callSearch.resetPage(this.current_language_set);
                 this.$refs.callPromo.resetPage();
                 this.$refs.callCinema.resetPage();
+
+                this.$refs.callAssist.filterAssist('searchbox',this.current_language_set);
             },
 
             mapButton: function (event) {
@@ -453,6 +490,7 @@
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
                 this.$refs.callMap.resetPage();
+                this.$refs.callAssist.filterAssist('map',this.current_language_set);
             },
 
             promosButton: function (event) {
@@ -464,6 +502,7 @@
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
                 this.$refs.callPromo.resetPage();
+                this.$refs.callAssist.filterAssist('promo',this.current_language_set);
             },
 
             cinemaButton: function (event) {
@@ -474,7 +513,7 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = true;
                 this.aboutIsShown = false;
-                this.$refs.callCinema.resetPage();
+                this.$refs.callCinema.resetPage(this.current_language_set);
             },
 
             returnFromAbout: function (event) {
@@ -501,23 +540,23 @@
                 }
             },
 
-            buildSchedule: function (data) {
+            buildSchedule: function (data) {              
                 let tempSchedule = [];
-                const currentSchedule = eval(data.tenant_details['schedules']);
-
-                Object.keys(this.days).forEach(day => {
-                    currentSchedule.forEach(obj => {
-                        Object.keys(obj).forEach(key => {
-                            if (key == 'schedules') {
-                                if (obj['schedules'].match(day)) {
-                                    tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
-                                }                               
-                            }
+                var currentSchedule = eval(data.tenant_details['schedules']);
+                    if (currentSchedule) {
+                        Object.keys(this.days).forEach(day => {
+                            currentSchedule.forEach(obj => {
+                                Object.keys(obj).forEach(key => {
+                                    if (key == 'schedules') {
+                                        if (obj['schedules'].match(day)) {
+                                            tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
+                                        }                               
+                                    }
+                                });
+                            });
                         });
-                    });
-                });
-
-                this.tenantSchedule = tempSchedule;
+                    }  
+                this.tenantSchedule = tempSchedule;              
             },
 
             updateLikeCount: function(id) {
@@ -664,6 +703,11 @@
                     this.filterLetterNavigator();
                 }, 500);
                 this.TitleCasePerWord();
+                setTimeout(() => {
+                    this.setTranslation(this.current_language_set);
+                }, 100);
+
+                this.$refs.callAssist.filterAssist('alphabet',this.current_language_set);
             },
 
             getTenantsByCategory: function(category) {
@@ -690,6 +734,10 @@
                     this.initializeSwipe();
                     this.resetCarousel();
                     this.TitleCasePerWord();
+
+                    setTimeout(() => {
+                        this.setTranslation(this.current_language_set);
+                    }, 100);
                 });       
             },
 
@@ -715,6 +763,12 @@
                     }
                     this.TitleCasePerWord();
                     this.resetCarousel();
+
+                    setTimeout(() => {
+                        this.setTranslation(this.current_language_set);
+                    }, 100);
+
+                    this.$refs.callAssist.filterAssist('supplemental',this.current_language_set);
                 });               
             },
 
@@ -727,6 +781,8 @@
                 this.navigationLetters = false;
                 this.initializeSwipe();
                 this.resetCarousel();
+
+                this.$refs.callAssist.filterAssist('tenantcategory',this.current_language_set);
             },
 
             showSupplementals: function() {
@@ -737,6 +793,8 @@
                 this.show_tenant = false; 
                 this.navigationLetters = false;
                 this.initializeSwipe();     
+
+                this.$refs.callAssist.filterAssist('supplementalcat',this.current_language_set);
             },     
 
             showChildren: function(category) {
@@ -756,6 +814,10 @@
                 this.helper.saveLogs({category_id: category.id}, 'Category');
                 this.initializeSwipe();
                 this.tabs_container = true;
+
+                setTimeout(() => {
+                    this.setTranslation(this.current_language_set);
+                }, 100);
             },
 
             goBack: function() {
@@ -822,16 +884,25 @@
                         $('#category-tab').trigger('click');
                     }
                     
-                }            
+                }    
+                setTimeout(() => {
+                    this.setTranslation(this.current_language_set);
+                }, 100);        
             },
 
             showTenant: function(tenant) {
-                this.page_title = 'Store Page';
+                this.page_title = 'Store Page';   
                 this.tenant_details = tenant;
                 this.alphabetical = false;
                 this.show_tenant = true;
                 this.tabs_container = false;
                 this.buildSchedule(this.tenant_details);
+
+                setTimeout(() => {
+                    this.setTranslation(this.current_language_set);
+                }, 100);
+
+                this.$refs.callAssist.filterAssist('tenant',this.current_language_set);
             },
 
             showSchedule: function() {
@@ -873,40 +944,53 @@
             setTranslation: function(language) {
                 if (language != 'english') {
                     this.translations_by_language = this.translations.filter(option => option.language == language);
+                }else {
+                    this.translations_by_language = this.translations;
                 }
                 
                 var vm = this;
 
-                if (vm.translated == '') {
                     $(".translateme").each(function(){
-                        let english_word = $(this).html().replace(/&amp;/g, '&');
-                        if (vm.translations_by_language.find(option => option.english == english_word) != null) {
-                            vm.translated = vm.translations_by_language.find(option => option.english == english_word);
-                            $(this).html(vm.translated.translated);
+                        let data_en = $(this).attr('data-en');
+
+                        // console.log($(this).attr("class") + " - " + data_en);
+
+                        vm.translated = vm.translations_by_language.find(option => option.english == data_en);
+
+                        if (vm.translated != null) {                         
+                            if (language != 'english') {
+                                $(this).html(vm.translated.translated);
+                            } else {
+                                $(this).html(vm.translated.english);
+                            }
                         }
+
                     });
-                } else if (language == 'english') {
-                    $(".translateme").each(function(){
-                        let english_word = $(this).html().replace(/&amp;/g, '&');
-                        if (vm.translations.find(option => option.translated == english_word) != null) {
-                            vm.translated = vm.translations.find(option => option.translated == english_word);
-                            $(this).html(vm.translated.english);
-                        }
-                    });
-                    this.translated = '';
-                } else {
-                    $(".translateme").each(function(){
-                        let english_word = $(this).html().replace(/&amp;/g, '&');
-                        if (vm.translations.find(option => option.translated == english_word) != null) {
-                            vm.translated = vm.translations.find(option => option.translated == english_word);
-                            vm.translated = vm.translations_by_language.find(option => option.english == vm.translated.english);
-                            $(this).html(vm.translated.translated);
-                        }
-                    });
-                }   
-                $(function() {
-                    $('.resize').autoSizr(24);     
-                });    
+
+                this.$refs.callAssist.filterAssist(null,vm.current_language_set);
+            
+                $('.resize').autoSizr(24);  
+                $('.resize-get-direction').autoSizr(21);
+                // $('.resize-see-details').autoSizr(21);
+
+                if (this.current_language_set == 'japanese') {
+                    $(".resize-share").css({'width':'124'});
+                    $('.resize-share').autoSizr(21);
+                }else {
+                    $(".resize-share").css({'width':'64'});
+                    $('.resize-share').autoSizr(21);
+                }
+			},
+
+            findStore: function(tenant_details,current_page) {
+                this.current_page = current_page;
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.mapIsShown = true;
+				this.$refs.callMap.find_store(tenant_details,this.current_page);
+                this.$refs.callAssist.filterAssist('maptenant',this.current_language_set);
 			},
 
         },
@@ -915,7 +999,7 @@
             var obj = this;
 
             $(function() {
-                // Call Parent Method from Child Component
+                //--s Call Parent Method from Child Component
                 obj.$root.$on('MainCategories', () => {
                     obj.homeButton();
                 });
@@ -929,6 +1013,14 @@
                     obj.returnFromAbout(value);
                 });
 
+                obj.$root.$on('callFindStore', (value,current_page) => {
+                    obj.findStore(value,current_page);
+                });
+
+                obj.$root.$on('callSetTranslation', () => {
+                    obj.setTranslation(obj.current_language_set);
+                });
+                //--e
                 $('.store-tabs-item').on('click', function () {
                     $('.store-tabs-item').removeClass('tab-item-selected');
                     $(this).addClass('tab-item-selected');
@@ -955,6 +1047,7 @@
                         $(".control-prev-s").show();
                         $(".control-next-s").show();
                     }
+                    obj.current_nav_dot = $(this).find('.active').attr('data-slide-to');
                 });
 
                 $('#supplementalCarousel').on('slid.bs.carousel', function () {
@@ -968,6 +1061,7 @@
                         $(".control-prev-a").show();
                         $(".control-next-a").show();
                     }
+                    obj.current_nav_dot = $(this).find('.active').attr('data-slide-to');
                 });
                 
                 // $('.store-tabs-item').on('click', function(){

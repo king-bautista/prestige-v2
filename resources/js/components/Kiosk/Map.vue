@@ -2,7 +2,7 @@
     <div class="router-page" style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
-                <div id="page-title">{{ page_title }}</div>
+                <div id="page-title" class="translateme" :data-en="page_title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
@@ -12,7 +12,7 @@
             
             <div id="tenant-details" class="card mb-3 label-3">
                 <div class="card-body text-info text-center">
-                    <div style="color:#6051e3;"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
+                    <div style="color:#6051e3;"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
                     <div style="padding-left: 10px;margin-top: 19px;color:#6051e3;">
                         <img src="images/man-walk.svg" style="width:20px;">
                         <span style="font-weight: bold;">
@@ -30,14 +30,14 @@
 
                 <div>
                     <div class="" style="text-align: left;padding-left: 45px;margin-top: 48px;">
-                        <span class="translateme">Was this helpful?</span>
+                        <span class="translateme" data-en="Was this helpful?">Was this helpful?</span>
                         <a href="#" class="response-btn btn-helpful" style="font-size:1rem;color:#6051e3;" @click="updateFeedback()">
                             <span class="fa fa-thumbs-up"></span>
                         </a> 
                         <a href="#" class="response-btn btn-nothelpful" style="font-size:1rem;color:#6051e3;">
                             <span class="fa fa-thumbs-down"></span>
                         </a> 
-                        <span class="translateme" v-show="feedback_response">Thank you!</span>
+                        <span class="translateme" v-show="feedback_response" data-en="Thank you!">Thank you!</span>
                     </div>             
                 </div>
             </div>
@@ -152,7 +152,7 @@
         </div>
         <div id="guide-button" v-show="guide_button">
             <div class="toggle-arrow mt-7"><i class="arrow up"></i></div>   
-            <div id="toggle-updown-text" class="translateme">Show Text Guide</div>
+            <div id="toggle-updown-text" class="translateme" data-en="Show Text Guide">Show Text Guide</div>
         </div>
 
         <!-- MODAL -->
@@ -203,6 +203,7 @@
         </div>
 
         <img class="back-button" :src="back_button" @click="goBack">
+        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
     </div>
 </template>
 <script>
@@ -236,7 +237,8 @@
                 disable: true,
                 feedback_modal: false,
                 submit_disable: true,
-                feedback_response: false
+                feedback_response: false,
+                called_from: '',
             };
         },
 
@@ -304,9 +306,20 @@
             },
 
             goBack: function() {
-                $('.h-button').removeClass('active');
-                $('.home-button').addClass('active');
-                this.$router.push("/").catch(()=>{});
+                if (this.called_from == 'home') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (this.called_from == 'search') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (this.called_from == 'promo') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (this.called_from == 'cinema') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else {
+                    this.$root.$emit('MainCategories');
+                    $('.h-button').removeClass('active');
+                    $('.home-button').addClass('active');
+                    this.$router.push("/").catch(()=>{});
+                }       
             },
 
             toggleSelectedMap: function(value, id) {
@@ -321,7 +334,8 @@
                 });
 			},
 
-            find_store: function(value, id) {
+            find_store: function(value, called_from) {
+                this.called_from = called_from;
                 this.helper.saveLogs(value, 'Map');
                 this.feedback_response = false;
                 $(function() {
@@ -335,6 +349,7 @@
                     this.wayfindings.drawline(value.id, value);
                     $('#guide-button').show();
                     $('.map-search-modal').hide();
+                    $('.pinch').hide();
                     $('.response-btn').removeClass('disabled-response');
                     $('.response-btn').removeClass('response-active-color');
                 });
@@ -374,6 +389,7 @@
                 $(".map-search-modal").hide();
                 this.feedback_modal = false;
                 this.feedback_response = false;
+                this.called_from = '';
                 $('#guide-button .toggle-arrow .arrow').removeClass('down');
                 $('#guide-button .toggle-arrow .arrow').addClass('up');
                 $('#guide-button').hide();
