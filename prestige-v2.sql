@@ -11487,7 +11487,7 @@ CREATE TABLE IF NOT EXISTS `companies` (
 
 -- Dumping data for table prestige.companies: ~3 rows (approximately)
 INSERT INTO `companies` (`id`, `parent_id`, `classification_id`, `name`, `email`, `contact_number`, `address`, `tin`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, NULL, 1, 'Sm Supermalls', 'test@yahoo.com', '09493593166', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', '32532453252345', 1, '2022-10-17 22:43:16', '2022-11-03 22:36:53', NULL),
+	(1, NULL, 1, 'SM Supermalls', 'test@yahoo.com', '09493593166', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', '32532453252345', 1, '2022-10-17 22:43:16', '2023-04-04 06:12:38', NULL),
 	(2, 1, 1, 'Prestige Interactive test', 'admintest@gmail.com', '09958568151', 'Unit 2901A 29th Floor West Tower, Philippine Stock Exchange Centre, Exchange Road, Ortigas Center, Pasig City', '09958568151', 1, '2022-11-02 21:10:28', '2023-03-31 05:26:15', NULL),
 	(3, NULL, 3, 'Bistro Group, Inc', 'admintest@gmail.com', '09493593166', 'User can post advertisements pertaining to Italiannis ONLY in Megamall (all screens)', '34535345345345345', 1, '2023-03-01 08:20:19', '2023-03-31 03:32:30', NULL);
 
@@ -11502,21 +11502,20 @@ CREATE TABLE IF NOT EXISTS `company_brands` (
   CONSTRAINT `company_brands_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.company_brands: ~14 rows (approximately)
+-- Dumping data for table prestige.company_brands: ~12 rows (approximately)
 INSERT INTO `company_brands` (`company_id`, `brand_id`) VALUES
-	(1, 7216),
+	(3, 7693),
+	(3, 7698),
+	(3, 7690),
+	(3, 7685),
+	(3, 7671),
 	(1, 7218),
 	(1, 7231),
 	(1, 7235),
 	(1, 7236),
 	(1, 7238),
 	(1, 7239),
-	(1, 7240),
-	(3, 7693),
-	(3, 7698),
-	(3, 7690),
-	(3, 7685),
-	(3, 7671);
+	(1, 7240);
 
 -- Dumping structure for table prestige.company_categories
 DROP TABLE IF EXISTS `company_categories`;
@@ -11926,7 +11925,7 @@ CREATE TABLE IF NOT EXISTS `contract_brands` (
   CONSTRAINT `contract_brands_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contract_brands: ~6 rows (approximately)
+-- Dumping data for table prestige.contract_brands: ~20 rows (approximately)
 INSERT INTO `contract_brands` (`contract_id`, `brand_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 7671, '2023-04-03 09:27:46', '2023-04-04 06:04:46', '2023-04-04 06:04:46'),
 	(1, 7677, '2023-04-03 09:27:46', '2023-04-04 06:04:46', '2023-04-04 06:04:46'),
@@ -11963,7 +11962,7 @@ CREATE TABLE IF NOT EXISTS `contract_screens` (
   CONSTRAINT `contract_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contract_screens: ~3 rows (approximately)
+-- Dumping data for table prestige.contract_screens: ~14 rows (approximately)
 INSERT INTO `contract_screens` (`contract_id`, `site_screen_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, '2023-04-03 09:27:46', '2023-04-04 06:04:46', '2023-04-04 06:04:46'),
 	(2, 1, '2023-04-03 09:28:45', '2023-04-03 09:28:45', NULL),
@@ -20535,7 +20534,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `company_id`, `full_name`, `email`, `email_verified_at`, `password`, `api_token`, `salt`, `login_attempt`, `is_blocked`, `active`, `activation_token`, `created_by`, `updated_by`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, NULL, 'Bautista, King', 'superportal@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2022-08-10 10:52:17', '2023-03-07 08:46:31', '2023-03-07 08:46:31'),
 	(4, NULL, 'Admin, Admin', 'admin@gmail.com', NULL, '$2y$10$QEY0OLI9HdHbfMsc9igWFuvg17iBIBK9hZ6RzyPzz29SV8Cp77RqK', NULL, 'aTVOhYWuUpIxmrn4cv1G', 0, 0, 1, NULL, 0, 0, NULL, '2022-09-15 10:28:20', '2023-03-07 08:46:34', '2023-03-07 08:46:34'),
-	(5, 1, 'Office, Head', 'headoffice@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2023-03-07 07:01:41', '2023-03-13 10:04:38', NULL),
+	(5, 1, 'Bautista, Ernani', 'headoffice@gmail.com', NULL, '$2y$10$vram/9jH8N8pehAzoFnaZuNV4tFRfqhY0bW80D.GbpmnaJA/m6aK6', NULL, 'aQvt31LueYGEJOszSMmf', 0, 0, 1, NULL, 0, 0, NULL, '2023-03-07 07:01:41', '2023-04-04 06:27:51', NULL),
 	(6, 1, 'Cute, King', 'admintest@gmail.com', NULL, '$2y$10$jKNobVuqfr00re4WlkipdOdb3wHIg4FYxjzKD7lXhrskCkPKOqgyW', NULL, 'fKd5PAVxriczjvnh4XWQ', 0, 0, 1, NULL, 0, 0, NULL, '2023-03-13 04:00:15', '2023-03-13 04:00:15', NULL);
 
 -- Dumping structure for table prestige.users_meta
@@ -20560,8 +20559,8 @@ INSERT INTO `users_meta` (`id`, `user_id`, `meta_key`, `meta_value`, `created_at
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 10:52:17', '2022-08-10 10:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 10:28:20', '2022-09-15 10:28:20', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 10:28:20', '2022-09-15 10:28:20', NULL),
-	(9, 5, 'first_name', 'Head', '2023-03-07 07:01:41', '2023-03-07 08:47:07', NULL),
-	(10, 5, 'last_name', 'Office', '2023-03-07 07:01:41', '2023-03-07 08:47:07', NULL),
+	(9, 5, 'first_name', 'Ernani', '2023-03-07 07:01:41', '2023-04-04 06:27:51', NULL),
+	(10, 5, 'last_name', 'Bautista', '2023-03-07 07:01:41', '2023-04-04 06:27:51', NULL),
 	(11, 6, 'first_name', 'King', '2023-03-13 04:00:15', '2023-03-13 04:00:15', NULL),
 	(12, 6, 'last_name', 'Cute', '2023-03-13 04:00:15', '2023-03-13 04:00:15', NULL),
 	(13, 5, 'mobile', '09493593166', '2023-03-13 09:34:40', '2023-03-13 09:34:40', NULL),
@@ -20596,13 +20595,14 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
   CONSTRAINT `user_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_roles: ~5 rows (approximately)
+-- Dumping data for table prestige.user_roles: ~6 rows (approximately)
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 	(3, 1),
 	(3, 2),
 	(4, 2),
 	(6, 3),
-	(5, 3);
+	(5, 3),
+	(5, 4);
 
 -- Dumping structure for table prestige.user_screens
 DROP TABLE IF EXISTS `user_screens`;
@@ -20615,13 +20615,12 @@ CREATE TABLE IF NOT EXISTS `user_screens` (
   CONSTRAINT `user_screens_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_screens: ~5 rows (approximately)
+-- Dumping data for table prestige.user_screens: ~4 rows (approximately)
 INSERT INTO `user_screens` (`user_id`, `site_screen_id`) VALUES
 	(5, 1),
 	(5, 2),
 	(5, 5),
-	(5, 6),
-	(5, 7);
+	(5, 6);
 
 -- Dumping structure for table prestige.user_sites
 DROP TABLE IF EXISTS `user_sites`;
@@ -20634,10 +20633,9 @@ CREATE TABLE IF NOT EXISTS `user_sites` (
   CONSTRAINT `user_sites_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_sites: ~2 rows (approximately)
+-- Dumping data for table prestige.user_sites: ~1 rows (approximately)
 INSERT INTO `user_sites` (`user_id`, `site_id`) VALUES
-	(5, 1),
-	(5, 2);
+	(5, 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
