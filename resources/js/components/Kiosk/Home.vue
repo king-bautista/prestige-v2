@@ -567,6 +567,8 @@
                     like_count: this.tenant_details.like_count
                 }
 
+                $(".btn-like-display").addClass('disabled-response');
+
                 $.post( "/api/v1/like-count", params ,function(response) {
                     
                 });
@@ -783,6 +785,8 @@
                 this.resetCarousel();
 
                 this.$refs.callAssist.filterAssist('tenantcategory',this.current_language_set);
+
+                $(".navigation-letters li").removeClass('active'); 
             },
 
             showSupplementals: function() {
@@ -795,6 +799,8 @@
                 this.initializeSwipe();     
 
                 this.$refs.callAssist.filterAssist('supplementalcat',this.current_language_set);
+
+                $(".navigation-letters li").removeClass('active'); 
             },     
 
             showChildren: function(category) {
@@ -903,6 +909,8 @@
                 }, 100);
 
                 this.$refs.callAssist.filterAssist('tenant',this.current_language_set);
+
+                $(".btn-like-display").removeClass('disabled-response');
             },
 
             showSchedule: function() {
