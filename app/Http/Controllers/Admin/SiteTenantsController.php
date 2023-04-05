@@ -17,6 +17,8 @@ use App\Models\ViewModels\BrandProductViewModel;
 use App\Models\ViewModels\TenantsDropdownViewModel;
 
 use App\Imports\SiteTenantsImport;
+use App\Exports\Export;
+use Storage;
 
 class SiteTenantsController extends AppBaseController implements SiteTenantsControllerInterface
 {
@@ -320,6 +322,52 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
         }
         catch (\Exception $e)
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $tenants_management = SiteTenantViewModel::get();
+            $reports = [];
+            foreach ($tenants_management as $tenant) {
+                $reports[] = [
+                    'brand_name' => $tenant->brand_name,
+                    'site_name' => $tenant->site_name,
+                    'building_name' => $tenant->building_name,
+                    'floor_name' => $tenant->floor_name,
+                    'status' => ($tenant->active == 1) ? 'Active' : 'Inactive',
+                    'is_subscriber' => ($tenant->is_subscriber == 1) ? 'Yes' : 'No',
+                    'updated_at' => $tenant->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "tenant_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

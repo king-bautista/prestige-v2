@@ -201,6 +201,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/delete/{id}', 'Admin\SiteController@delete')->where('id', '[0-9]+')->name('admin.site.delete');
     Route::get('/admin/site/get-all', 'Admin\SiteController@getAll')->where('id', '[0-9]+')->name('admin.site.get-all');
     Route::get('/admin/site/set-default/{id}', 'Admin\SiteController@setDefault')->where('id', '[0-9]+')->name('admin.site.set-default');
+    Route::get('/admin/site/download-csv', 'Admin\SiteController@downloadCsv')->name('admin.site.download-csv');
 
     /*
     |--------------------------------------------------------------------------
@@ -261,7 +262,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/tenant/store-brand-products', 'Admin\SiteTenantsController@saveBrandProduct')->name('admin.site.tenant.brand-products');
     Route::get('/admin/site/tenant/product/list/{id}', 'Admin\SiteTenantsController@tenantProducts')->where('id', '[0-9]+')->name('admin.site.tenant.product-list');
     Route::get('/admin/site/tenant/product/delete/{tid}/{id}', 'Admin\SiteTenantsController@deleteProduct')->where('tid', '[0-9]+')->where('id', '[0-9]+')->name('admin.site.tenant.delete-product');
-    
+    Route::get('/admin/site/tenant/download-csv', 'Admin\SiteTenantsController@downloadCsv')->name('admin.site-tenant.download-csv');
+
     /*
     |--------------------------------------------------------------------------
     | Sites Maps Routes
@@ -442,6 +444,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/assistant-message/update', 'Admin\AssistantMessagesController@update')->name('admin.assistant-message.update');
     Route::get('/admin/assistant-message/delete/{id}', 'Admin\AssistantMessagesController@delete')->where('id', '[0-9]+')->name('admin.assistant-message.delete');
     Route::get('/admin/assistant-message/download-csv', 'Admin\AssistantMessagesController@downloadCsv')->name('admin.assistant-message.download-csv');
+    
     /*
     |--------------------------------------------------------------------------
     | Translations Routes

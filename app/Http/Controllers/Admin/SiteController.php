@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\SiteControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Site;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SiteViewModel;
+use App\Exports\Export;
+use Storage;
+use URL;
+
 
 class SiteController extends AppBaseController implements SiteControllerInterface
 {
@@ -243,6 +248,53 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
         }
         catch (\Exception $e) 
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $sites_management = SiteViewModel::get();
+            $reports = [];
+            foreach ($sites_management as $site) {
+                $reports[] = [
+                    'name' => $site->name,
+                    'description' => $site->descriptions,
+                    'logo' =>URL::to("/"); $site->site_logo,
+                    'banner' => $site->site_banner,
+                    'background' => $site->site_background,
+                    'status' => ($site->active == 1) ? 'Active' : 'Inactive',
+                    'is_default' => ($site->is_default == 1) ? 'Yes' : 'No',
+                    'updated_at' => $site->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "site_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
