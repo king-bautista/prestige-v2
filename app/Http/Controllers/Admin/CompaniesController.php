@@ -195,13 +195,13 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $reports = [];
             foreach ($company_management as $company) {
                 $reports[] = [
-                    'name' => $company->,
-                    'parent_company' => $company->,
-                    'classification_name' => $company->,
-                    'email' => $company->,
-                    'contact_number' => $company->,
-                    'address' => $company->,
-                    'tin_number' => $company->,
+                    'name' => $company->name,
+                    'parent_company' => $company->parent_company,
+                    'classification_name' => $company->classification_name,
+                    'email' => $company->email,
+                    'contact_number' => $company->contact_number,
+                    'address' => $company->address,
+                    'tin_number' => $company->tin,
                     'status' => ($company->active == 1) ? 'Active' : 'Inactive',
                     'updated_at' => $company->updated_at,
                 ];
@@ -213,7 +213,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                 Storage::delete($file);
             }
 
-            $filename = "site_management.csv";
+            $filename = "company.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
