@@ -60,17 +60,4 @@ class SiteScreen extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    public function saveExclusiveScreen($request)
-    {
-        ExclusiveScreen::updateOrCreate(
-            [
-               'site_screen_id' => $this->id,
-            ],
-            [
-               'company_id' => $request->company,
-               'brand_id' => $request->brand
-            ],
-        );
-    }
 }

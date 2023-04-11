@@ -85,7 +85,7 @@
             },
 
             callHomeMethod: function(){
-                this.$root.$emit('MainCategories') //like this
+                this.$root.$emit('MainCategories');
             }
         },
 

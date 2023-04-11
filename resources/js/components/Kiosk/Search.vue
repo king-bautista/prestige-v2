@@ -2,19 +2,20 @@
     <div class="router-page" style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
-                <div id="page-title">{{ page_title }}</div>
+                <div id="page-title" class="translateme" :data-en="page_title">{{page_title}}</div>
             </div>
             <div class="col-md-6 text-right">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
+        <!-- SEARCH/ RESULT -->
         <div v-show="search_page">
             <div class="row keyboard-section" v-show="!search_results">
                 <div class="col-md-10 offset-md-1 mt-83 pt-5">
                     <form class="row form text-center" v-on:submit.prevent="onEnter">
                         <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
                             <input type="text" id="code" name="code" class="form-control input-mg search-box">
-                            <button class="btn search-box-button" type="button" @click="onEnter">Search</button>
+                            <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
                             <label class="notification">Please type at least two (2) letters to search.</label>
                         </div>                    
                         <div class="softkeys mt-63" data-target="input[name='code']"></div>
@@ -24,7 +25,7 @@
             <div class="result-section" v-show="search_results">
                 <div class="row mb-23">
                     <div class="col-md-12 home-title text-center">
-                        <div>You searched for: ‘{{this.search.key_words}}’</div>                  
+                        <div><span class="translateme" data-en="You searched for">You searched for</span>: ‘{{this.search.key_words}}’</div>                  
                     </div>
                 </div>
                 <div class="row col-md-10 offset-md-1">
@@ -48,8 +49,8 @@
                                                 <div class="shop_name">{{ tenant.brand_name }}</div>
                                                 <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.building_name }}, {{ tenant.floor_name }}</div>
                                                 <div style="font-weight: bold;font-size: 0.7em">
-                                                    <span class="translateme text-success" v-if="tenant.active==1">Open</span>
-                                                    <span class="translateme text-success" v-if="tenant.active==0">Close</span>
+                                                    <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
+                                                    <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
                                                     <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
                                                 </div>
                                             </div>
@@ -69,7 +70,7 @@
                     </div>
 
                     <div class="tabs m-a mt-42" v-show="current_subscriber_list_count>0">
-                        <span class="mr-10 my-auto translateme label-2">You might want to try : </span>
+                        <span class="mr-10 my-auto translateme label-2" data-en="You might want to try : ">You might want to try : </span>
                         <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.subscriber_logo" @click="onClickSuggestedSubsriber(subscriber.id)">
                     </div>
 
@@ -78,7 +79,7 @@
             </div>
         </div>
 
-        <!-- TENANT -->
+        <!-- TENANT PAGE -->
         <div v-show="show_tenant">
             <div class="row">
                 <div class="col-12 col-sm-8 text-center">
@@ -104,7 +105,7 @@
                             <img :src="tenant_details.brand_logo" class="tenant-details-logo">
                             <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
                             <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
-                            <div class="tenant-details-views"><span>{{ tenant_details.view_count }}</span>&nbsp;<span>Views</span></div>
+                            <div class="tenant-details-views"><span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                             <div>
                                 <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                     <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -124,7 +125,7 @@
                         <div v-else class="row mt-3 mb-206">
                             <div class="col-6">
                                 <a type="button" class="btn btn-share" disabled>
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                                    <i class="fa fa-share-alt mr-10" aria-hidden="true"></i><div class="translateme resize-share" data-en="Share">Share</div>
                                 </a>
                             </div>
                             <div class="col-6">
@@ -138,7 +139,7 @@
                         </div>
                         <div v-if="tenant_details.is_subscriber" class="row p-r-t-94">
                             <div class="col-6 mt-3">
-                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details)">Get Directions</button>
                             </div>
                             <div class="col-6 mt-3">
                                 <span class="text-danger ml-2 btn-like"  @click="updateLikeCount(tenant_details.id, tenant_details.like_count)">
@@ -150,22 +151,22 @@
                             </div>
                             <div class="col-6 mt-3">
                                 <a type="button" class="btn btn-share" disabled>
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                                    <i class="fa fa-share-alt mr-10" aria-hidden="true"></i><div class="translateme resize-share" data-en="Share">Share</div>
                                 </a>
                             </div>
                             <div class="col-6 mt-3">
-                                <button class="btn w-100 btn-prestige-rounded btn-order-now">Order Now</button>
+                                <button class="btn w-100 btn-prestige-rounded btn-order-now translateme" data-en="Order Now">Order Now</button>
                             </div>
                         </div>
                         <div v-else class="row mt-3">
                             <div class="col-12 mt-3">
-                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details)">Get Directions</button>
                             </div>
                             <div class="col-12 mt-3">
-                                <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd">Get Directions (PWD-friendly)</button>
+                                <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd translateme" data-en="Get Directions (PWD-friendly)">Get Directions (PWD-friendly)</button>
                             </div>
                             <div class="col-12 mt-3">
-                                <button class="btn w-100 btn-prestige-rounded btn-order-now">Order Now</button>
+                                <button class="btn w-100 btn-prestige-rounded btn-order-now translateme" data-en="Order Now">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -203,6 +204,7 @@
         </div>
 
         <img class="back-button" :src="back_button" @click="goBack">
+        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
     </div>
 </template>
 <script> 
@@ -268,8 +270,14 @@
                         this.page_title = 'Search Results';
                         this.helper.saveLogs(this.search, 'Search');
 
+                        this.$root.$emit('callMutateLocation','searchresult');
+
                         setTimeout(() => {
                             $('.first-item').trigger('click');
+                        }, 100);
+
+                        setTimeout(() => {
+                            this.$root.$emit('callSetTranslation');
                         }, 100);
                     })
                 }else{
@@ -283,15 +291,20 @@
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
                     this.tenant_list = response.data.data;
-                    Object.keys(this.tenant_list).forEach(list => {    
-                        this.tenant_details = this.tenant_list[list][0];
-                    });
+                    // this.tenant_details = this.tenant_list.find(option => option.id === this.search.id);
+                    this.tenant_details = response.data.data.shift();
+                    // Object.keys(this.tenant_list).forEach(list => {    
+                    //     this.tenant_details = this.tenant_list[list];
+                    // });
                     this.page_title = 'Store Page';
                     this.search_page = false;
                     this.show_tenant = true;
                     this.fromAutoSuggest = true;
 
+                    this.$root.$emit('callMutateLocation','tenant');
+
                     this.buildSchedule(this.tenant_details);
+                    $('.resize-share').autoSizr(21);
 				})     
             },
 
@@ -307,6 +320,8 @@
                     this.show_tenant = true;
                     this.fromAutoSuggest = false;
 
+                    this.$root.$emit('callMutateLocation','tenant');
+
                     this.buildSchedule(this.tenant_details);
 				})     
             },
@@ -318,6 +333,10 @@
                     this.show_tenant = false;
                     $("#code").val('');
                     this.page_title = 'Search Results';
+
+                    setTimeout(() => {
+                        this.$root.$emit('callSetTranslation');
+                    }, 100);
                 }
                 else if(this.fromAutoSuggest == true) {
                     this.tenant_list = [];
@@ -329,6 +348,10 @@
                     $("#code").val('');
                     this.fromAutoSuggest = false;
                     this.page_title = 'Search';
+
+                    setTimeout(() => {
+                        this.$root.$emit('callSetTranslation');
+                    }, 100);
                 }
                 else if(this.show_tenant == false && this.search_results == true) {
                     this.tenant_list = [];
@@ -338,13 +361,17 @@
                     this.getSuggestionList();
                     $("#code").val('');
                     this.page_title = 'Search';
+
+                    setTimeout(() => {
+                        this.$root.$emit('callSetTranslation');
+                    }, 100);
                 }
                 else {
                     $('.h-button').removeClass('active');
                     $('.home-button').addClass('active');
                     this.$router.push("/").catch(()=>{});
                     $("#code").val('');
-                    $(".home-button").trigger('click');
+                    this.$root.$emit('MainCategories');
                 }
             },
 
@@ -469,19 +496,19 @@
             buildSchedule: function (data) {
                 let tempSchedule = [];
                 const currentSchedule = eval(data.tenant_details['schedules']);
-
-                Object.keys(this.days).forEach(day => {
-                    currentSchedule.forEach(obj => {
-                        Object.keys(obj).forEach(key => {
-                            if (key == 'schedules') {
-                                if (obj['schedules'].match(day)) {
-                                    tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
-                                }                               
-                            }
+                    if (currentSchedule) {
+                        Object.keys(this.days).forEach(day => {
+                        currentSchedule.forEach(obj => {
+                            Object.keys(obj).forEach(key => {
+                                if (key == 'schedules') {
+                                    if (obj['schedules'].match(day)) {
+                                        tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
+                                    }                               
+                                }
+                            });
                         });
                     });
-                });
-
+                }
                 this.tenantSchedule = tempSchedule;
             },
 
@@ -492,6 +519,11 @@
                 this.show_tenant = true;
                 $('.notification').hide();
                 this.buildSchedule(this.tenant_details);
+                this.$root.$emit('callMutateLocation','tenant');
+
+                setTimeout(() => {
+                    this.$root.$emit('callSetTranslation');
+                }, 100);
             },
 
             updateLikeCount: function(id) {
@@ -524,19 +556,24 @@
                 } 
             },
 
-            resetPage: function() {
+            resetPage: function(content_language) {
                 $('#code').val("");
                 $('.notification').hide();
                 this.search_page = true;
                 this.search_results = false;
+                this.show_tenant = false;
                 this.page_title = 'Search';
 
-                this.$root.$emit('callAssistantFrom','searchbox');
+                // this.$root.$emit('callAssistant','searchbox',content_language);
             },
 
             callHomeMethod: function(){
                 this.$root.$emit('callAboutParent','search')
-            }
+            },
+
+            findStore: function(value) {
+                this.$root.$emit('callFindStore',value,'search')
+			},
 
         },
 

@@ -2,7 +2,7 @@
     <div class="router-page" style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
-                <div id="page-title">{{ page_title }}</div>
+                <div id="page-title" class="translateme" :data-en="page_title">{{ page_title }}</div>
             </div>
             <div class="col-md-6 text-right">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
@@ -31,7 +31,7 @@
                                                 {{promo.brand_name}}
                                             </p>
                                             <p class="sub-text">
-                                                {{promo.tenant_details.floor_name}}
+                                                {{promo.tenant_details.floor_name}}<span v-if="promo.tenant_details.building_name">, {{promo.tenant_details.building_name}}</span>
                                             </p>
                                         </a>
                                     </div>
@@ -52,7 +52,8 @@
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: -6rem auto auto;">
             </div>
         </div>
-        <img :src="back_button" class="back-button" @click="goBack">
+        <img class="back-button" :src="back_button" @click="goBack">
+        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
         <!-- TENANT -->
         <div v-show="show_tenant">
@@ -114,7 +115,7 @@
                         </div>
                         <div v-if="tenant_details.is_subscriber" class="row p-r-t-94">
                             <div class="col-6 mt-3">
-                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop"  @click="findStore(tenant_details)">Get Directions</button>
                             </div>
                             <div class="col-6 mt-3">
                                 <span class="text-danger ml-2 btn-like"  @click="updateLikeCount(tenant_details.id, tenant_details.like_count)">
@@ -135,7 +136,7 @@
                         </div>
                         <div v-else class="row mt-3">
                             <div class="col-12 mt-3">
-                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop"  @click="findStore(tenant_details)">Get Directions</button>
                             </div>
                             <div class="col-12 mt-3">
                                 <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd">Get Directions (PWD-friendly)</button>
@@ -316,6 +317,11 @@
                 this.show_tenant = true;
                 this.promo_page = false;
                 this.buildSchedule(this.tenant_details);
+                this.$root.$emit('callMutateLocation','tenant');
+
+                setTimeout(() => {
+                    this.$root.$emit('callSetTranslation');
+                }, 100);
             },
 
             goBack: function() {
@@ -323,17 +329,25 @@
                     this.page_title = 'Promos';
                     this.show_tenant = false;
                     this.promo_page = true;
+
+                    setTimeout(() => {
+                        this.$root.$emit('callSetTranslation');
+                    }, 100);
                 }else {
                     $('.h-button').removeClass('active');
                     $('.home-button').addClass('active');
                     this.$router.push("/").catch(()=>{});
-                    $(".home-button").trigger('click');
+                    this.$root.$emit('MainCategories');
                 }
             },
 
             callHomeMethod: function(){
                 this.$root.$emit('callAboutParent','promo')
-            }
+            },
+
+            findStore: function(value) {
+                this.$root.$emit('callFindStore',value,'promo')
+			},
 
         },
 

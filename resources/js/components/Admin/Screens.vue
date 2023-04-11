@@ -168,28 +168,6 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row" v-if="screen.is_exclusive">
-								<label for="firstName" class="col-sm-4 col-form-label">Company <span
-										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<select class="custom-select" v-model="company_index"
-										@change="getBrands($event.target.value)">
-										<option value="">Select Company</option>
-										<option v-for="(company, index) in companies" :value="index"> {{ company.name }}
-										</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group row" v-if="screen.is_exclusive">
-								<label for="firstName" class="col-sm-4 col-form-label">Brand <span
-										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<select class="custom-select" v-model="screen.brand">
-										<option value="">Select Brand</option>
-										<option v-for="brand in brands" :value="brand.id"> {{ brand.name }}</option>
-									</select>
-								</div>
-							</div>
 							<div class="form-group row" v-if="screen.product_application == 'Directory'">
 								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
 								<div class="col-sm-8">
@@ -268,141 +246,157 @@
 <script>
 import Table from '../Helpers/Table';
 
-export default {
-	name: "Screen",
-	data() {
-		return {
-			screen: {
-				id: '',
-				site_id: '',
-				site_building_id: '',
-				site_building_level_id: '',
-				name: '',
-				screen_type: '',
-				orientation: '',
-				product_application: '',
-				physical_size_diagonal: '',
-				physical_size_width: '',
-				physical_size_height: '',
-				dimension: '',
-				width: '',
-				height: '',
-				slots: '',
-				active: false,
-				is_default: false,
-				is_exclusive: false,
-				company: '',
-				brand: '',
-			},
-			id_to_deleted: 0,
-			is_default: '',
-			add_record: true,
-			edit_record: false,
-			sites: [],
-			buildings: [],
-			floors: [],
-			companies: [],
-			brands: [],
-			company_index: '',
-			screen_types: ['LED', 'LFD', 'LCD'],
-			orientations: ['Landscape', 'Portrait'],
-			product_applications: ['Directory', 'Digital Signage'],
-			dataFields: {
-				screen_location: "Location",
-				site_name: "Site Name",
-				screen_type: "Physical Configuration",
-				orientation: "Orientation",
-				product_application: "Product Application",
-				slots: "Slots",
-				active: {
-					name: "Status",
-					type: "Boolean",
-					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
-						1: '<span class="badge badge-info">Active</span>'
-					}
-				},
-				is_exclusive: {
-					name: "Is exclusive",
-					type: "Boolean",
-					status: {
-						0: '<span class="badge badge-danger">No</span>',
-						1: '<span class="badge badge-info">Yes</span>'
-					}
-				},
-				is_default: {
-					name: "Is Default",
-					type: "Boolean",
-					status: {
-						0: '<span class="badge badge-danger">No</span>',
-						1: '<span class="badge badge-info">Yes</span>'
-					}
-				},
-				updated_at: "Last Updated"
-			},
-			primaryKey: "id",
-			dataUrl: "/admin/site/screen/list",
-			actionButtons: {
-				edit: {
-					title: 'Edit this Screen',
-					name: 'Edit',
-					apiUrl: '',
-					routeName: 'building.edit',
-					button: '<i class="fas fa-edit"></i> Edit',
-					method: 'edit'
-				},
-				delete: {
-					title: 'Delete this Screen',
-					name: 'Delete',
-					apiUrl: '/admin/site/screen/delete',
-					routeName: '',
-					button: '<i class="fas fa-trash-alt"></i> Delete',
-					method: 'custom_delete',
-					v_on: 'DeleteScreen',
-				},
-				link: {
-					title: 'Manage Maps',
-					name: 'Manage Maps',
-					apiUrl: '/admin/site/manage-map',
-					routeName: '',
-					button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
-					method: 'link',
-					conditions: { product_application: 'Directory' }
-				},
-				view: {
-					title: 'Set as Default',
-					name: 'Set as Default',
-					apiUrl: '',
-					routeName: '',
-					button: '<i class="fa fa-tag"></i> Set as Default',
-					method: 'view',
-					v_on: 'DefaultScreen',
-					conditions: { product_application: 'Directory' }
-				},
-			},
-			otherButtons: {
-				addNew: {
-					title: 'New Screen',
-					v_on: 'AddNewScreen',
-					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
-					class: 'btn btn-primary btn-sm',
-					method: 'add'
-				},
-				download: {
+	export default {
+        name: "Screen",
+        data() {
+            return {
+                screen: {
+                    id: '',
+					site_id: '',
+                    site_building_id: '',
+                    site_building_level_id: '',
+                    name: '',
+                    screen_type: '',
+                    orientation: '',
+					product_application: '',
+                    physical_size_diagonal: '',
+                    physical_size_width: '',
+                    physical_size_height: '',
+                    dimension: '',
+                    width: '',
+                    height: '',
+                    slots: '',
+					active: false,
+					is_default: false,
+					is_exclusive: false,
+                },
+				id_to_deleted: 0,
+				is_default: '',
+                add_record: true,
+                edit_record: false,
+                sites: [],
+                buildings: [],
+                floors: [],
+				company_index: '',
+                screen_types: ['LED','LFD','LCD'],
+                orientations: ['Landscape','Portrait'],
+                product_applications: ['Directory','Digital Signage'],
+            	dataFields: {
+            		screen_location: "Location",
+                    site_name: "Site Name",
+            		screen_type: "Physical Configuration", 
+            		orientation: "Orientation", 
+            		product_application: "Product Application", 
+            		slots: "Slots",
+            		active: {
+            			name: "Status", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">Deactivated</span>', 
+            				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+					is_exclusive: {
+            			name: "Is exclusive", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
+            			}
+            		},
+					is_default: {
+            			name: "Is Default", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
+            			}
+            		},
+                    updated_at: "Last Updated"
+            	},
+            	primaryKey: "id",
+            	dataUrl: "/admin/site/screen/list",
+            	actionButtons: {
+            		edit: {
+            			title: 'Edit this Screen',
+            			name: 'Edit',
+            			apiUrl: '',
+            			routeName: 'building.edit',
+            			button: '<i class="fas fa-edit"></i> Edit',
+            			method: 'edit'
+            		},
+            		delete: {
+            			title: 'Delete this Screen',
+            			name: 'Delete',
+            			apiUrl: '/admin/site/screen/delete',
+            			routeName: '',
+            			button: '<i class="fas fa-trash-alt"></i> Delete',
+            			method: 'custom_delete',
+						v_on: 'DeleteScreen',
+            		},
+					link: {
+            			title: 'Manage Maps',
+            			name: 'Manage Maps',
+            			apiUrl: '/admin/site/manage-map',
+            			routeName: '',
+            			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
+            			method: 'link',
+						conditions: { product_application: 'Directory' }
+            		},
+					view: {
+            			title: 'Set as Default',
+            			name: 'Set as Default',
+            			apiUrl: '',
+            			routeName: '',
+            			button: '<i class="fa fa-tag"></i> Set as Default',
+            			method: 'view',
+						v_on: 'DefaultScreen',
+						conditions: { product_application: 'Directory' }
+            		},
+            	},
+				otherButtons: {
+					addNew: {
+						title: 'New Screen',
+						v_on: 'AddNewScreen',
+						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+					download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
-			}
-		};
-	},
+				}
+            };
+        },
 
-	created() {
-		this.getSites();
-		this.getCompany();
-	},
+        created(){
+			this.getSites();
+			this.getCompany();
+        },
+
+        // methods: {
+		// 	getSites: function() {
+        //         axios.get('/admin/site/get-all')
+        //         .then(response => this.sites = response.data.data);
+        //     },
+
+        //     getBuildings: function(id) {
+		// 		axios.get('/admin/site/get-buildings/'+id)
+        //         .then(response => this.buildings = response.data.data);
+		// 	},
+
+        //     getFloorLevel: function(id) {
+		// 		axios.get('/admin/site/floors/'+id)
+        //         .then(response => this.floors = response.data.data);
+        //     },
+
+		// 	AddNewScreen: function() {
+		// 		this.add_record = true;
+		// 		this.edit_record = false;
 
 	methods: {
 		getSites: function () {
@@ -493,19 +487,9 @@ export default {
 					this.screen.active = screen.active;
 					this.screen.is_default = screen.is_default;
 					this.screen.is_exclusive = screen.is_exclusive;
-
-					if (screen.company_details) {
-						var index = this.companies.findIndex(company => company.id === screen.company_details.id);
-
-						this.company_index = index;
-						this.screen.company = screen.company_details.id;
-						this.brands = screen.company_details.brands;
-						this.screen.brand = screen.brand_id;
-					}
-
-					$('#screen-form').modal('show');
-				});
-		},
+                    $('#screen-form').modal('show');
+                });
+            },
 
 		updateScreen: function () {
 			axios.put('/admin/site/screen/update', this.screen)

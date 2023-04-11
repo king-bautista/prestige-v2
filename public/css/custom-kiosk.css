@@ -27,6 +27,7 @@ body,html {
 .logo-holder {
     height: 60px;
     margin: 38px 40px 0 0;
+    cursor: pointer;
 }
 
 .main-content-holder {
@@ -47,6 +48,7 @@ body,html {
     display: inline-flex;
     width: 210px;
     height: 80px;
+    cursor: pointer;
 }
 
 .button-text-align {
@@ -253,7 +255,7 @@ body,html {
     left: 24px;
     width: 260px;
     height: 75px;
-    line-height: 65px;
+    /* line-height: 65px; */
     color: black;
 }
 
@@ -278,6 +280,7 @@ body,html {
     height: 90px;
     margin: auto;
     margin-left: 12px;
+    cursor: pointer;
 }
 
 .c-button-color2 {
@@ -360,6 +363,11 @@ body,html {
 .carousel-indicators {
     bottom: -1rem;
     z-index: 0;
+    display: block;
+    overflow: hidden;
+    height: 24px;
+    text-align: center;
+    transition: all 300ms linear 0s;
 }
 
 .carousel-indicators li {
@@ -370,6 +378,7 @@ body,html {
     border-radius: 15px;
     margin-right: 18px;
     margin-left: 18px;
+    display: inline-block;
 }
 
 .tenant-store {
@@ -378,6 +387,7 @@ body,html {
     border-radius:10px;
     height:90px;
     width:330px;
+    cursor: pointer;
 }
 
 .tenant-search {
@@ -521,10 +531,12 @@ body,html {
 
 .search-box-button {
     font-size: 24px;
-    padding: 5px 20px;
+    /* padding: 5px 20px; */
     background-color: #98dad0;
     border-radius: 10px;
     margin-left: 5px;
+    width: 111px;
+    text-align: center;
 }
 
 .softkeys__btn {
@@ -663,6 +675,7 @@ input[type="text"]:focus
     position:absolute;
     top:880px;
     right:0px;
+    z-index: 2;
 }
 
 .back-button {
@@ -873,8 +886,36 @@ div.mall-details {
     color: #6e6c6c;
     border-color: #e2e2e2; 
     width: 100%; 
+    height: 45px;
     font-size: 0.994em;
     opacity: 30%;
+}
+
+.resize-get-direction{
+    display: inherit;
+    width: 178px;
+    height: 45px;
+    font-size: 21px;
+    line-height: 22px;
+    vertical-align: middle;
+}
+
+.resize-share{
+    display: inherit;
+    width: 64px;
+    height: 30px;
+    font-size: 21px;
+    line-height: 22px;
+    vertical-align: middle;
+}
+
+.resize-see-details{
+    display: inherit;
+    width: 140px;
+    height: 53px;
+    font-size: 21px;
+    line-height: 22px;
+    vertical-align: middle;
 }
 
 .btn-heart {
@@ -1784,4 +1825,42 @@ div.mall-details::-webkit-scrollbar-thumb
 
 .rm-box-shadow {
     box-shadow: none !important;
+}
+
+.dtc-vam-tac {
+    display: table-cell; 
+    vertical-align: middle; 
+    text-align: center; 
+}
+
+.back-overlay {
+    background-color: #96aaff;
+    position: absolute;
+    top: 840px;
+    right: 26px;
+    z-index: 1;
+    color: #fff;
+    font-size: 14px;
+    width: 48px;
+    text-align: center;
+}
+
+.help-overlay {
+    background-color: #96aaff;
+    position: absolute;
+    top: 925px;
+    right: 26px;
+    z-index: 2;
+    color: #fff;
+    font-size: 14px;
+    width: 48px;
+    text-align: center;
+}
+
+div,span {
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
 }

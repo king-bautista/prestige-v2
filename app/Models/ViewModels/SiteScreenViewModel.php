@@ -50,8 +50,7 @@ class SiteScreenViewModel extends Model
         'floor_name',
         'screen_type_name',
         'screen_location',
-        'company_details',
-        'brand_id',
+        'site_screen_location',
     ];
 
     /****************************************
@@ -83,20 +82,9 @@ class SiteScreenViewModel extends Model
         return $this->name.', '.$this->building_name.', '.$this->floor_name;
     }
 
-    public function getCompanyDetailsAttribute() 
+    public function getSiteScreenLocationAttribute() 
     {
-        $is_exclusive = ExclusiveScreen::where('site_screen_id', $this->id)->first();
-        if($is_exclusive) 
-            return CompanyViewModel::find($is_exclusive->company_id);
-        return null;
-    }
-
-    public function getBrandIdAttribute() 
-    {
-        $is_exclusive = ExclusiveScreen::where('site_screen_id', $this->id)->first();
-        if($is_exclusive) 
-            return $is_exclusive->brand_id;
-        return null;
+        return $this->name.', '.$this->building_name.', '.$this->floor_name. ' ( '.$this->site_name.' ) ';
     }
 
 }
