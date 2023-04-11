@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CinemasControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Helpers\CinemaHelper;
 
@@ -13,6 +14,9 @@ use App\Models\CinemaGenre;
 use App\Models\CinemaSchedule;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\CinemaScheduleViewModel;
+use App\Exports\Export;
+use Storage;
+
 
 class CinemasScheduleController extends AppBaseController implements CinemasControllerInterface
 {
@@ -128,11 +132,58 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     {
         try
         {
-            $cinema_sites = CinemaSite::get();
+            $cinema_sites = CinemaSchedule::get();
             return $this->response($cinema_sites, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $cinema_schedule_management = CinemaScheduleViewModel::get();
+            $reports = [];
+            foreach ($cinema_schedule_management as $schedule) {
+                $reports[] = [  
+                    'title' => $schedule->title,
+                    'synopsis' => $schedule->synopsis,
+                    'site_name' => $schedule->site_name,
+                    'rating' => $schedule->rating,
+                    'screen_name' => $schedule->screen_name,
+                    'genre_name' => $schedule->genre_name,
+                    'time_slot' => $schedule->show_time,
+                    'updated_at' => $schedule->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "cinema_schedule_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

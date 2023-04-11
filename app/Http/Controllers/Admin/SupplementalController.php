@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\SupplementalControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Category;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\CategoryViewModel;
+use App\Exports\Export;
+use Storage;
 
 class SupplementalController extends AppBaseController implements SupplementalControllerInterface
 {
@@ -168,6 +171,49 @@ class SupplementalController extends AppBaseController implements SupplementalCo
         }
         catch (\Exception $e)
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+    public function downloadCsv()
+    {
+        try {
+
+            $supplemental_management = CategoryViewModel::where('category_type', 2)->get();//CategoryViewModel::where('category_type', 2);
+            $reports = [];
+            foreach ($supplemental_management as $supplemental) {
+                $reports[] = [  
+                    'name' => $supplemental->name,
+                    'description' => $supplemental->descriptions,
+                    'parent_category' => $supplemental->parent_category,
+                    'status' => ($supplemental->active == 1) ? 'Active' : 'Inactive',
+                    'updated_at' => $supplemental->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "supplemental_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

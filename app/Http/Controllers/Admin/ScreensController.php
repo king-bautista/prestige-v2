@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ScreensControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
@@ -13,15 +14,17 @@ use App\Http\Requests\ScreenRequest;
 use App\Models\SiteScreen;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
+use App\Exports\Export;
+use Storage;
 
 class ScreensController extends AppBaseController implements ScreensControllerInterface
 {
     /********************************************
-    * 			SITES SCREENS MANAGEMENT	 	*
-    ********************************************/
+     * 			SITES SCREENS MANAGEMENT	 	*
+     ********************************************/
     public function __construct()
     {
-        $this->module_id = 42; 
+        $this->module_id = 42;
         $this->module_name = 'Screens';
     }
 
@@ -32,34 +35,31 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function list(Request $request)
     {
-        try
-        {
+        try {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $filters = json_decode($request->filters);
-            $site_ids = []; 
-            if($filters)
+            $site_ids = [];
+            if ($filters)
                 $site_ids = $filters->site_ids;
 
-            $site_screens = SiteScreenViewModel::when(request('search'), function($query){
+            $site_screens = SiteScreenViewModel::when(request('search'), function ($query) {
                 return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->when(count($site_ids) > 0, function($query) use ($site_ids){
-                return $query->whereIn('site_screens.site_id', $site_ids);
-            })
-            ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-            ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-            ->select('site_screens.*')
-            ->latest()
-            ->paginate(request('perPage'));
+                ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
+                    return $query->whereIn('site_screens.site_id', $site_ids);
+                })
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->select('site_screens.*')
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -70,13 +70,10 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function details($id)
     {
-        try
-        {
+        try {
             $site_screen = SiteScreenViewModel::find($id);
             return $this->response($site_screen, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -87,9 +84,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function store(ScreenRequest $request)
     {
-        try
-    	{
-            if($request->is_default == 'true') {
+        try {
+            if ($request->is_default == 'true') {
                 SiteScreen::where('is_default', 1)->where('site_id', $request->site_id)->update(['is_default' => 0]);
             }
 
@@ -120,9 +116,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -133,11 +127,10 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function update(ScreenRequest $request)
     {
-        try
-    	{
+        try {
             $site_screen = SiteScreen::find($request->id);
 
-            if($request->is_default == 'true') {
+            if ($request->is_default == 'true') {
                 SiteScreen::where('is_default', 1)->where('site_id', $request->site_id)->update(['is_default' => 0]);
             }
 
@@ -165,9 +158,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $site_screen->saveExclusiveScreen($request);
 
             return $this->response($site_screen, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -178,14 +169,11 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $site_screen = SiteScreen::find($id);
             $site_screen->delete();
             return $this->response($site_screen, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -194,19 +182,16 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         }
     }
 
-    public function getScreens($ids, $type='')
+    public function getScreens($ids, $type = '')
     {
-        try
-    	{
+        try {
             $ids = explode(",", rtrim($ids, ","));
             $site_screens = SiteScreenViewModel::whereIn('site_id', $ids)
-            ->when($type, function($query) use ($type) { 
-                return $query->where('screen_type', $type);
-            })->get();
+                ->when($type, function ($query) use ($type) {
+                    return $query->where('screen_type', $type);
+                })->get();
             return $this->response($site_screens, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -217,11 +202,10 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function setDefault($id)
     {
-        try
-    	{
+        try {
             $site = SiteScreen::find($id);
 
-            if($site->screen_type != 'Directory')
+            if ($site->screen_type != 'Directory')
                 return response([
                     'message' => 'Only directory can set as default.',
                     'status' => false,
@@ -231,9 +215,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             SiteScreen::where('is_default', 1)->where('site_id', $site->site_id)->update(['is_default' => 0]);
             $site->update(['is_default' => 1]);
             return $this->response($site, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -241,5 +223,53 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ], 422);
         }
     }
-    
+
+    public function downloadCsv()
+    {
+        try {
+
+            $screen_management = SiteScreenViewModel::get();
+            $reports = [];
+            foreach ($screen_management as $screen) {
+                $reports[] = [
+                    'location' => $screen->screen_location,
+                    'site_name' => $screen->site_name,
+                    'physical_configuration' => $screen->screen_type,
+                    'orientation' => $screen->orientation,
+                    'product_application' => $screen->product_application,
+                    'slots' => $screen->slots,
+                    'status' => ($screen->active == 1) ? 'Active' : 'Inactive',
+                    'is_exclusive' => ($screen->is_exclusive == 1) ? 'Yes' : 'No',
+                    'is_default' => ($screen->is_default == 1) ? 'Yes' : 'No',
+                    'updated_at' => $screen->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "screen_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

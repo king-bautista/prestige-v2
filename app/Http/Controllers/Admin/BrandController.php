@@ -18,6 +18,9 @@ use App\Models\ViewModels\BrandViewModel;
 use App\Models\ViewModels\BrandProductViewModel;
 
 use App\Imports\BrandsImport;
+use App\Exports\Export;
+use Storage;
+use URL;
 
 class BrandController extends AppBaseController implements BrandControllerInterface
 {
@@ -263,6 +266,53 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         }
         catch (\Exception $e)
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $brand_management =  BrandViewModel::get();
+            $reports = [];
+            foreach ($brand_management as $brand) {
+                $reports[] = [  
+                    'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
+                    'name' => $brand->name,
+                    'descriptions' => $brand->descriptions,
+                    'category_name' => $brand->category_name,
+                    'supplementals' => $brand->supplemental_names,
+                    'tags' => $brand->tag_names,
+                    'status' => ($brand->active == 1) ? 'Active' : 'Inactive',
+                    'updated_at' => $brand->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "brand_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

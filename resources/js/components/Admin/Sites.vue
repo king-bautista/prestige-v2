@@ -473,7 +473,7 @@ export default {
 		},
 		downloadCsv: function () { 
 			axios.get('/admin/site/download-csv')
-				 .then(response => {
+				.then(response => {
                 const link = document.createElement('a');
                 link.href = response.data.data.filepath;
                 link.setAttribute('download', response.data.data.filename); //or any other extension
