@@ -15,6 +15,7 @@
                         :primaryKey="primaryKey"
 						v-on:AddNewUser="AddNewUser"
 						v-on:editButton="editUser"
+						v-on:downloadCsv="downloadCsv"
                         ref="dataTable">
 			          	</Table>
 		          	</div>
@@ -567,6 +568,13 @@
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
+					download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				},
                 brandsDataFields: {
             		logo_image_path: {
@@ -828,6 +836,17 @@
 				this.delete_index = '';
 				$('#delete-record').modal('hide');
 			},
+
+			downloadCsv: function () {
+			axios.get('/admin/client/users/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
 
         },
 

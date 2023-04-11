@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Models\Tag;
 use App\Models\ViewModels\AdminViewModel;
 use App\Imports\TagsImport;
+use App\Exports\Export;
+use Storage;
 
 class TagsController extends AppBaseController implements TagsControllerInterface
 {
@@ -140,6 +142,48 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
         }
         catch (\Exception $e)
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $tag_management =  Tag::get();         
+            $reports = [];
+            foreach ($tag_management as $tag) {
+                $reports[] = [
+                    'name' => $tag->name,  
+                    'status' => ($tag->active == 1) ? 'Active' : 'Inactive',
+                    'updated_at' => $tag->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "tag_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

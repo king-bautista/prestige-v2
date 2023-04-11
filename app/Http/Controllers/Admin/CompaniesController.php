@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CompaniesControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\ContractRequest;
@@ -15,6 +16,8 @@ use App\Models\Contract;
 use App\Models\ViewModels\CompanyViewModel;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\ContractViewModel;
+use App\Exports\Export;
+use Storage;
 
 
 class CompaniesController extends AppBaseController implements CompaniesControllerInterface
@@ -336,6 +339,54 @@ class CompaniesController extends AppBaseController implements CompaniesControll
         }
         catch (\Exception $e) 
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $company_management = CompanyViewModel::get();
+            $reports = [];
+            foreach ($company_management as $company) {
+                $reports[] = [
+                    'name' => $company->name,
+                    'parent_company' => $company->parent_company,
+                    'classification_name' => $company->classification_name,
+                    'email' => $company->email,
+                    'contact_number' => $company->contact_number,
+                    'address' => $company->address,
+                    'tin_number' => $company->tin,
+                    'status' => ($company->active == 1) ? 'Active' : 'Inactive',
+                    'updated_at' => $company->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "company.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\RolesControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 
@@ -12,6 +13,9 @@ use App\Models\Role;
 use App\Models\ViewModels\ModuleViewModel;
 use App\Models\ViewModels\RoleViewModel;
 use App\Models\ViewModels\AdminViewModel;
+
+use App\Exports\Export;
+use Storage;
 
 class RolesController extends AppBaseController implements RolesControllerInterface
 {
@@ -184,6 +188,50 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
         catch (\Exception $e) 
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $role_management = RoleViewModel::get();
+            $reports = [];
+            foreach ($role_management as $role) {
+                $reports[] = [
+                    'name' => $role->name,
+                    'descirption' => $role->description,
+                    'type' => $role->type,
+                    'status' => ($role->active == 1) ? 'Active' : 'Inactive',
+                    'updated_at' => $role->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "role.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
