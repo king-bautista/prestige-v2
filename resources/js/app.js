@@ -72,6 +72,8 @@ Vue.component('admin-customer-care', require('./components/Admin/CustomerCare.vu
 Vue.component('admin-assistant-messages', require('./components/Admin/AssistantMessages.vue').default);
 Vue.component('admin-translations', require('./components/Admin/Translations.vue').default);
 
+Vue.component('admin-users-information', require('./components/Admin/UsersInformation.vue').default);
+
 /**
  * PORTAL PART
  */
