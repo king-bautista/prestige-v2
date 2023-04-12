@@ -68,10 +68,10 @@
                         <div class="carousel-inner custom-w-818-ma carousel-mh-528">
                             <div class="carousel-item" v-for="(movies, index) in schedule_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == curent_schedule_list_count? 'last-item':'']">
                                 <div class="row mb-3 justify-content-center">
-                                    <div v-for="movie in movies" class="col-12 col-sm-4 text-center mt-3">
+                                    <div v-for="movie in movies" class="col-12 col-sm-4 text-center mt-3" @click="showModal(movie)">
                                         <img class="schedule-image" v-bind:src="'/uploads/media/cinema/'+movie.film_id+'.jpg'" :data-filmid="movie.film_id">
                                         <div class="text-center click-text" style="font-size:1.3em;color:#000000;padding: 12px 0px;" :data-filmid="movie.film_id">{{ movie.title }}</div>
-                                        <div class="text-center seeDetails"><button class="btn btn-sm btn-cinema-details resize-see-details translateme" :data-filmid="movie.film_id" @click="showModal(movie)" data-en="See Details">See Details</button></div>
+                                        <div class="text-center seeDetails"><button class="btn btn-sm btn-cinema-details resize-see-details translateme" :data-filmid="movie.film_id" data-en="See Details">See Details</button></div>
                                     </div>
                                 </div>
                             </div>                        
@@ -254,6 +254,7 @@
                     }else {
                         this.no_record_found_movies = false;
                     }
+                    this.removeSlashes();
                 });
             },
 
@@ -282,10 +283,10 @@
             },
 
             showTrailer: function(trailer_url) {
-                var videoSrc = trailer_url;
+                // var videoSrc = trailer_url;
 
                 // replace with embed link
-                videoSrc = videoSrc.replace("watch?v=", "embed/");
+                // videoSrc = videoSrc.replace("watch?v=", "embed/");
 
                 //check internet connection
                 var ifConnected = window.navigator.onLine;
@@ -299,10 +300,11 @@
                     $("#novideo").show();
                 }
 
-                var playlist = videoSrc.substr(30);
+                // var playlist = videoSrc.substr(30);
                 
                 // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
-                $("#video").attr('src',videoSrc + "?loop=1&playlist=" + playlist + "&autoplay=1"); 
+                // $("#video").attr('src',videoSrc + "?loop=1&playlist=" + playlist + "&autoplay=1"); 
+                $("#video").attr('src', "https://www.youtube.com/embed/"+ this.getYouTubeVideoIdByUrl(trailer_url) + "?loop=0&playlist=" + this.getYouTubeVideoIdByUrl(trailer_url) + "&autoplay=1"); 
                                     
                 $("#schedule-modal").hide();
                 $("#myTrailerModal").show();
@@ -334,6 +336,24 @@
                 this.$root.$emit('callFindStore',value,'cinema')
 			},
 
+            getYouTubeVideoIdByUrl: function(url) {
+                const reg = /^(https?:)?(\/\/)?((www\.|m\.)?youtube(-nocookie)?\.com\/((watch)?\?(feature=\w*&)?vi?=|embed\/|vi?\/|e\/)|youtu.be\/)([\w\-]{10,20})/i
+                const match = url.match(reg);
+                if (match) {
+                    return match[9];
+                } else {
+                    return null;
+                }
+            },
+
+            removeSlashes: function() {
+                this.schedule_list.forEach(element => {
+                    element.forEach(sched => {
+                        sched['synopsis'] = sched['synopsis'].replaceAll('\\', '');
+                    });
+                });
+            },
+
         },
 
         mounted() {
@@ -359,14 +379,14 @@
                     $("#custom-modal").hide();
                 });
 
-                $("#schedule-modal").on('click',function(){
-                    $("#schedule-modal").hide();
-                });
+                // $("#schedule-modal").on('click',function(){
+                //     $("#schedule-modal").hide();
+                // });
 
-                $("#myTrailerModal").on('click',function(){
-                    $("#myTrailerModal").hide();
-                    $("#video").attr('src',"");
-                });
+                // $("#myTrailerModal").on('click',function(){
+                //     $("#myTrailerModal").hide();
+                //     $("#video").attr('src',"");
+                // });
 
                 $('#myMovies').on('slid.bs.carousel', function () {
                     // $('.resize-see-details').autoSizr();
