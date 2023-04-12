@@ -348,11 +348,26 @@ class DirectoryCategoryViewModel extends Model
     public function getSupplementalAttribute() 
     {
         $supplemental = Category::where('supplemental_category_id', $this->id)->first();
-        if($supplemental) {
-            $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])->where('active', 1)->get()->toArray();
-            $supplemental['children'] = array_chunk($child_array, 15);
-            return $supplemental;
-        }
+        if (env('APP_ENV') == 'local') {
+            if($supplemental) {
+                $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])->where('active', 1)->get()->toArray();
+                $supplemental['children'] = array_chunk($child_array, 15);
+                return $supplemental;
+            }
+        } else {
+            if($supplemental) {
+                $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])
+                ->leftJoin('brand_supplementals', 'brand_supplementals.supplemental_id', '=', 'categories.id')
+                ->leftJoin('site_tenants', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
+                ->where('site_tenants.site_id', 1)
+                ->select('categories.*')
+                ->groupBy('name')
+                ->get()
+                ->toArray();
+                $supplemental['children'] = array_chunk($child_array, 15);
+                return $supplemental;
+            }
+        }    
         return null;
     }
 
