@@ -477,5 +477,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/translation/delete/{id}', 'Admin\TranslationsController@delete')->where('id', '[0-9]+')->name('admin.translation.delete');
     Route::get('/admin/translation/download-csv', 'Admin\TranslationsController@downloadCsv')->name('admin.translation.download-csv');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Users Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/users-information', 'Admin\UsersInformationController@index')->name('admin.users.information');
+    // Route::get('/admin/users/list', 'Admin\UsersController@list')->name('admin.users.list');
+    // Route::post('/admin/users/store', 'Admin\UsersController@store')->name('admin.users.store');
+    // Route::get('/admin/users/{id}', 'Admin\UsersController@details')->where('id', '[0-9]+')->name('admin.users.details');
+    // Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
+    // Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
+    // Route::get('/admin/users/download-csv', 'Admin\UsersController@downloadCsv')->name('admin.user.download-csv');
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
