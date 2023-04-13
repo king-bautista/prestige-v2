@@ -479,10 +479,12 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Admin Users Routes
+    | Admin Users Information Routes
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/users-information', 'Admin\UsersInformationController@index')->name('admin.users.information');
+    Route::get('/admin/users-information/details', 'Admin\UsersInformationController@details')->name('admin.users.information.details');
+    Route::post('/admin/users-information/update-profile', 'Admin\UsersInformationController@updateProfile')->name('portal.user.information.update-profile');
     // Route::get('/admin/users/list', 'Admin\UsersController@list')->name('admin.users.list');
     // Route::post('/admin/users/store', 'Admin\UsersController@store')->name('admin.users.store');
     // Route::get('/admin/users/{id}', 'Admin\UsersController@details')->where('id', '[0-9]+')->name('admin.users.details');
