@@ -56,19 +56,19 @@ class MainController extends AppBaseController
 
     public function getCategories()
     {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $categories = DirectoryCategoryViewModel::getMainCategory($site->id);            
             return $this->response($categories, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Categories to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Categories to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
 
     // public function getTenantsAlphabetical($category_id)
@@ -158,6 +158,7 @@ class MainController extends AppBaseController
             ->where('site_tenants.site_id', $site->id)
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->select('site_tenants.id','site_tenants.brand_id','brands.name','site_tenants.site_building_id','site_tenants.site_building_level_id')
             ->orderBy('brands.name', 'ASC')
             ->get();
@@ -203,6 +204,7 @@ class MainController extends AppBaseController
             $site_tenants = DB::table('site_tenants')
                 ->where('site_tenants.site_id', $site->id)
                 ->where('site_tenants.active', 1)
+                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
                 ->select('site_tenants.brand_id')
                 ->get()
                 ->pluck('brand_id');
@@ -272,16 +274,20 @@ class MainController extends AppBaseController
             //FIND BY KEYWORD and display as list E.G TAGS/KEY_WORDDS/BRAND_NAME
             if (!$request->id) {
                 $array_words = explode(' ', $request->key_words);
+                $keyword = $request->key_words;
 
                 $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
                 $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
-                ->where(function ($query) use($array_words) {
-                    foreach($array_words as $key) {
-                        $query->orWhere('brands.name', 'like', '%'.$key.'%')
-                        ->orWhere('categories.name', 'like', '%'.$key.'%')
-                        ->orWhere('supp.name', 'like', '%'.$key.'%')
-                        ->orWhere('tags.name', 'like', '%'.$key.'%');
-                    }
+                // ->where(function ($query) use($array_words) {
+                ->where(function ($query) use($keyword) {
+                    // foreach($array_words as $key) {
+                        $query->orWhere('brands.name', 'like', $keyword)
+                        ->orWhere('brands.name', 'like', '% '.$keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
+                        ->orWhere('brands.name', 'like', $keyword.'%') #FIRST WORD but start on first letter
+                        ->orWhere('categories.name', 'like', $keyword.'%')
+                        ->orWhere('supp.name', 'like', $keyword.'%')
+                        ->orWhere('tags.name', 'like', $keyword.'%');
+                    // }
                 })
                 ->where('site_tenants.site_id', $site->id)
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
@@ -290,6 +296,7 @@ class MainController extends AppBaseController
                 ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
                 ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
                 ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
+                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
                 ->select('site_tenants.*')
                 ->distinct()
                 ->orderBy('brands.name', 'ASC')
@@ -319,6 +326,8 @@ class MainController extends AppBaseController
                 } else {
                     $site_tenants = array_chunk($site_tenants->toArray(), 15);
                 }
+
+                // dd($site_tenants);
 
                 return $this->response([$site_tenants,$suggest_subscribers], 'Successfully Retreived!', 200, $counts);
             //FIND BY ID and display as Tenant Page

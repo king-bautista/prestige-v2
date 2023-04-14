@@ -28,6 +28,9 @@
                         <div><span class="translateme" data-en="You searched for">You searched for</span>: ‘{{this.search.key_words}}’</div>                  
                     </div>
                 </div>
+
+                <div class="label-4 translateme" data-en="No results found" v-show="current_tenant_list_count < 0">No results found</div>
+
                 <div class="row col-md-10 offset-md-1">
                     <div id="searchCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">
                                     
@@ -47,7 +50,7 @@
                                             </div>
                                             <div class="text-left pta-2 brand-name">
                                                 <div class="shop_name">{{ tenant.brand_name }}</div>
-                                                <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.building_name }}, {{ tenant.floor_name }}</div>
+                                                <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }}</div>
                                                 <div style="font-weight: bold;font-size: 0.7em">
                                                     <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
                                                     <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
@@ -259,7 +262,8 @@
                         this.tenant_list = response.data.data[0];
                         this.subscriber_list = response.data.data[1];
                         if(this.tenant_list.length == 0) {
-                            this.no_record_found = false;         
+                            this.no_record_found = false;   
+                            this.search_results = true;      
                         }else {
                             this.search_results = true;
                         }
@@ -269,6 +273,7 @@
                         this.search.results = response.data.data_count;
                         this.page_title = 'Search Results';
                         this.helper.saveLogs(this.search, 'Search');
+                        this.resetCarousel();
 
                         this.$root.$emit('callMutateLocation','searchresult');
 
@@ -559,6 +564,10 @@
             resetPage: function(content_language) {
                 $('#code').val("");
                 $('.notification').hide();
+                if ($('.ABC').html() === "ABC") {
+                    $('.ABC').trigger('click');
+                }
+                this.resetCarousel
                 this.search_page = true;
                 this.search_results = false;
                 this.show_tenant = false;
@@ -574,6 +583,14 @@
             findStore: function(value) {
                 this.$root.$emit('callFindStore',value,'search')
 			},
+
+            resetCarousel: function() {
+                $(".control-prev-sp").hide();
+                $(".control-next-sp").hide();
+                if(this.current_tenant_list_count>0){
+                    $(".control-next-sp").show();
+                }
+            },
 
         },
 
@@ -645,6 +662,16 @@
                         $(this).html("ABC");
                         $(".hidden-on-alt").hide();
                     }
+                    console.log("click");
+                }).on('touchstart',function(){
+                    if ($(this).html() === "ABC") {
+                        $(this).html("#+=");
+                        $(".hidden-on-alt").show();
+                    } else {
+                        $(this).html("ABC");
+                        $(".hidden-on-alt").hide();
+                    }
+                    console.log("touch");
                 });
 
                 $(".enter-key").on('click',function(event){

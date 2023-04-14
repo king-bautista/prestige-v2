@@ -988,6 +988,8 @@
                     $(".resize-share").css({'width':'64'});
                     $('.resize-share').autoSizr(21);
                 }
+
+                $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
 			},
 
             findStore: function(tenant_details,current_page) {

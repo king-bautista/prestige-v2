@@ -96,6 +96,9 @@ class DirectoryCategoryViewModel extends Model
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->select('site_tenants.*')
             ->orderBy('brands.name', 'ASC')
+            ->orderBy('site_tenants.is_subscriber', 'DESC')
+            ->orderBy('site_tenants.site_building_id', 'ASC')
+            ->orderBy('site_tenants.site_building_level_id', 'ASC')
             ->get()->toArray();
     
         if($tenants) {
@@ -348,7 +351,7 @@ class DirectoryCategoryViewModel extends Model
     public function getSupplementalAttribute() 
     {
         $supplemental = Category::where('supplemental_category_id', $this->id)->first();
-        if (env('APP_ENV') == 'local') {
+        if (config('app.env') == 'local') {
             if($supplemental) {
                 $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])->where('active', 1)->get()->toArray();
                 $supplemental['children'] = array_chunk($child_array, 15);
