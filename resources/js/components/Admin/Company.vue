@@ -144,7 +144,8 @@
 										<thead class="table-dark">
 											<tr>
 												<th>ID</th>
-												<th>Brand</th>
+												<th>Brand/s</th>
+												<th>Name</th>
 												<th>Screen Location</th>
 												<th>Duration (no. of days)</th>
 												<th>No. of slots per loop</th>
@@ -160,6 +161,7 @@
 													<img v-for="(brand, index) in data.brands" class="img-thumbnail"
 														:src="brand.logo_image_path" />
 												</td>
+												<td class="align-middle">{{ data.name }}</td>
 												<td class="align-middle">{{ data.screen_locations }}</td>
 												<td class="align-middle">{{ data.display_duration }}</td>
 												<td class="align-middle">{{ data.slots_per_loop }}</td>
@@ -333,21 +335,25 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Brands <span
-									class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
-								<multiselect v-model="contract.brands" :options="company.brands" :multiple="true"
-									:close-on-select="true" placeholder="Select Brands" label="name" track-by="name">
-								</multiselect>
+								<input type="text" class="form-control" v-model="contract.name" placeholder="Contract Name" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Screens <span
-									class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Screens <span class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
 								<multiselect v-model="contract.screens" :options="screens" :multiple="true"
 									:close-on-select="true" placeholder="Select Screens" label="site_screen_location"
 									track-by="site_screen_location">
+								</multiselect>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-8">
+								<multiselect v-model="contract.brands" :options="company.brands" :multiple="true"
+									:close-on-select="true" placeholder="Select Brands" label="name" track-by="name">
 								</multiselect>
 							</div>
 						</div>
@@ -407,10 +413,10 @@
 						</div>
 					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary btn-sm float-right" v-show="add_record"
+						<button type="button" class="btn btn-secondary btn-sm float-right" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary btn-sm float-right" v-show="add_contract"
 							@click="storeContract">Add New Contract</button>
-						<button type="button" class="btn btn-primary btn-sm float-right" v-show="edit_record"
+						<button type="button" class="btn btn-primary btn-sm float-right" v-show="edit_contract"
 							@click="updateContract">Save Changes</button>
 					</div>
 				</div>
@@ -465,6 +471,7 @@ export default {
 			},
 			contract: {
 				id: '',
+				name: '',
 				company_id: '',
 				brands: [],
 				screens: [],
@@ -482,6 +489,8 @@ export default {
 			screens: [],
 			add_record: true,
 			edit_record: false,
+			add_contract: true,
+			edit_contract: false,
 			delete_action: '',
 			delete_index: '',
 			dataFields: {
@@ -689,6 +698,8 @@ export default {
 			this.contract.is_indefinite = false;
 			this.contract.is_exclusive = false;
 			this.contract.active = false;
+			this.add_contract = true;
+			this.edit_contract = false;
 			$('#contract-form').modal('show');
 		},
 
@@ -752,6 +763,8 @@ export default {
 					this.contract.is_indefinite = contract.is_indefinite;
 					this.contract.is_exclusive = contract.is_exclusive;
 					this.contract.active = contract.active;
+					this.add_contract = false;
+					this.edit_contract = true;
 					$('#contract-form').modal('show');
 				});
 		},

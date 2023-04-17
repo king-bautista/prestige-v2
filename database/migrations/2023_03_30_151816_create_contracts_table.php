@@ -18,6 +18,7 @@ class CreateContractsTable extends Migration
             
             $table->bigIncrements('id');
             $table->bigInteger('company_id')->unsigned();
+            $table->string('name')->nullable();
             $table->boolean('is_indefinite')->default(false);
             $table->boolean('is_exclusive')->default(false);
             $table->integer('display_duration')->default(0);
@@ -48,11 +49,11 @@ class CreateContractsTable extends Migration
             
             $table->bigInteger('contract_id')->unsigned();
             $table->bigInteger('site_screen_id')->unsigned();
+            $table->bigInteger('site_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('contract_id')->references('id')->on('contracts');
-            $table->foreign('site_screen_id')->references('id')->on('site_screens');
         });
     }
 

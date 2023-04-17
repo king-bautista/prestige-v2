@@ -40,47 +40,88 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<multiselect v-model="advertisements.company_id"
 										:options="companies"
 										:multiple="false"
 										:close-on-select="true"
+										:searchable="true" 
+										:allow-empty="false"
 										placeholder="Select Company"
 										label="name"
-										track-by="name">
+										track-by="name"
+										@select="companySelected">
 									</multiselect>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Contract <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <multiselect v-model="advertisements.contract_id" 
+										:options="contracts" 
+										:multiple="false"
+										:close-on-select="true"
+										:searchable="true" 
+										:allow-empty="false"
+										track-by="name" 
+										label="name" 
+										placeholder="Select Contract" 
+										@select="contractSelected">
+                                    </multiselect> 
 								</div>
 							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <multiselect v-model="advertisements.brand_id" 
-									track-by="name" 
-									label="name" 
-									placeholder="Select Brand" 
-									:options="brands" 
+										:options="brands" 
+										:multiple="false"
+										:close-on-select="true"
+										:searchable="true" 
+										:allow-empty="false"
+										track-by="name" 
+										label="name" 
+										placeholder="Select Brand">
+                                    </multiselect> 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Product Application <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <multiselect v-model="advertisements.ad_type" 
+									placeholder="Select Type" 
+									:options="ad_types" 
 									:searchable="true" 
 									:allow-empty="false">
                                     </multiselect> 
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Screens <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
+                                    <multiselect v-model="advertisements.screen_ids" 
+									track-by="site_screen_location" 
+									label="site_screen_location" 
+									placeholder="Select Screens" 
+									:options="screens" 
+									:searchable="true" 
+									:allow-empty="false">
+                                    </multiselect> 
 								</div>
 							</div>
-                            <div class="form-group row">
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="material" @change="materialChange"  multiple>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Online'">image/video max size is 1140 x 140 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Banners'">image/video max size is 470 x 1060 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Fullscreen'">image/video max size is 1920 x 1080 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Pop-Up'">image/video max size is 470 x 1060 pixels</footer>
-									<footer class="blockquote-footer" v-if="ad_type=='Events'">image/video max size is 286 x 286 pixels</footer>
+									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<span v-if="material && helper.getFileExtension(material_type) == 'image'">
@@ -94,6 +135,20 @@
 									</span>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Width</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="advertisements.width" disabled>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Height</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="advertisements.height" disabled>
+								</div>
+							</div>
+							
+														
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
                                 <div class="col-sm-2">
@@ -132,30 +187,31 @@
 
 	export default {
         name: "Advertisements",
-        props: {
-        	ad_type: {
-        		type: String,
-        		required: true
-        	},
-        },
         data() {
             return {
                 helper: new Helpers(),
                 advertisements: {
                     id: '',
 					company_id: '',
+					contract_id: '',
 					brand_id: '',
 					ad_type: '',
+					screen_ids: '',
                     name: '',
-                    descriptions: '',
 					file_path: '',
 					display_duration: '',
+					width: '',
+					height: '',
+					status_id: '',
                     active: true,           
                 },
 				material: '',
 				material_type: '',
                 companies: [],
+                contracts: [],
                 brands: [],
+				ad_types: ['Digital Signage', 'Interactive Directory'],
+                screens: [],
                 add_record: true,
                 edit_record: false,
             	dataFields: {
@@ -196,7 +252,7 @@
             	dataUrl: "/admin/advertisement/list/"+this.ad_type,
             	actionButtons: {
             		edit: {
-            			title: 'Edit this Advertisements',
+            			title: 'Edit this Content',
             			name: 'Edit',
             			apiUrl: '',
             			routeName: 'advertisements.edit',
@@ -204,7 +260,7 @@
             			method: 'edit'
             		},
             		delete: {
-            			title: 'Delete this Advertisements',
+            			title: 'Delete this Content',
             			name: 'Delete',
             			apiUrl: '/admin/advertisements/delete',
             			routeName: '',
@@ -214,9 +270,9 @@
             	},
 				otherButtons: {
 					addNew: {
-						title: 'New Advertisements',
+						title: 'Add Content',
 						v_on: 'AddNewAdvertisements',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Advertisements',
+						icon: '<i class="fa fa-plus" aria-hidden="true"></i> Add Content',
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
@@ -226,7 +282,6 @@
 
         created(){
 			this.getCompany();
-			this.getBrands();
         },
 
         methods: {
@@ -235,16 +290,43 @@
                 .then(response => this.companies = response.data.data);
 			},
 
-			getBrands: function() {
-				axios.get('/admin/brand/get-all')
-                .then(response => this.brands = response.data.data);
+			companySelected: function(company) {
+				console.log(company);
+				this.contracts = company.contracts;
 			},
 
-			materialChange: function(e) { alert('eddd');
+			contractSelected: function(contract) {
+				this.brands = contract.brands;
+				this.screens = contract.screens;
+			},
+
+			materialChange: function(e) {
 				const file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.material = URL.createObjectURL(file);
 				this.advertisements.material = file;
+				
+				var file_type = this.material_type.split("/");
+				var obj = this;
+
+				if(file_type[0] == 'image') {
+					var img = new Image;
+					img.onload = function() {
+						obj.advertisements.width = img.width;
+						obj.advertisements.height = img.height;
+					};
+						
+					img.src = this.material;
+				}
+				else if(file_type[0] == 'video') {
+					const video = document.createElement("video");
+					video.src = this.material;
+					video.addEventListener("loadedmetadata", function () {
+						obj.advertisements.width = this.videoWidth;
+						obj.advertisements.height = this.videoHeight;
+						obj.advertisements.display_duration = this.duration;
+					});
+				}
 			},
 
 			AddNewAdvertisements: function() {
