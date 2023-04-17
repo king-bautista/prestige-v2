@@ -70,7 +70,23 @@ class ContractViewModel extends Model
     public function getScreensAttribute() 
     {
         $ids = $this->getScreens()->pluck('site_screen_id');
-        return SiteScreenViewModel::whereIn('id', $ids)->get();
+        $site_screens = SiteScreenViewModel::whereIn('id', $ids)->get();
+
+        $site_ids = $this->getScreens()->pluck('site_id');
+        if($site_ids) {
+            $site_all_directory = SiteScreenViewModel::where('site_id', $site_ids)->where('product_application', 'Directory')->groupBy('site_id')->get();
+            foreach($site_all_directory as $directory) {
+                $site_screens[] = [
+                    'id' => 0,
+                    'site_id' => $directory->site_id,
+                    'site_screen_location' => $directory->site_name.' - All ('.$directory->product_application.')'
+                ];
+            }
+        }
+
+        if($site_screens)
+            return $site_screens;
+        return null;
     }
 
     public function getScreenLocationsAttribute() 

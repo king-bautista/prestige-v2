@@ -181,7 +181,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     public function getScreens($ids, $type = '')
     {
         try {
-            $ids = explode(",", rtrim($ids, ","));
+            $ids = explode(",", rtrim($ids, ","));;
             $site_screens = SiteScreenViewModel::whereIn('site_id', $ids)
                 ->when($type, function ($query) use ($type) {
                     return $query->where('screen_type', $type);
@@ -201,6 +201,17 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         try
     	{
             $site_screens = SiteScreenViewModel::get();
+            $site_all_directory = SiteScreenViewModel::where('product_application', 'Directory')->groupBy('site_id')->get();
+            if($site_all_directory) {
+                foreach($site_all_directory as $directory) {
+                    $site_screens[] = [
+                        'id' => 0,
+                        'site_id' => $directory->site_id,
+                        'site_screen_location' => $directory->site_name.' - All ('.$directory->product_application.')'
+                    ];
+                }
+            }
+
             return $this->response($site_screens, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 

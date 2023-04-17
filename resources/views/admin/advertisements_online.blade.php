@@ -5,12 +5,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Advertisements - Online</h1>
+        <h1 class="m-0">Upload Content</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-          <li class="breadcrumb-item active">Advertisements - Online</li>
+          <li class="breadcrumb-item active">Upload Content</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -19,7 +19,7 @@
 <!-- /.content-header -->
 
 <!-- Main content -->
-<admin-advertisements :ad_type="'Online'"></admin-advertisements>
+<admin-advertisements></admin-advertisements>
 <!-- /.content -->
 @stop
 

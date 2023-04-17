@@ -15,6 +15,7 @@ class Contract extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'company_id',
         'brand_id',
         'site_screen_id',
@@ -77,6 +78,7 @@ class Contract extends Model
                     [
                        'contract_id' => $this->id,
                        'site_screen_id' => $data['id'],
+                       'site_id' => $data['site_id'],
                     ],
                 );
             }
