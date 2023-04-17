@@ -229,14 +229,6 @@ export default {
 					name: "Logo",
 					type: "image",
 				},
-				site_banner_path: {
-					name: "Banner",
-					type: "image",
-				},
-				site_background_path: {
-					name: "Background",
-					type: "image",
-				},
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -346,6 +338,12 @@ export default {
 			this.site_logo = '/images/no-image-available.png';
 			this.site_banner = '/images/no-image-available.png';
 			this.site_background = '/images/no-image-available.png';
+			this.site.facebook = '';
+			this.site.instagram = '';
+			this.site.twitter = '';
+			this.site.time_from = '';
+			this.site.time_to = '';
+			this.site.website = '';
 			this.$refs.site_logo.value = null;
 			this.$refs.site_banner.value = null;
 
