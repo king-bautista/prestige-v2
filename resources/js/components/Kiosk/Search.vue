@@ -74,7 +74,7 @@
 
                     <div class="tabs m-a mt-42" v-show="current_subscriber_list_count>0">
                         <span class="mr-10 my-auto translateme label-2" data-en="You might want to try : ">You might want to try : </span>
-                        <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.subscriber_logo" @click="onClickSuggestedSubsriber(subscriber.id)">
+                        <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.subscriber_logo" :alt="subscriber.brand_name" @click="onClickSuggestedSubsriber(subscriber.id)">
                     </div>
 
                     <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
@@ -238,7 +238,10 @@
                 current_tenant_list_count: 0,
                 current_subscriber_list_count: 0,
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
-                tenantSchedule :[],
+                tenantSchedule: [],
+                temp: [],
+                temp_subscriber_list: [],
+                temp2_subscriber_list: [],
             };
         },
 
@@ -261,11 +264,32 @@
                     .then(response => {
                         this.tenant_list = response.data.data[0];
                         this.subscriber_list = response.data.data[1];
+                        // this.temp_subscriber_list = response.data.data[1];
+
                         if(this.tenant_list.length == 0) {
                             this.no_record_found = false;   
                             this.search_results = true;      
                         }else {
                             this.search_results = true;
+                        }
+
+                        if (this.temp.length == 0) {
+                            this.subscriber_list = this.subscriber_list.slice(0, 2);
+                            this.temp = this.subscriber_list;
+                        }else {
+                            
+                            this.subscriber_list.forEach(array => {      
+                                if (this.temp.find(option => option.id == array.id)) {
+                                    this.temp_subscriber_list.push(array)
+                                }else {
+                                    this.temp_subscriber_list.unshift(array)
+                                }
+                            });
+
+                            this.subscriber_list = this.temp_subscriber_list
+                            this.temp_subscriber_list = []
+                            this.subscriber_list = this.subscriber_list.slice(0, 2);
+                            this.temp = this.subscriber_list;
                         }
 
                         this.current_tenant_list_count = this.tenant_list.length - 1;
@@ -317,7 +341,7 @@
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
-                    console.log(response.data.data);
+                    // console.log(response.data.data);
                     this.tenant_list_temp = response.data.data;   
                     this.tenant_details = this.tenant_list_temp[0];
                     this.page_title = 'Store Page';
@@ -540,7 +564,7 @@
                 }
 
                 $.post( "/api/v1/like-count", params ,function(response) {
-                    console.log(response);
+                    // console.log(response);
                 });
             },
 
@@ -662,7 +686,7 @@
                         $(this).html("ABC");
                         $(".hidden-on-alt").hide();
                     }
-                    console.log("click");
+                    // console.log("click");
                 }).on('touchstart',function(){
                     if ($(this).html() === "ABC") {
                         $(this).html("#+=");
@@ -671,7 +695,7 @@
                         $(this).html("ABC");
                         $(".hidden-on-alt").hide();
                     }
-                    console.log("touch");
+                    // console.log("touch");
                 });
 
                 $(".enter-key").on('click',function(event){

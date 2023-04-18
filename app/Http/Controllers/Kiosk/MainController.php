@@ -101,14 +101,26 @@ class MainController extends AppBaseController
     {
         try
         {
-            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
-            ->where('brands.category_id', $category_id)
-            ->where('site_tenants.site_id', $site->id)
-            ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
-            ->select('site_tenants.*')
-            ->orderBy('brands.name', 'ASC')
-            ->get()->toArray();
+            if (config('app.env') == 'local') {
+                $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+                $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
+                ->where('brands.category_id', $category_id)
+                ->where('site_tenants.site_id', $site->id)
+                ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
+                ->select('site_tenants.*')
+                ->orderBy('brands.name', 'ASC')
+                ->get()->toArray();
+            } else {
+                $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+                $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
+                ->where('brands.category_id', $category_id)
+                ->where('site_tenants.site_id', $site->id)
+                ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
+                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+                ->select('site_tenants.*')
+                ->orderBy('brands.name', 'ASC')
+                ->get()->toArray();
+            }
             
             $site_tenants = array_chunk($site_tenants, 15);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
@@ -284,8 +296,11 @@ class MainController extends AppBaseController
                         $query->orWhere('brands.name', 'like', $keyword)
                         ->orWhere('brands.name', 'like', '% '.$keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
                         ->orWhere('brands.name', 'like', $keyword.'%') #FIRST WORD but start on first letter
+                        ->orWhere('categories.name', 'like', '% '.$keyword.'%')
                         ->orWhere('categories.name', 'like', $keyword.'%')
+                        ->orWhere('supp.name', 'like', '% '.$keyword.'%')
                         ->orWhere('supp.name', 'like', $keyword.'%')
+                        ->orWhere('tags.name', 'like', '% '.$keyword.'%')
                         ->orWhere('tags.name', 'like', $keyword.'%');
                     // }
                 })
@@ -698,6 +713,15 @@ class MainController extends AppBaseController
                 'status_code' => 200,
             ], 200);
         }
+    }
+
+    public function getLikeCount($site_tenants_id)
+    {
+        $like_count = SiteTenantViewModel::where('site_tenants.active', 1)
+        ->where('site_tenants.id', $site_tenants_id)
+        ->value('site_tenants.like_count');
+
+        return $this->response($like_count, 'Successfully Retreived!', 200);
     }
 
     public function putLikeCount(Request $request)
