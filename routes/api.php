@@ -44,6 +44,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/tenants/supplemental/{id}', 'Kiosk\MainController@getTenantsBySupplementals')->where('id', '[0-9]+')->name('kiosk.tenants.by-supplemental');
     Route::get('/tenants/suggestion/list', 'Kiosk\MainController@getSuggestionList')->where('id', '[0-9]+')->name('kiosk.tenants.suggestion');
     Route::post('/search', 'Kiosk\MainController@search')->name('kiosk.search');
+    Route::get('/get-like-count/{id}', 'Kiosk\MainController@getLikeCount')->name('kiosk.get-like-count');
     Route::post('/like-count', 'Kiosk\MainController@putLikeCount')->name('kiosk.like-count');
     Route::post('/feedback', 'Kiosk\MainController@putFeedback')->name('kiosk.feedback');
     Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');

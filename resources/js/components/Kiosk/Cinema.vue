@@ -349,7 +349,10 @@
             removeSlashes: function() {
                 this.schedule_list.forEach(element => {
                     element.forEach(sched => {
+                        sched['title'] = sched['title'].replaceAll('\\', '');
                         sched['synopsis'] = sched['synopsis'].replaceAll('\\', '');
+                        sched['screen_name'] = sched['screen_name'].replaceAll('\\', '');
+                        sched['casting'] = sched['casting'].replace(/,\s*$/, '');
                     });
                 });
             },
