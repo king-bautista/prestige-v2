@@ -89,20 +89,44 @@ class DirectoryCategoryViewModel extends Model
 
     public function getTenants()
     {
-        $tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
-            ->where('categories.parent_id', $this->id)
-            ->where('site_tenants.site_id', self::$site_id)
-            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-            ->select('site_tenants.*')
-            ->orderBy('brands.name', 'ASC')
-            ->get()->toArray();
-    
-        if($tenants) {
-            $tenants = array_chunk($tenants, 15);
-            return $tenants;
+        if (config('app.env') == 'local') {
+            $tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
+                ->where('categories.parent_id', $this->id)
+                ->where('site_tenants.site_id', self::$site_id)
+                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+                ->select('site_tenants.*')
+                ->orderBy('brands.name', 'ASC')
+                ->orderBy('site_tenants.is_subscriber', 'DESC')
+                ->orderBy('site_tenants.site_building_id', 'ASC')
+                ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->get()->toArray();
+        
+            if($tenants) {
+                $tenants = array_chunk($tenants, 15);
+                return $tenants;
+            }
+            return null;
+        } else {
+            $tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
+                ->where('categories.parent_id', $this->id)
+                ->where('site_tenants.site_id', self::$site_id)
+                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+                ->select('site_tenants.*')
+                ->orderBy('brands.name', 'ASC')
+                ->orderBy('site_tenants.is_subscriber', 'DESC')
+                ->orderBy('site_tenants.site_building_id', 'ASC')
+                ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->get()->toArray();
+        
+            if($tenants) {
+                $tenants = array_chunk($tenants, 15);
+                return $tenants;
+            }
+            return null;
         }
-        return null;
     }
 
     /****************************************
@@ -348,7 +372,7 @@ class DirectoryCategoryViewModel extends Model
     public function getSupplementalAttribute() 
     {
         $supplemental = Category::where('supplemental_category_id', $this->id)->first();
-        if (env('APP_ENV') == 'local') {
+        if (config('app.env') == 'local') {
             if($supplemental) {
                 $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])->where('active', 1)->get()->toArray();
                 $supplemental['children'] = array_chunk($child_array, 15);
