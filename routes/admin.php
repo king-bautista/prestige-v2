@@ -492,5 +492,12 @@ Route::group(['middleware' => 'auth:admin'], function () {
     // Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
     // Route::get('/admin/users/download-csv', 'Admin\UsersController@downloadCsv')->name('admin.user.download-csv');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Users Activity Logs Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/activity-logs/list', 'Admin\UserActivityLogsController@list')->name('admin.user.activity.logs.list');
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
