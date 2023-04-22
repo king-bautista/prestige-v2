@@ -42,8 +42,9 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->latest()
+            ->paginate(request('perPage'));
+            
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -209,7 +210,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     public function getAll()
     {
         try {
-            $sites = Site::get();
+            $sites = Site::orderBy('name')->get();
             return $this->response($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([

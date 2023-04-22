@@ -378,26 +378,6 @@ import Table from '../Helpers/Table';
 			this.getCompany();
         },
 
-        // methods: {
-		// 	getSites: function() {
-        //         axios.get('/admin/site/get-all')
-        //         .then(response => this.sites = response.data.data);
-        //     },
-
-        //     getBuildings: function(id) {
-		// 		axios.get('/admin/site/get-buildings/'+id)
-        //         .then(response => this.buildings = response.data.data);
-		// 	},
-
-        //     getFloorLevel: function(id) {
-		// 		axios.get('/admin/site/floors/'+id)
-        //         .then(response => this.floors = response.data.data);
-        //     },
-
-		// 	AddNewScreen: function() {
-		// 		this.add_record = true;
-		// 		this.edit_record = false;
-
 	methods: {
 		getSites: function () {
 			axios.get('/admin/site/get-all')
