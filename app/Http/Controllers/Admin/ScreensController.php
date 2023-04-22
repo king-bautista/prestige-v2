@@ -36,8 +36,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     public function list(Request $request)
     {
         try {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $filters = json_decode($request->filters);
             $site_ids = [];
             if ($filters)
@@ -45,19 +43,24 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
             $site_screens = SiteScreenViewModel::when(request('search'), function ($query) {
                 return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%');
+                ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
             })
-                ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
-                    return $query->whereIn('site_screens.site_id', $site_ids);
-                })
-                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_screens.*')
-                ->latest()
-                ->paginate(request('perPage'));
+            ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
+                return $query->whereIn('site_screens.site_id', $site_ids);
+            })
+            ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+            ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+            ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+            ->select('site_screens.*')
+            ->latest()
+            ->paginate(request('perPage'));
+
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -229,7 +232,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         try {
             $site = SiteScreen::find($id);
 
-            if ($site->screen_type != 'Directory')
+            if ($site->product_application != 'Directory')
                 return response([
                     'message' => 'Only directory can set as default.',
                     'status' => false,

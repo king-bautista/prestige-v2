@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\BuildingsControllerInterface;
 use Illuminate\Http\Request;
+use App\Http\Requests\BuildingRequest;
 
 use App\Models\SiteBuilding;
 use App\Models\ViewModels\AdminViewModel;
@@ -35,8 +36,6 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         try
         {
             $site_id = session()->get('site_id');
-
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $buildings = SiteBuilding::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
@@ -74,7 +73,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         }
     }
 
-    public function store(Request $request)
+    public function store(BuildingRequest $request)
     {
         try
     	{
@@ -100,7 +99,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         }
     }
 
-    public function update(Request $request)
+    public function update(BuildingRequest $request)
     {
         try
     	{
