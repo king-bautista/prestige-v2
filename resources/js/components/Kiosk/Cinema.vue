@@ -18,7 +18,7 @@
                         
                         <!-- Control dots -->
                         <ul class="carousel-indicators z-1" v-show="curent_cinema_list_count > 0">
-                            <li data-target="#myCinemas" v-for="(cinemas, index) in cinema_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"></li>
+                            <li data-target="#myCinemas" v-for="(cinemas, index) in cinema_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active':''"><span></span></li>
                         </ul>
 
                         <div class="carousel-inner custom-p-0-65 carousel-mh-605">
@@ -63,7 +63,7 @@
                     <div id="myMovies" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="schedule_list.length > 0">
                         <!-- Control dots -->
                         <ul class="carousel-indicators z-1">
-                            <li data-target="#myMovies" v-for="(movies, index) in schedule_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>
+                            <li data-target="#myMovies" v-for="(movies, index) in schedule_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                         </ul>
                         <div class="carousel-inner custom-w-818-ma carousel-mh-528">
                             <div class="carousel-item" v-for="(movies, index) in schedule_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == curent_schedule_list_count? 'last-item':'']">
