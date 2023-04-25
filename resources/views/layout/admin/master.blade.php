@@ -45,7 +45,7 @@
         <!-- jQuery -->
         <script src="{{ URL::to('plugins/jquery/jquery.min.js') }}"></script>
         <!-- Bootstrap 4 -->
-        <!-- <script src="{{ URL::to('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
+        <script src="{{ URL::to('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <!-- Toastr -->
         <script src="{{ URL::to('plugins/toastr/toastr.min.js') }}"></script>
         <!-- ChartJS -->

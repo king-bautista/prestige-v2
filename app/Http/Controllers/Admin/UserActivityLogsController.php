@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\UserActivityLogsControllerInterface;
 //use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-//use App\Http\Requests\FAQsRequest;
-
 use App\Models\UserActivityLog;
 use App\Models\ViewModels\UserActivityLogViewModel;
 use App\Models\ViewModels\AdminViewModel;
@@ -39,9 +37,10 @@ class UserActivityLogsController extends AppBaseController implements UserActivi
             $user_activity_logs = UserActivityLogViewModel::when(request('search'), function ($query) {
 
                 return $query->where('user_activity_logs.last_login', 'LIKE', '%' . request('search') . '%')
-                         ->orWhere('user_activity_logs.last_password_reset', 'LIKE', '%' . request('search') . '%')
-                         ->orWhere('user_activity_logs.module_accessed', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('user_activity_logs.last_password_reset', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('user_activity_logs.module_accessed', 'LIKE', '%' . request('search') . '%');
             })
+                ->where('user_activity_logs.user_id', Auth::user()->id)
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($user_activity_logs, 'Successfully Retreived!', 200);

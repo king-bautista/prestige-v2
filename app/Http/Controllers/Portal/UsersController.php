@@ -162,7 +162,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     }
 
     public function updateProfile(PortalUserRequest $request)
-    {
+    {  
         try
     	{
             $profile_image = $request->file('profile_image');

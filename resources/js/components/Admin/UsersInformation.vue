@@ -3,7 +3,7 @@
 	<section class="content">
 		<!-- <div class="container-fluid"> -->
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-12">
 				<!-- Profile Image -->
 				<div class="card card-primary card-outline">
 					<div class="card-body box-profile">
@@ -13,28 +13,15 @@
 						<h3 class="profile-username text-center"> {{ user.full_name }}</h3>
 
 						<div class="text-center">{{ user.email }}</div>
-						<!-- <div class="form-group row">
-									<label for="lastName" class="col-sm-4 col-form-label">Password</label>
-									<div class="col-sm-8">
-										<input type="password" class="form-control" v-model="user.password"
-											placeholder="Password">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="lastName" class="col-sm-4 col-form-label">Confirm Password</label>
-									<div class="col-sm-8">
-										<input type="password" class="form-control" v-model="user.password_confirmation"
-											placeholder="Confirm Password">
-									</div>
-								</div> -->
-
 					</div>
 					<!-- /.card-body -->
 				</div>
 				<!-- /.card -->
 			</div>
+		</div>	
+		<div class="row">
 			<!-- /.col -->
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header p-2">
 						<ul class="nav nav-pills">
@@ -155,14 +142,12 @@ export default {
 			},
 			material: '/images/user-icon.png',
 			dataFields: {
-				last_login: "Last Updated",
+				last_login: "Last Login",
 				last_password_reset: "Last Password Reset",
 				module_accessed: "Module Accessed",
-				//company_name: "Company Name",
-				//type: "Type",
-				//user_name: "User Name",
 				query: "Query",
-				bindings: "Bindngs",
+				old_bindings: "(Old) Bindings",
+				bindings: "(New) Bindngs",
 			},
 			primaryKey: "id",
 			dataUrl: "/admin/activity-logs/list",

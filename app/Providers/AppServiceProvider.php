@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
+use App\Models\AdminMeta;
 use App\Models\UserActivityLog;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\UserViewModel;
@@ -99,7 +100,9 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $statement_type =  (explode(" ", $query->sql))[0];
-            if ($statement_type == 'insert' || $statement_type == 'update') {
+            if ($statement_type != 'select') {
+
+                $module_accessed = str_replace(".", "/", Route::currentRouteName());
 
                 if (Auth::user()) {
                     $user_id = Auth::user()->id;
@@ -117,6 +120,17 @@ class AppServiceProvider extends ServiceProvider
                     $last_login = $user->details['last_login'];
                     $type = 'Portal';
                     $company_id = Auth::guard('portal')->user()->company_id;
+                } else {
+                    $admin_meta_id = $query->bindings[2];
+                    $admin_meta = AdminMeta::find($admin_meta_id);
+
+                    $user = AdminViewModel::find($admin_meta->admin_id);
+                    $last_login = $query->bindings[1];
+                    $type = 'Admin';
+                    $company_id = '3';
+                    $user_id =  $user->id;
+                    $user_name = $user->full_name;
+                    $last_password_reset = $user->updated_at;
                 }
 
                 $module_accessed = str_replace(".", "/", Route::currentRouteName());
@@ -136,6 +150,27 @@ class AppServiceProvider extends ServiceProvider
                 ];
 
                 $user_activity_log = UserActivityLog::create($data);
+                if ($statement_type == 'insert') {
+
+                    $res = explode(" ", str_replace(array('(', ')'), '', explode("values", $query->sql)[0]));
+                    array_pop($res);
+                    $key = str_replace(array(',', '`'), '', array_slice($res, 3));
+                    $value = $query->bindings;
+                    $key_value = array_combine($key, $value);
+                    $table = str_replace('`', '', (explode(" ", $query->sql))[2]);
+
+                    $data = DB::table($table)
+                        ->select('id')
+                        ->where(function ($query) use ($key_value) {
+                            foreach ($key_value as $key => $value) {
+                                $query->where($key, '=', $value);
+                            }
+                        })->get();
+
+                    DB::table('user_activity_logs')->where('id', $user_activity_log->id)->update(array(
+                        'transaction_id' => $data[0]->id,
+                    ));
+                }
             }
         });
     }

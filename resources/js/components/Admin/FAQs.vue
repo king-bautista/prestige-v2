@@ -192,8 +192,8 @@ export default {
 		},
 
 		updateFAQs: function () {
-			let formData = new FormData(); 
-			formData.append("id", 13);
+			let formData = new FormData();
+			formData.append("id", this.faqs.id);
 			formData.append("question", this.faqs.question);
 			formData.append("answer", this.faqs.answer);
 			formData.append("active", this.faqs.active);

@@ -25,7 +25,6 @@ class UserActivityLog extends Model
         'transaction_id',
         'query',
         'bindings'
-
     ];
 
     /**
