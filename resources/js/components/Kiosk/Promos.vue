@@ -14,7 +14,7 @@
                         
                     <!-- Control dots -->
                     <ul class="carousel-indicators z-1">
-                        <li data-target="#promoCarousel" v-for="(promos, index) in promo_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>
+                        <li data-target="#promoCarousel" v-for="(promos, index) in promo_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                     </ul>
 
                     <!-- The slideshow -->
@@ -49,7 +49,7 @@
                     </a>
 
                 </div>
-                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: -6rem auto auto;">
+                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
             </div>
         </div>
         <img class="back-button" :src="back_button" @click="goBack">

@@ -36,7 +36,7 @@
                                     
                         <!-- Control dots -->
                         <ul class="carousel-indicators z-1" v-show="current_tenant_list_count>0">
-                            <li data-target="#searchCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>
+                            <li data-target="#searchCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                         </ul>
 
                         <!-- The slideshow -->
@@ -274,7 +274,7 @@
                         }
 
                         if (this.temp.length == 0) {
-                            this.subscriber_list = this.subscriber_list.slice(0, 2);
+                            this.subscriber_list = this.subscriber_list.slice(0, 3);
                             this.temp = this.subscriber_list;
                         }else {
                             
@@ -288,7 +288,7 @@
 
                             this.subscriber_list = this.temp_subscriber_list
                             this.temp_subscriber_list = []
-                            this.subscriber_list = this.subscriber_list.slice(0, 2);
+                            this.subscriber_list = this.subscriber_list.slice(0, 3);
                             this.temp = this.subscriber_list;
                         }
 

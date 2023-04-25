@@ -355,6 +355,10 @@
                     $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
                 });
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
+
+                if ($("#app").attr('app-env') == 'local') {
+                    $('#guide-button').trigger('click');
+                }
             },
 
             updateFeedback: function(id) {
