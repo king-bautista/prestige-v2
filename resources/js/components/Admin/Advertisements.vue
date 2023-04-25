@@ -99,7 +99,8 @@
 									placeholder="Select Type" 
 									:options="ad_types" 
 									:searchable="true" 
-									:allow-empty="false">
+									:allow-empty="false"
+									@select="applicationSelected">
                                     </multiselect> 
 								</div>
 							</div>
@@ -110,50 +111,106 @@
 									track-by="site_screen_location" 
 									label="site_screen_location" 
 									placeholder="Select Screens" 
-									:options="screens" 
+									:options="tmp_screens" 
 									:searchable="true" 
-									:allow-empty="false">
+									:allow-empty="false"
+									:multiple="true">
                                     </multiselect> 
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"> 
+									<footer class="blockquote-footer">In Seconds</footer>
+								</div>
+							</div>
+							<hr/>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad  <span class="font-italic text-danger"> *</span>
+									<footer class="blockquote-footer">Portrait</footer>
+								</label>								
 								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="material" @change="materialChange"  multiple>
+                                    <input type="file" accept="image/*" ref="material" @change="portraitBannerAd"  multiple>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
+									<footer class="blockquote-footer">image/video max size is 1080 x 1920 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
-									<span v-if="material && helper.getFileExtension(material_type) == 'image'">
-										<img v-if="material" :src="material" class="img-thumbnail" />
+									<span v-if="banner_portrait && helper.getFileExtension(material_type) == 'image'">
+										<img v-if="banner_portrait" :src="banner_portrait" class="img-thumbnail" />
 									</span>
-									<span v-else-if="material && helper.getFileExtension(material_type) == 'video'">
+									<span v-else-if="banner_portrait && helper.getFileExtension(material_type) == 'video'">
 										<video muted="muted" class="img-thumbnail">
-											<source :src="material" type="video/ogg">
+											<source :src="banner_portrait" type="video/ogg">
 											Your browser does not support the video tag.
 										</video>
 									</span>
 								</div>
 							</div>
+							<hr/>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Width</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="advertisements.width" disabled>
+								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad <span class="font-italic text-danger"> *</span>
+									<footer class="blockquote-footer">Portrait</footer>
+								</label>								
+								<div class="col-sm-5">
+                                    <input type="file" accept="image/*" ref="material" @change="portraitFullscreenAd"  multiple>
+									<footer class="blockquote-footer">Max file size is 15MB</footer>
+									<footer class="blockquote-footer">image/video max size is 1080 x 1920 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+									<span v-if="fullscreen_portrait && helper.getFileExtension(material_type) == 'image'">
+										<img v-if="fullscreen_portrait" :src="fullscreen_portrait" class="img-thumbnail" />
+									</span>
+									<span v-else-if="fullscreen_portrait && helper.getFileExtension(material_type) == 'video'">
+										<video muted="muted" class="img-thumbnail">
+											<source :src="fullscreen_portrait" type="video/ogg">
+											Your browser does not support the video tag.
+										</video>
+									</span>
 								</div>
 							</div>
+							<hr/>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Height</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="advertisements.height" disabled>
+								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad <span class="font-italic text-danger"> *</span>
+									<footer class="blockquote-footer">Landscape</footer>
+								</label>
+								<div class="col-sm-5">
+                                    <input type="file" accept="image/*" ref="material" @change="landscapeBannerAd"  multiple>
+									<footer class="blockquote-footer">Max file size is 15MB</footer>
+									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+									<span v-if="banner_landscape && helper.getFileExtension(material_type) == 'image'">
+										<img v-if="banner_landscape" :src="banner_landscape" class="img-thumbnail" />
+									</span>
+									<span v-else-if="banner_landscape && helper.getFileExtension(material_type) == 'video'">
+										<video muted="muted" class="img-thumbnail">
+											<source :src="banner_landscape" type="video/ogg">
+											Your browser does not support the video tag.
+										</video>
+									</span>
 								</div>
 							</div>
-							
-														
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"> 
-									<footer class="blockquote-footer">In Seconds</footer>
+							<hr/>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad <span class="font-italic text-danger"> *</span>
+									<footer class="blockquote-footer">Landscape</footer>
+								</label>
+								<div class="col-sm-5">
+                                    <input type="file" accept="image/*" ref="material" @change="landscapeFullscreenAd"  multiple>
+									<footer class="blockquote-footer">Max file size is 15MB</footer>
+									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+									<span v-if="fullscreen_landscape && helper.getFileExtension(material_type) == 'image'">
+										<img v-if="fullscreen_landscape" :src="fullscreen_landscape" class="img-thumbnail" />
+									</span>
+									<span v-else-if="fullscreen_landscape && helper.getFileExtension(material_type) == 'video'">
+										<video muted="muted" class="img-thumbnail">
+											<source :src="fullscreen_landscape" type="video/ogg">
+											Your browser does not support the video tag.
+										</video>
+									</span>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -200,18 +257,28 @@
                     name: '',
 					file_path: '',
 					display_duration: '',
-					width: '',
-					height: '',
+					portrait_width: '',
+					portrait_height: '',
+					landscape_width: '',
+					landscape_height: '',
 					status_id: '',
-                    active: true,           
+                    active: true,
+					banner_portrait: '',
+					banner_landscape: '',
+					fullscreen_portrait: '',        
+					fullscreen_landscape: '',        
                 },
-				material: '',
+				banner_portrait: '',
+				banner_landscape: '',
+				fullscreen_portrait: '',
+				fullscreen_landscape: '',
 				material_type: '',
                 companies: [],
                 contracts: [],
                 brands: [],
-				ad_types: ['Digital Signage', 'Interactive Directory'],
+				ad_types: ['Digital Signage', 'Directory'],
                 screens: [],
+				tmp_screens: [],
                 add_record: true,
                 edit_record: false,
             	dataFields: {
@@ -291,7 +358,6 @@
 			},
 
 			companySelected: function(company) {
-				console.log(company);
 				this.contracts = company.contracts;
 			},
 
@@ -300,32 +366,156 @@
 				this.screens = contract.screens;
 			},
 
-			materialChange: function(e) {
+			applicationSelected: function(application) {
+				this.advertisements.screen_ids = '';
+				this.tmp_screens = this.screens.filter(option => option.product_application == application); 
+			},
+
+			portraitBannerAd: function(e) {
 				const file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
-      			this.material = URL.createObjectURL(file);
-				this.advertisements.material = file;
+      			this.banner_portrait = URL.createObjectURL(file);
+				this.advertisements.banner_portrait = file;
 				
 				var file_type = this.material_type.split("/");
 				var obj = this;
+				var portrait_width;
+				var portrait_height;
 
 				if(file_type[0] == 'image') {
 					var img = new Image;
 					img.onload = function() {
-						obj.advertisements.width = img.width;
-						obj.advertisements.height = img.height;
+						portrait_width = img.width;
+						portrait_height = img.height;
 					};
 						
-					img.src = this.material;
+					img.src = this.banner_portrait;
 				}
 				else if(file_type[0] == 'video') {
 					const video = document.createElement("video");
-					video.src = this.material;
+					video.src = this.banner_portrait;
 					video.addEventListener("loadedmetadata", function () {
-						obj.advertisements.width = this.videoWidth;
-						obj.advertisements.height = this.videoHeight;
+						portrait_width = this.videoWidth;
+						portrait_height = this.videoHeight;
 						obj.advertisements.display_duration = this.duration;
 					});
+				}
+
+				if(portrait_width > portrait_height) {
+					this.banner_portrait = null;
+					this.advertisements.banner_portrait = null;
+					toastr.error('Invalid material for banner ad portrait size.');
+				}
+			},
+
+			portraitFullscreenAd: function(e) {
+				const file = e.target.files[0];
+				this.material_type = e.target.files[0].type;
+      			this.fullscreen_portrait = URL.createObjectURL(file);
+				this.advertisements.fullscreen_portrait = file;
+				
+				var file_type = this.material_type.split("/");
+				var obj = this;
+				var portrait_width;
+				var portrait_height;
+
+				if(file_type[0] == 'image') {
+					var img = new Image;
+					img.onload = function() {
+						portrait_width = img.width;
+						portrait_height = img.height;
+					};
+						
+					img.src = this.fullscreen_portrait;
+				}
+				else if(file_type[0] == 'video') {
+					const video = document.createElement("video");
+					video.src = this.fullscreen_portrait;
+					video.addEventListener("loadedmetadata", function () {
+						portrait_width = this.videoWidth;
+						portrait_height = this.videoHeight;
+						obj.advertisements.display_duration = this.duration;
+					});
+				}
+
+				if(portrait_width > portrait_height) {
+					this.fullscreen_portrait = null;
+					this.advertisements.fullscreen_portrait = null;
+					toastr.error('Invalid material for fullscreen portrait size.');
+				}
+			},
+
+			landscapeBannerAd: function(e) {
+				const file = e.target.files[0];
+				this.material_type = e.target.files[0].type;
+      			this.banner_landscape = URL.createObjectURL(file);
+				this.advertisements.banner_landscape = file;
+				
+				var file_type = this.material_type.split("/");
+				var obj = this;
+				var portrait_width;
+				var portrait_height;
+
+				if(file_type[0] == 'image') {
+					var img = new Image;
+					img.onload = function() {
+						portrait_width = img.width;
+						portrait_height = img.height;
+					};
+						
+					img.src = this.banner_landscape;
+				}
+				else if(file_type[0] == 'video') {
+					const video = document.createElement("video");
+					video.src = this.banner_landscape;
+					video.addEventListener("loadedmetadata", function () {
+						portrait_width = this.videoWidth;
+						portrait_height = this.videoHeight;
+						obj.advertisements.display_duration = this.duration;
+					});
+				}
+
+				if(portrait_width > portrait_height) {
+					this.banner_landscape = null;
+					this.advertisements.banner_portrait = null;
+					toastr.error('Invalid material for banner ad landscape size.');
+				}
+			},
+
+			landscapeFullscreenAd: function(e) {
+				const file = e.target.files[0];
+				this.material_type = e.target.files[0].type;
+      			this.fullscreen_landscape = URL.createObjectURL(file);
+				this.advertisements.fullscreen_landscape = file;
+				
+				var file_type = this.material_type.split("/");
+				var obj = this;
+				var portrait_width;
+				var portrait_height;
+
+				if(file_type[0] == 'image') {
+					var img = new Image;
+					img.onload = function() {
+						portrait_width = img.width;
+						portrait_height = img.height;
+					};
+						
+					img.src = this.fullscreen_landscape;
+				}
+				else if(file_type[0] == 'video') {
+					const video = document.createElement("video");
+					video.src = this.fullscreen_landscape;
+					video.addEventListener("loadedmetadata", function () {
+						portrait_width = this.videoWidth;
+						portrait_height = this.videoHeight;
+						obj.advertisements.display_duration = this.duration;
+					});
+				}
+
+				if(portrait_width > portrait_height) {
+					this.fullscreen_landscape = null;
+					this.advertisements.fullscreen_landscape = null;
+					toastr.error('Invalid material for fullscreen landscape size.');
 				}
 			},
 
@@ -388,7 +578,7 @@
             },
 
             updateAdvertisements: function() {
-				let formData = new FormData(); a
+				let formData = new FormData(); 
 				formData.append("id", this.advertisements.id);
 				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
 				formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));

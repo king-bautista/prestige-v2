@@ -79,7 +79,8 @@ class ContractViewModel extends Model
                 $site_screens[] = [
                     'id' => 0,
                     'site_id' => $directory->site_id,
-                    'site_screen_location' => $directory->site_name.' - All ('.$directory->product_application.')'
+                    'site_screen_location' => $directory->site_name.' - All ('.$directory->product_application.')',
+                    'product_application' => $directory->product_application
                 ];
             }
         }
