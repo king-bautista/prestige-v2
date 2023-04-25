@@ -1,119 +1,155 @@
 <template>
 	<!-- Main content -->
 	<section class="content">
-		<!-- <div class="container-fluid"> -->
-		<div class="row">
-			<div class="col-md-12">
-				<!-- Profile Image -->
-				<div class="card card-primary card-outline">
-					<div class="card-body box-profile">
-						<div class="text-center">
-							<img :src="material" class="profile-user-img img-fluid img-circle" />
-						</div>
-						<h3 class="profile-username text-center"> {{ user.full_name }}</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card m-3">
+						<!-- <div class="card-header">
+								<h5 class="card-title" ><i class="fa fa-plus" aria-hidden="true"></i> Add
+									New Company</h5>
+								<h5 class="card-title" ><i class="fas fa-edit"></i> Edit Company</h5>
+								<button type="button" class="btn btn-secondary btn-sm float-right"><i
+										class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+							</div> -->
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-3">
+									<div class="text-center">
+										<img :src="material" class="profile-user-img img-fluid img-circle" />
+									</div>
+									<div class="text-center">{{ user.email }}</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">Last Name</label>
+										<div class="col-sm-8">
+											{{ user.last_name }}
+										</div>
+									</div>
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">First Name</label>
+										<div class="col-sm-8">
+											{{ user.first_name }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">Mobile</label>
+										<div class="col-sm-8">
+											{{ user.mobile }}
+										</div>
+									</div>
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">Address</label>
+										<div class="col-sm-8">
+											{{ user.address }}
+										</div>
+									</div>
+								</div>
+							</div>
 
-						<div class="text-center">{{ user.email }}</div>
+						</div>
 					</div>
-					<!-- /.card-body -->
 				</div>
-				<!-- /.card -->
 			</div>
-		</div>	
-		<div class="row">
-			<!-- /.col -->
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header p-2">
-						<ul class="nav nav-pills">
-							<li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="#activity_logs" data-toggle="tab">Activity
-									Logs</a>
-							</li>
-						</ul>
-					</div><!-- /.card-header -->
-					<div class="card-body">
-						<div class="tab-content">
-							<div class="active tab-pane" id="settings">
-								<!-- <form class="form-horizontal"> -->
-								<div class="form-group row">
+			<div class="row">
+				<!-- /.col -->
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header p-2">
+							<ul class="nav nav-pills">
+								<li class="nav-item"><a class="nav-link active" href="#activity_logs"
+										data-toggle="tab">Activity
+										Logs</a>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
+								</li>
+							</ul>
+						</div><!-- /.card-header -->
+						<div class="card-body">
+							<div class="tab-content">
+								<div class="active tab-pane" id="activity_logs">
+									<div class="card">
+										<div class="card-body">
+											<Table :dataFields="dataFields" :dataUrl="dataUrl" :primaryKey="primaryKey"
+												ref="dataTable">
+											</Table>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane" id="settings">
+									<!-- <form class="form-horizontal"> -->
+									<div class="form-group row">
 
-									<div class="col-sm-10">
-										<input type="file" accept="image/*" ref="material" @change="materialChange">
-										<footer class="blockquote-footer">Max file size is 15MB</footer>
+										<div class="col-sm-10">
+											<input type="file" accept="image/*" ref="material" @change="materialChange">
+											<footer class="blockquote-footer">Max file size is 15MB</footer>
+										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="firstName" class="col-sm-2 col-form-label">First Name</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" v-model="user.first_name"
-											placeholder="First Name">
+									<div class="form-group row">
+										<label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" v-model="user.first_name"
+												placeholder="First Name">
+										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" v-model="user.last_name"
-											placeholder="Last Name">
+									<div class="form-group row">
+										<label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" v-model="user.last_name"
+												placeholder="Last Name">
+										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="mobile" class="col-sm-2 col-form-label">Mobile Number</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" v-model="user.mobile"
-											placeholder="Mobile Number">
+									<div class="form-group row">
+										<label for="mobile" class="col-sm-2 col-form-label">Mobile Number</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" v-model="user.mobile"
+												placeholder="Mobile Number">
+										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="email" class="col-sm-2 col-form-label">Address</label>
-									<div class="col-sm-10">
-										<textarea class="form-control" rows="4" v-model="user.address" placeholder="Address"
-											required></textarea>
+									<div class="form-group row">
+										<label for="email" class="col-sm-2 col-form-label">Address</label>
+										<div class="col-sm-10">
+											<textarea class="form-control" rows="4" v-model="user.address"
+												placeholder="Address" required></textarea>
+										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="lastName" class="col-sm-2 col-form-label">Password</label>
-									<div class="col-sm-8">
-										<input type="password" class="form-control" v-model="user.password"
-											placeholder="Password">
+									<div class="form-group row">
+										<label for="lastName" class="col-sm-2 col-form-label">Password</label>
+										<div class="col-sm-8">
+											<input type="password" class="form-control" v-model="user.password"
+												placeholder="Password">
+										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="passwordConfirmation" class="col-sm-2 col-form-label">Password
-										Confirmation</label>
-									<div class="col-sm-8">
-										<input type="password" class="form-control" v-model="user.password_confirmation"
-											placeholder="Password Confirmation">
+									<div class="form-group row">
+										<label for="passwordConfirmation" class="col-sm-2 col-form-label">Password
+											Confirmation</label>
+										<div class="col-sm-8">
+											<input type="password" class="form-control" v-model="user.password_confirmation"
+												placeholder="Password Confirmation">
+										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<div class="col-sm-2 text-right">
-										<button type="button" class="btn btn-primary btn-sm" @click="updateUser">Save
-											Changes</button>
+									<div class="form-group row">
+										<div class="col-sm-2 text-right">
+											<button type="button" class="btn btn-primary btn-sm" @click="updateUser">Save
+												Changes</button>
+										</div>
 									</div>
+									<!-- </form> -->
 								</div>
-								<!-- </form> -->
+								<!-- /.tab-pane -->
 							</div>
-							<div class="tab-pane" id="activity_logs">
-								<div class="card">
-									<div class="card-body">
-										<Table :dataFields="dataFields" :dataUrl="dataUrl" :primaryKey="primaryKey"
-											ref="dataTable">
-										</Table>
-									</div>
-								</div>
-							</div>
-							<!-- /.tab-pane -->
-						</div>
-						<!-- /.tab-content -->
-					</div><!-- /.card-body -->
+							<!-- /.tab-content -->
+						</div><!-- /.card-body -->
+					</div>
+					<!-- /.card -->
 				</div>
-				<!-- /.card -->
+				<!-- /.col -->
 			</div>
-			<!-- /.col -->
+			<!-- /.row -->
 		</div>
-		<!-- /.row -->
-		<!-- </div> -->
 		<!-- /.container-fluid -->
 	</section>
 	<!-- /.content -->
