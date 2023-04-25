@@ -84,7 +84,7 @@ class SiteScreenViewModel extends Model
 
     public function getSiteScreenLocationAttribute() 
     {
-        return $this->name.', '.$this->building_name.', '.$this->floor_name. ' ( '.$this->site_name.' ) ';
+        return $this->site_name.' - '.$this->name.', '.$this->building_name.', '.$this->floor_name. ' ('.$this->product_application.' / '.$this->orientation.')';
     }
 
 }

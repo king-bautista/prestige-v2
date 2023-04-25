@@ -52,11 +52,11 @@
                     <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{ current_category.label}}</div>
                 </div>
                 <div class="row col-md-10 offset-md-1 mb-3 w-1152">
-                    <div id="alphabeticalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false">
+                    <div id="alphabeticalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false" v-show="current_supplementals_count >= 0">
 
                         <!-- Indicators -->
-                        <ul class="carousel-indicators z-1">
-                            <li data-target="#alphabeticalCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>                 
+                        <ul class="carousel-indicators z-1" v-show="current_supplementals_count>1">
+                            <li data-target="#alphabeticalCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>                 
                         </ul>
 
                         <!-- The slideshow -->
@@ -81,6 +81,7 @@
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
+                    <img v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">
                 </div>
             </div>
 
@@ -100,7 +101,7 @@
 
                         <!-- Indicators -->
                         <ul class="carousel-indicators carousel-indicators-a z-1" v-show="tenant_list_count>0">
-                            <li data-target="#supplementalCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'first-item active':''"></li>                    
+                            <li data-target="#supplementalCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'first-item active':''"><span></span></li>                    
                         </ul>
 
                         <!-- The slideshow -->
@@ -572,6 +573,8 @@
                 $.post( "/api/v1/like-count", params ,function(response) {
                     
                 });
+                
+                this.$refs.callPromo.updatePromoList(params);
             },
 
             resetCarousel: function() {
@@ -988,6 +991,8 @@
                     $(".resize-share").css({'width':'64'});
                     $('.resize-share').autoSizr(21);
                 }
+
+                $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
 			},
 
             findStore: function(tenant_details,current_page) {
@@ -999,6 +1004,23 @@
                 this.mapIsShown = true;
 				this.$refs.callMap.find_store(tenant_details,this.current_page);
                 this.$refs.callAssist.filterAssist('maptenant',this.current_language_set);
+			},
+
+            updateMainCategory: function(params) {
+                // axios.get('/api/v1/get-like-count/'+tenant.id)
+                // .then(response => {
+                //     new_like_count = response.data.data
+                // });
+
+                this.main_category.forEach(object => {
+                    object.alphabetical.forEach(array => {
+                        array.forEach(object => {
+                            if (object.id == params.id) {
+                                object.like_count = params.like_count
+                            }
+                        });
+                    });
+                });
 			},
 
         },
@@ -1027,6 +1049,10 @@
 
                 obj.$root.$on('callSetTranslation', () => {
                     obj.setTranslation(obj.current_language_set);
+                });
+
+                obj.$root.$on('callUpdateMainCategory', (params) => {
+                    obj.updateMainCategory(params);
                 });
                 //--e
                 $('.store-tabs-item').on('click', function () {
@@ -1076,6 +1102,10 @@
                 //     var page = $(this).data('link');
                 //     obj.helper.saveLogs({action: 'click'}, 'Category');
                 // });
+
+                if (!$("#app").attr('app-mlng')){
+                    $(".multilanguage").addClass('disabled-response');
+                }
             });
         },
     };

@@ -269,6 +269,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
         try
     	{
             $data = [
+                'name' => $request->name,
                 'company_id' => $request->company_id,
                 'display_duration' => $request->display_duration,
                 'slots_per_loop' => $request->slots_per_loop,
@@ -303,6 +304,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $contract = Contract::find($request->id);
 
             $data = [
+                'name' => $request->name,
                 'company_id' => $request->company_id,
                 'display_duration' => $request->display_duration,
                 'slots_per_loop' => $request->slots_per_loop,

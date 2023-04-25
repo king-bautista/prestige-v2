@@ -17,6 +17,7 @@ class ContractScreen extends Model
     protected $fillable = [
         'contract_id',
         'site_screen_id',
+        'site_id',
      ];
 
     /**

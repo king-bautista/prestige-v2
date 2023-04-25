@@ -373,12 +373,21 @@ body,html {
 .carousel-indicators li {
     width: 18px;
     height: 18px;
+    /* background-color: #ffdb00; */
+    border: solid 0px;
+    border-radius: 15px;
+    padding-right: 18px;
+    padding-left: 18px;
+    display: inline-block;
+}
+
+.carousel-indicators span {
+    width: 18px;
+    height: 18px;
     background-color: #ffdb00;
     border: solid 0px;
     border-radius: 15px;
-    margin-right: 18px;
-    margin-left: 18px;
-    display: inline-block;
+    display: table;
 }
 
 .tenant-store {
@@ -412,6 +421,10 @@ body,html {
     float:left;
     margin-right:10px;
     position:relative;
+}
+
+.tenant-category {
+    border-radius: 15px;
 }
 
 .cinema-store {
@@ -1201,6 +1214,13 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     color: #32213E;
 }
 
+.label-4 {
+    color: #3e3e3e;
+    font-size: 40px;
+    text-align: center;
+    margin-top: 290px;
+}
+
 .m-a {
     margin: auto;
 }
@@ -1863,4 +1883,12 @@ div,span {
     -moz-user-select: none; /* mozilla browsers */
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
+}
+
+.directions-to,.destination {
+    display: none;
+}
+
+.theme-bubble-none {
+    background-image: none !important;
 }

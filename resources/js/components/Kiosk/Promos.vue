@@ -14,7 +14,7 @@
                         
                     <!-- Control dots -->
                     <ul class="carousel-indicators z-1">
-                        <li data-target="#promoCarousel" v-for="(promos, index) in promo_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>
+                        <li data-target="#promoCarousel" v-for="(promos, index) in promo_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                     </ul>
 
                     <!-- The slideshow -->
@@ -49,7 +49,7 @@
                     </a>
 
                 </div>
-                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: -6rem auto auto;">
+                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
             </div>
         </div>
         <img class="back-button" :src="back_button" @click="goBack">
@@ -236,10 +236,20 @@
             updateLikeCount: function(id) {
                 this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
 
+                this.promo_list.forEach(element => {
+                    element.forEach(tenant => {
+                        if (tenant.id = this.tenant_details.id) {
+                            tenant.tenant_details.like_count = this.tenant_details.like_count;
+                        }          
+                    });
+                });
+
                 let params = {
                     id: this.tenant_details.id,
                     like_count: this.tenant_details.like_count
                 }
+
+                $(".btn-like-display").addClass('disabled-response');
 
                 $.post( "/api/v1/like-count", params ,function(response) {
                     
@@ -247,6 +257,13 @@
             },
 
             resetPage: function() {
+                this.page_title = 'Promos';
+                this.show_tenant = false;
+                this.promo_page = true;
+
+                setTimeout(() => {
+                    this.$root.$emit('callSetTranslation');
+                }, 100);
                 $('.first-item').trigger('click');
             },
 
@@ -314,10 +331,16 @@
             showTenant: function(tenant) {
                 this.page_title = 'Store Page';
                 this.tenant_details = tenant;
+                // axios.get('/api/v1/get-like-count/'+tenant.id)
+                // .then(response => {
+                //     this.tenant_details.like_count = response.data.data
+                // });
                 this.show_tenant = true;
                 this.promo_page = false;
                 this.buildSchedule(this.tenant_details);
                 this.$root.$emit('callMutateLocation','tenant');
+
+                $(".btn-like-display").removeClass('disabled-response');
 
                 setTimeout(() => {
                     this.$root.$emit('callSetTranslation');
@@ -347,6 +370,16 @@
 
             findStore: function(value) {
                 this.$root.$emit('callFindStore',value,'promo')
+			},
+
+            updatePromoList: function(params) {
+                this.promo_list.forEach(array => {
+                    array.forEach(object => {
+                        if (object.id = params.id) {
+                            object.tenant_details.like_count = params.like_count;
+                        }          
+                    });
+                });
 			},
 
         },

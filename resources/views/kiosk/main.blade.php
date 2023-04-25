@@ -1,6 +1,6 @@
 @extends('layout.kiosk_default.master')
 @section('content')
-<div class="container-fluid" style="background-image: url('{{ $site_background }}')">
+<div class="container-fluid theme-bubble" style="background-image: url('{{ $site_background }}')">
     <div class="row">
         <div class="col-md-3 custom-p-1">
             <div class="banner-ads">
@@ -108,6 +108,7 @@
         $('.h-button').on('click', function(){
             $('.h-button').removeClass('active');
             $(this).addClass('active');
+            $(".theme-bubble").removeClass("theme-bubble-none");
         });
 
         $('.widget-button').on('click', function(){

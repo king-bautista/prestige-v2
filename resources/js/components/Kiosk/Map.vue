@@ -86,7 +86,6 @@
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
-                            :reset-after="true"
                             @select="find_store"
                             id="search-input"
                             name="tenant-search"
@@ -105,6 +104,8 @@
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
+                        <span class="label-3 directions-to translateme" data-en="Directions to:">Directions to:</span>
+                        <span class="destination"></span>
                     </div>
                 </div>
                 <div class="col-12 custom-col-sm-3">
@@ -117,8 +118,6 @@
                             :multiple="false"
                             :close-on-select="true"
                             :show-labels="false"
-                            :allow-empty="false"
-                            :searchable="false"
                             @select="toggleSelectedMap"
                             id="floor-input"
                             name="floor-search"
@@ -352,7 +351,14 @@
                     $('.pinch').hide();
                     $('.response-btn').removeClass('disabled-response');
                     $('.response-btn').removeClass('response-active-color');
+                    $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
                 });
+                $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
+
+                if ($("#app").attr('app-env') == 'local') {
+                    $('#guide-button').trigger('click');
+                }
             },
 
             updateFeedback: function(id) {
@@ -396,6 +402,8 @@
                 $('.response-btn').removeClass('disabled-response');
                 $('.response-btn').removeClass('response-active-color');
                 $(".pinch").show();
+                $('.map-tenant-option .multiselect__single').html('Input Destination');
+                $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
             },
 
             softkeys: function() {
@@ -457,6 +465,7 @@
                 this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
                 this.wayfindings.animate_marker_here_stop();
                 $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
+                // $('.map-tenant-option .multiselect__tags').prepend('<span class="label-3 directions-to translateme" data-en="Directions to:">Directions to:</span>');
 
                 axios.get('/api/v1/site/maps')
                 .then(response => {
@@ -558,6 +567,10 @@
                     vm.softkeysTenant = true;
                     vm.softkeysFeedback = false;
                     $(".btn-nothelpful").removeClass('response-active-color');
+                });
+
+                $(".map-search-modal").on('click',function(){
+                    $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
                 });
 
                 $(".softkeys__btn").on('mousedown',function(){

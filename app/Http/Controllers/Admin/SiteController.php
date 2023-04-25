@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\SiteControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\SiteRequest;
 
 use App\Models\Site;
 use App\Models\ViewModels\AdminViewModel;
@@ -41,8 +42,9 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->latest()
+            ->paginate(request('perPage'));
+            
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -67,7 +69,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
         }
     }
 
-    public function store(Request $request)
+    public function store(SiteRequest $request)
     {
         try {
             $site_logo = $request->file('site_logo');
@@ -91,7 +93,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
             }
 
-            if ($request->is_default == 'true') {
+            if ($request->is_default === 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
 
@@ -102,7 +104,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_banner' => str_replace('\\', '/', $site_banner_path),
                 'site_background' => str_replace('\\', '/', $site_background_path),
                 'active' => 1,
-                'is_default' => ($request->is_default == 0) ? 0 : 1,
+                'is_default' => ($request->is_default === 'false') ? 0 : 1,
             ];
 
             $meta_value = [
@@ -127,7 +129,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
         }
     }
 
-    public function update(Request $request)
+    public function update(SiteRequest $request)
     {
         try {
             $site = Site::find($request->id);
@@ -208,7 +210,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     public function getAll()
     {
         try {
-            $sites = Site::get();
+            $sites = Site::orderBy('name')->get();
             return $this->response($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
