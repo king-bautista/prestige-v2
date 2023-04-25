@@ -56,7 +56,7 @@
 
                         <!-- Indicators -->
                         <ul class="carousel-indicators z-1" v-show="current_supplementals_count>1">
-                            <li data-target="#alphabeticalCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"></li>                 
+                            <li data-target="#alphabeticalCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>                 
                         </ul>
 
                         <!-- The slideshow -->
@@ -101,7 +101,7 @@
 
                         <!-- Indicators -->
                         <ul class="carousel-indicators carousel-indicators-a z-1" v-show="tenant_list_count>0">
-                            <li data-target="#supplementalCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'first-item active':''"></li>                    
+                            <li data-target="#supplementalCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'first-item active':''"><span></span></li>                    
                         </ul>
 
                         <!-- The slideshow -->
@@ -1102,6 +1102,10 @@
                 //     var page = $(this).data('link');
                 //     obj.helper.saveLogs({action: 'click'}, 'Category');
                 // });
+
+                if (!$("#app").attr('app-mlng')){
+                    $(".multilanguage").addClass('disabled-response');
+                }
             });
         },
     };
