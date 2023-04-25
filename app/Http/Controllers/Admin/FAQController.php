@@ -14,6 +14,7 @@ use App\Models\ViewModels\FAQViewModel;
 use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
+use Route;
 
 class FAQController extends AppBaseController implements FAQControllerInterface
 {
@@ -92,7 +93,7 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     {
         try {
             $faq = FAQ::find($request->id);
-            $faq->touch();
+            //$faq->touch();
 
             $data = [
                 'question' => $request->question,

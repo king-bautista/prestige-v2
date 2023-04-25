@@ -61,6 +61,7 @@ class AdminViewModel extends Model
         'details',
         'roles',
         'permissions',
+        'profile_image',
     ];
 
     public function getUserDetails()
@@ -107,6 +108,13 @@ class AdminViewModel extends Model
         }
 
         return $permissions_group;
+    }
+
+    public function getProfileImageAttribute() 
+    {
+        $profile_image = $this->getUserDetails()->where('meta_key', 'profile_image')->pluck('meta_value')->toArray();
+        if(count($profile_image) > 0)
+            return asset($profile_image[0]);
     }
 
 

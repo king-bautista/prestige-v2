@@ -56,7 +56,10 @@ class AuthController extends AppBaseController implements AuthControllerInterfac
         {
             $admin_user = Admin::where('email', '=', $request->email)->where('active', true)->first();
             if ($admin_user && Hash::check($admin_user->salt.env("PEPPER_HASH").$request->password, $admin_user->password)) {
+                $meta_details = ["last_login" => date("Y-m-d H:i:s")];
+                $admin_user->saveMeta($meta_details);
                 Auth::guard('admin')->login($admin_user);
+
                 return redirect()->intended(url('/admin'));
             }
 

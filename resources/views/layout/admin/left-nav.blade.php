@@ -10,7 +10,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ URL::to('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{$user->profile_image}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{$user->full_name}}</a>
@@ -29,32 +29,32 @@
                     </a>
                 </li>
                 @foreach($user->permissions as $permission)
-                    @if($permission->can_view)
-                    <li class="nav-item">
-                        <a href="{{ $permission->link }}" class="nav-link">
-                            <i class="{{ $permission->class_name }}"></i>
-                            <p>{{ $permission->name }}
-                                @if(count($permission->sub_permissions) > 0)
-                                <i class="fas fa-angle-left right"></i>
-                                @endif
-                            </p>
-                        </a>
-                        @if(count($permission->sub_permissions) > 0)
-                        <ul class="nav nav-treeview">
-                            @foreach($permission->sub_permissions as $sub_menu)
-                                @if($sub_menu->can_view)
-                                <li class="nav-item ml-3">
-                                    <a href="{{ $sub_menu->link }}" class="nav-link">
-                                        <i class="{{ $sub_menu->class_name }}"></i>
-                                        <p>{{ $sub_menu->name }}</p>
-                                    </a>
-                                </li>
-                                @endif
-                            @endforeach
-                        </ul>
+                @if($permission->can_view)
+                <li class="nav-item">
+                    <a href="{{ $permission->link }}" class="nav-link">
+                        <i class="{{ $permission->class_name }}"></i>
+                        <p>{{ $permission->name }}
+                            @if(count($permission->sub_permissions) > 0)
+                            <i class="fas fa-angle-left right"></i>
+                            @endif
+                        </p>
+                    </a>
+                    @if(count($permission->sub_permissions) > 0)
+                    <ul class="nav nav-treeview">
+                        @foreach($permission->sub_permissions as $sub_menu)
+                        @if($sub_menu->can_view)
+                        <li class="nav-item ml-3">
+                            <a href="{{ $sub_menu->link }}" class="nav-link">
+                                <i class="{{ $sub_menu->class_name }}"></i>
+                                <p>{{ $sub_menu->name }}</p>
+                            </a>
+                        </li>
                         @endif
-                    </li>
+                        @endforeach
+                    </ul>
                     @endif
+                </li>
+                @endif
                 @endforeach
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
@@ -65,16 +65,16 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-user-edit"></i>
                             <p>User information</p>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="nav-icon fas fa-sign-out-alt"></i>
-                            <p>Logout</p>
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
                             </a>
                             <form id="logout-form" action='{{ url("admin/logout") }}' method="POST" style="display: none;">
                                 @csrf
@@ -87,5 +87,5 @@
         <!-- /.sidebar-menu -->
     </div>
     @endif
-<!-- /.sidebar -->
+    <!-- /.sidebar -->
 </aside>

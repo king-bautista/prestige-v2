@@ -1,365 +1,245 @@
 <template>
- <div class="content-wrapper">
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3">
+	<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card m-3">
+						<!-- <div class="card-header">
+								<h5 class="card-title" ><i class="fa fa-plus" aria-hidden="true"></i> Add
+									New Company</h5>
+								<h5 class="card-title" ><i class="fas fa-edit"></i> Edit Company</h5>
+								<button type="button" class="btn btn-secondary btn-sm float-right"><i
+										class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+							</div> -->
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-3">
+									<div class="text-center">
+										<img :src="material" class="profile-user-img img-fluid img-circle" />
+									</div>
+									<div class="text-center">{{ user.email }}</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">Last Name</label>
+										<div class="col-sm-8">
+											{{ user.last_name }}
+										</div>
+									</div>
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">First Name</label>
+										<div class="col-sm-8">
+											{{ user.first_name }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">Mobile</label>
+										<div class="col-sm-8">
+											{{ user.mobile }}
+										</div>
+									</div>
+									<div class="form-group row mb-0">
+										<label for="firstName" class="col-sm-4">Address</label>
+										<div class="col-sm-8">
+											{{ user.address }}
+										</div>
+									</div>
+								</div>
+							</div>
 
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <!-- <img class="profile-user-img img-fluid img-circle"
-                       src="../../dist/img/user4-128x128.jpg"
-                       alt="User profile picture"> -->
-                </div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<!-- /.col -->
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header p-2">
+							<ul class="nav nav-pills">
+								<li class="nav-item"><a class="nav-link active" href="#activity_logs"
+										data-toggle="tab">Activity
+										Logs</a>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
+								</li>
+							</ul>
+						</div><!-- /.card-header -->
+						<div class="card-body">
+							<div class="tab-content">
+								<div class="active tab-pane" id="activity_logs">
+									<div class="card">
+										<div class="card-body">
+											<Table :dataFields="dataFields" :dataUrl="dataUrl" :primaryKey="primaryKey"
+												ref="dataTable">
+											</Table>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane" id="settings">
+									<!-- <form class="form-horizontal"> -->
+									<div class="form-group row">
 
-                <h3 class="profile-username text-center">Nina Mcintire</h3>
-
-                <p class="text-muted text-center">Software Engineer</p>
-
-                <ul class="list-group list-group-unbordered mb-3">
-                  <li class="list-group-item">
-                    <b>Followers</b> <a class="float-right">1,322</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Following</b> <a class="float-right">543</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Friends</b> <a class="float-right">13,287</a>
-                  </li>
-                </ul>
-
-                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-            <!-- About Me Box -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">About Me</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <strong><i class="fas fa-book mr-1"></i> Education</strong>
-
-                <p class="text-muted">
-                  B.S. in Computer Science from the University of Tennessee at Knoxville
-                </p>
-
-                <hr>
-
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
-
-                <p class="text-muted">Malibu, California</p>
-
-                <hr>
-
-                <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
-
-                <p class="text-muted">
-                  <span class="tag tag-danger">UI Design</span>
-                  <span class="tag tag-success">Coding</span>
-                  <span class="tag tag-info">Javascript</span>
-                  <span class="tag tag-warning">PHP</span>
-                  <span class="tag tag-primary">Node.js</span>
-                </p>
-
-                <hr>
-
-                <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
-
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-9">
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="active tab-pane" id="activity">
-                    <!-- Post -->
-                    <div class="post">
-                      <div class="user-block">
-                        <!-- <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image"> -->
-                        <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                        </span>
-                        <span class="description">Shared publicly - 7:30 PM today</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore the hate as they create awesome
-                        tools to help create filler text for everyone from bacon lovers
-                        to Charlie Sheen fans.
-                      </p>
-
-                      <p>
-                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                        <span class="float-right">
-                          <a href="#" class="link-black text-sm">
-                            <i class="far fa-comments mr-1"></i> Comments (5)
-                          </a>
-                        </span>
-                      </p>
-
-                      <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
-                    </div>
-                    <!-- /.post -->
-
-                    <!-- Post -->
-                    <div class="post clearfix">
-                      <div class="user-block">
-                        <!-- <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image"> -->
-                        <span class="username">
-                          <a href="#">Sarah Ross</a>
-                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                        </span>
-                        <span class="description">Sent you a message - 3 days ago</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore the hate as they create awesome
-                        tools to help create filler text for everyone from bacon lovers
-                        to Charlie Sheen fans.
-                      </p>
-
-                      <form class="form-horizontal">
-                        <div class="input-group input-group-sm mb-0">
-                          <input class="form-control form-control-sm" placeholder="Response">
-                          <div class="input-group-append">
-                            <button type="submit" class="btn btn-danger">Send</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                    <!-- /.post -->
-
-                    <!-- Post -->
-                    <div class="post">
-                      <div class="user-block">
-                        <!-- <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image"> -->
-                        <span class="username">
-                          <a href="#">Adam Jones</a>
-                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                        </span>
-                        <span class="description">Posted 5 photos - 5 days ago</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <div class="row mb-3">
-                        <div class="col-sm-6">
-                          <!-- <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo"> -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-6">
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <!-- <img class="img-fluid mb-3" src="../../dist/img/photo2.png" alt="Photo"> -->
-                              <!-- <img class="img-fluid" src="../../dist/img/photo3.jpg" alt="Photo"> -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-6">
-                              <!-- <img class="img-fluid mb-3" src="../../dist/img/photo4.jpg" alt="Photo"> -->
-                              <!-- <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo"> -->
-                            </div>
-                            <!-- /.col -->
-                          </div>
-                          <!-- /.row -->
-                        </div>
-                        <!-- /.col -->
-                      </div>
-                      <!-- /.row -->
-
-                      <p>
-                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                        <span class="float-right">
-                          <a href="#" class="link-black text-sm">
-                            <i class="far fa-comments mr-1"></i> Comments (5)
-                          </a>
-                        </span>
-                      </p>
-
-                      <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
-                    </div>
-                    <!-- /.post -->
-                  </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="timeline">
-                    <!-- The timeline -->
-                    <div class="timeline timeline-inverse">
-                      <!-- timeline time label -->
-                      <div class="time-label">
-                        <span class="bg-danger">
-                          10 Feb. 2014
-                        </span>
-                      </div>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-envelope bg-primary"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 12:05</span>
-
-                          <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                          <div class="timeline-body">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                            quora plaxo ideeli hulu weebly balihoo...
-                          </div>
-                          <div class="timeline-footer">
-                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-user bg-info"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
-
-                          <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
-                          </h3>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-comments bg-warning"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
-
-                          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                          <div class="timeline-body">
-                            Take me to your leader!
-                            Switzerland is small and neutral!
-                            We are more like Germany, ambitious and misunderstood!
-                          </div>
-                          <div class="timeline-footer">
-                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline time label -->
-                      <div class="time-label">
-                        <span class="bg-success">
-                          3 Jan. 2014
-                        </span>
-                      </div>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-camera bg-purple"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
-
-                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                          <div class="timeline-body">
-                            <img src="https://placehold.it/150x100" alt="...">
-                            <img src="https://placehold.it/150x100" alt="...">
-                            <img src="https://placehold.it/150x100" alt="...">
-                            <img src="https://placehold.it/150x100" alt="...">
-                          </div>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <div>
-                        <i class="far fa-clock bg-gray"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /.tab-pane -->
-
-                  <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- /.tab-pane -->
-                </div>
-                <!-- /.tab-content -->
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>	
+										<div class="col-sm-10">
+											<input type="file" accept="image/*" ref="material" @change="materialChange">
+											<footer class="blockquote-footer">Max file size is 15MB</footer>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" v-model="user.first_name"
+												placeholder="First Name">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" v-model="user.last_name"
+												placeholder="Last Name">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="mobile" class="col-sm-2 col-form-label">Mobile Number</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" v-model="user.mobile"
+												placeholder="Mobile Number">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="email" class="col-sm-2 col-form-label">Address</label>
+										<div class="col-sm-10">
+											<textarea class="form-control" rows="4" v-model="user.address"
+												placeholder="Address" required></textarea>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="lastName" class="col-sm-2 col-form-label">Password</label>
+										<div class="col-sm-8">
+											<input type="password" class="form-control" v-model="user.password"
+												placeholder="Password">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="passwordConfirmation" class="col-sm-2 col-form-label">Password
+											Confirmation</label>
+										<div class="col-sm-8">
+											<input type="password" class="form-control" v-model="user.password_confirmation"
+												placeholder="Password Confirmation">
+										</div>
+									</div>
+									<div class="form-group row">
+										<div class="col-sm-2 text-right">
+											<button type="button" class="btn btn-primary btn-sm" @click="updateUser">Save
+												Changes</button>
+										</div>
+									</div>
+									<!-- </form> -->
+								</div>
+								<!-- /.tab-pane -->
+							</div>
+							<!-- /.tab-content -->
+						</div><!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.container-fluid -->
+	</section>
+	<!-- /.content -->
 </template>
+<script>
+import Table from '../Helpers/Table';
+// Import this component
+import Multiselect from 'vue-multiselect';
+
+export default {
+	name: "Users_Information",
+	data() {
+		return {
+			helper: new Helpers(),
+			user: {
+				id: '',
+				full_name: '',
+				email: '',
+				first_name: '',
+				last_name: '',
+				password: null,
+				password_confirmation: null,
+				profile_image: '',
+				mobile: '',
+				address: '',
+			},
+			material: '/images/user-icon.png',
+			dataFields: {
+				last_login: "Last Login",
+				last_password_reset: "Last Password Reset",
+				module_accessed: "Module Accessed",
+				query: "Query",
+				old_bindings: "(Old) Bindings",
+				bindings: "(New) Bindngs",
+			},
+			primaryKey: "id",
+			dataUrl: "/admin/activity-logs/list",
+		};
+
+
+	},
+	created() {
+		this.editUser();
+	},
+	methods: {
+		materialChange: function (e) {
+			const file = e.target.files[0];
+			this.material = URL.createObjectURL(file);
+			this.user.profile_image = file;
+		},
+		editUser: function () {
+			axios.get('/admin/users-information/details')
+				.then(response => {
+					var user = response.data.data;
+					this.user.id = user.id;
+					this.user.full_name = user.full_name;
+					this.user.email = user.email;
+					this.user.first_name = user.details.first_name;
+					this.user.last_name = user.details.last_name;
+					this.material = user.profile_image;
+					this.user.mobile = user.details.mobile;
+					this.user.address = user.details.address;
+				});
+		},
+
+		updateUser: function () {
+			let formData = new FormData();
+			formData.append("id", this.user.id);
+			formData.append("email", this.user.email);
+			formData.append("first_name", this.user.first_name);
+			formData.append("last_name", this.user.last_name);
+			formData.append("mobile", this.user.mobile);
+			formData.append("address", this.user.address);
+			formData.append("profile_image", this.user.profile_image);
+			formData.append("password", this.user.password);
+			formData.append("password_confirmation", this.user.password_confirmation);
+			axios.post('/admin/users-information/update-profile', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				},
+			})
+				.then(response => {
+					toastr.success(response.data.message);
+				})
+		},
+
+	},
+	components: {
+		Table,
+	}
+
+};
+</script>
