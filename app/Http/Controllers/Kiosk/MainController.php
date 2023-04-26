@@ -553,7 +553,8 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_maps = SiteMapViewModel::where('site_id', $site->id)->get();
+            $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();  
+            $site_maps = SiteMapViewModel::where('site_id', $site->id)->where('site_screen_id', $site_screen->id)->get();
             
             return $this->response($site_maps, 'Successfully Retreived!', 200);
         }
