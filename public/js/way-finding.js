@@ -381,7 +381,7 @@ WayFinding.prototype = {
         context.save();
     },
 
-    showmap: function(map_details) {
+    showmap: function(map_details,reference) {
         if(map_details.id) {
             id = map_details.id;
         }
@@ -389,6 +389,16 @@ WayFinding.prototype = {
             id = this.settings.currentmap_id;
         }
 
+        // set default map zoom level each map
+        if (reference != 'start') {
+            const elem = document.getElementById('zoomable-container')
+            Panzoom(elem, {
+                startScale: map_details.default_scale,
+                startX: map_details.default_x,
+                startY: map_details.default_y
+            })
+        }
+        
         this.settings.currentmap_id = id;
         this.settings.currentmap = map_details.site_building_level_id + '-' + map_details.site_building_id;
 
