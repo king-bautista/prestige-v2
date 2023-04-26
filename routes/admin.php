@@ -439,7 +439,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Customer Care Routes
+    | Customer Care Inquiry Routes
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/customer-cares', 'Admin\CustomerCareController@index')->name('admin.customer-care');
@@ -450,6 +450,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/customer-care/delete/{id}', 'Admin\CustomerCareController@delete')->where('id', '[0-9]+')->name('admin.customer-care.delete');
     Route::get('/admin/customer-care/users', 'Admin\CustomerCareController@getUsers')->where('id', '[0-9]+')->name('admin.customer-care.users');
     Route::get('/admin/customer-care/download-csv', 'Admin\CustomerCareController@downloadCsv')->name('admin.customer-care.download-csv');
+    /*
+    |--------------------------------------------------------------------------
+    | Customer Care Concern Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/customer-care/concerns', 'Admin\ConcernsController@index')->name('admin.concerns');
+    Route::get('/admin/customer-care/concern/list', 'Admin\ConcernsController@list')->name('admin.concern.list');
+    Route::post('/admin/customer-care/concern/store', 'Admin\ConcernsController@store')->name('admin.concern.store');
+    Route::get('/admin/customer-care/concern/{id}', 'Admin\ConcernsController@details')->where('id', '[0-9]+')->name('admin.concern.details');
+    Route::post('/admin/customer-care/concern/update', 'Admin\ConcernsController@update')->name('admin.concern.update');
+    Route::get('/admin/customer-care/concern/delete/{id}', 'Admin\ConcernsController@delete')->where('id', '[0-9]+')->name('admin.concern.delete');
+    Route::get('/admin/customer-care/concern/download-csv', 'Admin\ConcernsController@downloadCsv')->name('admin.concern.download-csv');
     
     /*
     |--------------------------------------------------------------------------
@@ -498,6 +510,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/activity-logs/list', 'Admin\UserActivityLogsController@list')->name('admin.user.activity.logs.list');
+  
 
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
