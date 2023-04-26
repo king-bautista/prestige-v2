@@ -71,6 +71,8 @@ class CreateAdvertisementsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('advertisement_screens');
+        Schema::dropIfExists('advertisement_materials');
         Schema::dropIfExists('advertisements');
     }
 }
