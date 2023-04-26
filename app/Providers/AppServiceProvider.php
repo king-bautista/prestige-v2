@@ -121,10 +121,14 @@ class AppServiceProvider extends ServiceProvider
                     $type = 'Portal';
                     $company_id = Auth::guard('portal')->user()->company_id;
                 } else {
-                    $admin_meta_id = $query->bindings[2];
-                    $admin_meta = AdminMeta::find($admin_meta_id);
-
-                    $user = AdminViewModel::find($admin_meta->admin_id);
+                    if ($query->bindings[1] != 'last_login') {
+                        $admin_meta_id = $query->bindings[2];
+                        $admin_meta = AdminMeta::find($admin_meta_id);
+                        $user = AdminViewModel::find($admin_meta->admin_id);
+                    } else {
+                        $admin_id = $query->bindings[0];
+                        $user = AdminViewModel::find($admin_id);
+                    }
                     $last_login = $query->bindings[1];
                     $type = 'Admin';
                     $company_id = '3';
@@ -146,12 +150,10 @@ class AppServiceProvider extends ServiceProvider
                     'transaction_id' => ($statement_type == 'update') ? end($query->bindings) : 0,
                     'query' => $query->sql,
                     'bindings' => ' [' . implode(', ', $query->bindings) . ']'
-
                 ];
 
                 $user_activity_log = UserActivityLog::create($data);
                 if ($statement_type == 'insert') {
-
                     $res = explode(" ", str_replace(array('(', ')'), '', explode("values", $query->sql)[0]));
                     array_pop($res);
                     $key = str_replace(array(',', '`'), '', array_slice($res, 3));
