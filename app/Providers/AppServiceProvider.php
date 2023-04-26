@@ -14,16 +14,11 @@ use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\App;
-use App\Http\Controllers\AppBaseController;
 use Request;
 use Route;
 
-
-
 class AppServiceProvider extends ServiceProvider
 {
-
-    public $module_id;
     /**
      * Register any application services.
      *
