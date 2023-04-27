@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PortalCustomerCareRequest;
 
 use App\Models\CustomerCare;
+use App\Models\Concern;
 use App\Models\ViewModels\CompanyViewModel;
 use App\Models\ViewModels\CustomerCareViewModel;
 use App\Models\ViewModels\UserViewModel;
@@ -38,6 +39,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             
             $data = [
                 'user_id' => $user->id,
+                'concern_id' => $request->concern_id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
@@ -46,14 +48,12 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'assigned_to_alias' => '',
                 'status_id' => 2,
                 'active' => 1,
-            ];
+            ];  
 
-            $customer_care = CustomerCare::create($data);
-            $insert_ticket_id = CustomerCare::find($customer_care->id);
-            $insert_ticket_id->touch();
-            $ticket_id = ['ticket_id' => 'tid-'.$customer_care->id];
-            $insert_ticket_id->update($ticket_id); 
-
+            $customer_care = CustomerCare::create($data); 
+            $customer_care->ticket_id = 'tid-'.$customer_care->id;
+            $customer_care->save();
+            
             return $this->response($customer_care, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
@@ -81,9 +81,21 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'status_code' => 422,
             ], 422);
         }
-    
-    
-    
-    
+    }
+    public function getConcerns()
+    {
+        try
+    	{
+            $concerns = Concern::get();
+            return $this->response($concerns, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 }

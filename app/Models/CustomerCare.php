@@ -17,6 +17,7 @@ class CustomerCare extends Model
     protected $fillable = [
         'ticket_id',
         'user_id',
+        'concern_id',
         'first_name',
         'last_name',
         'ticket_subject',

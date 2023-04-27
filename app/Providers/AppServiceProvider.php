@@ -5,8 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Admin;
+//use App\Models\Admin;
 use App\Models\AdminMeta;
+use App\Models\UserMeta;
 use App\Models\UserActivityLog;
 use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\UserViewModel;
@@ -103,14 +104,14 @@ class AppServiceProvider extends ServiceProvider
             if ($statement_type != 'select') {
 
                 $module_accessed = str_replace(".", "/", Route::currentRouteName());
-
+                $type = explode("/", $module_accessed)[0];
+    
                 if (Auth::user()) {
                     $user_id = Auth::user()->id;
                     $user_name = Auth::user()->full_name;
                     $last_password_reset = Auth::user()->updated_at;
                     $user = AdminViewModel::find($user_id);
                     $last_login = $user->details['last_login'];
-                    $type = 'Admin';
                     $company_id = '3';
                 } else if (Auth::guard('portal')->check()) {
                     $user_id = Auth::guard('portal')->user()->id;
@@ -118,26 +119,24 @@ class AppServiceProvider extends ServiceProvider
                     $last_password_reset = Auth::guard('portal')->user()->updated_at;
                     $user = UserViewModel::find(Auth::guard('portal')->user()->id);
                     $last_login = $user->details['last_login'];
-                    $type = 'Portal';
                     $company_id = Auth::guard('portal')->user()->company_id;
                 } else {
+                    // echo '<pre>';print_r($query->sql);echo '</pre>';
+                    // echo '<pre>';print_r($query->bindings);echo '</pre>'; die();
                     if ($query->bindings[1] != 'last_login') {
-                        $admin_meta_id = $query->bindings[2];
-                        $admin_meta = AdminMeta::find($admin_meta_id);
-                        $user = AdminViewModel::find($admin_meta->admin_id);
+                        $meta_id = $query->bindings[2];
+                        $meta = ($type == 'admin')? (AdminMeta::find($meta_id)): (UserMeta::find($meta_id));
+                        $user = ($type == 'admin')? (AdminViewModel::find($meta->admin_id)): (UserViewModel::find($meta->user_id));
                     } else {
-                        $admin_id = $query->bindings[0];
-                        $user = AdminViewModel::find($admin_id);
+                        $id = $query->bindings[0];
+                        $user = ($type == 'admin')? AdminViewModel::find($id): UserViewModel::find($id);
                     }
                     $last_login = $query->bindings[1];
-                    $type = 'Admin';
                     $company_id = '3';
                     $user_id =  $user->id;
                     $user_name = $user->full_name;
                     $last_password_reset = $user->updated_at;
                 }
-
-                $module_accessed = str_replace(".", "/", Route::currentRouteName());
 
                 $data = [
                     'last_login' => $last_login,

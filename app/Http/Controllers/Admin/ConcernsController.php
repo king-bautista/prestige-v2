@@ -127,6 +127,23 @@ class ConcernsController extends AppBaseController implements ConcernsController
         }
     }
 
+    public function getAll()
+    {
+        try
+        {
+            $concerns = ConcernViewModel::get();
+            return $this->response($concerns, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try {

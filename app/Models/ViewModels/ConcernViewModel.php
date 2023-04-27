@@ -43,6 +43,7 @@ class ConcernViewModel extends Model
 	public $appends = [
         'shorten_name',
         'shorten_description',
+        'label',
     ]; 
 
     /****************************************
