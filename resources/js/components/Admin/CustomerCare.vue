@@ -148,6 +148,7 @@ export default {
 			helper: new Helpers(),
 			customer_care: {
 				id: '',
+				concern_name:'',
 				ticket_id: '',
 				user_id: '',
 				first_name: '',
@@ -165,6 +166,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
+				concern_name:"Concern Name",
 				ticket_id: "Ticket ID",
 				first_name: "First Name",
 				last_name: "Last Name",

@@ -116,8 +116,6 @@ class AppServiceProvider extends ServiceProvider
                     $last_login = $user->details['last_login'];
                     $company_id = Auth::guard('portal')->user()->company_id;
                 } else {
-                    // echo '<pre>';print_r($query->sql);echo '</pre>';
-                    // echo '<pre>';print_r($query->bindings);echo '</pre>'; die();
                     if ($query->bindings[1] != 'last_login') {
                         $meta_id = $query->bindings[2];
                         $meta = ($type == 'admin')? (AdminMeta::find($meta_id)): (UserMeta::find($meta_id));
