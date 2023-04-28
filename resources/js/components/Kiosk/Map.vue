@@ -386,7 +386,7 @@
                     this.wayfindings.clearAmenitiesLayer();
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
-                    this.wayfindings.showmap(obj.active_map_details);
+                    this.wayfindings.showmap(obj.active_map_details,'start');
                 });              
                 $('#repeatButton').hide();
                 $('#tenant-details').hide();
@@ -480,9 +480,9 @@
                     const panzoom = Panzoom(elem, {
                         maxScale: 5,
                         canvas: true,
-                        startScale: 0.5,
-                        startX: -970,
-                        startY: -1170
+                        startScale: vm.active_map_details.start_scale,
+                        startX: vm.active_map_details.start_x,
+                        startY: vm.active_map_details.start_y
                     })
 
                     // Zoom In / Zoom Out Controls
