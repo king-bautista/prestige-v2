@@ -17,6 +17,7 @@ class CreateCustomerCareTable extends Migration
             $table->engine = "InnoDB";
 
             $table->bigIncrements('id');
+            $table->bigInteger('concern_id')->unsigned()->nullable()->index();
             $table->string('ticket_id');
             $table->bigInteger('user_id')->unsigned()->nullable()->index();
             $table->string('first_name');
@@ -30,6 +31,7 @@ class CreateCustomerCareTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('concern_id')->references('id')->on('concerns');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('status_id')->references('id')->on('transaction_statuses');
         });

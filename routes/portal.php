@@ -286,7 +286,8 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::post('/portal/customer-care/update', 'Portal\CustomerCareController@update')->name('portal.customer-care.update');
     Route::get('/portal/customer-care/delete/{id}', 'Portal\CustomerCareController@delete')->where('id', '[0-9]+')->name('portal.customer-care.delete');
     Route::get('/portal/customer-care/get-company', 'Portal\CustomerCareController@getCompany')->name('portal.customer-care.get-company');
-
+    Route::get('/portal/customer-care/get-concerns', 'Portal\CustomerCareController@getConcerns')->name('portal.customer-care.get-concerns');
+    
     Route::get('/portal/faqs', 'Portal\FAQsController@index')->name('portal.faqs');
     Route::get('/portal/faqs/get-all', 'Portal\FAQsController@getAll')->name('portal.faq.get-all');
 

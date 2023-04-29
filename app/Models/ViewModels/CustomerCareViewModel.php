@@ -5,10 +5,8 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-// use App\Models\Brand;
-// use App\Models\Company;
-// use App\Models\Category;
- use App\Models\TransactionStatus;
+use App\Models\Concern;
+use App\Models\TransactionStatus;
 
 class CustomerCareViewModel extends Model
 {
@@ -29,7 +27,7 @@ class CustomerCareViewModel extends Model
      * The table associated with the model.
      *
      * @var string
-    */
+     */
     protected $table = 'customer_care';
 
     /**
@@ -42,11 +40,12 @@ class CustomerCareViewModel extends Model
     public $appends = [
         'advertisement_details',
         'status_details',
-        'transaction_status'
+        'transaction_status',
+        'concern_name'
     ];
 
     public function getAdvertisementDetails()
-    {   
+    {
         return AdvertisementViewModel::find($this->advertisement_id);
     }
 
@@ -56,31 +55,35 @@ class CustomerCareViewModel extends Model
     }
 
     /****************************************
-    *           ATTRIBUTES PARTS            *
-    ****************************************/
+     *           ATTRIBUTES PARTS            *
+     ****************************************/
 
-    public function getAdvertisementDetailsAttribute() 
+    public function getAdvertisementDetailsAttribute()
     {
         $ad_details = $this->getAdvertisementDetails();
-        if($ad_details)
+        if ($ad_details)
             return $ad_details;
         return null;
     }
 
-    public function getTransactionStatusAttribute() 
+    public function getTransactionStatusAttribute()
     {
         $ad_details = $this->getAdvertisementDetails();
-        if($ad_details)
+        if ($ad_details)
             return $ad_details->transaction_status;
         return null;
-    } 
+    }
 
     public function getStatusDetailsAttribute()
     {
         $status = $this->getTransactionStatus();
-        if($status)
+        if ($status)
             return $status;
         return null;
     }
 
+    public function getConcernNameAttribute()
+    {
+        return Concern::find($this->concern_id)->name;
+    }
 }
