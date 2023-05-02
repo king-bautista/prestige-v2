@@ -40,6 +40,7 @@ Vue.component('admin-building-tenants', require('./components/Admin/Tenants.vue'
 Vue.component('admin-advertisements', require('./components/Admin/Advertisements.vue').default);
 Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').default);
 Vue.component('admin-companies', require('./components/Admin/Company.vue').default);
+Vue.component('admin-company-workflows', require('./components/Admin/CompanyWorkflows.vue').default);
 Vue.component('admin-illustrations', require('./components/Admin/Illustrations.vue').default);
 Vue.component('admin-tenant-products', require('./components/Admin/TenantProducts.vue').default);
 Vue.component('admin-genres', require('./components/Admin/Genre.vue').default);
