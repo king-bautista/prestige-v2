@@ -137,6 +137,21 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Company User Workflows Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/company/workflows/{id}', 'Admin\CompanyWorkflowsController@index')->name('admin.company.workflows');
+    //Route::get('/admin/company/workflow/list', 'Admin\CompanyWorkflowsController@list')->name('admin.site.building.list');
+    Route::get('/admin/company/workflow/get-all', 'Admin\CompanyWorkflowsController@getAll')->where('id', '[0-9]+')->name('admin.company.workflow.get-all');
+    Route::post('/admin/company/workflow/store', 'Admin\CompanyWorkflowsController@store')->name('admin.site.building.store');
+    // Route::get('/admin/company/workflow/{id}', 'Admin\CompanyWorkflowsController@details')->where('id', '[0-9]+')->name('admin.site.building.details');
+    // Route::put('/admin/company/workflow/update', 'Admin\CompanyWorkflowsController@update')->name('admin.site.building.update');
+    // Route::get('/admin/company/workflow/delete/{id}', 'Admin\CompanyWorkflowsController@delete')->where('id', '[0-9]+')->name('admin.site.building.delete');
+    // Route::get('/admin/company/workflows', 'Admin\CompanyWorkflowsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
+    Route::get('/admin/company/workflow/{id}', 'Admin\CompanyWorkflowsController@getCompanyDetails')->where('id', '[0-9]+')->name('admin.company.workflow.get-company-details');
+
+    /*
+    |--------------------------------------------------------------------------
     | Amenities Routesadmin/tags
     |--------------------------------------------------------------------------
     */
