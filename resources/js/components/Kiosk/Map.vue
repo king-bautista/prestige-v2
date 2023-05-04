@@ -391,7 +391,7 @@
                 $('#repeatButton').hide();
                 $('#tenant-details').hide();
                 $('#zoomResetButton').addClass('last-border-radius');
-                $('#zoomResetButton').trigger('click');
+                // $('#zoomResetButton').trigger('click');
                 $(".map-search-modal").hide();
                 this.feedback_modal = false;
                 this.feedback_response = false;
@@ -404,6 +404,18 @@
                 $(".pinch").show();
                 $('.map-tenant-option .multiselect__single').html('Input Destination');
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
+
+                obj.$refs.multiselectFloor.value = this.active_map_details;
+
+                // Reset Start Scale
+                const elem = document.getElementById('zoomable-container')
+                const panzoom = Panzoom(elem, {
+                    maxScale: 5,
+                    canvas: true,
+                    startScale: obj.active_map_details.start_scale,
+                    startX: obj.active_map_details.start_x,
+                    startY: obj.active_map_details.start_y
+                })
             },
 
             softkeys: function() {
@@ -480,9 +492,9 @@
                     const panzoom = Panzoom(elem, {
                         maxScale: 5,
                         canvas: true,
-                        startScale: vm.active_map_details.start_scale,
-                        startX: vm.active_map_details.start_x,
-                        startY: vm.active_map_details.start_y
+                        startScale: vm.active_map_details.default_scale,
+                        startX: vm.active_map_details.default_x,
+                        startY: vm.active_map_details.default_y
                     })
 
                     // Zoom In / Zoom Out Controls
@@ -491,9 +503,9 @@
                     $('#zoomResetButton').get(0).addEventListener('click', panzoom.reset)
 
                     // Display Panzoom Values on Change Event
-                    // elem.addEventListener('panzoomchange', (event) => {
-                    //     console.log(event.detail) // => { x: 0, y: 0, scale: 1 }
-                    // })
+                    elem.addEventListener('panzoomchange', (event) => {
+                        console.log(event.detail) // => { x: 0, y: 0, scale: 1 }
+                    })
 
                     // No function bind needed
                     parent.addEventListener('wheel', panzoom.zoomWithWheel)

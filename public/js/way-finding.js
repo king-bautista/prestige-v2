@@ -392,11 +392,13 @@ WayFinding.prototype = {
         // set default map zoom level each map
         if (reference != 'start') {
             const elem = document.getElementById('zoomable-container')
-            Panzoom(elem, {
+            const panzoom = Panzoom(elem, {
+                maxScale: 5,
+                canvas: true,
                 startScale: map_details.default_scale,
                 startX: map_details.default_x,
                 startY: map_details.default_y
-            })
+            })  
         }
         
         this.settings.currentmap_id = id;
