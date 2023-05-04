@@ -143,7 +143,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/company/workflows/{id}', 'Admin\CompanyWorkflowsController@index')->name('admin.company.workflows');
     //Route::get('/admin/company/workflow/list', 'Admin\CompanyWorkflowsController@list')->name('admin.site.building.list');
     Route::get('/admin/company/workflow/get-all', 'Admin\CompanyWorkflowsController@getAll')->where('id', '[0-9]+')->name('admin.company.workflow.get-all');
-    Route::post('/admin/company/workflow/store', 'Admin\CompanyWorkflowsController@store')->name('admin.site.building.store');
+    Route::post('/admin/company/workflow/store', 'Admin\CompanyWorkflowsController@store')->name('admin.company.workflow.store');
     // Route::get('/admin/company/workflow/{id}', 'Admin\CompanyWorkflowsController@details')->where('id', '[0-9]+')->name('admin.site.building.details');
     // Route::put('/admin/company/workflow/update', 'Admin\CompanyWorkflowsController@update')->name('admin.site.building.update');
     // Route::get('/admin/company/workflow/delete/{id}', 'Admin\CompanyWorkflowsController@delete')->where('id', '[0-9]+')->name('admin.site.building.delete');
@@ -525,7 +525,13 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/activity-logs/list', 'Admin\UserActivityLogsController@list')->name('admin.user.activity.logs.list');
-  
 
+    /*
+    |--------------------------------------------------------------------------
+    | Transaction Status Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/transaction/statuses/get-all', 'Admin\TransactionStatusController@getAll')->name('admin.transaction.statuses.get-all');
+  
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
