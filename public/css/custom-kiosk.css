@@ -82,7 +82,8 @@ body,html {
     font-family: 'Henry Sans Medium';
 }
 
-.home-button {
+/* MEGA/NORTH */
+/* .home-button {
     background-image: url('../assets/images/Home.png');
     color: black;
 }
@@ -160,6 +161,74 @@ body,html {
 }
 
 .event-button.active {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+} */
+
+.home-button {
+    background-image: url('../assets/images/Homev4.png');
+    color: #c15669;
+}
+
+.home-button:hover {
+    background-image: url('../assets/images/Homev4S.png') !important;
+}
+
+.home-button.active {
+    background-image: url('../assets/images/Homev4s.png') !important;
+}
+
+.search-button {
+    background-image: url('../assets/images/Searchv4.png');
+    color: #6051e3;
+    margin-right: -3px;
+}
+
+.search-button:hover {
+    background-image: url('../assets/images/Searchv4s.png') !important;
+}
+
+.search-button.active {
+    background-image: url('../assets/images/Searchv4s.png') !important;
+}
+
+.map-button {
+    background-image: url('../assets/images/Mapv4.png');
+    color: #6051e3;
+    margin-right: -5px;
+}
+
+.map-button:hover {
+    background-image: url('../assets/images/Mapv4s.png') !important;
+}
+
+.map-button.active {
+    background-image: url('../assets/images/Mapv4s.png') !important;
+}
+
+.promos-button {
+    background-image: url('../assets/images/Promosv4.png');
+    color: #e89b12;
+    margin-right: -1px;
+}
+
+.promos-button:hover {
+    background-image: url('../assets/images/Promosv4s.png') !important;
+}
+
+.promos-button.active {
+    background-image: url('../assets/images/Promosv4s.png') !important;
+}
+
+.cinema-button {
+    background-image: url('../assets/images/Cinemav4.png');
+    color: #246c63;
+}
+
+.cinema-button:hover {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+}
+
+.cinema-button.active {
     background-image: url('../assets/images/Cinemav4s.png') !important;
 }
 
@@ -373,7 +442,7 @@ body,html {
 .carousel-indicators li {
     width: 18px;
     height: 18px;
-    /* background-color: #ffdb00; */
+    background-color: transparent;
     border: solid 0px;
     border-radius: 15px;
     padding-right: 18px;
