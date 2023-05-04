@@ -73,6 +73,7 @@ Vue.component('admin-customer-care', require('./components/Admin/CustomerCare.vu
 Vue.component('admin-concerns', require('./components/Admin/Concerns.vue').default);
 Vue.component('admin-assistant-messages', require('./components/Admin/AssistantMessages.vue').default);
 Vue.component('admin-translations', require('./components/Admin/Translations.vue').default);
+Vue.component('admin-workflows', require('./components/Admin/Workflows.vue').default);
 
 Vue.component('admin-users-information', require('./components/Admin/UsersInformation.vue').default);
 
