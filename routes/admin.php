@@ -18,9 +18,9 @@ Route::get('/admin/login', 'AdminAuth\AuthController@login')->name('admin.login'
 Route::post('/admin/login', 'AdminAuth\AuthController@adminLogin')->name('admin.admin-login');
 
 Route::group(['middleware' => 'auth:admin'], function () {
-    
+
     Route::get('/admin', 'Admin\DashboardController@index')->name('admin.dashboard');
-    
+
     /*
     |--------------------------------------------------------------------------
     | Admin Users Routes
@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
     Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
     Route::get('/admin/users/download-csv', 'Admin\UsersController@downloadCsv')->name('admin.user.download-csv');
-    
+
     /*
     |--------------------------------------------------------------------------
     | Roles Routes
@@ -141,14 +141,14 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/company/workflows/{id}', 'Admin\CompanyWorkflowsController@index')->name('admin.company.workflows');
-    //Route::get('/admin/company/workflow/list', 'Admin\CompanyWorkflowsController@list')->name('admin.site.building.list');
-    Route::get('/admin/company/workflow/get-all', 'Admin\CompanyWorkflowsController@getAll')->where('id', '[0-9]+')->name('admin.company.workflow.get-all');
-    Route::post('/admin/company/workflow/store', 'Admin\CompanyWorkflowsController@store')->name('admin.company.workflow.store');
-    // Route::get('/admin/company/workflow/{id}', 'Admin\CompanyWorkflowsController@details')->where('id', '[0-9]+')->name('admin.site.building.details');
-    // Route::put('/admin/company/workflow/update', 'Admin\CompanyWorkflowsController@update')->name('admin.site.building.update');
-    // Route::get('/admin/company/workflow/delete/{id}', 'Admin\CompanyWorkflowsController@delete')->where('id', '[0-9]+')->name('admin.site.building.delete');
-    // Route::get('/admin/company/workflows', 'Admin\CompanyWorkflowsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
-    Route::get('/admin/company/workflow/{id}', 'Admin\CompanyWorkflowsController@getCompanyDetails')->where('id', '[0-9]+')->name('admin.company.workflow.get-company-details');
+    Route::post('/admin/company/workflow/store', 'Admin\CompanyWorkflowsController@storeWorkflow')->name('admin.company.workflow.store');
+    Route::get('/admin/company/workflowzzz/{id}', 'Admin\CompanyWorkflowsController@details')->name('admin.company.workflow.details');
+    Route::put('/admin/company/workflow/update', 'Admin\CompanyWorkflowsController@update')->name('admin.company.workflow.update');
+    Route::get('/admin/company/workflow/delete/{id}', 'Admin\CompanyWorkflowsController@delete')->where('id', '[0-9]+')->name('admin.company.workflow.delete');
+    Route::get('/admin/company/workflow/get-list/{id}', 'Admin\CompanyWorkflowsController@getList')->name('admin.company.workflow.get-list');
+    Route::get('/admin/company/workflow/get-company-details', 'Admin\CompanyWorkflowsController@getCompanyDetails')->name('admin.company.workflow.get-company-details');
+    Route::get('/admin/company/workflow/get-users', 'Admin\CompanyWorkflowsController@getUsers')->name('admin.company.workflow.get-users');
+    Route::get('/admin/company/workflow/download-csv', 'Admin\CompanyWorkflowsController@downloadCsv')->name('admin.company.workflow.download-csv');
 
     /*
     |--------------------------------------------------------------------------
@@ -162,7 +162,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
     Route::get('/admin/amenity/delete/{id}', 'Admin\AmenitiesController@delete')->where('id', '[0-9]+')->name('admin.amenity.delete');
     Route::get('/admin/amenity/download-csv', 'Admin\AmenitiesController@downloadCsv')->name('admin.amenity.download-csv');
-    
+
     /*
     |--------------------------------------------------------------------------
     | Tags Routes
@@ -211,7 +211,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     | Brands Products Routes
     |--------------------------------------------------------------------------
-    */    
+    */
     Route::get('/admin/brand/products/{id}', 'Admin\ProductsController@index')->where('id', '[0-9]+')->name('admin.brand.products');
     Route::get('/admin/brand/product/list', 'Admin\ProductsController@list')->name('admin.brand.product.list');
     Route::get('/admin/brand/product/{id}', 'Admin\ProductsController@details')->where('id', '[0-9]+')->name('admin.brand.product.details');
@@ -477,7 +477,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/customer-care/concern/update', 'Admin\ConcernsController@update')->name('admin.concern.update');
     Route::get('/admin/customer-care/concern/delete/{id}', 'Admin\ConcernsController@delete')->where('id', '[0-9]+')->name('admin.concern.delete');
     Route::get('/admin/customer-care/concern/download-csv', 'Admin\ConcernsController@downloadCsv')->name('admin.concern.download-csv');
-    
+
     /*
     |--------------------------------------------------------------------------
     | Assistant Messages Routes
@@ -490,7 +490,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/assistant-message/update', 'Admin\AssistantMessagesController@update')->name('admin.assistant-message.update');
     Route::get('/admin/assistant-message/delete/{id}', 'Admin\AssistantMessagesController@delete')->where('id', '[0-9]+')->name('admin.assistant-message.delete');
     Route::get('/admin/assistant-message/download-csv', 'Admin\AssistantMessagesController@downloadCsv')->name('admin.assistant-message.download-csv');
-    
+
     /*
     |--------------------------------------------------------------------------
     | Translations Routes
@@ -512,19 +512,17 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/users-information', 'Admin\UsersInformationController@index')->name('admin.users.information');
     Route::get('/admin/users-information/details', 'Admin\UsersInformationController@details')->name('admin.users.information.details');
     Route::post('/admin/users-information/update-profile', 'Admin\UsersInformationController@updateProfile')->name('portal.user.information.update-profile');
-    // Route::get('/admin/users/list', 'Admin\UsersController@list')->name('admin.users.list');
-    // Route::post('/admin/users/store', 'Admin\UsersController@store')->name('admin.users.store');
-    // Route::get('/admin/users/{id}', 'Admin\UsersController@details')->where('id', '[0-9]+')->name('admin.users.details');
-    // Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
-    // Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
-    // Route::get('/admin/users/download-csv', 'Admin\UsersController@downloadCsv')->name('admin.user.download-csv');
-
+    
     /*
     |--------------------------------------------------------------------------
     | Admin Users Activity Logs Routes
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/activity-logs/list', 'Admin\UserActivityLogsController@list')->name('admin.user.activity.logs.list');
+<<<<<<< HEAD
+
+=======
+>>>>>>> a056bb2da17e7532f378e8f31f3e69d5421f9de2
 
     /*
     |--------------------------------------------------------------------------
