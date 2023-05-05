@@ -151,6 +151,7 @@
 												<th>No. of slots per loop</th>
 												<th>Exposure per Day</th>
 												<th>Is Exclusive?</th>
+												<th>Status</th>
 												<th>Action</th>
 											</tr>
 										</thead>
@@ -169,6 +170,10 @@
 												<td class="align-middle">
 													<span v-if="data.is_exclusive" class="badge badge-info">Yes</span>
 													<span v-else class="badge badge-info">No</span>
+												</td>
+												<td class="align-middle">
+													<span v-if="data.active" class="badge badge-info">Active</span>
+													<span v-else class="badge badge-info">Deactivated</span>
 												</td>
 												<td class="align-middle text-nowrap">
 													<button type="button" class="btn btn-outline-danger"
@@ -530,6 +535,14 @@ export default {
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
 				},
+				link: {
+					title: 'Workflow',
+					name: 'Link',
+					apiUrl: '/admin/company/workflows',
+					routeName: '',
+					button: '<i class="fa fa-link"></i>Workflow',
+					method: 'link'
+				},
 			},
 			otherButtons: {
 				addNew: {
@@ -690,6 +703,7 @@ export default {
 
 		AddNewContract: function () {
 			this.contract.company_id = this.company.id;
+			this.contract.name = '';
 			this.contract.brands = '';
 			this.contract.screens = '';
 			this.contract.display_duration = '';
@@ -756,6 +770,7 @@ export default {
 					this.contract.id = contract.id;
 					this.contract.company_id = this.company.id;
 					this.contract.brands = contract.brands;
+					this.contract.name = contract.name;
 					this.contract.screens = contract.screens;
 					this.contract.display_duration = contract.display_duration;
 					this.contract.slots_per_loop = contract.slots_per_loop;
