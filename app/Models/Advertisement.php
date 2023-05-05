@@ -16,18 +16,13 @@ class Advertisement extends Model
      */
     protected $fillable = [
         'company_id',
+        'contract_id',
         'brand_id',
-        'ad_type',
-        'name',
-        'file_path',
-        'file_type',
-        'file_size',
-        'dimension',
-        'width',
-        'height',
-        'display_duration',
-        'active',
         'status_id',
+        'product_application',
+        'display_duration',
+        'name',
+        'active',
     ];
 
     /**
@@ -54,4 +49,29 @@ class Advertisement extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveScreens($screens)
+    {
+        if(count($screens) > 0) {
+            AdvertisementScreen::where('advertisement_id', $this->id)->delete();
+
+            foreach ($screens as $data) {
+                AdvertisementScreen::updateOrCreate(
+                    [
+                       'advertisement_id' => $this->id,
+                       'site_screen_id' => $data->id,
+                       'site_id' => $data->site_id,
+                       'product_application' => $data->product_application
+                    ],
+                );
+            }
+        }
+    }
+
+    public function saveMaterials($requests)
+    {
+        # code...
+    }
+
+    
 }

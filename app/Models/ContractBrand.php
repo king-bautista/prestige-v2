@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ContractBrand extends Model
 {
-    use SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -17,18 +14,14 @@ class ContractBrand extends Model
     protected $fillable = [
         'contract_id',
         'brand_id',
-     ];
+    ];
 
     /**
-     * The attributes that should be cast.
+     * set timestamps to false
      *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-        'deleted_at' => 'datetime:Y-m-d H:i:s',
-    ];
+     * @var boolean
+    */
+    public $timestamps = false;
 
     /**
      * The table associated with the model.

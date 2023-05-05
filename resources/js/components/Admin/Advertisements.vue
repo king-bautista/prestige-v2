@@ -113,7 +113,6 @@
 									placeholder="Select Screens" 
 									:options="tmp_screens" 
 									:searchable="true" 
-									:allow-empty="false"
 									:multiple="true">
                                     </multiselect> 
 								</div>
@@ -125,9 +124,9 @@
 									<footer class="blockquote-footer">In Seconds</footer>
 								</div>
 							</div>
-							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage'">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad  <span class="font-italic text-danger"> *</span>
+							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'"/>
+							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'">
+								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad
 									<footer class="blockquote-footer">Portrait</footer>
 								</label>								
 								<div class="col-sm-5">
@@ -147,13 +146,13 @@
 									</span>
 								</div>
 							</div>
-							<hr v-if="advertisements.product_application == 'Directory'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory'">
-								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad <span class="font-italic text-danger"> *</span>
+							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'"/>
+							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'">
+								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad
 									<footer class="blockquote-footer">Portrait</footer>
 								</label>								
 								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="material" @change="portraitFullscreenAd"  multiple>
+                                    <input type="file" accept="image/*" ref="portrait_fullscreen_ad" @change="portraitFullscreenAd"  multiple>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer">image/video max size is 1080 x 1920 pixels</footer>
 								</div>
@@ -169,13 +168,13 @@
 									</span>
 								</div>
 							</div>
-							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage'">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad <span class="font-italic text-danger"> *</span>
+							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'"/>
+							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'">
+								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad
 									<footer class="blockquote-footer">Landscape</footer>
 								</label>
 								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="material" @change="landscapeBannerAd"  multiple>
+                                    <input type="file" accept="image/*" ref="landscape_banner_ad" @change="landscapeBannerAd"  multiple>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
 								</div>
@@ -191,13 +190,13 @@
 									</span>
 								</div>
 							</div>
-							<hr v-if="advertisements.product_application == 'Directory'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory'">
-								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad <span class="font-italic text-danger"> *</span>
+							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'"/>
+							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'">
+								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad
 									<footer class="blockquote-footer">Landscape</footer>
 								</label>
 								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="material" @change="landscapeFullscreenAd" multiple>
+                                    <input type="file" accept="image/*" ref="landscape_fullscreen_ad" @change="landscapeFullscreenAd" multiple>
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
 								</div>
@@ -211,6 +210,22 @@
 											Your browser does not support the video tag.
 										</video>
 									</span>
+								</div>
+							</div>
+							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'"/>
+							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'">
+								<label for="firstName" class="col-sm-4 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <multiselect v-model="advertisements.status_id" 
+										:options="statuses" 
+										:multiple="false"
+										:close-on-select="true"
+										:searchable="true" 
+										:allow-empty="false"
+										track-by="name" 
+										label="name" 
+										placeholder="Select Status">
+                                    </multiselect> 
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -257,24 +272,26 @@
                     name: '',
 					status_id: '',
                     active: true,
+					display_duration: '',
+					materials: 0,
 					banner_portrait: {
 						file: '',
-						with: '',
+						width: '',
 						height: ''
 					},
 					banner_landscape: {
 						file: '',
-						with: '',
+						width: '',
 						height: ''
 					},
 					fullscreen_portrait: {
 						file: '',
-						with: '',
+						width: '',
 						height: ''
 					},        
 					fullscreen_landscape: {
 						file: '',
-						with: '',
+						width: '',
 						height: ''
 					},        
                 },
@@ -288,7 +305,8 @@
                 companies: [],
                 contracts: [],
                 brands: [],
-				product_applications: ['Digital Signage', 'Directory'],
+                statuses: [],
+				product_applications: ['Digital Signage', 'Directory', 'All'],
                 screens: [],
 				tmp_screens: [],
                 add_record: true,
@@ -302,7 +320,6 @@
 					company_name: "Company Name",
 					brand_name: "Brand Name",
 					display_duration: "Duration (in sec)",
-					dimension: "Dimension",
             		status_id: {
             			name: "Transaction Status", 
             			type:"Boolean", 
@@ -361,12 +378,18 @@
 
         created(){
 			this.getCompany();
+			this.getStatuses();
         },
 
         methods: {
 			getCompany: function() {
 				axios.get('/admin/company/get-all')
                 .then(response => this.companies = response.data.data);
+			},
+
+			getStatuses: function() {
+				axios.get('/admin/transaction/statuses/get-all')
+                .then(response => this.statuses = response.data.data);
 			},
 
 			companySelected: function(company) {
@@ -380,184 +403,272 @@
 
 			applicationSelected: function(application) {
 				this.advertisements.screen_ids = '';
-				this.tmp_screens = this.screens.filter(option => option.product_application == application); 
+				if(application == 'All') {
+					this.tmp_screens = this.screens;
+				}
+				else {
+					this.tmp_screens = this.screens.filter(option => option.product_application == application); 
+				}
 			},
 
 			portraitBannerAd: function(e) {
-				const file = e.target.files[0];
+				var file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.banner_portrait = URL.createObjectURL(file);
 				this.advertisements.banner_portrait.file = file;
 				
 				var file_type = this.material_type.split("/");
 				var obj = this;
+				var material;
 
 				if(file_type[0] == 'image') {
-					var img = new Image;
-					img.onload = function() {
-						
-						if(img.width > img.height) {
+					material = new Image;
+					material.onload = function() {
+						if(material.width > material.height) {
 							obj.banner_portrait = null;
-							obj.advertisements.banner_portrait = null;
-							obj.$refs.portrait_banner_ad.value = null;
+							obj.advertisements.banner_portrait = {
+								file: '',
+								width: '',
+								height: ''
+							};
+							obj.$refs.portrait_banner_ad.value = null;							
 							toastr.error('Invalid material for banner ad portrait size.');
 						}
 						else {
-							obj.advertisements.banner_portrait.with = img.width;
-							obj.advertisements.banner_portrait.height = img.height;
+							obj.advertisements.banner_portrait.width = material.width;
+							obj.advertisements.banner_portrait.height = material.height;
+							obj.advertisements.materials++;							
 						}
 					};
 						
-					img.src = this.banner_portrait;
+					material.src = this.banner_portrait;
 				}
 				else if(file_type[0] == 'video') {
-					const video = document.createElement("video");
-					video.src = this.banner_portrait;
-					video.addEventListener("loadedmetadata", function () {
+					material = document.createElement("video");
+					material.src = this.banner_portrait;
+					material.addEventListener("loadedmetadata", function () {
 						
 						obj.advertisements.display_duration = this.duration;
 
 						if(this.videoWidth > this.videoHeight) {
 							obj.banner_portrait = null;
-							obj.advertisements.banner_portrait = null;
+							obj.advertisements.banner_portrait = {
+								file: '',
+								width: '',
+								height: ''
+							};
 							obj.$refs.portrait_banner_ad.value = null;
 							toastr.error('Invalid material for banner ad portrait size.');
 						}
+						else {
+							obj.advertisements.banner_portrait.width = this.videoWidth;
+							obj.advertisements.banner_portrait.height = this.videoHeight;		
+							obj.advertisements.materials++;							
+						}
 					});
 				}
-
-				console.log(this.advertisements.banner_portrait);
 			},
 
 			portraitFullscreenAd: function(e) {
-				const file = e.target.files[0];
+				var file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.fullscreen_portrait = URL.createObjectURL(file);
 				this.advertisements.fullscreen_portrait.file = file;
 				
 				var file_type = this.material_type.split("/");
 				var obj = this;
-				var portrait_width;
-				var portrait_height;
+				var material;
 
 				if(file_type[0] == 'image') {
-					var img = new Image;
-					img.onload = function() {
-						portrait_width = img.width;
-						portrait_height = img.height;
-						if(img.width > img.height) {
+					material = new Image;
+					material.onload = function() {
+						if(material.width > material.height) {
 							obj.fullscreen_portrait = null;
-							obj.advertisements.fullscreen_portrait = null;
-							obj.$refs.portrait_banner_ad.value = null;
+							obj.advertisements.fullscreen_portrait = {
+								file: '',
+								width: '',
+								height: ''
+							};
+							obj.$refs.portrait_fullscreen_ad.value = null;							
 							toastr.error('Invalid material for banner ad portrait size.');
 						}
 						else {
-							obj.advertisements.banner_portrait.with = img.width;
-							obj.advertisements.banner_portrait.height = img.height;
+							obj.advertisements.fullscreen_portrait.width = material.width;
+							obj.advertisements.fullscreen_portrait.height = material.height;
 						}
 					};
 						
-					img.src = this.fullscreen_portrait;
+					material.src = this.fullscreen_portrait;
 				}
 				else if(file_type[0] == 'video') {
-					const video = document.createElement("video");
-					video.src = this.fullscreen_portrait;
-					video.addEventListener("loadedmetadata", function () {
-						portrait_width = this.videoWidth;
-						portrait_height = this.videoHeight;
+					material = document.createElement("video");
+					material.src = this.fullscreen_portrait;
+					material.addEventListener("loadedmetadata", function () {
 						
 						obj.advertisements.display_duration = this.duration;
-					});
-				}
 
-				if(portrait_width > portrait_height) {
-					this.fullscreen_portrait = null;
-					this.advertisements.fullscreen_portrait = null;
-					toastr.error('Invalid material for fullscreen portrait size.');
+						if(this.videoWidth > this.videoHeight) {
+							obj.fullscreen_portrait = null;
+							obj.advertisements.fullscreen_portrait = {
+								file: '',
+								width: '',
+								height: ''
+							};
+							obj.$refs.portrait_fullscreen_ad.value = null;
+							toastr.error('Invalid material for banner ad portrait size.');
+						}
+						else {
+							obj.advertisements.fullscreen_portrait.width = this.videoWidth;
+							obj.advertisements.fullscreen_portrait.height = this.videoHeight;		
+							obj.advertisements.materials++;							
+						}
+					});
 				}
 			},
 
 			landscapeBannerAd: function(e) {
-				const file = e.target.files[0];
+				var file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.banner_landscape = URL.createObjectURL(file);
-				this.advertisements.banner_landscape = file;
 				
 				var file_type = this.material_type.split("/");
 				var obj = this;
-				var portrait_width;
-				var portrait_height;
+				var material;
 
 				if(file_type[0] == 'image') {
-					var img = new Image;
-					img.onload = function() {
-						portrait_width = img.width;
-						portrait_height = img.height;
+					material = new Image;
+					material.onload = function() {
+						if(material.height > material.width) {
+							obj.banner_landscape = null;
+							obj.advertisements.banner_landscape = {
+								file: '',
+								width: '',
+								height: ''
+							};
+							obj.$refs.landscape_banner_ad.value = null;							
+							toastr.error('Invalid material for banner ad portrait size.');
+						}
+						else {
+							obj.advertisements.banner_landscape.width = material.width;
+							obj.advertisements.banner_landscape.height = material.height;
+							obj.advertisements.banner_landscape.file = file;
+						}
 					};
 						
-					img.src = this.banner_landscape;
+					material.src = this.banner_landscape;
 				}
 				else if(file_type[0] == 'video') {
-					const video = document.createElement("video");
-					video.src = this.banner_landscape;
-					video.addEventListener("loadedmetadata", function () {
-						portrait_width = this.videoWidth;
-						portrait_height = this.videoHeight;
+					material = document.createElement("video");
+					material.src = this.banner_landscape;
+					material.addEventListener("loadedmetadata", function () {
+						
 						obj.advertisements.display_duration = this.duration;
-					});
-				}
 
-				if(portrait_width > portrait_height) {
-					this.banner_landscape = null;
-					this.advertisements.banner_portrait = null;
-					toastr.error('Invalid material for banner ad landscape size.');
+						if(this.videoWidth > this.videoHeight) {
+							obj.banner_landscape = null;
+							obj.advertisements.banner_landscape = {
+								file: '',
+								width: '',
+								height: ''
+							};
+							obj.$refs.landscape_banner_ad.value = null;
+							toastr.error('Invalid material for banner ad portrait size.');
+						}
+						else {
+							obj.advertisements.banner_landscape.width = this.videoWidth;
+							obj.advertisements.banner_landscape.height = this.videoHeight;		
+						}
+					});
 				}
 			},
 
 			landscapeFullscreenAd: function(e) {
-				const file = e.target.files[0];
+				var file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.fullscreen_landscape = URL.createObjectURL(file);
-				this.advertisements.fullscreen_landscape = file;
+				this.advertisements.fullscreen_landscape.file = file;
 				
 				var file_type = this.material_type.split("/");
 				var obj = this;
-				var portrait_width;
-				var portrait_height;
+				var material;
 
 				if(file_type[0] == 'image') {
-					var img = new Image;
-					img.onload = function() {
-						portrait_width = img.width;
-						portrait_height = img.height;
+					material = new Image;
+					material.onload = function() {
+						if(material.height > material.width) {
+							obj.fullscreen_landscape = null;
+							obj.advertisements.fullscreen_landscape = {
+								file: '',
+								width: '',
+								height: ''
+							};
+							obj.$refs.landscape_fullscreen_ad.value = null;							
+							toastr.error('Invalid material for banner ad portrait size.');
+						}
+						else {
+							obj.advertisements.fullscreen_landscape.width = material.width;
+							obj.advertisements.fullscreen_landscape.height = material.height;
+						}
 					};
 						
-					img.src = this.fullscreen_landscape;
+					material.src = this.fullscreen_landscape;
 				}
 				else if(file_type[0] == 'video') {
-					const video = document.createElement("video");
-					video.src = this.fullscreen_landscape;
-					video.addEventListener("loadedmetadata", function () {
-						portrait_width = this.videoWidth;
-						portrait_height = this.videoHeight;
+					material = document.createElement("video");
+					material.src = this.fullscreen_landscape;
+					material.addEventListener("loadedmetadata", function () {
+						
 						obj.advertisements.display_duration = this.duration;
-					});
-				}
 
-				if(portrait_width > portrait_height) {
-					this.fullscreen_landscape = null;
-					this.advertisements.fullscreen_landscape = null;
-					toastr.error('Invalid material for fullscreen landscape size.');
+						if(this.videoWidth > this.videoHeight) {
+							obj.fullscreen_landscape = null;
+							obj.advertisements.fullscreen_landscape = {
+								file: '',
+								width: '',
+								height: ''
+							};
+							obj.$refs.landscape_fullscreen_ad.value = null;
+							toastr.error('Invalid material for banner ad portrait size.');
+						}
+						else {
+							obj.advertisements.fullscreen_landscape.width = this.videoWidth;
+							obj.advertisements.fullscreen_landscape.height = this.videoHeight;		
+						}
+					});
 				}
 			},
 
 			AddNewAdvertisements: function() {
-				this.advertisements.company_id = null;
-				this.advertisements.brand_id = null;
-                this.advertisements.name = '';
-				this.advertisements.product_application = null;
+				this.advertisements.company_id = '';
+				this.advertisements.contract_id = '';
+				this.advertisements.brand_id = '';
+				this.advertisements.product_application = '';
+				this.advertisements.screen_ids = '';
+				this.advertisements.name = '';
+				this.advertisements.status_id = '';
+				this.advertisements.active = true;
 				this.advertisements.display_duration = '';
-                this.advertisements.active = true;				
+				this.advertisements.materials = 0;
+				this.advertisements.banner_portrait = {
+					file: '',
+					width: '',
+					height: ''
+				};
+				this.advertisements.banner_landscape = {
+					file: '',
+					width: '',
+					height: ''
+				};
+				this.advertisements.fullscreen_portrait = {
+					file: '',
+					width: '',
+					height: ''
+				};
+				this.advertisements.fullscreen_landscape = {
+					file: '',
+					width: '',
+					height: ''
+				};
 
 				this.add_record = true;
 				this.edit_record = false;
@@ -566,13 +677,24 @@
 
             storeAdvertisements: function() {
 				let formData = new FormData();
-				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
-				formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));
-				formData.append("name", this.advertisements.name);
+				formData.append("company_id", (this.advertisements.company_id) ? JSON.stringify(this.advertisements.company_id) : '');
+				formData.append("contract_id", (this.advertisements.contract_id) ? JSON.stringify(this.advertisements.contract_id) : '');
+				formData.append("brand_id", (this.advertisements.brand_id) ? JSON.stringify(this.advertisements.brand_id) : '');
 				formData.append("product_application", this.advertisements.product_application);
-				formData.append("file_path", this.advertisements.material);
-				formData.append("display_duration", this.advertisements.display_duration);
+				formData.append("screen_ids", JSON.stringify(this.advertisements.screen_ids));
+				formData.append("name", this.advertisements.name);
+				formData.append("status_id", (this.advertisements.status_id) ? JSON.stringify(this.advertisements.status_id) : '');
 				formData.append("active", this.advertisements.active);
+				formData.append("display_duration", this.advertisements.display_duration);
+				formData.append("banner_portrait", (this.advertisements.banner_portrait.file) ? this.advertisements.banner_portrait.file : '');
+				formData.append("banner_portrait_dimension", (this.advertisements.banner_portrait.file) ? JSON.stringify(this.advertisements.banner_portrait) : '');
+				formData.append("banner_landscape", (this.advertisements.banner_landscape.file) ? this.advertisements.banner_landscape.file : '');
+				formData.append("banner_landscape_dimension", (this.advertisements.banner_landscape.file) ? JSON.stringify(this.advertisements.banner_landscape) : '');
+				formData.append("fullscreen_portrait", (this.advertisements.fullscreen_portrait.file) ? this.advertisements.fullscreen_portrait.file : '');
+				formData.append("fullscreen_portrait_dimension", (this.advertisements.fullscreen_portrait.file) ? JSON.stringify(this.advertisements.fullscreen_portrait) : '');
+				formData.append("fullscreen_landscape", (this.advertisements.fullscreen_landscape.file) ? this.advertisements.fullscreen_landscape.file : '');
+				formData.append("fullscreen_landscape_dimension", (this.advertisements.fullscreen_landscape.file) ? JSON.stringify(this.advertisements.fullscreen_landscape) : '');
+
                 axios.post('/admin/advertisement/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
@@ -591,12 +713,27 @@
                     var advertisements = response.data.data;
 					this.advertisements.id = advertisements.id;
 					this.advertisements.company_id = advertisements.company_details;
-					this.advertisements.brand_id = advertisements.brand_details;
-					this.advertisements.product_application = this.product_application;
 					this.advertisements.name = advertisements.name;
-					this.advertisements.file_path = advertisements.name;
 					this.advertisements.display_duration = advertisements.display_duration;
+					this.advertisements.status_id = advertisements.transaction_status;
 					this.advertisements.active = advertisements.active;
+
+					this.contracts = advertisements.company_details.contracts;
+                	this.brands = advertisements.contract_details.brands;
+					this.screens = advertisements.contract_details.screens;
+					this.tmp_screens = [];
+					if(advertisements.product_application == 'All') {
+						this.tmp_screens = this.screens;
+					}
+					else {
+						this.tmp_screens = this.screens.filter(option => option.product_application == advertisements.product_application);
+					}
+
+					this.advertisements.contract_id = advertisements.contract_details;
+					this.advertisements.brand_id = advertisements.brand_details;
+					this.advertisements.product_application = advertisements.product_application;
+					this.advertisements.screen_ids = advertisements.screens;
+
 					this.add_record = false;
 					this.edit_record = true;
 
@@ -605,16 +742,27 @@
             },
 
             updateAdvertisements: function() {
-				let formData = new FormData(); 
+				let formData = new FormData();
 				formData.append("id", this.advertisements.id);
-				formData.append("company_id", JSON.stringify(this.advertisements.company_id));
-				formData.append("brand_id", JSON.stringify(this.advertisements.brand_id));
+				formData.append("company_id", (this.advertisements.company_id) ? JSON.stringify(this.advertisements.company_id) : '');
+				formData.append("contract_id", (this.advertisements.contract_id) ? JSON.stringify(this.advertisements.contract_id) : '');
+				formData.append("brand_id", (this.advertisements.brand_id) ? JSON.stringify(this.advertisements.brand_id) : '');
 				formData.append("product_application", this.advertisements.product_application);
+				formData.append("screen_ids", JSON.stringify(this.advertisements.screen_ids));
 				formData.append("name", this.advertisements.name);
-				formData.append("file_path", this.advertisements.material);
-				formData.append("display_duration", this.advertisements.display_duration);
+				formData.append("status_id", (this.advertisements.status_id) ? JSON.stringify(this.advertisements.status_id) : '');
 				formData.append("active", this.advertisements.active);
-                axios.post('/admin/advertisement/update', formData, {
+				formData.append("display_duration", this.advertisements.display_duration);
+				formData.append("banner_portrait", (this.advertisements.banner_portrait.file) ? this.advertisements.banner_portrait.file : '');
+				formData.append("banner_portrait_dimension", (this.advertisements.banner_portrait.file) ? JSON.stringify(this.advertisements.banner_portrait) : '');
+				formData.append("banner_landscape", (this.advertisements.banner_landscape.file) ? this.advertisements.banner_landscape.file : '');
+				formData.append("banner_landscape_dimension", (this.advertisements.banner_landscape.file) ? JSON.stringify(this.advertisements.banner_landscape) : '');
+				formData.append("fullscreen_portrait", (this.advertisements.fullscreen_portrait.file) ? this.advertisements.fullscreen_portrait.file : '');
+				formData.append("fullscreen_portrait_dimension", (this.advertisements.fullscreen_portrait.file) ? JSON.stringify(this.advertisements.fullscreen_portrait) : '');
+				formData.append("fullscreen_landscape", (this.advertisements.fullscreen_landscape.file) ? this.advertisements.fullscreen_landscape.file : '');
+				formData.append("fullscreen_landscape_dimension", (this.advertisements.fullscreen_landscape.file) ? JSON.stringify(this.advertisements.fullscreen_landscape) : '');
+
+				axios.post('/admin/advertisement/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
