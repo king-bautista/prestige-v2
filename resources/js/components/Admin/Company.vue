@@ -535,6 +535,14 @@ export default {
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
 				},
+				link: {
+					title: 'Workflow',
+					name: 'Link',
+					apiUrl: '/admin/company/workflows',
+					routeName: '',
+					button: '<i class="fa fa-link"></i>Workflow',
+					method: 'link'
+				},
 			},
 			otherButtons: {
 				addNew: {
