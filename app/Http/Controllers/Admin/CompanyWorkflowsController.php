@@ -80,7 +80,6 @@ class CompanyWorkflowsController extends AppBaseController implements CompanyWor
             ];
 
             $workflow = Workflow::create($data);
-            //$workflow = WorkflowViewModel::find($workflow->id);
             $company_id = session()->get('company_id');
             $workflows = WorkflowViewModel::where('company_id', $company_id)->orderBy('permission_level', 'ASC')->get();
 
@@ -153,7 +152,7 @@ class CompanyWorkflowsController extends AppBaseController implements CompanyWor
         try {
 
             $company_id = session()->get('company_id');
-            $workflows = WorkflowViewModel::where('company_id', $company_id)->where('permission_level', 'Level '.$id)->orderBy('permission_level', 'ASC')->get();
+            $workflows = WorkflowViewModel::where('company_id', $company_id)->where('permission_level', 'Level ' . $id)->orderBy('permission_level', 'ASC')->get();
             return $this->response($workflows, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
