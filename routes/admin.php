@@ -512,13 +512,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/users-information', 'Admin\UsersInformationController@index')->name('admin.users.information');
     Route::get('/admin/users-information/details', 'Admin\UsersInformationController@details')->name('admin.users.information.details');
     Route::post('/admin/users-information/update-profile', 'Admin\UsersInformationController@updateProfile')->name('portal.user.information.update-profile');
-    // Route::get('/admin/users/list', 'Admin\UsersController@list')->name('admin.users.list');
-    // Route::post('/admin/users/store', 'Admin\UsersController@store')->name('admin.users.store');
-    // Route::get('/admin/users/{id}', 'Admin\UsersController@details')->where('id', '[0-9]+')->name('admin.users.details');
-    // Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
-    // Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
-    // Route::get('/admin/users/download-csv', 'Admin\UsersController@downloadCsv')->name('admin.user.download-csv');
-
+    
     /*
     |--------------------------------------------------------------------------
     | Admin Users Activity Logs Routes
