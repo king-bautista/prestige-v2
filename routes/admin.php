@@ -519,10 +519,6 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/activity-logs/list', 'Admin\UserActivityLogsController@list')->name('admin.user.activity.logs.list');
-<<<<<<< HEAD
-
-=======
->>>>>>> a056bb2da17e7532f378e8f31f3e69d5421f9de2
 
     /*
     |--------------------------------------------------------------------------
