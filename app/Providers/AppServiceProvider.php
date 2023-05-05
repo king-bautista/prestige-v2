@@ -166,6 +166,45 @@ class AppServiceProvider extends ServiceProvider
                         ));
                     }
                 }
-            });
+
+                $data = [
+                    'last_login' => $last_login,
+                    'last_password_reset' => $last_password_reset,
+                    'module_accessed' => $module_accessed,
+                    'company_id' => $company_id,
+                    'type' => $type,
+                    'user_id' => $user_id,
+                    'user_name' => $user_name,
+                    'transaction_id' => ($statement_type == 'update') ? end($query->bindings) : 0,
+                    'query' => $query->sql,
+                    'bindings' => ' [' . implode(', ', $query->bindings) . ']'
+                ];
+
+                $user_activity_log = UserActivityLog::create($data);
+                if ($statement_type == 'insert') {
+                    $res = explode(" ", str_replace(array('(', ')'), '', explode("values", $query->sql)[0]));
+                    array_pop($res);
+                    $key = str_replace(array(',', '`'), '', array_slice($res, 3));
+                    $value = $query->bindings;
+                    $key_value = array_combine($key, $value);
+                    $table = str_replace('`', '', (explode(" ", $query->sql))[2]);
+
+                    $data = DB::table($table)
+                        ->select($table.'.*')
+                        ->where(function ($query) use ($key_value) {
+                            foreach ($key_value as $key => $value) {
+                                $query->where($key, '=', $value);
+                            }
+                        })->get();
+
+                    if(isset($data[0]->id)) {
+                        DB::table('user_activity_logs')->where('id', $user_activity_log->id)->update(array(
+                            'transaction_id' => $data[0]->id,
+                        ));                            
+                    }
+
+                }
+            }
+        });
     }
 }

@@ -57,7 +57,7 @@ class Contract extends Model
         if(count($brands) > 0) {
             ContractBrand::where('contract_id', $this->id)->delete();
 
-            foreach ($brands as $index => $data) {
+            foreach ($brands as $data) {
                 ContractBrand::updateOrCreate(
                     [
                        'contract_id' => $this->id,
@@ -79,6 +79,7 @@ class Contract extends Model
                        'contract_id' => $this->id,
                        'site_screen_id' => $data['id'],
                        'site_id' => $data['site_id'],
+                       'product_application' => $data['product_application'],
                     ],
                 );
             }

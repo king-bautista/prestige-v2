@@ -37,8 +37,6 @@ class CreateContractsTable extends Migration
             
             $table->bigInteger('contract_id')->unsigned();
             $table->bigInteger('brand_id')->unsigned();
-            $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('contract_id')->references('id')->on('contracts');
             $table->foreign('brand_id')->references('id')->on('brands');
@@ -48,10 +46,9 @@ class CreateContractsTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigInteger('contract_id')->unsigned();
-            $table->bigInteger('site_screen_id')->unsigned();
-            $table->bigInteger('site_id')->unsigned();
-            $table->timestamps();
-            $table->softDeletes();
+            $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
+            $table->bigInteger('site_id')->unsigned()->nullable()->index();
+            $table->enum('product_application', ['Directory','Digital Signage', 'All']);
 
             $table->foreign('contract_id')->references('id')->on('contracts');
         });

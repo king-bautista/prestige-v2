@@ -48,6 +48,8 @@ class CreateAdvertisementsTable extends Migration
             $table->string('height')->nullable();
             $table->enum('ad_type', ['Banner Ad','Fullscreen Ad']);
             $table->enum('orientation', ['Landscape','Portrait']);
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('advertisement_id')->references('id')->on('advertisements');
         });
@@ -55,13 +57,16 @@ class CreateAdvertisementsTable extends Migration
         Schema::create('advertisement_screens', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
-            $table->bigIncrements('id');
             $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
+            $table->bigInteger('site_id')->unsigned()->nullable()->index();
+            $table->enum('product_application', ['Directory','Digital Signage', 'All']);
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('advertisement_id')->references('id')->on('advertisements');
-            $table->foreign('site_screen_id')->references('id')->on('site_screens');
         });
+        
     }
 
     /**
@@ -74,5 +79,6 @@ class CreateAdvertisementsTable extends Migration
         Schema::dropIfExists('advertisement_screens');
         Schema::dropIfExists('advertisement_materials');
         Schema::dropIfExists('advertisements');
+        
     }
 }
