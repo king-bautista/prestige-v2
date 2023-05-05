@@ -154,16 +154,19 @@ class AppServiceProvider extends ServiceProvider
                     $table = str_replace('`', '', (explode(" ", $query->sql))[2]);
 
                     $data = DB::table($table)
-                        ->select('id')
+                        ->select($table.'.*')
                         ->where(function ($query) use ($key_value) {
                             foreach ($key_value as $key => $value) {
                                 $query->where($key, '=', $value);
                             }
                         })->get();
 
-                    DB::table('user_activity_logs')->where('id', $user_activity_log->id)->update(array(
-                        'transaction_id' => $data[0]->id,
-                    ));
+                    if(isset($data[0]->id)) {
+                        DB::table('user_activity_logs')->where('id', $user_activity_log->id)->update(array(
+                            'transaction_id' => $data[0]->id,
+                        ));                            
+                    }
+
                 }
             }
         });

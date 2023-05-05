@@ -204,7 +204,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
         try
     	{
             $site_screens = SiteScreenViewModel::get();
-            $site_all_directory = SiteScreenViewModel::where('product_application', 'Directory')->groupBy('site_id')->get();
+            $site_all_directory = SiteScreenViewModel::groupBy('site_id', 'product_application')->get();
             if($site_all_directory) {
                 foreach($site_all_directory as $directory) {
                     $site_screens[] = [
@@ -215,6 +215,13 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                     ];
                 }
             }
+
+            $site_screens[] = [
+                'id' => 0,
+                'site_id' => 0,
+                'site_screen_location' => 'All (Sites screens)',
+                'product_application' => 'All'
+            ];
 
             return $this->response($site_screens, 'Successfully Retreived!', 200);
         }

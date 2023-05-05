@@ -69,20 +69,30 @@ class ContractViewModel extends Model
 
     public function getScreensAttribute() 
     {
-        $ids = $this->getScreens()->pluck('site_screen_id');
+        $ids = $this->getScreens()->where('site_screen_id', '>', 0)->pluck('site_screen_id');
         $site_screens = SiteScreenViewModel::whereIn('id', $ids)->get();
 
-        $site_ids = $this->getScreens()->pluck('site_id');
-        if($site_ids) {
-            $site_all_directory = SiteScreenViewModel::where('site_id', $site_ids)->where('product_application', 'Directory')->groupBy('site_id')->get();
-            foreach($site_all_directory as $directory) {
+        $ad_screens = $this->getScreens()->where('site_screen_id', '=', 0)->where('site_id', '>', 0)->get();
+
+        if($ad_screens) {
+            foreach($ad_screens as $ad_screen) {
                 $site_screens[] = [
                     'id' => 0,
-                    'site_id' => $directory->site_id,
-                    'site_screen_location' => $directory->site_name.' - All ('.$directory->product_application.')',
-                    'product_application' => $directory->product_application
+                    'site_id' => $ad_screen->site_id,
+                    'site_screen_location' => $ad_screen->site_name.' - All ('.$ad_screen->product_application.')',
+                    'product_application' => $ad_screen->product_application
                 ];
-            }
+            }            
+        }
+
+        $all = $this->getScreens()->where('product_application', 'All')->get();
+        if(count($all)) {
+            $site_screens[] = [
+                'id' => 0,
+                'site_id' => 0,
+                'site_screen_location' => 'All (Sites screens)',
+                'product_application' => 'All'
+            ];
         }
 
         if($site_screens)
