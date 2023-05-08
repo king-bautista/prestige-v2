@@ -71,7 +71,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
-	(10, 3, 'last_login', '2023-04-26 10:56:51', '2023-04-26 02:53:48', '2023-04-26 02:56:51', NULL);
+	(10, 3, 'last_login', '2023-05-08 10:15:36', '2023-04-26 02:53:48', '2023-05-08 02:15:36', NULL);
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -98,58 +98,76 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   `contract_id` bigint(20) unsigned DEFAULT NULL,
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `status_id` bigint(20) unsigned DEFAULT NULL,
-  `ad_type` enum('Events','Online','Banners','Fullscreen','Pop-Up','Promos') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `file_path` mediumtext COLLATE utf8mb4_unicode_ci,
-  `file_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `file_size` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `dimension` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `width` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `height` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_application` enum('Directory','Digital Signage','All') COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_duration` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `advertisements_company_id_index` (`company_id`),
+  KEY `advertisements_contract_id_index` (`contract_id`),
   KEY `advertisements_brand_id_index` (`brand_id`),
   KEY `advertisements_status_id_index` (`status_id`),
-  KEY `advertisements_contract_id_index` (`contract_id`),
   CONSTRAINT `advertisements_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
   CONSTRAINT `advertisements_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `advertisements_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`),
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~26 rows (approximately)
-INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `ad_type`, `name`, `file_path`, `file_type`, `file_size`, `dimension`, `width`, `height`, `display_duration`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, NULL, 4840, 5, 'Banners', 'SM - You\'re always welcome here BA', 'uploads/media/advertisements/banners/70c97549-9230-3481.jpg', 'image', '45642', '470 x 1060', '470', '1060', 12, 1, '2023-01-19 02:11:00', '2023-01-19 07:22:34', NULL),
-	(2, 1, NULL, NULL, 5, 'Banners', 'Powered By PRESTIGE BA', 'uploads/media/advertisements/banners/70c97549-92b5-38f2.ogv', 'video', '5103477', NULL, NULL, NULL, 10, 1, '2023-01-19 06:46:07', '2023-02-01 02:38:28', NULL),
-	(3, 1, NULL, 7307, 5, 'Banners', 'SUNNIES STUDIOS BA', 'uploads/media/advertisements/banners/70c97e63-0578-5f62.jpg', 'image', '221647', '470 x 1060', '470', '1060', 10, 1, '2023-01-19 07:19:39', '2023-01-19 07:19:39', NULL),
-	(4, 1, NULL, 6776, 5, 'Banners', 'SMNE MOSSIMO BA', 'uploads/media/advertisements/banners/70c97e63-0870-f0ca.jpg', 'image', '233100', '470 x 1060', '470', '1060', 10, 1, '2023-01-19 07:20:47', '2023-01-19 07:20:47', NULL),
-	(5, 1, NULL, 7255, 5, 'Banners', 'SONY BA', 'uploads/media/advertisements/banners/70c97e63-08ec-3958.jpg', 'image', '332131', '470 x 1060', '470', '1060', 10, 1, '2023-01-19 07:21:33', '2023-01-19 07:21:33', NULL),
-	(6, 1, NULL, 4840, 5, 'Banners', 'MEGA - FACADE BA', 'uploads/media/advertisements/banners/70c97549-3e15-9cda.jpg', 'image', '85177', '470 x 1060', '470', '1060', 10, 1, '2023-01-19 07:22:16', '2023-01-19 07:22:38', NULL),
-	(7, 1, NULL, 934, 5, 'Banners', 'SMMG BLK 513 BA', 'uploads/media/advertisements/banners/70c97549-96db-bf89.jpg', 'image', '79093', '470 x 1060', '470', '1060', 10, 1, '2023-01-19 08:42:47', '2023-01-19 08:42:47', NULL),
-	(8, 1, NULL, 3746, 5, 'Banners', 'SMMG MELONPAN ICE BA', 'uploads/media/advertisements/banners/70c97549-95bb-2444.jpg', 'image', '77406', '470 x 1060', '470', '1060', 10, 1, '2023-01-19 08:44:17', '2023-01-19 08:44:17', NULL),
-	(9, 1, NULL, 4840, 5, 'Fullscreen', 'SM - You\'re always welcome here FS', 'uploads/media/advertisements/fullscreen/70c97549-91f0-f52a.jpg', 'image', '410329', '1920 x 1080', '1920', '1080', 10, 1, '2023-01-19 08:50:37', '2023-01-19 08:50:37', NULL),
-	(10, 1, NULL, 4840, 5, 'Fullscreen', 'MEGA - FACADE FS', 'uploads/media/advertisements/fullscreen/70c97549-3de9-1d76.jpg', 'image', '337706', '1920 x 1080', '1920', '1080', 10, 1, '2023-01-19 08:51:04', '2023-01-19 08:51:04', NULL),
-	(11, 1, NULL, 6776, 5, 'Fullscreen', 'SMNE MOSSIMO FS', 'uploads/media/advertisements/fullscreen/70c97e63-0851-64a1.jpg', 'image', '588734', '1920 x 1080', '1920', '1080', 10, 1, '2023-01-19 08:51:39', '2023-01-19 08:51:39', NULL),
-	(12, 1, NULL, 934, 5, 'Fullscreen', 'SMMG BLK 513 FS', 'uploads/media/advertisements/fullscreen/70c97549-96ba-ba7d.jpg', 'image', '211739', '1920 x 1080', '1920', '1080', 10, 1, '2023-01-19 08:52:11', '2023-01-19 08:52:11', NULL),
-	(13, 1, NULL, 3746, 5, 'Fullscreen', 'SMMG MELONPAN ICE FS', 'uploads/media/advertisements/fullscreen/70c97549-958d-4add.jpg', 'image', '206833', '1920 x 1080', '1920', '1080', 10, 1, '2023-01-19 08:52:45', '2023-01-19 08:52:45', NULL),
-	(14, 2, NULL, NULL, 5, 'Fullscreen', 'Powered By PRESTIGE FS', 'uploads/media/advertisements/fullscreen/70c97549-9286-5c27.ogv', 'video', '5013314', NULL, NULL, NULL, 10, 1, '2023-01-19 08:54:56', '2023-02-01 02:39:45', NULL),
-	(15, 1, NULL, 7306, 5, 'Fullscreen', 'SUNNIES STUDIOS FA', 'uploads/media/advertisements/fullscreen/70c97e63-0630-022a.jpg', 'image', '821089', '1920 x 1080', '1920', '1080', 10, 1, '2023-01-19 08:55:34', '2023-01-19 08:55:34', NULL),
-	(16, 1, NULL, 6417, 5, 'Promos', 'Sample Promo 1', 'uploads/media/advertisements/promos/promo-1.jpg', 'image', '263584', '735 x 902', '735', '902', 0, 1, '2023-02-02 05:28:30', '2023-02-02 05:28:39', NULL),
-	(17, 1, NULL, 6417, 5, 'Promos', 'Promo 2', 'uploads/media/advertisements/promos/promo-2.jpg', 'image', '249067', '728 x 906', '728', '906', 0, 1, '2023-02-02 05:28:57', '2023-02-02 05:28:57', NULL),
-	(18, 1, NULL, 6417, 5, 'Promos', 'Promo 3', 'uploads/media/advertisements/promos/promo-3.jpg', 'image', '174898', '728 x 908', '728', '908', 0, 1, '2023-02-02 05:29:18', '2023-02-02 05:29:18', NULL),
-	(19, 1, NULL, 6417, 5, 'Promos', 'Promo 4', 'uploads/media/advertisements/promos/promo-4.jpg', 'image', '228975', '728 x 908', '728', '908', 0, 1, '2023-02-02 05:29:36', '2023-02-02 05:29:36', NULL),
-	(20, 1, NULL, 6417, 5, 'Promos', 'Promo 5', 'uploads/media/advertisements/promos/promo-5.jpg', 'image', '262582', '728 x 907', '728', '907', 0, 1, '2023-02-02 05:29:58', '2023-02-02 05:29:58', NULL),
-	(21, 1, NULL, 6417, 5, 'Promos', 'Promo 6', 'uploads/media/advertisements/promos/promo-6.jpg', 'image', '215459', '707 x 906', '707', '906', 0, 1, '2023-02-02 05:30:20', '2023-02-02 05:30:20', NULL),
-	(22, 1, NULL, 6417, 5, 'Promos', 'Promo 7', 'uploads/media/advertisements/promos/promo-7.jpg', 'image', '196230', '726 x 906', '726', '906', 0, 1, '2023-02-02 05:30:38', '2023-02-02 05:30:38', NULL),
-	(23, 1, NULL, 6417, 5, 'Promos', 'Promo 8', 'uploads/media/advertisements/promos/promo-8.jpg', 'image', '265793', '726 x 907', '726', '907', 0, 1, '2023-02-02 05:30:58', '2023-02-02 05:30:58', NULL),
-	(24, 1, NULL, 6417, 5, 'Promos', 'Promo 9', 'uploads/media/advertisements/promos/promo-9.jpg', 'image', '246233', '725 x 907', '725', '907', 0, 1, '2023-02-02 05:31:14', '2023-02-02 05:31:14', NULL),
-	(25, 1, NULL, 7317, 5, 'Banners', 'SWATCH GOKU BA', 'uploads/media/advertisements/banners/70c97549-9385-9d11.jpg', 'image', '59442', '470 x 1060', '470', '1060', 10, 1, '2023-02-03 03:30:30', '2023-02-03 03:30:30', NULL),
-	(26, 1, NULL, 7317, 5, 'Fullscreen', 'SWATCH GOKU FX', 'uploads/media/advertisements/fullscreen/70c97549-9343-a869.jpg', 'image', '133760', '1920 x 1080', '1920', '1080', 10, 1, '2023-02-03 03:45:00', '2023-02-03 03:45:00', NULL);
+-- Dumping data for table prestige.advertisements: ~4 rows (approximately)
+INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 3, 1, 7671, 5, 'All', 10, 'Sample 1', 1, '2023-05-04 02:57:02', '2023-05-04 08:46:42', NULL),
+	(2, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:48', '2023-05-05 03:11:48', NULL),
+	(3, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:51', '2023-05-05 03:11:51', NULL),
+	(4, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:58', '2023-05-05 03:11:58', NULL);
+
+-- Dumping structure for table prestige.advertisement_materials
+DROP TABLE IF EXISTS `advertisement_materials`;
+CREATE TABLE IF NOT EXISTS `advertisement_materials` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `advertisement_id` bigint(20) unsigned DEFAULT NULL,
+  `file_path` mediumtext COLLATE utf8mb4_unicode_ci,
+  `file_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_size` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dimension` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `width` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `height` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ad_type` enum('Banner Ad','Fullscreen Ad') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `orientation` enum('Landscape','Portrait') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `advertisement_materials_advertisement_id_index` (`advertisement_id`),
+  CONSTRAINT `advertisement_materials_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.advertisement_materials: ~0 rows (approximately)
+
+-- Dumping structure for table prestige.advertisement_screens
+DROP TABLE IF EXISTS `advertisement_screens`;
+CREATE TABLE IF NOT EXISTS `advertisement_screens` (
+  `advertisement_id` bigint(20) unsigned DEFAULT NULL,
+  `site_screen_id` bigint(20) unsigned DEFAULT NULL,
+  `site_id` bigint(20) unsigned DEFAULT NULL,
+  `product_application` enum('Directory','Digital Signage','All') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  KEY `advertisement_screens_advertisement_id_index` (`advertisement_id`),
+  KEY `advertisement_screens_site_screen_id_index` (`site_screen_id`),
+  KEY `advertisement_screens_site_id_index` (`site_id`),
+  CONSTRAINT `advertisement_screens_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.advertisement_screens: ~4 rows (approximately)
+INSERT INTO `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 0, 41, 'Digital Signage', NULL, NULL, NULL),
+	(1, 0, 41, 'Directory', NULL, NULL, NULL),
+	(1, 0, 23, 'Digital Signage', NULL, NULL, NULL),
+	(1, 0, 1, 'Digital Signage', NULL, NULL, NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -431,7 +449,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7709 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,440 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,531 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -11442,7 +11460,7 @@ CREATE TABLE IF NOT EXISTS `cinema_sites` (
   CONSTRAINT `cinema_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.cinema_sites: ~1 rows (approximately)
+-- Dumping data for table prestige.cinema_sites: ~0 rows (approximately)
 INSERT INTO `cinema_sites` (`id`, `site_id`, `cinema_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, '2102', '2022-11-20 22:48:43', '2022-11-20 22:54:57', NULL);
 
@@ -11492,7 +11510,7 @@ CREATE TABLE IF NOT EXISTS `companies` (
 -- Dumping data for table prestige.companies: ~3 rows (approximately)
 INSERT INTO `companies` (`id`, `parent_id`, `classification_id`, `name`, `email`, `contact_number`, `address`, `tin`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 1, 'SM Supermalls', 'test@yahoo.com', '09493593166', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', '32532453252345', 1, '2022-10-17 22:43:16', '2023-04-04 06:12:38', NULL),
-	(2, 1, 1, 'Prestige Interactive test', 'admintest@gmail.com', '09958568151', 'Unit 2901A 29th Floor West Tower, Philippine Stock Exchange Centre, Exchange Road, Ortigas Center, Pasig City', '09958568151', 1, '2022-11-02 21:10:28', '2023-03-31 05:26:15', NULL),
+	(2, NULL, 1, 'Prestige Interactive', 'admintest@gmail.com', '09958568151', 'Unit 2901A 29th Floor West Tower, Philippine Stock Exchange Centre, Exchange Road, Ortigas Center, Pasig City', '09958568151', 1, '2022-11-02 21:10:28', '2023-04-26 08:06:54', NULL),
 	(3, NULL, 3, 'Bistro Group, Inc', 'admintest@gmail.com', '09493593166', 'User can post advertisements pertaining to Italiannis ONLY in Megamall (all screens)', '34535345345345345', 1, '2023-03-01 08:20:19', '2023-03-31 03:32:30', NULL);
 
 -- Dumping structure for table prestige.company_brands
@@ -11557,7 +11575,7 @@ INSERT INTO `company_categories` (`id`, `company_id`, `category_id`, `sub_catego
 	(3, NULL, 3, NULL, NULL, 1, 'uploads/media/category/Consumer-Electronics.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:19:25', '2022-10-19 17:19:25', NULL),
 	(4, NULL, 4, NULL, NULL, 1, 'uploads/media/category/Function.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:19:46', '2022-10-19 17:19:46', NULL),
 	(5, NULL, 5, NULL, NULL, 1, 'uploads/media/category/Finds.png', '', NULL, NULL, NULL, NULL, '2022-10-19 17:20:06', '2022-10-19 17:20:06', NULL),
-	(6, NULL, 1, NULL, 2, 1, 'uploads/media/category/20221020071343Food.png', '', NULL, NULL, NULL, NULL, '2022-10-19 23:07:33', '2022-10-20 00:45:15', NULL),
+	(6, NULL, 1, NULL, 46, 1, 'uploads/media/category/20221020071343Food.png', '', NULL, NULL, NULL, NULL, '2022-10-19 23:07:33', '2023-05-04 08:27:49', NULL),
 	(7, NULL, 1, 6, NULL, 1, 'uploads/media/category/20221021013619Casual-Dining.png', 'uploads/media/category/strips/20221021014001Casual-Dining-copy.png', NULL, NULL, NULL, NULL, '2022-10-20 17:36:19', '2022-10-20 17:40:01', NULL),
 	(8, NULL, 1, 7, NULL, 1, 'uploads/media/category/20221021014211SMMG-Food-Court-button.png', 'uploads/media/category/strips/20221021014211SMMG-Food-Court-strip.png', NULL, NULL, NULL, NULL, '2022-10-20 17:42:11', '2022-10-20 17:42:11', NULL),
 	(9, NULL, 1, 8, NULL, 1, 'uploads/media/category/20221021014407SMMG-Food-Hall-button.png', 'uploads/media/category/strips/20221021014407SMMG-Food-Hall-Strip.png', NULL, NULL, NULL, NULL, '2022-10-20 17:44:07', '2022-10-20 17:44:07', NULL),
@@ -11925,90 +11943,65 @@ CREATE TABLE IF NOT EXISTS `contracts` (
   PRIMARY KEY (`id`),
   KEY `contracts_company_id_foreign` (`company_id`),
   CONSTRAINT `contracts_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contracts: ~2 rows (approximately)
+-- Dumping data for table prestige.contracts: ~11 rows (approximately)
 INSERT INTO `contracts` (`id`, `company_id`, `name`, `is_indefinite`, `is_exclusive`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 3, 'Sample Contract 1', 0, 0, 30, 3, 100, 1, '2023-04-13 07:01:53', '2023-04-24 05:40:36', NULL),
-	(2, 3, 'Sample Contract 2', 0, 0, 40, 3, 150, 1, '2023-04-13 07:04:05', '2023-04-24 06:46:02', NULL);
+	(1, 3, 'Sample Contract 1', 0, 1, 420, 3, 100, 1, '2023-05-03 09:04:08', '2023-05-05 09:33:41', '2023-05-05 09:33:41'),
+	(2, 3, 'Sample Contract 2', 0, 0, 300, 1, 100, 1, '2023-05-03 09:36:33', '2023-05-05 09:33:43', '2023-05-05 09:33:43'),
+	(3, 3, 'Sample Contract 3', 0, 0, 400, 3, 100, 1, '2023-05-03 09:37:38', '2023-05-05 09:33:45', '2023-05-05 09:33:45'),
+	(4, 1, 'Site Partner Contract 1', 0, 0, 360, 3, 100, 1, '2023-05-05 09:28:30', '2023-05-05 09:28:30', NULL),
+	(5, 1, 'Site Partner Contract 1', 0, 0, 360, 3, 100, 1, '2023-05-05 09:28:43', '2023-05-05 09:28:43', NULL),
+	(6, 1, 'Site Partner Contract 1', 0, 0, 360, 3, 100, 1, '2023-05-05 09:28:54', '2023-05-05 09:28:54', NULL),
+	(7, 1, 'Site Partner Contract 1', 0, 0, 360, 3, 100, 1, '2023-05-05 09:29:05', '2023-05-05 09:29:05', NULL),
+	(8, 3, 'SM site partner contract 1', 0, 0, 360, 3, 100, 1, '2023-05-05 09:34:24', '2023-05-05 09:35:25', '2023-05-05 09:35:25'),
+	(9, 3, 'SM site partner contract 1', 0, 0, 360, 3, 100, 1, '2023-05-05 09:34:39', '2023-05-05 09:35:23', '2023-05-05 09:35:23'),
+	(10, 3, 'SM site partner contract 1', 0, 0, 360, 3, 100, 1, '2023-05-05 09:34:59', '2023-05-05 09:34:59', NULL),
+	(11, 3, 'SM site partner contract 2', 0, 0, 360, 1, 100, 1, '2023-05-05 09:36:39', '2023-05-05 09:36:39', NULL);
 
 -- Dumping structure for table prestige.contract_brands
 DROP TABLE IF EXISTS `contract_brands`;
 CREATE TABLE IF NOT EXISTS `contract_brands` (
   `contract_id` bigint(20) unsigned NOT NULL,
   `brand_id` bigint(20) unsigned NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
   KEY `contract_brands_contract_id_foreign` (`contract_id`),
   KEY `contract_brands_brand_id_foreign` (`brand_id`),
   CONSTRAINT `contract_brands_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
   CONSTRAINT `contract_brands_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contract_brands: ~17 rows (approximately)
-INSERT INTO `contract_brands` (`contract_id`, `brand_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 7671, '2023-04-13 07:01:53', '2023-04-24 05:39:50', '2023-04-24 05:39:50'),
-	(1, 7685, '2023-04-13 07:01:53', '2023-04-24 05:39:50', '2023-04-24 05:39:50'),
-	(1, 7690, '2023-04-13 07:01:53', '2023-04-24 05:39:50', '2023-04-24 05:39:50'),
-	(2, 7693, '2023-04-13 07:04:05', '2023-04-13 08:30:32', '2023-04-13 08:30:32'),
-	(2, 7698, '2023-04-13 07:04:05', '2023-04-13 08:30:32', '2023-04-13 08:30:32'),
-	(2, 7693, '2023-04-13 08:30:32', '2023-04-24 05:43:17', '2023-04-24 05:43:17'),
-	(2, 7698, '2023-04-13 08:30:32', '2023-04-24 05:43:17', '2023-04-24 05:43:17'),
-	(1, 7671, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 7685, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 7690, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 7671, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 7685, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 7690, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(2, 7693, '2023-04-24 05:43:17', '2023-04-24 06:46:02', '2023-04-24 06:46:02'),
-	(2, 7698, '2023-04-24 05:43:17', '2023-04-24 06:46:02', '2023-04-24 06:46:02'),
-	(2, 7693, '2023-04-24 06:46:02', '2023-04-24 06:46:02', NULL),
-	(2, 7698, '2023-04-24 06:46:02', '2023-04-24 06:46:02', NULL);
+-- Dumping data for table prestige.contract_brands: ~5 rows (approximately)
+INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
+	(3, 7690),
+	(2, 7698),
+	(1, 7671),
+	(10, 7698),
+	(11, 7698);
 
 -- Dumping structure for table prestige.contract_screens
 DROP TABLE IF EXISTS `contract_screens`;
 CREATE TABLE IF NOT EXISTS `contract_screens` (
   `contract_id` bigint(20) unsigned NOT NULL,
-  `site_screen_id` bigint(20) unsigned NOT NULL,
-  `site_id` bigint(20) unsigned NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
+  `site_screen_id` bigint(20) unsigned DEFAULT NULL,
+  `site_id` bigint(20) unsigned DEFAULT NULL,
+  `product_application` enum('Directory','Digital Signage','All') COLLATE utf8mb4_unicode_ci NOT NULL,
   KEY `contract_screens_contract_id_foreign` (`contract_id`),
+  KEY `contract_screens_site_screen_id_index` (`site_screen_id`),
+  KEY `contract_screens_site_id_index` (`site_id`),
   CONSTRAINT `contract_screens_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contract_screens: ~28 rows (approximately)
-INSERT INTO `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 0, 1, '2023-04-13 07:01:53', '2023-04-24 05:39:50', '2023-04-24 05:39:50'),
-	(2, 0, 1, '2023-04-13 07:04:05', '2023-04-13 08:30:32', '2023-04-13 08:30:32'),
-	(2, 0, 1, '2023-04-13 08:30:32', '2023-04-24 05:43:17', '2023-04-24 05:43:17'),
-	(2, 2, 1, '2023-04-13 08:30:32', '2023-04-24 05:43:17', '2023-04-24 05:43:17'),
-	(2, 5, 1, '2023-04-13 08:30:32', '2023-04-24 05:43:17', '2023-04-24 05:43:17'),
-	(1, 0, 1, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 8, 1, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 9, 1, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 13, 1, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 14, 1, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 15, 1, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 16, 1, '2023-04-24 05:39:50', '2023-04-24 05:40:36', '2023-04-24 05:40:36'),
-	(1, 8, 1, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 9, 1, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 13, 1, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 14, 1, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 15, 1, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 16, 1, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(1, 0, 1, '2023-04-24 05:40:36', '2023-04-24 05:40:36', NULL),
-	(2, 0, 23, '2023-04-24 05:43:17', '2023-04-24 06:46:02', '2023-04-24 06:46:02'),
-	(2, 84, 23, '2023-04-24 05:43:17', '2023-04-24 06:46:02', '2023-04-24 06:46:02'),
-	(2, 85, 23, '2023-04-24 05:43:17', '2023-04-24 06:46:02', '2023-04-24 06:46:02'),
-	(2, 86, 23, '2023-04-24 05:43:17', '2023-04-24 06:46:02', '2023-04-24 06:46:02'),
-	(2, 87, 23, '2023-04-24 05:43:17', '2023-04-24 06:46:02', '2023-04-24 06:46:02'),
-	(2, 84, 23, '2023-04-24 06:46:02', '2023-04-24 06:46:02', NULL),
-	(2, 85, 23, '2023-04-24 06:46:02', '2023-04-24 06:46:02', NULL),
-	(2, 86, 23, '2023-04-24 06:46:02', '2023-04-24 06:46:02', NULL),
-	(2, 87, 23, '2023-04-24 06:46:02', '2023-04-24 06:46:02', NULL);
+-- Dumping data for table prestige.contract_screens: ~9 rows (approximately)
+INSERT INTO `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) VALUES
+	(3, 0, 1, 'Directory'),
+	(3, 0, 1, 'Digital Signage'),
+	(3, 0, 46, 'Directory'),
+	(2, 0, 49, 'Directory'),
+	(2, 0, 48, 'Directory'),
+	(2, 0, 41, 'Digital Signage'),
+	(1, 0, 1, 'Directory'),
+	(10, 0, 1, 'Directory'),
+	(11, 274, 11, 'Digital Signage');
 
 -- Dumping structure for table prestige.customer_care
 DROP TABLE IF EXISTS `customer_care`;
@@ -12070,7 +12063,7 @@ CREATE TABLE IF NOT EXISTS `faqs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.faqs: ~1 rows (approximately)
+-- Dumping data for table prestige.faqs: ~0 rows (approximately)
 INSERT INTO `faqs` (`id`, `question`, `answer`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(12, '434343', 'Contrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transpa\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\n\r\n\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.rent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.', 1, '2023-03-28 21:43:03', '2023-03-28 21:43:03', NULL);
 
@@ -12118,7 +12111,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   KEY `logs_advertisement_id_index` (`advertisement_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.logs: ~226 rows (approximately)
+-- Dumping data for table prestige.logs: ~207 rows (approximately)
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_category_id`, `main_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `advertisement_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:42', '2023-02-28 06:31:42', NULL),
 	(2, 1, 2, 6, 1, 1, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:43', '2023-02-28 06:31:43', NULL),
@@ -12354,9 +12347,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=197 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.migrations: 41 rows
+-- Dumping data for table prestige.migrations: 42 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(160, '2014_10_12_000000_create_users_table', 35),
@@ -12387,7 +12380,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(144, '2023_01_03_154716_create_last_update_ats_table', 27),
 	(162, '2023_01_09_164021_create_logs_table', 37),
 	(146, '2023_01_17_111716_create_transaction_statuses_table', 29),
-	(149, '2023_01_18_105915_create_advertisements_table', 30),
+	(194, '2023_01_18_105915_create_advertisements_table', 49),
 	(152, '2023_01_20_095155_create_content_management_table', 31),
 	(156, '2023_02_14_135156_create_portals_table', 33),
 	(161, '2023_02_15_102541_create_user_roles_table', 36),
@@ -12399,7 +12392,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(169, '2023_03_17_163738_create_exclusive_screens_table', 43),
 	(172, '2023_03_22_151752_create_site_feedback_table', 44),
 	(175, '2023_03_24_131810_create_site_screen_uptimes_table', 45),
-	(189, '2023_03_30_151816_create_contracts_table', 46);
+	(193, '2023_03_30_151816_create_contracts_table', 48),
+	(196, '2023_05_06_155340_create_pi_products_table', 50);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.modules
@@ -12418,9 +12412,9 @@ CREATE TABLE IF NOT EXISTS `modules` (
   PRIMARY KEY (`id`),
   KEY `modules_name_index` (`name`),
   KEY `modules_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~71 rows (approximately)
+-- Dumping data for table prestige.modules: ~73 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin', '#', 'Admin', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2023-04-05 07:57:28', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'Admin', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -12462,7 +12456,7 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, 
 	(39, 38, 'Genre', '/admin/cinema/genres', 'Admin', 'nav-icon fa fa-film', 1, '2022-11-20 18:55:29', '2023-02-17 09:45:11', NULL),
 	(40, 38, 'Site Code', '/admin/cinema/site-codes', 'Admin', 'nav-icon fa fa-film', 1, '2022-11-20 18:56:17', '2023-02-17 09:45:06', NULL),
 	(41, 38, 'Schedules', '/admin/cinema/schedules', 'Admin', 'nav-icon fa fa-calendar', 1, '2022-11-20 18:57:27', '2023-02-17 09:45:00', NULL),
-	(42, 13, 'Screens', '/admin/site/screens', 'Admin', 'nav-icon fa fa-desktop', 1, '2022-12-29 03:38:30', '2023-03-28 02:42:15', NULL),
+	(42, NULL, 'Site Screen', '/admin/site/screens', 'Admin', 'nav-icon fa fa-desktop', 1, '2022-12-29 03:38:30', '2023-05-08 02:16:15', NULL),
 	(43, 14, 'Promos', '/admin/advertisements/promos', 'Admin', 'nav-icon fa fa-tags', 0, '2023-01-19 07:10:54', '2023-03-29 09:02:37', NULL),
 	(44, 14, 'Create Ad', '/admin/content-management', 'Admin', 'nav-icon fas fa-photo-video', 1, '2023-01-19 09:09:57', '2023-03-29 08:54:08', NULL),
 	(46, 5, 'Users', '/admin/client/users', 'Admin', 'nav-icon fas fa-users', 1, '2023-03-02 08:57:46', '2023-03-28 03:06:40', NULL),
@@ -12492,7 +12486,9 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, 
 	(70, NULL, 'FAQ\'s', '/admin/faqs', 'Admin', 'nav-icon fa fa-question-circle', 1, '2023-03-29 09:52:10', '2023-03-29 09:52:20', NULL),
 	(71, NULL, 'Customer Care', '/admin/customer-cares', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-03-29 10:03:13', '2023-03-29 10:03:26', NULL),
 	(72, 71, 'Inquiries', '/admin/customer-cares', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-04-25 06:06:46', '2023-04-25 06:06:53', NULL),
-	(73, 71, 'Concerns', '#', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-04-25 06:07:38', '2023-04-25 06:07:46', NULL);
+	(73, 71, 'Concerns', '/admin/customer-care/concerns', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-04-25 06:07:38', '2023-05-05 06:11:50', NULL),
+	(74, NULL, 'User Information', '/admin/users-information', 'Admin', 'nav-icon fa fa-question-circle', 1, '2023-05-05 06:11:38', '2023-05-05 06:11:38', NULL),
+	(75, NULL, 'Site Screen Product', '/admin/site/pi-products', 'Admin', 'nav-icon fa fa-desktop', 1, '2023-05-08 03:46:29', '2023-05-08 05:30:23', NULL);
 
 -- Dumping structure for table prestige.password_resets
 DROP TABLE IF EXISTS `password_resets`;
@@ -12526,9 +12522,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   KEY `permissions_deleted_at_index` (`deleted_at`),
   CONSTRAINT `permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`),
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~128 rows (approximately)
+-- Dumping data for table prestige.permissions: ~123 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -12540,35 +12536,35 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(8, 2, 8, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
 	(9, 2, 9, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
 	(10, 2, 10, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
-	(16, 1, 1, 1, 1, 1, 1, '2022-08-10 00:58:44', '2023-04-25 06:08:42', NULL),
-	(17, 1, 3, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(18, 1, 4, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(19, 1, 11, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
-	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-04-25 06:08:42', NULL),
+	(16, 1, 1, 1, 1, 1, 1, '2022-08-10 00:58:44', '2023-05-08 03:50:03', NULL),
+	(17, 1, 3, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(18, 1, 4, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(19, 1, 11, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
 	(26, 1, 12, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
-	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(31, 1, 17, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(32, 1, 18, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(33, 1, 19, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(34, 1, 20, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(35, 1, 21, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(36, 1, 22, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(37, 1, 23, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(38, 1, 24, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(39, 1, 25, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(40, 1, 26, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(41, 1, 27, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(42, 1, 28, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(43, 1, 29, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
-	(44, 1, 30, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-04-25 06:08:42', NULL),
+	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(31, 1, 17, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(32, 1, 18, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(33, 1, 19, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(34, 1, 20, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(35, 1, 21, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(36, 1, 22, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(37, 1, 23, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(38, 1, 24, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(39, 1, 25, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(40, 1, 26, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(41, 1, 27, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(42, 1, 28, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(43, 1, 29, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(44, 1, 30, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
 	(45, 2, 12, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(46, 2, 13, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(47, 2, 14, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
@@ -12588,21 +12584,21 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(61, 2, 28, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(62, 2, 29, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(63, 2, 30, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
-	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2023-04-25 06:08:42', NULL),
-	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2023-04-25 06:08:42', NULL),
-	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2023-04-25 06:08:42', NULL),
-	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2023-04-25 06:08:42', NULL),
-	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2023-04-25 06:08:42', NULL),
-	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2023-04-25 06:08:42', NULL),
+	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2023-05-08 03:50:03', NULL),
+	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2023-05-08 03:50:03', NULL),
+	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2023-05-08 03:50:03', NULL),
+	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2023-05-08 03:50:03', NULL),
+	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2023-05-08 03:50:03', NULL),
+	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2023-05-08 03:50:03', NULL),
 	(70, 1, 37, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-11-15 18:37:58', NULL),
-	(71, 1, 38, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-04-25 06:08:42', NULL),
-	(72, 1, 39, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-04-25 06:08:42', NULL),
-	(73, 1, 40, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-04-25 06:08:42', NULL),
-	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-04-25 06:08:42', NULL),
-	(75, 1, 42, 1, 1, 1, 1, '2022-12-29 03:38:57', '2023-04-25 06:08:42', NULL),
-	(76, 1, 43, 1, 1, 1, 1, '2023-01-19 07:11:36', '2023-04-25 06:08:42', NULL),
-	(77, 1, 44, 1, 1, 1, 1, '2023-01-19 10:01:38', '2023-04-25 06:08:42', NULL),
-	(78, 1, 46, 1, 1, 1, 1, '2023-03-02 09:01:50', '2023-04-25 06:08:42', NULL),
+	(71, 1, 38, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
+	(72, 1, 39, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
+	(73, 1, 40, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
+	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
+	(75, 1, 42, 1, 1, 1, 1, '2022-12-29 03:38:57', '2023-05-08 03:50:03', NULL),
+	(76, 1, 43, 1, 1, 1, 1, '2023-01-19 07:11:36', '2023-05-08 03:50:03', NULL),
+	(77, 1, 44, 1, 1, 1, 1, '2023-01-19 10:01:38', '2023-05-08 03:50:03', NULL),
+	(78, 1, 46, 1, 1, 1, 1, '2023-03-02 09:01:50', '2023-05-08 03:50:03', NULL),
 	(79, 3, 47, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-22 02:14:58', NULL),
 	(80, 3, 48, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-22 02:14:58', NULL),
 	(81, 3, 49, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
@@ -12654,10 +12650,12 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(127, 3, 67, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
 	(128, 3, 68, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
 	(129, 3, 69, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
-	(130, 1, 70, 1, 1, 1, 1, '2023-03-29 09:53:20', '2023-04-25 06:08:42', NULL),
-	(131, 1, 71, 1, 1, 1, 1, '2023-03-29 10:04:21', '2023-04-25 06:08:42', NULL),
-	(132, 1, 72, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-04-25 06:08:42', NULL),
-	(133, 1, 73, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-04-25 06:08:42', NULL);
+	(130, 1, 70, 1, 1, 1, 1, '2023-03-29 09:53:20', '2023-05-08 03:50:03', NULL),
+	(131, 1, 71, 1, 1, 1, 1, '2023-03-29 10:04:21', '2023-05-08 03:50:03', NULL),
+	(132, 1, 72, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-08 03:50:03', NULL),
+	(133, 1, 73, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-08 03:50:03', NULL),
+	(134, 1, 74, 1, 1, 1, 1, '2023-05-05 06:13:03', '2023-05-08 03:50:03', NULL),
+	(135, 1, 75, 1, 1, 1, 1, '2023-05-08 03:50:03', '2023-05-08 03:50:03', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
 DROP TABLE IF EXISTS `personal_access_tokens`;
@@ -12680,6 +12678,124 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 
+-- Dumping structure for table prestige.pi_products
+DROP TABLE IF EXISTS `pi_products`;
+CREATE TABLE IF NOT EXISTS `pi_products` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_screen_id` bigint(20) unsigned NOT NULL,
+  `ad_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `dimension` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `width` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `height` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sec_slot` int(11) NOT NULL DEFAULT '0',
+  `slots` int(11) NOT NULL DEFAULT '0',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pi_products_site_screen_id_foreign` (`site_screen_id`),
+  CONSTRAINT `pi_products_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.pi_products: ~47 rows (approximately)
+INSERT INTO `pi_products` (`id`, `site_screen_id`, `ad_type`, `description`, `dimension`, `width`, `height`, `sec_slot`, `slots`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 06:50:08', '2023-05-08 06:50:08', NULL),
+	(2, 1, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 15, 40, 1, '2023-05-08 07:02:52', '2023-05-08 07:15:54', NULL),
+	(3, 2, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:17:02', '2023-05-08 07:17:02', NULL),
+	(4, 2, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:18:05', '2023-05-08 07:18:05', NULL),
+	(5, 5, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:21:01', '2023-05-08 07:21:01', NULL),
+	(6, 5, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:21:40', '2023-05-08 07:21:40', NULL),
+	(7, 6, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:23:07', '2023-05-08 07:23:07', NULL),
+	(8, 6, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:24:34', '2023-05-08 07:24:34', NULL),
+	(9, 7, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:25:07', '2023-05-08 07:25:07', NULL),
+	(10, 7, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:25:30', '2023-05-08 07:25:30', NULL),
+	(11, 8, 'Full Screen Ad', '10 sec, per month', '1080x1920', '1080', '1920', 10, 40, 1, '2023-05-08 07:26:18', '2023-05-08 07:48:56', NULL),
+	(12, 8, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:27:42', '2023-05-08 07:40:26', '2023-05-08 07:40:26'),
+	(13, 9, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:31:39', '2023-05-08 07:39:10', NULL),
+	(14, 9, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:33:14', '2023-05-08 07:40:38', '2023-05-08 07:40:38'),
+	(15, 10, 'Full Screen Ad', '10 sec, per month', '1080x1920', '1080', '1920', 10, 40, 1, '2023-05-08 07:48:39', '2023-05-08 07:48:39', NULL),
+	(16, 11, 'Full Screen Ad', '10 sec, per month', '384x768', '384', '768', 10, 40, 1, '2023-05-08 07:53:30', '2023-05-08 07:53:30', NULL),
+	(17, 12, 'Full Screen Ad', '10 sec, per month', '384x768', '384', '768', 10, 40, 1, '2023-05-08 07:55:44', '2023-05-08 07:55:44', NULL),
+	(18, 13, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:30:35', '2023-05-08 08:30:35', NULL),
+	(19, 14, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:31:07', '2023-05-08 08:31:07', NULL),
+	(20, 15, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:31:42', '2023-05-08 08:31:42', NULL),
+	(21, 16, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:32:04', '2023-05-08 08:32:04', NULL),
+	(22, 17, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:32:35', '2023-05-08 08:32:35', NULL),
+	(23, 17, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:32:53', '2023-05-08 08:32:53', NULL),
+	(24, 18, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:33:15', '2023-05-08 08:33:15', NULL),
+	(25, 18, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:33:34', '2023-05-08 08:33:34', NULL),
+	(26, 19, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:34:44', '2023-05-08 08:34:44', NULL),
+	(27, 19, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:35:06', '2023-05-08 08:35:06', NULL),
+	(28, 20, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:35:23', '2023-05-08 08:35:23', NULL),
+	(29, 20, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:35:39', '2023-05-08 08:35:39', NULL),
+	(30, 21, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:36:30', '2023-05-08 08:36:30', NULL),
+	(31, 21, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:36:53', '2023-05-08 08:36:53', NULL),
+	(32, 22, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:37:15', '2023-05-08 08:37:15', NULL),
+	(33, 22, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:37:39', '2023-05-08 08:37:39', NULL),
+	(34, 23, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:37:59', '2023-05-08 08:37:59', NULL),
+	(35, 23, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:38:30', '2023-05-08 08:38:30', NULL),
+	(36, 24, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:38:58', '2023-05-08 08:38:58', NULL),
+	(37, 24, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:39:17', '2023-05-08 08:39:17', NULL),
+	(38, 25, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:39:32', '2023-05-08 08:39:32', NULL),
+	(39, 25, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:39:48', '2023-05-08 08:39:48', NULL),
+	(40, 26, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:40:14', '2023-05-08 08:40:14', NULL),
+	(41, 26, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:40:33', '2023-05-08 08:40:33', NULL),
+	(42, 27, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:41:28', '2023-05-08 08:41:28', NULL),
+	(43, 27, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:41:45', '2023-05-08 08:41:45', NULL),
+	(44, 227, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:42:43', '2023-05-08 08:42:43', NULL),
+	(45, 228, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:43:03', '2023-05-08 08:43:03', NULL),
+	(46, 59, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:02:19', '2023-05-08 09:02:19', NULL),
+	(47, 59, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:02:41', '2023-05-08 09:02:41', NULL),
+	(48, 60, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:18:37', '2023-05-08 09:18:37', NULL),
+	(49, 60, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:19:05', '2023-05-08 09:19:05', NULL),
+	(50, 61, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:19:27', '2023-05-08 09:19:27', NULL),
+	(51, 61, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:19:52', '2023-05-08 09:19:52', NULL),
+	(52, 62, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:20:13', '2023-05-08 09:20:13', NULL),
+	(53, 62, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:20:31', '2023-05-08 09:20:31', NULL),
+	(54, 63, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:20:48', '2023-05-08 09:20:48', NULL),
+	(55, 63, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:21:11', '2023-05-08 09:21:11', NULL),
+	(56, 64, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:21:36', '2023-05-08 09:21:36', NULL),
+	(57, 64, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:21:58', '2023-05-08 09:21:58', NULL),
+	(58, 65, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:22:20', '2023-05-08 09:22:20', NULL),
+	(59, 65, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:22:40', '2023-05-08 09:22:40', NULL),
+	(60, 66, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:22:58', '2023-05-08 09:22:58', NULL),
+	(61, 66, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:23:38', '2023-05-08 09:23:38', NULL),
+	(62, 67, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:23:54', '2023-05-08 09:23:54', NULL),
+	(63, 67, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:24:27', '2023-05-08 09:24:27', NULL),
+	(64, 68, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:24:48', '2023-05-08 09:24:48', NULL),
+	(65, 68, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:25:09', '2023-05-08 09:25:09', NULL),
+	(66, 69, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:25:34', '2023-05-08 09:25:34', NULL),
+	(67, 69, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:26:03', '2023-05-08 09:26:03', NULL),
+	(68, 70, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:26:20', '2023-05-08 09:26:20', NULL),
+	(69, 70, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:26:39', '2023-05-08 09:26:39', NULL),
+	(70, 71, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:26:57', '2023-05-08 09:26:57', NULL),
+	(71, 71, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:27:18', '2023-05-08 09:27:18', NULL),
+	(72, 72, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:27:41', '2023-05-08 09:27:41', NULL),
+	(73, 72, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:28:00', '2023-05-08 09:28:00', NULL),
+	(74, 73, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:28:23', '2023-05-08 09:28:23', NULL),
+	(75, 73, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:28:42', '2023-05-08 09:28:42', NULL),
+	(76, 74, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:29:36', '2023-05-08 09:29:36', NULL),
+	(77, 74, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:29:54', '2023-05-08 09:29:54', NULL),
+	(78, 75, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:30:16', '2023-05-08 09:30:16', NULL),
+	(79, 75, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:30:33', '2023-05-08 09:30:33', NULL),
+	(80, 76, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:31:22', '2023-05-08 09:31:22', NULL),
+	(81, 76, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:31:39', '2023-05-08 09:31:39', NULL),
+	(82, 77, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:08', '2023-05-08 09:32:08', NULL),
+	(83, 77, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:32:24', '2023-05-08 09:32:24', NULL),
+	(84, 78, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:39', '2023-05-08 09:32:39', NULL),
+	(85, 78, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:54', '2023-05-08 09:32:54', NULL),
+	(86, 84, 'Full Screen Ad', NULL, '3840x2160', '3840', '2160', 10, 40, 1, '2023-05-08 09:33:47', '2023-05-08 09:33:47', NULL),
+	(87, 85, 'Full Screen Ad', NULL, '3840x2160', '3840', '2160', 10, 40, 1, '2023-05-08 09:34:12', '2023-05-08 09:34:12', NULL),
+	(88, 86, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:34:38', '2023-05-08 09:34:38', NULL),
+	(89, 87, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:35:00', '2023-05-08 09:35:00', NULL),
+	(90, 88, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:35:24', '2023-05-08 09:35:24', NULL),
+	(91, 89, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, '2023-05-08 09:35:47', '2023-05-08 09:35:47', NULL),
+	(92, 90, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:08', '2023-05-08 09:36:08', NULL),
+	(93, 91, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:29', '2023-05-08 09:36:29', NULL),
+	(94, 92, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, '2023-05-08 09:36:56', '2023-05-08 09:36:56', NULL);
+
 -- Dumping structure for table prestige.roles
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
@@ -12699,7 +12815,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 
 -- Dumping data for table prestige.roles: ~8 rows (approximately)
 INSERT INTO `roles` (`id`, `name`, `description`, `type`, `company_id`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Super Admin', 'Mga Alien lang ang may access dito', 'Admin', NULL, 1, '2022-08-08 19:13:33', '2022-08-08 19:13:33', NULL),
+	(1, 'Super Admin', 'Mga Alien lang ang may access dito', 'Admin', NULL, 1, '2022-08-08 19:13:33', '2023-05-08 03:50:03', NULL),
 	(2, 'Admin', 'Corporate access', 'Admin', NULL, 1, '2022-08-08 19:13:57', '2023-03-02 10:16:18', '2023-03-02 10:16:18'),
 	(3, 'Site - Head Office', 'Site - Head Office', 'Portal', NULL, 1, '2023-03-02 10:17:26', '2023-03-22 02:14:58', NULL),
 	(4, 'Site - Local', 'Site - Local', 'Portal', NULL, 1, '2023-03-07 03:29:25', '2023-03-07 03:29:25', NULL),
@@ -12726,9 +12842,9 @@ CREATE TABLE IF NOT EXISTS `sites` (
   KEY `sites_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites: ~49 rows (approximately)
+-- Dumping data for table prestige.sites: ~48 rows (approximately)
 INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `site_background`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'SM Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nFun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 'uploads/media/sites/background/SMMG-BG.jpg', 1, 1, '2022-10-24 00:54:28', '2023-04-18 09:56:08', NULL),
+	(1, 'SM Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nFun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 'uploads/media/sites/background/SMMG-BG.jpg', 1, 0, '2022-10-24 00:54:28', '2023-05-04 08:35:10', NULL),
 	(2, 'SM Tuguegarao', 'KING\r\nSM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. \r\n\r\nIt\'s Fun and Festive Malling at SM City Tuguegarao!\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', '', 'uploads/media/sites/banners/about-us-smtu.jpg', NULL, 1, 0, '2022-10-25 17:14:19', '2023-04-17 02:16:03', '2023-04-17 02:16:03'),
 	(3, 'SM Bacolod', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:17:44', '2023-04-17 02:53:27', NULL),
 	(4, 'SM Batangas', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:22:19', '2023-04-17 02:22:19', NULL),
@@ -12736,10 +12852,10 @@ INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `
 	(6, 'SM Fairview', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:24:18', '2023-04-17 02:24:18', NULL),
 	(7, 'SM Grand Central', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:25:30', '2023-04-17 02:25:30', NULL),
 	(8, 'SM Lanang', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:26:13', '2023-04-17 02:26:13', NULL),
-	(9, 'SM Mall of Asia', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:27:24', '2023-04-17 02:27:24', NULL),
+	(9, 'SM Mall of Asia', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:27:24', '2023-04-26 06:57:47', NULL),
 	(10, 'SM Manila', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', '', '', '', 1, 0, '2023-04-17 02:37:25', '2023-04-17 02:37:25', NULL),
 	(11, 'SM Marikina', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', '', '', '', 1, 0, '2023-04-17 02:38:07', '2023-04-17 02:38:07', NULL),
-	(12, 'SM North EDSA', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '', '', '', 1, 0, '2023-04-17 02:38:30', '2023-04-17 02:38:30', NULL),
+	(12, 'SM North EDSA', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '', '', '', 1, 0, '2023-04-17 02:38:30', '2023-04-26 07:03:05', '2023-04-26 07:03:05'),
 	(13, 'SM Olongapo Central', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:38:56', '2023-04-17 02:38:56', NULL),
 	(14, 'SM Puerto Princesa', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:39:10', '2023-04-17 02:39:10', NULL),
 	(15, 'SM San Jose', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', '', '', '', 1, 0, '2023-04-17 02:39:34', '2023-04-17 02:39:34', NULL),
@@ -12750,21 +12866,21 @@ INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `
 	(20, 'SM Tuguegarao', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '', '', '', 1, 0, '2023-04-17 02:41:30', '2023-04-17 02:53:08', NULL),
 	(21, 'Aura Premier', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '', '', '', 1, 0, '2023-04-17 07:50:22', '2023-04-17 07:50:22', NULL),
 	(22, 'Cagayan de Oro Premier', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-17 09:01:18', '2023-04-17 09:01:18', NULL),
-	(23, 'SM North EDSA', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-17 09:44:17', '2023-04-17 09:44:17', NULL),
+	(23, 'SM North EDSA', 'It all began here. SM City North EDSA innovated and institutionalized the "one-stop shopping complex" and was the first mall in the Philippines to introduce "malling" as a pastime. Besides being a haven for shoppers, the architecture of the mall blends both old and new, creating calming and colorful scenes.\r\n\r\nWith world-class cinemas, a helpful and convenient transport depot for easy commuting, outdoor parking, and attractive structures, SM City North EDSA aims to be an architectural landmark of Metro Manila’s progress, as well as one of the most beautiful structures in the Philippines. The mall complex composed of 6 major buildings namely The Block, Annex, Skygarden, City Center, Interior Zone, and Northlink.\r\n\r\nIt features SM Store, its major anchor, SM Supermarket, a Hypermarket, a food court, a Skygarden, an Amphitheater which is an entertainment stage for events with more than 1,500 seats, a 12-cinema complex, and over 800 shops. It offers more than 4,000 parking slots and valet services on 3 strategic locations.\r\n\r\nTruly, more fun, dining, and celebration experiences await everyone everyday at SM City North Edsa!! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smne.png', 'uploads/media/sites/banners/about-us-smtz.jpg', '', 1, 0, '2023-04-17 09:44:17', '2023-04-26 07:05:37', NULL),
 	(24, 'S Maison', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 02:31:08', '2023-04-18 09:56:08', NULL),
 	(25, 'Seaside Cebu', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 03:09:58', '2023-04-18 03:09:58', NULL),
 	(26, 'The Podium', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat', '', '', '', 1, 0, '2023-04-18 06:04:20', '2023-04-18 06:04:20', NULL),
 	(27, 'SM Bataan', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat', '', '', '', 1, 0, '2023-04-18 06:55:23', '2023-04-18 06:55:23', NULL),
 	(28, 'SM BF', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 07:24:05', '2023-04-18 07:24:05', NULL),
 	(29, 'SM Bicutan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 07:31:36', '2023-04-18 07:31:36', NULL),
-	(30, 'SM Butuan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 08:05:43', '2023-04-18 08:05:43', NULL),
+	(30, 'SM Butuan', 'The 75th SM Supermall, SM CITY BUTUAN is located along JC Aquino Avenue and is the first SM mall development in the CARAGA Region.\r\n\r\nSM City Butuan will be hosting a diverse mix of international fashion brands and local concepts. It is a world class shopping center with 175 stores and dining establishments. The 3 storey mall will also have a bank and other service outlets to choose from. Mall features include a rooftop parking space and a helipad.\r\n\r\nExciting activities await you and your family and friends at SM City Butuan! Keep updated with our latest events and promotions.', '', '', '', 1, 0, '2023-04-18 08:05:43', '2023-04-26 06:59:42', NULL),
 	(31, 'SM Calamba', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 08:10:46', '2023-04-18 08:11:35', NULL),
 	(32, 'SM Cauayan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 08:57:43', '2023-04-18 09:56:08', NULL),
 	(33, 'SM Daet', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 09:21:11', '2023-04-18 09:21:11', NULL),
 	(34, 'SM Dasmariñas', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 09:26:48', '2023-04-18 09:26:48', NULL),
 	(35, 'SM East Ortigas', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-18 09:29:28', '2023-04-18 09:31:11', NULL),
 	(36, 'SM Legazpi', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 06:02:54', '2023-04-19 06:09:45', NULL),
-	(37, 'SM Lemery', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 1, '2023-04-19 06:12:04', '2023-04-19 06:12:04', NULL),
+	(37, 'SM Lemery', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 06:12:04', '2023-05-04 08:29:25', NULL),
 	(38, 'SM Lipa', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 06:14:20', '2023-04-19 06:14:20', NULL),
 	(39, 'SM Marilao', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 06:23:31', '2023-04-19 06:23:31', NULL),
 	(40, 'SM Novaliches', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 06:27:00', '2023-04-19 06:27:00', NULL),
@@ -12773,10 +12889,10 @@ INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `
 	(43, 'SM San Jose del Monte', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 07:26:39', '2023-04-19 07:26:39', NULL),
 	(44, 'SM San Pablo', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:08:08', '2023-04-19 08:08:08', NULL),
 	(45, 'SM Sta. Rosa', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:11:57', '2023-04-19 08:13:58', NULL),
-	(46, 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', '', 1, 0, '2023-04-19 09:14:12', '2023-04-26 05:51:19', NULL),
+	(46, 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', '', 1, 1, '2023-04-19 09:14:12', '2023-05-04 08:29:25', NULL),
 	(47, 'SM Telabastagan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:38:55', '2023-04-19 09:38:55', NULL),
 	(48, 'SM Tuguegarao Downrown', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:45:57', '2023-04-19 09:46:49', NULL),
-	(49, 'SM Urdaneta', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 1, '2023-04-19 09:51:50', '2023-04-19 09:51:50', NULL);
+	(49, 'SM Urdaneta', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:51:50', '2023-05-04 08:29:25', NULL);
 
 -- Dumping structure for table prestige.sites_meta
 DROP TABLE IF EXISTS `sites_meta`;
@@ -12794,7 +12910,7 @@ CREATE TABLE IF NOT EXISTS `sites_meta` (
   CONSTRAINT `sites_meta_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=295 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites_meta: ~294 rows (approximately)
+-- Dumping data for table prestige.sites_meta: ~293 rows (approximately)
 INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'facebook', '@smmegamall', '2022-10-24 00:54:28', '2023-01-04 08:46:20', NULL),
 	(2, 1, 'instagram', '@smmegamall', '2022-10-24 00:54:28', '2023-01-04 08:46:20', NULL),
@@ -12844,12 +12960,12 @@ INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at
 	(46, 8, 'time_from', NULL, '2023-04-17 02:26:13', '2023-04-17 02:26:13', NULL),
 	(47, 8, 'time_to', NULL, '2023-04-17 02:26:13', '2023-04-17 02:26:13', NULL),
 	(48, 8, 'website', NULL, '2023-04-17 02:26:13', '2023-04-17 02:26:13', NULL),
-	(49, 9, 'facebook', NULL, '2023-04-17 02:27:24', '2023-04-17 02:27:24', NULL),
-	(50, 9, 'instagram', NULL, '2023-04-17 02:27:24', '2023-04-17 02:27:24', NULL),
-	(51, 9, 'twitter', NULL, '2023-04-17 02:27:24', '2023-04-17 02:27:24', NULL),
-	(52, 9, 'time_from', NULL, '2023-04-17 02:27:24', '2023-04-17 02:27:24', NULL),
-	(53, 9, 'time_to', NULL, '2023-04-17 02:27:24', '2023-04-17 02:27:24', NULL),
-	(54, 9, 'website', NULL, '2023-04-17 02:27:24', '2023-04-17 02:27:24', NULL),
+	(49, 9, 'facebook', NULL, '2023-04-17 02:27:24', '2023-04-26 06:57:47', NULL),
+	(50, 9, 'instagram', NULL, '2023-04-17 02:27:24', '2023-04-26 06:57:47', NULL),
+	(51, 9, 'twitter', NULL, '2023-04-17 02:27:24', '2023-04-26 06:57:47', NULL),
+	(52, 9, 'time_from', '10:00 AM', '2023-04-17 02:27:24', '2023-04-26 06:57:26', NULL),
+	(53, 9, 'time_to', '10:00 PM', '2023-04-17 02:27:24', '2023-04-26 06:57:26', NULL),
+	(54, 9, 'website', 'smsupermalls.com', '2023-04-17 02:27:24', '2023-04-26 06:57:47', NULL),
 	(55, 10, 'facebook', NULL, '2023-04-17 02:37:25', '2023-04-17 02:37:25', NULL),
 	(56, 10, 'instagram', NULL, '2023-04-17 02:37:25', '2023-04-17 02:37:25', NULL),
 	(57, 10, 'twitter', NULL, '2023-04-17 02:37:25', '2023-04-17 02:37:25', NULL),
@@ -12928,12 +13044,12 @@ INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at
 	(130, 22, 'time_from', NULL, '2023-04-17 09:01:18', '2023-04-17 09:01:18', NULL),
 	(131, 22, 'time_to', NULL, '2023-04-17 09:01:18', '2023-04-17 09:01:18', NULL),
 	(132, 22, 'website', NULL, '2023-04-17 09:01:18', '2023-04-17 09:01:18', NULL),
-	(133, 23, 'facebook', NULL, '2023-04-17 09:44:17', '2023-04-17 09:44:17', NULL),
-	(134, 23, 'instagram', NULL, '2023-04-17 09:44:17', '2023-04-17 09:44:17', NULL),
-	(135, 23, 'twitter', NULL, '2023-04-17 09:44:17', '2023-04-17 09:44:17', NULL),
-	(136, 23, 'time_from', NULL, '2023-04-17 09:44:17', '2023-04-17 09:44:17', NULL),
-	(137, 23, 'time_to', NULL, '2023-04-17 09:44:17', '2023-04-17 09:44:17', NULL),
-	(138, 23, 'website', NULL, '2023-04-17 09:44:17', '2023-04-17 09:44:17', NULL),
+	(133, 23, 'facebook', '@smnedsa', '2023-04-17 09:44:17', '2023-04-26 07:05:37', NULL),
+	(134, 23, 'instagram', '@smnorthedsa', '2023-04-17 09:44:17', '2023-04-26 07:05:37', NULL),
+	(135, 23, 'twitter', '@smnorthedsa', '2023-04-17 09:44:17', '2023-04-26 07:05:37', NULL),
+	(136, 23, 'time_from', '10:00 AM', '2023-04-17 09:44:17', '2023-04-26 07:05:37', NULL),
+	(137, 23, 'time_to', '10:00 PM', '2023-04-17 09:44:17', '2023-04-26 07:05:37', NULL),
+	(138, 23, 'website', 'smsupermalls.com', '2023-04-17 09:44:17', '2023-04-26 07:05:37', NULL),
 	(139, 24, 'facebook', NULL, '2023-04-18 02:31:08', '2023-04-18 02:31:08', NULL),
 	(140, 24, 'instagram', NULL, '2023-04-18 02:31:08', '2023-04-18 02:31:08', NULL),
 	(141, 24, 'twitter', NULL, '2023-04-18 02:31:08', '2023-04-18 02:31:08', NULL),
@@ -12970,12 +13086,12 @@ INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at
 	(172, 29, 'time_from', NULL, '2023-04-18 07:31:36', '2023-04-18 07:31:36', NULL),
 	(173, 29, 'time_to', NULL, '2023-04-18 07:31:36', '2023-04-18 07:31:36', NULL),
 	(174, 29, 'website', NULL, '2023-04-18 07:31:36', '2023-04-18 07:31:36', NULL),
-	(175, 30, 'facebook', NULL, '2023-04-18 08:05:43', '2023-04-18 08:05:43', NULL),
-	(176, 30, 'instagram', NULL, '2023-04-18 08:05:43', '2023-04-18 08:05:43', NULL),
-	(177, 30, 'twitter', NULL, '2023-04-18 08:05:43', '2023-04-18 08:05:43', NULL),
-	(178, 30, 'time_from', NULL, '2023-04-18 08:05:43', '2023-04-18 08:05:43', NULL),
-	(179, 30, 'time_to', NULL, '2023-04-18 08:05:43', '2023-04-18 08:05:43', NULL),
-	(180, 30, 'website', NULL, '2023-04-18 08:05:43', '2023-04-18 08:05:43', NULL),
+	(175, 30, 'facebook', '@smcitybutuanofficial', '2023-04-18 08:05:43', '2023-04-26 06:59:42', NULL),
+	(176, 30, 'instagram', '@smcitybutuan', '2023-04-18 08:05:43', '2023-04-26 06:59:42', NULL),
+	(177, 30, 'twitter', '@SMButuan', '2023-04-18 08:05:43', '2023-04-26 06:59:42', NULL),
+	(178, 30, 'time_from', '10:00 AM', '2023-04-18 08:05:43', '2023-04-26 06:59:42', NULL),
+	(179, 30, 'time_to', '07:00 PM', '2023-04-18 08:05:43', '2023-04-26 06:59:42', NULL),
+	(180, 30, 'website', 'smsupermalls.com', '2023-04-18 08:05:43', '2023-04-26 06:59:42', NULL),
 	(181, 31, 'facebook', 'null', '2023-04-18 08:10:46', '2023-04-18 08:11:35', NULL),
 	(182, 31, 'instagram', 'null', '2023-04-18 08:10:46', '2023-04-18 08:11:35', NULL),
 	(183, 31, 'twitter', 'null', '2023-04-18 08:10:46', '2023-04-18 08:11:35', NULL),
@@ -13247,7 +13363,7 @@ CREATE TABLE IF NOT EXISTS `site_buildings` (
   CONSTRAINT `site_buildings_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_buildings: ~60 rows (approximately)
+-- Dumping data for table prestige.site_buildings: ~59 rows (approximately)
 INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'Mega A', 'Mega A', 1, '2022-10-24 00:54:59', '2022-10-24 00:54:59', NULL),
 	(2, 1, 'Mega B', 'Mega B', 1, '2022-10-24 00:55:05', '2022-10-24 00:55:05', NULL),
@@ -13326,9 +13442,9 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   KEY `site_building_levels_site_building_id_foreign` (`site_building_id`),
   CONSTRAINT `site_building_levels_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~178 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~175 rows (approximately)
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LGF', 1, '2022-10-24 01:00:47', '2022-10-24 01:00:47', NULL),
 	(2, 1, 1, 'UGF', 1, '2022-10-24 01:00:53', '2022-10-24 01:00:53', NULL),
@@ -13529,7 +13645,7 @@ CREATE TABLE IF NOT EXISTS `site_feedback` (
   CONSTRAINT `site_feedback_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_feedback: ~16 rows (approximately)
+-- Dumping data for table prestige.site_feedback: ~15 rows (approximately)
 INSERT INTO `site_feedback` (`id`, `site_id`, `site_screen_id`, `helpful`, `reason`, `reason_other`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:56:23', '2023-03-22 07:56:24', NULL),
 	(2, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:57:10', '2023-03-22 07:57:10', NULL),
@@ -13571,6 +13687,9 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   `start_x` int(11) NOT NULL DEFAULT '0',
   `start_y` int(11) NOT NULL DEFAULT '0',
   `start_scale` decimal(10,2) NOT NULL DEFAULT '1.00',
+  `default_x` int(11) NOT NULL DEFAULT '0',
+  `default_y` int(11) NOT NULL DEFAULT '0',
+  `default_scale` decimal(10,2) NOT NULL DEFAULT '1.00',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `is_default` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -13585,41 +13704,43 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   CONSTRAINT `site_maps_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
   CONSTRAINT `site_maps_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`),
   CONSTRAINT `site_maps_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_maps: ~29 rows (approximately)
-INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `start_x`, `start_y`, `start_scale`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 1, 2, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -970, -1170, 0.50, 1, 1, '2022-11-28 15:07:47', '2023-01-05 14:27:46', NULL),
-	(2, 1, 1, 4, 1, 'uploads/map/files/2F_A.png', 'uploads/map/preview/2F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-28 15:25:31', '2022-11-29 10:45:33', NULL),
-	(3, 1, 1, 5, 1, 'uploads/map/files/3F_A.png', 'uploads/map/preview/3F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-28 15:25:52', '2022-11-29 10:45:33', NULL),
-	(4, 1, 1, 6, 1, 'uploads/map/files/4F_A.png', 'uploads/map/preview/4F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-28 15:26:10', '2022-11-29 10:45:33', NULL),
-	(5, 1, 1, 7, 1, 'uploads/map/files/5F_A.png', 'uploads/map/preview/5F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-28 15:26:26', '2022-11-29 10:45:33', NULL),
-	(6, 1, 2, 8, 1, 'uploads/map/files/0LG_B.png', 'uploads/map/preview/0LG_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-29 13:51:47', '2022-11-29 13:51:47', NULL),
-	(7, 1, 2, 9, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:00', '2022-11-29 13:52:00', NULL),
-	(8, 1, 2, 10, 1, 'uploads/map/files/2F_B.png', 'uploads/map/preview/2F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:23', '2022-11-29 13:52:23', NULL),
-	(9, 1, 2, 11, 1, 'uploads/map/files/3F_B.png', 'uploads/map/preview/3F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:46', '2022-11-29 13:52:46', NULL),
-	(10, 1, 2, 12, 1, 'uploads/map/files/4F_B.png', 'uploads/map/preview/4F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:58', '2022-11-29 13:52:58', NULL),
-	(11, 1, 2, 13, 1, 'uploads/map/files/5F_B.png', 'uploads/map/preview/5F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2022-11-29 13:53:10', '2022-11-29 13:53:10', NULL),
-	(12, 1, 1, 1, 9, 'uploads/map/files/Mega_A_LG.png', 'uploads/map/preview/Mega_A_LG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:12:30', '2023-04-25 17:44:18', NULL),
-	(13, 1, 1, 2, 9, 'uploads/map/files/Mega_A_UG.png', 'uploads/map/preview/Mega_A_UG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:12:59', '2023-04-25 17:44:18', NULL),
-	(14, 1, 1, 3, 9, 'uploads/map/files/Mega_A_Bus_Bay.png', 'uploads/map/preview/Mega_A_Bus_Bay.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:13:13', '2023-04-25 17:44:18', NULL),
-	(15, 1, 1, 4, 9, 'uploads/map/files/Mega_A_2F.png', 'uploads/map/preview/Mega_A_2F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:13:30', '2023-04-25 17:44:18', NULL),
-	(16, 1, 1, 5, 9, 'uploads/map/files/Mega_A_3F.png', 'uploads/map/preview/Mega_A_3F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:13:49', '2023-04-25 17:44:18', NULL),
-	(17, 1, 1, 6, 9, 'uploads/map/files/Mega_A_4F.png', 'uploads/map/preview/Mega_A_4F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:14:19', '2023-04-25 17:44:18', NULL),
-	(18, 1, 1, 7, 9, 'uploads/map/files/Mega_A_5F.png', 'uploads/map/preview/Mega_A_5F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:14:42', '2023-04-25 17:44:18', NULL),
-	(19, 1, 2, 8, 9, 'uploads/map/files/Mega_B_LG.png', 'uploads/map/preview/Mega_B_LG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:15:09', '2023-04-25 17:44:18', NULL),
-	(20, 1, 2, 9, 9, 'uploads/map/files/Mega_B_UG.png', 'uploads/map/preview/Mega_B_UG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:15:42', '2023-04-25 17:44:18', NULL),
-	(21, 1, 2, 10, 9, 'uploads/map/files/Mega_B_2F.png', 'uploads/map/preview/Mega_B_2F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:19:38', '2023-04-25 17:44:18', NULL),
-	(22, 1, 2, 11, 9, 'uploads/map/files/Mega_B_3F.png', 'uploads/map/preview/Mega_B_3F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:19:54', '2023-04-25 17:44:18', NULL),
-	(23, 1, 2, 12, 9, 'uploads/map/files/Mega_B_4F.png', 'uploads/map/preview/Mega_B_4F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-25 17:20:15', '2023-04-25 17:44:18', NULL),
-	(24, 1, 2, 13, 9, 'uploads/map/files/Mega_B_5F.png', 'uploads/map/preview/Mega_B_5F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -758, -786, 0.50, 1, 1, '2023-04-25 17:20:35', '2023-04-25 17:44:18', NULL),
-	(25, 1, 3, 14, 9, 'uploads/map/files/Mega_D_UG.png', 'uploads/map/preview/Mega_D_UG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -719, -1048, 0.27, 1, 0, '2023-04-25 17:40:36', '2023-04-25 17:44:18', NULL),
-	(26, 1, 3, 15, 9, 'uploads/map/files/Mega_D_2F.png', 'uploads/map/preview/Mega_D_2F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -719, -1048, 0.27, 1, 0, '2023-04-25 17:40:51', '2023-04-25 17:44:18', NULL),
-	(27, 1, 3, 16, 9, 'uploads/map/files/Mega_D_3F.png', 'uploads/map/preview/Mega_D_3F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -719, -1048, 0.27, 1, 0, '2023-04-25 17:41:03', '2023-04-25 17:44:18', NULL),
-	(28, 1, 3, 17, 9, 'uploads/map/files/Mega_D_4F.png', 'uploads/map/preview/Mega_D_4F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -719, -1048, 0.27, 1, 0, '2023-04-25 17:41:16', '2023-04-25 17:44:18', NULL),
-	(29, 1, 3, 18, 9, 'uploads/map/files/Mega_D_5F.png', 'uploads/map/preview/Mega_D_5F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -719, -1048, 0.27, 1, 0, '2023-04-25 17:41:37', '2023-04-25 17:44:18', NULL),
-	(30, 46, 52, 154, 227, 'uploads/map/files/SMTZ-gf.png', 'uploads/map/preview/SMTZ-gf.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 1, '2023-04-26 05:54:56', '2023-04-26 05:54:56', NULL),
-	(31, 46, 52, 179, 227, 'uploads/map/files/SMTZ-2f.png', 'uploads/map/preview/SMTZ-2f.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 1, 0, '2023-04-26 05:55:11', '2023-04-26 05:55:11', NULL);
+-- Dumping data for table prestige.site_maps: ~33 rows (approximately)
+INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `start_x`, `start_y`, `start_scale`, `default_x`, `default_y`, `default_scale`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 1, 2, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -970, -1170, 0.50, 0, 0, 1.00, 1, 1, '2022-11-28 15:07:47', '2023-01-05 14:27:46', NULL),
+	(2, 1, 1, 4, 1, 'uploads/map/files/2F_A.png', 'uploads/map/preview/2F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-28 15:25:31', '2022-11-29 10:45:33', NULL),
+	(3, 1, 1, 5, 1, 'uploads/map/files/3F_A.png', 'uploads/map/preview/3F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-28 15:25:52', '2022-11-29 10:45:33', NULL),
+	(4, 1, 1, 6, 1, 'uploads/map/files/4F_A.png', 'uploads/map/preview/4F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-28 15:26:10', '2022-11-29 10:45:33', NULL),
+	(5, 1, 1, 7, 1, 'uploads/map/files/5F_A.png', 'uploads/map/preview/5F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-28 15:26:26', '2022-11-29 10:45:33', NULL),
+	(6, 1, 2, 8, 1, 'uploads/map/files/0LG_B.png', 'uploads/map/preview/0LG_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-29 13:51:47', '2022-11-29 13:51:47', NULL),
+	(7, 1, 2, 9, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:00', '2022-11-29 13:52:00', NULL),
+	(8, 1, 2, 10, 1, 'uploads/map/files/2F_B.png', 'uploads/map/preview/2F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:23', '2022-11-29 13:52:23', NULL),
+	(9, 1, 2, 11, 1, 'uploads/map/files/3F_B.png', 'uploads/map/preview/3F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:46', '2022-11-29 13:52:46', NULL),
+	(10, 1, 2, 12, 1, 'uploads/map/files/4F_B.png', 'uploads/map/preview/4F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-29 13:52:58', '2022-11-29 13:52:58', NULL),
+	(11, 1, 2, 13, 1, 'uploads/map/files/5F_B.png', 'uploads/map/preview/5F_B.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-29 13:53:10', '2022-11-29 13:53:10', NULL),
+	(12, 1, 1, 1, 9, 'uploads/map/files/Mega_A_LG.png', 'uploads/map/preview/Mega_A_LG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:12:30', '2023-04-25 17:44:18', NULL),
+	(13, 1, 1, 2, 9, 'uploads/map/files/Mega_A_UG.png', 'uploads/map/preview/Mega_A_UG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:12:59', '2023-04-25 17:44:18', NULL),
+	(14, 1, 1, 3, 9, 'uploads/map/files/Mega_A_Bus_Bay.png', 'uploads/map/preview/Mega_A_Bus_Bay.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:13:13', '2023-04-25 17:44:18', NULL),
+	(15, 1, 1, 4, 9, 'uploads/map/files/Mega_A_2F.png', 'uploads/map/preview/Mega_A_2F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:13:30', '2023-04-25 17:44:18', NULL),
+	(16, 1, 1, 5, 9, 'uploads/map/files/Mega_A_3F.png', 'uploads/map/preview/Mega_A_3F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:13:49', '2023-04-25 17:44:18', NULL),
+	(17, 1, 1, 6, 9, 'uploads/map/files/Mega_A_4F.png', 'uploads/map/preview/Mega_A_4F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:14:19', '2023-04-25 17:44:18', NULL),
+	(18, 1, 1, 7, 9, 'uploads/map/files/Mega_A_5F.png', 'uploads/map/preview/Mega_A_5F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:14:42', '2023-04-25 17:44:18', NULL),
+	(19, 1, 2, 8, 9, 'uploads/map/files/Mega_B_LG.png', 'uploads/map/preview/Mega_B_LG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:15:09', '2023-04-25 17:44:18', NULL),
+	(20, 1, 2, 9, 9, 'uploads/map/files/Mega_B_UG.png', 'uploads/map/preview/Mega_B_UG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:15:42', '2023-04-25 17:44:18', NULL),
+	(21, 1, 2, 10, 9, 'uploads/map/files/Mega_B_2F.png', 'uploads/map/preview/Mega_B_2F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:19:38', '2023-04-25 17:44:18', NULL),
+	(22, 1, 2, 11, 9, 'uploads/map/files/Mega_B_3F.png', 'uploads/map/preview/Mega_B_3F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:19:54', '2023-04-25 17:44:18', NULL),
+	(23, 1, 2, 12, 9, 'uploads/map/files/Mega_B_4F.png', 'uploads/map/preview/Mega_B_4F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-25 17:20:15', '2023-04-25 17:44:18', NULL),
+	(24, 1, 2, 13, 9, 'uploads/map/files/Mega_B_5F.png', 'uploads/map/preview/Mega_B_5F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -758, -786, 0.50, -719, -1048, 0.27, 1, 1, '2023-04-25 17:20:35', '2023-04-25 17:44:18', NULL),
+	(25, 1, 3, 14, 9, 'uploads/map/files/Mega_D_UG.png', 'uploads/map/preview/Mega_D_UG.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 0.27, -719, -1048, 0.27, 1, 0, '2023-04-25 17:40:36', '2023-04-25 17:44:18', NULL),
+	(26, 1, 3, 15, 9, 'uploads/map/files/Mega_D_2F.png', 'uploads/map/preview/Mega_D_2F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 0.27, -719, -1048, 0.27, 1, 0, '2023-04-25 17:40:51', '2023-04-25 17:44:18', NULL),
+	(27, 1, 3, 16, 9, 'uploads/map/files/Mega_D_3F.png', 'uploads/map/preview/Mega_D_3F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 0.27, -719, -1048, 0.27, 1, 0, '2023-04-25 17:41:03', '2023-04-25 17:44:18', NULL),
+	(28, 1, 3, 17, 9, 'uploads/map/files/Mega_D_4F.png', 'uploads/map/preview/Mega_D_4F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 0.27, -719, -1048, 0.27, 1, 0, '2023-04-25 17:41:16', '2023-04-25 17:44:18', NULL),
+	(29, 1, 3, 18, 9, 'uploads/map/files/Mega_D_5F.png', 'uploads/map/preview/Mega_D_5F.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 0.27, -719, -1048, 0.27, 1, 0, '2023-04-25 17:41:37', '2023-04-25 17:44:18', NULL),
+	(30, 46, 52, 154, 227, 'uploads/map/files/SMTZ-gf-R-5000.png', 'uploads/map/preview/SMTZ-gf-R-5000.png', NULL, 5000, 5000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, -719, -1048, 0.27, 1, 1, '2023-04-26 05:54:56', '2023-05-04 01:47:42', NULL),
+	(31, 46, 52, 179, 227, 'uploads/map/files/SMTZ-2f-R-5000.png', 'uploads/map/preview/SMTZ-2f-R-5000.png', NULL, 5000, 5000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -719, -1048, 1.00, -719, -1048, 0.27, 1, 0, '2023-04-26 05:55:11', '2023-05-04 01:47:42', NULL),
+	(32, 46, 52, 154, 228, 'uploads/map/files/SMTZ-gf-R-3000.png', 'uploads/map/preview/SMTZ-gf-R-3000.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2023-04-26 08:26:40', '2023-04-26 08:26:53', NULL),
+	(33, 46, 52, 179, 228, 'uploads/map/files/SMTZ-2f-R-3000.png', 'uploads/map/preview/SMTZ-2f-R-3000.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 1, '2023-04-26 08:26:53', '2023-04-26 08:26:53', NULL);
 
 -- Dumping structure for table prestige.site_map_paths
 DROP TABLE IF EXISTS `site_map_paths`;
@@ -15624,7 +15745,7 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screens: ~285 rows (approximately)
+-- Dumping data for table prestige.site_screens: ~271 rows (approximately)
 INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `orientation`, `product_application`, `physical_size_diagonal`, `physical_size_width`, `physical_size_height`, `dimension`, `width`, `height`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 1, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, '1920 x 1080', NULL, NULL, 'thBRpAF7GchJOrBFe', 'Food Court', 20, 1, 0, 0, '2022-10-25 01:28:36', '2023-04-18 05:42:27', NULL),
 	(2, 1, 1, 2, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HmcSeFjl3tsyn0mva', 'National Bookstore', 24, 1, 0, 0, '2022-10-25 01:39:22', '2023-04-24 05:23:37', NULL),
@@ -15755,10 +15876,10 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(129, 29, 24, 89, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'qSSZyuqLpgshWuTv', 'Ace Hardware', 40, 1, 0, 0, '2023-04-18 07:59:03', '2023-04-18 07:59:03', NULL),
 	(130, 29, 25, 90, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'T41CMfnNieD0KFXW', 'Davids Forever', 40, 1, 0, 0, '2023-04-18 07:59:40', '2023-04-18 07:59:40', NULL),
 	(131, 29, 25, 92, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'I7usR8itat6nx9HL', 'Bridgeway', 40, 1, 0, 0, '2023-04-18 08:00:01', '2023-04-18 08:00:01', NULL),
-	(132, 30, 26, 93, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'Mc4F5HNJhF1hwOxS', 'E3 Uniqlo', 40, 1, 1, 0, '2023-04-18 08:06:40', '2023-04-18 08:08:10', NULL),
+	(132, 30, 26, 93, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'Mc4F5HNJhF1hwOxS', 'E3 Uniqlo', 40, 1, 0, 0, '2023-04-18 08:06:40', '2023-05-05 10:10:37', NULL),
 	(133, 30, 26, 93, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'Fxw4Xtt4dPwWMel6', 'E1 Starbucks', 40, 1, 0, 0, '2023-04-18 08:07:02', '2023-04-18 08:07:02', NULL),
-	(134, 30, 26, 93, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'A7v4mSFfcfx2NbK4', 'E2 Breadtalk', 40, 1, 0, 0, '2023-04-18 08:07:27', '2023-04-18 08:07:27', NULL),
-	(135, 30, 26, 95, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'JhXDNCPtjyNXTfOJ', 'E4 Kidzooona', 40, 1, 0, 0, '2023-04-18 08:07:52', '2023-04-18 08:07:52', NULL),
+	(134, 30, 26, 93, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, '470', '1060', 'A7v4mSFfcfx2NbK4', 'E2 Breadtalk', 40, 1, 0, 0, '2023-04-18 08:07:27', '2023-05-05 10:11:08', NULL),
+	(135, 30, 26, 95, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, '1920', '1080', 'JhXDNCPtjyNXTfOJ', 'E4 Kidzooona', 40, 1, 0, 0, '2023-04-18 08:07:52', '2023-05-05 10:10:37', NULL),
 	(136, 31, 27, 96, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'tg8bqExBTEtxTII1', 'Banco de Oro', 40, 1, 0, 0, '2023-04-18 08:12:11', '2023-04-18 08:12:11', NULL),
 	(137, 31, 27, 97, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '2li7HgvaFcJWQaL7', 'National Bookstore', 40, 1, 0, 0, '2023-04-18 08:23:36', '2023-04-18 08:23:36', NULL),
 	(142, 32, 28, 98, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'G3MbBXq23tNBPANz', 'Bench', 40, 1, 1, 0, '2023-04-18 09:09:26', '2023-04-18 09:09:52', NULL),
@@ -15851,7 +15972,7 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(229, 47, 53, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'ogaaB4DOHAnSeMmF', 'Tous Les Jours', 40, 1, 1, 0, '2023-04-19 09:39:37', '2023-04-19 09:40:21', NULL),
 	(230, 47, 53, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '8TRweDDRXNf3mrzs', 'Starbucks', 40, 1, 0, 0, '2023-04-19 09:39:56', '2023-04-19 09:39:56', NULL),
 	(231, 47, 53, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'JpJtreRpe5zSS3je', 'BDO', 40, 1, 0, 0, '2023-04-19 09:40:17', '2023-04-19 09:40:17', NULL),
-	(232, 20, 54, 156, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'k97CCpGhqxyTvhQy', 'Starbucks', 40, 1, 1, 0, '2023-04-19 09:43:30', '2023-04-19 09:44:10', NULL),
+	(232, 20, 54, 156, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'k97CCpGhqxyTvhQy', 'Starbucks', 40, 1, 0, 0, '2023-04-19 09:43:30', '2023-05-08 02:23:03', NULL),
 	(233, 20, 54, 156, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'BbUrj3t4PVdDcq8u', 'J.Co', 40, 1, 0, 0, '2023-04-19 09:43:51', '2023-04-19 09:43:51', NULL),
 	(234, 20, 54, 156, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'BuREWhyTK1ypghkt', 'Supermarket', 40, 1, 0, 0, '2023-04-19 09:44:08', '2023-04-19 09:44:08', NULL),
 	(235, 48, 55, 157, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'xhVb2MdTAkEPXyhA', 'BDO', 40, 1, 1, 0, '2023-04-19 09:46:56', '2023-04-19 09:51:24', NULL),
@@ -15910,7 +16031,7 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(288, 19, 60, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'tIiLp2ypbPPoQkld', 'Huawei', 20, 1, 0, 1, '2023-04-20 09:48:07', '2023-04-20 09:52:09', NULL),
 	(289, 19, 60, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'IOD5pzYmD35fekpi', 'Samsung', 20, 1, 0, 1, '2023-04-20 09:48:39', '2023-04-20 09:52:29', NULL),
 	(290, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'ShTMccf1uM5c1Gah', 'Lenovo', 20, 1, 0, 0, '2023-04-20 09:54:08', '2023-04-20 09:54:08', NULL),
-	(291, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-04-20 09:54:26', NULL);
+	(291, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', '53 Inch', NULL, NULL, NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-05-08 03:17:45', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptimes
 DROP TABLE IF EXISTS `site_screen_uptimes`;
@@ -15931,7 +16052,7 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes` (
   CONSTRAINT `site_screen_uptimes_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes: ~6 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes: ~5 rows (approximately)
 INSERT INTO `site_screen_uptimes` (`id`, `site_screen_id`, `up_time_date`, `total_hours`, `opening_hour`, `closing_hour`, `hours_up`, `percentage_uptime`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 1, '2023-03-26', 6, '10:00:00', '22:00:00', 12, 50.00, '2023-03-27 06:46:55', '2023-03-27 06:46:55', NULL),
 	(4, 1, '2023-03-27', 7, '10:00:00', '22:00:00', 12, 58.33, '2023-03-28 02:16:44', '2023-03-28 02:16:44', NULL),
@@ -15950,9 +16071,9 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes_temp` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=545 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=561 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes_temp: ~238 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes_temp: ~231 rows (approximately)
 INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, `up_time_hours`, `created_at`, `updated_at`) VALUES
 	(62, 4, '2023-03-28', '13:36:44', '2023-03-28 05:36:44', '2023-03-28 05:36:44'),
 	(69, 3, '2023-03-28', '14:18:44', '2023-03-28 06:18:44', '2023-03-28 06:18:44'),
@@ -16191,7 +16312,23 @@ INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, 
 	(541, 1, '2023-04-17', '17:42:49', '2023-04-17 09:42:49', '2023-04-17 09:42:49'),
 	(542, 1, '2023-04-17', '17:48:49', '2023-04-17 09:48:49', '2023-04-17 09:48:49'),
 	(543, 1, '2023-04-17', '17:54:49', '2023-04-17 09:54:49', '2023-04-17 09:54:49'),
-	(544, 1, '2023-04-17', '18:00:49', '2023-04-17 10:00:49', '2023-04-17 10:00:49');
+	(544, 1, '2023-04-17', '18:00:49', '2023-04-17 10:00:49', '2023-04-17 10:00:49'),
+	(545, 227, '2023-05-04', '16:35:32', '2023-05-04 08:35:32', '2023-05-04 08:35:32'),
+	(546, 227, '2023-05-04', '16:41:32', '2023-05-04 08:41:32', '2023-05-04 08:41:32'),
+	(547, 227, '2023-05-04', '16:47:32', '2023-05-04 08:47:32', '2023-05-04 08:47:32'),
+	(548, 227, '2023-05-04', '16:53:32', '2023-05-04 08:53:32', '2023-05-04 08:53:32'),
+	(549, 227, '2023-05-04', '16:59:45', '2023-05-04 08:59:45', '2023-05-04 08:59:45'),
+	(550, 227, '2023-05-04', '17:05:45', '2023-05-04 09:05:45', '2023-05-04 09:05:45'),
+	(551, 227, '2023-05-04', '17:11:45', '2023-05-04 09:11:45', '2023-05-04 09:11:45'),
+	(552, 227, '2023-05-04', '17:17:45', '2023-05-04 09:17:45', '2023-05-04 09:17:45'),
+	(553, 227, '2023-05-04', '17:23:45', '2023-05-04 09:23:45', '2023-05-04 09:23:45'),
+	(554, 227, '2023-05-04', '17:29:45', '2023-05-04 09:29:45', '2023-05-04 09:29:45'),
+	(555, 227, '2023-05-04', '17:35:45', '2023-05-04 09:35:45', '2023-05-04 09:35:45'),
+	(556, 227, '2023-05-04', '17:41:45', '2023-05-04 09:41:45', '2023-05-04 09:41:45'),
+	(557, 227, '2023-05-04', '17:47:45', '2023-05-04 09:47:45', '2023-05-04 09:47:45'),
+	(558, 227, '2023-05-04', '17:53:45', '2023-05-04 09:53:45', '2023-05-04 09:53:45'),
+	(559, 227, '2023-05-04', '17:59:45', '2023-05-04 09:59:45', '2023-05-04 09:59:45'),
+	(560, 227, '2023-05-04', '18:05:45', '2023-05-04 10:05:45', '2023-05-04 10:05:45');
 
 -- Dumping structure for table prestige.site_tenants
 DROP TABLE IF EXISTS `site_tenants`;
@@ -21628,7 +21765,7 @@ CREATE TABLE IF NOT EXISTS `users_meta` (
   CONSTRAINT `users_meta_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.users_meta: ~13 rows (approximately)
+-- Dumping data for table prestige.users_meta: ~11 rows (approximately)
 INSERT INTO `users_meta` (`id`, `user_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(5, 3, 'first_name', 'King', '2022-08-10 10:52:17', '2022-08-10 10:52:17', NULL),
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 10:52:17', '2022-08-10 10:52:17', NULL),
@@ -21664,9 +21801,9 @@ CREATE TABLE IF NOT EXISTS `user_activity_logs` (
   PRIMARY KEY (`id`),
   KEY `user_activity_logs_company_id_foreign` (`company_id`),
   CONSTRAINT `user_activity_logs_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_activity_logs: ~145 rows (approximately)
+-- Dumping data for table prestige.user_activity_logs: ~416 rows (approximately)
 INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `module_accessed`, `company_id`, `type`, `user_id`, `user_name`, `transaction_id`, `query`, `bindings`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(19, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/store', 3, 'Admin', 3, 'perena, jordan', 8, 'insert into `faqs` (`question`, `answer`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [aaa, bbb, 1, 2023-04-24 15:31:45, 2023-04-24 15:31:45]', '2023-04-24 07:31:45', '2023-04-24 07:31:45', NULL),
 	(20, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/update', 3, 'Admin', 3, 'perena, jordan', 8, 'update `faqs` set `question` = ?, `answer` = ?, `faqs`.`updated_at` = ? where `id` = ?', ' [aaazzz, bbbvvv, 2023-04-24 15:32:00, 8]', '2023-04-24 07:32:00', '2023-04-24 07:32:00', NULL),
@@ -21824,7 +21961,266 @@ INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `mo
 	(172, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 276, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [www.smsupermalls.com, 2023-04-26 13:51:19, 276]', '2023-04-26 05:51:19', '2023-04-26 05:51:19', NULL),
 	(173, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/store', 3, 'Admin', 3, 'Bautista, King', 227, 'update `site_maps` set `is_default` = ?, `site_maps`.`updated_at` = ? where `site_id` = ? and `site_screen_id` = ? and `site_maps`.`deleted_at` is null', ' [0, 2023-04-26 13:54:56, 46, 227]', '2023-04-26 05:54:56', '2023-04-26 05:54:56', NULL),
 	(174, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/store', 3, 'Admin', 3, 'Bautista, King', 30, 'insert into `site_maps` (`site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `image_size_width`, `image_size_height`, `descriptions`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `map_file`, `map_preview`, `active`, `is_default`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [46, 52, 154, 227, 3000, 3000, , 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, uploads/map/files/SMTZ-gf.png, uploads/map/preview/SMTZ-gf.png, 1, 1, 2023-04-26 13:54:56, 2023-04-26 13:54:56]', '2023-04-26 05:54:56', '2023-04-26 05:54:56', NULL),
-	(175, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/store', 3, 'Admin', 3, 'Bautista, King', 31, 'insert into `site_maps` (`site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `image_size_width`, `image_size_height`, `descriptions`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `map_file`, `map_preview`, `active`, `is_default`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [46, 52, 179, 227, 3000, 3000, , 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, uploads/map/files/SMTZ-2f.png, uploads/map/preview/SMTZ-2f.png, 1, 0, 2023-04-26 13:55:11, 2023-04-26 13:55:11]', '2023-04-26 05:55:11', '2023-04-26 05:55:11', NULL);
+	(175, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/store', 3, 'Admin', 3, 'Bautista, King', 31, 'insert into `site_maps` (`site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `image_size_width`, `image_size_height`, `descriptions`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `map_file`, `map_preview`, `active`, `is_default`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [46, 52, 179, 227, 3000, 3000, , 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, uploads/map/files/SMTZ-2f.png, uploads/map/preview/SMTZ-2f.png, 1, 0, 2023-04-26 13:55:11, 2023-04-26 13:55:11]', '2023-04-26 05:55:11', '2023-04-26 05:55:11', NULL),
+	(176, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 9, 'update `sites` set `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 14:57:26, 9]', '2023-04-26 06:57:26', '2023-04-26 06:57:26', NULL),
+	(177, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 49, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [null, 2023-04-26 14:57:26, 49]', '2023-04-26 06:57:26', '2023-04-26 06:57:26', NULL),
+	(178, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 50, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [null, 2023-04-26 14:57:26, 50]', '2023-04-26 06:57:26', '2023-04-26 06:57:26', NULL),
+	(179, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 51, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [null, 2023-04-26 14:57:26, 51]', '2023-04-26 06:57:26', '2023-04-26 06:57:26', NULL),
+	(180, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 52, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [10:00 AM, 2023-04-26 14:57:26, 52]', '2023-04-26 06:57:26', '2023-04-26 06:57:26', NULL),
+	(181, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 53, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [10:00 PM, 2023-04-26 14:57:26, 53]', '2023-04-26 06:57:26', '2023-04-26 06:57:26', NULL),
+	(182, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 54, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [null, 2023-04-26 14:57:26, 54]', '2023-04-26 06:57:26', '2023-04-26 06:57:26', NULL),
+	(183, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 9, 'update `sites` set `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 14:57:47, 9]', '2023-04-26 06:57:47', '2023-04-26 06:57:47', NULL),
+	(184, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 49, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [, 2023-04-26 14:57:47, 49]', '2023-04-26 06:57:47', '2023-04-26 06:57:47', NULL),
+	(185, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 50, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [, 2023-04-26 14:57:47, 50]', '2023-04-26 06:57:47', '2023-04-26 06:57:47', NULL),
+	(186, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 51, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [, 2023-04-26 14:57:47, 51]', '2023-04-26 06:57:47', '2023-04-26 06:57:47', NULL),
+	(187, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 54, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [smsupermalls.com, 2023-04-26 14:57:47, 54]', '2023-04-26 06:57:47', '2023-04-26 06:57:47', NULL),
+	(188, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 1, 'update `sites` set `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 14:58:13, 1]', '2023-04-26 06:58:13', '2023-04-26 06:58:13', NULL),
+	(189, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 1, 'update `sites` set `descriptions` = ?, `is_default` = ?, `sites`.`updated_at` = ? where `id` = ?', ' [SM Megamall is the third largest shopping center in the country and one of SM\'s premier malls. It is the launchpad for first and new experiences in shopping, dining, leisure and events. It is located at the heart of EDSA and part of the Ortigas\' bustling CBD with foot traffic averaging from 300,000 to 500,000 daily. It is currently ranked as one of the largest malls in the country by floor area measuring 474,224.86 square meters of total retail floor area and 13th largest in the world.  \r\n \r\nAs one of SM’s showcase malls, SM Megamall is home to over 1,000 stores with over 200 restaurants. SM Megamall is currently composed of buildings ie. Mega A, Mega B, Mega Carpark C, Mega Atrium and Mega Fashion hall. It hosts one of the biggest SM Store, two SM Supermarkets, one of the largest food courts in the metro and the Mega Food Hall. There are twelve state of art digital cinemas, an IMAX Theater and a Director’s Club. A chapel, an Olympic-sized ice skating rink and a fully computerized 14-lane bowling alley, an art center, 3 large exhibition halls and a dedicated IT hub called the SM Cyberzone and 3 event centers.  \r\n \r\nThe Mega Fashion Hall opened last January 28, 2014 and is home to the flagship stores of H&M, Uniqlo and Zara, as well as the home of global brands such as Spain’s Pull and Bear and furniture giant, Crate and Barrel. Located at the newest wing of SM Megamall is also home to exciting international dining concepts such as Hong Kong’s Michelin Star Dimsum restaurant Tim Ho Wan, Din Tai Fung, and Kam’s Roast, the first Saint Marc’s Café and Ippudo of Japan, Nara Thai Cuisine from Bangkok, the Famous Panda Express of USA, firs in the mall Shake Shack to name a few. The mall is also known for its homegrown brands such as, Yabu, Tuan Tuan, 8 Cuts and more.\r\n \r\nSM Megamall’s accolades include 5 years of winning the Philippine Retail Association\'s (PRA) Shopping Center of the Year bringing it to Hall of Fame and is consistently the Top Taxpayer Awardee of Mandaluyong City for 2014 to date and Southeast Asia Property Awards for Best Architectural Design for the Mega Fashion Hall. Further, SM Megamall was also certified and given the Certification 22301-2012 (Business Continuity Management System) last October 2015 by TUV SUD Singapore.\r\n\r\nExciting activities await you and your family and friends at SM Megamalll! Keep updated with our latest events and promotions., 0, 2023-04-26 14:58:13, 1]', '2023-04-26 06:58:13', '2023-04-26 06:58:13', NULL),
+	(190, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 30, 'update `sites` set `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 14:59:42, 30]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(191, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 30, 'update `sites` set `descriptions` = ?, `sites`.`updated_at` = ? where `id` = ?', ' [The 75th SM Supermall, SM CITY BUTUAN is located along JC Aquino Avenue and is the first SM mall development in the CARAGA Region.\r\n\r\nSM City Butuan will be hosting a diverse mix of international fashion brands and local concepts. It is a world class shopping center with 175 stores and dining establishments. The 3 storey mall will also have a bank and other service outlets to choose from. Mall features include a rooftop parking space and a helipad.\r\n\r\nExciting activities await you and your family and friends at SM City Butuan! Keep updated with our latest events and promotions., 2023-04-26 14:59:42, 30]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(192, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 175, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [@smcitybutuanofficial, 2023-04-26 14:59:42, 175]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(193, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 176, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [@smcitybutuan, 2023-04-26 14:59:42, 176]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(194, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 177, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [@SMButuan, 2023-04-26 14:59:42, 177]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(195, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 178, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [10:00 AM, 2023-04-26 14:59:42, 178]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(196, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 179, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [07:00 PM, 2023-04-26 14:59:42, 179]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(197, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 180, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [smsupermalls.com, 2023-04-26 14:59:42, 180]', '2023-04-26 06:59:42', '2023-04-26 06:59:42', NULL),
+	(198, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/delete', 3, 'Admin', 3, 'Bautista, King', 12, 'update `sites` set `deleted_at` = ?, `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 15:03:05, 2023-04-26 15:03:05, 12]', '2023-04-26 07:03:05', '2023-04-26 07:03:05', NULL),
+	(199, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 23, 'update `sites` set `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 15:04:23, 23]', '2023-04-26 07:04:23', '2023-04-26 07:04:23', NULL),
+	(200, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 23, 'update `sites` set `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 15:04:24, 23]', '2023-04-26 07:04:24', '2023-04-26 07:04:24', NULL),
+	(201, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 23, 'update `sites` set `sites`.`updated_at` = ? where `id` = ?', ' [2023-04-26 15:05:37, 23]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(202, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 23, 'update `sites` set `descriptions` = ?, `site_logo` = ?, `site_banner` = ?, `sites`.`updated_at` = ? where `id` = ?', ' [It all began here. SM City North EDSA innovated and institutionalized the "one-stop shopping complex" and was the first mall in the Philippines to introduce "malling" as a pastime. Besides being a haven for shoppers, the architecture of the mall blends both old and new, creating calming and colorful scenes.\r\n\r\nWith world-class cinemas, a helpful and convenient transport depot for easy commuting, outdoor parking, and attractive structures, SM City North EDSA aims to be an architectural landmark of Metro Manila’s progress, as well as one of the most beautiful structures in the Philippines. The mall complex composed of 6 major buildings namely The Block, Annex, Skygarden, City Center, Interior Zone, and Northlink.\r\n\r\nIt features SM Store, its major anchor, SM Supermarket, a Hypermarket, a food court, a Skygarden, an Amphitheater which is an entertainment stage for events with more than 1,500 seats, a 12-cinema complex, and over 800 shops. It offers more than 4,000 parking slots and valet services on 3 strategic locations.\r\n\r\nTruly, more fun, dining, and celebration experiences await everyone everyday at SM City North Edsa!! Keep updated with our latest events and promotions., uploads/media/sites/logos/logo-smne.png, uploads/media/sites/banners/about-us-smtz.jpg, 2023-04-26 15:05:37, 23]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(203, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 133, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [@smnedsa, 2023-04-26 15:05:37, 133]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(204, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 134, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [@smnorthedsa, 2023-04-26 15:05:37, 134]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(205, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 135, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [@smnorthedsa, 2023-04-26 15:05:37, 135]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(206, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 136, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [10:00 AM, 2023-04-26 15:05:37, 136]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(207, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 137, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [10:00 PM, 2023-04-26 15:05:37, 137]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(208, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/update', 3, 'Admin', 3, 'Bautista, King', 138, 'update `sites_meta` set `meta_value` = ?, `sites_meta`.`updated_at` = ? where `id` = ?', ' [smsupermalls.com, 2023-04-26 15:05:37, 138]', '2023-04-26 07:05:37', '2023-04-26 07:05:37', NULL),
+	(209, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/company/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `companies` set `parent_id` = ?, `name` = ?, `companies`.`updated_at` = ? where `id` = ?', ' [, Prestige Interactive, 2023-04-26 16:06:54, 2]', '2023-04-26 08:06:54', '2023-04-26 08:06:54', NULL),
+	(210, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/update', 3, 'Admin', 3, 'Bautista, King', 31, 'update `site_maps` set `map_file` = ?, `map_preview` = ?, `is_default` = ?, `site_maps`.`updated_at` = ? where `id` = ?', ' [uploads/map/files/SMTZ-2f-R-3000.png, uploads/map/preview/SMTZ-2f-R-3000.png, 1, 2023-04-26 16:25:43, 31]', '2023-04-26 08:25:43', '2023-04-26 08:25:43', NULL),
+	(211, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/update', 3, 'Admin', 3, 'Bautista, King', 30, 'update `site_maps` set `map_file` = ?, `map_preview` = ?, `site_maps`.`updated_at` = ? where `id` = ?', ' [uploads/map/files/SMTZ-gf-R-3000.png, uploads/map/preview/SMTZ-gf-R-3000.png, 2023-04-26 16:25:54, 30]', '2023-04-26 08:25:54', '2023-04-26 08:25:54', NULL),
+	(212, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/store', 3, 'Admin', 3, 'Bautista, King', 32, 'insert into `site_maps` (`site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `image_size_width`, `image_size_height`, `descriptions`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `map_file`, `map_preview`, `active`, `is_default`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [46, 52, 154, 228, 3000, 3000, , 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, uploads/map/files/SMTZ-gf-R-3000.png, uploads/map/preview/SMTZ-gf-R-3000.png, 1, 0, 2023-04-26 16:26:40, 2023-04-26 16:26:40]', '2023-04-26 08:26:40', '2023-04-26 08:26:40', NULL),
+	(213, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/store', 3, 'Admin', 3, 'Bautista, King', 228, 'update `site_maps` set `is_default` = ?, `site_maps`.`updated_at` = ? where `site_id` = ? and `site_screen_id` = ? and `site_maps`.`deleted_at` is null', ' [0, 2023-04-26 16:26:53, 46, 228]', '2023-04-26 08:26:53', '2023-04-26 08:26:53', NULL),
+	(214, '2023-04-26 10:56:51', '2022-08-11 05:24:30', 'admin/site/manage/map/store', 3, 'Admin', 3, 'Bautista, King', 33, 'insert into `site_maps` (`site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `image_size_width`, `image_size_height`, `descriptions`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `map_file`, `map_preview`, `active`, `is_default`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [46, 52, 179, 228, 3000, 3000, , 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, uploads/map/files/SMTZ-2f-R-3000.png, uploads/map/preview/SMTZ-2f-R-3000.png, 1, 1, 2023-04-26 16:26:53, 2023-04-26 16:26:53]', '2023-04-26 08:26:53', '2023-04-26 08:26:53', NULL),
+	(215, '2023-04-27 11:10:41', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-04-27 11:10:41, 2023-04-27 11:10:41, 10]', '2023-04-27 03:10:41', '2023-04-27 03:10:41', NULL),
+	(216, '2023-04-27 15:03:27', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-04-27 15:03:27, 2023-04-27 15:03:27, 10]', '2023-04-27 07:03:27', '2023-04-27 07:03:27', NULL),
+	(217, '2023-04-28 09:58:04', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-04-28 09:58:04, 2023-04-28 09:58:04, 10]', '2023-04-28 01:58:04', '2023-04-28 01:58:04', NULL),
+	(218, '2023-04-28 14:27:59', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-04-28 14:27:59, 2023-04-28 14:27:59, 10]', '2023-04-28 06:27:59', '2023-04-28 06:27:59', NULL),
+	(219, '2023-04-29 16:56:06', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-04-29 16:56:06, 2023-04-29 16:56:06, 10]', '2023-04-29 08:56:06', '2023-04-29 08:56:06', NULL),
+	(220, '2023-05-02 10:21:27', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-02 10:21:27, 2023-05-02 10:21:27, 10]', '2023-05-02 02:21:28', '2023-05-02 02:21:28', NULL),
+	(221, '2023-05-02 16:28:54', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-02 16:28:54, 2023-05-02 16:28:54, 10]', '2023-05-02 08:28:54', '2023-05-02 08:28:54', NULL),
+	(222, '2023-05-02 16:28:54', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 1, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7685, , Directory, 10, Admin test, 1, 2023-05-02 17:50:24, 2023-05-02 17:50:24]', '2023-05-02 09:50:24', '2023-05-02 09:50:24', NULL),
+	(223, '2023-05-02 16:28:54', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 2, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7671, 5, Directory, 10, Admin test 2, 1, 2023-05-02 18:00:22, 2023-05-02 18:00:22]', '2023-05-02 10:00:22', '2023-05-02 10:00:22', NULL),
+	(224, '2023-05-03 09:23:43', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-03 09:23:43, 2023-05-03 09:23:43, 10]', '2023-05-03 01:23:43', '2023-05-03 01:23:43', NULL),
+	(225, '2023-05-03 09:23:43', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7671, 5, All, 10, Sample 1, 1, 2023-05-03 18:08:59, 2023-05-03 18:08:59]', '2023-05-03 10:08:59', '2023-05-03 10:08:59', NULL),
+	(226, '2023-05-03 09:23:43', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7671, 5, All, 10, Sample 1, 1, 2023-05-03 18:09:04, 2023-05-03 18:09:04]', '2023-05-03 10:09:04', '2023-05-03 10:09:04', NULL),
+	(227, '2023-05-03 09:23:43', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7671, 5, All, 10, Sample 1, 1, 2023-05-03 18:09:25, 2023-05-03 18:09:25]', '2023-05-03 10:09:25', '2023-05-03 10:09:25', NULL),
+	(228, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-04 09:24:39, 2023-05-04 09:24:39, 10]', '2023-05-04 01:24:39', '2023-05-04 01:24:39', NULL),
+	(229, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 09:33:56, 3]', '2023-05-04 01:33:56', '2023-05-04 01:33:56', NULL),
+	(230, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `product_application` = ?, `advertisements`.`updated_at` = ? where `id` = ?', ' [Directory, 2023-05-04 09:33:56, 3]', '2023-05-04 01:33:56', '2023-05-04 01:33:56', NULL),
+	(231, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 09:39:52, 3]', '2023-05-04 01:39:52', '2023-05-04 01:39:52', NULL),
+	(232, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `contract_id` = ?, `brand_id` = ?, `name` = ?, `advertisements`.`updated_at` = ? where `id` = ?', ' [2, 7698, Sample 3, 2023-05-04 09:39:52, 3]', '2023-05-04 01:39:52', '2023-05-04 01:39:52', NULL),
+	(233, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/site/manage/map/update', 3, 'Admin', 3, 'Bautista, King', 30, 'update `site_maps` set `map_file` = ?, `map_preview` = ?, `image_size_width` = ?, `image_size_height` = ?, `site_maps`.`updated_at` = ? where `id` = ?', ' [uploads/map/files/SMTZ-gf-R-5000.png, uploads/map/preview/SMTZ-gf-R-5000.png, 5000, 5000, 2023-05-04 09:47:11, 30]', '2023-05-04 01:47:11', '2023-05-04 01:47:11', NULL),
+	(234, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/site/manage/map/update', 3, 'Admin', 3, 'Bautista, King', 31, 'update `site_maps` set `map_file` = ?, `map_preview` = ?, `image_size_width` = ?, `image_size_height` = ?, `site_maps`.`updated_at` = ? where `id` = ?', ' [uploads/map/files/SMTZ-2f-R-5000.png, uploads/map/preview/SMTZ-2f-R-5000.png, 5000, 5000, 2023-05-04 09:47:23, 31]', '2023-05-04 01:47:23', '2023-05-04 01:47:23', NULL),
+	(235, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/site/map/set-default', 3, 'Admin', 3, 'Bautista, King', 227, 'update `site_maps` set `is_default` = ?, `site_maps`.`updated_at` = ? where `site_id` = ? and `site_screen_id` = ? and `site_maps`.`deleted_at` is null', ' [0, 2023-05-04 09:47:38, 46, 227]', '2023-05-04 01:47:38', '2023-05-04 01:47:38', NULL),
+	(236, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/site/map/set-default', 3, 'Admin', 3, 'Bautista, King', 227, 'update `site_maps` set `is_default` = ?, `site_maps`.`updated_at` = ? where `site_id` = ? and `site_screen_id` = ? and `site_maps`.`deleted_at` is null', ' [0, 2023-05-04 09:47:42, 46, 227]', '2023-05-04 01:47:42', '2023-05-04 01:47:42', NULL),
+	(237, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/site/map/set-default', 3, 'Admin', 3, 'Bautista, King', 30, 'update `site_maps` set `is_default` = ?, `site_maps`.`updated_at` = ? where `id` = ?', ' [1, 2023-05-04 09:47:42, 30]', '2023-05-04 01:47:42', '2023-05-04 01:47:42', NULL),
+	(238, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:30:24, 3]', '2023-05-04 02:30:24', '2023-05-04 02:30:24', NULL),
+	(239, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `contract_id` = ?, `brand_id` = ?, `advertisements`.`updated_at` = ? where `id` = ?', ' [1, 7671, 2023-05-04 10:30:24, 3]', '2023-05-04 02:30:24', '2023-05-04 02:30:24', NULL),
+	(240, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:30:25, 3]', '2023-05-04 02:30:25', '2023-05-04 02:30:25', NULL),
+	(241, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:30:31, 3]', '2023-05-04 02:30:31', '2023-05-04 02:30:31', NULL),
+	(242, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:31:23, 3]', '2023-05-04 02:31:23', '2023-05-04 02:31:23', NULL),
+	(243, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:32:14, 3]', '2023-05-04 02:32:14', '2023-05-04 02:32:14', NULL),
+	(244, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:34:12, 3]', '2023-05-04 02:34:12', '2023-05-04 02:34:12', NULL),
+	(245, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:34:36, 3]', '2023-05-04 02:34:36', '2023-05-04 02:34:36', NULL),
+	(246, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:35:43, 3]', '2023-05-04 02:35:43', '2023-05-04 02:35:43', NULL),
+	(247, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:37:23, 3]', '2023-05-04 02:37:23', '2023-05-04 02:37:23', NULL),
+	(248, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:37:28, 3]', '2023-05-04 02:37:28', '2023-05-04 02:37:28', NULL),
+	(249, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:37:48, 3]', '2023-05-04 02:37:48', '2023-05-04 02:37:48', NULL),
+	(250, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:38:45, 3]', '2023-05-04 02:38:45', '2023-05-04 02:38:45', NULL),
+	(251, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:39:07, 3]', '2023-05-04 02:39:07', '2023-05-04 02:39:07', NULL),
+	(252, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:39:33, 3]', '2023-05-04 02:39:33', '2023-05-04 02:39:33', NULL),
+	(253, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:39:57, 3]', '2023-05-04 02:39:57', '2023-05-04 02:39:57', NULL),
+	(254, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:40:16, 3]', '2023-05-04 02:40:16', '2023-05-04 02:40:16', NULL),
+	(255, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:40:42, 3]', '2023-05-04 02:40:42', '2023-05-04 02:40:42', NULL),
+	(256, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:40:55, 3]', '2023-05-04 02:40:55', '2023-05-04 02:40:55', NULL),
+	(257, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:41:11, 3]', '2023-05-04 02:41:11', '2023-05-04 02:41:11', NULL),
+	(258, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:41:11', '2023-05-04 02:41:11', NULL),
+	(259, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:41:54, 3]', '2023-05-04 02:41:54', '2023-05-04 02:41:54', NULL),
+	(260, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:41:54', '2023-05-04 02:41:54', NULL),
+	(261, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`) values (?, ?)', ' [3, 0]', '2023-05-04 02:41:54', '2023-05-04 02:41:54', NULL),
+	(262, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:42:21, 3]', '2023-05-04 02:42:21', '2023-05-04 02:42:21', NULL),
+	(263, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:42:21', '2023-05-04 02:42:21', NULL),
+	(264, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:42:55, 3]', '2023-05-04 02:42:55', '2023-05-04 02:42:55', NULL),
+	(265, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:42:55', '2023-05-04 02:42:55', NULL),
+	(266, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:43:17, 3]', '2023-05-04 02:43:17', '2023-05-04 02:43:17', NULL),
+	(267, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:43:17', '2023-05-04 02:43:17', NULL),
+	(268, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:43:30, 3]', '2023-05-04 02:43:30', '2023-05-04 02:43:30', NULL),
+	(269, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:43:30', '2023-05-04 02:43:30', NULL),
+	(270, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`) values (?, ?)', ' [3, 0]', '2023-05-04 02:43:30', '2023-05-04 02:43:30', NULL),
+	(271, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:46:06, 3]', '2023-05-04 02:46:06', '2023-05-04 02:46:06', NULL),
+	(272, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:46:06', '2023-05-04 02:46:06', NULL),
+	(273, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [3, 0, 1, Directory]', '2023-05-04 02:46:06', '2023-05-04 02:46:06', NULL),
+	(274, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:48:01, 3]', '2023-05-04 02:48:01', '2023-05-04 02:48:01', NULL),
+	(275, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:48:01', '2023-05-04 02:48:01', NULL),
+	(276, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [3, 0, 1, Directory]', '2023-05-04 02:48:01', '2023-05-04 02:48:01', NULL),
+	(277, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:48:07, 3]', '2023-05-04 02:48:07', '2023-05-04 02:48:07', NULL),
+	(278, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:48:07', '2023-05-04 02:48:07', NULL),
+	(279, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [3, 0, 1, Directory]', '2023-05-04 02:48:07', '2023-05-04 02:48:07', NULL),
+	(280, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 3, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 10:53:52, 3]', '2023-05-04 02:53:52', '2023-05-04 02:53:52', NULL),
+	(281, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [3]', '2023-05-04 02:53:52', '2023-05-04 02:53:52', NULL),
+	(282, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [3, 0, 1, Directory]', '2023-05-04 02:53:52', '2023-05-04 02:53:52', NULL),
+	(283, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contract_brands` set `deleted_at` = ?, `contract_brands`.`updated_at` = ? where `contract_id` = ? and `contract_brands`.`deleted_at` is null', ' [2023-05-04 13:37:59, 2023-05-04 13:37:59, 2]', '2023-05-04 05:37:59', '2023-05-04 05:37:59', NULL),
+	(284, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`, `updated_at`, `created_at`) values (?, ?, ?, ?)', ' [2, 7693, 2023-05-04 13:37:59, 2023-05-04 13:37:59]', '2023-05-04 05:37:59', '2023-05-04 05:37:59', NULL),
+	(285, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contract_brands` set `deleted_at` = ?, `contract_brands`.`updated_at` = ? where `contract_id` = ? and `contract_brands`.`deleted_at` is null', ' [2023-05-04 13:38:11, 2023-05-04 13:38:11, 2]', '2023-05-04 05:38:11', '2023-05-04 05:38:11', NULL),
+	(286, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`, `updated_at`, `created_at`) values (?, ?, ?, ?)', ' [2, 7693, 2023-05-04 13:38:11, 2023-05-04 13:38:11]', '2023-05-04 05:38:11', '2023-05-04 05:38:11', NULL),
+	(287, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contract_brands` set `deleted_at` = ?, `contract_brands`.`updated_at` = ? where `contract_id` = ? and `contract_brands`.`deleted_at` is null', ' [2023-05-04 13:38:26, 2023-05-04 13:38:26, 2]', '2023-05-04 05:38:26', '2023-05-04 05:38:26', NULL),
+	(288, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`, `updated_at`, `created_at`) values (?, ?, ?, ?)', ' [2, 7693, 2023-05-04 13:38:26, 2023-05-04 13:38:26]', '2023-05-04 05:38:26', '2023-05-04 05:38:26', NULL),
+	(289, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contract_brands` set `deleted_at` = ?, `contract_brands`.`updated_at` = ? where `contract_id` = ? and `contract_brands`.`deleted_at` is null', ' [2023-05-04 13:39:15, 2023-05-04 13:39:15, 2]', '2023-05-04 05:39:15', '2023-05-04 05:39:15', NULL),
+	(290, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`, `updated_at`, `created_at`) values (?, ?, ?, ?)', ' [2, 7698, 2023-05-04 13:39:15, 2023-05-04 13:39:15]', '2023-05-04 05:39:15', '2023-05-04 05:39:15', NULL),
+	(291, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contract_brands` set `deleted_at` = ?, `contract_brands`.`updated_at` = ? where `contract_id` = ? and `contract_brands`.`deleted_at` is null', ' [2023-05-04 13:40:04, 2023-05-04 13:40:04, 2]', '2023-05-04 05:40:04', '2023-05-04 05:40:04', NULL),
+	(292, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`, `updated_at`, `created_at`) values (?, ?, ?, ?)', ' [2, 7698, 2023-05-04 13:40:04, 2023-05-04 13:40:04]', '2023-05-04 05:40:04', '2023-05-04 05:40:04', NULL),
+	(293, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contract_brands` set `deleted_at` = ?, `contract_brands`.`updated_at` = ? where `contract_id` = ? and `contract_brands`.`deleted_at` is null', ' [2023-05-04 13:42:24, 2023-05-04 13:42:24, 2]', '2023-05-04 05:42:24', '2023-05-04 05:42:24', NULL),
+	(294, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contract_brands` set `deleted_at` = ?, `contract_brands`.`updated_at` = ? where `contract_id` = ? and `contract_brands`.`deleted_at` is null', ' [2023-05-04 13:42:32, 2023-05-04 13:42:32, 2]', '2023-05-04 05:42:32', '2023-05-04 05:42:32', NULL),
+	(295, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`, `updated_at`, `created_at`) values (?, ?, ?, ?)', ' [2, 7698, 2023-05-04 13:42:32, 2023-05-04 13:42:32]', '2023-05-04 05:42:32', '2023-05-04 05:42:32', NULL),
+	(296, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:43:51', '2023-05-04 05:43:51', NULL),
+	(297, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`, `updated_at`, `created_at`) values (?, ?, ?, ?)', ' [2, 7698, 2023-05-04 13:43:51, 2023-05-04 13:43:51]', '2023-05-04 05:43:51', '2023-05-04 05:43:51', NULL),
+	(298, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:46:07', '2023-05-04 05:46:07', NULL),
+	(299, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 05:46:07', '2023-05-04 05:46:07', NULL),
+	(300, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:46:33', '2023-05-04 05:46:33', NULL),
+	(301, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 05:46:33', '2023-05-04 05:46:33', NULL),
+	(302, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:48:31', '2023-05-04 05:48:31', NULL),
+	(303, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 05:48:31', '2023-05-04 05:48:31', NULL),
+	(304, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:50:40', '2023-05-04 05:50:40', NULL),
+	(305, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 05:50:40', '2023-05-04 05:50:40', NULL),
+	(306, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:52:19', '2023-05-04 05:52:19', NULL),
+	(307, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 05:52:19', '2023-05-04 05:52:19', NULL),
+	(308, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:53:13', '2023-05-04 05:53:13', NULL),
+	(309, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 05:53:13', '2023-05-04 05:53:13', NULL),
+	(310, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 05:59:16', '2023-05-04 05:59:16', NULL),
+	(311, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 05:59:16', '2023-05-04 05:59:16', NULL),
+	(312, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 06:00:27', '2023-05-04 06:00:27', NULL),
+	(313, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 06:00:27', '2023-05-04 06:00:27', NULL),
+	(314, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 06:03:05', '2023-05-04 06:03:05', NULL),
+	(315, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 06:03:05', '2023-05-04 06:03:05', NULL),
+	(316, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 06:04:00', '2023-05-04 06:04:00', NULL),
+	(317, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 06:04:00', '2023-05-04 06:04:00', NULL),
+	(318, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [2]', '2023-05-04 06:04:32', '2023-05-04 06:04:32', NULL),
+	(319, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [2, 7698]', '2023-05-04 06:04:32', '2023-05-04 06:04:32', NULL),
+	(320, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_screens` where `contract_id` = ?', ' [2]', '2023-05-04 06:04:32', '2023-05-04 06:04:32', NULL),
+	(321, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [2, 0, 49, Directory]', '2023-05-04 06:04:32', '2023-05-04 06:04:32', NULL),
+	(322, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [2, 0, 48, Directory]', '2023-05-04 06:04:32', '2023-05-04 06:04:32', NULL),
+	(323, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [2, 0, 41, Digital Signage]', '2023-05-04 06:04:32', '2023-05-04 06:04:32', NULL),
+	(324, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/Illustration/update', 3, 'Admin', 3, 'Bautista, King', 6, 'update `company_categories` set `site_id` = ?, `company_categories`.`updated_at` = ? where `id` = ?', ' [46, 2023-05-04 16:27:49, 6]', '2023-05-04 08:27:49', '2023-05-04 08:27:49', NULL),
+	(325, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/site/set-default', 3, 'Admin', 3, 'Bautista, King', 1, 'update `sites` set `is_default` = ?, `sites`.`updated_at` = ? where `is_default` = ? and `sites`.`deleted_at` is null', ' [0, 2023-05-04 16:29:25, 1]', '2023-05-04 08:29:25', '2023-05-04 08:29:25', NULL),
+	(326, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/site/set-default', 3, 'Admin', 3, 'Bautista, King', 46, 'update `sites` set `is_default` = ?, `sites`.`updated_at` = ? where `id` = ?', ' [1, 2023-05-04 16:29:25, 46]', '2023-05-04 08:29:25', '2023-05-04 08:29:25', NULL),
+	(327, '2023-05-04 00:00:00', '2023-04-04 14:27:51', 'api/screen-uptime', 3, '', 5, 'Bautista, Ernani', 545, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 16:35:32, 2023-05-04 16:35:32, 2023-05-04 16:35:32]', '2023-05-04 08:35:32', '2023-05-04 08:35:32', NULL),
+	(328, '2023-05-04 00:00:00', '2023-04-04 14:27:51', 'api/screen-uptime', 3, '', 5, 'Bautista, Ernani', 546, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 16:41:32, 2023-05-04 16:41:32, 2023-05-04 16:41:32]', '2023-05-04 08:41:32', '2023-05-04 08:41:32', NULL),
+	(329, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 1, 'update `advertisements` set `advertisements`.`updated_at` = ? where `id` = ?', ' [2023-05-04 16:46:42, 1]', '2023-05-04 08:46:42', '2023-05-04 08:46:42', NULL),
+	(330, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `advertisement_screens` where `advertisement_id` = ?', ' [1]', '2023-05-04 08:46:42', '2023-05-04 08:46:42', NULL),
+	(331, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [1, 0, 41, Digital Signage]', '2023-05-04 08:46:42', '2023-05-04 08:46:42', NULL),
+	(332, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [1, 0, 41, Directory]', '2023-05-04 08:46:42', '2023-05-04 08:46:42', NULL),
+	(333, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [1, 0, 23, Digital Signage]', '2023-05-04 08:46:42', '2023-05-04 08:46:42', NULL),
+	(334, '2023-05-04 09:24:39', '2022-08-11 05:24:30', 'admin/advertisement/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [1, 0, 1, Digital Signage]', '2023-05-04 08:46:42', '2023-05-04 08:46:42', NULL),
+	(335, '2023-05-04 00:00:00', '2023-04-04 14:27:51', 'api/screen-uptime', 3, '', 5, 'Bautista, Ernani', 547, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 16:47:32, 2023-05-04 16:47:32, 2023-05-04 16:47:32]', '2023-05-04 08:47:32', '2023-05-04 08:47:32', NULL),
+	(336, '2023-05-04 00:00:00', '2023-04-04 14:27:51', 'api/screen-uptime', 3, '', 5, 'Bautista, Ernani', 548, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 16:53:32, 2023-05-04 16:53:32, 2023-05-04 16:53:32]', '2023-05-04 08:53:32', '2023-05-04 08:53:32', NULL),
+	(337, '2023-05-04 00:00:00', '2023-04-04 14:27:51', 'api/screen-uptime', 3, '', 5, 'Bautista, Ernani', 549, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 16:59:45, 2023-05-04 16:59:45, 2023-05-04 16:59:45]', '2023-05-04 08:59:45', '2023-05-04 08:59:45', NULL),
+	(338, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 550, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:05:45, 2023-05-04 17:05:45, 2023-05-04 17:05:45]', '2023-05-04 09:05:45', '2023-05-04 09:05:45', NULL),
+	(339, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 551, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:11:45, 2023-05-04 17:11:45, 2023-05-04 17:11:45]', '2023-05-04 09:11:45', '2023-05-04 09:11:45', NULL),
+	(340, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 552, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:17:45, 2023-05-04 17:17:45, 2023-05-04 17:17:45]', '2023-05-04 09:17:45', '2023-05-04 09:17:45', NULL),
+	(341, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 553, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:23:45, 2023-05-04 17:23:45, 2023-05-04 17:23:45]', '2023-05-04 09:23:45', '2023-05-04 09:23:45', NULL),
+	(342, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 554, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:29:45, 2023-05-04 17:29:45, 2023-05-04 17:29:45]', '2023-05-04 09:29:45', '2023-05-04 09:29:45', NULL),
+	(343, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 555, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:35:45, 2023-05-04 17:35:45, 2023-05-04 17:35:45]', '2023-05-04 09:35:45', '2023-05-04 09:35:45', NULL),
+	(344, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 556, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:41:45, 2023-05-04 17:41:45, 2023-05-04 17:41:45]', '2023-05-04 09:41:45', '2023-05-04 09:41:45', NULL),
+	(345, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 557, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:47:45, 2023-05-04 17:47:45, 2023-05-04 17:47:45]', '2023-05-04 09:47:45', '2023-05-04 09:47:45', NULL),
+	(346, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 558, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:53:45, 2023-05-04 17:53:45, 2023-05-04 17:53:45]', '2023-05-04 09:53:45', '2023-05-04 09:53:45', NULL),
+	(347, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 559, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 17:59:45, 2023-05-04 17:59:45, 2023-05-04 17:59:45]', '2023-05-04 09:59:45', '2023-05-04 09:59:45', NULL),
+	(348, '2023-05-04 00:00:00', '2023-04-05 10:26:19', 'api/screen-uptime', 3, '', 7, 'Bautista, King', 560, 'insert into `site_screen_uptimes_temp` (`site_screen_id`, `up_time_date`, `up_time_hours`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [227, 2023-05-04, 18:05:45, 2023-05-04 18:05:45, 2023-05-04 18:05:45]', '2023-05-04 10:05:45', '2023-05-04 10:05:45', NULL),
+	(349, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-05 09:03:22, 2023-05-05 09:03:22, 10]', '2023-05-05 01:03:22', '2023-05-05 01:03:22', NULL),
+	(350, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 1, 'update `contracts` set `is_exclusive` = ?, `active` = ?, `contracts`.`updated_at` = ? where `id` = ?', ' [1, 1, 2023-05-05 11:09:18, 1]', '2023-05-05 03:09:18', '2023-05-05 03:09:18', NULL),
+	(351, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [1]', '2023-05-05 03:09:18', '2023-05-05 03:09:18', NULL),
+	(352, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [1, 7671]', '2023-05-05 03:09:18', '2023-05-05 03:09:18', NULL),
+	(353, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_screens` where `contract_id` = ?', ' [1]', '2023-05-05 03:09:18', '2023-05-05 03:09:18', NULL),
+	(354, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [1, 10, 1, Digital Signage]', '2023-05-05 03:09:18', '2023-05-05 03:09:18', NULL),
+	(355, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 2, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7671, 5, All, 10, Sample 2, 1, 2023-05-05 11:11:48, 2023-05-05 11:11:48]', '2023-05-05 03:11:48', '2023-05-05 03:11:48', NULL),
+	(356, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 3, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7671, 5, All, 10, Sample 2, 1, 2023-05-05 11:11:51, 2023-05-05 11:11:51]', '2023-05-05 03:11:51', '2023-05-05 03:11:51', NULL),
+	(357, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/advertisement/store', 3, 'Admin', 3, 'Bautista, King', 4, 'insert into `advertisements` (`company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [3, 1, 7671, 5, All, 10, Sample 2, 1, 2023-05-05 11:11:58, 2023-05-05 11:11:58]', '2023-05-05 03:11:58', '2023-05-05 03:11:58', NULL),
+	(358, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/modules/store', 3, 'Admin', 3, 'Bautista, King', 74, 'insert into `modules` (`name`, `parent_id`, `link`, `role`, `class_name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)', ' [User Information, , /admin/users-information, Admin, nav-icon fa fa-question-circle, 1, 2023-05-05 14:11:38, 2023-05-05 14:11:38]', '2023-05-05 06:11:38', '2023-05-05 06:11:38', NULL),
+	(359, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 73, 'update `modules` set `link` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [/admin/customer-care/concerns, 2023-05-05 14:11:50, 73]', '2023-05-05 06:11:50', '2023-05-05 06:11:50', NULL),
+	(360, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 1, 'update `roles` set `active` = ?, `roles`.`updated_at` = ? where `id` = ?', ' [1, 2023-05-05 14:13:03, 1]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(361, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 16, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 16]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(362, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 17, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 17]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(363, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 18, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 18]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(364, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 19, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 19]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(365, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 20, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 20]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(366, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 66, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 66]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(367, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 78, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 78]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(368, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 21, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 21]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(369, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 22, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 22]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(370, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 23, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 23]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(371, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 24, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 24]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(372, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 25, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 25]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(373, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 64, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 64]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(374, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 65, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 65]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(375, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 67, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 67]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(376, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 27, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 27]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(377, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 68, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 68]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(378, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 69, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 69]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(379, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 75, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 75]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(380, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 28, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 28]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(381, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 29, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 29]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(382, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 30, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 30]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(383, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 31, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 31]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(384, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 32, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 32]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(385, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 33, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 33]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(386, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 76, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 76]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(387, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 77, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 77]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(388, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 34, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 34]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(389, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 35, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 35]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(390, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 36, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 36]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(391, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 37, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 37]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(392, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 38, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 38]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(393, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 39, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 39]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(394, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 40, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 40]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(395, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 41, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 41]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(396, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 42, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 42]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(397, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 43, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 43]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(398, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 44, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 44]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(399, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 71, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 71]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(400, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 72, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 72]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(401, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 73, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 73]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(402, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 74, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 74]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(403, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 130, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 130]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(404, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 131, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 131]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(405, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 132, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 132]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(406, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 133, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-05 14:13:03, 133]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(407, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 134, 'insert into `permissions` (`role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)', ' [1, 74, 1, 1, 1, 1, 2023-05-05 14:13:03, 2023-05-05 14:13:03]', '2023-05-05 06:13:03', '2023-05-05 06:13:03', NULL),
+	(408, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 42, 'update `modules` set `parent_id` = ?, `name` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [, SSP, 2023-05-05 14:16:39, 42]', '2023-05-05 06:16:39', '2023-05-05 06:16:39', NULL),
+	(409, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 42, 'update `modules` set `parent_id` = ?, `name` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [6, Site-Screen-Product, 2023-05-05 14:25:16, 42]', '2023-05-05 06:25:16', '2023-05-05 06:25:16', NULL),
+	(410, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 42, 'update `modules` set `name` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [Site Screen Product, 2023-05-05 15:55:32, 42]', '2023-05-05 07:55:32', '2023-05-05 07:55:32', NULL),
+	(411, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 42, 'update `modules` set `parent_id` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [, 2023-05-05 15:57:00, 42]', '2023-05-05 07:57:00', '2023-05-05 07:57:00', NULL),
+	(412, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 4, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [Site Partner Contract 1, 1, 360, 3, 100, 0, 0, 1, 2023-05-05 17:28:30, 2023-05-05 17:28:30]', '2023-05-05 09:28:30', '2023-05-05 09:28:30', NULL),
+	(413, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:28:31', '2023-05-05 09:28:31', NULL),
+	(414, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 5, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [Site Partner Contract 1, 1, 360, 3, 100, 0, 0, 1, 2023-05-05 17:28:43, 2023-05-05 17:28:43]', '2023-05-05 09:28:43', '2023-05-05 09:28:43', NULL),
+	(415, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:28:43', '2023-05-05 09:28:43', NULL),
+	(416, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 6, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [Site Partner Contract 1, 1, 360, 3, 100, 0, 0, 1, 2023-05-05 17:28:54, 2023-05-05 17:28:54]', '2023-05-05 09:28:54', '2023-05-05 09:28:54', NULL),
+	(417, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:28:54', '2023-05-05 09:28:54', NULL),
+	(418, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 7, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [Site Partner Contract 1, 1, 360, 3, 100, 0, 0, 1, 2023-05-05 17:29:05, 2023-05-05 17:29:05]', '2023-05-05 09:29:05', '2023-05-05 09:29:05', NULL),
+	(419, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:29:05', '2023-05-05 09:29:05', NULL),
+	(420, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [1]', '2023-05-05 09:33:11', '2023-05-05 09:33:11', NULL),
+	(421, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [1, 7671]', '2023-05-05 09:33:11', '2023-05-05 09:33:11', NULL),
+	(422, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_screens` where `contract_id` = ?', ' [1]', '2023-05-05 09:33:11', '2023-05-05 09:33:11', NULL),
+	(423, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [1, 0, 1, Directory]', '2023-05-05 09:33:11', '2023-05-05 09:33:11', NULL),
+	(424, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [1]', '2023-05-05 09:33:29', '2023-05-05 09:33:29', NULL),
+	(425, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_brands` (`contract_id`, `brand_id`) values (?, ?)', ' [1, 7671]', '2023-05-05 09:33:29', '2023-05-05 09:33:29', NULL),
+	(426, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_screens` where `contract_id` = ?', ' [1]', '2023-05-05 09:33:29', '2023-05-05 09:33:29', NULL),
+	(427, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) values (?, ?, ?, ?)', ' [1, 0, 1, Directory]', '2023-05-05 09:33:29', '2023-05-05 09:33:29', NULL),
+	(428, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/delete', 3, 'Admin', 3, 'Bautista, King', 1, 'update `contracts` set `deleted_at` = ?, `contracts`.`updated_at` = ? where `id` = ?', ' [2023-05-05 17:33:41, 2023-05-05 17:33:41, 1]', '2023-05-05 09:33:41', '2023-05-05 09:33:41', NULL),
+	(429, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/delete', 3, 'Admin', 3, 'Bautista, King', 2, 'update `contracts` set `deleted_at` = ?, `contracts`.`updated_at` = ? where `id` = ?', ' [2023-05-05 17:33:43, 2023-05-05 17:33:43, 2]', '2023-05-05 09:33:43', '2023-05-05 09:33:43', NULL),
+	(430, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/delete', 3, 'Admin', 3, 'Bautista, King', 3, 'update `contracts` set `deleted_at` = ?, `contracts`.`updated_at` = ? where `id` = ?', ' [2023-05-05 17:33:45, 2023-05-05 17:33:45, 3]', '2023-05-05 09:33:45', '2023-05-05 09:33:45', NULL),
+	(431, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 8, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [SM site partner contract 1, 3, 360, 3, 100, 0, 0, 1, 2023-05-05 17:34:24, 2023-05-05 17:34:24]', '2023-05-05 09:34:24', '2023-05-05 09:34:24', NULL),
+	(432, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:34:24', '2023-05-05 09:34:24', NULL),
+	(433, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 9, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [SM site partner contract 1, 3, 360, 3, 100, 0, 0, 1, 2023-05-05 17:34:39, 2023-05-05 17:34:39]', '2023-05-05 09:34:39', '2023-05-05 09:34:39', NULL),
+	(434, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:34:39', '2023-05-05 09:34:39', NULL);
 
 -- Dumping structure for table prestige.user_brands
 DROP TABLE IF EXISTS `user_brands`;
@@ -21897,6 +22293,32 @@ CREATE TABLE IF NOT EXISTS `user_sites` (
 -- Dumping data for table prestige.user_sites: ~1 rows (approximately)
 INSERT INTO `user_sites` (`user_id`, `site_id`) VALUES
 	(5, 1);
+
+-- Dumping structure for table prestige.workflows
+DROP TABLE IF EXISTS `workflows`;
+CREATE TABLE IF NOT EXISTS `workflows` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `permission_level` enum('Level 1','Level 2','Level 3') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `condition` enum('Strick','Any') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `workflows_company_id_foreign` (`company_id`),
+  KEY `workflows_user_id_foreign` (`user_id`),
+  CONSTRAINT `workflows_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
+  CONSTRAINT `workflows_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.workflows: ~4 rows (approximately)
+INSERT INTO `workflows` (`id`, `company_id`, `user_id`, `permission_level`, `condition`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 6, 'Level 3', 'Strick', 1, '2023-05-04 07:54:37', '2023-05-04 08:31:49', NULL),
+	(2, 1, 6, 'Level 1', 'Strick', 1, '2023-05-04 07:54:44', '2023-05-04 08:32:25', NULL),
+	(3, 1, 6, 'Level 3', 'Any', 1, '2023-05-04 07:55:01', '2023-05-04 08:31:27', NULL),
+	(4, 1, 5, 'Level 3', 'Strick', 1, '2023-05-04 07:55:57', '2023-05-04 08:16:02', NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

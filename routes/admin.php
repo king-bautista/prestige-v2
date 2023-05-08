@@ -526,6 +526,18 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/transaction/statuses/get-all', 'Admin\TransactionStatusController@getAll')->name('admin.transaction.statuses.get-all');
+
+        /*
+    |--------------------------------------------------------------------------
+    | Sites Screen Products Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/site/pi-products', 'Admin\PiProductController@index')->name('admin.site.pi-product');
+    Route::get('/admin/site/pi-product/list', 'Admin\PiProductController@list')->name('admin.site.pi-product.list');
+    Route::post('/admin/site/pi-product/store', 'Admin\PiProductController@store')->name('admin.site.pi-product.store');
+    Route::get('/admin/site/pi-product/{id}', 'Admin\PiProductController@details')->where('id', '[0-9]+')->name('admin.site.pi-product.details');
+    Route::put('/admin/site/pi-product/update', 'Admin\PiProductController@update')->name('admin.site.pi-product.update');
+    Route::get('/admin/site/pi-product/delete/{id}', 'Admin\PiProductController@delete')->where('id', '[0-9]+')->name('admin.site.pi-product.delete');
   
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
