@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Companies Management
+        <h1 class="m-0">Workflow
         <!-- <a type="button" href="/admin/companies" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back to list</a> -->
         </h1>
       </div><!-- /.col -->
