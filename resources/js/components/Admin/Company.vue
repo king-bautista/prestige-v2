@@ -346,15 +346,6 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Screens <span class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-8">
-								<multiselect v-model="contract.screens" :options="screens" :multiple="true"
-									:close-on-select="true" placeholder="Select Screens" label="site_screen_location"
-									track-by="site_screen_location">
-								</multiselect>
-							</div>
-						</div>
-						<div class="form-group row">
 							<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
 								<multiselect v-model="contract.brands" :options="company.brands" :multiple="true"
@@ -363,10 +354,19 @@
 							</div>
 						</div>
 						<div class="form-group row">
+							<label for="firstName" class="col-sm-4 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-8">
+								<multiselect v-model="contract.screens" :options="screens" :multiple="true"
+									:close-on-select="true" placeholder="Select Screens" label="site_screen_location"
+									track-by="site_screen_location">
+								</multiselect>
+							</div>
+						</div>
+						<div class="form-group row">
 							<label for="firstName" class="col-sm-4 col-form-label">Duration (no. of days) <span
 									class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" :disabled="contract.is_indefinite"
+								<input type="text" class="form-control" :disabled="contract.is_indefinite == 1"
 									v-model="contract.display_duration" placeholder="0" required>
 							</div>
 						</div>

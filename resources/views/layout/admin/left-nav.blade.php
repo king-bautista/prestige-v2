@@ -56,31 +56,14 @@
                 </li>
                 @endif
                 @endforeach
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-user-cog"></i>
-                        <p>
-                            Account Settings
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Logout</p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <!-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-user-edit"></i>
-                            <p>User information</p>
-                            </a>
-                        </li> -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>Logout</p>
-                            </a>
-                            <form id="logout-form" action='{{ url("admin/logout") }}' method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
+                    <form id="logout-form" action='{{ url("admin/logout") }}' method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
             </ul>
         </nav>

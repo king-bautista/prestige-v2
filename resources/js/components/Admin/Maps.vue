@@ -115,21 +115,54 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size diagonal</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_diagonal"
-										placeholder="43 Inch" required>
+										placeholder="43 inc" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size width</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_width"
-										placeholder="43 Inch" required>
+										placeholder="43 inc" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size height</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_height"
-										placeholder="43 Inch" required>
+										placeholder="43 inc" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Width</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.width" placeholder="1920"
+										required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Height</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.height" placeholder="1080"
+										required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Slots <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.slots" placeholder="Slots"
+										required>
+								</div>
+							</div>
+							<div class="form-group row"
+								v-if="(screen.screen_type == 'LED' || screen.screen_type == 'LFD') && screen.product_application == 'Digital Signage'">
+								<label for="isExclusive" class="col-sm-4 col-form-label">Is Exclusive </label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_exclusive"
+											v-model="screen.is_exclusive">
+										<label class="custom-control-label" for="is_exclusive"></label>
+									</div>
 								</div>
 							</div>
 							<div class="form-group row" v-if="screen.product_application == 'Directory'">
@@ -226,8 +259,13 @@ import Table from '../Helpers/Table';
                     physical_size_diagonal: '',
                     physical_size_width: '',
                     physical_size_height: '',
+                    dimension: '',
+                    width: '',
+                    height: '',
+                    slots: '',
 					active: false,
 					is_default: false,
+					is_exclusive: false,
                 },
 				id_to_deleted: 0,
 				is_default: '',
@@ -246,12 +284,29 @@ import Table from '../Helpers/Table';
             		screen_type: "Physical Configuration", 
             		orientation: "Orientation", 
             		product_application: "Product Application", 
+            		slots: "Slots",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
             				0: '<span class="badge badge-danger">Deactivated</span>', 
             				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+					is_exclusive: {
+            			name: "Is exclusive", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
+            			}
+            		},
+					is_default: {
+            			name: "Is Default", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
             			}
             		},
                     updated_at: "Last Updated"
@@ -275,6 +330,25 @@ import Table from '../Helpers/Table';
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'custom_delete',
 						v_on: 'DeleteScreen',
+            		},
+					link: {
+            			title: 'Manage Maps',
+            			name: 'Manage Maps',
+            			apiUrl: '/admin/site/manage-map',
+            			routeName: '',
+            			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
+            			method: 'link',
+						conditions: { product_application: 'Directory' }
+            		},
+					view: {
+            			title: 'Set as Default',
+            			name: 'Set as Default',
+            			apiUrl: '',
+            			routeName: '',
+            			button: '<i class="fa fa-tag"></i> Set as Default',
+            			method: 'view',
+						v_on: 'DefaultScreen',
+						conditions: { product_application: 'Directory' }
             		},
             	},
 				otherButtons: {
@@ -342,8 +416,13 @@ import Table from '../Helpers/Table';
 			this.screen.physical_size_diagonal = '';
 			this.screen.physical_size_width = '';
 			this.screen.physical_size_height = '';
+			this.screen.dimension = '';
+			this.screen.width = '';
+			this.screen.height = '';
+			this.screen.slots = '';
 			this.screen.active = false;
 			this.screen.is_default = false;
+			this.screen.is_exclusive = false;
 
 			$('#screen-form').modal('show');
 		},
@@ -378,8 +457,13 @@ import Table from '../Helpers/Table';
 					this.screen.physical_size_diagonal = screen.physical_size_diagonal;
 					this.screen.physical_size_width = screen.physical_size_width;
 					this.screen.physical_size_height = screen.physical_size_height;
+					this.screen.dimension = screen.dimension;
+					this.screen.width = screen.width;
+					this.screen.height = screen.height;
+					this.screen.slots = screen.slots;
 					this.screen.active = screen.active;
 					this.screen.is_default = screen.is_default;
+					this.screen.is_exclusive = screen.is_exclusive;
                     $('#screen-form').modal('show');
                 });
             },

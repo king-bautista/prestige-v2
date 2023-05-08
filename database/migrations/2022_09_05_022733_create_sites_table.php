@@ -85,15 +85,10 @@ class CreateSitesTable extends Migration
             $table->string('physical_size_diagonal')->nullable();
             $table->string('physical_size_width')->nullable();
             $table->string('physical_size_height')->nullable();
-            $table->string('dimension')->nullable();
-            $table->string('width')->nullable();
-            $table->string('height')->nullable();
             $table->string('kiosk_id')->nullable();     
             $table->string('token_key')->nullable();     
-            $table->integer('slots')->default(0);
             $table->boolean('active')->default(true);
             $table->boolean('is_default')->default(false);
-            $table->boolean('is_exclusive')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

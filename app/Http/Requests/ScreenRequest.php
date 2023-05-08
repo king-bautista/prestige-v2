@@ -31,7 +31,6 @@ class ScreenRequest extends FormRequest
             "screen_type" => "required",
             "orientation" => "required",
             "product_application" => "required",
-            "slots" => "required|not_in:0|numeric",
         ];
     }
 

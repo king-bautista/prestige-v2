@@ -105,14 +105,9 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
-                'dimension' => $request->dimension,
-                'width' => $request->width,
-                'height' => $request->height,
                 'kiosk_id' => $kiosk_id,
-                'slots' => $request->slots,
                 'active' => 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
-                'is_exclusive' => ($request->is_exclusive == 0) ? 0 : 1,
             ];
 
             $site_screen = SiteScreen::create($data);
@@ -146,13 +141,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
-                'dimension' => $request->dimension,
-                'width' => $request->width,
-                'height' => $request->height,
-                'slots' => $request->slots,
                 'active' => ($request->active == 0) ? 0 : 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
-                'is_exclusive' => ($request->is_exclusive == 0) ? 0 : 1,
             ];
 
             $site_screen->update($data);
@@ -272,9 +262,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                     'physical_configuration' => $screen->screen_type,
                     'orientation' => $screen->orientation,
                     'product_application' => $screen->product_application,
-                    'slots' => $screen->slots,
                     'status' => ($screen->active == 1) ? 'Active' : 'Inactive',
-                    'is_exclusive' => ($screen->is_exclusive == 1) ? 'Yes' : 'No',
                     'is_default' => ($screen->is_default == 1) ? 'Yes' : 'No',
                     'updated_at' => $screen->updated_at,
                 ];
