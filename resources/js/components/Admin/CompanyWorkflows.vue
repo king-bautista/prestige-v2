@@ -9,7 +9,7 @@
 							<div class="card-header">
 								<h5 class="card-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add
 									New Company</h5>
-								<h5 class="card-title" v-show="edit_record"><i class="fas fa-edit"></i> Edit Company</h5>
+								<h5 class="card-title" v-show="edit_record"><i class="fas fa-edit"></i> Company Info</h5>
 								<button type="button" class="btn btn-secondary btn-sm float-right" @click="backToList"><i
 										class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
 							</div>
@@ -61,10 +61,6 @@
 											</div>
 										</div>
 									</div>
-									<!-- <div class="coll-md-1">
-										<button type="button" class="btn btn-outline-secondary btn-sm" @click="modalAdd"><i
-												class="fas fa-pen"></i></button>
-									</div> -->
 								</div>
 
 							</div>
@@ -83,7 +79,7 @@
 								<button type="button" class="btn btn-primary btn-sm m-2 float-right" @click="downloadCsv"><i
 										class="fa fa-download" aria-hidden="true"></i> Download CSV</button>
 							</div>
-							<div class="card-body" v-if = "workflows1.length">
+							<div class="card-body" v-if="workflows1.length">
 								<div class="table-responsive mt-2">
 									<label for="level1">Level 1</label>
 									<table class="table table-hover" id="dataTable" style="width:100%">
@@ -98,7 +94,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="(data1, index1) in workflows1" v-bind:key="index">
+											<tr v-for="(data1, index1) in workflows1" v-bind:key="index1">
 												<td class="align-middle">{{ data1.id }}</td>
 												<td class="align-middle">{{ data1.user_name }}</td>
 												<td class="align-middle">{{ data1.permission_level }}</td>
@@ -120,7 +116,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="card-body"  v-if = "workflows2.length">
+							<div class="card-body" v-if="workflows2.length">
 								<div class="table-responsive mt-2">
 									<label for="level2">Level 2</label>
 									<table class="table table-hover" id="dataTable" style="width:100%">
@@ -135,7 +131,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="(data2, index2) in workflows2" v-bind:key="index">
+											<tr v-for="(data2, index2) in workflows2" v-bind:key="index2">
 												<td class="align-middle">{{ data2.id }}</td>
 												<td class="align-middle">{{ data2.user_name }}</td>
 												<td class="align-middle">{{ data2.permission_level }}</td>
@@ -157,7 +153,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="card-body" v-if = "workflows3.length">
+							<div class="card-body" v-if="workflows3.length">
 								<div class="table-responsive mt-2">
 									<label for="level3">Level 3</label>
 									<table class="table table-hover" id="dataTable" style="width:100%">
@@ -172,7 +168,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="(data3, index3) in workflows3" v-bind:key="index">
+											<tr v-for="(data3, index3) in workflows3" v-bind:key="index3">
 												<td class="align-middle">{{ data3.id }}</td>
 												<td class="align-middle">{{ data3.user_name }}</td>
 												<td class="align-middle">{{ data3.permission_level }}</td>
@@ -201,96 +197,6 @@
 			</div><!-- /.container-fluid -->
 		</section>
 		<!-- /.content -->
-
-		<div class="modal fade" id="company-details" tabindex="-1" aria-labelledby="company-details" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="card-title">Company Details</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Company Name <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" v-model="company.name" placeholder="Company Name"
-									required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Address <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-8">
-								<textarea class="form-control" v-model="company.address" placeholder="Company Address"
-									required></textarea>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Email <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-8">
-								<input type="email" class="form-control" v-model="company.email" placeholder="Email"
-									required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Contact Number <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-8">
-								<input type="email" class="form-control" v-model="company.contact_number"
-									placeholder="Contact Number" required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">TIN Number <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" v-model="company.tin" placeholder="TIN Number"
-									required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Classification <span
-									class="font-italic text-danger"> *</span></label>
-							<div class="col-sm-8">
-								<select class="custom-select" v-model="company.classification_id">
-									<option value="">Select Classification</option>
-									<option v-for="classification in classifications" :value="classification.id"> {{
-										classification.name }}</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="lastName" class="col-sm-4 col-form-label">Parent Company</label>
-							<div class="col-sm-8">
-								<treeselect v-model="company.parent_id" :options="parent_company"
-									placeholder="Select Parent Company" />
-							</div>
-						</div>
-						<div class="form-group row" v-show="edit_record">
-							<label for="active" class="col-sm-4 col-form-label">Active</label>
-							<div class="col-sm-8">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="active"
-										v-model="company.active">
-									<label class="custom-control-label" for="active"></label>
-								</div>
-							</div>
-						</div>
-					</div><!-- /.card-body -->
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary btn-sm float-right" v-show="add_record"
-							@click="storeCompany">Add New Company</button>
-						<button type="button" class="btn btn-primary btn-sm float-right" v-show="edit_record"
-							@click="updateCompany">Save Changes</button>
-					</div>
-				</div>
-			</div>
-		</div>
 
 		<div class="modal fade" id="workflow-form" tabindex="-1" aria-labelledby="workflow-form" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-lg">
@@ -427,9 +333,6 @@ export default {
 			workflows3: [],
 			data_list: false,
 			data_form: true,
-			parent_company: [],
-			classifications: [],
-			screens: [],
 			add_record: true,
 			edit_record: false,
 			add_workflow: true,
@@ -441,9 +344,6 @@ export default {
 	},
 
 	created() {
-		this.getClassifications();
-		this.getParentCompany();
-		this.getScreens();
 		this.getCompanyDetails();
 		this.getUsers();
 		this.getWorkflows1();
@@ -493,51 +393,7 @@ export default {
 					this.data_form = true;
 				});
 		},
-		getScreens: function (id) {
-			axios.get('/admin/site/screen/get-all')
-				.then(response => this.screens = response.data.data);
-		},
-
-		getParentCompany: function () {
-			axios.get('/admin/company/get-parent')
-				.then(response => this.parent_company = response.data.data);
-		},
-
-		getClassifications: function () {
-			axios.get('/admin/classification/get-all')
-				.then(response => this.classifications = response.data.data);
-		},
-
-		AddNewCompany: function () {
-			this.add_record = true;
-			this.edit_record = false;
-			this.company.parent_id = null;
-			this.company.classification_id = '';
-			this.company.name = '';
-			this.company.email = '';
-			this.company.contact_number = '';
-			this.company.address = '';
-			this.company.tin = '';
-			this.company.active = false;
-			this.company.brands = [];
-			this.data_list = false;
-			this.data_form = true;
-		},
-
-		// modalAdd: function () {
-		// 	$('#company-details').modal('show');
-		// },
-
-		storeCompany: function () {
-			axios.post('/admin/company/store', this.company)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					this.data_list = true;
-					this.data_form = false;
-				})
-		},
-
+				
 		editCompany: function (id) {
 			axios.get('/admin/company/' + id)
 				.then(response => {
@@ -562,47 +418,17 @@ export default {
 				});
 		},
 
-		updateCompany: function () {
-			axios.put('/admin/company/update', this.company)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#company-details').modal('hide');
-				})
-		},
-
 		backToList: function () {
 			this.data_list = true;
 			this.data_form = false;
 		},
 
-		selectedBrand: function (data) {
-			data.company_id = this.company.id;
-			axios.post('/admin/company/brand/store', data)
-				.then(response => {
-					if (response.data.data.brand_id) {
-						toastr.success('Brand ' + data.name + ' has been added.');
-						this.company.brands.push(data);
-					}
-				});
-		},
-
-		removeBrand: function (index) {
-			axios.get('/admin/company/brand/delete/' + this.company.brands[index].id + '/' + this.company.id)
-				.then(response => {
-					if (response.data.data) {
-						this.company.brands.splice(index, 1);
-						toastr.success('Brand has been removed.');
-					}
-				});
-		},
-
 		AddNewWorkflow: function () {
 			this.workflow.company_id = this.company.id;
 			this.workflow.user_id = '',
-				this.workflow.permission_level = '',
-				this.workflow.condition = '',
-				this.workflow.active = false;
+			this.workflow.permission_level = '',
+			this.workflow.condition = '',
+			this.workflow.active = false;
 			this.add_workflow = true;
 			this.edit_workflow = false;
 			$('#workflow-form').modal('show');
@@ -631,31 +457,31 @@ export default {
 				})
 		},
 
-		removeWorkflow1: function (index) {
-			axios.get('/admin/company/workflow/delete/' + this.workflows1[index].id)
+		removeWorkflow1: function (index1) {
+			axios.get('/admin/company/workflow/delete/' + this.workflows1[index1].id)
 				.then(response => {
 					if (response.data.data) {
-						this.workflows1.splice(index, 1);
+						this.workflows1.splice(index1, 1);
 						toastr.success('User workflow level has been removed.');
 					}
 				});
 		},
 
-		removeWorkflow2: function (index) {
-			axios.get('/admin/company/workflow/delete/' + this.workflows2[index].id)
+		removeWorkflow2: function (index2) {
+			axios.get('/admin/company/workflow/delete/' + this.workflows2[index2].id)
 				.then(response => {
 					if (response.data.data) {
-						this.workflows2.splice(index, 1);
+						this.workflows2.splice(index2, 1);
 						toastr.success('User workflow level has been removed.');
 					}
 				});
 		},
 
-		removeWorkflow3: function (index) {
-			axios.get('/admin/company/workflow/delete/' + this.workflows3[index].id)
+		removeWorkflow3: function (index3) {
+			axios.get('/admin/company/workflow/delete/' + this.workflows3[index3].id)
 				.then(response => {
 					if (response.data.data) {
-						this.workflows3.splice(index, 1);
+						this.workflows3.splice(index3, 1);
 						toastr.success('User workflow level has been removed.');
 					}
 				});
