@@ -61,10 +61,10 @@
 											</div>
 										</div>
 									</div>
-									<div class="coll-md-1">
+									<!-- <div class="coll-md-1">
 										<button type="button" class="btn btn-outline-secondary btn-sm" @click="modalAdd"><i
 												class="fas fa-pen"></i></button>
-									</div>
+									</div> -->
 								</div>
 
 							</div>
@@ -83,7 +83,7 @@
 								<button type="button" class="btn btn-primary btn-sm m-2 float-right" @click="downloadCsv"><i
 										class="fa fa-download" aria-hidden="true"></i> Download CSV</button>
 							</div>
-							<div class="card-body">
+							<div class="card-body" v-if = "workflows1.length">
 								<div class="table-responsive mt-2">
 									<label for="level1">Level 1</label>
 									<table class="table table-hover" id="dataTable" style="width:100%">
@@ -120,7 +120,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="card-body">
+							<div class="card-body"  v-if = "workflows2.length">
 								<div class="table-responsive mt-2">
 									<label for="level2">Level 2</label>
 									<table class="table table-hover" id="dataTable" style="width:100%">
@@ -157,7 +157,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="card-body">
+							<div class="card-body" v-if = "workflows3.length">
 								<div class="table-responsive mt-2">
 									<label for="level3">Level 3</label>
 									<table class="table table-hover" id="dataTable" style="width:100%">
@@ -524,9 +524,9 @@ export default {
 			this.data_form = true;
 		},
 
-		modalAdd: function () {
-			$('#company-details').modal('show');
-		},
+		// modalAdd: function () {
+		// 	$('#company-details').modal('show');
+		// },
 
 		storeCompany: function () {
 			axios.post('/admin/company/store', this.company)
