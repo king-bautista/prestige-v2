@@ -330,18 +330,13 @@ Route::group(['middleware' => 'auth:admin'], function () {
     | Advertisements Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/advertisements/online', 'Admin\AdvertisementController@index')->name('admin.advertisement.online');
-    Route::get('/admin/advertisements/banner', 'Admin\AdvertisementController@banner')->name('admin.advertisement.banner');
-    Route::get('/admin/advertisements/fullscreen', 'Admin\AdvertisementController@fullscreen')->name('admin.advertisement.fullscreen');
-    Route::get('/admin/advertisements/popups', 'Admin\AdvertisementController@popups')->name('admin.advertisement.popups');
-    Route::get('/admin/advertisements/events', 'Admin\AdvertisementController@events')->name('admin.advertisement.events');
-    Route::get('/admin/advertisements/promos', 'Admin\AdvertisementController@promos')->name('admin.advertisement.promos');
-    Route::get('/admin/advertisement/list/{ad_type}', 'Admin\AdvertisementController@list')->name('admin.advertisement.list');
-    Route::post('/admin/advertisement/store', 'Admin\AdvertisementController@store')->name('admin.advertisement.store');
-    Route::get('/admin/advertisement/{id}', 'Admin\AdvertisementController@details')->where('id', '[0-9]+')->name('admin.advertisement.details');
-    Route::post('/admin/advertisement/update', 'Admin\AdvertisementController@update')->name('admin.advertisement.update');
-    Route::get('/admin/advertisement/delete/{id}', 'Admin\AdvertisementController@delete')->where('id', '[0-9]+')->name('admin.advertisement.delete');
-    Route::get('/admin/advertisement/all', 'Admin\AdvertisementController@getAllType')->name('admin.advertisement.all');
+    Route::get('/admin/manage-ads/upload', 'Admin\AdvertisementController@index')->name('admin.manage-ads.upload');
+    Route::get('/admin/manage-ads/list', 'Admin\AdvertisementController@list')->name('admin.manage-ads.list');
+    Route::post('/admin/manage-ads/store', 'Admin\AdvertisementController@store')->name('admin.manage-ads.store');
+    Route::get('/admin/manage-ads/{id}', 'Admin\AdvertisementController@details')->where('id', '[0-9]+')->name('admin.manage-ads.details');
+    Route::post('/admin/manage-ads/update', 'Admin\AdvertisementController@update')->name('admin.manage-ads.update');
+    Route::get('/admin/manage-ads/delete/{id}', 'Admin\AdvertisementController@delete')->where('id', '[0-9]+')->name('admin.manage-ads.delete');
+    Route::get('/admin/manage-ads/all', 'Admin\AdvertisementController@getAllType')->name('admin.manage-ads.all');
 
     /*
     |--------------------------------------------------------------------------

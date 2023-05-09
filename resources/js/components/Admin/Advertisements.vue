@@ -93,127 +93,13 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Product Application <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <multiselect v-model="advertisements.product_application" 
-									placeholder="Select Type" 
-									:options="product_applications" 
-									:searchable="true" 
-									:allow-empty="false"
-									@select="applicationSelected">
-                                    </multiselect> 
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Screens <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <multiselect v-model="advertisements.screen_ids" 
-									track-by="site_screen_location" 
-									label="site_screen_location" 
-									placeholder="Select Screens" 
-									:options="tmp_screens" 
-									:searchable="true" 
-									:multiple="true">
-                                    </multiselect> 
-								</div>
-							</div>
-							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"> 
 									<footer class="blockquote-footer">In Seconds</footer>
 								</div>
-							</div>
-							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad
-									<footer class="blockquote-footer">Portrait</footer>
-								</label>								
-								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="portrait_banner_ad" @change="portraitBannerAd"  multiple>
-									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer">image/video max size is 1080 x 1920 pixels</footer>
-								</div>
-								<div class="col-sm-3 text-center">
-									<span v-if="banner_portrait && helper.getFileExtension(material_type) == 'image'">
-										<img v-if="banner_portrait" :src="banner_portrait" class="img-thumbnail" />
-									</span>
-									<span v-else-if="banner_portrait && helper.getFileExtension(material_type) == 'video'">
-										<video muted="muted" class="img-thumbnail">
-											<source :src="banner_portrait" type="video/ogg">
-											Your browser does not support the video tag.
-										</video>
-									</span>
-								</div>
-							</div>
-							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'">
-								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad
-									<footer class="blockquote-footer">Portrait</footer>
-								</label>								
-								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="portrait_fullscreen_ad" @change="portraitFullscreenAd"  multiple>
-									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer">image/video max size is 1080 x 1920 pixels</footer>
-								</div>
-								<div class="col-sm-3 text-center">
-									<span v-if="fullscreen_portrait && helper.getFileExtension(material_type) == 'image'">
-										<img v-if="fullscreen_portrait" :src="fullscreen_portrait" class="img-thumbnail" />
-									</span>
-									<span v-else-if="fullscreen_portrait && helper.getFileExtension(material_type) == 'video'">
-										<video muted="muted" class="img-thumbnail">
-											<source :src="fullscreen_portrait" type="video/ogg">
-											Your browser does not support the video tag.
-										</video>
-									</span>
-								</div>
-							</div>
-							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Ad
-									<footer class="blockquote-footer">Landscape</footer>
-								</label>
-								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="landscape_banner_ad" @change="landscapeBannerAd"  multiple>
-									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
-								</div>
-								<div class="col-sm-3 text-center">
-									<span v-if="banner_landscape && helper.getFileExtension(material_type) == 'image'">
-										<img v-if="banner_landscape" :src="banner_landscape" class="img-thumbnail" />
-									</span>
-									<span v-else-if="banner_landscape && helper.getFileExtension(material_type) == 'video'">
-										<video muted="muted" class="img-thumbnail">
-											<source :src="banner_landscape" type="video/ogg">
-											Your browser does not support the video tag.
-										</video>
-									</span>
-								</div>
-							</div>
-							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'All'">
-								<label for="firstName" class="col-sm-4 col-form-label">Fullscreen Ad
-									<footer class="blockquote-footer">Landscape</footer>
-								</label>
-								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="landscape_fullscreen_ad" @change="landscapeFullscreenAd" multiple>
-									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer">image/video max size is 1920 x 1080 pixels</footer>
-								</div>
-								<div class="col-sm-3 text-center">
-									<span v-if="fullscreen_landscape && helper.getFileExtension(material_type) == 'image'">
-										<img v-if="fullscreen_landscape" :src="fullscreen_landscape" class="img-thumbnail" />
-									</span>
-									<span v-else-if="fullscreen_landscape && helper.getFileExtension(material_type) == 'video'">
-										<video muted="muted" class="img-thumbnail">
-											<source :src="fullscreen_landscape" type="video/ogg">
-											Your browser does not support the video tag.
-										</video>
-									</span>
-								</div>
-							</div>
-							<hr v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'"/>
-							<div class="form-group row" v-if="advertisements.product_application == 'Directory' || advertisements.product_application == 'Digital Signage' || advertisements.product_application == 'All'">
+							</div>							
+							<div class="form-group row" ">
 								<label for="firstName" class="col-sm-4 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
                                     <multiselect v-model="advertisements.status_id" 
@@ -267,48 +153,16 @@
 					company_id: '',
 					contract_id: '',
 					brand_id: '',
-					product_application: '',
-					screen_ids: '',
                     name: '',
 					status_id: '',
                     active: true,
-					display_duration: '',
-					materials: 0,
-					banner_portrait: {
-						file: '',
-						width: '',
-						height: ''
-					},
-					banner_landscape: {
-						file: '',
-						width: '',
-						height: ''
-					},
-					fullscreen_portrait: {
-						file: '',
-						width: '',
-						height: ''
-					},        
-					fullscreen_landscape: {
-						file: '',
-						width: '',
-						height: ''
-					},        
+					display_duration: '',      
                 },
-				width: '',
-				height: '',
-				banner_portrait: '',
-				banner_landscape: '',
-				fullscreen_portrait: '',
-				fullscreen_landscape: '',
 				material_type: '',
                 companies: [],
                 contracts: [],
                 brands: [],
                 statuses: [],
-				product_applications: ['Digital Signage', 'Directory', 'All'],
-                screens: [],
-				tmp_screens: [],
                 add_record: true,
                 edit_record: false,
             	dataFields: {
@@ -345,7 +199,7 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/advertisement/list/"+this.product_application,
+            	dataUrl: "/admin/advertisement/list/",
             	actionButtons: {
             		edit: {
             			title: 'Edit this Content',
