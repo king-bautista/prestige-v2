@@ -17,6 +17,10 @@
         <link rel="stylesheet" href="{{ URL::to('css/softkeys-0.0.1.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/fancybox.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
+        <!-- SM MID Generic UI -->
+        <link rel="stylesheet" href="{{ URL::to('css/generic-sm-theme-kiosk.css') }}">
+        <!-- SM MID MEGA Generic UI -->
+        <!-- <link rel="stylesheet" href="{{ URL::to('css/smeg-theme-kiosk.css') }}"> -->
     </head>
 
     <body>
