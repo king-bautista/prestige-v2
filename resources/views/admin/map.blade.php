@@ -84,7 +84,7 @@
                       <div class="row">
                         <div class="col-md-12 map-holder">
                           <div id="selectable" class="ui-selectable"></div>
-                          <canvas id="my-point" width="3000" height="3000" style="position: absolute;"></canvas>
+                          <canvas id="my-point" style="position: absolute;"></canvas>
                           <img id="map_path">
                         </div>
                       </div>
@@ -223,6 +223,8 @@
     
     // SET WIDTH, HEIGHT, AND IMAGE PATH
     $("#map_path").attr('width', map_width);
+    $("#my-point").attr('width', map_width);
+    $("#my-point").attr('height', map_width);
     $("#map_path").attr('src', floor_map);
     $("#selectable").attr('style', 'width: '+map_width+'px; height: '+map_height+'px;');
 
