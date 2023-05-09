@@ -148,6 +148,15 @@
             </div>
           </div>
           <div class="form-group row mb-0">
+            <label for="firstName" class="col-sm-6 col-form-label">WRAP:</label>
+            <div class="col-sm-6">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" id="wrap_at" name="wrap_at" class="frm_info custom-control-input" value="1">
+                <label class="custom-control-label" for="wrap_at"></label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-12 col-form-label">Tenant:</label>
             <div class="col-sm-12">
               <select class="frm_info custom-select" id="tenant_id" name="tenant_id">
@@ -364,10 +373,13 @@
 
     $("#" +  data.id).html('<p class="point-text">'+point_label+'</p>');
 
-    var p_width = $("#" +  data.id+" p:first" ).width();
+    var p_width = $("#" +  data.id+" p:first").width();
+    var p_height = $("#" +  data.id+" p:first").height();
     var center=((p_width/2)-5)*-1;
+    var vcenter=((p_height/2)-5)*-1;
 
-    $("#" +  data.id+" p:first" ).css({"font-size": fontSize+"rem", "margin": mtop+"px 0 0 "+center+"px", "transform": "rotate(" + data.rotation_z + "deg)"});
+    $("#" +  data.id+" p:first" ).css({"font-size": fontSize+"rem", "position" : "absolute", "top":+ vcenter +"px", "left":+ center +"px", "transform": "rotate(" + data.rotation_z + "deg)"});
+    // $("#" +  data.id+" p:first" ).css({"font-size": fontSize+"rem", "margin": mtop+"px 0 0 "+center+"px", "transform": "rotate(" + data.rotation_z + "deg)"});
 
     $("#" +  data.id).click(function() {
       $(this).css('background-color', 'red');

@@ -405,7 +405,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'text_width' => ($request->text_width) ? $request->text_width : 0,
                 'is_pwd' => ($request->is_pwd) ? $request->is_pwd : 0,
                 'point_label' => ($request->point_label) ? $request->point_label : null,
-                'wrap_at' => ($request->wrap_at == "on") ? 1 : 0,
+                'wrap_at' => ($request->wrap_at == 1) ? 1 : 0,
             ];
 
             $site_point->update($data);

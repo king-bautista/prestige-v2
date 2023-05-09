@@ -1,6 +1,6 @@
 var defaults = {
-    width: 3000,
-    height: 3000,
+    width: 5000,
+    height: 5000,
     currentmap_id: 0,
     defaultmap_id: 0,
     currentmap: 0,
@@ -203,6 +203,7 @@ WayFinding.prototype = {
         var font_weight = 'bold';
         var labels=[];
         var nextId=tenant.id; //no. of id shown
+        var wrap=tenant.wrap_at
 
         //Draw Ameneties Icon
         if (tenant.point_type > 0) {
@@ -217,13 +218,13 @@ WayFinding.prototype = {
         }
 
         if(text) {
-            var label = addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius);
+            var label = addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius,wrap);
             if (tenant.point_type == 0) {
                 drawLabel(label);
             }
         }
 
-        function addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius) {
+        function addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius,wrap) {
             var font = font_weight + ' ' + font_size+'px '+ font_face;
             var title_width = longest(text);
             ctx.font = font;
@@ -244,7 +245,7 @@ WayFinding.prototype = {
                 dotRadius:dot_radius,
                 dotX:coord_x,
                 dotY:coord_y,
-                wrap:1,
+                wrap:wrap,
                 size:font_size,
             }; 
             labels.push(label);
@@ -270,15 +271,17 @@ WayFinding.prototype = {
         function drawLabel(label) {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
+            label_height = 14;
 
             if(label.wrap == 0) {
+                var text_width = ctx.measureText(label.text.toUpperCase()).width/2;
                 ctx.textAlign='left';
                 ctx.font = label.font;
                 ctx.strokeStyle = 'white';
-                ctx.lineWidth = 2;
-                ctx.strokeText(label.text.toUpperCase(),label.x,label.y);
+                ctx.lineWidth = 2;   
+                ctx.strokeText(label.text.toUpperCase(),label.dotX-text_width,label.y+label_height);
                 ctx.fillStyle = "rgb(32,32,32)";
-                ctx.fillText(label.text.toUpperCase(),label.x,label.y);
+                ctx.fillText(label.text.toUpperCase(),label.dotX-text_width,label.y+label_height);
             }
             else {
                 ctx.font = label.font;
@@ -289,7 +292,7 @@ WayFinding.prototype = {
                 ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
                 var text = label.text;
                 var stitle_w = longest(label.text);
-                var w = ctx.measureText(stitle_w.toUpperCase()).width;
+                var w = ctx.measureText(stitle_w.toUpperCase()).width + 8;
                 var words = text.split(' '),
                     line = '',
                     lineCount = 0,
@@ -314,8 +317,8 @@ WayFinding.prototype = {
                     metrics = ctx.measureText(test);
                     
                     if (metrics.width > w && i > 0) {
-                        ctx.strokeText(line.toUpperCase(), label.x + (w/2) + 4, label.y);
-                        ctx.fillText(line.toUpperCase(), label.x + (w/2) + 4, label.y);
+                        ctx.strokeText(line.toUpperCase(), label.x + (w/2) -4, label.y +label_height);
+                        ctx.fillText(line.toUpperCase(), label.x + (w/2) -4, label.y +label_height);
                         line = words[i] + ' ';
                         label.y += label.size - 1;
                         label.dotY = parseInt(label.dotY) + label.size - 1;
@@ -326,14 +329,14 @@ WayFinding.prototype = {
                     }
                 }
 
-                ctx.strokeText(line.toUpperCase(), label.x + (w/2) + 4, label.y);
-                ctx.fillText(line.toUpperCase(), label.x + (w/2) + 4, label.y);				
+                ctx.strokeText(line.toUpperCase(), label.x + (w/2) - 4, label.y +label_height);
+                ctx.fillText(line.toUpperCase(), label.x + (w/2) - 4, label.y +label_height);				
             }
 
             //create dots
-            ctx.beginPath();
-            ctx.arc(label.dotX,label.dotY,label.dotRadius,0,Math.PI*2);
-            ctx.fill();
+            // ctx.beginPath();
+            // ctx.arc(label.dotX,label.dotY,label.dotRadius,0,Math.PI*2);
+            // ctx.fill();
  
         }
 
