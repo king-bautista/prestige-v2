@@ -31,4 +31,24 @@ class ContractScreen extends Model
      * @var string
     */
     protected $table = 'contract_screens';
+
+    /**
+     * Append additiona info to the return data
+     *
+     * @var string
+     */
+	public $appends = [
+        'site_name',
+    ];
+
+    /****************************************
+    *           ATTRIBUTES PARTS            *
+    ****************************************/
+    public function getSiteNameAttribute() 
+    {
+        $site = Site::find($this->site_id);
+        if($site)
+            return $site->name;
+        return null;
+    }
 }
