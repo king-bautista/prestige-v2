@@ -71,7 +71,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
-	(10, 3, 'last_login', '2023-05-08 10:15:36', '2023-04-26 02:53:48', '2023-05-08 02:15:36', NULL);
+	(10, 3, 'last_login', '2023-05-09 09:28:33', '2023-04-26 02:53:48', '2023-05-09 01:28:33', NULL);
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~4 rows (approximately)
+-- Dumping data for table prestige.advertisements: ~3 rows (approximately)
 INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 3, 1, 7671, 5, 'All', 10, 'Sample 1', 1, '2023-05-04 02:57:02', '2023-05-04 08:46:42', NULL),
 	(2, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:48', '2023-05-05 03:11:48', NULL),
@@ -12414,7 +12414,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `modules_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~73 rows (approximately)
+-- Dumping data for table prestige.modules: ~71 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin', '#', 'Admin', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2023-04-05 07:57:28', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'Admin', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -12524,7 +12524,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~123 rows (approximately)
+-- Dumping data for table prestige.permissions: ~121 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -12699,7 +12699,7 @@ CREATE TABLE IF NOT EXISTS `pi_products` (
   CONSTRAINT `pi_products_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.pi_products: ~47 rows (approximately)
+-- Dumping data for table prestige.pi_products: ~86 rows (approximately)
 INSERT INTO `pi_products` (`id`, `site_screen_id`, `ad_type`, `description`, `dimension`, `width`, `height`, `sec_slot`, `slots`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 06:50:08', '2023-05-08 06:50:08', NULL),
 	(2, 1, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 15, 40, 1, '2023-05-08 07:02:52', '2023-05-08 07:15:54', NULL),
@@ -13444,7 +13444,7 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~175 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~174 rows (approximately)
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LGF', 1, '2022-10-24 01:00:47', '2022-10-24 01:00:47', NULL),
 	(2, 1, 1, 'UGF', 1, '2022-10-24 01:00:53', '2022-10-24 01:00:53', NULL),
@@ -13706,7 +13706,7 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   CONSTRAINT `site_maps_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_maps: ~33 rows (approximately)
+-- Dumping data for table prestige.site_maps: ~31 rows (approximately)
 INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `start_x`, `start_y`, `start_scale`, `default_x`, `default_y`, `default_scale`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 2, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -970, -1170, 0.50, 0, 0, 1.00, 1, 1, '2022-11-28 15:07:47', '2023-01-05 14:27:46', NULL),
 	(2, 1, 1, 4, 1, 'uploads/map/files/2F_A.png', 'uploads/map/preview/2F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-28 15:25:31', '2022-11-29 10:45:33', NULL),
@@ -16073,7 +16073,7 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes_temp` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=561 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes_temp: ~231 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes_temp: ~215 rows (approximately)
 INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, `up_time_hours`, `created_at`, `updated_at`) VALUES
 	(62, 4, '2023-03-28', '13:36:44', '2023-03-28 05:36:44', '2023-03-28 05:36:44'),
 	(69, 3, '2023-03-28', '14:18:44', '2023-03-28 06:18:44', '2023-03-28 06:18:44'),
@@ -21801,9 +21801,9 @@ CREATE TABLE IF NOT EXISTS `user_activity_logs` (
   PRIMARY KEY (`id`),
   KEY `user_activity_logs_company_id_foreign` (`company_id`),
   CONSTRAINT `user_activity_logs_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=436 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_activity_logs: ~416 rows (approximately)
+-- Dumping data for table prestige.user_activity_logs: ~390 rows (approximately)
 INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `module_accessed`, `company_id`, `type`, `user_id`, `user_name`, `transaction_id`, `query`, `bindings`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(19, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/store', 3, 'Admin', 3, 'perena, jordan', 8, 'insert into `faqs` (`question`, `answer`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [aaa, bbb, 1, 2023-04-24 15:31:45, 2023-04-24 15:31:45]', '2023-04-24 07:31:45', '2023-04-24 07:31:45', NULL),
 	(20, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/update', 3, 'Admin', 3, 'perena, jordan', 8, 'update `faqs` set `question` = ?, `answer` = ?, `faqs`.`updated_at` = ? where `id` = ?', ' [aaazzz, bbbvvv, 2023-04-24 15:32:00, 8]', '2023-04-24 07:32:00', '2023-04-24 07:32:00', NULL),
@@ -22220,7 +22220,8 @@ INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `mo
 	(431, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 8, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [SM site partner contract 1, 3, 360, 3, 100, 0, 0, 1, 2023-05-05 17:34:24, 2023-05-05 17:34:24]', '2023-05-05 09:34:24', '2023-05-05 09:34:24', NULL),
 	(432, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:34:24', '2023-05-05 09:34:24', NULL),
 	(433, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 9, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [SM site partner contract 1, 3, 360, 3, 100, 0, 0, 1, 2023-05-05 17:34:39, 2023-05-05 17:34:39]', '2023-05-05 09:34:39', '2023-05-05 09:34:39', NULL),
-	(434, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:34:39', '2023-05-05 09:34:39', NULL);
+	(434, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:34:39', '2023-05-05 09:34:39', NULL),
+	(435, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-09 09:28:33, 2023-05-09 09:28:33, 10]', '2023-05-09 01:28:33', '2023-05-09 01:28:33', NULL);
 
 -- Dumping structure for table prestige.user_brands
 DROP TABLE IF EXISTS `user_brands`;
