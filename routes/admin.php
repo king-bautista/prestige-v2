@@ -277,6 +277,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/screen/get-all', 'Admin\ScreensController@getAllScreens')->name('admin.site.screen.get-all');
     Route::get('/admin/site/screen/set-default/{id}', 'Admin\ScreensController@setDefault')->where('id', '[0-9]+')->name('admin.site.screen.set-default');
     Route::get('/admin/site/screen/download-csv', 'Admin\ScreensController@downloadCsv')->name('admin.site-screen.download-csv');
+
+    Route::get('/admin/site/maps', 'Admin\SiteMapController@index')->name('admin.site.maps');
+    Route::get('/admin/site/maps/list', 'Admin\SiteMapController@list')->name('admin.site.maps.list');
     /*
     |--------------------------------------------------------------------------
     | Sites Tenants Routes
