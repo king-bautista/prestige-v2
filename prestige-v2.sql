@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~3 rows (approximately)
+-- Dumping data for table prestige.advertisements: ~4 rows (approximately)
 INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 3, 1, 7671, 5, 'All', 10, 'Sample 1', 1, '2023-05-04 02:57:02', '2023-05-04 08:46:42', NULL),
 	(2, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:48', '2023-05-05 03:11:48', NULL),
@@ -449,7 +449,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7709 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,531 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,440 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -11460,7 +11460,7 @@ CREATE TABLE IF NOT EXISTS `cinema_sites` (
   CONSTRAINT `cinema_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.cinema_sites: ~0 rows (approximately)
+-- Dumping data for table prestige.cinema_sites: ~1 rows (approximately)
 INSERT INTO `cinema_sites` (`id`, `site_id`, `cinema_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, '2102', '2022-11-20 22:48:43', '2022-11-20 22:54:57', NULL);
 
@@ -12063,7 +12063,7 @@ CREATE TABLE IF NOT EXISTS `faqs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.faqs: ~0 rows (approximately)
+-- Dumping data for table prestige.faqs: ~1 rows (approximately)
 INSERT INTO `faqs` (`id`, `question`, `answer`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(12, '434343', 'Contrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transpa\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\n\r\n\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.rent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.', 1, '2023-03-28 21:43:03', '2023-03-28 21:43:03', NULL);
 
@@ -12111,7 +12111,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   KEY `logs_advertisement_id_index` (`advertisement_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.logs: ~207 rows (approximately)
+-- Dumping data for table prestige.logs: ~226 rows (approximately)
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_category_id`, `main_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `advertisement_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:42', '2023-02-28 06:31:42', NULL),
 	(2, 1, 2, 6, 1, 1, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:43', '2023-02-28 06:31:43', NULL),
@@ -12414,7 +12414,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `modules_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~71 rows (approximately)
+-- Dumping data for table prestige.modules: ~74 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin', '#', 'Admin', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2023-04-05 07:57:28', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'Admin', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -12488,7 +12488,8 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, 
 	(72, 71, 'Inquiries', '/admin/customer-cares', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-04-25 06:06:46', '2023-04-25 06:06:53', NULL),
 	(73, 71, 'Concerns', '/admin/customer-care/concerns', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-04-25 06:07:38', '2023-05-05 06:11:50', NULL),
 	(74, NULL, 'User Information', '/admin/users-information', 'Admin', 'nav-icon fa fa-question-circle', 1, '2023-05-05 06:11:38', '2023-05-05 06:11:38', NULL),
-	(75, NULL, 'Site Screen Product', '/admin/site/pi-products', 'Admin', 'nav-icon fa fa-desktop', 1, '2023-05-08 03:46:29', '2023-05-08 05:30:23', NULL);
+	(75, NULL, 'Site Screen Product', '/admin/site/pi-products', 'Admin', 'nav-icon fa fa-desktop', 1, '2023-05-08 03:46:29', '2023-05-08 05:30:23', NULL),
+	(76, 13, 'Maps', '/admin/site/maps', 'Admin', 'nav-icon fas fa-map', 1, '2023-05-09 01:35:40', '2023-05-09 02:10:54', NULL);
 
 -- Dumping structure for table prestige.password_resets
 DROP TABLE IF EXISTS `password_resets`;
@@ -12524,7 +12525,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~121 rows (approximately)
+-- Dumping data for table prestige.permissions: ~130 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -12536,35 +12537,35 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(8, 2, 8, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
 	(9, 2, 9, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
 	(10, 2, 10, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
-	(16, 1, 1, 1, 1, 1, 1, '2022-08-10 00:58:44', '2023-05-08 03:50:03', NULL),
-	(17, 1, 3, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(18, 1, 4, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(19, 1, 11, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
-	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-08 03:50:03', NULL),
+	(16, 1, 1, 1, 1, 1, 1, '2022-08-10 00:58:44', '2023-05-09 01:37:56', NULL),
+	(17, 1, 3, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(18, 1, 4, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(19, 1, 11, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
+	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-09 01:37:56', NULL),
 	(26, 1, 12, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
-	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(31, 1, 17, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(32, 1, 18, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(33, 1, 19, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(34, 1, 20, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(35, 1, 21, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(36, 1, 22, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(37, 1, 23, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(38, 1, 24, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(39, 1, 25, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(40, 1, 26, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(41, 1, 27, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(42, 1, 28, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(43, 1, 29, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
-	(44, 1, 30, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-08 03:50:03', NULL),
+	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(31, 1, 17, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(32, 1, 18, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(33, 1, 19, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(34, 1, 20, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(35, 1, 21, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(36, 1, 22, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(37, 1, 23, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(38, 1, 24, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(39, 1, 25, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(40, 1, 26, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(41, 1, 27, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(42, 1, 28, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(43, 1, 29, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
+	(44, 1, 30, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-09 01:37:56', NULL),
 	(45, 2, 12, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(46, 2, 13, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(47, 2, 14, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
@@ -12584,21 +12585,21 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(61, 2, 28, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(62, 2, 29, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(63, 2, 30, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
-	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2023-05-08 03:50:03', NULL),
-	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2023-05-08 03:50:03', NULL),
-	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2023-05-08 03:50:03', NULL),
-	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2023-05-08 03:50:03', NULL),
-	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2023-05-08 03:50:03', NULL),
-	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2023-05-08 03:50:03', NULL),
+	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2023-05-09 01:37:56', NULL),
+	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2023-05-09 01:37:56', NULL),
+	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2023-05-09 01:37:56', NULL),
+	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2023-05-09 01:37:56', NULL),
+	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2023-05-09 01:37:56', NULL),
+	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2023-05-09 01:37:56', NULL),
 	(70, 1, 37, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-11-15 18:37:58', NULL),
-	(71, 1, 38, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
-	(72, 1, 39, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
-	(73, 1, 40, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
-	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-08 03:50:03', NULL),
-	(75, 1, 42, 1, 1, 1, 1, '2022-12-29 03:38:57', '2023-05-08 03:50:03', NULL),
-	(76, 1, 43, 1, 1, 1, 1, '2023-01-19 07:11:36', '2023-05-08 03:50:03', NULL),
-	(77, 1, 44, 1, 1, 1, 1, '2023-01-19 10:01:38', '2023-05-08 03:50:03', NULL),
-	(78, 1, 46, 1, 1, 1, 1, '2023-03-02 09:01:50', '2023-05-08 03:50:03', NULL),
+	(71, 1, 38, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-09 01:37:56', NULL),
+	(72, 1, 39, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-09 01:37:56', NULL),
+	(73, 1, 40, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-09 01:37:56', NULL),
+	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-09 01:37:56', NULL),
+	(75, 1, 42, 1, 1, 1, 1, '2022-12-29 03:38:57', '2023-05-09 01:37:56', NULL),
+	(76, 1, 43, 1, 1, 1, 1, '2023-01-19 07:11:36', '2023-05-09 01:37:56', NULL),
+	(77, 1, 44, 1, 1, 1, 1, '2023-01-19 10:01:38', '2023-05-09 01:37:56', NULL),
+	(78, 1, 46, 1, 1, 1, 1, '2023-03-02 09:01:50', '2023-05-09 01:37:56', NULL),
 	(79, 3, 47, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-22 02:14:58', NULL),
 	(80, 3, 48, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-22 02:14:58', NULL),
 	(81, 3, 49, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
@@ -12650,12 +12651,13 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(127, 3, 67, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
 	(128, 3, 68, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
 	(129, 3, 69, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
-	(130, 1, 70, 1, 1, 1, 1, '2023-03-29 09:53:20', '2023-05-08 03:50:03', NULL),
-	(131, 1, 71, 1, 1, 1, 1, '2023-03-29 10:04:21', '2023-05-08 03:50:03', NULL),
-	(132, 1, 72, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-08 03:50:03', NULL),
-	(133, 1, 73, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-08 03:50:03', NULL),
-	(134, 1, 74, 1, 1, 1, 1, '2023-05-05 06:13:03', '2023-05-08 03:50:03', NULL),
-	(135, 1, 75, 1, 1, 1, 1, '2023-05-08 03:50:03', '2023-05-08 03:50:03', NULL);
+	(130, 1, 70, 1, 1, 1, 1, '2023-03-29 09:53:20', '2023-05-09 01:37:56', NULL),
+	(131, 1, 71, 1, 1, 1, 1, '2023-03-29 10:04:21', '2023-05-09 01:37:56', NULL),
+	(132, 1, 72, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-09 01:37:56', NULL),
+	(133, 1, 73, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-09 01:37:56', NULL),
+	(134, 1, 74, 1, 1, 1, 1, '2023-05-05 06:13:03', '2023-05-09 01:37:56', NULL),
+	(135, 1, 75, 1, 1, 1, 1, '2023-05-08 03:50:03', '2023-05-09 01:37:56', NULL),
+	(136, 1, 76, 1, 1, 1, 1, '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
 DROP TABLE IF EXISTS `personal_access_tokens`;
@@ -12699,7 +12701,7 @@ CREATE TABLE IF NOT EXISTS `pi_products` (
   CONSTRAINT `pi_products_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.pi_products: ~86 rows (approximately)
+-- Dumping data for table prestige.pi_products: ~94 rows (approximately)
 INSERT INTO `pi_products` (`id`, `site_screen_id`, `ad_type`, `description`, `dimension`, `width`, `height`, `sec_slot`, `slots`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 06:50:08', '2023-05-08 06:50:08', NULL),
 	(2, 1, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 15, 40, 1, '2023-05-08 07:02:52', '2023-05-08 07:15:54', NULL),
@@ -12842,7 +12844,7 @@ CREATE TABLE IF NOT EXISTS `sites` (
   KEY `sites_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites: ~48 rows (approximately)
+-- Dumping data for table prestige.sites: ~49 rows (approximately)
 INSERT INTO `sites` (`id`, `name`, `descriptions`, `site_logo`, `site_banner`, `site_background`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'SM Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nFun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 'uploads/media/sites/background/SMMG-BG.jpg', 1, 0, '2022-10-24 00:54:28', '2023-05-04 08:35:10', NULL),
 	(2, 'SM Tuguegarao', 'KING\r\nSM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. \r\n\r\nIt\'s Fun and Festive Malling at SM City Tuguegarao!\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', '', 'uploads/media/sites/banners/about-us-smtu.jpg', NULL, 1, 0, '2022-10-25 17:14:19', '2023-04-17 02:16:03', '2023-04-17 02:16:03'),
@@ -12910,7 +12912,7 @@ CREATE TABLE IF NOT EXISTS `sites_meta` (
   CONSTRAINT `sites_meta_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=295 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites_meta: ~293 rows (approximately)
+-- Dumping data for table prestige.sites_meta: ~294 rows (approximately)
 INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'facebook', '@smmegamall', '2022-10-24 00:54:28', '2023-01-04 08:46:20', NULL),
 	(2, 1, 'instagram', '@smmegamall', '2022-10-24 00:54:28', '2023-01-04 08:46:20', NULL),
@@ -13363,7 +13365,7 @@ CREATE TABLE IF NOT EXISTS `site_buildings` (
   CONSTRAINT `site_buildings_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_buildings: ~59 rows (approximately)
+-- Dumping data for table prestige.site_buildings: ~60 rows (approximately)
 INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'Mega A', 'Mega A', 1, '2022-10-24 00:54:59', '2022-10-24 00:54:59', NULL),
 	(2, 1, 'Mega B', 'Mega B', 1, '2022-10-24 00:55:05', '2022-10-24 00:55:05', NULL),
@@ -13444,7 +13446,7 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~174 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~179 rows (approximately)
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LGF', 1, '2022-10-24 01:00:47', '2022-10-24 01:00:47', NULL),
 	(2, 1, 1, 'UGF', 1, '2022-10-24 01:00:53', '2022-10-24 01:00:53', NULL),
@@ -13645,7 +13647,7 @@ CREATE TABLE IF NOT EXISTS `site_feedback` (
   CONSTRAINT `site_feedback_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_feedback: ~15 rows (approximately)
+-- Dumping data for table prestige.site_feedback: ~16 rows (approximately)
 INSERT INTO `site_feedback` (`id`, `site_id`, `site_screen_id`, `helpful`, `reason`, `reason_other`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:56:23', '2023-03-22 07:56:24', NULL),
 	(2, 1, 1, 'Yes', NULL, NULL, '2023-03-22 07:57:10', '2023-03-22 07:57:10', NULL),
@@ -13706,7 +13708,7 @@ CREATE TABLE IF NOT EXISTS `site_maps` (
   CONSTRAINT `site_maps_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_maps: ~31 rows (approximately)
+-- Dumping data for table prestige.site_maps: ~33 rows (approximately)
 INSERT INTO `site_maps` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_screen_id`, `map_file`, `map_preview`, `descriptions`, `image_size_width`, `image_size_height`, `position_x`, `position_y`, `position_z`, `text_y_position`, `default_zoom`, `default_zoom_desktop`, `default_zoom_mobile`, `start_x`, `start_y`, `start_scale`, `default_x`, `default_y`, `default_scale`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 2, 1, 'uploads/map/files/0UG_A.png', 'uploads/map/preview/0UG_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, -970, -1170, 0.50, 0, 0, 1.00, 1, 1, '2022-11-28 15:07:47', '2023-01-05 14:27:46', NULL),
 	(2, 1, 1, 4, 1, 'uploads/map/files/2F_A.png', 'uploads/map/preview/2F_A.png', NULL, 3000, 3000, 10.00, 0.20, 5.00, 4.00, 0.40, 0.40, 0.40, 0, 0, 1.00, 0, 0, 1.00, 1, 0, '2022-11-28 15:25:31', '2022-11-29 10:45:33', NULL),
@@ -15745,7 +15747,7 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screens: ~271 rows (approximately)
+-- Dumping data for table prestige.site_screens: ~285 rows (approximately)
 INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `orientation`, `product_application`, `physical_size_diagonal`, `physical_size_width`, `physical_size_height`, `dimension`, `width`, `height`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 1, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, '1920 x 1080', NULL, NULL, 'thBRpAF7GchJOrBFe', 'Food Court', 20, 1, 0, 0, '2022-10-25 01:28:36', '2023-04-18 05:42:27', NULL),
 	(2, 1, 1, 2, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HmcSeFjl3tsyn0mva', 'National Bookstore', 24, 1, 0, 0, '2022-10-25 01:39:22', '2023-04-24 05:23:37', NULL),
@@ -16052,7 +16054,7 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes` (
   CONSTRAINT `site_screen_uptimes_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes: ~5 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes: ~6 rows (approximately)
 INSERT INTO `site_screen_uptimes` (`id`, `site_screen_id`, `up_time_date`, `total_hours`, `opening_hour`, `closing_hour`, `hours_up`, `percentage_uptime`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 1, '2023-03-26', 6, '10:00:00', '22:00:00', 12, 50.00, '2023-03-27 06:46:55', '2023-03-27 06:46:55', NULL),
 	(4, 1, '2023-03-27', 7, '10:00:00', '22:00:00', 12, 58.33, '2023-03-28 02:16:44', '2023-03-28 02:16:44', NULL),
@@ -16073,7 +16075,7 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes_temp` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=561 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes_temp: ~215 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes_temp: ~254 rows (approximately)
 INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, `up_time_hours`, `created_at`, `updated_at`) VALUES
 	(62, 4, '2023-03-28', '13:36:44', '2023-03-28 05:36:44', '2023-03-28 05:36:44'),
 	(69, 3, '2023-03-28', '14:18:44', '2023-03-28 06:18:44', '2023-03-28 06:18:44'),
@@ -21765,7 +21767,7 @@ CREATE TABLE IF NOT EXISTS `users_meta` (
   CONSTRAINT `users_meta_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.users_meta: ~11 rows (approximately)
+-- Dumping data for table prestige.users_meta: ~13 rows (approximately)
 INSERT INTO `users_meta` (`id`, `user_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(5, 3, 'first_name', 'King', '2022-08-10 10:52:17', '2022-08-10 10:52:17', NULL),
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 10:52:17', '2022-08-10 10:52:17', NULL),
@@ -21803,7 +21805,7 @@ CREATE TABLE IF NOT EXISTS `user_activity_logs` (
   CONSTRAINT `user_activity_logs_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=436 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_activity_logs: ~390 rows (approximately)
+-- Dumping data for table prestige.user_activity_logs: ~417 rows (approximately)
 INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `module_accessed`, `company_id`, `type`, `user_id`, `user_name`, `transaction_id`, `query`, `bindings`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(19, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/store', 3, 'Admin', 3, 'perena, jordan', 8, 'insert into `faqs` (`question`, `answer`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [aaa, bbb, 1, 2023-04-24 15:31:45, 2023-04-24 15:31:45]', '2023-04-24 07:31:45', '2023-04-24 07:31:45', NULL),
 	(20, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/update', 3, 'Admin', 3, 'perena, jordan', 8, 'update `faqs` set `question` = ?, `answer` = ?, `faqs`.`updated_at` = ? where `id` = ?', ' [aaazzz, bbbvvv, 2023-04-24 15:32:00, 8]', '2023-04-24 07:32:00', '2023-04-24 07:32:00', NULL),
@@ -22221,7 +22223,60 @@ INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `mo
 	(432, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:34:24', '2023-05-05 09:34:24', NULL),
 	(433, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 9, 'insert into `contracts` (`name`, `company_id`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `is_exclusive`, `is_indefinite`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ' [SM site partner contract 1, 3, 360, 3, 100, 0, 0, 1, 2023-05-05 17:34:39, 2023-05-05 17:34:39]', '2023-05-05 09:34:39', '2023-05-05 09:34:39', NULL),
 	(434, '2023-05-05 09:03:22', '2022-08-11 05:24:30', 'admin/company/contract/store', 3, 'Admin', 3, 'Bautista, King', 0, 'delete from `contract_brands` where `contract_id` = ?', ' [0]', '2023-05-05 09:34:39', '2023-05-05 09:34:39', NULL),
-	(435, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-09 09:28:33, 2023-05-09 09:28:33, 10]', '2023-05-09 01:28:33', '2023-05-09 01:28:33', NULL);
+	(435, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-09 09:28:33, 2023-05-09 09:28:33, 10]', '2023-05-09 01:28:33', '2023-05-09 01:28:33', NULL),
+	(436, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/modules/store', 3, 'Admin', 3, 'Bautista, King', 76, 'insert into `modules` (`name`, `parent_id`, `link`, `role`, `class_name`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)', ' [Maps, 13, #, Admin, #, 1, 2023-05-09 09:35:40, 2023-05-09 09:35:40]', '2023-05-09 01:35:40', '2023-05-09 01:35:40', NULL),
+	(437, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 76, 'update `modules` set `class_name` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [fas fa-map, 2023-05-09 09:36:35, 76]', '2023-05-09 01:36:35', '2023-05-09 01:36:35', NULL),
+	(438, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 76, 'update `modules` set `class_name` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [nav-icon fas fa-map, 2023-05-09 09:36:48, 76]', '2023-05-09 01:36:48', '2023-05-09 01:36:48', NULL),
+	(439, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 16, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 16]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(440, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 17, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 17]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(441, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 18, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 18]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(442, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 19, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 19]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(443, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 20, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 20]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(444, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 66, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 66]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(445, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 78, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 78]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(446, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 21, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 21]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(447, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 22, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 22]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(448, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 23, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 23]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(449, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 24, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 24]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(450, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 25, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 25]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(451, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 64, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 64]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(452, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 65, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 65]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(453, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 67, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 67]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(454, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 27, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 27]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(455, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 68, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 68]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(456, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 69, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 69]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(457, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 136, 'insert into `permissions` (`role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)', ' [1, 76, 1, 1, 1, 1, 2023-05-09 09:37:56, 2023-05-09 09:37:56]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(458, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 28, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 28]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(459, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 29, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 29]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(460, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 30, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 30]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(461, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 31, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 31]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(462, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 32, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 32]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(463, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 33, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 33]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(464, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 76, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 76]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(465, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 77, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 77]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(466, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 34, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 34]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(467, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 35, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 35]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(468, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 36, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 36]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(469, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 37, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 37]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(470, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 38, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 38]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(471, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 39, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 39]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(472, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 40, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 40]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(473, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 41, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 41]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(474, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 42, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 42]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(475, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 43, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 43]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(476, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 44, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 44]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(477, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 71, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 71]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(478, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 72, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 72]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(479, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 73, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 73]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(480, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 74, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 74]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(481, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 75, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 75]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(482, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 130, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 130]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(483, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 131, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 131]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(484, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 132, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 132]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(485, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 133, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 133]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(486, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 134, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 134]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(487, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/roles/update', 3, 'Admin', 3, 'Bautista, King', 135, 'update `permissions` set `can_view` = ?, `can_add` = ?, `can_edit` = ?, `can_delete` = ?, `permissions`.`updated_at` = ? where `id` = ?', ' [1, 1, 1, 1, 2023-05-09 09:37:56, 135]', '2023-05-09 01:37:56', '2023-05-09 01:37:56', NULL),
+	(488, '2023-05-09 09:28:33', '2022-08-11 05:24:30', 'admin/modules/update', 3, 'Admin', 3, 'Bautista, King', 76, 'update `modules` set `link` = ?, `modules`.`updated_at` = ? where `id` = ?', ' [/admin/site/maps, 2023-05-09 10:10:54, 76]', '2023-05-09 02:10:54', '2023-05-09 02:10:54', NULL);
 
 -- Dumping structure for table prestige.user_brands
 DROP TABLE IF EXISTS `user_brands`;
