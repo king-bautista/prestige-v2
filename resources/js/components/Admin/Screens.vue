@@ -286,12 +286,12 @@ import Table from '../Helpers/Table';
 						method: 'add'
 					},
 					download: {
-					title: 'Download',
-					v_on: 'downloadCsv',
-					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
-					class: 'btn btn-primary btn-sm',
-					method: 'add'
-				},
+						title: 'Download',
+						v_on: 'downloadCsv',
+						icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
 				}
             };
         },

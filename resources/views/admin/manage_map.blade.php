@@ -6,7 +6,7 @@
     <div class="row mb-2">
       <div class="col-sm-6">
         <h1 class="m-0">Manage Maps : {{$site_screen->name}}
-            <a type="button" href="/admin/site/screens" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back to Site Details</a>
+            <a type="button" href="/admin/site/maps" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back to Site Details</a>
         </h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
