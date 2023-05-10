@@ -10,8 +10,11 @@
 								<h5 class="card-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add
 									New Company</h5>
 								<h5 class="card-title" v-show="edit_record"><i class="fas fa-edit"></i> Company Info</h5>
-								<button type="button" class="btn btn-secondary btn-sm float-right" @click="backToList"><i
-										class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
+								<a href="/admin/companies">
+								<button type="button" class="btn btn-secondary btn-sm float-right">
+								<i class="fa fa-angle-double-left" aria-hidden="true"></i>
+								&nbsp;Back to list</button>
+								</a>
 							</div>
 							<div class="card-body">
 								<div class="row">
