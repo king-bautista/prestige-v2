@@ -22,8 +22,6 @@ class AdvertisementMaterial extends Model
         'dimension',
         'width',
         'height',
-        'ad_type',
-        'orientation',
     ];
 
     /**

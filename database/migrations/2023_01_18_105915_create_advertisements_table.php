@@ -21,7 +21,6 @@ class CreateAdvertisementsTable extends Migration
             $table->bigInteger('contract_id')->unsigned()->nullable()->index();
             $table->bigInteger('brand_id')->unsigned()->nullable()->index();
             $table->bigInteger('status_id')->unsigned()->nullable()->index();
-            $table->enum('product_application', ['Directory','Digital Signage']);
             $table->integer('display_duration')->default(0);
             $table->string('name');
             $table->boolean('active')->default(true);
@@ -46,8 +45,6 @@ class CreateAdvertisementsTable extends Migration
             $table->string('dimension')->nullable();
             $table->string('width')->nullable();
             $table->string('height')->nullable();
-            $table->enum('ad_type', ['Banner Ad','Fullscreen Ad']);
-            $table->enum('orientation', ['Landscape','Portrait']);
             $table->timestamps();
             $table->softDeletes();
 
@@ -58,13 +55,14 @@ class CreateAdvertisementsTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
+            $table->bigInteger('material_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_id')->unsigned()->nullable()->index();
-            $table->enum('product_application', ['Directory','Digital Signage', 'All']);
+            $table->string('ad_type')->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('advertisement_id')->references('id')->on('advertisements');
+            $table->foreign('material_id')->references('id')->on('advertisement_materials');
         });
         
     }
