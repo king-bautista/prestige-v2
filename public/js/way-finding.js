@@ -292,7 +292,7 @@ WayFinding.prototype = {
                 ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
                 var text = label.text;
                 var stitle_w = longest(label.text);
-                var w = ctx.measureText(stitle_w.toUpperCase()).width + 8;
+                var w = ctx.measureText(stitle_w.toUpperCase()).width + 10;
                 var words = text.split(' '),
                     line = '',
                     lineCount = 0,
@@ -317,8 +317,8 @@ WayFinding.prototype = {
                     metrics = ctx.measureText(test);
                     
                     if (metrics.width > w && i > 0) {
-                        ctx.strokeText(line.toUpperCase(), label.x + (w/2) -4, label.y +label_height);
-                        ctx.fillText(line.toUpperCase(), label.x + (w/2) -4, label.y +label_height);
+                        ctx.strokeText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
+                        ctx.fillText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
                         line = words[i] + ' ';
                         label.y += label.size - 1;
                         label.dotY = parseInt(label.dotY) + label.size - 1;
@@ -329,8 +329,8 @@ WayFinding.prototype = {
                     }
                 }
 
-                ctx.strokeText(line.toUpperCase(), label.x + (w/2) - 4, label.y +label_height);
-                ctx.fillText(line.toUpperCase(), label.x + (w/2) - 4, label.y +label_height);				
+                ctx.strokeText(line.toUpperCase(), label.x + (w/2) - 5, label.y +label_height);
+                ctx.fillText(line.toUpperCase(), label.x + (w/2) - 5, label.y +label_height);				
             }
 
             //create dots
@@ -393,16 +393,16 @@ WayFinding.prototype = {
         }
 
         // set default map zoom level each map
-        if (reference != 'start') {
-            const elem = document.getElementById('zoomable-container')
-            const panzoom = Panzoom(elem, {
-                maxScale: 5,
-                canvas: true,
-                startScale: map_details.default_scale,
-                startX: map_details.default_x,
-                startY: map_details.default_y
-            })  
-        }
+        // if (reference != 'start') {
+        //     const elem = document.getElementById('zoomable-container')
+        //     const panzoom = Panzoom(elem, {
+        //         maxScale: 5,
+        //         canvas: true,
+        //         startScale: map_details.default_scale,
+        //         startX: map_details.default_x,
+        //         startY: map_details.default_y
+        //     })  
+        // }
         
         this.settings.currentmap_id = id;
         this.settings.currentmap = map_details.site_building_level_id + '-' + map_details.site_building_id;
@@ -499,13 +499,13 @@ WayFinding.prototype = {
 
         if(direction) {
             context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
-            context.font = "bold 30px Raleway";
+            context.font = "bold 30px Henry Sans Medium";
             context.fillStyle = "rgb(71, 131, 162)";
             context.fillText(text.toUpperCase(),(this.settings.points.linePoint[this.settings.current_point].x+65),(this.settings.points.linePoint[this.settings.current_point].y-37));
         }
         else {
             context.drawImage(document.getElementById('marker-escalator-down'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
-            context.font = "bold 30px Raleway";
+            context.font = "bold 30px Henry Sans Medium";
             context.fillStyle = "rgb(71, 131, 162)";
             context.fillText(text.toUpperCase(),(this.settings.points.linePoint[this.settings.current_point].x+65),(this.settings.points.linePoint[this.settings.current_point].y-37));
         }

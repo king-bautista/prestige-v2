@@ -227,7 +227,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     public function getMapDetails($id)
     {
         $current_map = SiteMapViewModel::find($id);
-        $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->get();
+        $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('site_screen_id', $current_map->site_screen_id)->get();
         $site_details = SiteViewModel::find($current_map->site_id);
         
         $amenities = Amenity::get();
