@@ -238,6 +238,7 @@
                 submit_disable: true,
                 feedback_response: false,
                 called_from: '',
+                panzoom: '',
             };
         },
 
@@ -331,6 +332,9 @@
                     this.wayfindings.clearMarker();
                     this.wayfindings.showmap(value);
                 });
+                // set default map zoom level each map
+                this.panzoom.zoom(value.default_scale)
+                setTimeout(() => this.panzoom.pan(value.default_x, value.default_y))
 			},
 
             find_store: function(value, called_from) {
@@ -408,14 +412,8 @@
                 obj.$refs.multiselectFloor.value = this.active_map_details;
 
                 // Reset Start Scale
-                const elem = document.getElementById('zoomable-container')
-                const panzoom = Panzoom(elem, {
-                    maxScale: 5,
-                    canvas: true,
-                    startScale: obj.active_map_details.start_scale,
-                    startX: obj.active_map_details.start_x,
-                    startY: obj.active_map_details.start_y
-                })
+                obj.panzoom.zoom(obj.active_map_details.start_scale)
+                setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y))
             },
 
             softkeys: function() {
@@ -489,7 +487,7 @@
                     // Initialize Panzoom JS
                     const elem = document.getElementById('zoomable-container')
                     const parent = elem.parentElement
-                    const panzoom = Panzoom(elem, {
+                    vm.panzoom = Panzoom(elem, {
                         maxScale: 5,
                         canvas: true,
                         startScale: vm.active_map_details.default_scale,
@@ -498,9 +496,9 @@
                     })
 
                     // Zoom In / Zoom Out Controls
-                    $('#zoomInButton').get(0).addEventListener('click', panzoom.zoomIn)
-                    $('#zoomOutButton').get(0).addEventListener('click', panzoom.zoomOut)
-                    $('#zoomResetButton').get(0).addEventListener('click', panzoom.reset)
+                    $('#zoomInButton').get(0).addEventListener('click', vm.panzoom.zoomIn)
+                    $('#zoomOutButton').get(0).addEventListener('click', vm.panzoom.zoomOut)
+                    $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 
                     // Display Panzoom Values on Change Event
                     elem.addEventListener('panzoomchange', (event) => {
@@ -508,12 +506,12 @@
                     })
 
                     // No function bind needed
-                    parent.addEventListener('wheel', panzoom.zoomWithWheel)
+                    parent.addEventListener('wheel', vm.panzoom.zoomWithWheel)
 
                     // This demo binds to shift + wheel
                     parent.addEventListener('wheel', function(event) {
                         if (!event.shiftKey) return
-                        panzoom.zoomWithWheel(event)
+                        vm.panzoom.zoomWithWheel(event)
                     })
                 });
 
