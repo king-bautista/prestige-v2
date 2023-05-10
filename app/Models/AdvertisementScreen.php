@@ -14,9 +14,10 @@ class AdvertisementScreen extends Model
      */
     protected $fillable = [
         'advertisement_id', 
+        'material_id',
         'site_screen_id',
         'site_id',
-        'product_application',
+        'ad_type',
     ];
 
     /**

@@ -19,7 +19,6 @@ class Advertisement extends Model
         'contract_id',
         'brand_id',
         'status_id',
-        'product_application',
         'display_duration',
         'name',
         'active',

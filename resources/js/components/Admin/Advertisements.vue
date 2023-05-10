@@ -42,13 +42,13 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="advertisements.name" placeholder="Advertisements Name" required>
+									<input type="text" class="form-control" v-model="advertisement.name" placeholder="Advertisements Name" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<multiselect v-model="advertisements.company_id"
+									<multiselect v-model="advertisement.company_id"
 										:options="companies"
 										:multiple="false"
 										:close-on-select="true"
@@ -64,7 +64,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Contract <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <multiselect v-model="advertisements.contract_id" 
+                                    <multiselect v-model="advertisement.contract_id" 
 										:options="contracts" 
 										:multiple="false"
 										:close-on-select="true"
@@ -80,7 +80,7 @@
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <multiselect v-model="advertisements.brand_id" 
+                                    <multiselect v-model="advertisement.brand_id" 
 										:options="brands" 
 										:multiple="false"
 										:close-on-select="true"
@@ -91,18 +91,11 @@
 										placeholder="Select Brand">
                                     </multiselect> 
 								</div>
-							</div>
+							</div>						
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" v-model="advertisements.display_duration" placeholder="Duration"> 
-									<footer class="blockquote-footer">In Seconds</footer>
-								</div>
-							</div>							
-							<div class="form-group row" ">
 								<label for="firstName" class="col-sm-4 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <multiselect v-model="advertisements.status_id" 
+                                    <multiselect v-model="advertisement.status_id" 
 										:options="statuses" 
 										:multiple="false"
 										:close-on-select="true"
@@ -114,13 +107,60 @@
                                     </multiselect> 
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" v-model="advertisement.display_duration" placeholder="Duration"> 
+									<footer class="blockquote-footer">In Seconds</footer>
+								</div>
+							</div>	
 							<div class="form-group row" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="active" v-model="advertisements.active">
+										<input type="checkbox" class="custom-control-input" id="active" v-model="advertisement.active">
 										<label class="custom-control-label" for="active"></label>
 									</div>
+								</div>
+							</div>
+							<div v-for="(material, index) in advertisement.materials" v-bind:key="index">
+								<hr/>
+								<div class="form-group row">
+									
+									<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>								
+									<div class="col-sm-5">
+										<input type="file" accept="image/*" ref="materials" @change="fileUpload" multiple>
+										<footer class="blockquote-footer">Max file size is 15MB</footer>
+									</div>
+									<div class="col-sm-3 text-center">
+										<span v-if="material.src && helper.getFileExtension(material.type) == 'image'">
+											<img v-if="material.src" :src="material.src" class="img-thumbnail" />
+										</span>
+										<span v-else-if="material.src && helper.getFileExtension(material.type) == 'video'">
+											<video muted="muted" class="img-thumbnail">
+												<source :src="material.src" type="video/ogg">
+												Your browser does not support the video tag.
+											</video>
+										</span>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="firstName" class="col-sm-4 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-8">
+										<multiselect v-model="material.screen_ids" 
+										track-by="site_screen_location" 
+										label="site_screen_location" 
+										placeholder="Select Screens" 
+										:options="material.screens" 
+										:searchable="true" 
+										:multiple="true">
+										</multiselect> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary" v-show="add_record" @click="addMaterial">Add Material</button>
 								</div>
 							</div>
 						</div>
@@ -148,7 +188,7 @@
         data() {
             return {
                 helper: new Helpers(),
-                advertisements: {
+                advertisement: {
                     id: '',
 					company_id: '',
 					contract_id: '',
@@ -156,8 +196,14 @@
                     name: '',
 					status_id: '',
                     active: true,
-					display_duration: '',      
+					display_duration: '',
+					materials: []
                 },
+				filter: {
+					height: '',
+					width: '',
+					contract_id: ''
+				},
 				material_type: '',
                 companies: [],
                 contracts: [],
@@ -199,13 +245,13 @@
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/advertisement/list/",
+            	dataUrl: "/admin/manage-ads/list",
             	actionButtons: {
             		edit: {
             			title: 'Edit this Content',
             			name: 'Edit',
             			apiUrl: '',
-            			routeName: 'advertisements.edit',
+            			routeName: 'advertisement.edit',
             			button: '<i class="fas fa-edit"></i> Edit',
             			method: 'edit'
             		},
@@ -252,24 +298,26 @@
 
 			contractSelected: function(contract) {
 				this.brands = contract.brands;
-				this.screens = contract.screens;
 			},
 
-			applicationSelected: function(application) {
-				this.advertisements.screen_ids = '';
-				if(application == 'All') {
-					this.tmp_screens = this.screens;
-				}
-				else {
-					this.tmp_screens = this.screens.filter(option => option.product_application == application); 
-				}
+			addMaterial: function() {
+				this.advertisement.materials.push({
+					src: '',
+					width: '',
+					height: '',
+					screens: [],
+					screen_ids: [],
+				});
 			},
 
-			portraitBannerAd: function(e) {
+			deleteRow: function(index) {
+				this.advertisement.materials.splice(index, 1);
+			},
+
+			fileUpload: function(e) {
 				var file = e.target.files[0];
 				this.material_type = e.target.files[0].type;
       			this.banner_portrait = URL.createObjectURL(file);
-				this.advertisements.banner_portrait.file = file;
 				
 				var file_type = this.material_type.split("/");
 				var obj = this;
@@ -280,7 +328,7 @@
 					material.onload = function() {
 						if(material.width > material.height) {
 							obj.banner_portrait = null;
-							obj.advertisements.banner_portrait = {
+							obj.advertisement.banner_portrait = {
 								file: '',
 								width: '',
 								height: ''
@@ -289,9 +337,9 @@
 							toastr.error('Invalid material for banner ad portrait size.');
 						}
 						else {
-							obj.advertisements.banner_portrait.width = material.width;
-							obj.advertisements.banner_portrait.height = material.height;
-							obj.advertisements.materials++;							
+							obj.advertisement.banner_portrait.width = material.width;
+							obj.advertisement.banner_portrait.height = material.height;
+							obj.advertisement.materials++;							
 						}
 					};
 						
@@ -302,11 +350,11 @@
 					material.src = this.banner_portrait;
 					material.addEventListener("loadedmetadata", function () {
 						
-						obj.advertisements.display_duration = this.duration;
+						obj.advertisement.display_duration = this.duration;
 
 						if(this.videoWidth > this.videoHeight) {
 							obj.banner_portrait = null;
-							obj.advertisements.banner_portrait = {
+							obj.advertisement.banner_portrait = {
 								file: '',
 								width: '',
 								height: ''
@@ -315,214 +363,24 @@
 							toastr.error('Invalid material for banner ad portrait size.');
 						}
 						else {
-							obj.advertisements.banner_portrait.width = this.videoWidth;
-							obj.advertisements.banner_portrait.height = this.videoHeight;		
-							obj.advertisements.materials++;							
-						}
-					});
-				}
-			},
-
-			portraitFullscreenAd: function(e) {
-				var file = e.target.files[0];
-				this.material_type = e.target.files[0].type;
-      			this.fullscreen_portrait = URL.createObjectURL(file);
-				this.advertisements.fullscreen_portrait.file = file;
-				
-				var file_type = this.material_type.split("/");
-				var obj = this;
-				var material;
-
-				if(file_type[0] == 'image') {
-					material = new Image;
-					material.onload = function() {
-						if(material.width > material.height) {
-							obj.fullscreen_portrait = null;
-							obj.advertisements.fullscreen_portrait = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.portrait_fullscreen_ad.value = null;							
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisements.fullscreen_portrait.width = material.width;
-							obj.advertisements.fullscreen_portrait.height = material.height;
-						}
-					};
-						
-					material.src = this.fullscreen_portrait;
-				}
-				else if(file_type[0] == 'video') {
-					material = document.createElement("video");
-					material.src = this.fullscreen_portrait;
-					material.addEventListener("loadedmetadata", function () {
-						
-						obj.advertisements.display_duration = this.duration;
-
-						if(this.videoWidth > this.videoHeight) {
-							obj.fullscreen_portrait = null;
-							obj.advertisements.fullscreen_portrait = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.portrait_fullscreen_ad.value = null;
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisements.fullscreen_portrait.width = this.videoWidth;
-							obj.advertisements.fullscreen_portrait.height = this.videoHeight;		
-							obj.advertisements.materials++;							
-						}
-					});
-				}
-			},
-
-			landscapeBannerAd: function(e) {
-				var file = e.target.files[0];
-				this.material_type = e.target.files[0].type;
-      			this.banner_landscape = URL.createObjectURL(file);
-				
-				var file_type = this.material_type.split("/");
-				var obj = this;
-				var material;
-
-				if(file_type[0] == 'image') {
-					material = new Image;
-					material.onload = function() {
-						if(material.height > material.width) {
-							obj.banner_landscape = null;
-							obj.advertisements.banner_landscape = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.landscape_banner_ad.value = null;							
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisements.banner_landscape.width = material.width;
-							obj.advertisements.banner_landscape.height = material.height;
-							obj.advertisements.banner_landscape.file = file;
-						}
-					};
-						
-					material.src = this.banner_landscape;
-				}
-				else if(file_type[0] == 'video') {
-					material = document.createElement("video");
-					material.src = this.banner_landscape;
-					material.addEventListener("loadedmetadata", function () {
-						
-						obj.advertisements.display_duration = this.duration;
-
-						if(this.videoWidth > this.videoHeight) {
-							obj.banner_landscape = null;
-							obj.advertisements.banner_landscape = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.landscape_banner_ad.value = null;
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisements.banner_landscape.width = this.videoWidth;
-							obj.advertisements.banner_landscape.height = this.videoHeight;		
-						}
-					});
-				}
-			},
-
-			landscapeFullscreenAd: function(e) {
-				var file = e.target.files[0];
-				this.material_type = e.target.files[0].type;
-      			this.fullscreen_landscape = URL.createObjectURL(file);
-				this.advertisements.fullscreen_landscape.file = file;
-				
-				var file_type = this.material_type.split("/");
-				var obj = this;
-				var material;
-
-				if(file_type[0] == 'image') {
-					material = new Image;
-					material.onload = function() {
-						if(material.height > material.width) {
-							obj.fullscreen_landscape = null;
-							obj.advertisements.fullscreen_landscape = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.landscape_fullscreen_ad.value = null;							
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisements.fullscreen_landscape.width = material.width;
-							obj.advertisements.fullscreen_landscape.height = material.height;
-						}
-					};
-						
-					material.src = this.fullscreen_landscape;
-				}
-				else if(file_type[0] == 'video') {
-					material = document.createElement("video");
-					material.src = this.fullscreen_landscape;
-					material.addEventListener("loadedmetadata", function () {
-						
-						obj.advertisements.display_duration = this.duration;
-
-						if(this.videoWidth > this.videoHeight) {
-							obj.fullscreen_landscape = null;
-							obj.advertisements.fullscreen_landscape = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.landscape_fullscreen_ad.value = null;
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisements.fullscreen_landscape.width = this.videoWidth;
-							obj.advertisements.fullscreen_landscape.height = this.videoHeight;		
+							obj.advertisement.banner_portrait.width = this.videoWidth;
+							obj.advertisement.banner_portrait.height = this.videoHeight;		
+							obj.advertisement.materials++;							
 						}
 					});
 				}
 			},
 
 			AddNewAdvertisements: function() {
-				this.advertisements.company_id = '';
-				this.advertisements.contract_id = '';
-				this.advertisements.brand_id = '';
-				this.advertisements.product_application = '';
-				this.advertisements.screen_ids = '';
-				this.advertisements.name = '';
-				this.advertisements.status_id = '';
-				this.advertisements.active = true;
-				this.advertisements.display_duration = '';
-				this.advertisements.materials = 0;
-				this.advertisements.banner_portrait = {
-					file: '',
-					width: '',
-					height: ''
-				};
-				this.advertisements.banner_landscape = {
-					file: '',
-					width: '',
-					height: ''
-				};
-				this.advertisements.fullscreen_portrait = {
-					file: '',
-					width: '',
-					height: ''
-				};
-				this.advertisements.fullscreen_landscape = {
-					file: '',
-					width: '',
-					height: ''
-				};
+				this.advertisement.name = '';
+				this.advertisement.company_id = '';
+				this.advertisement.contract_id = '';
+				this.advertisement.brand_id = '';
+				this.advertisement.status_id = '';
+				this.advertisement.display_duration = '';
+				this.advertisement.active = true;
+				this.advertisement.materials = [];
+				this.addMaterial();
 
 				this.add_record = true;
 				this.edit_record = false;
@@ -531,25 +389,25 @@
 
             storeAdvertisements: function() {
 				let formData = new FormData();
-				formData.append("company_id", (this.advertisements.company_id) ? JSON.stringify(this.advertisements.company_id) : '');
-				formData.append("contract_id", (this.advertisements.contract_id) ? JSON.stringify(this.advertisements.contract_id) : '');
-				formData.append("brand_id", (this.advertisements.brand_id) ? JSON.stringify(this.advertisements.brand_id) : '');
-				formData.append("product_application", this.advertisements.product_application);
-				formData.append("screen_ids", JSON.stringify(this.advertisements.screen_ids));
-				formData.append("name", this.advertisements.name);
-				formData.append("status_id", (this.advertisements.status_id) ? JSON.stringify(this.advertisements.status_id) : '');
-				formData.append("active", this.advertisements.active);
-				formData.append("display_duration", this.advertisements.display_duration);
-				formData.append("banner_portrait", (this.advertisements.banner_portrait.file) ? this.advertisements.banner_portrait.file : '');
-				formData.append("banner_portrait_dimension", (this.advertisements.banner_portrait.file) ? JSON.stringify(this.advertisements.banner_portrait) : '');
-				formData.append("banner_landscape", (this.advertisements.banner_landscape.file) ? this.advertisements.banner_landscape.file : '');
-				formData.append("banner_landscape_dimension", (this.advertisements.banner_landscape.file) ? JSON.stringify(this.advertisements.banner_landscape) : '');
-				formData.append("fullscreen_portrait", (this.advertisements.fullscreen_portrait.file) ? this.advertisements.fullscreen_portrait.file : '');
-				formData.append("fullscreen_portrait_dimension", (this.advertisements.fullscreen_portrait.file) ? JSON.stringify(this.advertisements.fullscreen_portrait) : '');
-				formData.append("fullscreen_landscape", (this.advertisements.fullscreen_landscape.file) ? this.advertisements.fullscreen_landscape.file : '');
-				formData.append("fullscreen_landscape_dimension", (this.advertisements.fullscreen_landscape.file) ? JSON.stringify(this.advertisements.fullscreen_landscape) : '');
+				formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
+				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
+				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
+				formData.append("product_application", this.advertisement.product_application);
+				formData.append("screen_ids", JSON.stringify(this.advertisement.screen_ids));
+				formData.append("name", this.advertisement.name);
+				formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
+				formData.append("active", this.advertisement.active);
+				formData.append("display_duration", this.advertisement.display_duration);
+				formData.append("banner_portrait", (this.advertisement.banner_portrait.file) ? this.advertisement.banner_portrait.file : '');
+				formData.append("banner_portrait_dimension", (this.advertisement.banner_portrait.file) ? JSON.stringify(this.advertisement.banner_portrait) : '');
+				formData.append("banner_landscape", (this.advertisement.banner_landscape.file) ? this.advertisement.banner_landscape.file : '');
+				formData.append("banner_landscape_dimension", (this.advertisement.banner_landscape.file) ? JSON.stringify(this.advertisement.banner_landscape) : '');
+				formData.append("fullscreen_portrait", (this.advertisement.fullscreen_portrait.file) ? this.advertisement.fullscreen_portrait.file : '');
+				formData.append("fullscreen_portrait_dimension", (this.advertisement.fullscreen_portrait.file) ? JSON.stringify(this.advertisement.fullscreen_portrait) : '');
+				formData.append("fullscreen_landscape", (this.advertisement.fullscreen_landscape.file) ? this.advertisement.fullscreen_landscape.file : '');
+				formData.append("fullscreen_landscape_dimension", (this.advertisement.fullscreen_landscape.file) ? JSON.stringify(this.advertisement.fullscreen_landscape) : '');
 
-                axios.post('/admin/advertisement/store', formData, {
+                axios.post('/admin/manage-ads/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -562,31 +420,31 @@
             },
 
 			editAdvertisements: function(id) {
-                axios.get('/admin/advertisement/'+id)
+                axios.get('/admin/manage-ads/'+id)
                 .then(response => {
                     var advertisements = response.data.data;
-					this.advertisements.id = advertisements.id;
-					this.advertisements.company_id = advertisements.company_details;
-					this.advertisements.name = advertisements.name;
-					this.advertisements.display_duration = advertisements.display_duration;
-					this.advertisements.status_id = advertisements.transaction_status;
-					this.advertisements.active = advertisements.active;
+					this.advertisement.id = advertisement.id;
+					this.advertisement.company_id = advertisement.company_details;
+					this.advertisement.name = advertisement.name;
+					this.advertisement.display_duration = advertisement.display_duration;
+					this.advertisement.status_id = advertisement.transaction_status;
+					this.advertisement.active = advertisement.active;
 
-					this.contracts = advertisements.company_details.contracts;
-                	this.brands = advertisements.contract_details.brands;
-					this.screens = advertisements.contract_details.screens;
+					this.contracts = advertisement.company_details.contracts;
+                	this.brands = advertisement.contract_details.brands;
+					this.screens = advertisement.contract_details.screens;
 					this.tmp_screens = [];
-					if(advertisements.product_application == 'All') {
+					if(advertisement.product_application == 'All') {
 						this.tmp_screens = this.screens;
 					}
 					else {
-						this.tmp_screens = this.screens.filter(option => option.product_application == advertisements.product_application);
+						this.tmp_screens = this.screens.filter(option => option.product_application == advertisement.product_application);
 					}
 
-					this.advertisements.contract_id = advertisements.contract_details;
-					this.advertisements.brand_id = advertisements.brand_details;
-					this.advertisements.product_application = advertisements.product_application;
-					this.advertisements.screen_ids = advertisements.screens;
+					this.advertisement.contract_id = advertisement.contract_details;
+					this.advertisement.brand_id = advertisement.brand_details;
+					this.advertisement.product_application = advertisement.product_application;
+					this.advertisement.screen_ids = advertisement.screens;
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -597,26 +455,26 @@
 
             updateAdvertisements: function() {
 				let formData = new FormData();
-				formData.append("id", this.advertisements.id);
-				formData.append("company_id", (this.advertisements.company_id) ? JSON.stringify(this.advertisements.company_id) : '');
-				formData.append("contract_id", (this.advertisements.contract_id) ? JSON.stringify(this.advertisements.contract_id) : '');
-				formData.append("brand_id", (this.advertisements.brand_id) ? JSON.stringify(this.advertisements.brand_id) : '');
-				formData.append("product_application", this.advertisements.product_application);
-				formData.append("screen_ids", JSON.stringify(this.advertisements.screen_ids));
-				formData.append("name", this.advertisements.name);
-				formData.append("status_id", (this.advertisements.status_id) ? JSON.stringify(this.advertisements.status_id) : '');
-				formData.append("active", this.advertisements.active);
-				formData.append("display_duration", this.advertisements.display_duration);
-				formData.append("banner_portrait", (this.advertisements.banner_portrait.file) ? this.advertisements.banner_portrait.file : '');
-				formData.append("banner_portrait_dimension", (this.advertisements.banner_portrait.file) ? JSON.stringify(this.advertisements.banner_portrait) : '');
-				formData.append("banner_landscape", (this.advertisements.banner_landscape.file) ? this.advertisements.banner_landscape.file : '');
-				formData.append("banner_landscape_dimension", (this.advertisements.banner_landscape.file) ? JSON.stringify(this.advertisements.banner_landscape) : '');
-				formData.append("fullscreen_portrait", (this.advertisements.fullscreen_portrait.file) ? this.advertisements.fullscreen_portrait.file : '');
-				formData.append("fullscreen_portrait_dimension", (this.advertisements.fullscreen_portrait.file) ? JSON.stringify(this.advertisements.fullscreen_portrait) : '');
-				formData.append("fullscreen_landscape", (this.advertisements.fullscreen_landscape.file) ? this.advertisements.fullscreen_landscape.file : '');
-				formData.append("fullscreen_landscape_dimension", (this.advertisements.fullscreen_landscape.file) ? JSON.stringify(this.advertisements.fullscreen_landscape) : '');
+				formData.append("id", this.advertisement.id);
+				formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
+				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
+				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
+				formData.append("product_application", this.advertisement.product_application);
+				formData.append("screen_ids", JSON.stringify(this.advertisement.screen_ids));
+				formData.append("name", this.advertisement.name);
+				formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
+				formData.append("active", this.advertisement.active);
+				formData.append("display_duration", this.advertisement.display_duration);
+				formData.append("banner_portrait", (this.advertisement.banner_portrait.file) ? this.advertisement.banner_portrait.file : '');
+				formData.append("banner_portrait_dimension", (this.advertisement.banner_portrait.file) ? JSON.stringify(this.advertisement.banner_portrait) : '');
+				formData.append("banner_landscape", (this.advertisement.banner_landscape.file) ? this.advertisement.banner_landscape.file : '');
+				formData.append("banner_landscape_dimension", (this.advertisement.banner_landscape.file) ? JSON.stringify(this.advertisement.banner_landscape) : '');
+				formData.append("fullscreen_portrait", (this.advertisement.fullscreen_portrait.file) ? this.advertisement.fullscreen_portrait.file : '');
+				formData.append("fullscreen_portrait_dimension", (this.advertisement.fullscreen_portrait.file) ? JSON.stringify(this.advertisement.fullscreen_portrait) : '');
+				formData.append("fullscreen_landscape", (this.advertisement.fullscreen_landscape.file) ? this.advertisement.fullscreen_landscape.file : '');
+				formData.append("fullscreen_landscape_dimension", (this.advertisement.fullscreen_landscape.file) ? JSON.stringify(this.advertisement.fullscreen_landscape) : '');
 
-				axios.post('/admin/advertisement/update', formData, {
+				axios.post('/admin/manage-ads/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},

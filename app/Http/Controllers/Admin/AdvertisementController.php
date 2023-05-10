@@ -56,7 +56,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
         return view('admin.advertisements_promos');
     }
 
-    public function list($ad_type, Request $request)
+    public function list(Request $request)
     {
         try
         {
