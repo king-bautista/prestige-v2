@@ -40,14 +40,14 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="advertisement.name" placeholder="Advertisements Name" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<label for="lastName" class="col-sm-3 col-form-label">Company <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
 									<multiselect v-model="advertisement.company_id"
 										:options="companies"
 										:multiple="false"
@@ -62,8 +62,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Contract <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Contract <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
                                     <multiselect v-model="advertisement.contract_id" 
 										:options="contracts" 
 										:multiple="false"
@@ -78,8 +78,8 @@
 								</div>
 							</div>
                             <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
                                     <multiselect v-model="advertisement.brand_id" 
 										:options="brands" 
 										:multiple="false"
@@ -93,8 +93,8 @@
 								</div>
 							</div>						
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
                                     <multiselect v-model="advertisement.status_id" 
 										:options="statuses" 
 										:multiple="false"
@@ -108,15 +108,15 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-3 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" v-model="advertisement.display_duration" placeholder="Duration"> 
 									<footer class="blockquote-footer">In Seconds</footer>
 								</div>
 							</div>	
 							<div class="form-group row" v-show="edit_record">
-								<label for="active" class="col-sm-4 col-form-label">Active</label>
-								<div class="col-sm-8">
+								<label for="active" class="col-sm-3 col-form-label">Active</label>
+								<div class="col-sm-9">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="active" v-model="advertisement.active">
 										<label class="custom-control-label" for="active"></label>
@@ -125,18 +125,20 @@
 							</div>
 							<div v-for="(material, index) in advertisement.materials" v-bind:key="index">
 								<hr/>
+								<div class="position-absolute" style="right: 2.5rem; z-index: 9;">
+									<button type="button" class="btn btn-outline-danger" @click="deleteRow(index)"><i class="fas fa-trash-alt"></i></button>
+								</div>
 								<div class="form-group row">
-									
-									<label for="firstName" class="col-sm-4 col-form-label">Material <span class="font-italic text-danger"> *</span></label>								
+									<label for="firstName" class="col-sm-3 col-form-label">Material <span class="font-italic text-danger"> *</span></label>								
 									<div class="col-sm-5">
-										<input type="file" accept="image/*" ref="materials" @change="fileUpload" multiple>
+										<input type="file" accept="image/*" ref="materials" @change="fileUpload($event, index)" multiple>
 										<footer class="blockquote-footer">Max file size is 15MB</footer>
 									</div>
 									<div class="col-sm-3 text-center">
-										<span v-if="material.src && helper.getFileExtension(material.type) == 'image'">
+										<span v-if="material.src && material.file_type == 'image'">
 											<img v-if="material.src" :src="material.src" class="img-thumbnail" />
 										</span>
-										<span v-else-if="material.src && helper.getFileExtension(material.type) == 'video'">
+										<span v-else-if="material.src && material.file_type == 'video'">
 											<video muted="muted" class="img-thumbnail">
 												<source :src="material.src" type="video/ogg">
 												Your browser does not support the video tag.
@@ -145,8 +147,8 @@
 									</div>
 								</div>
 								<div class="form-group row">
-									<label for="firstName" class="col-sm-4 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
-									<div class="col-sm-8">
+									<label for="firstName" class="col-sm-3 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-9">
 										<multiselect v-model="material.screen_ids" 
 										track-by="site_screen_location" 
 										label="site_screen_location" 
@@ -302,7 +304,9 @@
 
 			addMaterial: function() {
 				this.advertisement.materials.push({
+					file: '',
 					src: '',
+					file_type: '',
 					width: '',
 					height: '',
 					screens: [],
@@ -311,64 +315,42 @@
 			},
 
 			deleteRow: function(index) {
-				this.advertisement.materials.splice(index, 1);
+				console.log(this.advertisement.materials);
+				//this.advertisement.materials.splice(index, 1);
 			},
 
-			fileUpload: function(e) {
+			fileUpload: function(e, index) {
 				var file = e.target.files[0];
-				this.material_type = e.target.files[0].type;
-      			this.banner_portrait = URL.createObjectURL(file);
-				
-				var file_type = this.material_type.split("/");
+				var file_type = e.target.files[0].type.split("/");
+				var file_path = URL.createObjectURL(file);
 				var obj = this;
 				var material;
+
+				this.advertisement.materials[index].file = file;
+				this.advertisement.materials[index].src = file_path;
+				this.advertisement.materials[index].file_type = file_type[0];
 
 				if(file_type[0] == 'image') {
 					material = new Image;
 					material.onload = function() {
-						if(material.width > material.height) {
-							obj.banner_portrait = null;
-							obj.advertisement.banner_portrait = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.portrait_banner_ad.value = null;							
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisement.banner_portrait.width = material.width;
-							obj.advertisement.banner_portrait.height = material.height;
-							obj.advertisement.materials++;							
-						}
+						obj.advertisement.materials[index].width = material.width;
+						obj.advertisement.materials[index].height = material.height;
 					};
 						
-					material.src = this.banner_portrait;
+					material.src = file_path;
 				}
 				else if(file_type[0] == 'video') {
 					material = document.createElement("video");
 					material.src = this.banner_portrait;
-					material.addEventListener("loadedmetadata", function () {
-						
+					material.addEventListener("loadedmetadata", function () {						
 						obj.advertisement.display_duration = this.duration;
-
-						if(this.videoWidth > this.videoHeight) {
-							obj.banner_portrait = null;
-							obj.advertisement.banner_portrait = {
-								file: '',
-								width: '',
-								height: ''
-							};
-							obj.$refs.portrait_banner_ad.value = null;
-							toastr.error('Invalid material for banner ad portrait size.');
-						}
-						else {
-							obj.advertisement.banner_portrait.width = this.videoWidth;
-							obj.advertisement.banner_portrait.height = this.videoHeight;		
-							obj.advertisement.materials++;							
-						}
+						obj.advertisement.materials[index].width = this.videoWidth;
+						obj.advertisement.materials[index].height = this.videoHeight;		
 					});
 				}
+
+				console.log(obj.advertisement.materials[index].width);
+				console.log(obj.advertisement.materials[index].height);
 			},
 
 			AddNewAdvertisements: function() {
