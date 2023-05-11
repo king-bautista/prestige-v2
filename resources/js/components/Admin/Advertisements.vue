@@ -123,7 +123,7 @@
 									</div>
 								</div>
 							</div>
-							<div v-for="(material, index) in advertisement.materials" v-bind:key="index">
+							<div v-for="(material, index) in advertisement.materials" v-bind:key="index" v-if="advertisement.contract_id">
 								<hr/>
 								<div class="position-absolute" style="right: 2.5rem; z-index: 9;">
 									<button type="button" class="btn btn-outline-danger" @click="deleteRow(index)"><i class="fas fa-trash-alt"></i></button>
@@ -136,10 +136,10 @@
 									</div>
 									<div class="col-sm-3 text-center">
 										<span v-if="material.src && material.file_type == 'image'">
-											<img v-if="material.src" :src="material.src" class="img-thumbnail" />
+											<img v-if="material.src" :src="material.src" class="img-thumbnail"/>
 										</span>
 										<span v-else-if="material.src && material.file_type == 'video'">
-											<video muted="muted" class="img-thumbnail">
+											<video muted="muted" class="img-thumbnail" @load="onImgLoad(index)">
 												<source :src="material.src" type="video/ogg">
 												Your browser does not support the video tag.
 											</video>
@@ -149,18 +149,20 @@
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-3 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-9">
+										<button type="button" v-show="material.button_show" class="btn btn-primary" @click="getScreens(index)">Filter Screens</button>
 										<multiselect v-model="material.screen_ids" 
 										track-by="site_screen_location" 
 										label="site_screen_location" 
 										placeholder="Select Screens" 
 										:options="material.screens" 
 										:searchable="true" 
-										:multiple="true">
-										</multiselect> 
+										:multiple="true"
+										v-show="material.list_show">
+										</multiselect>
 									</div>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row" v-if="advertisement.contract_id">
 								<div class="col-sm-12">
 									<button type="button" class="btn btn-primary" v-show="add_record" @click="addMaterial">Add Material</button>
 								</div>
@@ -300,6 +302,7 @@
 
 			contractSelected: function(contract) {
 				this.brands = contract.brands;
+				this.filter.contract_id = contract.id;
 			},
 
 			addMaterial: function() {
@@ -311,12 +314,13 @@
 					height: '',
 					screens: [],
 					screen_ids: [],
+					button_show: true,
+					list_show: false,
 				});
 			},
 
 			deleteRow: function(index) {
-				console.log(this.advertisement.materials);
-				//this.advertisement.materials.splice(index, 1);
+				this.advertisement.materials.splice(index, 1);
 			},
 
 			fileUpload: function(e, index) {
@@ -333,8 +337,7 @@
 				if(file_type[0] == 'image') {
 					material = new Image;
 					material.onload = function() {
-						obj.advertisement.materials[index].width = material.width;
-						obj.advertisement.materials[index].height = material.height;
+						obj.setfilter(index, material.height, material.width);
 					};
 						
 					material.src = file_path;
@@ -344,13 +347,25 @@
 					material.src = this.banner_portrait;
 					material.addEventListener("loadedmetadata", function () {						
 						obj.advertisement.display_duration = this.duration;
-						obj.advertisement.materials[index].width = this.videoWidth;
-						obj.advertisement.materials[index].height = this.videoHeight;		
+						obj.setfilter(index, this.videoHeight, this.videoWidth);
 					});
 				}
+			},
 
-				console.log(obj.advertisement.materials[index].width);
-				console.log(obj.advertisement.materials[index].height);
+			setfilter: function(index, height, width) {
+				this.filter.height = height;
+				this.filter.width = width;
+				this.advertisement.materials[index].height = height;
+				this.advertisement.materials[index].width = width;
+			},
+
+			getScreens: function(index) {
+				axios.post('/admin/site/pi-product/get-screens', this.filter)
+                .then(response => {
+					this.advertisement.materials[index].screens = response.data.data;
+					this.advertisement.materials[index].button_show = false;
+					this.advertisement.materials[index].list_show = true;
+				});
 			},
 
 			AddNewAdvertisements: function() {
@@ -371,23 +386,17 @@
 
             storeAdvertisements: function() {
 				let formData = new FormData();
-				formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
-				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
-				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
-				formData.append("product_application", this.advertisement.product_application);
-				formData.append("screen_ids", JSON.stringify(this.advertisement.screen_ids));
-				formData.append("name", this.advertisement.name);
-				formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
-				formData.append("active", this.advertisement.active);
-				formData.append("display_duration", this.advertisement.display_duration);
-				formData.append("banner_portrait", (this.advertisement.banner_portrait.file) ? this.advertisement.banner_portrait.file : '');
-				formData.append("banner_portrait_dimension", (this.advertisement.banner_portrait.file) ? JSON.stringify(this.advertisement.banner_portrait) : '');
-				formData.append("banner_landscape", (this.advertisement.banner_landscape.file) ? this.advertisement.banner_landscape.file : '');
-				formData.append("banner_landscape_dimension", (this.advertisement.banner_landscape.file) ? JSON.stringify(this.advertisement.banner_landscape) : '');
-				formData.append("fullscreen_portrait", (this.advertisement.fullscreen_portrait.file) ? this.advertisement.fullscreen_portrait.file : '');
-				formData.append("fullscreen_portrait_dimension", (this.advertisement.fullscreen_portrait.file) ? JSON.stringify(this.advertisement.fullscreen_portrait) : '');
-				formData.append("fullscreen_landscape", (this.advertisement.fullscreen_landscape.file) ? this.advertisement.fullscreen_landscape.file : '');
-				formData.append("fullscreen_landscape_dimension", (this.advertisement.fullscreen_landscape.file) ? JSON.stringify(this.advertisement.fullscreen_landscape) : '');
+
+				for( let index = 0; index < this.advertisement.materials.length; index++ ) {
+					formData.append('files[]', this.advertisement.materials[index].file);
+				}
+				// formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
+				// formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
+				// formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
+				// formData.append("name", this.advertisement.name);
+				// formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
+				// formData.append("active", this.advertisement.active);
+				// formData.append("display_duration", this.advertisement.display_duration);
 
                 axios.post('/admin/manage-ads/store', formData, {
 					headers: {
@@ -398,7 +407,7 @@
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 	              	$('#site_ad-form').modal('hide');
-				});				
+				});		
             },
 
 			editAdvertisements: function(id) {
