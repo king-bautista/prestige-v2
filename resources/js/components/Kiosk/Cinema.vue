@@ -97,14 +97,14 @@
                         <a class="translateme cinema-locator" data-en="Cinema">Cinema</a>
                     </div>
                 </div>
-                <div class="tabs-item store-tabs-item" @click="tabSchedule">
+                <div id="schedule-tab" class="tabs-item store-tabs-item" @click="tabSchedule">
                     <div>
                         <a class="translateme cinema-schedule" data-en="Schedule">Schedule</a>
                     </div>
                 </div>
             </div>
         </div>
-        <img  class="back-button" :src="back_button" @click="goBack">
+        <div class="back-button" :src="back_button" @click="goBack"></div>
         <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
         <div class="custom-modal" id="schedule-modal">

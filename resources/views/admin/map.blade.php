@@ -380,8 +380,17 @@
     var center=((p_width/2)-5)*-1;
     var vcenter=((p_height/2)-5)*-1;
 
-    $("#" +  data.id+" p:first" ).css({"font-size": fontSize+"rem", "position" : "absolute", "top":+ vcenter +"px", "left":+ center +"px", "transform": "rotate(" + data.rotation_z + "deg)"});
+    $("#" +  data.id+" p:first" ).css({"width": (data.wrap_at == 0) ? 'max-content' : '',  "font-size": fontSize+"rem", "position" : "absolute", "top":+ vcenter +"px", "left":+ center +"px", "transform": "rotate(" + data.rotation_z + "deg)"});
     // $("#" +  data.id+" p:first" ).css({"font-size": fontSize+"rem", "margin": mtop+"px 0 0 "+center+"px", "transform": "rotate(" + data.rotation_z + "deg)"});
+    
+    //Updated values
+    if (data.wrap_at == 0) {
+      var p_width = $("#" +  data.id+" p:first").width();
+      var p_height = $("#" +  data.id+" p:first").height();
+      var center=((p_width/2)-5)*-1;
+      var vcenter=((p_height/2)-5)*-1;
+      $("#" +  data.id+" p:first" ).css({"top":+ vcenter +"px", "left":+ center +"px"});
+    }
 
     $("#" +  data.id).click(function() {
       $(this).css('background-color', 'red');
@@ -506,26 +515,26 @@
     contextp.lineJoin = contextp.lineCap = 'round';
     contextp.strokeStyle = '#ff0000';
 
-    if(x1 > x2 && y1 > y2) {
-      contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
-      contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
-    }
-    else if(x2 > x1 && y1 > y2) {
-      contextp.moveTo(parseInt(x1)+2.5,parseInt(y1)+6.5);
-      contextp.lineTo(parseInt(x2)+2.5,parseInt(y2)+6.5);
-    }
-    else if(x1 > x2 && y2 > y1) {
-      contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
-      contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
-    }
-    else if(x2 > x1 && y2 > y1) {
-      contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
-      contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
-    }
-    else {
-      contextp.moveTo(parseInt(x1)-6.5,parseInt(y1)+6.5);
-      contextp.lineTo(parseInt(x2)-6.5,parseInt(y2)+6.5);
-    }
+    // if(x1 > x2 && y1 > y2) {
+    //   contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
+    //   contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
+    // }
+    // else if(x2 > x1 && y1 > y2) {
+    //   contextp.moveTo(parseInt(x1)+2.5,parseInt(y1)+6.5);
+    //   contextp.lineTo(parseInt(x2)+2.5,parseInt(y2)+6.5);
+    // }
+    // else if(x1 > x2 && y2 > y1) {
+    //   contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
+    //   contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
+    // }
+    // else if(x2 > x1 && y2 > y1) {
+    //   contextp.moveTo(parseInt(x1)+1.5,parseInt(y1)+6.5);
+    //   contextp.lineTo(parseInt(x2)+1.5,parseInt(y2)+6.5);
+    // }
+    // else {
+      contextp.moveTo(parseInt(x1),parseInt(y1)+7.5);
+      contextp.lineTo(parseInt(x2),parseInt(y2)+7.5);
+    // }
     contextp.stroke();
 
   }
