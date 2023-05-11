@@ -201,7 +201,7 @@
             </div>
         </div>
 
-        <img class="back-button" :src="back_button" @click="goBack">
+        <div class="back-button" :src="back_button" @click="goBack"></div>
         <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
     </div>
 </template>
@@ -363,6 +363,8 @@
                 if ($("#app").attr('app-env') == 'local') {
                     $('#guide-button').trigger('click');
                 }
+                this.panzoom.zoom(this.active_map_details.default_scale)
+                setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
             },
 
             updateFeedback: function(id) {
@@ -501,9 +503,9 @@
                     $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 
                     // Display Panzoom Values on Change Event
-                    elem.addEventListener('panzoomchange', (event) => {
-                        console.log(event.detail) // => { x: 0, y: 0, scale: 1 }
-                    })
+                    // elem.addEventListener('panzoomchange', (event) => {
+                    //     console.log(event.detail) // => { x: 0, y: 0, scale: 1 }
+                    // })
 
                     // No function bind needed
                     parent.addEventListener('wheel', vm.panzoom.zoomWithWheel)
@@ -557,6 +559,8 @@
                 $('#repeatButton').on('click',function(){
                     $('.map-floor-option .multiselect__tags .multiselect__single').html(vm.active_map_details.building_floor_name);
                     obj.wayfindings.replay();
+                    vm.panzoom.zoom(vm.active_map_details.default_scale)
+                    setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
     			});
 
                 $('#guide-button').on('click',function(){

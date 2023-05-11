@@ -65,3 +65,179 @@
 .cinema-button.active {
     background-image: url('../assets/images/Cinemav4s.png') !important;
 }
+
+.c-category-1 {
+    color:#246c63;
+}
+
+.c-category-2 {
+    color:#823d3b;
+}
+
+.c-category-3 {
+    color:#c18c2f;
+}
+
+.c-category-4 {
+    color:#6051e3;
+}
+
+.c-category-5 {
+    color:#6051e3;
+}
+
+input[type="text"]:focus
+{
+    box-shadow: none !important;
+    border-color: #6051e3;
+}
+
+.search-box {
+    font-family: 'Henry Sans Medium';
+    font-size: 24px; 
+    width: 65%; 
+    padding-left: 10px; 
+    padding-top: 8px; 
+    padding-bottom: 8px; 
+    border-color: #6051e3;
+    border-width: 1px;
+    margin: auto;
+    border-radius: 10px;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    height: calc(1.5em + 0.75rem + 6px) !important;
+}
+
+.search-box-button {
+    font-size: 24px;
+    /* padding: 5px 20px; */
+    background-color: #0030ff;
+    border-radius: 10px;
+    margin-left: 5px;
+    width: 111px;
+    text-align: center;
+    color: #fff;
+}
+
+.search-box-button:focus
+{
+    outline: none;
+    box-shadow: none !important;
+    border-color: none;
+    color: #fff;
+}
+
+.carousel-indicators span {
+    background-color: #2e35a1;
+}
+
+.tab-item-selected > div {
+    background-color: #0030ff !important;
+    color: #000 !important;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 5px 10px 5px 10px;
+}
+
+.tab-item-selected > div > a {
+    color: #fff !important;
+}
+
+.custom-color {
+    color: #0030ff;
+}
+
+#guide-button {
+    background: #0030ff !important;
+}
+
+.multiselect__select {
+    position: absolute;
+    width: 0 !important;
+    height: 0 !important;
+    right: 6px !important;
+    top: 43% !important;
+    padding: 6px !important;
+    transition: transform .1s ease !important;
+    border: solid #0030ff!important;
+    display: inline-block !important;
+    border-width: 0 6px 6px 0 !important;
+    transform: rotate(-225deg) !important;
+    -webkit-transform: rotate(225deg) !important;
+    margin-right: 8px !important;
+}
+
+.multiselect__option--highlight {
+    background: #0030ff !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #0030ff !important;
+    box-shadow: none !important;
+}
+
+.softkeys__btn {
+    color: #6051e3;
+    border: 1px solid #6051e3 !important;
+}
+
+.delete-key {
+    background-image: url('../assets/images/key-delete-generic.png');
+    color: transparent;
+}
+
+.delete-key:hover, .delete-key:focus {
+    outline: none;
+    background-color: #98dad0 !important;
+    color: transparent !important;
+}
+
+.back-button {
+    z-index:1;
+    position:absolute;
+    top:800px;
+    right:15px; 
+    cursor:pointer;
+    width: 70px;
+    height: 70px;
+    background-image: url('../assets/images/Back-Generic.png') !important;
+}
+
+.back-overlay {
+    background-color: #accaff;
+    position: absolute;
+    top: 840px;
+    right: 26px;
+    z-index: 1;
+    color: #0032fc;
+    font-size: 14px;
+    width: 48px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.assistance_tooltip {
+    position:absolute;
+    top:880px;
+    right:0px;
+    z-index: 2;
+    width: 86px;
+    height: 68px;
+    background-color: #0032fc;
+    border-radius: 15px 0 0 15px;
+    background-image: url('../assets/images/Help-Generic.png') !important;
+}
+
+.help-overlay {
+    background-color: #0032fc;
+    position: absolute;
+    top: 925px;
+    right: 26px;
+    z-index: 2;
+    color: #fff;
+    font-size: 14px;
+    width: 48px;
+    text-align: center;
+}

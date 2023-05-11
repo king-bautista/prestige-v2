@@ -79,3 +79,131 @@
 .event-button.active {
     background-image: url('../assets/images/Cinemav4s.png') !important;
 }
+
+.search-box {
+    font-family: 'Henry Sans Medium';
+    font-size: 24px; 
+    width: 65%; 
+    padding-left: 10px; 
+    padding-top: 8px; 
+    padding-bottom: 8px; 
+    border-color: #000000;
+    border-width: 1px;
+    margin: auto;
+    border-radius: 10px;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    height: calc(1.5em + 0.75rem + 6px) !important;
+}
+
+.search-box-button {
+    font-size: 24px;
+    /* padding: 5px 20px; */
+    background-color: #98dad0;
+    border-radius: 10px;
+    margin-left: 5px;
+    width: 111px;
+    text-align: center;
+}
+
+.tab-item-selected > div {
+    background-color: #98dad0 !important;
+    color: #000 !important;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 5px 10px 5px 10px;
+}
+
+.custom-color {
+    color: #98dad0;
+}
+
+.multiselect__select {
+    position: absolute;
+    width: 0 !important;
+    height: 0 !important;
+    right: 6px !important;
+    top: 43% !important;
+    padding: 6px !important;
+    transition: transform .1s ease !important;
+    border: solid rgb(152, 218, 208) !important;
+    display: inline-block !important;
+    border-width: 0 6px 6px 0 !important;
+    transform: rotate(-225deg) !important;
+    -webkit-transform: rotate(225deg) !important;
+    margin-right: 8px !important;
+}
+
+.multiselect__option--highlight {
+    background: #98dad0 !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #90cfc5 !important;
+    box-shadow: none !important;
+}
+
+.softkeys__btn {
+    color: #000;
+    border: 1px solid #000 !important;
+}
+
+.delete-key {
+    color: transparent;
+}
+
+.delete-key:hover, .delete-key:focus {
+    outline: none;
+    background-color: #98dad0 !important;
+    color: transparent !important;
+}
+
+.back-button {
+    z-index:1;
+    position:absolute;
+    top:800px;
+    right:15px; 
+    cursor:pointer;
+    width: 70px;
+    height: 70px;
+    background-image: url('../assets/images/Back-Generic.png') !important;
+}
+
+.back-overlay {
+    background-color: #96aaff;
+    position: absolute;
+    top: 840px;
+    right: 26px;
+    z-index: 1;
+    color: #fff;
+    font-size: 14px;
+    width: 48px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.assistance_tooltip {
+    position:absolute;
+    top:880px;
+    right:0px;
+    z-index: 2;
+    width: 86px;
+    height: 68px;
+    background-color: #96aaff;
+    border-radius: 15px 0 0 15px;
+    background-image: url('../assets/images/Help.png') !important;
+}
+
+.help-overlay {
+    background-color: #96aaff;
+    position: absolute;
+    top: 925px;
+    right: 26px;
+    z-index: 2;
+    color: #fff;
+    font-size: 14px;
+    width: 48px;
+    text-align: center;
+}
