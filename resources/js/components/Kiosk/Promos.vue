@@ -52,7 +52,7 @@
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
             </div>
         </div>
-        <img class="back-button" :src="back_button" @click="goBack">
+        <div class="back-button" :src="back_button" @click="goBack"></div>
         <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
         <!-- TENANT -->

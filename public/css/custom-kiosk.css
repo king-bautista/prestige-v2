@@ -250,16 +250,6 @@ body,html {
     padding: 5px 30px 5px 30px;
 }
 
-.tab-item-selected > div {
-    background-color: #98dad0 !important;
-    color: #000 !important;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    padding: 5px 10px 5px 10px;
-}
-
 .tabs .tabs-item:nth-child(2) {
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
@@ -273,6 +263,16 @@ body,html {
 
 #myCarousel, #myTenants, #myCinemas, #myMovies, #supplementalCarousel, #alphabeticalCarousel, #searchCarousel, #promoCarousel {
     width: 100%;
+}
+
+#supplementals-tab{
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+#schedule-tab{
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 .carousel-inner {
@@ -422,22 +422,6 @@ body,html {
     left: 423px;
 }
 
-.search-box {
-    font-family: 'Henry Sans Medium';
-    font-size: 24px; 
-    width: 65%; 
-    padding-left: 10px; 
-    padding-top: 8px; 
-    padding-bottom: 8px; 
-    border-color: #000000;
-    border-width: 1px;
-    margin: auto;
-    border-radius: 10px;
-    border-top-right-radius: 10px !important;
-    border-bottom-right-radius: 10px !important;
-    height: calc(1.5em + 0.75rem + 6px) !important;
-}
-
 .btn-prestige-rounded {
     border-radius: 10px;
     border: 1px solid #6051e3;
@@ -459,16 +443,6 @@ body,html {
     position: absolute;
     top: 53px;
     display: none;
-}
-
-.search-box-button {
-    font-size: 24px;
-    /* padding: 5px 20px; */
-    background-color: #98dad0;
-    border-radius: 10px;
-    margin-left: 5px;
-    width: 111px;
-    text-align: center;
 }
 
 .softkeys__btn {
@@ -601,21 +575,6 @@ input[type="text"]:focus
     -webkit-box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 75%);
     -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 75%);
-}
-
-.assistance_tooltip {
-    position:absolute;
-    top:880px;
-    right:0px;
-    z-index: 2;
-}
-
-.back-button {
-    z-index:1;
-    position:absolute;
-    top:800px;
-    right:15px; 
-    cursor:pointer;
 }
 
 .seeDetails {
@@ -1425,22 +1384,6 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     font-size: 20px;
 }
 
-.multiselect__select {
-    position: absolute;
-    width: 0 !important;
-    height: 0 !important;
-    right: 6px !important;
-    top: 43% !important;
-    padding: 6px !important;
-    transition: transform .1s ease !important;
-    border: solid rgb(152, 218, 208) !important;
-    display: inline-block !important;
-    border-width: 0 6px 6px 0 !important;
-    transform: rotate(-225deg) !important;
-    -webkit-transform: rotate(225deg) !important;
-    margin-right: 8px !important;
-}
-
 .multiselect--active .multiselect__select {
     transform: rotate(-45deg) !important;
     -webkit-transform: rotate(45deg) !important;
@@ -1497,10 +1440,6 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
     /* min-width: 403px !important; */
 }
 
-.multiselect__option--highlight {
-    background: #98dad0 !important;
-}
-
 .multiselect__element:first-child {
     margin-top: 20px;
 }
@@ -1543,15 +1482,6 @@ div.subscriber-products::-webkit-scrollbar-track-piece {
 .custom-select {
     background: none !important;
     background-color: rgb(255, 255, 255) !important;
-}
-
-.custom-color {
-    color: #98dad0;
-}
-
-.btn-outline-secondary:hover {
-    background-color: #90cfc5 !important;
-    box-shadow: none !important;
 }
 
 #repeatButton {
@@ -1770,30 +1700,6 @@ div.mall-details::-webkit-scrollbar-thumb
     display: table-cell; 
     vertical-align: middle; 
     text-align: center; 
-}
-
-.back-overlay {
-    background-color: #96aaff;
-    position: absolute;
-    top: 840px;
-    right: 26px;
-    z-index: 1;
-    color: #fff;
-    font-size: 14px;
-    width: 48px;
-    text-align: center;
-}
-
-.help-overlay {
-    background-color: #96aaff;
-    position: absolute;
-    top: 925px;
-    right: 26px;
-    z-index: 2;
-    color: #fff;
-    font-size: 14px;
-    width: 48px;
-    text-align: center;
 }
 
 div,span {

@@ -40,7 +40,7 @@
                     <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="getTenantsByCategory(subcategory)">			
                         <div class="c-button ml-0">						
                             <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                            <div class="c-button-align c-button-color2"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>                        
+                            <div class="c-button-align c-button-color2" v-bind:class="'c-category-'+ current_category.category_id"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>                        
                         </div>					
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                                     <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">			
                                         <div class="c-button">						
                                             <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
-                                            <div class="c-button-align c-button-color2"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>                        
+                                            <div class="c-button-align c-button-color2" v-bind:class="'c-category-'+ current_category.category_id"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>                        
                                         </div>					
                                     </div>
                                 </div>
@@ -261,7 +261,7 @@
                     </ol>
                 </div>
             </div>
-            <img v-show="!home_category" :src="back_button" class="back-button" @click="goBack">
+            <div v-show="!home_category" class="back-button" :src="back_button" @click="goBack"></div>
             <div v-show="!home_category" class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
             <!-- MODAL -->
