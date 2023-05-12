@@ -133,6 +133,7 @@
 									<div class="col-sm-5">
 										<input type="file" accept="image/*" ref="materials" @change="fileUpload($event, index)" multiple>
 										<footer class="blockquote-footer">Max file size is 15MB</footer>
+
 									</div>
 									<div class="col-sm-3 text-center">
 										<span v-if="material.src && material.file_type == 'image'">
@@ -149,7 +150,7 @@
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-3 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-9">
-										<button type="button" v-show="material.button_show" class="btn btn-primary" @click="getScreens(index)">Filter Screens</button>
+										<button type="button" v-show="material.button_show" class="btn btn-primary" @click="getScreens(index)">Evaluate</button>
 										<multiselect v-model="material.screen_ids" 
 										track-by="site_screen_location" 
 										label="site_screen_location" 
@@ -162,9 +163,10 @@
 									</div>
 								</div>
 							</div>
+							<hr v-if="advertisement.contract_id"/>
 							<div class="form-group row" v-if="advertisement.contract_id">
 								<div class="col-sm-12">
-									<button type="button" class="btn btn-primary" v-show="add_record" @click="addMaterial">Add Material</button>
+									<button type="button" class="btn btn-primary" @click="addMaterial">Add Material</button>
 								</div>
 							</div>
 						</div>
@@ -203,12 +205,6 @@
 					display_duration: '',
 					materials: []
                 },
-				filter: {
-					height: '',
-					width: '',
-					contract_id: ''
-				},
-				material_type: '',
                 companies: [],
                 contracts: [],
                 brands: [],
@@ -228,7 +224,7 @@
             			name: "Transaction Status", 
             			type:"Boolean", 
             			status: { 
-            				1: '<span class="badge badge-primary">Draft</span>',
+            				1: '<span class="badge badge-secondary">Draft</span>',
             				2: '<span class="badge badge-primary">New</span>',
             				3: '<span class="badge badge-info">Pending approval</span>',
             				4: '<span class="badge badge-danger">Disapprove</span>',
@@ -302,11 +298,11 @@
 
 			contractSelected: function(contract) {
 				this.brands = contract.brands;
-				this.filter.contract_id = contract.id;
 			},
 
 			addMaterial: function() {
 				this.advertisement.materials.push({
+					id: '',
 					file: '',
 					src: '',
 					file_type: '',
@@ -316,6 +312,7 @@
 					screen_ids: [],
 					button_show: true,
 					list_show: false,
+					contract_id: '',
 				});
 			},
 
@@ -333,6 +330,8 @@
 				this.advertisement.materials[index].file = file;
 				this.advertisement.materials[index].src = file_path;
 				this.advertisement.materials[index].file_type = file_type[0];
+				this.advertisement.materials[index].button_show = true;
+				this.advertisement.materials[index].list_show = false;
 
 				if(file_type[0] == 'image') {
 					material = new Image;
@@ -353,14 +352,13 @@
 			},
 
 			setfilter: function(index, height, width) {
-				this.filter.height = height;
-				this.filter.width = width;
 				this.advertisement.materials[index].height = height;
 				this.advertisement.materials[index].width = width;
+				this.advertisement.materials[index].contract_id = this.advertisement.contract_id.id;
 			},
 
 			getScreens: function(index) {
-				axios.post('/admin/site/pi-product/get-screens', this.filter)
+				axios.post('/admin/site/pi-product/get-screens', this.advertisement.materials[index])
                 .then(response => {
 					this.advertisement.materials[index].screens = response.data.data;
 					this.advertisement.materials[index].button_show = false;
@@ -386,17 +384,19 @@
 
             storeAdvertisements: function() {
 				let formData = new FormData();
+				formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
+				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
+				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
+				formData.append("name", this.advertisement.name);
+				formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
+				formData.append("active", this.advertisement.active);
+				formData.append("display_duration", this.advertisement.display_duration);
 
 				for( let index = 0; index < this.advertisement.materials.length; index++ ) {
 					formData.append('files[]', this.advertisement.materials[index].file);
 				}
-				// formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
-				// formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
-				// formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
-				// formData.append("name", this.advertisement.name);
-				// formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
-				// formData.append("active", this.advertisement.active);
-				// formData.append("display_duration", this.advertisement.display_duration);
+
+				formData.append("materials", (this.advertisement.materials.length > 0) ? JSON.stringify(this.advertisement.materials) : '');
 
                 axios.post('/admin/manage-ads/store', formData, {
 					headers: {
@@ -413,29 +413,21 @@
 			editAdvertisements: function(id) {
                 axios.get('/admin/manage-ads/'+id)
                 .then(response => {
-                    var advertisements = response.data.data;
-					this.advertisement.id = advertisement.id;
-					this.advertisement.company_id = advertisement.company_details;
-					this.advertisement.name = advertisement.name;
-					this.advertisement.display_duration = advertisement.display_duration;
-					this.advertisement.status_id = advertisement.transaction_status;
-					this.advertisement.active = advertisement.active;
+                    var advertisement = response.data.data;
 
 					this.contracts = advertisement.company_details.contracts;
                 	this.brands = advertisement.contract_details.brands;
-					this.screens = advertisement.contract_details.screens;
-					this.tmp_screens = [];
-					if(advertisement.product_application == 'All') {
-						this.tmp_screens = this.screens;
-					}
-					else {
-						this.tmp_screens = this.screens.filter(option => option.product_application == advertisement.product_application);
-					}
 
+					this.advertisement.materials = [];
+					this.advertisement.id = advertisement.id;
+					this.advertisement.name = advertisement.name;
+					this.advertisement.company_id = advertisement.company_details;
 					this.advertisement.contract_id = advertisement.contract_details;
 					this.advertisement.brand_id = advertisement.brand_details;
-					this.advertisement.product_application = advertisement.product_application;
-					this.advertisement.screen_ids = advertisement.screens;
+					this.advertisement.status_id = advertisement.transaction_status;
+					this.advertisement.display_duration = advertisement.display_duration;
+					this.advertisement.active = advertisement.active;
+					this.addMaterial();
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -450,20 +442,16 @@
 				formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
 				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
 				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
-				formData.append("product_application", this.advertisement.product_application);
-				formData.append("screen_ids", JSON.stringify(this.advertisement.screen_ids));
 				formData.append("name", this.advertisement.name);
 				formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
 				formData.append("active", this.advertisement.active);
 				formData.append("display_duration", this.advertisement.display_duration);
-				formData.append("banner_portrait", (this.advertisement.banner_portrait.file) ? this.advertisement.banner_portrait.file : '');
-				formData.append("banner_portrait_dimension", (this.advertisement.banner_portrait.file) ? JSON.stringify(this.advertisement.banner_portrait) : '');
-				formData.append("banner_landscape", (this.advertisement.banner_landscape.file) ? this.advertisement.banner_landscape.file : '');
-				formData.append("banner_landscape_dimension", (this.advertisement.banner_landscape.file) ? JSON.stringify(this.advertisement.banner_landscape) : '');
-				formData.append("fullscreen_portrait", (this.advertisement.fullscreen_portrait.file) ? this.advertisement.fullscreen_portrait.file : '');
-				formData.append("fullscreen_portrait_dimension", (this.advertisement.fullscreen_portrait.file) ? JSON.stringify(this.advertisement.fullscreen_portrait) : '');
-				formData.append("fullscreen_landscape", (this.advertisement.fullscreen_landscape.file) ? this.advertisement.fullscreen_landscape.file : '');
-				formData.append("fullscreen_landscape_dimension", (this.advertisement.fullscreen_landscape.file) ? JSON.stringify(this.advertisement.fullscreen_landscape) : '');
+
+				for( let index = 0; index < this.advertisement.materials.length; index++ ) {
+					formData.append('files[]', this.advertisement.materials[index].file);
+				}
+
+				formData.append("materials", (this.advertisement.materials.length > 0) ? JSON.stringify(this.advertisement.materials) : '');
 
 				axios.post('/admin/manage-ads/update', formData, {
 					headers: {
