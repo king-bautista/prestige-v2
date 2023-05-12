@@ -132,16 +132,24 @@ class AdvertisementController extends AppBaseController implements Advertisement
         }
     }
 
-    public function store(AdvertisementRequest $request)
+    public function store(Request $request)
     {
+        
+
         // try
     	// {
-            // $banner_portrait = $request->file('banner_portrait');
+            // $banner_portrait = $request->file('files');
             // if($banner_portrait) {
 
             // }
 
-            // $file_path = $request->file('file_path');
+            $files = $request->file('files');
+
+            foreach ($files as $file) {
+
+                return $originalname = $file->getClientOriginalName();
+            
+            }
             // $extension = null;
             // $file_path_path = null;
             // $file_size = null;
@@ -149,42 +157,42 @@ class AdvertisementController extends AppBaseController implements Advertisement
             // $width = null;
             // $height = null;
 
-            // if($file_path) {
-            //     $originalname = $file_path->getClientOriginalName();
-            //     $extension = $file_path->getClientOriginalExtension();
-            //     $mime_type = explode("/",$file_path->getClientMimeType());
-            //     $file_size = $file_path->getSize();
-            //     $file_path_path = $file_path->move('uploads/media/advertisements/'.strtolower($request->ad_type).'/', str_replace(' ','-', $originalname));
-            //     $file_type = $mime_type[0];
-            //     if($file_type == 'image') {
-            //         $image_size = getimagesize($file_path_path);
-            //         $width = $image_size[0];
-            //         $height = $image_size[1];
-            //         $dimension = $width.' x '.$height;
-            //     }
-            // }
+            if($file_path) {
+                $originalname = $file_path->getClientOriginalName();
+                $extension = $file_path->getClientOriginalExtension();
+                $mime_type = explode("/",$file_path->getClientMimeType());
+                $file_size = $file_path->getSize();
+                $file_path_path = $file_path->move('uploads/media/advertisements/materials/', str_replace(' ','-', $originalname));
+                // $file_type = $mime_type[0];
+                // if($file_type == 'image') {
+                //     $image_size = getimagesize($file_path_path);
+                //     $width = $image_size[0];
+                //     $height = $image_size[1];
+                //     $dimension = $width.' x '.$height;
+                // }
+            }
 
-            $company_id = json_decode($request->company_id);
-            $contract_id = json_decode($request->contract_id);
-            $brand_id = json_decode($request->brand_id);
-            $status_id = json_decode($request->status_id);
+            // $company_id = json_decode($request->company_id);
+            // $contract_id = json_decode($request->contract_id);
+            // $brand_id = json_decode($request->brand_id);
+            // $status_id = json_decode($request->status_id);
 
-            $data = [
-                'company_id' => ($company_id) ? $company_id->id : null,
-                'contract_id' => ($contract_id) ? $contract_id->id : null,
-                'brand_id' => ($brand_id) ? $brand_id->id : null,
-                'status_id' => ($status_id) ? $status_id->id : null,
-                'product_application' => $request->product_application,
-                'display_duration' => $request->display_duration,
-                'name' => $request->name,
-                'active' => ($request->active == 'false') ? 0 : 1
-            ];
+            // $data = [
+            //     'company_id' => ($company_id) ? $company_id->id : null,
+            //     'contract_id' => ($contract_id) ? $contract_id->id : null,
+            //     'brand_id' => ($brand_id) ? $brand_id->id : null,
+            //     'status_id' => ($status_id) ? $status_id->id : null,
+            //     'product_application' => $request->product_application,
+            //     'display_duration' => $request->display_duration,
+            //     'name' => $request->name,
+            //     'active' => ($request->active == 'false') ? 0 : 1
+            // ];
 
-            $advertisement = Advertisement::create($data);
-            $advertisement->saveScreens($screen_ids);
+            // $advertisement = Advertisement::create($data);
+            // $advertisement->saveScreens($screen_ids);
             //$advertisement->saveMaterials($requests);
 
-            return $this->response($advertisement, 'Successfully Created!', 200);
+            // return $this->response($advertisement, 'Successfully Created!', 200);
         // }
         // catch (\Exception $e) 
         // {

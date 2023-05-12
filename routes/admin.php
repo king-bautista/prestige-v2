@@ -536,6 +536,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/pi-product/{id}', 'Admin\PiProductController@details')->where('id', '[0-9]+')->name('admin.site.pi-product.details');
     Route::put('/admin/site/pi-product/update', 'Admin\PiProductController@update')->name('admin.site.pi-product.update');
     Route::get('/admin/site/pi-product/delete/{id}', 'Admin\PiProductController@delete')->where('id', '[0-9]+')->name('admin.site.pi-product.delete');
+    Route::post('/admin/site/pi-product/get-screens', 'Admin\PiProductController@getScreen')->name('admin.site.pi-product.get-screens');
   
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

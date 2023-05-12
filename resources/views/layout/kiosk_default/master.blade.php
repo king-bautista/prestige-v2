@@ -17,16 +17,14 @@
         <link rel="stylesheet" href="{{ URL::to('css/softkeys-0.0.1.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/fancybox.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
-        <!-- SM MID Generic UI -->
-        <link rel="stylesheet" href="{{ URL::to('css/generic-sm-theme-kiosk.css') }}">
-        <!-- SM MID MEGA Generic UI -->
-        <!-- <link rel="stylesheet" href="{{ URL::to('css/smeg-theme-kiosk.css') }}"> -->
+        <!-- Set Custom Theme UI -->
+        <link rel="stylesheet" href="{{ URL::to('css') }}/{{ $site_name }}-theme.css">
     </head>
 
     <body>
         <!-- LOADING VIDEO --> 
         <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>    
-        <div id="app" app-env="{{ config('app.env') }}" app-mlng="{{ env('APP_MLNG') }}">
+        <div id="app" app-env="{{ config('app.env') }}">
         
             @yield('content')
 

@@ -114,6 +114,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'time_from' => $request->time_from,
                 'time_to' => $request->time_to,
                 'website' => $request->website,
+                'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
+                'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
             ];
 
             $site = Site::create($data);
@@ -131,6 +133,9 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function update(SiteRequest $request)
     {
+        if ($request->is_default == 'true') {
+            Site::where('is_default', 1)->update(['is_default' => 0]);
+        }
         try {
             $site = Site::find($request->id);
             $site->touch();
@@ -156,10 +161,6 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
             }
 
-            if ($request->is_default == 'true') {
-                Site::where('is_default', 1)->update(['is_default' => 0]);
-            }
-
             $data = [
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
@@ -177,6 +178,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'time_from' => $request->time_from,
                 'time_to' => $request->time_to,
                 'website' => $request->website,
+                'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
+                'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
             ];
 
             $site->update($data);
