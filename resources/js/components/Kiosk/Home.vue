@@ -400,6 +400,7 @@
                 current_page: 'home',
                 current_location: '',
                 see_details_font_size: '',
+                multilanguage: '',
             };
         },
 
@@ -672,7 +673,14 @@
 
 			getSite: function() {
 				axios.get('/api/v1/site')
-                .then(response => this.site_logo = response.data.data.site_logo);
+                .then(response => {
+                    this.site_logo = response.data.data.site_logo
+                    this.multilanguage = (response.data.data.details.multilanguage == '1') ? true : false
+
+                    if (this.multilanguage === false){         
+                        $(".multilanguage").addClass('disabled-response');
+                    }
+                });
 			},
 
             getCategories: function() {
@@ -1102,10 +1110,6 @@
                 //     var page = $(this).data('link');
                 //     obj.helper.saveLogs({action: 'click'}, 'Category');
                 // });
-
-                if (!$("#app").attr('app-mlng')){
-                    $(".multilanguage").addClass('disabled-response');
-                }
             });
         },
     };

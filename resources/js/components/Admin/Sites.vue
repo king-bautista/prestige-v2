@@ -100,6 +100,26 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="isActive" class="col-sm-4 col-form-label">Is Premiere</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_premiere"
+											v-model="site.is_premiere">
+										<label class="custom-control-label" for="is_premiere"></label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="isActive" class="col-sm-4 col-form-label">Multilanguage</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="multilanguage"
+											v-model="site.multilanguage">
+										<label class="custom-control-label" for="multilanguage"></label>
+									</div>
+								</div>
+							</div>
 							<hr />
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-12 col-form-label"><strong>Social
@@ -211,6 +231,8 @@ export default {
 				website: '',
 				active: false,
 				is_default: false,
+				is_premiere: false,
+				multilanguage: false,
 			},
 			site_logo: '/images/no-image-available.png',
 			site_banner: '/images/no-image-available.png',
@@ -238,6 +260,22 @@ export default {
 					}
 				},
 				is_default: {
+					name: "Is Default",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">No</span>',
+						1: '<span class="badge badge-info">Yes</span>'
+					}
+				},
+				is_premiere: {
+					name: "Is Default",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">No</span>',
+						1: '<span class="badge badge-info">Yes</span>'
+					}
+				},
+				multilanguage: {
 					name: "Is Default",
 					type: "Boolean",
 					status: {
@@ -364,7 +402,8 @@ export default {
 			formData.append("time_to", this.site.time_to);
 			formData.append("website", this.site.website);
 			formData.append("is_default", this.site.is_default);
-
+			formData.append("is_premiere", this.site.is_premiere);
+			formData.append("multilanguage", this.site.multilanguage);
 			axios.post('/admin/site/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
@@ -395,7 +434,9 @@ export default {
 					this.site.time_to = site.details.time_to;
 					this.site.website = site.details.website;
 					this.site.active = site.active;
-					this.site.is_default = site.is_default;
+					this.site.is_default = (site.is_default ==  1) ? true : false;
+					this.site.is_premiere = parseInt(site.details.premiere);
+					this.site.multilanguage = parseInt(site.details.multilanguage);
 					this.add_record = false;
 					this.edit_record = true;
 
@@ -443,6 +484,8 @@ export default {
 			formData.append("website", this.site.website);
 			formData.append("active", this.site.active);
 			formData.append("is_default", this.site.is_default);
+			formData.append("is_premiere", this.site.is_premiere);
+			formData.append("multilanguage", this.site.multilanguage);
 
 			axios.post('/admin/site/update', formData, {
 				headers: {
