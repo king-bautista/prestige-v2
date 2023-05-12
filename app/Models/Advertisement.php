@@ -49,27 +49,39 @@ class Advertisement extends Model
      */
     protected $primaryKey = 'id';
 
-    public function saveScreens($screens)
+    public function saveMaterials($materials, $files)
     {
-        if(count($screens) > 0) {
-            AdvertisementScreen::where('advertisement_id', $this->id)->delete();
+        if(count($materials) > 0) {
+            foreach($materials as $index => $material) {
+                $file_path = '';
+                $file_size = '';
+                $original_name = '';
 
-            foreach ($screens as $data) {
-                AdvertisementScreen::updateOrCreate(
-                    [
-                       'advertisement_id' => $this->id,
-                       'site_screen_id' => $data->id,
-                       'site_id' => $data->site_id,
-                       'product_application' => $data->product_application
-                    ],
-                );
+                $original_name = $files[$index]->getClientOriginalName();
+                $file_size = $files[$index]->getSize();
+                $file_path = $files[$index]->move('uploads/media/advertisements/materials/', str_replace(' ','-', $original_name));
+
+                $data = [
+                    'advertisement_id' => $this->id,
+                    'file_path' => $file_path,
+                    'file_type' => $material->file_type,
+                    'file_size' => $file_size,
+                    'dimension' => $material->width.'x'.$material->height,
+                    'width' => $material->width,
+                    'height' => $material->height
+                ];
+
+                $material_data = AdvertisementMaterial::find($material->id);
+                if($material_data) {
+                    $material_data->update($data);
+                }
+                else {
+                    $material_data = AdvertisementMaterial::create($data);
+                }
+
+                //$material_data->saveScreens($material->screen_ids);
             }
         }
-    }
-
-    public function saveMaterials($requests)
-    {
-        # code...
     }
 
     

@@ -51,7 +51,7 @@ class AdvertisementViewModel extends Model
         'parent_category_id',
         'parent_category_name',
         'transaction_status',
-        'screens',
+        // 'screens',
     ]; 
 
     public function getCompany()
@@ -112,8 +112,8 @@ class AdvertisementViewModel extends Model
     ****************************************/
     public function getMaterialImagePathAttribute()
     {
-        if($this->file_path)
-            return asset($this->file_path);
+        // if($this->file_path)
+        //     return asset($this->file_path);
         return asset('/images/no-image-available.png');
     } 
 
@@ -184,37 +184,37 @@ class AdvertisementViewModel extends Model
         return null;
     }
 
-    public function getScreensAttribute() 
-    {
-        $ids = $this->getScreens()->where('site_screen_id', '>', 0)->pluck('site_screen_id');
-        $site_screens = SiteScreenViewModel::whereIn('id', $ids)->get();
+    // public function getScreensAttribute() 
+    // {
+    //     $ids = $this->getScreens()->where('site_screen_id', '>', 0)->pluck('site_screen_id');
+    //     $site_screens = SiteScreenViewModel::whereIn('id', $ids)->get();
 
-        $ad_screens = $this->getScreens()->where('site_screen_id', '=', 0)->where('site_id', '>', 0)->get();
+    //     $ad_screens = $this->getScreens()->where('site_screen_id', '=', 0)->where('site_id', '>', 0)->get();
 
-        if($ad_screens) {
-            foreach($ad_screens as $ad_screen) {
-                $site_screens[] = [
-                    'id' => 0,
-                    'site_id' => $ad_screen->site_id,
-                    'site_screen_location' => $ad_screen->site_name.' - All ('.$ad_screen->product_application.')',
-                    'product_application' => $ad_screen->product_application
-                ];
-            }            
-        }
+    //     if($ad_screens) {
+    //         foreach($ad_screens as $ad_screen) {
+    //             $site_screens[] = [
+    //                 'id' => 0,
+    //                 'site_id' => $ad_screen->site_id,
+    //                 'site_screen_location' => $ad_screen->site_name.' - All ('.$ad_screen->product_application.')',
+    //                 'product_application' => $ad_screen->product_application
+    //             ];
+    //         }            
+    //     }
 
-        $all = $this->getScreens()->where('product_application', 'All')->get();
-        if(count($all)) {
-            $site_screens[] = [
-                'id' => 0,
-                'site_id' => 0,
-                'site_screen_location' => 'All (Sites screens)',
-                'product_application' => 'All'
-            ];
-        }
+    //     $all = $this->getScreens()->where('product_application', 'All')->get();
+    //     if(count($all)) {
+    //         $site_screens[] = [
+    //             'id' => 0,
+    //             'site_id' => 0,
+    //             'site_screen_location' => 'All (Sites screens)',
+    //             'product_application' => 'All'
+    //         ];
+    //     }
 
-        if($site_screens)
-            return $site_screens;
-        return null;
-    }
+    //     if($site_screens)
+    //         return $site_screens;
+    //     return null;
+    // }
 
 }
