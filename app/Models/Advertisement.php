@@ -79,7 +79,7 @@ class Advertisement extends Model
                     $material_data = AdvertisementMaterial::create($data);
                 }
 
-                //$material_data->saveScreens($material->screen_ids);
+                $material_data->saveScreens($material->screen_ids, $this->id);
             }
         }
     }

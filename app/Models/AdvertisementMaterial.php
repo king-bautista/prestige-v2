@@ -42,16 +42,24 @@ class AdvertisementMaterial extends Model
     {
         if(count($screens) > 0) {
             $deleted = AdvertisementScreen::where('advertisement_id', $advertisement_id)->where('material_id', $this->id)->delete();
-            // if(!$deleted) 
-            //     return false;
+            if(!$deleted) 
+                return false;
 
             foreach ($screens as $data) {
+                $site_id = '';
+                if(isset($data->site_id)) {
+                    $site_id = $data->site_id;
+                }
+                else {
+                    $site_id = $data->site_screen_details->site_id;
+                }
+
                 AdvertisementScreen::updateOrCreate(
                     [
                        'advertisement_id' => $advertisement_id,
                        'material_id' => $this->id,
                        'site_screen_id' => $data->id,
-                       'site_id' => $data->site_id,
+                       'site_id' => $site_id,
                        'ad_type' => $data->ad_type
                     ],
                 );
