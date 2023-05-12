@@ -493,6 +493,7 @@ class MainController extends AppBaseController
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.name', 'like', '%CINEMA%')
+            ->where('brands.name', 'not like', '%LOBBY%')
             ->where('categories.name', 'like', '%Amusement & Exhibitions%')
             ->where('site_tenants.site_id', $site->id)
             ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
