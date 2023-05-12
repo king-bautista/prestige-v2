@@ -256,6 +256,31 @@
                 .then(response => this.site_logo = response.data.data.site_logo);
 			},
 
+            TitleCasePerWord: function() {
+
+                this.tenant_list.forEach(element => {
+                    element.forEach(tenant => {
+                        const splitBrandName = tenant.brand_name.toLocaleLowerCase().split(" ");
+
+                        for (var i = 0; i < splitBrandName.length; i++) {
+                            splitBrandName[i] = splitBrandName[i].charAt(0).toUpperCase() + splitBrandName[i].slice(1);
+                        }      
+
+                        if (splitBrandName.join(" ").match(/(\(.*\))/)) {
+                            const text = splitBrandName.join(" ");
+                            
+                            const strToReplace = splitBrandName.join(" ").match(/(\(.*\))/)[0];
+
+                            tenant.brand_name = text.replace(strToReplace, strToReplace.toUpperCase());
+                        } else {
+                            tenant.brand_name = splitBrandName.join(" ");
+                        }
+
+                    });
+                });
+
+            },
+
             onEnter: function() {
                 if ($('#code').val().length >= 2) {
                     this.search.key_words = $('#code').val();
@@ -265,6 +290,8 @@
                         this.tenant_list = response.data.data[0];
                         this.subscriber_list = response.data.data[1];
                         // this.temp_subscriber_list = response.data.data[1];
+
+                        this.TitleCasePerWord()
 
                         if(this.tenant_list.length == 0) {
                             this.no_record_found = false;   
