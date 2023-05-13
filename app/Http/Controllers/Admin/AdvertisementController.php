@@ -106,8 +106,10 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
     public function update(AdvertisementRequest $request)
     {
-        try
-    	{
+        // try
+    	// {
+            // dd($request->file('files'));
+
             $advertisement = Advertisement::find($request->id);
             $advertisement->touch();
 
@@ -131,15 +133,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $advertisement->saveMaterials(json_decode($request->materials), $request->file('files'));
 
             return $this->response($advertisement, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function delete($id)

@@ -51,31 +51,35 @@ class Advertisement extends Model
 
     public function saveMaterials($materials, $files)
     {
+        if(count($files) > 0) {
+            foreach($files as $file) {
+                $original_name = $file->getClientOriginalName();
+                $file_size = $file->getSize();
+                $file_path = $file->move('uploads/media/advertisements/materials/', str_replace(' ','-', $original_name));    
+            }
+        }
+
         if(count($materials) > 0) {
             foreach($materials as $index => $material) {
-                $file_path = '';
-                $file_size = '';
-                $original_name = '';
+                $material_data = AdvertisementMaterial::find($material->id);
 
-                $original_name = $files[$index]->getClientOriginalName();
-                $file_size = $files[$index]->getSize();
-                $file_path = $files[$index]->move('uploads/media/advertisements/materials/', str_replace(' ','-', $original_name));
+                $file_path = 'uploads/media/advertisements/materials\\';
 
                 $data = [
                     'advertisement_id' => $this->id,
-                    'file_path' => $file_path,
                     'file_type' => $material->file_type,
-                    'file_size' => $file_size,
+                    'file_size' => $material->size,
                     'dimension' => $material->width.'x'.$material->height,
                     'width' => $material->width,
                     'height' => $material->height
                 ];
 
-                $material_data = AdvertisementMaterial::find($material->id);
                 if($material_data) {
+                    $data['file_path'] = ($material->name) ? $file_path.$material->name : $material_data->file_path;
                     $material_data->update($data);
                 }
                 else {
+                    $data['file_path'] = ($material->name) ? $file_path.$material->name : '';
                     $material_data = AdvertisementMaterial::create($data);
                 }
 
