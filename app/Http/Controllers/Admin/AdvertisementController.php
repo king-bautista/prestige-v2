@@ -69,44 +69,6 @@ class AdvertisementController extends AppBaseController implements Advertisement
         }
     }
 
-    public function validateMaterial(Request $request)
-    {
-        try
-    	{
-            $file_path = $request->file('file_path');
-            $extension = null;
-            $file_path_path = null;
-            $file_size = null;
-            $dimension = null;
-            $width = null;
-            $height = null;
-
-            if($file_path) {
-                $originalname = $file_path->getClientOriginalName();
-                $extension = $file_path->getClientOriginalExtension();
-                $mime_type = explode("/",$file_path->getClientMimeType());
-                $file_size = $file_path->getSize();
-                $file_path_path = $file_path->move('uploads/media/advertisements/'.strtolower($request->ad_type).'/', str_replace(' ','-', $originalname));
-                $file_type = $mime_type[0];
-                if($file_type == 'image') {
-                    $image_size = getimagesize($file_path_path);
-                    $width = $image_size[0];
-                    $height = $image_size[1];
-                    $dimension = $width.' x '.$height;
-                }
-            }
-            
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
     public function store(AdvertisementRequest $request)
     {
         try
@@ -128,7 +90,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
             ];
 
             $advertisement = Advertisement::create($data);
-            //$advertisement->saveMaterials($requests->materials, $request->file('files'));
+            $advertisement->saveMaterials(json_decode($request->materials), $request->file('files'));
 
             return $this->response($advertisement, 'Successfully Created!', 200);
         }

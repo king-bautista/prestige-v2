@@ -427,7 +427,24 @@
 					this.advertisement.status_id = advertisement.transaction_status;
 					this.advertisement.display_duration = advertisement.display_duration;
 					this.advertisement.active = advertisement.active;
-					this.addMaterial();
+
+					var obj = this;
+
+					advertisement.materials.forEach(function (material) {
+						obj.advertisement.materials.push({
+							id: material.id,
+							file: '',
+							src: material.material_path,
+							file_type: material.file_type,
+							width: material.width,
+							height: material.height,
+							screens: [],
+							screen_ids: material.pi_screens,
+							button_show: true,
+							list_show: false,
+							contract_id: advertisement.contract_details.id,
+						});
+					});
 
 					this.add_record = false;
 					this.edit_record = true;
