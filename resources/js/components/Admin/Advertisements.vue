@@ -304,6 +304,8 @@
 				this.advertisement.materials.push({
 					id: '',
 					file: '',
+					name: '',
+					size: '',
 					src: '',
 					file_type: '',
 					width: '',
@@ -328,6 +330,8 @@
 				var material;
 
 				this.advertisement.materials[index].file = file;
+				this.advertisement.materials[index].name = file.name.replace(/\s+/g, '-');
+				this.advertisement.materials[index].size = file.size;
 				this.advertisement.materials[index].src = file_path;
 				this.advertisement.materials[index].file_type = file_type[0];
 				this.advertisement.materials[index].button_show = true;
@@ -434,6 +438,8 @@
 						obj.advertisement.materials.push({
 							id: material.id,
 							file: '',
+							name: '',
+							size: material.file_size,
 							src: material.material_path,
 							file_type: material.file_type,
 							width: material.width,
@@ -464,8 +470,14 @@
 				formData.append("active", this.advertisement.active);
 				formData.append("display_duration", this.advertisement.display_duration);
 
+				console.log(this.advertisement.materials.length);
 				for( let index = 0; index < this.advertisement.materials.length; index++ ) {
-					formData.append('files[]', this.advertisement.materials[index].file);
+					if(this.advertisement.materials[index].file) {
+						formData.append('files[]', this.advertisement.materials[index].file);
+					}
+					else {
+						formData.append('files[]', this.advertisement.materials[index].src);
+					}
 				}
 
 				formData.append("materials", (this.advertisement.materials.length > 0) ? JSON.stringify(this.advertisement.materials) : '');
