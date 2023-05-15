@@ -10,10 +10,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AdvertisementRequest;
 
 use App\Models\Advertisement;
+use App\Models\AdvertisementMaterial;
+use App\Models\AdvertisementScreen;
 use App\Models\ViewModels\AdvertisementViewModel;
-use App\Models\ViewModels\AdminViewModel;
-
-
 
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {
@@ -106,10 +105,8 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
     public function update(AdvertisementRequest $request)
     {
-        // try
-    	// {
-            // dd($request->file('files'));
-
+        try
+    	{
             $advertisement = Advertisement::find($request->id);
             $advertisement->touch();
 
@@ -133,15 +130,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $advertisement->saveMaterials(json_decode($request->materials), $request->file('files'));
 
             return $this->response($advertisement, 'Successfully Modified!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function delete($id)
@@ -182,6 +179,35 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function deleteMaterial($id) {
+        try
+    	{
+            $screens = AdvertisementScreen::where('material_id', $id)->count();
+            if($screens > 0) {
+                return response([
+                    'message' => "You can't this delete material, it's been assigned to a screen/s. ",
+                    'status' => false,
+                    'status_code' => 422,
+                ], 422);
+            }
+            
+            $material = AdvertisementMaterial::find($id);
+            $material->delete();
+
+            return $this->response($material, 'Successfully Deleted!.', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+        
+
     }
 
 }

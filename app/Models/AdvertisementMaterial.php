@@ -42,8 +42,6 @@ class AdvertisementMaterial extends Model
     {
         if(count($screens) > 0) {
             $deleted = AdvertisementScreen::where('advertisement_id', $advertisement_id)->where('material_id', $this->id)->delete();
-            if(!$deleted) 
-                return false;
 
             foreach ($screens as $data) {
                 $site_id = '';
