@@ -51,7 +51,7 @@ class Advertisement extends Model
 
     public function saveMaterials($materials, $files)
     {
-        if(count($files) > 0) {
+        if($files) {
             foreach($files as $file) {
                 $original_name = $file->getClientOriginalName();
                 $file_size = $file->getSize();

@@ -126,7 +126,7 @@
 							<div v-for="(material, index) in advertisement.materials" v-bind:key="index" v-if="advertisement.contract_id">
 								<hr/>
 								<div class="position-absolute" style="right: 2.5rem; z-index: 9;">
-									<button type="button" class="btn btn-outline-danger" @click="deleteRow(index)"><i class="fas fa-trash-alt"></i></button>
+									<button type="button" class="btn btn-outline-danger" @click="deleteRow(index, material.id)"><i class="fas fa-trash-alt"></i></button>
 								</div>
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-3 col-form-label">Material <span class="font-italic text-danger"> *</span></label>								
@@ -318,8 +318,14 @@
 				});
 			},
 
-			deleteRow: function(index) {
-				this.advertisement.materials.splice(index, 1);
+			deleteRow: function(index, id) {
+				axios.get('/admin/manage-ads/material/delete/'+id)
+                .then(response => {
+					if(response.status == false)
+						return false;
+					
+					this.advertisement.materials.splice(index, 1);
+				});
 			},
 
 			fileUpload: function(e, index) {

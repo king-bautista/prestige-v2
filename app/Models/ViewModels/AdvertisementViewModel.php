@@ -107,8 +107,9 @@ class AdvertisementViewModel extends Model
     ****************************************/
     public function getMaterialImagePathAttribute()
     {
-        // if($this->file_path)
-        //     return asset($this->file_path);
+        $material = AdvertisementMaterialViewModel::where('advertisement_id', $this->id)->latest()->first();
+        if($material)
+            return asset($material->file_path);
         return asset('/images/no-image-available.png');
     } 
 
