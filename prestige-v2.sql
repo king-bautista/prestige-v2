@@ -71,7 +71,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
-	(10, 3, 'last_login', '2023-05-09 14:34:59', '2023-04-26 02:53:48', '2023-05-09 06:34:59', NULL);
+	(10, 3, 'last_login', '2023-05-15 11:40:16', '2023-04-26 02:53:48', '2023-05-15 03:40:16', NULL);
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -98,7 +98,6 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   `contract_id` bigint(20) unsigned DEFAULT NULL,
   `brand_id` bigint(20) unsigned DEFAULT NULL,
   `status_id` bigint(20) unsigned DEFAULT NULL,
-  `product_application` enum('Directory','Digital Signage','All') COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_duration` int(11) NOT NULL DEFAULT '0',
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
@@ -114,14 +113,12 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `advertisements_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`),
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~4 rows (approximately)
-INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `product_application`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 3, 1, 7671, 5, 'All', 10, 'Sample 1', 1, '2023-05-04 02:57:02', '2023-05-04 08:46:42', NULL),
-	(2, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:48', '2023-05-05 03:11:48', NULL),
-	(3, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:51', '2023-05-05 03:11:51', NULL),
-	(4, 3, 1, 7671, 5, 'All', 10, 'Sample 2', 1, '2023-05-05 03:11:58', '2023-05-05 03:11:58', NULL);
+-- Dumping data for table prestige.advertisements: ~2 rows (approximately)
+INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 3, 11, 7671, 1, 10, 'Sample 1', 1, '2023-05-12 01:46:02', '2023-05-12 02:13:59', NULL),
+	(2, 3, 11, 7685, 2, 10, 'Sample 2', 1, '2023-05-12 02:13:59', '2023-05-13 08:43:20', NULL);
 
 -- Dumping structure for table prestige.advertisement_materials
 DROP TABLE IF EXISTS `advertisement_materials`;
@@ -134,40 +131,53 @@ CREATE TABLE IF NOT EXISTS `advertisement_materials` (
   `dimension` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `width` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `height` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ad_type` enum('Banner Ad','Fullscreen Ad') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orientation` enum('Landscape','Portrait') COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `advertisement_materials_advertisement_id_index` (`advertisement_id`),
   CONSTRAINT `advertisement_materials_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_materials: ~0 rows (approximately)
+-- Dumping data for table prestige.advertisement_materials: ~10 rows (approximately)
+INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `file_type`, `file_size`, `dimension`, `width`, `height`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 2, 'uploads/media/advertisements/materials\\70c97549-96ba-ba7d.jpg', 'image', '211739', '1920x1080', '1920', '1080', '2023-05-12 07:03:05', '2023-05-13 08:43:20', NULL),
+	(2, 2, 'uploads/media/advertisements/materials\\70c97549-9646-d790.jpg', 'image', '', '470x1060', '470', '1060', '2023-05-12 07:03:05', '2023-05-13 08:43:20', NULL),
+	(3, 2, 'uploads/media/advertisements/materials\\70c97549-9343-a869.jpg', 'image', '', '1920x1080', '1920', '1080', '2023-05-12 07:10:58', '2023-05-13 08:43:20', NULL),
+	(4, 2, 'uploads/media/advertisements/materials\\70c97549-93f1-5d98.jpg', 'image', '225217', '1920x1080', '1920', '1080', '2023-05-12 07:12:39', '2023-05-13 08:43:20', NULL),
+	(5, 2, 'uploads/media/advertisements/materials\\70c97549-95bb-2444.jpg', 'image', '77406', '470x1060', '470', '1060', '2023-05-12 07:19:49', '2023-05-13 08:43:20', NULL),
+	(6, 2, 'uploads/media/advertisements/materials\\70c97549-96ba-ba7d.jpg', 'image', '', '1920x1080', '1920', '1080', '2023-05-12 07:19:57', '2023-05-13 08:41:38', NULL),
+	(7, 2, 'uploads/media/advertisements/materials\\70c97549-961c-36f4.jpg', 'image', '', '470x1060', '470', '1060', '2023-05-12 07:22:09', '2023-05-13 08:41:38', NULL),
+	(8, 2, 'uploads/media/advertisements/materials\\70c97549-958d-4add.jpg', 'image', '', '1920x1080', '1920', '1080', '2023-05-12 07:22:09', '2023-05-13 08:41:38', NULL),
+	(9, 2, 'uploads/media/advertisements/materials\\70c97549-9343-a869.jpg', 'image', '', '1920x1080', '1920', '1080', '2023-05-12 07:23:20', '2023-05-13 08:41:38', NULL),
+	(10, 2, 'uploads/media/advertisements/materials\\70c97549-94a9-4f97.jpg', 'image', '49041', '470x1060', '470', '1060', '2023-05-12 07:23:20', '2023-05-13 08:43:20', NULL);
 
 -- Dumping structure for table prestige.advertisement_screens
 DROP TABLE IF EXISTS `advertisement_screens`;
 CREATE TABLE IF NOT EXISTS `advertisement_screens` (
   `advertisement_id` bigint(20) unsigned DEFAULT NULL,
+  `material_id` bigint(20) unsigned DEFAULT NULL,
   `site_screen_id` bigint(20) unsigned DEFAULT NULL,
   `site_id` bigint(20) unsigned DEFAULT NULL,
-  `product_application` enum('Directory','Digital Signage','All') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ad_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
   KEY `advertisement_screens_advertisement_id_index` (`advertisement_id`),
+  KEY `advertisement_screens_material_id_index` (`material_id`),
   KEY `advertisement_screens_site_screen_id_index` (`site_screen_id`),
   KEY `advertisement_screens_site_id_index` (`site_id`),
-  CONSTRAINT `advertisement_screens_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
+  CONSTRAINT `advertisement_screens_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`),
+  CONSTRAINT `advertisement_screens_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_screens: ~4 rows (approximately)
-INSERT INTO `advertisement_screens` (`advertisement_id`, `site_screen_id`, `site_id`, `product_application`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 0, 41, 'Digital Signage', NULL, NULL, NULL),
-	(1, 0, 41, 'Directory', NULL, NULL, NULL),
-	(1, 0, 23, 'Digital Signage', NULL, NULL, NULL),
-	(1, 0, 1, 'Digital Signage', NULL, NULL, NULL);
+-- Dumping data for table prestige.advertisement_screens: ~6 rows (approximately)
+INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `site_screen_id`, `site_id`, `ad_type`, `created_at`, `updated_at`) VALUES
+	(2, 7, 2, 1, 'Banner Ad', NULL, NULL),
+	(2, 7, 4, 1, 'Banner Ad', NULL, NULL),
+	(2, 7, 6, 1, 'Banner Ad', NULL, NULL),
+	(2, 8, 26, 1, 'Full Screen Ad', NULL, NULL),
+	(2, 8, 28, 1, 'Full Screen Ad', NULL, NULL),
+	(2, 8, 29, 1, 'Banner Ad', NULL, NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -449,7 +459,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7709 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,531 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,440 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -12354,7 +12364,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=197 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=198 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.migrations: 42 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
@@ -12387,7 +12397,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(144, '2023_01_03_154716_create_last_update_ats_table', 27),
 	(162, '2023_01_09_164021_create_logs_table', 37),
 	(146, '2023_01_17_111716_create_transaction_statuses_table', 29),
-	(194, '2023_01_18_105915_create_advertisements_table', 49),
+	(197, '2023_01_18_105915_create_advertisements_table', 51),
 	(152, '2023_01_20_095155_create_content_management_table', 31),
 	(156, '2023_02_14_135156_create_portals_table', 33),
 	(161, '2023_02_15_102541_create_user_roles_table', 36),
@@ -12803,7 +12813,7 @@ INSERT INTO `pi_products` (`id`, `site_screen_id`, `ad_type`, `description`, `di
 	(91, 89, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, '2023-05-08 09:35:47', '2023-05-08 09:35:47', NULL),
 	(92, 90, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:08', '2023-05-08 09:36:08', NULL),
 	(93, 91, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:29', '2023-05-08 09:36:29', NULL),
-	(94, 92, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, '2023-05-08 09:36:56', '2023-05-08 09:36:56', NULL);
+	(94, 92, 'Full Screen Ad', 'Admin test', '384x1024', '384', '1024', 10, 40, 0, '2023-05-08 09:36:56', '2023-05-12 03:42:21', NULL);
 
 -- Dumping structure for table prestige.roles
 DROP TABLE IF EXISTS `roles`;
@@ -15752,9 +15762,9 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_screens_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=293 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screens: ~285 rows (approximately)
+-- Dumping data for table prestige.site_screens: ~286 rows (approximately)
 INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_level_id`, `site_point_id`, `screen_type`, `orientation`, `product_application`, `physical_size_diagonal`, `physical_size_width`, `physical_size_height`, `dimension`, `width`, `height`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 1, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, '1920 x 1080', NULL, NULL, 'thBRpAF7GchJOrBFe', 'Food Court', 20, 1, 0, 0, '2022-10-25 01:28:36', '2023-04-18 05:42:27', NULL),
 	(2, 1, 1, 2, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HmcSeFjl3tsyn0mva', 'National Bookstore', 24, 1, 0, 0, '2022-10-25 01:39:22', '2023-04-24 05:23:37', NULL),
@@ -15846,7 +15856,7 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(90, 23, 13, 59, 0, 'LED', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'NFExzWvucI49qqOf', 'Globe', 40, 1, 0, 1, '2023-04-18 05:35:09', '2023-04-18 05:35:33', NULL),
 	(91, 23, 13, 60, 0, 'LED', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'iJzeCCCCaKGYRMiO', 'PCX', 40, 1, 0, 0, '2023-04-18 05:35:58', '2023-04-18 05:35:58', NULL),
 	(92, 23, 13, 60, 0, 'LED', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, '4EpYslOQHM34ATa8', 'Toolbox', 40, 1, 0, 0, '2023-04-18 05:36:22', '2023-04-18 05:36:22', NULL),
-	(93, 26, 19, 73, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'fcP42XisD5OMLBMD', 'Marketplace', 40, 1, 1, 0, '2023-04-18 06:08:22', '2023-04-18 06:49:04', NULL),
+	(93, 26, 19, 73, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'fcP42XisD5OMLBMD', 'Marketplace', 40, 1, 0, 0, '2023-04-18 06:08:22', '2023-05-12 03:28:09', NULL),
 	(94, 26, 19, 74, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'sG29J2W6A25S6jRp', 'Arabica', 40, 1, 0, 0, '2023-04-18 06:15:40', '2023-04-18 06:15:40', NULL),
 	(95, 26, 19, 74, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'n3XjcAeBmzUY0DNv', 'Starbucks Reserve/Nikkei', 40, 1, 0, 0, '2023-04-18 06:16:12', '2023-04-18 06:16:12', NULL),
 	(96, 26, 19, 75, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '3xXYwX31fNH0fpi9', 'Watsons', 40, 1, 0, 0, '2023-04-18 06:19:19', '2023-04-18 06:19:19', NULL),
@@ -16040,7 +16050,8 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(288, 19, 60, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'tIiLp2ypbPPoQkld', 'Huawei', 20, 1, 0, 1, '2023-04-20 09:48:07', '2023-04-20 09:52:09', NULL),
 	(289, 19, 60, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'IOD5pzYmD35fekpi', 'Samsung', 20, 1, 0, 1, '2023-04-20 09:48:39', '2023-04-20 09:52:29', NULL),
 	(290, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'ShTMccf1uM5c1Gah', 'Lenovo', 20, 1, 0, 0, '2023-04-20 09:54:08', '2023-04-20 09:54:08', NULL),
-	(291, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', '53 Inch', NULL, NULL, NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-05-08 03:17:45', NULL);
+	(291, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', '53 Inches', '53 Inches', '53 Inches', NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-05-12 03:30:57', NULL),
+	(292, 26, 19, 73, 0, 'LFD', 'Portrait', 'Digital Signage', '56 Inches', '80 Inches', '56 Inches', NULL, NULL, NULL, 'yqjzN4Bfbtt5cTC6', 'Sample sample test', 0, 1, 0, 0, '2023-05-12 03:27:46', '2023-05-12 03:30:49', '2023-05-12 03:30:49');
 
 -- Dumping structure for table prestige.site_screen_uptimes
 DROP TABLE IF EXISTS `site_screen_uptimes`;
@@ -21810,9 +21821,9 @@ CREATE TABLE IF NOT EXISTS `user_activity_logs` (
   PRIMARY KEY (`id`),
   KEY `user_activity_logs_company_id_foreign` (`company_id`),
   CONSTRAINT `user_activity_logs_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=521 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=522 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_activity_logs: ~502 rows (approximately)
+-- Dumping data for table prestige.user_activity_logs: ~503 rows (approximately)
 INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `module_accessed`, `company_id`, `type`, `user_id`, `user_name`, `transaction_id`, `query`, `bindings`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(19, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/store', 3, 'Admin', 3, 'perena, jordan', 8, 'insert into `faqs` (`question`, `answer`, `active`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?)', ' [aaa, bbb, 1, 2023-04-24 15:31:45, 2023-04-24 15:31:45]', '2023-04-24 07:31:45', '2023-04-24 07:31:45', NULL),
 	(20, '2023-04-24 12:26:41', '2023-04-19 16:54:54', 'admin/faq/update', 3, 'Admin', 3, 'perena, jordan', 8, 'update `faqs` set `question` = ?, `answer` = ?, `faqs`.`updated_at` = ? where `id` = ?', ' [aaazzz, bbbvvv, 2023-04-24 15:32:00, 8]', '2023-04-24 07:32:00', '2023-04-24 07:32:00', NULL),
@@ -22315,7 +22326,8 @@ INSERT INTO `user_activity_logs` (`id`, `last_login`, `last_password_reset`, `mo
 	(517, '2023-05-09 14:34:59', '2022-08-11 05:24:30', 'admin/company/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `company_brands` (`company_id`, `brand_id`) values (?, ?)', ' [3, 7685]', '2023-05-09 07:47:58', '2023-05-09 07:47:58', NULL),
 	(518, '2023-05-09 14:34:59', '2022-08-11 05:24:30', 'admin/company/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `company_brands` (`company_id`, `brand_id`) values (?, ?)', ' [3, 7690]', '2023-05-09 07:47:58', '2023-05-09 07:47:58', NULL),
 	(519, '2023-05-09 14:34:59', '2022-08-11 05:24:30', 'admin/company/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `company_brands` (`company_id`, `brand_id`) values (?, ?)', ' [3, 7693]', '2023-05-09 07:47:58', '2023-05-09 07:47:58', NULL),
-	(520, '2023-05-09 14:34:59', '2022-08-11 05:24:30', 'admin/company/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `company_brands` (`company_id`, `brand_id`) values (?, ?)', ' [3, 7698]', '2023-05-09 07:47:58', '2023-05-09 07:47:58', NULL);
+	(520, '2023-05-09 14:34:59', '2022-08-11 05:24:30', 'admin/company/update', 3, 'Admin', 3, 'Bautista, King', 0, 'insert into `company_brands` (`company_id`, `brand_id`) values (?, ?)', ' [3, 7698]', '2023-05-09 07:47:58', '2023-05-09 07:47:58', NULL),
+	(521, '2023-05-10 10:45:03', '2022-08-11 05:24:30', 'admin/admin-login', 3, 'Admin', 3, 'Bautista, King', 10, 'update `admins_meta` set `meta_value` = ?, `admins_meta`.`updated_at` = ? where `id` = ?', ' [2023-05-10 10:45:03, 2023-05-10 10:45:03, 10]', '2023-05-10 02:45:03', '2023-05-10 02:45:03', NULL);
 
 -- Dumping structure for table prestige.user_brands
 DROP TABLE IF EXISTS `user_brands`;
