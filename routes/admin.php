@@ -62,8 +62,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/modules/update', 'Admin\ModulesController@update')->name('admin.modules.update');
     Route::get('/admin/modules/delete/{id}', 'Admin\ModulesController@delete')->where('id', '[0-9]+')->name('admin.modules.delete');
     Route::get('/admin/modules/get-all-links', 'Admin\ModulesController@getAllLinks')->where('id', '[0-9]+')->name('admin.modules.get-all-links');
+    Route::get('/admin/modules/get-parent/{id}', 'Admin\ModulesController@getParent')->where('id', '[0-9]+')->name('admin.modules.get-parent');
     Route::get('/admin/modules/download-csv', 'Admin\ModulesController@downloadCsv')->name('admin.modules.download-csv');
-
+    
     /*
     |--------------------------------------------------------------------------
     | Categories Routes
