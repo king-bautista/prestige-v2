@@ -13,6 +13,8 @@ use App\Models\Advertisement;
 use App\Models\AdvertisementMaterial;
 use App\Models\AdvertisementScreen;
 use App\Models\ViewModels\AdvertisementViewModel;
+use App\Models\ViewModels\AdvertisementMaterialViewModel;
+use App\Models\ViewModels\ContentMaterialViewModel;
 
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {
@@ -163,13 +165,36 @@ class AdvertisementController extends AppBaseController implements Advertisement
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-            $advertisements = AdvertisementViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            $advertisements = ContentMaterialViewModel::when(request('search'), function($query){
+                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
+                             ->where('companies.name', 'LIKE', '%' . request('search') . '%')
+                             ->where('brands.name', 'LIKE', '%' . request('search') . '%');
             })
+            ->where('advertisements.status_id', 5)
+            ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+            ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
+            ->select('advertisement_materials.*')
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getMaterialDetails($id)
+    {
+        try
+        {
+            $material = ContentMaterialViewModel::find($id);
+            return $this->response($material, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {

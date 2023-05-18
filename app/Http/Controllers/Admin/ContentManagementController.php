@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 use App\Models\ContentManagement;
 use App\Models\TransactionStatus;
-use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\ContentManagementViewModel;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
@@ -32,7 +31,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             $contents = ContentManagementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -72,18 +70,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try
     	{
             $data = [
-                'advertisement_id' => $request->advertisement_id['id'],
-                'site_id' => $request->site_id['id'],
-                'site_tenant_id' => $request->site_tenant_id['id'],
+                'material_id' => $request->material_id,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
-                'uom' => $request->uom,
-                'status_id' => $request->status_id['id'],
-                'active' => 1,
+                'active' => $request->active,
             ];
 
             $content = ContentManagement::create($data);
-            $content->saveScreens($request->site_screen_id);
+            $content->saveScreens($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Created!', 200);
         }
@@ -104,18 +98,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $content = ContentManagement::find($request->id);
 
             $data = [
-                'advertisement_id' => $request->advertisement_id['id'],
-                'site_id' => $request->site_id['id'],
-                'site_tenant_id' => $request->site_tenant_id['id'],
+                'material_id' => $request->material_id,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
-                'uom' => $request->uom,
-                'status_id' => $request->status_id['id'],
-                'active' => ($request->active) ? 1 : 0,
+                'active' => $request->active,
             ];
 
             $content->update($data);
-            $content->saveScreens($request->site_screen_id);
+            $content->saveScreens($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Modified!', 200);
         }

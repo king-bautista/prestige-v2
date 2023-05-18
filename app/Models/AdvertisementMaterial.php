@@ -52,17 +52,17 @@ class AdvertisementMaterial extends Model
                     $site_id = $data->site_screen_details->site_id;
                 }
 
-                AdvertisementScreen::updateOrCreate(
+                AdvertisementScreen::create(
                     [
                        'advertisement_id' => $advertisement_id,
                        'material_id' => $this->id,
-                       'site_screen_id' => $data->id,
+                       'pi_product_id' => $data->id,
+                       'site_screen_id' => $data->site_screen_id,
                        'site_id' => $site_id,
                        'ad_type' => $data->ad_type
                     ],
                 );
             }
-
         }
     }
 }

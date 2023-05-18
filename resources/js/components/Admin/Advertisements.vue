@@ -353,7 +353,7 @@
 				}
 				else if(file_type[0] == 'video') {
 					material = document.createElement("video");
-					material.src = this.banner_portrait;
+					material.src = file_path;
 					material.addEventListener("loadedmetadata", function () {						
 						obj.advertisement.display_duration = this.duration;
 						obj.setfilter(index, this.videoHeight, this.videoWidth);
@@ -368,6 +368,7 @@
 			},
 
 			getScreens: function(index) {
+				console.log(this.advertisement.materials);
 				axios.post('/admin/site/pi-product/get-screens', this.advertisement.materials[index])
                 .then(response => {
 					this.advertisement.materials[index].screens = response.data.data;
