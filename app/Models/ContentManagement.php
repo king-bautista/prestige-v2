@@ -15,14 +15,9 @@ class ContentManagement extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'advertisement_id',
-        'site_id',
-        'site_screen_id',
-        'site_tenant_id',
+        'material_id',
         'start_date',
         'end_date',
-        'uom',
-        'status_id',
         'active',
     ];
 
@@ -53,18 +48,27 @@ class ContentManagement extends Model
 
     public function saveScreens($screens)
     {
-        ContentScreen::where('content_id', $this->id)->delete();
+        if(count($screens) > 0) {
+            $deleted = ContentScreen::where('content_id', $this->id)->delete();
 
-        if($screens) {
-            foreach ($screens as $index => $data) {
+            foreach ($screens as $data) {
+                $site_id = '';
+                if(isset($data->site_id)) {
+                    $site_id = $data->site_id;
+                }
+                else {
+                    $site_id = $data['site_screen_details']['site_id'];
+                }
+
                 ContentScreen::updateOrCreate(
                     [
                        'content_id' => $this->id,
-                       'site_screen_id' => $data['id'],
+                       'pi_product_id' => $data['id'],
+                       'site_screen_id' => $data['site_screen_id'],
+                       'site_id' => $site_id,
                     ],
                 );
             }
-        }
-    }
+        }    }
 
 }

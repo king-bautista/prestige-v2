@@ -179,6 +179,18 @@ class PiProductController extends AppBaseController implements PiProductControll
                 ->get();
             }
 
+            $all_sites = ContractScreen::where('contract_id', $request->contract_id)->where('product_application', '=', 'All')->first();
+            if($all_sites) {
+                $pi_products = PiProductViewModel::where('pi_products.width', $request->width)
+                ->where('pi_products.height', $request->height)
+                ->leftJoin('site_screens', 'pi_products.site_screen_id', '=', 'site_screens.id')
+                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->select('pi_products.*')
+                ->get();
+            }
+
             return $this->response($pi_products, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
             return response([
