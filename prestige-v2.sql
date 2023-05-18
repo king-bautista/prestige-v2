@@ -117,12 +117,17 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
 
 -- Dumping data for table prestige.advertisements: ~6 rows (approximately)
 INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 3, 12, 7398, 5, 10, 'SMTZ - Mall Facade', 1, '2023-05-18 06:29:13', '2023-05-18 06:41:50', NULL),
+	(1, 3, 12, 7398, 5, 10, 'SMTZ - Mall Facade', 1, '2023-05-18 06:29:13', '2023-05-18 08:47:59', NULL),
 	(2, 3, 12, 7398, 5, 10, 'SM TANZA MID', 1, '2023-05-18 06:31:56', '2023-05-18 06:43:19', NULL),
 	(3, 2, 13, 7714, 5, 20, 'SMTZ POWERED BY PRESTIGE', 1, '2023-05-18 07:03:33', '2023-05-18 07:16:12', NULL),
 	(4, 3, 12, 7398, 5, 10, 'SMTZ - YOUT ALWAYS WELCOME HERE BA', 1, '2023-05-18 07:17:59', '2023-05-18 07:17:59', NULL),
 	(5, 2, 13, 7714, 5, 10, 'Earth Month Ad', 1, '2023-05-18 07:23:33', '2023-05-18 07:23:33', NULL),
-	(6, 2, 13, 6162, 5, 10, 'Globe Ad 2023', 1, '2023-05-18 07:26:06', '2023-05-18 07:26:06', NULL);
+	(6, 2, 13, 6162, 5, 10, 'Globe Ad 2023', 1, '2023-05-18 07:26:06', '2023-05-18 08:01:40', NULL),
+	(7, 2, 13, 7714, 5, 10, 'Prestige Mothers Day Ad', 1, '2023-05-18 07:49:38', '2023-05-18 07:49:38', NULL),
+	(8, 3, 12, 7398, 5, 10, 'SMTZ - 3 DAY SALE', 1, '2023-05-18 07:51:29', '2023-05-18 07:51:29', NULL),
+	(9, 2, 13, 2151, 5, 10, 'SM Cyber Gadget Craze', 1, '2023-05-18 07:54:44', '2023-05-18 07:54:44', NULL),
+	(10, 2, 13, 2151, 5, 10, 'SM Feel the Cyber Thrill', 1, '2023-05-18 07:57:01', '2023-05-18 07:57:01', NULL),
+	(11, 3, 12, 7398, 5, 10, 'SM Its Summer  Time', 1, '2023-05-18 07:59:05', '2023-05-18 07:59:05', NULL);
 
 -- Dumping structure for table prestige.advertisement_materials
 DROP TABLE IF EXISTS `advertisement_materials`;
@@ -156,7 +161,17 @@ INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `f
 	(9, 5, 'uploads/media/advertisements/materials\\889e07a2-b65c-42c7.ogv', 'video', '2095090', '470x1060', '470', '1060', '2023-05-18 07:23:33', '2023-05-18 07:23:33', NULL),
 	(10, 5, 'uploads/media/advertisements/materials\\889e07a2-b587-ccbc-full.ogv', 'video', '5272410', '1920x1080', '1920', '1080', '2023-05-18 07:23:33', '2023-05-18 07:23:33', NULL),
 	(11, 6, 'uploads/media/advertisements/materials\\98206342-d80f-7db0.ogv', 'video', '2036863', '470x1060', '470', '1060', '2023-05-18 07:26:06', '2023-05-18 07:26:06', NULL),
-	(12, 6, 'uploads/media/advertisements/materials\\70c97f33-306a-3bd0-full.ogv', 'video', '4244326', '1920x1080', '1920', '1080', '2023-05-18 07:26:06', '2023-05-18 07:26:06', NULL);
+	(12, 6, 'uploads/media/advertisements/materials\\70c97f33-306a-3bd0-full.ogv', 'video', '4244326', '1920x1080', '1920', '1080', '2023-05-18 07:26:06', '2023-05-18 07:26:06', NULL),
+	(13, 7, 'uploads/media/advertisements/materials\\70c97f39-16ec-fe41.ogv', 'video', '1435128', '470x1060', '470', '1060', '2023-05-18 07:49:38', '2023-05-18 07:49:38', NULL),
+	(14, 7, 'uploads/media/advertisements/materials\\70c97f39-1605-fa23.ogv', 'video', '4075076', '1920x1080', '1920', '1080', '2023-05-18 07:49:38', '2023-05-18 07:49:38', NULL),
+	(15, 8, 'uploads/media/advertisements/materials\\70c97179-ae42-8e39.jpg', 'image', '77158', '470x1060', '470', '1060', '2023-05-18 07:51:29', '2023-05-18 07:51:29', NULL),
+	(16, 8, 'uploads/media/advertisements/materials\\70c97179-ae1b-bb94-full.jpg', 'image', '202184', '1920x1080', '1920', '1080', '2023-05-18 07:51:29', '2023-05-18 07:51:29', NULL),
+	(17, 9, 'uploads/media/advertisements/materials\\70c97158-c52f-32c3.jpg', 'image', '398078', '470x1060', '470', '1060', '2023-05-18 07:54:44', '2023-05-18 07:54:44', NULL),
+	(18, 9, 'uploads/media/advertisements/materials\\70c97158-c48a-7fd9-full.jpg', 'image', '1056084', '1920x1080', '1920', '1080', '2023-05-18 07:54:44', '2023-05-18 07:54:44', NULL),
+	(19, 10, 'uploads/media/advertisements/materials\\70c97158-d4da-d797.jpg', 'image', '266615', '470x1060', '470', '1060', '2023-05-18 07:57:01', '2023-05-18 07:57:01', NULL),
+	(20, 10, 'uploads/media/advertisements/materials\\70c97158-d46d-8a7f-full.jpg', 'image', '716064', '1920x1080', '1920', '1080', '2023-05-18 07:57:01', '2023-05-18 07:57:01', NULL),
+	(21, 11, 'uploads/media/advertisements/materials\\70c97158-d619-171c.jpg', 'image', '188226', '470x1060', '470', '1060', '2023-05-18 07:59:05', '2023-05-18 07:59:05', NULL),
+	(22, 11, 'uploads/media/advertisements/materials\\70c97158-d569-7e32-full.jpg', 'image', '402722', '1920x1080', '1920', '1080', '2023-05-18 07:59:05', '2023-05-18 07:59:05', NULL);
 
 -- Dumping structure for table prestige.advertisement_screens
 DROP TABLE IF EXISTS `advertisement_screens`;
@@ -181,12 +196,8 @@ CREATE TABLE IF NOT EXISTS `advertisement_screens` (
   CONSTRAINT `advertisement_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_screens: ~24 rows (approximately)
+-- Dumping data for table prestige.advertisement_screens: ~44 rows (approximately)
 INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_product_id`, `site_screen_id`, `site_id`, `ad_type`, `created_at`, `updated_at`) VALUES
-	(1, 1, 45, 228, 46, 'Banner Ad', NULL, NULL),
-	(1, 1, 96, 227, 46, 'Banner Ad', NULL, NULL),
-	(1, 2, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
-	(1, 2, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
 	(2, 3, 45, 228, 46, 'Banner Ad', NULL, NULL),
 	(2, 3, 96, 227, 46, 'Banner Ad', NULL, NULL),
 	(2, 4, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
@@ -203,10 +214,34 @@ INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_prod
 	(5, 9, 96, 227, 46, 'Banner Ad', NULL, NULL),
 	(5, 10, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
 	(5, 10, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(7, 13, 45, 228, 46, 'Banner Ad', NULL, NULL),
+	(7, 13, 96, 227, 46, 'Banner Ad', NULL, NULL),
+	(7, 14, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
+	(7, 14, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(8, 15, 45, 228, 46, 'Banner Ad', NULL, NULL),
+	(8, 15, 96, 227, 46, 'Banner Ad', NULL, NULL),
+	(8, 16, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
+	(8, 16, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(9, 17, 45, 228, 46, 'Banner Ad', NULL, NULL),
+	(9, 17, 96, 227, 46, 'Banner Ad', NULL, NULL),
+	(9, 18, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
+	(9, 18, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(10, 19, 45, 228, 46, 'Banner Ad', NULL, NULL),
+	(10, 19, 96, 227, 46, 'Banner Ad', NULL, NULL),
+	(10, 20, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
+	(10, 20, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(11, 21, 45, 228, 46, 'Banner Ad', NULL, NULL),
+	(11, 21, 96, 227, 46, 'Banner Ad', NULL, NULL),
+	(11, 22, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
+	(11, 22, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
 	(6, 11, 45, 228, 46, 'Banner Ad', NULL, NULL),
 	(6, 11, 96, 227, 46, 'Banner Ad', NULL, NULL),
 	(6, 12, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
-	(6, 12, 95, 228, 46, 'Full Screen Ad', NULL, NULL);
+	(6, 12, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(1, 1, 45, 228, 46, 'Banner Ad', NULL, NULL),
+	(1, 1, 96, 227, 46, 'Banner Ad', NULL, NULL),
+	(1, 2, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
+	(1, 2, 95, 228, 46, 'Full Screen Ad', NULL, NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -11888,9 +11923,17 @@ CREATE TABLE IF NOT EXISTS `content_management` (
   CONSTRAINT `content_management_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_management: ~1 rows (approximately)
+-- Dumping data for table prestige.content_management: ~2 rows (approximately)
 INSERT INTO `content_management` (`id`, `material_id`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 8, '2023-05-01', '2023-05-31', 1, '2023-05-17 10:11:08', '2023-05-17 10:11:08', NULL);
+	(1, 8, '2023-05-01', '2023-05-31', 1, '2023-05-17 10:11:08', '2023-05-18 08:47:20', '2023-05-18 08:47:20'),
+	(2, 2, '2023-05-01', '2023-12-31', 1, '2023-05-18 08:51:33', '2023-05-18 08:51:33', NULL),
+	(3, 1, '2023-05-01', '2023-12-31', 1, '2023-05-18 09:24:59', '2023-05-18 09:24:59', NULL),
+	(4, 4, '2023-05-01', '2023-12-31', 1, '2023-05-18 09:34:03', '2023-05-18 09:34:03', NULL),
+	(5, 3, '2023-05-01', '2023-12-31', 1, '2023-05-18 09:34:33', '2023-05-18 09:34:33', NULL),
+	(6, 5, '2023-05-01', '2023-12-31', 1, '2023-05-18 09:44:12', '2023-05-18 09:44:12', NULL),
+	(7, 6, '2023-05-01', '2023-12-31', 1, '2023-05-18 09:44:55', '2023-05-18 09:44:55', NULL),
+	(8, 8, '2023-05-01', '2023-12-31', 1, '2023-05-18 09:45:43', '2023-05-18 09:45:43', NULL),
+	(9, 7, '2023-05-01', '2023-12-31', 1, '2023-05-18 09:46:04', '2023-05-18 09:46:04', NULL);
 
 -- Dumping structure for table prestige.content_screens
 DROP TABLE IF EXISTS `content_screens`;
@@ -11911,7 +11954,21 @@ CREATE TABLE IF NOT EXISTS `content_screens` (
 
 -- Dumping data for table prestige.content_screens: ~1 rows (approximately)
 INSERT INTO `content_screens` (`content_id`, `pi_product_id`, `site_screen_id`, `site_id`) VALUES
-	(1, 83, 77, 23);
+	(1, 83, 77, 23),
+	(2, 44, 227, 46),
+	(2, 95, 228, 46),
+	(3, 45, 228, 46),
+	(3, 96, 227, 46),
+	(4, 44, 227, 46),
+	(4, 95, 228, 46),
+	(5, 45, 228, 46),
+	(5, 96, 227, 46),
+	(6, 45, 228, 46),
+	(6, 96, 227, 46),
+	(7, 44, 227, 46),
+	(8, 44, 227, 46),
+	(8, 95, 228, 46),
+	(9, 45, 228, 46);
 
 -- Dumping structure for table prestige.contracts
 DROP TABLE IF EXISTS `contracts`;
