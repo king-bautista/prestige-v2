@@ -199,6 +199,7 @@
             		ad_name: "Ad Name", 
 					company_name: "Company Name",
 					brand_name: "Brand Name",
+					air_dates: "Airdates",
 					active: {
             			name: "Status", 
             			type:"Boolean", 

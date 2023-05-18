@@ -47,6 +47,7 @@ class ContentManagementViewModel extends Model
         'dimension',
         'company_name',
         'brand_name',
+        'air_dates',
         'advertisement_details',
         'screens',
         // 'advertisement_details',
@@ -164,6 +165,11 @@ class ContentManagementViewModel extends Model
         if($site_screen_products)
             return $site_screen_products;
         return null;
+    }  
+
+    public function getAirDatesAttribute() 
+    {
+        return $this->start_date.' - '.$this->end_date;
     }  
 
     // public function getAdvertisementDetailsAttribute() 
