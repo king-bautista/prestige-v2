@@ -108,7 +108,7 @@ class ContentMaterialViewModel extends Model
     
     public function getScreenAssignedAttribute()
     {
-        $screens = $this->pi_screens->pluck('site_screen_location')->toArray();;
+        $screens = $this->pi_screens->pluck('site_screen_location')->toArray();
         if($screens)
             return $screens;
         return null;
