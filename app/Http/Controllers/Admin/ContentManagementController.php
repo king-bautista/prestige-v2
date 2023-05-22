@@ -110,7 +110,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content->update($data);
             $content->saveScreens($request->site_screen_ids);
-            dd($request->site_screen_ids);
             $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Modified!', 200);
@@ -176,8 +175,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 'categories_ids' => $categories_ids,
             ];
 
-            dd($params);
-
             $this->createPlayList($params);
 
         }
@@ -185,8 +182,16 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function createPlayList($params)
     {
-        dd($params);
-        $contents = ContentScreenViewModel::where('site_screen_id', $params[])->get();
+
+        $contents = ContentScreenViewModel::where('site_screen_id', $params['site_screen_id'])
+        ->join('content_management', 'content_screens.content_id', '=', 'content_management.id')
+        ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
+        ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+        ->join('brands', 'advertisements.brand_id', '=', 'brands.id')
+        ->join('categories', 'brands.category_id', '=', 'categories.id')
+        ->get();
+
+        dd($contents);
         // get material filter with category
 
         // get site partner material

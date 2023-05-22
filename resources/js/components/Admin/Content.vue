@@ -259,7 +259,7 @@
             			apiUrl: '',
             			routeName: 'content.edit',
             			button: '<i class="far fa-check-circle"></i> Add',
-            			method: 'edit'
+            			method: 'view'
             		},
             	},
 
@@ -306,16 +306,11 @@
               	$('#content-form').modal('show');
             },
 
-			selectedAd: function(id) {
-				axios.get('/admin/manage-ads/material/'+id)
-                .then(response => {
-					var material = response.data.data;
-					this.screens = [];
-
-                    this.content.material_id = material.id
-					this.content.advertisement_details = material;
-					this.screens = material.pi_screens;
-                });
+			selectedAd: function(data) {
+				this.screens = [];
+				this.content.material_id = data.id
+				this.content.advertisement_details = data;
+				this.screens = data.pi_screens;
 			},
 
             storeContent: function() {
