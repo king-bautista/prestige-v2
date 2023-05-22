@@ -8,8 +8,10 @@ use App\Http\Controllers\Admin\Interfaces\ContentManagementControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\ContentManagement;
+use App\Models\Category;
 use App\Models\TransactionStatus;
 use App\Models\ViewModels\ContentManagementViewModel;
+use App\Models\ViewModels\ContentScreenViewModel;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -78,6 +80,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content = ContentManagement::create($data);
             $content->saveScreens($request->site_screen_ids);
+            // create playlist here
+
 
             return $this->response($content, 'Successfully Created!', 200);
         }
@@ -106,6 +110,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content->update($data);
             $content->saveScreens($request->site_screen_ids);
+            dd($request->site_screen_ids);
+            $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Modified!', 200);
         }
@@ -152,6 +158,43 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function generatePlayList($screens)
+    {
+        //dd($screens);
+        // get main category
+        $categories = Category::whereNull('parent_id')->where('category_type', 1)->get();
+        $categories_ids = $categories->pluck('id');
+
+        foreach($screens as $screen) {
+            $loop_count = 0;
+            $loop_count = $screen['slots']/$categories->count();
+            $params = [
+                'loop_count' => $loop_count,
+                'site_screen_id' => $screen['site_screen_id'],
+                'categories_ids' => $categories_ids,
+            ];
+
+            dd($params);
+
+            $this->createPlayList($params);
+
+        }
+    }
+
+    public function createPlayList($params)
+    {
+        dd($params);
+        $contents = ContentScreenViewModel::where('site_screen_id', $params[])->get();
+        // get material filter with category
+
+        // get site partner material
+
+        // loop from max slot per screen
+
+        // insert into playlist table
+
     }
 
 }
