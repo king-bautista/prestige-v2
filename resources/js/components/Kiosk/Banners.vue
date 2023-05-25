@@ -5,12 +5,12 @@
                 <div v-for="(banner, index) in banners.slice(0,2)" :data-index="index" :data-id="banner.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(banner.display_duration*1000)">
                     <span v-if="banner.file_type == 'video'" @click="helper.saveLogs(banner, 'Banner Ad')">
                         <video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
-                            <source :src="banner.material_image_path" type="video/ogg">
+                            <source :src="banner.material_path" type="video/ogg">
                             Your browser does not support the video tag.
                         </video>
                     </span>
                     <span v-else @click="helper.saveLogs(banner, 'Banner Ad')">
-                        <img :src="banner.material_image_path" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
+                        <img :src="banner.material_path" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                     </span>
                 </div>
             </div>
@@ -59,14 +59,14 @@
                         if(banner_array[count].file_type == 'video') {
                             carousel_item += '<span>';
                             carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" id="logs_'+banner_array[count].id+'" data-id="'+count+'">';
-                            carousel_item += '<source src="'+banner_array[count].material_image_path+'" type="video/ogg">';
+                            carousel_item += '<source src="'+banner_array[count].material_path+'" type="video/ogg">';
                             carousel_item += 'Your browser does not support the video tag.';
                             carousel_item += '</video>';
                             carousel_item += '</span>';
                         }
                         else {
                             carousel_item += '<span>';
-                            carousel_item += '<img src="'+banner_array[count].material_image_path+'" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;"  id="logs_'+banner_array[count].id+'" data-id="'+count+'">';
+                            carousel_item += '<img src="'+banner_array[count].material_path+'" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;"  id="logs_'+banner_array[count].id+'" data-id="'+count+'">';
                             carousel_item += '</span>';
                         }
                     carousel_item += '</div>';
