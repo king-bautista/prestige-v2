@@ -33,6 +33,7 @@
 
 	export default {
         name: "PlayList",
+		
         data() {
             return {
             	dataFields: {
