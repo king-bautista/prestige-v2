@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "admin" middleware group. Now create something great!
 |
-*/
+*/  
 
 Route::get('/admin/login', 'AdminAuth\AuthController@login')->name('admin.login');
 Route::post('/admin/login', 'AdminAuth\AuthController@adminLogin')->name('admin.admin-login');
@@ -337,7 +337,10 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/manage-ads/update', 'Admin\AdvertisementController@update')->name('admin.manage-ads.update');
     Route::get('/admin/manage-ads/delete/{id}', 'Admin\AdvertisementController@delete')->where('id', '[0-9]+')->name('admin.manage-ads.delete');
     Route::get('/admin/manage-ads/all', 'Admin\AdvertisementController@getAllType')->name('admin.manage-ads.all');
+<<<<<<< HEAD
+=======
     Route::get('/admin/manage-ads/material/{id}', 'Admin\AdvertisementController@getMaterialDetails')->where('id', '[0-9]+')->name('admin.manage-ads.material.details');
+>>>>>>> d58bbb5067fbc7bfe09402cefcc2b56fdd7e100f
     Route::get('/admin/manage-ads/material/delete/{id}', 'Admin\AdvertisementController@deleteMaterial')->where('id', '[0-9]+')->name('admin.manage-ads.material.delete');
 
     /*
@@ -456,6 +459,15 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Gallery Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/gallery', 'Admin\GalleryController@index')->name('admin.gallery');
+    Route::post('/admin/gallery/upload', 'Admin\GalleryController@upload')->name('admin.gallery.upload');
+    Route::get('/admin/gallery/get-all', 'Admin\GalleryController@getAll')->name('admin.gallery.get-all');
+    
+    /*
+    |--------------------------------------------------------------------------
     | Customer Care Inquiry Routes
     |--------------------------------------------------------------------------
     */
@@ -541,6 +553,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/site/pi-product/update', 'Admin\PiProductController@update')->name('admin.site.pi-product.update');
     Route::get('/admin/site/pi-product/delete/{id}', 'Admin\PiProductController@delete')->where('id', '[0-9]+')->name('admin.site.pi-product.delete');
     Route::post('/admin/site/pi-product/get-screens', 'Admin\PiProductController@getScreen')->name('admin.site.pi-product.get-screens');
+<<<<<<< HEAD
+     
+
+=======
   
+>>>>>>> d58bbb5067fbc7bfe09402cefcc2b56fdd7e100f
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

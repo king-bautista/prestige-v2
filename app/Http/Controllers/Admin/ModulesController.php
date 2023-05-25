@@ -167,6 +167,23 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
         }
     }
 
+    public function getParent($id)
+    {
+        try
+        {
+            $count = Module::where('parent_id', $id)->get()->count();
+            return $this->response($count, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     { 
         try {
