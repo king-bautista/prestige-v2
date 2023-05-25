@@ -456,9 +456,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     | Gallery Routes
     |--------------------------------------------------------------------------
     */
-    //Route::get('/admin/gallery', 'Admin\GalleryController@index')->name('admin.gallery');
-    //Route::post('/admin/gallery/upload', 'Admin\GalleryController@upload')->name('admin.gallery.upload');
-    //Route::get('/admin/gallery/get-all', 'Admin\GalleryController@getAll')->name('admin.gallery.get-all');
+    Route::get('/admin/gallery', 'Admin\GalleryController@index')->name('admin.gallery');
+    Route::post('/admin/gallery/upload', 'Admin\GalleryController@upload')->name('admin.gallery.upload');
+    Route::get('/admin/gallery/get-all', 'Admin\GalleryController@getAll')->name('admin.gallery.get-all');
     
     /*
     |--------------------------------------------------------------------------
