@@ -24,10 +24,10 @@ class CreatePlayListsTable extends Migration
             $table->bigInteger('category_id')->unsigned();
             $table->bigInteger('parent_category_id')->unsigned();
             $table->bigInteger('main_category_id')->unsigned();
-            $table->bigInteger('site_tenant_id')->unsigned();
             $table->bigInteger('advertisement_id')->unsigned();
             $table->bigInteger('sequence')->unsigned();
             $table->timestamps();
+
         });
     }
 
