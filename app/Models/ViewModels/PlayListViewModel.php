@@ -47,7 +47,8 @@ class PlayListViewModel extends Model
         'company_name',
         'site_name',
         'screen_location',
-        'duration'
+        'duration',
+        'file_type',
     ];
 
     public function getContentDetails()
@@ -145,6 +146,15 @@ class PlayListViewModel extends Model
         if($total_days)
             return $total_days. ' Days';
         return 0;
-
     }
+
+    public function getFileTypeAttribute()
+    {
+        $content_details = $this->getContentDetails()->first();
+        if($content_details)
+            return $content_details->advertisement_details->file_type;
+        return null;
+    }
+
+
 }

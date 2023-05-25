@@ -198,13 +198,12 @@ class ContentManagementController extends AppBaseController implements ContentMa
             // GET SITE PARTNER IDS FROM COMPANY TABLE
             $site_partner_ids = Company::whereIn('classification_id', [1,2])->get();
 
-            // GET ADVERTISER CONTENT
-            $advertiser_contents = $this->getContent($params, $play_list_ids, $site_partner_ids);            
-            $play_list = PlayList::insert($advertiser_contents);
-
             // GET SITE PARTNER CONTENT
             $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
             $play_list = PlayList::insert($site_partner_content);            
+            // GET ADVERTISER CONTENT
+            $advertiser_contents = $this->getContent($params, $play_list_ids, $site_partner_ids);            
+            $play_list = PlayList::insert($advertiser_contents);
         }
 
         $date_now = date('Y-m-d H:i:s');
@@ -256,7 +255,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $play_list = PlayListViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
+            ->orderBy('play_lists.id', 'ASC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         }

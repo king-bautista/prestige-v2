@@ -6,12 +6,12 @@
                     <div v-for="(screen, index) in fullscreens.slice(0,2)" :data-index="index" :data-id="screen.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(screen.display_duration*1000)">
                         <span v-if="screen.file_type == 'video'">
                             <video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">
-                                <source :src="screen.material_image_path" type="video/ogg">
+                                <source :src="screen.material_path" type="video/ogg">
                                 Your browser does not support the video tag.
                             </video>
                         </span>
                         <span v-else>
-                            <img :src="screen.material_image_path" style="margin: 0px; height: 100%; width: 100%;">
+                            <img :src="screen.material_path" style="margin: 0px; height: 100%; width: 100%;">
                         </span>
                     </div>
                 </div>
@@ -62,14 +62,14 @@
                         if(fullscreen_array[countscreen].file_type == 'video') {
                             carousel_item += '<span>';
                             carousel_item += '<video muted="muted" autoplay="true" style="margin: 0px; height: 100%; width: 100%;">';
-                            carousel_item += '<source src="'+fullscreen_array[countscreen].material_image_path+'" type="video/ogg">';
+                            carousel_item += '<source src="'+fullscreen_array[countscreen].material_path+'" type="video/ogg">';
                             carousel_item += 'Your browser does not support the video tag.';
                             carousel_item += '</video>';
                             carousel_item += '</span>';
                         }
                         else {
                             carousel_item += '<span>';
-                            carousel_item += '<img src="'+fullscreen_array[countscreen].material_image_path+'" style="margin: 0px; height: 100%; width: 100%;">';
+                            carousel_item += '<img src="'+fullscreen_array[countscreen].material_path+'" style="margin: 0px; height: 100%; width: 100%;">';
                             carousel_item += '</span>';
                         }
                     carousel_item += '</div>';
