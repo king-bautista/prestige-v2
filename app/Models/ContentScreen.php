@@ -13,7 +13,9 @@ class ContentScreen extends Model
      */
     protected $fillable = [
         'content_id', 
-        'site_screen_id'
+        'pi_product_id',
+        'site_screen_id',
+        'site_id',
     ];
 
     /**

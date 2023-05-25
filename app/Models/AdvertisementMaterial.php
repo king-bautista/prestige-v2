@@ -37,4 +37,32 @@ class AdvertisementMaterial extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public function saveScreens($screens, $advertisement_id)
+    {
+        if(count($screens) > 0) {
+            $deleted = AdvertisementScreen::where('advertisement_id', $advertisement_id)->where('material_id', $this->id)->delete();
+
+            foreach ($screens as $data) {
+                $site_id = '';
+                if(isset($data->site_id)) {
+                    $site_id = $data->site_id;
+                }
+                else {
+                    $site_id = $data->site_screen_details->site_id;
+                }
+
+                AdvertisementScreen::create(
+                    [
+                       'advertisement_id' => $advertisement_id,
+                       'material_id' => $this->id,
+                       'pi_product_id' => $data->id,
+                       'site_screen_id' => $data->site_screen_id,
+                       'site_id' => $site_id,
+                       'ad_type' => $data->ad_type
+                    ],
+                );
+            }
+        }
+    }
 }

@@ -34,6 +34,18 @@ class MainController extends AppBaseController
         $site = Site::where('is_default', 1)->where('active', 1)->first();
         $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;            
         $site['site_screen_id'] = $site_screen_id;
+        $site_name = $site->name;
+        
+        $siteMeta = SiteViewModel::find($site->id);
+
+        if ($siteMeta->details['premiere']) {
+            $arr = explode(" ",$site_name);
+            $site_name = strtolower(implode("-",$arr));
+            $site['site_name'] = $site_name;
+        } else {
+            $site_name = 'generic';
+            $site['site_name'] = $site_name;
+        }
 
         return view('kiosk.main', $site);
     }
@@ -166,11 +178,14 @@ class MainController extends AppBaseController
         {
             // # GET ALL TENANT BRAND
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
+            ->where('site_maps.site_screen_id', $site_screen_id)
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+            ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
             ->select('site_tenants.id','site_tenants.brand_id','brands.name','site_tenants.site_building_id','site_tenants.site_building_level_id')
             ->orderBy('brands.name', 'ASC')
             ->get();
@@ -478,6 +493,7 @@ class MainController extends AppBaseController
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brands.name', 'like', '%CINEMA%')
+            ->where('brands.name', 'not like', '%LOBBY%')
             ->where('categories.name', 'like', '%Amusement & Exhibitions%')
             ->where('site_tenants.site_id', $site->id)
             ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')

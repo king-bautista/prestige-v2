@@ -49,27 +49,43 @@ class Advertisement extends Model
      */
     protected $primaryKey = 'id';
 
-    public function saveScreens($screens)
+    public function saveMaterials($materials, $files)
     {
-        if(count($screens) > 0) {
-            AdvertisementScreen::where('advertisement_id', $this->id)->delete();
-
-            foreach ($screens as $data) {
-                AdvertisementScreen::updateOrCreate(
-                    [
-                       'advertisement_id' => $this->id,
-                       'site_screen_id' => $data->id,
-                       'site_id' => $data->site_id,
-                       'product_application' => $data->product_application
-                    ],
-                );
+        if($files) {
+            foreach($files as $file) {
+                $original_name = $file->getClientOriginalName();
+                $file_size = $file->getSize();
+                $file_path = $file->move('uploads/media/advertisements/materials/', str_replace(' ','-', $original_name));    
             }
         }
-    }
 
-    public function saveMaterials($requests)
-    {
-        # code...
+        if(count($materials) > 0) {
+            foreach($materials as $index => $material) {
+                $material_data = AdvertisementMaterial::find($material->id);
+
+                $file_path = 'uploads/media/advertisements/materials\\';
+
+                $data = [
+                    'advertisement_id' => $this->id,
+                    'file_type' => $material->file_type,
+                    'file_size' => $material->size,
+                    'dimension' => $material->width.'x'.$material->height,
+                    'width' => $material->width,
+                    'height' => $material->height
+                ];
+
+                if($material_data) {
+                    $data['file_path'] = ($material->name) ? $file_path.$material->name : $material_data->file_path;
+                    $material_data->update($data);
+                }
+                else {
+                    $data['file_path'] = ($material->name) ? $file_path.$material->name : '';
+                    $material_data = AdvertisementMaterial::create($data);
+                }
+
+                $material_data->saveScreens($material->screen_ids, $this->id);
+            }
+        }
     }
 
     

@@ -115,21 +115,28 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size diagonal</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_diagonal"
-										placeholder="43 Inch" required>
+										placeholder="43 Inches" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size width</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_width"
-										placeholder="43 Inch" required>
+										placeholder="43 Inches" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size height</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_height"
-										placeholder="43 Inch" required>
+										placeholder="43 Inches" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Serial Number</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="screen.physical_size_height"
+										placeholder="43 Inches" required>
 								</div>
 							</div>
 							<div class="form-group row" v-if="screen.product_application == 'Directory'">

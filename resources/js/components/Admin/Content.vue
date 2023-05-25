@@ -28,7 +28,7 @@
 
 		<!-- Modal Add New / Edit User -->
 		<div class="modal fade" id="content-form" data-backdrop="static" tabindex="-1" aria-labelledby="content-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-dialog modal-dialog-centered modal-xl">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Content</h5>
@@ -39,7 +39,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="row" v-if="!content.advertisement_id">
+							<div class="row" v-if="!content.advertisement_details">
 								<div class="col-sm-12">
 									<Table 
 									:dataFields="adsDataFields"
@@ -51,28 +51,28 @@
 									</Table>
 								</div>
 							</div>
-							<div v-if="content.advertisement_id">
+							<div v-if="content.advertisement_details">
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Material</label>
 									<div class="col-sm-3 text-center" id="ad-holder">
-										<span v-if="helper.getFileExtension(content.advertisement_id.material_image_path) == 'image'">
-											<img :src="content.advertisement_id.material_image_path" class="img-thumbnail" />
+										<span v-if="content.advertisement_details.file_type == 'image'">
+											<img :src="content.advertisement_details.material_path" class="img-thumbnail" />
 										</span>
-										<span v-else-if="helper.getFileExtension(content.advertisement_id.material_image_path) == 'video'">
+										<span v-else-if="content.advertisement_details.file_type == 'video'">
 											<video muted="muted" class="img-thumbnail">
-												<source :src="content.advertisement_id.material_image_path" type="video/ogg">
+												<source :src="content.advertisement_details.material_path" type="video/ogg">
 												Your browser does not support the video tag.
 											</video>
 										</span>
 
-										<div class="edit-button"><a @click="content.advertisement_id = null" class="bg-success"><i class="fas fa-edit"></i> CHANGE </a></div>
+										<div class="edit-button"><a @click="content.advertisement_details = null" class="bg-success"><i class="fas fa-edit"></i> CHANGE </a></div>
 									</div>
 								</div>
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Ad Name</label>
 									<div class="col-sm-8">
 										<span>
-											{{ content.advertisement_id.name }}
+											{{ content.advertisement_details.advertisement_name }}
 										</span>
 									</div>
 								</div>
@@ -80,7 +80,7 @@
 									<label for="firstName" class="col-sm-4 col-form-label">Brand Name</label>
 									<div class="col-sm-8">
 										<span>
-											{{ content.advertisement_id.brand_name }}
+											{{ content.advertisement_details.brand_name }}
 										</span>
 									</div>
 								</div>
@@ -88,7 +88,7 @@
 									<label for="firstName" class="col-sm-4 col-form-label">Company Name</label>
 									<div class="col-sm-8">
 										<span>
-											{{ content.advertisement_id.company_name }}
+											{{ content.advertisement_details.company_name }}
 										</span>
 									</div>
 								</div>
@@ -96,86 +96,47 @@
 									<label for="firstName" class="col-sm-4 col-form-label">Dimension</label>
 									<div class="col-sm-8">
 										<span>
-											{{ content.advertisement_id.dimension }}
+											{{ content.advertisement_details.dimension }}
 										</span>
 									</div>
 								</div>
 								<div class="form-group row">
-									<label for="Site" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
+									<label for="firstName" class="col-sm-4 col-form-label">Display Duration</label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.site_id"
-											:options="sites"
-											:multiple="false"
-											:close-on-select="true"
-											placeholder="Select Site"
-											label="name"
-											track-by="name"
-											@select="getTenants">
-										</multiselect>
+										<span>
+											{{ content.advertisement_details.display_duration }}
+										</span>
 									</div>
 								</div>
+								
 								<div class="form-group row">
-									<label for="Tenant" class="col-sm-4 col-form-label">Tenant <span class="font-italic text-danger"> *</span></label>
+									<label for="Screen" class="col-sm-4 col-form-label">Screen/s <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.site_tenant_id" 
-										track-by="brand_site_name" 
-										label="brand_site_name" 
-										placeholder="Select Tenant" 
-										:options="tenants" 
-										:searchable="true" 
-										:allow-empty="false">
-										</multiselect> 
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="Screen" class="col-sm-4 col-form-label">Screen <span class="font-italic text-danger"> *</span></label>
-									<div class="col-sm-8">
-										<multiselect v-model="content.site_screen_id" 
-										track-by="screen_type_name" 
-										label="screen_type_name" 
+										<multiselect v-model="content.site_screen_ids" 
+										track-by="site_screen_location" 
+										label="site_screen_location" 
 										placeholder="Select Screen" 
 										:multiple="true"
 										:options="screens" 
 										:searchable="true" 
-										:allow-empty="false">
+										:allow-empty="true">
 										</multiselect> 
 									</div>
 								</div>
 								<div class="form-group row">
-									<label for="firstName" class="col-sm-4 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
-									<div class="col-sm-2">
-										<input type="text" class="form-control" v-model="content.display_duration" placeholder="Duration" readonly> 
-										<footer class="blockquote-footer">In Seconds</footer>
-									</div>
-									<div class="col-sm-3">
-										<date-picker v-model="content.start_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
-									</div>
-									<div class="col-sm-3 text-center">
-										<date-picker v-model="content.end_date" placeholder="YYYY/MM/DD" :config="options" autocomplete="off"></date-picker>
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="uom" class="col-sm-4 col-form-label">No. of Slots <span class="font-italic text-danger"> *</span></label>
-									<div class="col-sm-2">
-										<input type="number" class="form-control" v-model="content.uom">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="Status" class="col-sm-4 col-form-label">Change Status</label>
+									<label for="userName" class="col-sm-4 col-form-label">Start Date <span class="font-italic text-danger">*</span></label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.status_id" 
-										track-by="name" 
-										label="name" 
-										placeholder="Change Status" 
-										:multiple="false"
-										:options="transaction_statuses" 
-										:searchable="true" 
-										:allow-empty="false">
-										</multiselect>
+										<date-picker v-model="content.start_date" placeholder="YYYY-MM-DD" :config="options" id="date_from" autocomplete="off"></date-picker>
 									</div>
 								</div>
-								<div class="form-group row" v-show="edit_record">
-									<label for="Active" class="col-sm-4 col-form-label">Active</label>
+								<div class="form-group row">
+									<label for="userName" class="col-sm-4 col-form-label">End Date <span class="font-italic text-danger">*</span></label>
+									<div class="col-sm-8">
+										<date-picker v-model="content.end_date" placeholder="YYYY-MM-DD" :config="options" id="date_to" autocomplete="off"></date-picker>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="Active" class="col-sm-4 col-form-label">Active <span class="font-italic text-danger">*</span></label>
 									<div class="col-sm-8">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" id="active" v-model="content.active">
@@ -184,12 +145,11 @@
 									</div>
 								</div>
 							</div>
-
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary pull-right" v-if="content.advertisement_id" v-show="add_record" @click="storeContent">Add New Content</button>
-							<button type="button" class="btn btn-primary pull-right" v-if="content.advertisement_id" v-show="edit_record" @click="updateContent">Save Changes</button>
+							<button type="button" class="btn btn-primary pull-right" v-if="content.advertisement_details" v-show="add_record" @click="storeContent">Add New Content</button>
+							<button type="button" class="btn btn-primary pull-right" v-if="content.advertisement_details" v-show="edit_record" @click="updateContent">Save Changes</button>
 						</div>
 					<!-- /.card-body -->
 					</div>
@@ -216,20 +176,14 @@
                 helper: new Helpers(),
                 content: {
                     id: '',
-					advertisement_id: '',
-					site_id: '',
-					site_screen_id: '',
-                    site_tenant_id: '',
+					material_id: '',
+					advertisement_details: '',
                     start_date: '',
 					end_date: '',
-					uom: '',
-					status_id: '',
+					site_screen_ids: [],
                     active: true,           
                 },
-                sites: [],
-                tenants: [],
                 screens: [],
-                transaction_statuses: [],
 				options: {
                     format: 'YYYY/MM/DD',
                     useCurrent: false,
@@ -237,31 +191,15 @@
                 add_record: true,
                 edit_record: false,
             	dataFields: {
-					material_image_path: {
+					material_path: {
             			name: "Preview", 
             			type: "logo", 
             		},
-            		ad_name: "Name", 
+					dimension: "Dimension",
+            		ad_name: "Ad Name", 
 					company_name: "Company Name",
 					brand_name: "Brand Name",
-					site_name: "Site Name",
-					uom: "No. of Slots",
-					display_duration: "Duration (in sec)",
-					dimension: "Dimension",
-            		status_id: {
-            			name: "Transaction Status", 
-            			type:"Boolean", 
-            			status: { 
-            				1: '<span class="badge badge-primary">Draft</span>',
-            				2: '<span class="badge badge-primary">New</span>',
-            				3: '<span class="badge badge-info">Pending approval</span>',
-            				4: '<span class="badge badge-danger">Disapprove</span>',
-            				5: '<span class="badge badge-success">Approved</span>',
-            				6: '<span class="badge badge-secondary">For review</span>',
-            				7: '<span class="badge badge-info">Archive</span>',
-            				8: '<span class="badge badge-success">Saved</span>',
-            			}
-            		},
+					air_dates: "Airdates",
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -303,17 +241,17 @@
 				},
 
 				adsDataFields: {
-					material_image_path: {
+					material_path: {
             			name: "Preview", 
             			type: "logo", 
             		},
-            		name: "Name", 
+					screen_assigned: "Screen Assigned",
+            		advertisement_name: "Name", 
 					company_name: "Company Name",
 					brand_name: "Brand Name",
-					display_duration: "Duration (in sec)",
             	},
 				adsPrimaryKey: "id",
-            	adsDataUrl: "/admin/advertisement/all",
+            	adsDataUrl: "/admin/manage-ads/all",
 				adsActionButtons: {
             		edit: {
             			title: 'Add',
@@ -321,7 +259,7 @@
             			apiUrl: '',
             			routeName: 'content.edit',
             			button: '<i class="far fa-check-circle"></i> Add',
-            			method: 'edit'
+            			method: 'view'
             		},
             	},
 
@@ -359,17 +297,21 @@
 			AddNewContent: function() {
 				this.add_record = true;
 				this.edit_record = false;
-				this.content.advertisement_id = null;
-				this.content.site_id = null;
-                this.content.site_screen_id = '';
-				this.content.site_tenant_id = ''
+				this.content.material_id = '';
+				this.content.advertisement_details = '';
 				this.content.start_date = '';
 				this.content.end_date = '';
-				this.content.uom = '';
-				this.content.status_id = '';
+				this.content.site_screen_ids = [];
                 this.content.active = true;				
               	$('#content-form').modal('show');
             },
+
+			selectedAd: function(data) {
+				this.screens = [];
+				this.content.material_id = data.id
+				this.content.advertisement_details = data;
+				this.screens = data.pi_screens;
+			},
 
             storeContent: function() {
                 axios.post('/admin/content-management/store', this.content)
@@ -384,18 +326,15 @@
                 axios.get('/admin/content-management/'+id)
                 .then(response => {
                     var content = response.data.data;
+					this.screens = [];
+					this.screens = content.advertisement_details.pi_screens;
 
-					this.getTenants(content.site_details);
 					this.content.id = content.id;
-					this.content.advertisement_id = content.advertisement_details;
-					this.content.site_id = content.site_details;
-					this.content.site_screen_id = content.screens;
-					this.content.site_tenant_id = content.tenant_details;
+					this.content.material_id = content.material_id;
+					this.content.advertisement_details = content.advertisement_details;
 					this.content.start_date = content.start_date;
 					this.content.end_date = content.end_date;
-					this.content.uom = content.uom;
-					this.content.display_duration = content.advertisement_details.display_duration;
-					this.content.status_id = content.status_details;
+					this.content.site_screen_ids = content.screens;
 					this.content.active = content.active;
 
 					this.add_record = false;
@@ -414,14 +353,7 @@
 				})
             },
 
-			selectedAd: function(id) {
-				axios.get('/admin/advertisement/'+id)
-                .then(response => {
-                    this.content.advertisement_id = response.data.data;
-					this.content.display_duration = this.content.advertisement_id.display_duration;
-					console.log(this.content.advertisement_id);
-                });
-			}
+			
 
         },
 

@@ -10,10 +10,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AdvertisementRequest;
 
 use App\Models\Advertisement;
+use App\Models\AdvertisementMaterial;
+use App\Models\AdvertisementScreen;
 use App\Models\ViewModels\AdvertisementViewModel;
-use App\Models\ViewModels\AdminViewModel;
-
-
+use App\Models\ViewModels\AdvertisementMaterialViewModel;
+use App\Models\ViewModels\ContentMaterialViewModel;
 
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {
@@ -29,31 +30,6 @@ class AdvertisementController extends AppBaseController implements Advertisement
     public function index()
     {
         return view('admin.advertisements_online');
-    }
-
-    public function banner()
-    {
-        return view('admin.advertisements_banner');
-    }
-
-    public function fullscreen()
-    {
-        return view('admin.advertisements_fullscreen');
-    }
-
-    public function popups()
-    {
-        return view('admin.advertisements_popups');
-    }
-
-    public function events()
-    {
-        return view('admin.advertisements_events');
-    }
-
-    public function promos()
-    {
-        return view('admin.advertisements_promos');
     }
 
     public function list(Request $request)
@@ -94,76 +70,10 @@ class AdvertisementController extends AppBaseController implements Advertisement
         }
     }
 
-    public function validateMaterial(Request $request)
+    public function store(AdvertisementRequest $request)
     {
         try
     	{
-            $file_path = $request->file('file_path');
-            $extension = null;
-            $file_path_path = null;
-            $file_size = null;
-            $dimension = null;
-            $width = null;
-            $height = null;
-
-            if($file_path) {
-                $originalname = $file_path->getClientOriginalName();
-                $extension = $file_path->getClientOriginalExtension();
-                $mime_type = explode("/",$file_path->getClientMimeType());
-                $file_size = $file_path->getSize();
-                $file_path_path = $file_path->move('uploads/media/advertisements/'.strtolower($request->ad_type).'/', str_replace(' ','-', $originalname));
-                $file_type = $mime_type[0];
-                if($file_type == 'image') {
-                    $image_size = getimagesize($file_path_path);
-                    $width = $image_size[0];
-                    $height = $image_size[1];
-                    $dimension = $width.' x '.$height;
-                }
-            }
-            
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
-    public function store(AdvertisementRequest $request)
-    {
-        // try
-    	// {
-            // $banner_portrait = $request->file('banner_portrait');
-            // if($banner_portrait) {
-
-            // }
-
-            // $file_path = $request->file('file_path');
-            // $extension = null;
-            // $file_path_path = null;
-            // $file_size = null;
-            // $dimension = null;
-            // $width = null;
-            // $height = null;
-
-            // if($file_path) {
-            //     $originalname = $file_path->getClientOriginalName();
-            //     $extension = $file_path->getClientOriginalExtension();
-            //     $mime_type = explode("/",$file_path->getClientMimeType());
-            //     $file_size = $file_path->getSize();
-            //     $file_path_path = $file_path->move('uploads/media/advertisements/'.strtolower($request->ad_type).'/', str_replace(' ','-', $originalname));
-            //     $file_type = $mime_type[0];
-            //     if($file_type == 'image') {
-            //         $image_size = getimagesize($file_path_path);
-            //         $width = $image_size[0];
-            //         $height = $image_size[1];
-            //         $dimension = $width.' x '.$height;
-            //     }
-            // }
-
             $company_id = json_decode($request->company_id);
             $contract_id = json_decode($request->contract_id);
             $brand_id = json_decode($request->brand_id);
@@ -181,25 +91,24 @@ class AdvertisementController extends AppBaseController implements Advertisement
             ];
 
             $advertisement = Advertisement::create($data);
-            $advertisement->saveScreens($screen_ids);
-            //$advertisement->saveMaterials($requests);
+            $advertisement->saveMaterials(json_decode($request->materials), $request->file('files'));
 
             return $this->response($advertisement, 'Successfully Created!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function update(AdvertisementRequest $request)
     {
-        // try
-    	// {
+        try
+    	{
             $advertisement = Advertisement::find($request->id);
             $advertisement->touch();
 
@@ -207,7 +116,6 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $contract_id = json_decode($request->contract_id);
             $brand_id = json_decode($request->brand_id);
             $status_id = json_decode($request->status_id);
-            $screen_ids = json_decode($request->screen_ids);
 
             $data = [
                 'company_id' => ($company_id) ? $company_id->id : null,
@@ -221,19 +129,18 @@ class AdvertisementController extends AppBaseController implements Advertisement
             ];
 
             $advertisement->update($data);
-            $advertisement->saveScreens($screen_ids);
-            //$advertisement->saveMaterials($requests);
+            $advertisement->saveMaterials(json_decode($request->materials), $request->file('files'));
 
             return $this->response($advertisement, 'Successfully Modified!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function delete($id)
@@ -258,10 +165,16 @@ class AdvertisementController extends AppBaseController implements Advertisement
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-            $advertisements = AdvertisementViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            $advertisements = ContentMaterialViewModel::when(request('search'), function($query){
+                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
+                             ->where('companies.name', 'LIKE', '%' . request('search') . '%')
+                             ->where('brands.name', 'LIKE', '%' . request('search') . '%');
             })
+            ->where('advertisements.status_id', 5)
+            ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+            ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
+            ->select('advertisement_materials.*')
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
@@ -274,6 +187,52 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function getMaterialDetails($id)
+    {
+        try
+        {
+            $material = ContentMaterialViewModel::find($id);
+            return $this->response($material, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function deleteMaterial($id) {
+        try
+    	{
+            $screens = AdvertisementScreen::where('material_id', $id)->count();
+            if($screens > 0) {
+                return response([
+                    'message' => "You can't this delete material, it's been assigned to a screen/s. ",
+                    'status' => false,
+                    'status_code' => 422,
+                ], 422);
+            }
+            
+            $material = AdvertisementMaterial::find($id);
+            $material->delete();
+
+            return $this->response($material, 'Successfully Deleted!.', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+        
+
     }
 
 }

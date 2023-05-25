@@ -337,6 +337,10 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/manage-ads/update', 'Admin\AdvertisementController@update')->name('admin.manage-ads.update');
     Route::get('/admin/manage-ads/delete/{id}', 'Admin\AdvertisementController@delete')->where('id', '[0-9]+')->name('admin.manage-ads.delete');
     Route::get('/admin/manage-ads/all', 'Admin\AdvertisementController@getAllType')->name('admin.manage-ads.all');
+<<<<<<< HEAD
+=======
+    Route::get('/admin/manage-ads/material/{id}', 'Admin\AdvertisementController@getMaterialDetails')->where('id', '[0-9]+')->name('admin.manage-ads.material.details');
+>>>>>>> d58bbb5067fbc7bfe09402cefcc2b56fdd7e100f
     Route::get('/admin/manage-ads/material/delete/{id}', 'Admin\AdvertisementController@deleteMaterial')->where('id', '[0-9]+')->name('admin.manage-ads.material.delete');
 
     /*
@@ -351,6 +355,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/content-management/update', 'Admin\ContentManagementController@update')->name('admin.content-management.update');
     Route::get('/admin/content-management/delete/{id}', 'Admin\ContentManagementController@delete')->where('id', '[0-9]+')->name('admin.content-management.delete');
     Route::get('/admin/content-management/transaction-statuses', 'Admin\ContentManagementController@getTransactionStatuses')->where('id', '[0-9]+')->name('admin.content-management.transaction-statuses');
+    Route::get('/admin/play-list', 'Admin\ContentManagementController@playlist')->name('admin.play-list');
+    Route::get('/admin/play-list/list', 'Admin\ContentManagementController@getPLayList')->name('admin.play-list.list');
 
     /*
     |--------------------------------------------------------------------------
@@ -547,7 +553,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/site/pi-product/update', 'Admin\PiProductController@update')->name('admin.site.pi-product.update');
     Route::get('/admin/site/pi-product/delete/{id}', 'Admin\PiProductController@delete')->where('id', '[0-9]+')->name('admin.site.pi-product.delete');
     Route::post('/admin/site/pi-product/get-screens', 'Admin\PiProductController@getScreen')->name('admin.site.pi-product.get-screens');
+<<<<<<< HEAD
      
 
+=======
+  
+>>>>>>> d58bbb5067fbc7bfe09402cefcc2b56fdd7e100f
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

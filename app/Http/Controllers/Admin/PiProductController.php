@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PiProductRequest;
 
 use App\Models\PiProduct;
+use App\Models\ContractScreen;
 use App\Models\ViewModels\PiProductViewModel;
 use App\Exports\Export;
 use Storage;
@@ -146,6 +147,51 @@ class PiProductController extends AppBaseController implements PiProductControll
             $pi_product = PiProduct::find($id);
             $pi_product->delete();
             return $this->response($pi_product, 'Successfully Deleted!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getScreen(Request $request)
+    {
+        try {
+            $pi_products = [];
+
+            $site_screen_ids = ContractScreen::where('contract_id', $request->contract_id)->where('site_screen_id', '>', 0)->get()->pluck('site_screen_id');
+            if(count($site_screen_ids)) {
+                return $site_screen_ids;
+            }
+
+            $site_ids = ContractScreen::where('contract_id', $request->contract_id)->where('site_id', '>', 0)->groupBy('site_id')->get()->pluck('site_id');
+            if(count($site_ids)) {
+                $pi_products = PiProductViewModel::whereIn('site_screens.site_id', $site_ids)
+                ->where('pi_products.width', $request->width)
+                ->where('pi_products.height', $request->height)
+                ->leftJoin('site_screens', 'pi_products.site_screen_id', '=', 'site_screens.id')
+                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->select('pi_products.*')
+                ->get();
+            }
+
+            $all_sites = ContractScreen::where('contract_id', $request->contract_id)->where('product_application', '=', 'All')->first();
+            if($all_sites) {
+                $pi_products = PiProductViewModel::where('pi_products.width', $request->width)
+                ->where('pi_products.height', $request->height)
+                ->leftJoin('site_screens', 'pi_products.site_screen_id', '=', 'site_screens.id')
+                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->select('pi_products.*')
+                ->get();
+            }
+
+            return $this->response($pi_products, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
