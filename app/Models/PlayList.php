@@ -19,7 +19,6 @@ class PlayList extends Model
         'category_id',
         'parent_category_id',
         'main_category_id',
-        'site_tenant_id',
         'advertisement_id',
         'sequence',
     ];

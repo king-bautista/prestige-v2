@@ -352,6 +352,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/content-management/update', 'Admin\ContentManagementController@update')->name('admin.content-management.update');
     Route::get('/admin/content-management/delete/{id}', 'Admin\ContentManagementController@delete')->where('id', '[0-9]+')->name('admin.content-management.delete');
     Route::get('/admin/content-management/transaction-statuses', 'Admin\ContentManagementController@getTransactionStatuses')->where('id', '[0-9]+')->name('admin.content-management.transaction-statuses');
+    Route::get('/admin/play-list', 'Admin\ContentManagementController@playlist')->name('admin.play-list');
+    Route::get('/admin/play-list/list', 'Admin\ContentManagementController@getPLayList')->name('admin.play-list.list');
 
     /*
     |--------------------------------------------------------------------------
