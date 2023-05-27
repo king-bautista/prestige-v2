@@ -40,44 +40,41 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site Screen <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Physical Configuration <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<multiselect v-model="pi_product.site_screen_id" 
-										:options="screens" 
-										:multiple="false"
-										:close-on-select="true" 
-										placeholder="Select Screens" 
-										label="site_screen_location"
-										track-by="site_screen_location">
-									</multiselect>
+                                    <select class="custom-select" v-model="pi_product.physical_configuration">
+										<option value="">Select Physical Configuration</option>
+										<option v-for="physical_configuration in physical_configurations" :value="physical_configuration"> {{ physical_configuration }}
+										</option>
+									</select>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Advertisement Type <span class="font-italic text-danger"> *</span></label>
+                            <div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Product Application <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<select class="custom-select" v-model="pi_product.ad_type">
-										<option value="">Select Advertisement Type</option>
-										<option v-for="ad_type in ad_types" :value="ad_type"> {{ ad_type }}
+                                    <select class="custom-select" v-model="pi_product.product_application">
+										<option value="">Select Product Application </option>
+										<option v-for="product_application in product_applications" :value="product_application"> {{ product_application }}
 										</option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Advertisement Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="pi_product.ad_type" placeholder="Advertisement Type" required>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions</label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="pi_product.description" placeholder="Descriptions"></textarea>
+                                    <textarea class="form-control" v-model="pi_product.descriptions" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Width <span class="font-italic text-danger"> *</span></label>
+                            <div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Remarks</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.width" placeholder="1920" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Height <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.height" placeholder="1080" required>
+                                    <textarea class="form-control" v-model="pi_product.remarks" placeholder="Remarks"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -92,7 +89,7 @@
 									<input type="text" class="form-control" v-model="pi_product.slots" placeholder="40" required>
 								</div>
 							</div>
-							<div class="form-group row" v-show="edit_record">
+							<div class="form-group row">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
@@ -102,12 +99,22 @@
 									</div>
 								</div>
 							</div>
+                            <div class="form-group row">
+								<label for="is_exclusive" class="col-sm-4 col-form-label">is_exclusive</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_exclusive"
+											v-model="pi_product.is_exclusive">
+										<label class="custom-control-label" for="is_exclusive"></label>
+									</div>
+								</div>
+							</div>
 						</div>
 						<!-- /.card-body -->
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeScreen">Add New
+						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeProduct">Add New
 							Product</button>
 						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateScreen">Save
 							Changes</button>
@@ -121,7 +128,6 @@
 </template>
 <script>
 	import Table from '../Helpers/Table';
-	import Multiselect from 'vue-multiselect';
 
 	export default {
         name: "PiProduct",
@@ -129,23 +135,26 @@
             return {
                 pi_product: {
                     id: '',
-					site_screen_id: '',
+					physical_configuration: '',
+                    product_application: '',
                     ad_type: '',
-                    description: '',
-                    width: '',
-                    height: '',
+                    descriptions: '',
+                    remarks: '',
                     sec_slot: '',
 					slots: '',
 					active: false,
+					is_exclusive: false,
                 },
                 add_record: true,
                 edit_record: false,
-				screens: [],
-				ad_types: ['Full Screen Ad','Banner Ad'],
+				product_applications: ['Digital Signage','Directory'],
+				physical_configurations: ['LCD','LED','LFD'],
             	dataFields: {
-            		site_screen_location: "Screen Location",
+            		physical_configuration: "Physical Configuration",
+            		product_application: "Product Application",
                     ad_type: "Advertisement Type",
-            		dimension: "Dimension", 
+            		descriptions: "Descriptions", 
+            		remarks: "Remarks", 
             		sec_slot: "Sec/Slot", 
             		slots: "Slot", 
             		active: {
@@ -154,6 +163,14 @@
             			status: { 
             				0: '<span class="badge badge-danger">Deactivated</span>', 
             				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+                    is_exclusive: {
+            			name: "Is Exclusive", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">No</span>', 
+            				1: '<span class="badge badge-info">Yes</span>'
             			}
             		},
                     updated_at: "Last Updated"
@@ -172,7 +189,7 @@
             		delete: {
             			title: 'Delete this Product',
             			name: 'Delete',
-            			apiUrl: '/admin/site/pi-product/delete',
+            			apiUrl: '/admin/site/site-screen-product/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete',
@@ -197,86 +214,80 @@
             };
         },
 
-        created(){
-			this.getScreens();
-        },
+        methods: {
+            AddNewProduct: function () {
+                this.add_record = true;
+                this.edit_record = false;
 
-	methods: {
-		getScreens: function (id) {
-			axios.get('/admin/site/screen/get-all')
-				.then(response => this.screens = response.data.data);
-		},
+                this.pi_product.physical_configuration = '';
+                this.pi_product.product_application = '';
+                this.pi_product.ad_type = '';
+                this.pi_product.descriptions = '';
+                this.pi_product.remarks = '';
+                this.pi_product.sec_slot = '';
+                this.pi_product.slots = '';
+                this.pi_product.active = false;
+                this.pi_product.is_exclusive = false;
 
-		AddNewProduct: function () {
-			this.add_record = true;
-			this.edit_record = false;
-			this.pi_product.site_screen_id = '';
-			this.pi_product.ad_type = '';
-			this.pi_product.description = '';
-			this.pi_product.width = '';
-			this.pi_product.height = '';
-			this.pi_product.sec_slot = '';
-			this.pi_product.slots = '';
-			this.pi_product.active = false;
-
-			$('#product-form').modal('show');
-		},
-
-		storeScreen: function () {
-			axios.post('/admin/site/pi-product/store', this.pi_product)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#product-form').modal('hide');
-				})
-		},
-
-		editProduct: function (id) {
-			axios.get('/admin/site/pi-product/' + id)
-				.then(response => {
-					this.add_record = false;
-					this.edit_record = true;
-
-					var pi_product = response.data.data;
-					this.pi_product.id = pi_product.id;
-					this.pi_product.site_screen_id = pi_product.site_screen_details;
-					this.pi_product.ad_type = pi_product.ad_type;
-					this.pi_product.description = pi_product.description;
-					this.pi_product.width = pi_product.width;
-					this.pi_product.height = pi_product.height;
-					this.pi_product.sec_slot = pi_product.sec_slot;
-					this.pi_product.slots = pi_product.slots;
-					this.pi_product.active = pi_product.active;
-
-                    $('#product-form').modal('show');
-                });
+                $('#product-form').modal('show');
             },
 
-		updateScreen: function () {
-			axios.put('/admin/site/pi-product/update', this.pi_product)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#product-form').modal('hide');
-				})
-		},
+            storeProduct: function () {
+                axios.post('/admin/site/pi-product/store', this.pi_product)
+                    .then(response => {
+                        toastr.success(response.data.message);
+                        this.$refs.dataTable.fetchData();
+                        $('#product-form').modal('hide');
+                    })
+            },
 
-		downloadCsv: function () {
-			axios.get('/admin/site/pi-product/download-csv')
-				.then(response => {
-					const link = document.createElement('a');
-					link.href = response.data.data.filepath;
-					link.setAttribute('download', response.data.data.filename); //or any other extension
-					document.body.appendChild(link);
-					link.click();
-				})
-		},
+            editProduct: function (id) {
+                axios.get('/admin/site/pi-product/' + id)
+                    .then(response => {
+                        this.add_record = false;
+                        this.edit_record = true;
 
-	},
+                        var pi_product = response.data.data;
+                        this.pi_product.id = pi_product.id;
+                        this.pi_product.physical_configuration = pi_product.physical_configuration;
+                        this.pi_product.product_application = pi_product.product_application;
+                        this.pi_product.ad_type = pi_product.ad_type;
+                        this.pi_product.descriptions = pi_product.descriptions;
+                        this.pi_product.remarks = pi_product.remarks;
+                        this.pi_product.sec_slot = pi_product.sec_slot;
+                        this.pi_product.slots = pi_product.slots;
+                        this.pi_product.active = pi_product.active;
+                        this.pi_product.is_exclusive = pi_product.is_exclusive;
 
-	components: {
-		Table,
-		Multiselect
-	}
+                        $('#product-form').modal('show');
+                    });
+                },
+
+
+            updateScreen: function () {
+                axios.put('/admin/site/pi-product/update', this.pi_product)
+                    .then(response => {
+                        toastr.success(response.data.message);
+                        this.$refs.dataTable.fetchData();
+                        $('#product-form').modal('hide');
+                    })
+            },
+
+            downloadCsv: function () {
+                axios.get('/admin/site/pi-product/download-csv')
+                    .then(response => {
+                        const link = document.createElement('a');
+                        link.href = response.data.data.filepath;
+                        link.setAttribute('download', response.data.data.filename); //or any other extension
+                        document.body.appendChild(link);
+                        link.click();
+                    })
+            },
+
+        },
+
+        components: {
+            Table,
+        }
 };
 </script> 

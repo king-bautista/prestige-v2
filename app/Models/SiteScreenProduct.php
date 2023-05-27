@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PiProduct extends Model
+class SiteScreenProduct extends Model
 {
     use SoftDeletes;
 
@@ -15,15 +15,15 @@ class PiProduct extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'physical_configuration',
-        'product_application',
+        'site_screen_id',
         'ad_type',
-        'descriptions',
-        'remarks',
+        'description',
+        'dimension',
+        'width',
+        'height',
         'sec_slot',
         'slots',
         'active',
-        'is_exclusive',
     ];
 
     /**
@@ -42,7 +42,7 @@ class PiProduct extends Model
      *
      * @var string
     */
-    protected $table = 'pi_products';
+    protected $table = 'site_screen_products';
 
     /**
      * The primary key associated with the table.
