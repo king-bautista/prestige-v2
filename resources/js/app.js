@@ -76,9 +76,10 @@ Vue.component('admin-translations', require('./components/Admin/Translations.vue
 //Vue.component('admin-workflows', require('./components/Admin/Workflows.vue').default);
 
 Vue.component('admin-users-information', require('./components/Admin/UsersInformation.vue').default);
-Vue.component('admin-pi-products', require('./components/Admin/PiProducts.vue').default);
+Vue.component('admin-site-screen-products', require('./components/Admin/SiteScreenProduct.vue').default);
 Vue.component('admin-site-maps', require('./components/Admin/SiteMaps.vue').default);
 Vue.component('admin-playlist', require('./components/Admin/PlayList.vue').default);
+Vue.component('admin-pi-products', require('./components/Admin/PiProducts.vue').default);
 
 
 /**

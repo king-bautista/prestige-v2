@@ -71,7 +71,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
-	(10, 3, 'last_login', '2023-05-25 09:47:21', '2023-04-26 02:53:48', '2023-05-25 01:47:21', NULL);
+	(10, 3, 'last_login', '2023-05-25 14:10:50', '2023-04-26 02:53:48', '2023-05-25 06:10:50', NULL);
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~27 rows (approximately)
+-- Dumping data for table prestige.advertisements: ~30 rows (approximately)
 INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 3, 12, 7671, 5, 10, 'Sample 1', 1, '2023-05-18 06:29:13', '2023-05-20 01:32:22', NULL),
 	(2, 3, 12, 7671, 5, 10, 'Sample 2', 1, '2023-05-18 06:31:56', '2023-05-20 01:32:22', NULL),
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `advertisement_materials` (
   CONSTRAINT `advertisement_materials_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_materials: ~55 rows (approximately)
+-- Dumping data for table prestige.advertisement_materials: ~60 rows (approximately)
 INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `file_type`, `file_size`, `dimension`, `width`, `height`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'uploads/media/advertisements/materials\\70c97979-d315-f221.jpg', 'image', '290916', '470x1060', '470', '1060', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
 	(2, 1, 'uploads/media/advertisements/materials\\70c97979-d376-0c3b-full.jpg', 'image', '963864', '1920x1080', '1920', '1080', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `advertisement_screens` (
   CONSTRAINT `advertisement_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_screens: ~107 rows (approximately)
+-- Dumping data for table prestige.advertisement_screens: ~120 rows (approximately)
 INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_product_id`, `site_screen_id`, `site_id`, `ad_type`, `created_at`, `updated_at`) VALUES
 	(2, 3, 45, 228, 46, 'Banner Ad', NULL, NULL),
 	(2, 3, 96, 227, 46, 'Banner Ad', NULL, NULL),
@@ -12298,7 +12298,7 @@ CREATE TABLE IF NOT EXISTS `content_management` (
   CONSTRAINT `content_management_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_management: ~16 rows (approximately)
+-- Dumping data for table prestige.content_management: ~18 rows (approximately)
 INSERT INTO `content_management` (`id`, `material_id`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 8, '2023-05-01', '2023-05-31', 1, '2023-05-17 10:11:08', '2023-05-18 08:47:20', '2023-05-18 08:47:20'),
 	(2, 2, '2023-05-01', '2023-12-31', 1, '2023-05-18 08:51:33', '2023-05-18 08:51:33', NULL),
@@ -12608,7 +12608,7 @@ CREATE TABLE IF NOT EXISTS `last_update_ats` (
 -- Dumping data for table prestige.last_update_ats: 1 rows
 /*!40000 ALTER TABLE `last_update_ats` DISABLE KEYS */;
 INSERT INTO `last_update_ats` (`last_updated_at`) VALUES
-	('2023-05-20 09:32:38');
+	('2023-05-25 16:10:16');
 /*!40000 ALTER TABLE `last_update_ats` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.logs
@@ -12641,7 +12641,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   KEY `logs_company_id_index` (`company_id`),
   KEY `logs_site_tenant_id_index` (`site_tenant_id`),
   KEY `logs_advertisement_id_index` (`advertisement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.logs: ~226 rows (approximately)
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_category_id`, `main_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `advertisement_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -12872,7 +12872,10 @@ INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_ca
 	(226, 1, 1, 33, 5, 5, 6900, NULL, 293, NULL, 'click', 'Category', NULL, NULL, '2023-04-13 02:00:09', '2023-04-13 02:00:09', NULL),
 	(227, 1, 1, 33, 5, 5, 582, NULL, 406, NULL, 'click', 'Category', NULL, NULL, '2023-04-13 02:00:12', '2023-04-13 02:00:12', NULL),
 	(228, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Map', NULL, NULL, '2023-05-20 01:27:15', '2023-05-20 01:27:15', NULL),
-	(229, 46, 227, 18, 3, 3, 78, NULL, 1291, NULL, 'click', 'Map', NULL, NULL, '2023-05-20 01:27:27', '2023-05-20 01:27:27', NULL);
+	(229, 46, 227, 18, 3, 3, 78, NULL, 1291, NULL, 'click', 'Map', NULL, NULL, '2023-05-20 01:27:27', '2023-05-20 01:27:27', NULL),
+	(230, 46, 227, 11, 1, 1, 974, 2, NULL, 15, 'click', 'Banner Ad', NULL, NULL, '2023-05-25 08:16:30', '2023-05-25 08:16:30', NULL),
+	(231, 46, 227, 11, 1, 1, 974, 2, NULL, 15, 'click', 'Banner Ad', NULL, NULL, '2023-05-25 08:16:30', '2023-05-25 08:16:30', NULL),
+	(232, 46, 227, 11, 1, 1, 974, 2, NULL, 15, 'click', 'Banner Ad', NULL, NULL, '2023-05-25 08:16:31', '2023-05-25 08:16:31', NULL);
 
 -- Dumping structure for table prestige.migrations
 DROP TABLE IF EXISTS `migrations`;
@@ -12949,7 +12952,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   KEY `modules_deleted_at_index` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.modules: ~74 rows (approximately)
+-- Dumping data for table prestige.modules: ~73 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 'Admin', '#', 'Admin', 'nav-icon fas fa-users-cog', 1, '2022-08-08 01:26:43', '2023-04-05 07:57:28', NULL),
 	(3, 1, 'Roles', '/admin/roles', 'Admin', 'nav-icon fas fa-user-tag', 1, '2022-08-08 18:49:58', '2022-08-08 18:49:58', NULL),
@@ -13061,7 +13064,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.permissions: ~131 rows (approximately)
+-- Dumping data for table prestige.permissions: ~130 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 2, 1, 1, 1, 1, 1, '2022-08-09 20:12:41', '2022-08-14 21:54:18', NULL),
 	(2, 2, 3, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-14 21:54:18', NULL),
@@ -13354,43 +13357,43 @@ CREATE TABLE IF NOT EXISTS `play_lists` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.play_lists: ~33 rows (approximately)
 INSERT INTO `play_lists` (`id`, `content_id`, `site_screen_id`, `company_id`, `brand_id`, `category_id`, `parent_category_id`, `main_category_id`, `advertisement_id`, `sequence`, `created_at`, `updated_at`) VALUES
-	(117, 11, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(118, 10, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(119, 15, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(120, 3, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(121, 12, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(122, 16, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(123, 2, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(124, 13, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(125, 17, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(126, 5, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(127, 14, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(128, 18, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(129, 4, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(130, 6, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(131, 7, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(132, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(133, 9, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(134, 11, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(135, 10, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(136, 15, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(137, 3, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(138, 12, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(139, 16, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(140, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(141, 13, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(142, 17, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(143, 5, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(144, 14, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(145, 18, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(146, 4, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(147, 6, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(148, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37'),
-	(149, 9, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-24 10:00:37', '2023-05-24 10:00:37');
+	(150, 3, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(151, 11, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(152, 10, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(153, 15, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(154, 2, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(155, 12, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(156, 16, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(157, 5, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(158, 13, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(159, 17, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(160, 4, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(161, 14, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(162, 18, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(163, 6, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(164, 7, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(165, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(166, 9, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(167, 3, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(168, 11, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(169, 10, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(170, 15, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(171, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(172, 12, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(173, 16, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(174, 5, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(175, 13, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(176, 17, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(177, 4, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(178, 14, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(179, 18, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(180, 6, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(181, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
+	(182, 9, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51');
 
 -- Dumping structure for table prestige.roles
 DROP TABLE IF EXISTS `roles`;
@@ -24518,9 +24521,9 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes_temp` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=684 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=693 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes_temp: ~267 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes_temp: ~269 rows (approximately)
 INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, `up_time_hours`, `created_at`, `updated_at`) VALUES
 	(62, 4, '2023-03-28', '13:36:44', '2023-03-28 05:36:44', '2023-03-28 05:36:44'),
 	(69, 3, '2023-03-28', '14:18:44', '2023-03-28 06:18:44', '2023-03-28 06:18:44'),
@@ -24803,7 +24806,16 @@ INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, 
 	(680, 227, '2023-05-20', '10:51:25', '2023-05-20 02:51:25', '2023-05-20 02:51:25'),
 	(681, 227, '2023-05-20', '10:57:25', '2023-05-20 02:57:25', '2023-05-20 02:57:25'),
 	(682, 227, '2023-05-20', '11:11:42', '2023-05-20 03:11:42', '2023-05-20 03:11:42'),
-	(683, 227, '2023-05-20', '11:15:25', '2023-05-20 03:15:25', '2023-05-20 03:15:25');
+	(683, 227, '2023-05-20', '11:15:25', '2023-05-20 03:15:25', '2023-05-20 03:15:25'),
+	(684, 227, '2023-05-25', '14:29:01', '2023-05-25 06:29:01', '2023-05-25 06:29:01'),
+	(685, 227, '2023-05-25', '14:35:01', '2023-05-25 06:35:01', '2023-05-25 06:35:01'),
+	(686, 227, '2023-05-25', '14:44:05', '2023-05-25 06:44:05', '2023-05-25 06:44:05'),
+	(687, 227, '2023-05-25', '14:50:05', '2023-05-25 06:50:05', '2023-05-25 06:50:05'),
+	(688, 227, '2023-05-25', '14:57:11', '2023-05-25 06:57:11', '2023-05-25 06:57:11'),
+	(689, 227, '2023-05-25', '15:17:12', '2023-05-25 07:17:12', '2023-05-25 07:17:12'),
+	(690, 227, '2023-05-25', '15:35:31', '2023-05-25 07:35:31', '2023-05-25 07:35:31'),
+	(691, 227, '2023-05-25', '15:44:13', '2023-05-25 07:44:13', '2023-05-25 07:44:13'),
+	(692, 227, '2023-05-25', '16:16:20', '2023-05-25 08:16:20', '2023-05-25 08:16:20');
 
 -- Dumping structure for table prestige.site_tenants
 DROP TABLE IF EXISTS `site_tenants`;

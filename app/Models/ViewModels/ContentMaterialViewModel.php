@@ -67,7 +67,7 @@ class ContentMaterialViewModel extends Model
     public function getPiScreensAttribute()
     {
         $ids = $this->getScreens()->pluck('pi_product_id');
-        $site_screen_products = PiProductViewModel::whereIn('id', $ids)->get();
+        $site_screen_products = SiteScreenProductViewModel::whereIn('id', $ids)->get();
 
         if($site_screen_products)
             return $site_screen_products;
