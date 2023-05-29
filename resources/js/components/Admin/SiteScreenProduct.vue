@@ -74,7 +74,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Advertisement Type <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<select class="custom-select" v-model="pi_product.ad_type" @change="filterAdType(pi_product.ad_type)">
+									<select class="custom-select" v-model="pi_product.ad_type" @change="adTypeDetails(pi_product.ad_type)">
 										<option value="">Select Advertisement Type</option>
 										<option v-for="ad_type in ad_types" :value="ad_type"> {{ ad_type.ad_type }}
 										</option>
@@ -235,14 +235,17 @@
 				.then(response => this.ad_types = response.data.data);
 		},
 
-		filterAdType: function(ad_type) {
-			console.log(ad_type);
+		adTypeDetails: function(ad_type) {
+			this.pi_product.sec_slot = ad_type.sec_slot;
+			this.pi_product.slots = ad_type.slots;
+
 		},
 
 		screenDetails: function(screen) {
 			this.pi_product.physical_configuration = screen.physical_size_width +' x '+screen.physical_size_height;
 			this.pi_product.orientation = screen.orientation;
 			this.pi_product.product_application = screen.product_application;
+			this.ad_types = this.ad_types.filter(option => option.product_application == screen.product_application);
 		},
 
 		AddNewProduct: function () {

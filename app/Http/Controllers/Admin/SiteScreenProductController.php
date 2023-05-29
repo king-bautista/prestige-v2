@@ -91,7 +91,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
         try {
             $data = [
                 'site_screen_id' => $request->site_screen_id['id'],
-                'ad_type' => $request->ad_type,
+                'ad_type' => $request->ad_type['ad_type'],
                 'description' => $request->description,
                 'dimension' => $request->width.'x'.$request->height,
                 'width' => $request->width,
@@ -119,7 +119,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
 
             $data = [
                 'site_screen_id' => $request->site_screen_id['id'],
-                'ad_type' => $request->ad_type,
+                'ad_type' => $request->ad_type['ad_type'],
                 'description' => $request->description,
                 'dimension' => $request->width.'x'.$request->height,
                 'width' => $request->width,
