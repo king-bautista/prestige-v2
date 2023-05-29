@@ -25,8 +25,7 @@ class SiteScreenProductRequest extends FormRequest
     {
         return [
             "site_screen_id" => "required",
-            "ad_type" => "required|string",
-            // "description" => "required|string",
+            "ad_type" => "required|array",
             "width" => "required|not_in:0",
             "height" => "required|not_in:0",
             "sec_slot" => "required|not_in:0",

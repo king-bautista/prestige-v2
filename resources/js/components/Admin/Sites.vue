@@ -512,6 +512,7 @@ export default {
 					$('#confirmModal').modal('hide');
 				})
 		},
+		
 		downloadCsv: function () { 
 			axios.get('/admin/site/download-csv')
 				.then(response => {
