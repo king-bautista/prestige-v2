@@ -71,7 +71,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
-	(10, 3, 'last_login', '2023-05-25 14:10:50', '2023-04-26 02:53:48', '2023-05-25 06:10:50', NULL);
+	(10, 3, 'last_login', '2023-05-29 16:09:56', '2023-04-26 02:53:48', '2023-05-29 08:09:56', NULL);
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -113,9 +113,9 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `advertisements_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`),
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~30 rows (approximately)
+-- Dumping data for table prestige.advertisements: ~33 rows (approximately)
 INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `status_id`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 3, 12, 7671, 5, 10, 'Sample 1', 1, '2023-05-18 06:29:13', '2023-05-20 01:32:22', NULL),
 	(2, 3, 12, 7671, 5, 10, 'Sample 2', 1, '2023-05-18 06:31:56', '2023-05-20 01:32:22', NULL),
@@ -146,7 +146,10 @@ INSERT INTO `advertisements` (`id`, `company_id`, `contract_id`, `brand_id`, `st
 	(27, 2, 13, 6174, 5, 10, 'gong cha', 1, '2023-05-22 06:19:23', '2023-05-22 06:19:23', NULL),
 	(28, 2, 13, 6181, 5, 10, 'great image', 1, '2023-05-22 06:20:29', '2023-05-22 06:20:29', NULL),
 	(29, 2, 13, 6229, 5, 8, 'HEARTS & ARROWS', 1, '2023-05-22 06:21:55', '2023-05-22 06:21:55', NULL),
-	(30, 2, 13, 6455, 5, 10, 'kfc', 1, '2023-05-22 06:23:01', '2023-05-22 06:23:01', NULL);
+	(30, 2, 13, 6455, 5, 10, 'kfc', 1, '2023-05-22 06:23:01', '2023-05-22 06:23:01', NULL),
+	(31, 2, 13, 5861, 5, 10, 'dreame 1', 1, '2023-05-29 02:49:55', '2023-05-29 03:34:32', '2023-05-29 03:34:32'),
+	(32, 2, 13, 5861, 5, 10, 'dreame 2', 1, '2023-05-29 03:00:39', '2023-05-29 03:34:20', '2023-05-29 03:34:20'),
+	(33, 2, 13, 5861, 5, 10, 'DREAME PROMOS', 1, '2023-05-29 03:02:11', '2023-05-29 03:36:42', NULL);
 
 -- Dumping structure for table prestige.advertisement_materials
 DROP TABLE IF EXISTS `advertisement_materials`;
@@ -165,9 +168,9 @@ CREATE TABLE IF NOT EXISTS `advertisement_materials` (
   PRIMARY KEY (`id`),
   KEY `advertisement_materials_advertisement_id_index` (`advertisement_id`),
   CONSTRAINT `advertisement_materials_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_materials: ~60 rows (approximately)
+-- Dumping data for table prestige.advertisement_materials: ~75 rows (approximately)
 INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `file_type`, `file_size`, `dimension`, `width`, `height`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'uploads/media/advertisements/materials\\70c97979-d315-f221.jpg', 'image', '290916', '470x1060', '470', '1060', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
 	(2, 1, 'uploads/media/advertisements/materials\\70c97979-d376-0c3b-full.jpg', 'image', '963864', '1920x1080', '1920', '1080', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
@@ -228,7 +231,22 @@ INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `f
 	(57, 29, 'uploads/media/advertisements/materials\\BANNER-SEASIDE-470PX-X-1060PX_mpeg4_libtheora.ogv', 'video', '4293794', '470x1060', '470', '1060', '2023-05-22 06:21:55', '2023-05-22 06:21:55', NULL),
 	(58, 29, 'uploads/media/advertisements/materials\\Sequence_02_1_libtheora.ogv', 'video', '3942662', '1920x1080', '1920', '1080', '2023-05-22 06:21:55', '2023-05-22 06:21:55', NULL),
 	(59, 30, 'uploads/media/advertisements/materials\\SM-Bataan_New-FLD_470x1060px-(1).jpg', 'image', '272069', '470x1060', '470', '1060', '2023-05-22 06:23:01', '2023-05-22 06:23:01', NULL),
-	(60, 30, 'uploads/media/advertisements/materials\\SM-Bataan_Project-Taste_1290x1080px-(1).jpg', 'image', '869697', '1920x1080', '1920', '1080', '2023-05-22 06:23:01', '2023-05-22 06:23:01', NULL);
+	(60, 30, 'uploads/media/advertisements/materials\\SM-Bataan_Project-Taste_1290x1080px-(1).jpg', 'image', '869697', '1920x1080', '1920', '1080', '2023-05-22 06:23:01', '2023-05-22 06:23:01', NULL),
+	(61, 31, 'uploads/media/advertisements/materials\\dreame1.jpg', 'image', '172228', '700x700', '700', '700', '2023-05-29 02:49:55', '2023-05-29 02:49:55', '2023-05-29 02:49:55'),
+	(62, 32, 'uploads/media/advertisements/materials\\dreame2.jpg', 'image', '154137', '700x700', '700', '700', '2023-05-29 03:00:39', '2023-05-29 03:00:39', '2023-05-29 02:49:55'),
+	(63, 33, 'uploads/media/advertisements/materials\\dreame3.jpg', 'image', '178150', '700x700', '700', '700', '2023-05-29 03:02:11', '2023-05-29 03:02:11', NULL),
+	(64, 33, 'uploads/media/advertisements/materials\\dreame4.jpg', 'image', '107418', '700x700', '700', '700', '2023-05-29 03:02:11', '2023-05-29 03:02:11', NULL),
+	(65, 33, 'uploads/media/advertisements/materials\\dreame5.jpg', 'image', '156700', '700x700', '700', '700', '2023-05-29 03:02:11', '2023-05-29 03:02:11', NULL),
+	(66, 33, 'uploads/media/advertisements/materials\\dreame6.jpg', 'image', '143925', '700x700', '700', '700', '2023-05-29 03:02:11', '2023-05-29 03:02:11', NULL),
+	(67, 33, 'uploads/media/advertisements/materials\\dreame7.jpg', 'image', '160989', '700x700', '700', '700', '2023-05-29 03:02:11', '2023-05-29 03:02:11', NULL),
+	(68, 33, 'uploads/media/advertisements/materials\\dreame8.jpg', 'image', '146431', '700x700', '700', '700', '2023-05-29 03:02:11', '2023-05-29 03:02:11', NULL),
+	(69, 33, 'uploads/media/advertisements/materials\\dreame9.jpg', 'image', '185939', '700x700', '700', '700', '2023-05-29 03:02:56', '2023-05-29 03:02:56', NULL),
+	(70, 33, 'uploads/media/advertisements/materials\\dreame10.jpg', 'image', '132200', '700x700', '700', '700', '2023-05-29 03:02:56', '2023-05-29 03:02:56', NULL),
+	(71, 33, 'uploads/media/advertisements/materials\\dreame11.jpg', 'image', '185890', '700x700', '700', '700', '2023-05-29 03:02:56', '2023-05-29 03:02:56', NULL),
+	(72, 33, 'uploads/media/advertisements/materials\\dreame12.jpg', 'image', '140188', '700x700', '700', '700', '2023-05-29 03:03:26', '2023-05-29 03:03:26', NULL),
+	(73, 33, 'uploads/media/advertisements/materials\\dreame13.jpg', 'image', '124696', '700x700', '700', '700', '2023-05-29 03:03:26', '2023-05-29 03:03:26', NULL),
+	(74, 33, 'uploads/media/advertisements/materials\\dreame1.jpg', 'image', '172228', '700x700', '700', '700', '2023-05-29 03:36:21', '2023-05-29 03:36:21', NULL),
+	(75, 33, 'uploads/media/advertisements/materials\\dreame2.jpg', 'image', '154137', '700x700', '700', '700', '2023-05-29 03:36:21', '2023-05-29 03:36:21', NULL);
 
 -- Dumping structure for table prestige.advertisement_screens
 DROP TABLE IF EXISTS `advertisement_screens`;
@@ -248,12 +266,12 @@ CREATE TABLE IF NOT EXISTS `advertisement_screens` (
   KEY `advertisement_screens_site_id_index` (`site_id`),
   CONSTRAINT `advertisement_screens_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`),
   CONSTRAINT `advertisement_screens_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`),
-  CONSTRAINT `advertisement_screens_pi_product_id_foreign` FOREIGN KEY (`pi_product_id`) REFERENCES `pi_products` (`id`),
+  CONSTRAINT `advertisement_screens_pi_product_id_foreign` FOREIGN KEY (`pi_product_id`) REFERENCES `site_screen_products` (`id`),
   CONSTRAINT `advertisement_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`),
   CONSTRAINT `advertisement_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_screens: ~120 rows (approximately)
+-- Dumping data for table prestige.advertisement_screens: ~150 rows (approximately)
 INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_product_id`, `site_screen_id`, `site_id`, `ad_type`, `created_at`, `updated_at`) VALUES
 	(2, 3, 45, 228, 46, 'Banner Ad', NULL, NULL),
 	(2, 3, 96, 227, 46, 'Banner Ad', NULL, NULL),
@@ -374,7 +392,37 @@ INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_prod
 	(30, 59, 45, 228, 46, 'Banner Ad', NULL, NULL),
 	(30, 59, 96, 227, 46, 'Banner Ad', NULL, NULL),
 	(30, 60, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
-	(30, 60, 95, 228, 46, 'Full Screen Ad', NULL, NULL);
+	(30, 60, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(31, 61, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(31, 61, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(32, 62, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(32, 62, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 63, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 63, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 64, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 64, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 65, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 65, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 66, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 66, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 67, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 67, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 68, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 68, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 69, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 69, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 70, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 70, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 71, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 71, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 72, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 72, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 73, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 73, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 74, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 74, 102, 228, 46, 'Promo Page', NULL, NULL),
+	(33, 75, 101, 227, 46, 'Promo Page', NULL, NULL),
+	(33, 75, 102, 228, 46, 'Promo Page', NULL, NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -11737,7 +11785,7 @@ CREATE TABLE IF NOT EXISTS `company_brands` (
   CONSTRAINT `company_brands_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.company_brands: ~73 rows (approximately)
+-- Dumping data for table prestige.company_brands: ~74 rows (approximately)
 INSERT INTO `company_brands` (`company_id`, `brand_id`) VALUES
 	(1, 7218),
 	(1, 7231),
@@ -11811,7 +11859,8 @@ INSERT INTO `company_brands` (`company_id`, `brand_id`) VALUES
 	(2, 7335),
 	(2, 7388),
 	(2, 7675),
-	(2, 7714);
+	(2, 7714),
+	(2, 5861);
 
 -- Dumping structure for table prestige.company_categories
 DROP TABLE IF EXISTS `company_categories`;
@@ -12296,9 +12345,9 @@ CREATE TABLE IF NOT EXISTS `content_management` (
   PRIMARY KEY (`id`),
   KEY `content_management_material_id_index` (`material_id`),
   CONSTRAINT `content_management_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_management: ~18 rows (approximately)
+-- Dumping data for table prestige.content_management: ~30 rows (approximately)
 INSERT INTO `content_management` (`id`, `material_id`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 8, '2023-05-01', '2023-05-31', 1, '2023-05-17 10:11:08', '2023-05-18 08:47:20', '2023-05-18 08:47:20'),
 	(2, 2, '2023-05-01', '2023-12-31', 1, '2023-05-18 08:51:33', '2023-05-18 08:51:33', NULL),
@@ -12317,7 +12366,19 @@ INSERT INTO `content_management` (`id`, `material_id`, `start_date`, `end_date`,
 	(15, 25, '2023-05-01', '2023-12-31', 1, '2023-05-22 09:21:30', '2023-05-22 09:21:30', NULL),
 	(16, 26, '2023-05-01', '2023-12-31', 1, '2023-05-22 09:21:53', '2023-05-22 09:21:53', NULL),
 	(17, 49, '2023-05-01', '2023-12-31', 1, '2023-05-23 02:47:03', '2023-05-23 02:47:03', NULL),
-	(18, 50, '2023-05-01', '2023-08-31', 1, '2023-05-23 02:47:33', '2023-05-24 10:00:37', NULL);
+	(18, 50, '2023-05-01', '2023-08-31', 1, '2023-05-23 02:47:33', '2023-05-24 10:00:37', NULL),
+	(19, 74, '2023-05-01', '2023-05-31', 1, '2023-05-29 03:38:47', '2023-05-29 03:38:47', NULL),
+	(20, 75, '2023-05-01', '2023-06-30', 1, '2023-05-29 03:39:06', '2023-05-29 03:39:06', NULL),
+	(21, 72, '2023-05-01', '2023-06-30', 1, '2023-05-29 03:39:27', '2023-05-29 03:39:27', NULL),
+	(22, 73, '2023-05-01', '2023-06-30', 1, '2023-05-29 03:39:59', '2023-05-29 03:39:59', NULL),
+	(23, 69, '2023-05-01', '2023-06-30', 1, '2023-05-29 03:40:14', '2023-05-29 03:40:14', NULL),
+	(24, 70, '2023-05-01', '2023-07-31', 1, '2023-05-29 03:40:39', '2023-05-29 03:40:39', NULL),
+	(25, 63, '2023-05-01', '2023-06-15', 1, '2023-05-29 03:40:56', '2023-05-29 03:40:56', NULL),
+	(26, 64, '2023-05-01', '2023-06-02', 1, '2023-05-29 03:41:13', '2023-05-29 03:41:13', NULL),
+	(27, 65, '2023-05-28', '2023-06-30', 1, '2023-05-29 03:41:33', '2023-05-29 03:41:33', NULL),
+	(28, 66, '2023-05-21', '2023-06-15', 1, '2023-05-29 03:41:49', '2023-05-29 03:41:49', NULL),
+	(29, 67, '2023-05-15', '2023-05-31', 1, '2023-05-29 03:42:07', '2023-05-29 03:42:07', NULL),
+	(30, 68, '2023-05-27', '2023-06-19', 1, '2023-05-29 03:42:28', '2023-05-29 03:42:28', NULL);
 
 -- Dumping structure for table prestige.content_screens
 DROP TABLE IF EXISTS `content_screens`;
@@ -12331,12 +12392,12 @@ CREATE TABLE IF NOT EXISTS `content_screens` (
   KEY `content_screens_site_screen_id_index` (`site_screen_id`),
   KEY `content_screens_site_id_index` (`site_id`),
   CONSTRAINT `content_screens_content_id_foreign` FOREIGN KEY (`content_id`) REFERENCES `content_management` (`id`),
-  CONSTRAINT `content_screens_pi_product_id_foreign` FOREIGN KEY (`pi_product_id`) REFERENCES `pi_products` (`id`),
+  CONSTRAINT `content_screens_pi_product_id_foreign` FOREIGN KEY (`pi_product_id`) REFERENCES `site_screen_products` (`id`),
   CONSTRAINT `content_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`),
   CONSTRAINT `content_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_screens: ~34 rows (approximately)
+-- Dumping data for table prestige.content_screens: ~57 rows (approximately)
 INSERT INTO `content_screens` (`content_id`, `pi_product_id`, `site_screen_id`, `site_id`) VALUES
 	(1, 83, 77, 23),
 	(2, 44, 227, 46),
@@ -12371,7 +12432,30 @@ INSERT INTO `content_screens` (`content_id`, `pi_product_id`, `site_screen_id`, 
 	(17, 45, 228, 46),
 	(17, 96, 227, 46),
 	(18, 44, 227, 46),
-	(18, 95, 228, 46);
+	(18, 95, 228, 46),
+	(19, 101, 227, 46),
+	(19, 102, 228, 46),
+	(20, 101, 227, 46),
+	(20, 102, 228, 46),
+	(21, 101, 227, 46),
+	(21, 102, 228, 46),
+	(22, 101, 227, 46),
+	(23, 101, 227, 46),
+	(23, 102, 228, 46),
+	(24, 101, 227, 46),
+	(24, 102, 228, 46),
+	(25, 101, 227, 46),
+	(25, 102, 228, 46),
+	(26, 101, 227, 46),
+	(26, 102, 228, 46),
+	(27, 101, 227, 46),
+	(27, 102, 228, 46),
+	(28, 101, 227, 46),
+	(28, 102, 228, 46),
+	(29, 101, 227, 46),
+	(29, 102, 228, 46),
+	(30, 101, 227, 46),
+	(30, 102, 228, 46);
 
 -- Dumping structure for table prestige.contracts
 DROP TABLE IF EXISTS `contracts`;
@@ -12421,7 +12505,7 @@ CREATE TABLE IF NOT EXISTS `contract_brands` (
   CONSTRAINT `contract_brands_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contract_brands: ~75 rows (approximately)
+-- Dumping data for table prestige.contract_brands: ~76 rows (approximately)
 INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
 	(3, 7690),
 	(2, 7698),
@@ -12456,18 +12540,19 @@ INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
 	(12, 7241),
 	(12, 7246),
 	(12, 7398),
-	(13, 2151),
-	(13, 6162),
-	(13, 7135),
-	(13, 7714),
-	(13, 1917),
-	(13, 7136),
+	(14, 7214),
+	(14, 7216),
+	(14, 7217),
+	(14, 7218),
 	(13, 52),
 	(13, 76),
 	(13, 648),
 	(13, 974),
+	(13, 1917),
 	(13, 1969),
 	(13, 2006),
+	(13, 2151),
+	(13, 5141),
 	(13, 5771),
 	(13, 5805),
 	(13, 5824),
@@ -12477,6 +12562,7 @@ INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
 	(13, 6114),
 	(13, 6149),
 	(13, 6155),
+	(13, 6162),
 	(13, 6174),
 	(13, 6181),
 	(13, 6229),
@@ -12490,14 +12576,13 @@ INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
 	(13, 6924),
 	(13, 6926),
 	(13, 7068),
-	(13, 5141),
+	(13, 7135),
+	(13, 7136),
 	(13, 7335),
 	(13, 7388),
 	(13, 7675),
-	(14, 7214),
-	(14, 7216),
-	(14, 7217),
-	(14, 7218);
+	(13, 7714),
+	(13, 5861);
 
 -- Dumping structure for table prestige.contract_screens
 DROP TABLE IF EXISTS `contract_screens`;
@@ -12530,10 +12615,10 @@ INSERT INTO `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `pro
 	(12, 0, 1, 'Directory'),
 	(12, 0, 1, 'Digital Signage'),
 	(12, 0, 46, 'Directory'),
-	(13, 0, 0, 'All'),
 	(14, 1, 1, 'Directory'),
 	(14, 2, 1, 'Directory'),
-	(14, 5, 1, 'Directory');
+	(14, 5, 1, 'Directory'),
+	(13, 0, 0, 'All');
 
 -- Dumping structure for table prestige.customer_care
 DROP TABLE IF EXISTS `customer_care`;
@@ -12608,7 +12693,7 @@ CREATE TABLE IF NOT EXISTS `last_update_ats` (
 -- Dumping data for table prestige.last_update_ats: 1 rows
 /*!40000 ALTER TABLE `last_update_ats` DISABLE KEYS */;
 INSERT INTO `last_update_ats` (`last_updated_at`) VALUES
-	('2023-05-25 16:10:16');
+	('2023-05-29 15:16:05');
 /*!40000 ALTER TABLE `last_update_ats` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.logs
@@ -12641,7 +12726,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   KEY `logs_company_id_index` (`company_id`),
   KEY `logs_site_tenant_id_index` (`site_tenant_id`),
   KEY `logs_advertisement_id_index` (`advertisement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.logs: ~226 rows (approximately)
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_category_id`, `main_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `advertisement_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -12875,7 +12960,16 @@ INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_ca
 	(229, 46, 227, 18, 3, 3, 78, NULL, 1291, NULL, 'click', 'Map', NULL, NULL, '2023-05-20 01:27:27', '2023-05-20 01:27:27', NULL),
 	(230, 46, 227, 11, 1, 1, 974, 2, NULL, 15, 'click', 'Banner Ad', NULL, NULL, '2023-05-25 08:16:30', '2023-05-25 08:16:30', NULL),
 	(231, 46, 227, 11, 1, 1, 974, 2, NULL, 15, 'click', 'Banner Ad', NULL, NULL, '2023-05-25 08:16:30', '2023-05-25 08:16:30', NULL),
-	(232, 46, 227, 11, 1, 1, 974, 2, NULL, 15, 'click', 'Banner Ad', NULL, NULL, '2023-05-25 08:16:31', '2023-05-25 08:16:31', NULL);
+	(232, 46, 227, 11, 1, 1, 974, 2, NULL, 15, 'click', 'Banner Ad', NULL, NULL, '2023-05-25 08:16:31', '2023-05-25 08:16:31', NULL),
+	(233, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Map', NULL, NULL, '2023-05-29 06:21:08', '2023-05-29 06:21:08', NULL),
+	(234, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Promos', NULL, NULL, '2023-05-29 06:30:58', '2023-05-29 06:30:58', NULL),
+	(235, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Promos', NULL, NULL, '2023-05-29 06:48:53', '2023-05-29 06:48:53', NULL),
+	(236, 46, 227, 2, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-05-29 07:11:51', '2023-05-29 07:11:51', NULL),
+	(237, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Home', NULL, NULL, '2023-05-29 07:11:57', '2023-05-29 07:11:57', NULL),
+	(238, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Promos', NULL, NULL, '2023-05-29 07:49:23', '2023-05-29 07:49:23', NULL),
+	(239, 46, 227, 30, 5, 5, 5861, 2, NULL, 33, 'click', 'Promos', NULL, NULL, '2023-05-29 07:49:25', '2023-05-29 07:49:25', NULL),
+	(240, 46, 227, 30, 5, 5, 5861, 2, NULL, 33, 'click', 'Promos', NULL, NULL, '2023-05-29 07:49:27', '2023-05-29 07:49:27', NULL),
+	(241, 46, 227, 30, 5, 5, 5861, 2, NULL, 33, 'click', 'Promos', NULL, NULL, '2023-05-29 07:49:29', '2023-05-29 07:49:29', NULL);
 
 -- Dumping structure for table prestige.migrations
 DROP TABLE IF EXISTS `migrations`;
@@ -12884,7 +12978,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=208 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=209 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.migrations: 43 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
@@ -12930,7 +13024,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(172, '2023_03_22_151752_create_site_feedback_table', 44),
 	(175, '2023_03_24_131810_create_site_screen_uptimes_table', 45),
 	(193, '2023_03_30_151816_create_contracts_table', 48),
-	(196, '2023_05_06_155340_create_pi_products_table', 50),
+	(208, '2023_05_06_155340_create_pi_products_table', 55),
 	(207, '2023_05_18_175843_create_play_lists_table', 54);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
@@ -12950,7 +13044,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   PRIMARY KEY (`id`),
   KEY `modules_name_index` (`name`),
   KEY `modules_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.modules: ~73 rows (approximately)
 INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -13026,9 +13120,10 @@ INSERT INTO `modules` (`id`, `parent_id`, `name`, `link`, `role`, `class_name`, 
 	(72, 71, 'Inquiries', '/admin/customer-cares', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-04-25 06:06:46', '2023-04-25 06:06:53', NULL),
 	(73, 71, 'Concerns', '/admin/customer-care/concerns', 'Admin', 'nav-icon  fa fa-phone-square', 1, '2023-04-25 06:07:38', '2023-05-05 06:11:50', NULL),
 	(74, NULL, 'User Information', '/admin/users-information', 'Admin', 'nav-icon fa fa-question-circle', 1, '2023-05-05 06:11:38', '2023-05-05 06:11:38', NULL),
-	(75, NULL, 'Site Screen Product', '/admin/site/pi-products', 'Admin', 'nav-icon fa fa-desktop', 1, '2023-05-08 03:46:29', '2023-05-08 05:30:23', NULL),
+	(75, NULL, 'Site Screen Product', '/admin/site/site-screen-products', 'Admin', 'nav-icon fa fa-desktop', 1, '2023-05-08 03:46:29', '2023-05-26 02:33:16', NULL),
 	(76, 13, 'Maps', '/admin/site/maps', 'Admin', 'nav-icon fas fa-map', 1, '2023-05-09 01:35:40', '2023-05-09 02:10:54', NULL),
-	(77, 14, 'Ad Playlist', '/admin/play-list', 'Admin', 'nav-icon fa fa-play-circle', 1, '2023-05-24 07:05:36', '2023-05-24 07:11:44', NULL);
+	(77, 14, 'Ad Playlist', '/admin/play-list', 'Admin', 'nav-icon fa fa-play-circle', 1, '2023-05-24 07:05:36', '2023-05-24 07:11:44', NULL),
+	(78, NULL, 'Pi Products', '/admin/site/pi-products', 'Admin', 'nav-icon  fab fa-product-hunt', 1, '2023-05-26 06:29:46', '2023-05-26 06:31:34', NULL);
 
 -- Dumping structure for table prestige.password_resets
 DROP TABLE IF EXISTS `password_resets`;
@@ -13062,7 +13157,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   KEY `permissions_deleted_at_index` (`deleted_at`),
   CONSTRAINT `permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`),
   CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.permissions: ~130 rows (approximately)
 INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, `can_edit`, `can_delete`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -13076,35 +13171,35 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(8, 2, 8, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
 	(9, 2, 9, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
 	(10, 2, 10, 1, 1, 1, 1, '2022-08-09 20:17:32', '2022-08-09 23:31:55', NULL),
-	(16, 1, 1, 1, 1, 1, 1, '2022-08-10 00:58:44', '2023-05-24 07:13:03', NULL),
-	(17, 1, 3, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(18, 1, 4, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(19, 1, 11, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
-	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-24 07:13:03', NULL),
+	(16, 1, 1, 1, 1, 1, 1, '2022-08-10 00:58:44', '2023-05-26 06:32:39', NULL),
+	(17, 1, 3, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(18, 1, 4, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(19, 1, 11, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(20, 1, 5, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(21, 1, 6, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(22, 1, 7, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(23, 1, 8, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(24, 1, 9, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
+	(25, 1, 10, 1, 1, 1, 1, '2022-08-10 00:58:45', '2023-05-26 06:32:39', NULL),
 	(26, 1, 12, 1, 1, 1, 1, '2022-08-11 23:57:15', '2022-08-12 00:06:23', NULL),
-	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(31, 1, 17, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(32, 1, 18, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(33, 1, 19, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(34, 1, 20, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(35, 1, 21, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(36, 1, 22, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(37, 1, 23, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(38, 1, 24, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(39, 1, 25, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(40, 1, 26, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(41, 1, 27, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(42, 1, 28, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(43, 1, 29, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
-	(44, 1, 30, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-24 07:13:03', NULL),
+	(27, 1, 13, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(28, 1, 14, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(29, 1, 15, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(30, 1, 16, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(31, 1, 17, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(32, 1, 18, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(33, 1, 19, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(34, 1, 20, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(35, 1, 21, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(36, 1, 22, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(37, 1, 23, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(38, 1, 24, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(39, 1, 25, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(40, 1, 26, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(41, 1, 27, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(42, 1, 28, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(43, 1, 29, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
+	(44, 1, 30, 1, 1, 1, 1, '2022-08-11 23:57:15', '2023-05-26 06:32:39', NULL),
 	(45, 2, 12, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(46, 2, 13, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(47, 2, 14, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
@@ -13124,21 +13219,21 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(61, 2, 28, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(62, 2, 29, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
 	(63, 2, 30, 0, 0, 0, 0, '2022-08-14 18:59:38', '2022-08-14 18:59:38', NULL),
-	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2023-05-24 07:13:03', NULL),
-	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2023-05-24 07:13:03', NULL),
-	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2023-05-24 07:13:03', NULL),
-	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2023-05-24 07:13:03', NULL),
-	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2023-05-24 07:13:03', NULL),
-	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2023-05-24 07:13:03', NULL),
+	(64, 1, 31, 1, 1, 1, 1, '2022-08-18 22:51:07', '2023-05-26 06:32:39', NULL),
+	(65, 1, 32, 1, 1, 1, 1, '2022-08-22 17:03:54', '2023-05-26 06:32:39', NULL),
+	(66, 1, 33, 1, 1, 1, 1, '2022-10-17 21:34:09', '2023-05-26 06:32:39', NULL),
+	(67, 1, 34, 1, 1, 1, 1, '2022-10-18 21:41:17', '2023-05-26 06:32:39', NULL),
+	(68, 1, 35, 1, 1, 1, 1, '2022-10-19 21:55:11', '2023-05-26 06:32:39', NULL),
+	(69, 1, 36, 1, 1, 1, 1, '2022-10-19 22:00:30', '2023-05-26 06:32:39', NULL),
 	(70, 1, 37, 1, 1, 1, 1, '2022-10-19 22:00:30', '2022-11-15 18:37:58', NULL),
-	(71, 1, 38, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-24 07:13:03', NULL),
-	(72, 1, 39, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-24 07:13:03', NULL),
-	(73, 1, 40, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-24 07:13:03', NULL),
-	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-24 07:13:03', NULL),
-	(75, 1, 42, 1, 1, 1, 1, '2022-12-29 03:38:57', '2023-05-24 07:13:03', NULL),
-	(76, 1, 43, 1, 1, 1, 1, '2023-01-19 07:11:36', '2023-05-24 07:13:03', NULL),
-	(77, 1, 44, 1, 1, 1, 1, '2023-01-19 10:01:38', '2023-05-24 07:13:03', NULL),
-	(78, 1, 46, 1, 1, 1, 1, '2023-03-02 09:01:50', '2023-05-24 07:13:03', NULL),
+	(71, 1, 38, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-26 06:32:39', NULL),
+	(72, 1, 39, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-26 06:32:39', NULL),
+	(73, 1, 40, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-26 06:32:39', NULL),
+	(74, 1, 41, 1, 1, 1, 1, '2022-11-20 18:59:37', '2023-05-26 06:32:39', NULL),
+	(75, 1, 42, 1, 1, 1, 1, '2022-12-29 03:38:57', '2023-05-26 06:32:39', NULL),
+	(76, 1, 43, 1, 1, 1, 1, '2023-01-19 07:11:36', '2023-05-26 06:32:39', NULL),
+	(77, 1, 44, 1, 1, 1, 1, '2023-01-19 10:01:38', '2023-05-26 06:32:39', NULL),
+	(78, 1, 46, 1, 1, 1, 1, '2023-03-02 09:01:50', '2023-05-26 06:32:39', NULL),
 	(79, 3, 47, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-22 02:14:58', NULL),
 	(80, 3, 48, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-22 02:14:58', NULL),
 	(81, 3, 49, 1, 1, 1, 1, '2023-03-02 10:20:23', '2023-03-09 06:49:14', NULL),
@@ -13190,14 +13285,15 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `can_view`, `can_add`, 
 	(127, 3, 67, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
 	(128, 3, 68, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
 	(129, 3, 69, 1, 1, 1, 1, '2023-03-22 02:14:58', '2023-03-22 02:14:58', NULL),
-	(130, 1, 70, 1, 1, 1, 1, '2023-03-29 09:53:20', '2023-05-24 07:13:03', NULL),
-	(131, 1, 71, 1, 1, 1, 1, '2023-03-29 10:04:21', '2023-05-24 07:13:03', NULL),
-	(132, 1, 72, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-24 07:13:03', NULL),
-	(133, 1, 73, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-24 07:13:03', NULL),
-	(134, 1, 74, 1, 1, 1, 1, '2023-05-05 06:13:03', '2023-05-24 07:13:03', NULL),
-	(135, 1, 75, 1, 1, 1, 1, '2023-05-08 03:50:03', '2023-05-24 07:13:03', NULL),
-	(136, 1, 76, 1, 1, 1, 1, '2023-05-09 01:37:56', '2023-05-24 07:13:03', NULL),
-	(137, 1, 77, 1, 1, 1, 1, '2023-05-24 07:13:03', '2023-05-24 07:13:03', NULL);
+	(130, 1, 70, 1, 1, 1, 1, '2023-03-29 09:53:20', '2023-05-26 06:32:39', NULL),
+	(131, 1, 71, 1, 1, 1, 1, '2023-03-29 10:04:21', '2023-05-26 06:32:39', NULL),
+	(132, 1, 72, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-26 06:32:39', NULL),
+	(133, 1, 73, 1, 1, 1, 1, '2023-04-25 06:08:42', '2023-05-26 06:32:39', NULL),
+	(134, 1, 74, 1, 1, 1, 1, '2023-05-05 06:13:03', '2023-05-26 06:32:39', NULL),
+	(135, 1, 75, 1, 1, 1, 1, '2023-05-08 03:50:03', '2023-05-26 06:32:39', NULL),
+	(136, 1, 76, 1, 1, 1, 1, '2023-05-09 01:37:56', '2023-05-26 06:32:39', NULL),
+	(137, 1, 77, 1, 1, 1, 1, '2023-05-24 07:13:03', '2023-05-26 06:32:39', NULL),
+	(138, 1, 78, 1, 1, 1, 1, '2023-05-26 06:32:39', '2023-05-26 06:32:39', NULL);
 
 -- Dumping structure for table prestige.personal_access_tokens
 DROP TABLE IF EXISTS `personal_access_tokens`;
@@ -13224,122 +13320,27 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 DROP TABLE IF EXISTS `pi_products`;
 CREATE TABLE IF NOT EXISTS `pi_products` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `site_screen_id` bigint(20) unsigned NOT NULL,
+  `physical_configuration` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_application` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ad_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `dimension` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `width` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `height` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `descriptions` mediumtext COLLATE utf8mb4_unicode_ci,
+  `remarks` mediumtext COLLATE utf8mb4_unicode_ci,
   `sec_slot` int(11) NOT NULL DEFAULT '0',
   `slots` int(11) NOT NULL DEFAULT '0',
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_exclusive` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `pi_products_site_screen_id_foreign` (`site_screen_id`),
-  CONSTRAINT `pi_products_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.pi_products: ~94 rows (approximately)
-INSERT INTO `pi_products` (`id`, `site_screen_id`, `ad_type`, `description`, `dimension`, `width`, `height`, `sec_slot`, `slots`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 06:50:08', '2023-05-08 06:50:08', NULL),
-	(2, 1, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 15, 40, 1, '2023-05-08 07:02:52', '2023-05-08 07:15:54', NULL),
-	(3, 2, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:17:02', '2023-05-08 07:17:02', NULL),
-	(4, 2, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:18:05', '2023-05-08 07:18:05', NULL),
-	(5, 5, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:21:01', '2023-05-08 07:21:01', NULL),
-	(6, 5, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:21:40', '2023-05-08 07:21:40', NULL),
-	(7, 6, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:23:07', '2023-05-08 07:23:07', NULL),
-	(8, 6, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:24:34', '2023-05-08 07:24:34', NULL),
-	(9, 7, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:25:07', '2023-05-08 07:25:07', NULL),
-	(10, 7, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:25:30', '2023-05-08 07:25:30', NULL),
-	(11, 8, 'Full Screen Ad', '10 sec, per month', '1080x1920', '1080', '1920', 10, 40, 1, '2023-05-08 07:26:18', '2023-05-08 07:48:56', NULL),
-	(12, 8, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:27:42', '2023-05-08 07:40:26', '2023-05-08 07:40:26'),
-	(13, 9, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:31:39', '2023-05-08 07:39:10', NULL),
-	(14, 9, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:33:14', '2023-05-08 07:40:38', '2023-05-08 07:40:38'),
-	(15, 10, 'Full Screen Ad', '10 sec, per month', '1080x1920', '1080', '1920', 10, 40, 1, '2023-05-08 07:48:39', '2023-05-08 07:48:39', NULL),
-	(16, 11, 'Full Screen Ad', '10 sec, per month', '384x768', '384', '768', 10, 40, 1, '2023-05-08 07:53:30', '2023-05-08 07:53:30', NULL),
-	(17, 12, 'Full Screen Ad', '10 sec, per month', '384x768', '384', '768', 10, 40, 1, '2023-05-08 07:55:44', '2023-05-08 07:55:44', NULL),
-	(18, 13, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:30:35', '2023-05-08 08:30:35', NULL),
-	(19, 14, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:31:07', '2023-05-08 08:31:07', NULL),
-	(20, 15, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:31:42', '2023-05-08 08:31:42', NULL),
-	(21, 16, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:32:04', '2023-05-08 08:32:04', NULL),
-	(22, 17, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:32:35', '2023-05-08 08:32:35', NULL),
-	(23, 17, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:32:53', '2023-05-08 08:32:53', NULL),
-	(24, 18, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:33:15', '2023-05-08 08:33:15', NULL),
-	(25, 18, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:33:34', '2023-05-08 08:33:34', NULL),
-	(26, 19, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:34:44', '2023-05-08 08:34:44', NULL),
-	(27, 19, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:35:06', '2023-05-08 08:35:06', NULL),
-	(28, 20, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:35:23', '2023-05-08 08:35:23', NULL),
-	(29, 20, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:35:39', '2023-05-08 08:35:39', NULL),
-	(30, 21, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:36:30', '2023-05-08 08:36:30', NULL),
-	(31, 21, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:36:53', '2023-05-08 08:36:53', NULL),
-	(32, 22, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:37:15', '2023-05-08 08:37:15', NULL),
-	(33, 22, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:37:39', '2023-05-08 08:37:39', NULL),
-	(34, 23, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:37:59', '2023-05-08 08:37:59', NULL),
-	(35, 23, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:38:30', '2023-05-08 08:38:30', NULL),
-	(36, 24, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:38:58', '2023-05-08 08:38:58', NULL),
-	(37, 24, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:39:17', '2023-05-08 08:39:17', NULL),
-	(38, 25, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:39:32', '2023-05-08 08:39:32', NULL),
-	(39, 25, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:39:48', '2023-05-08 08:39:48', NULL),
-	(40, 26, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:40:14', '2023-05-08 08:40:14', NULL),
-	(41, 26, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:40:33', '2023-05-08 08:40:33', NULL),
-	(42, 27, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:41:28', '2023-05-08 08:41:28', NULL),
-	(43, 27, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:41:45', '2023-05-08 08:41:45', NULL),
-	(44, 227, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:42:43', '2023-05-08 08:42:43', NULL),
-	(45, 228, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:43:03', '2023-05-08 08:43:03', NULL),
-	(46, 59, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:02:19', '2023-05-08 09:02:19', NULL),
-	(47, 59, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:02:41', '2023-05-08 09:02:41', NULL),
-	(48, 60, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:18:37', '2023-05-08 09:18:37', NULL),
-	(49, 60, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:19:05', '2023-05-08 09:19:05', NULL),
-	(50, 61, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:19:27', '2023-05-08 09:19:27', NULL),
-	(51, 61, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:19:52', '2023-05-08 09:19:52', NULL),
-	(52, 62, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:20:13', '2023-05-08 09:20:13', NULL),
-	(53, 62, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:20:31', '2023-05-08 09:20:31', NULL),
-	(54, 63, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:20:48', '2023-05-08 09:20:48', NULL),
-	(55, 63, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:21:11', '2023-05-08 09:21:11', NULL),
-	(56, 64, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:21:36', '2023-05-08 09:21:36', NULL),
-	(57, 64, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:21:58', '2023-05-08 09:21:58', NULL),
-	(58, 65, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:22:20', '2023-05-08 09:22:20', NULL),
-	(59, 65, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:22:40', '2023-05-08 09:22:40', NULL),
-	(60, 66, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:22:58', '2023-05-08 09:22:58', NULL),
-	(61, 66, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:23:38', '2023-05-08 09:23:38', NULL),
-	(62, 67, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:23:54', '2023-05-08 09:23:54', NULL),
-	(63, 67, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:24:27', '2023-05-08 09:24:27', NULL),
-	(64, 68, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:24:48', '2023-05-08 09:24:48', NULL),
-	(65, 68, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:25:09', '2023-05-08 09:25:09', NULL),
-	(66, 69, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:25:34', '2023-05-08 09:25:34', NULL),
-	(67, 69, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:26:03', '2023-05-08 09:26:03', NULL),
-	(68, 70, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:26:20', '2023-05-08 09:26:20', NULL),
-	(69, 70, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:26:39', '2023-05-08 09:26:39', NULL),
-	(70, 71, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:26:57', '2023-05-08 09:26:57', NULL),
-	(71, 71, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:27:18', '2023-05-08 09:27:18', NULL),
-	(72, 72, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:27:41', '2023-05-08 09:27:41', NULL),
-	(73, 72, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:28:00', '2023-05-08 09:28:00', NULL),
-	(74, 73, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:28:23', '2023-05-08 09:28:23', NULL),
-	(75, 73, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:28:42', '2023-05-08 09:28:42', NULL),
-	(76, 74, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:29:36', '2023-05-08 09:29:36', NULL),
-	(77, 74, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:29:54', '2023-05-08 09:29:54', NULL),
-	(78, 75, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:30:16', '2023-05-08 09:30:16', NULL),
-	(79, 75, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:30:33', '2023-05-08 09:30:33', NULL),
-	(80, 76, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:31:22', '2023-05-08 09:31:22', NULL),
-	(81, 76, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:31:39', '2023-05-08 09:31:39', NULL),
-	(82, 77, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:08', '2023-05-08 09:32:08', NULL),
-	(83, 77, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:32:24', '2023-05-08 09:32:24', NULL),
-	(84, 78, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:39', '2023-05-08 09:32:39', NULL),
-	(85, 78, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:54', '2023-05-08 09:32:54', NULL),
-	(86, 84, 'Full Screen Ad', NULL, '3840x2160', '3840', '2160', 10, 40, 1, '2023-05-08 09:33:47', '2023-05-08 09:33:47', NULL),
-	(87, 85, 'Full Screen Ad', NULL, '3840x2160', '3840', '2160', 10, 40, 1, '2023-05-08 09:34:12', '2023-05-08 09:34:12', NULL),
-	(88, 86, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:34:38', '2023-05-08 09:34:38', NULL),
-	(89, 87, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:35:00', '2023-05-08 09:35:00', NULL),
-	(90, 88, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:35:24', '2023-05-08 09:35:24', NULL),
-	(91, 89, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, '2023-05-08 09:35:47', '2023-05-08 09:35:47', NULL),
-	(92, 90, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:08', '2023-05-08 09:36:08', NULL),
-	(93, 91, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:29', '2023-05-08 09:36:29', NULL),
-	(94, 92, 'Full Screen Ad', 'Admin test', '384x1024', '384', '1024', 10, 40, 0, '2023-05-08 09:36:56', '2023-05-12 03:42:21', NULL),
-	(95, 228, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-18 06:33:48', '2023-05-18 06:33:48', NULL),
-	(96, 227, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-18 06:34:45', '2023-05-18 06:34:45', NULL),
-	(99, 1, 'Full Screen Ad', 'this is test edit', '1920x1080', '1920', '1080', 15, 50, 0, '2023-05-23 08:06:56', '2023-05-23 08:07:51', '2023-05-23 08:07:51');
+-- Dumping data for table prestige.pi_products: ~4 rows (approximately)
+INSERT INTO `pi_products` (`id`, `physical_configuration`, `product_application`, `ad_type`, `descriptions`, `remarks`, `sec_slot`, `slots`, `active`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'LED', 'Digital Signage', 'Full Screen Ad', NULL, NULL, 10, 40, 1, 0, '2023-05-26 07:14:00', '2023-05-26 09:05:57', NULL),
+	(2, 'LED', 'Directory', 'Full Screen Ad', NULL, NULL, 10, 40, 1, 0, '2023-05-26 07:54:01', '2023-05-26 07:54:01', NULL),
+	(3, 'LED', 'Directory', 'Banner Ad', NULL, NULL, 10, 40, 1, 0, '2023-05-26 07:54:28', '2023-05-26 07:54:28', NULL),
+	(4, 'LED', 'Directory', 'Promo Page', NULL, NULL, 10, 40, 1, 0, '2023-05-26 07:55:46', '2023-05-26 07:55:46', NULL);
 
 -- Dumping structure for table prestige.play_lists
 DROP TABLE IF EXISTS `play_lists`;
@@ -13357,43 +13358,49 @@ CREATE TABLE IF NOT EXISTS `play_lists` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.play_lists: ~33 rows (approximately)
+-- Dumping data for table prestige.play_lists: ~39 rows (approximately)
 INSERT INTO `play_lists` (`id`, `content_id`, `site_screen_id`, `company_id`, `brand_id`, `category_id`, `parent_category_id`, `main_category_id`, `advertisement_id`, `sequence`, `created_at`, `updated_at`) VALUES
-	(150, 3, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(151, 11, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(152, 10, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(153, 15, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(154, 2, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(155, 12, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(156, 16, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(157, 5, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(158, 13, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(159, 17, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(160, 4, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(161, 14, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(162, 18, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(163, 6, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(164, 7, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(165, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(166, 9, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(167, 3, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(168, 11, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(169, 10, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(170, 15, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(171, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(172, 12, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(173, 16, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(174, 5, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(175, 13, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(176, 17, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(177, 4, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(178, 14, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(179, 18, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(180, 6, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(181, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51'),
-	(182, 9, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-25 06:52:51', '2023-05-25 06:52:51');
+	(183, 3, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(184, 11, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(185, 10, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(186, 15, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(187, 2, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(188, 12, 227, 2, 52, 11, 1, 1, 12, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(189, 16, 227, 2, 76, 30, 5, 5, 13, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(190, 5, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(191, 13, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(192, 17, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(193, 4, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(194, 14, 227, 2, 974, 11, 1, 1, 15, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(195, 18, 227, 2, 6149, 30, 5, 5, 25, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(196, 6, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(197, 19, 227, 2, 5861, 30, 5, 5, 33, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(198, 7, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(199, 20, 227, 2, 5861, 30, 5, 5, 33, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(200, 9, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(201, 21, 227, 2, 5861, 30, 5, 5, 33, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(202, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(203, 3, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(204, 11, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(205, 10, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(206, 15, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(207, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(208, 12, 228, 2, 52, 11, 1, 1, 12, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(209, 16, 228, 2, 76, 30, 5, 5, 13, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(210, 5, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(211, 13, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(212, 17, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(213, 4, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(214, 14, 228, 2, 974, 11, 1, 1, 15, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(215, 18, 228, 2, 6149, 30, 5, 5, 25, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(216, 6, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(217, 19, 228, 2, 5861, 30, 5, 5, 33, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(218, 9, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(219, 20, 228, 2, 5861, 30, 5, 5, 33, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(220, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33'),
+	(221, 21, 228, 2, 5861, 30, 5, 5, 33, 0, '2023-05-29 03:39:33', '2023-05-29 03:39:33');
 
 -- Dumping structure for table prestige.roles
 DROP TABLE IF EXISTS `roles`;
@@ -24410,8 +24417,8 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(235, 48, 55, 157, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'xhVb2MdTAkEPXyhA', 'BDO', 40, 1, 1, 0, '2023-04-19 09:46:56', '2023-04-19 09:51:24', NULL),
 	(236, 48, 55, 157, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HQmHG2gsQQtfdgo5', 'Burger King', 40, 1, 0, 0, '2023-04-19 09:47:14', '2023-04-19 09:47:14', NULL),
 	(237, 48, 55, 157, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'suNTZQnIOkO4OiOb', 'McDonalds', 40, 1, 0, 0, '2023-04-19 09:47:29', '2023-04-19 09:47:29', NULL),
-	(238, 49, 56, 158, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '9GEjPwneWJ9RiY5M', 'Starbucks', 40, 1, 0, 0, '2023-04-19 09:52:29', '2023-04-19 09:52:29', NULL),
-	(239, 49, 56, 158, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'lxVG2kuZywFrxAs0', 'Bon Chon', 40, 1, 0, 0, '2023-04-19 09:52:49', '2023-04-19 09:52:49', NULL),
+	(238, 49, 56, 158, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '9GEjPwneWJ9RiY5M', 'Starbucks', 40, 1, 1, 0, '2023-04-19 09:52:29', '2023-05-29 09:08:21', NULL),
+	(239, 49, 56, 158, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'lxVG2kuZywFrxAs0', 'Bon Chon', 40, 1, 0, 0, '2023-04-19 09:52:49', '2023-05-29 09:08:21', NULL),
 	(240, 3, 20, 80, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'UGZ7VbYnakziv9WX', 'Samsung', 20, 1, 0, 0, '2023-04-19 10:02:37', '2023-04-19 10:02:37', NULL),
 	(241, 3, 20, 80, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, '3msSbKuL53Y3kQXj', 'Asus', 20, 1, 0, 0, '2023-04-19 10:04:27', '2023-04-19 10:04:27', NULL),
 	(242, 4, 22, 159, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, '82stSiZ9NqZ2b6J1', 'Photoline', 20, 1, 0, 0, '2023-04-19 10:07:36', '2023-04-19 10:07:36', NULL),
@@ -24464,6 +24471,130 @@ INSERT INTO `site_screens` (`id`, `site_id`, `site_building_id`, `site_building_
 	(289, 19, 60, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'IOD5pzYmD35fekpi', 'Samsung', 20, 1, 0, 1, '2023-04-20 09:48:39', '2023-04-20 09:52:29', NULL),
 	(290, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'ShTMccf1uM5c1Gah', 'Lenovo', 20, 1, 0, 0, '2023-04-20 09:54:08', '2023-04-20 09:54:08', NULL),
 	(291, 20, 54, 178, 0, 'LFD', 'Portrait', 'Digital Signage', '53 Inch', NULL, NULL, NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-05-08 03:17:45', NULL);
+
+-- Dumping structure for table prestige.site_screen_products
+DROP TABLE IF EXISTS `site_screen_products`;
+CREATE TABLE IF NOT EXISTS `site_screen_products` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `site_screen_id` bigint(20) unsigned NOT NULL,
+  `ad_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `dimension` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `width` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `height` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sec_slot` int(11) NOT NULL DEFAULT '0',
+  `slots` int(11) NOT NULL DEFAULT '0',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pi_products_site_screen_id_foreign` (`site_screen_id`),
+  CONSTRAINT `pi_products_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.site_screen_products: ~100 rows (approximately)
+INSERT INTO `site_screen_products` (`id`, `site_screen_id`, `ad_type`, `description`, `dimension`, `width`, `height`, `sec_slot`, `slots`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 06:50:08', '2023-05-08 06:50:08', NULL),
+	(2, 1, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 15, 40, 1, '2023-05-08 07:02:52', '2023-05-08 07:15:54', NULL),
+	(3, 2, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:17:02', '2023-05-08 07:17:02', NULL),
+	(4, 2, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:18:05', '2023-05-08 07:18:05', NULL),
+	(5, 5, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:21:01', '2023-05-08 07:21:01', NULL),
+	(6, 5, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:21:40', '2023-05-08 07:21:40', NULL),
+	(7, 6, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:23:07', '2023-05-08 07:23:07', NULL),
+	(8, 6, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:24:34', '2023-05-08 07:24:34', NULL),
+	(9, 7, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:25:07', '2023-05-08 07:25:07', NULL),
+	(10, 7, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:25:30', '2023-05-08 07:25:30', NULL),
+	(11, 8, 'Full Screen Ad', '10 sec, per month', '1080x1920', '1080', '1920', 10, 40, 1, '2023-05-08 07:26:18', '2023-05-08 07:48:56', NULL),
+	(12, 8, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:27:42', '2023-05-08 07:40:26', NULL),
+	(13, 9, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 07:31:39', '2023-05-08 07:39:10', NULL),
+	(14, 9, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 07:33:14', '2023-05-08 07:40:38', NULL),
+	(15, 10, 'Full Screen Ad', '10 sec, per month', '1080x1920', '1080', '1920', 10, 40, 1, '2023-05-08 07:48:39', '2023-05-08 07:48:39', NULL),
+	(16, 11, 'Full Screen Ad', '10 sec, per month', '384x768', '384', '768', 10, 40, 1, '2023-05-08 07:53:30', '2023-05-08 07:53:30', NULL),
+	(17, 12, 'Full Screen Ad', '10 sec, per month', '384x768', '384', '768', 10, 40, 1, '2023-05-08 07:55:44', '2023-05-08 07:55:44', NULL),
+	(18, 13, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:30:35', '2023-05-08 08:30:35', NULL),
+	(19, 14, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:31:07', '2023-05-08 08:31:07', NULL),
+	(20, 15, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:31:42', '2023-05-08 08:31:42', NULL),
+	(21, 16, 'Full Screen Ad', NULL, '384x768', '384', '768', 10, 40, 1, '2023-05-08 08:32:04', '2023-05-08 08:32:04', NULL),
+	(22, 17, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:32:35', '2023-05-08 08:32:35', NULL),
+	(23, 17, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:32:53', '2023-05-08 08:32:53', NULL),
+	(24, 18, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:33:15', '2023-05-08 08:33:15', NULL),
+	(25, 18, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:33:34', '2023-05-08 08:33:34', NULL),
+	(26, 19, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:34:44', '2023-05-08 08:34:44', NULL),
+	(27, 19, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:35:06', '2023-05-08 08:35:06', NULL),
+	(28, 20, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:35:23', '2023-05-08 08:35:23', NULL),
+	(29, 20, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:35:39', '2023-05-08 08:35:39', NULL),
+	(30, 21, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:36:30', '2023-05-08 08:36:30', NULL),
+	(31, 21, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:36:53', '2023-05-08 08:36:53', NULL),
+	(32, 22, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:37:15', '2023-05-08 08:37:15', NULL),
+	(33, 22, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:37:39', '2023-05-08 08:37:39', NULL),
+	(34, 23, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:37:59', '2023-05-08 08:37:59', NULL),
+	(35, 23, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:38:30', '2023-05-08 08:38:30', NULL),
+	(36, 24, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:38:58', '2023-05-08 08:38:58', NULL),
+	(37, 24, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:39:17', '2023-05-08 08:39:17', NULL),
+	(38, 25, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:39:32', '2023-05-08 08:39:32', NULL),
+	(39, 25, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:39:48', '2023-05-08 08:39:48', NULL),
+	(40, 26, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:40:14', '2023-05-08 08:40:14', NULL),
+	(41, 26, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:40:33', '2023-05-08 08:40:33', NULL),
+	(42, 27, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:41:28', '2023-05-08 08:41:28', NULL),
+	(43, 27, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:41:45', '2023-05-08 08:41:45', NULL),
+	(44, 227, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 08:42:43', '2023-05-08 08:42:43', NULL),
+	(45, 228, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 08:43:03', '2023-05-08 08:43:03', NULL),
+	(46, 59, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:02:19', '2023-05-08 09:02:19', NULL),
+	(47, 59, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:02:41', '2023-05-08 09:02:41', NULL),
+	(48, 60, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:18:37', '2023-05-08 09:18:37', NULL),
+	(49, 60, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:19:05', '2023-05-08 09:19:05', NULL),
+	(50, 61, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:19:27', '2023-05-08 09:19:27', NULL),
+	(51, 61, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:19:52', '2023-05-08 09:19:52', NULL),
+	(52, 62, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:20:13', '2023-05-08 09:20:13', NULL),
+	(53, 62, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:20:31', '2023-05-08 09:20:31', NULL),
+	(54, 63, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:20:48', '2023-05-08 09:20:48', NULL),
+	(55, 63, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:21:11', '2023-05-08 09:21:11', NULL),
+	(56, 64, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:21:36', '2023-05-08 09:21:36', NULL),
+	(57, 64, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:21:58', '2023-05-08 09:21:58', NULL),
+	(58, 65, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:22:20', '2023-05-08 09:22:20', NULL),
+	(59, 65, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:22:40', '2023-05-08 09:22:40', NULL),
+	(60, 66, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:22:58', '2023-05-08 09:22:58', NULL),
+	(61, 66, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:23:38', '2023-05-08 09:23:38', NULL),
+	(62, 67, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:23:54', '2023-05-08 09:23:54', NULL),
+	(63, 67, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:24:27', '2023-05-08 09:24:27', NULL),
+	(64, 68, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:24:48', '2023-05-08 09:24:48', NULL),
+	(65, 68, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:25:09', '2023-05-08 09:25:09', NULL),
+	(66, 69, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:25:34', '2023-05-08 09:25:34', NULL),
+	(67, 69, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:26:03', '2023-05-08 09:26:03', NULL),
+	(68, 70, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:26:20', '2023-05-08 09:26:20', NULL),
+	(69, 70, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:26:39', '2023-05-08 09:26:39', NULL),
+	(70, 71, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:26:57', '2023-05-08 09:26:57', NULL),
+	(71, 71, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:27:18', '2023-05-08 09:27:18', NULL),
+	(72, 72, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:27:41', '2023-05-08 09:27:41', NULL),
+	(73, 72, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:28:00', '2023-05-08 09:28:00', NULL),
+	(74, 73, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:28:23', '2023-05-08 09:28:23', NULL),
+	(75, 73, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:28:42', '2023-05-08 09:28:42', NULL),
+	(76, 74, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:29:36', '2023-05-08 09:29:36', NULL),
+	(77, 74, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:29:54', '2023-05-08 09:29:54', NULL),
+	(78, 75, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:30:16', '2023-05-08 09:30:16', NULL),
+	(79, 75, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:30:33', '2023-05-08 09:30:33', NULL),
+	(80, 76, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:31:22', '2023-05-08 09:31:22', NULL),
+	(81, 76, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:31:39', '2023-05-08 09:31:39', NULL),
+	(82, 77, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:08', '2023-05-08 09:32:08', NULL),
+	(83, 77, 'Banner Ad', NULL, '470x1060', '470', '1060', 10, 40, 1, '2023-05-08 09:32:24', '2023-05-08 09:32:24', NULL),
+	(84, 78, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:39', '2023-05-08 09:32:39', NULL),
+	(85, 78, 'Banner Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-08 09:32:54', '2023-05-08 09:32:54', NULL),
+	(86, 84, 'Full Screen Ad', NULL, '3840x2160', '3840', '2160', 10, 40, 1, '2023-05-08 09:33:47', '2023-05-08 09:33:47', NULL),
+	(87, 85, 'Full Screen Ad', NULL, '3840x2160', '3840', '2160', 10, 40, 1, '2023-05-08 09:34:12', '2023-05-08 09:34:12', NULL),
+	(88, 86, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:34:38', '2023-05-08 09:34:38', NULL),
+	(89, 87, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:35:00', '2023-05-08 09:35:00', NULL),
+	(90, 88, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:35:24', '2023-05-08 09:35:24', NULL),
+	(91, 89, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, '2023-05-08 09:35:47', '2023-05-08 09:35:47', NULL),
+	(92, 90, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:08', '2023-05-08 09:36:08', NULL),
+	(93, 91, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, '2023-05-08 09:36:29', '2023-05-08 09:36:29', NULL),
+	(94, 92, 'Full Screen Ad', 'Admin', '384x1024', '384', '1024', 10, 40, 0, '2023-05-08 09:36:56', '2023-05-26 02:36:40', NULL),
+	(95, 228, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, '2023-05-18 06:33:48', '2023-05-18 06:33:48', NULL),
+	(96, 227, 'Banner Ad', 'test', '470x1060', '470', '1060', 10, 40, 1, '2023-05-18 06:34:45', '2023-05-26 02:41:37', NULL),
+	(99, 1, 'Full Screen Ad', 'this is test edit', '1920x1080', '1920', '1080', 15, 50, 0, '2023-05-23 08:06:56', '2023-05-23 08:07:51', '2023-05-23 08:07:51'),
+	(100, 1, 'Full Screen Ad', 'this is a test test test etst', '1920x1080', '1920', '1080', 10, 50, 1, '2023-05-26 03:02:39', '2023-05-26 03:02:48', '2023-05-26 03:02:48'),
+	(101, 227, 'Promo Page', NULL, '700x700', '700', '700', 10, 40, 1, '2023-05-29 02:19:34', '2023-05-29 02:43:29', NULL),
+	(102, 228, 'Promo Page', NULL, '700x700', '700', '700', 10, 40, 1, '2023-05-29 02:43:59', '2023-05-29 02:43:59', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
 DROP TABLE IF EXISTS `site_screen_uptime`;
@@ -24521,9 +24652,9 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes_temp` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=693 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=750 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes_temp: ~269 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes_temp: ~267 rows (approximately)
 INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, `up_time_hours`, `created_at`, `updated_at`) VALUES
 	(62, 4, '2023-03-28', '13:36:44', '2023-03-28 05:36:44', '2023-03-28 05:36:44'),
 	(69, 3, '2023-03-28', '14:18:44', '2023-03-28 06:18:44', '2023-03-28 06:18:44'),
@@ -24815,7 +24946,64 @@ INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, 
 	(689, 227, '2023-05-25', '15:17:12', '2023-05-25 07:17:12', '2023-05-25 07:17:12'),
 	(690, 227, '2023-05-25', '15:35:31', '2023-05-25 07:35:31', '2023-05-25 07:35:31'),
 	(691, 227, '2023-05-25', '15:44:13', '2023-05-25 07:44:13', '2023-05-25 07:44:13'),
-	(692, 227, '2023-05-25', '16:16:20', '2023-05-25 08:16:20', '2023-05-25 08:16:20');
+	(692, 227, '2023-05-25', '16:16:20', '2023-05-25 08:16:20', '2023-05-25 08:16:20'),
+	(693, 227, '2023-05-25', '16:24:15', '2023-05-25 08:24:15', '2023-05-25 08:24:15'),
+	(694, 227, '2023-05-25', '16:30:15', '2023-05-25 08:30:15', '2023-05-25 08:30:15'),
+	(695, 227, '2023-05-25', '16:36:15', '2023-05-25 08:36:15', '2023-05-25 08:36:15'),
+	(696, 227, '2023-05-25', '16:42:15', '2023-05-25 08:42:15', '2023-05-25 08:42:15'),
+	(697, 227, '2023-05-25', '16:48:15', '2023-05-25 08:48:15', '2023-05-25 08:48:15'),
+	(698, 227, '2023-05-25', '16:54:15', '2023-05-25 08:54:15', '2023-05-25 08:54:15'),
+	(699, 227, '2023-05-25', '17:00:15', '2023-05-25 09:00:15', '2023-05-25 09:00:15'),
+	(700, 227, '2023-05-25', '17:06:15', '2023-05-25 09:06:15', '2023-05-25 09:06:15'),
+	(701, 227, '2023-05-25', '17:12:16', '2023-05-25 09:12:16', '2023-05-25 09:12:16'),
+	(702, 227, '2023-05-25', '17:18:15', '2023-05-25 09:18:15', '2023-05-25 09:18:15'),
+	(703, 227, '2023-05-25', '17:24:15', '2023-05-25 09:24:15', '2023-05-25 09:24:15'),
+	(704, 227, '2023-05-25', '17:30:15', '2023-05-25 09:30:15', '2023-05-25 09:30:15'),
+	(705, 227, '2023-05-25', '17:36:15', '2023-05-25 09:36:15', '2023-05-25 09:36:15'),
+	(706, 227, '2023-05-25', '17:42:15', '2023-05-25 09:42:15', '2023-05-25 09:42:15'),
+	(707, 227, '2023-05-25', '17:48:15', '2023-05-25 09:48:15', '2023-05-25 09:48:15'),
+	(708, 227, '2023-05-25', '17:54:15', '2023-05-25 09:54:15', '2023-05-25 09:54:15'),
+	(709, 227, '2023-05-29', '12:03:06', '2023-05-29 04:03:06', '2023-05-29 04:03:06'),
+	(710, 227, '2023-05-29', '12:09:06', '2023-05-29 04:09:06', '2023-05-29 04:09:06'),
+	(711, 227, '2023-05-29', '12:32:52', '2023-05-29 04:32:52', '2023-05-29 04:32:52'),
+	(712, 227, '2023-05-29', '12:39:06', '2023-05-29 04:39:06', '2023-05-29 04:39:06'),
+	(713, 227, '2023-05-29', '12:45:06', '2023-05-29 04:45:06', '2023-05-29 04:45:06'),
+	(714, 227, '2023-05-29', '13:26:28', '2023-05-29 05:26:28', '2023-05-29 05:26:28'),
+	(715, 227, '2023-05-29', '13:27:06', '2023-05-29 05:27:06', '2023-05-29 05:27:06'),
+	(716, 227, '2023-05-29', '13:33:06', '2023-05-29 05:33:06', '2023-05-29 05:33:06'),
+	(717, 227, '2023-05-29', '13:39:06', '2023-05-29 05:39:06', '2023-05-29 05:39:06'),
+	(718, 227, '2023-05-29', '13:52:44', '2023-05-29 05:52:44', '2023-05-29 05:52:44'),
+	(719, 227, '2023-05-29', '13:57:06', '2023-05-29 05:57:06', '2023-05-29 05:57:06'),
+	(720, 227, '2023-05-29', '14:04:42', '2023-05-29 06:04:42', '2023-05-29 06:04:42'),
+	(721, 227, '2023-05-29', '14:11:26', '2023-05-29 06:11:26', '2023-05-29 06:11:26'),
+	(722, 227, '2023-05-29', '14:17:26', '2023-05-29 06:17:26', '2023-05-29 06:17:26'),
+	(723, 227, '2023-05-29', '14:23:25', '2023-05-29 06:23:25', '2023-05-29 06:23:25'),
+	(724, 227, '2023-05-29', '14:29:25', '2023-05-29 06:29:25', '2023-05-29 06:29:25'),
+	(725, 227, '2023-05-29', '14:36:20', '2023-05-29 06:36:20', '2023-05-29 06:36:20'),
+	(726, 227, '2023-05-29', '14:42:20', '2023-05-29 06:42:20', '2023-05-29 06:42:20'),
+	(727, 227, '2023-05-29', '14:47:26', '2023-05-29 06:47:26', '2023-05-29 06:47:26'),
+	(728, 227, '2023-05-29', '14:54:20', '2023-05-29 06:54:20', '2023-05-29 06:54:20'),
+	(729, 227, '2023-05-29', '14:59:25', '2023-05-29 06:59:25', '2023-05-29 06:59:25'),
+	(730, 227, '2023-05-29', '15:05:25', '2023-05-29 07:05:25', '2023-05-29 07:05:25'),
+	(731, 227, '2023-05-29', '15:11:25', '2023-05-29 07:11:25', '2023-05-29 07:11:25'),
+	(732, 227, '2023-05-29', '15:17:25', '2023-05-29 07:17:25', '2023-05-29 07:17:25'),
+	(733, 227, '2023-05-29', '15:23:25', '2023-05-29 07:23:25', '2023-05-29 07:23:25'),
+	(734, 227, '2023-05-29', '15:29:25', '2023-05-29 07:29:25', '2023-05-29 07:29:25'),
+	(735, 227, '2023-05-29', '15:35:25', '2023-05-29 07:35:25', '2023-05-29 07:35:25'),
+	(736, 227, '2023-05-29', '15:41:25', '2023-05-29 07:41:25', '2023-05-29 07:41:25'),
+	(737, 227, '2023-05-29', '15:56:50', '2023-05-29 07:56:50', '2023-05-29 07:56:50'),
+	(738, 227, '2023-05-29', '16:02:51', '2023-05-29 08:02:51', '2023-05-29 08:02:51'),
+	(739, 227, '2023-05-29', '16:08:50', '2023-05-29 08:08:50', '2023-05-29 08:08:50'),
+	(740, 227, '2023-05-29', '16:14:50', '2023-05-29 08:14:50', '2023-05-29 08:14:50'),
+	(741, 227, '2023-05-29', '16:20:50', '2023-05-29 08:20:50', '2023-05-29 08:20:50'),
+	(742, 227, '2023-05-29', '16:26:50', '2023-05-29 08:26:50', '2023-05-29 08:26:50'),
+	(743, 227, '2023-05-29', '16:32:50', '2023-05-29 08:32:50', '2023-05-29 08:32:50'),
+	(744, 227, '2023-05-29', '16:38:50', '2023-05-29 08:38:50', '2023-05-29 08:38:50'),
+	(745, 227, '2023-05-29', '16:44:50', '2023-05-29 08:44:50', '2023-05-29 08:44:50'),
+	(746, 227, '2023-05-29', '16:50:50', '2023-05-29 08:50:50', '2023-05-29 08:50:50'),
+	(747, 227, '2023-05-29', '16:56:50', '2023-05-29 08:56:50', '2023-05-29 08:56:50'),
+	(748, 227, '2023-05-29', '17:02:50', '2023-05-29 09:02:50', '2023-05-29 09:02:50'),
+	(749, 227, '2023-05-29', '17:08:50', '2023-05-29 09:08:50', '2023-05-29 09:08:50');
 
 -- Dumping structure for table prestige.site_tenants
 DROP TABLE IF EXISTS `site_tenants`;
