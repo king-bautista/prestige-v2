@@ -15,7 +15,11 @@ class Gallery extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'file_path',
+        'title',
+        'caption',
+        'description',
+        'thumbnail',
+        'image_video_url',
         'file_type',
         'file_size',
         'dimension',

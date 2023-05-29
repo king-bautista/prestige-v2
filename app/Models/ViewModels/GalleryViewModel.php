@@ -40,25 +40,4 @@ class GalleryViewModel extends Model
      *
      * @var string
      */
-	// public $appends = [
-    //     'shorten_question',
-    //     'shorten_answer',
-    // ]; 
-
-    /****************************************
-    *           ATTRIBUTES PARTS            *
-    ****************************************/
-       
-    // public function getShortenQuestionAttribute()
-    // {
-       
-    //     return Str::limit($this->question, 50, '...'); 
-    // }
-
-    // public function getShortenAnswerAttribute()
-    // {
-       
-    //     return Str::limit($this->answer, 150, '...');
-    // }
-
 }

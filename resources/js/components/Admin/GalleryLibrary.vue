@@ -1,212 +1,178 @@
 <template>
   <div>
-    <div>
-      <div class="btn-group w-100 mb-2">
-        <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All items </a>
-        <a class="btn btn-info" href="javascript:void(0)" data-filter="1"> Category 1 (WHITE) </a>
-        <a class="btn btn-info" href="javascript:void(0)" data-filter="2"> Category 2 (BLACK) </a>
-        <a class="btn btn-info" href="javascript:void(0)" data-filter="3"> Category 3 (COLORED) </a>
-        <a class="btn btn-info" href="javascript:void(0)" data-filter="4"> Category 4 (COLORED, BLACK) </a>
-      </div>
-      <div class="mb-2">
-        <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
-        <div class="float-right">
-          <select class="custom-select" style="width: auto;" data-sortOrder>
-            <option value="index"> Sort by Position </option>
-            <option value="sortData"> Sort by Custom Data </option>
-          </select>
-          <div class="btn-group">
-            <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascending </a>
-            <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descending </a>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons" :primaryKey="primaryKey"
+                  v-on:editButton="editGallery" ref="dataTable">
+                </Table>
+              </div>
+            </div>
           </div>
         </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+    <!-- Modal Add New / Edit User -->
+    <div class="modal fade" id="gallery-form" data-backdrop="static" tabindex="-1" aria-labelledby="gallery-form"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+              Gallery</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="text-center">
+                    <span v-if="gallery.file_type == 'image'">
+                      <img :src="gallery.image_video_url"
+                        style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" />
+                    </span>
+                    <span v-else-if="gallery.file_type == 'video'">
+                      <video style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" controls>
+                        <source :src="gallery.image_video_url" type="video/mp4">
+                      </video>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group row mb-0">
+                    <label for="firstName" class="col-sm-4">Title</label>
+                    <div class="col-sm-8">
+                      {{ gallery.title }}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="caption" class="col-sm-4 col-form-label">Caption <span class="font-italic text-danger">
+                        *</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" v-model="gallery.caption" placeholder="">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="Description" class="col-sm-4 col-form-label">Description <span
+                        class="font-italic text-danger"> *</span></label>
+                    <div class="col-sm-8">
+                      <textarea class="form-control" rows="5" v-model="gallery.description"
+                        placeholder="Answer"></textarea>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary pull-right" @click="updateGallery">Save
+              Changes</button>
+          </div>
+          <!-- /.card-body -->
+        </div>
       </div>
     </div>
-    <div>
-      <div class="filter-container p-0 row">
-      
-        <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample" v-for="(business, index) in businessesNew">
-          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox"
-            data-title="sample 1 - white">
-            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample" />
-          </a>
-        </div>
-        
-      </div>
-
-      <!-- <div class="filter-container p-0 row">
-        <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
-          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox"
-            data-title="sample 1 - white">
-            <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="2, 4" data-sort="black sample">
-          <a href="https://via.placeholder.com/1200/000000.png?text=2" data-toggle="lightbox"
-            data-title="sample 2 - black">
-            <img src="https://via.placeholder.com/300/000000?text=2" class="img-fluid mb-2" alt="black sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="3, 4" data-sort="red sample">
-          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=3" data-toggle="lightbox"
-            data-title="sample 3 - red">
-            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=3" class="img-fluid mb-2" alt="red sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="3, 4" data-sort="red sample">
-          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=4" data-toggle="lightbox"
-            data-title="sample 4 - red">
-            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=4" class="img-fluid mb-2" alt="red sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="2, 4" data-sort="black sample">
-          <a href="https://via.placeholder.com/1200/000000.png?text=5" data-toggle="lightbox"
-            data-title="sample 5 - black">
-            <img src="https://via.placeholder.com/300/000000?text=5" class="img-fluid mb-2" alt="black sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
-          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=6" data-toggle="lightbox"
-            data-title="sample 6 - white">
-            <img src="https://via.placeholder.com/300/FFFFFF?text=6" class="img-fluid mb-2" alt="white sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
-          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=7" data-toggle="lightbox"
-            data-title="sample 7 - white">
-            <img src="https://via.placeholder.com/300/FFFFFF?text=7" class="img-fluid mb-2" alt="white sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="2, 4" data-sort="black sample">
-          <a href="https://via.placeholder.com/1200/000000.png?text=8" data-toggle="lightbox"
-            data-title="sample 8 - black">
-            <img src="https://via.placeholder.com/300/000000?text=8" class="img-fluid mb-2" alt="black sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="3, 4" data-sort="red sample">
-          <a href="https://via.placeholder.com/1200/FF0000/FFFFFF.png?text=9" data-toggle="lightbox"
-            data-title="sample 9 - red">
-            <img src="https://via.placeholder.com/300/FF0000/FFFFFF?text=9" class="img-fluid mb-2" alt="red sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
-          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=10" data-toggle="lightbox"
-            data-title="sample 10 - white">
-            <img src="https://via.placeholder.com/300/FFFFFF?text=10" class="img-fluid mb-2" alt="white sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
-          <a href="https://via.placeholder.com/1200/FFFFFF.png?text=11" data-toggle="lightbox"
-            data-title="sample 11 - white">
-            <img src="https://via.placeholder.com/300/FFFFFF?text=11" class="img-fluid mb-2" alt="white sample" />
-          </a>
-        </div>
-        <div class="filtr-item col-sm-2" data-category="2, 4" data-sort="black sample">
-          <a href="https://via.placeholder.com/1200/000000.png?text=12" data-toggle="lightbox"
-            data-title="sample 12 - black">
-            <img src="https://via.placeholder.com/300/000000?text=12" class="img-fluid mb-2" alt="black sample" />
-          </a>
-        </div>
-      </div> -->
-    </div>
-
   </div>
-</template>
-
+  <!-- End Modal Add New User -->
+</div></template>
 <script>
-$(function () {
-  $(document).on('click', '[data-toggle="lightbox"]', function (event) {
-    event.preventDefault();
-    $(this).ekkoLightbox({
-      alwaysShowClose: true
-    });
-  });
-
-  $('.filter-container').filterizr({ gutterPixels: 3 });
-  $('.btn[data-filter]').on('click', function () {
-    $('.btn[data-filter]').removeClass('active');
-    $(this).addClass('active');
-  });
-})
-
+import Table from '../Helpers/TableGallery';
+// Import this component
 export default {
-  name: "Gallery_Library",
+  name: "Gallery",
   data() {
     return {
-      library: {
+      helper: new Helpers(),
+      gallery: {
         id: '',
-        file_path: '',
+        title: '',
+        caption: '',
+        description: '',
+        thumbnail: '',
+        image_video_url: '',
         file_type: '',
         file_size: '',
         dimension: '',
         width: '',
         height: '',
-        //active: false,           
       },
-      images: [],
-      //add_record: true,
-      //edit_record: false,
-      // dataFields: {
-      // 	name: "Building Name", 
-      // 	descriptions: "Descriptions", 
-      // 	active: {
-      // 		name: "Status", 
-      // 		type:"Boolean", 
-      // 		status: { 
-      // 			0: '<span class="badge badge-danger">Deactivated</span>', 
-      // 			1: '<span class="badge badge-info">Active</span>'
-      // 		}
-      // 	},
-      //       updated_at: "Last Updated"
-      // },
-      // primaryKey: "id",
-      // dataUrl: "/admin/site/building/list",
-      // actionButtons: {
-      // 	edit: {
-      // 		title: 'Edit this Building',
-      // 		name: 'Edit',
-      // 		apiUrl: '',
-      // 		routeName: 'building.edit',
-      // 		button: '<i class="fas fa-edit"></i> Edit',
-      // 		method: 'edit'
-      // 	},
-      // 	delete: {
-      // 		title: 'Delete this Building',
-      // 		name: 'Delete',
-      // 		apiUrl: '/admin/site/buildings/delete',
-      // 		routeName: '',
-      // 		button: '<i class="fas fa-trash-alt"></i> Delete',
-      // 		method: 'delete'
-      // 	},
-      // },
-      // otherButtons: {
-      // 	addNew: {
-      // 		title: 'New Building',
-      // 		v_on: 'AddNewBuilding',
-      // 		icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Building',
-      // 		class: 'btn btn-primary btn-sm',
-      // 		method: 'add'
-      // 	},
-      // }
+      dataFields: {
+        title: "Title",
+        caption: "Caption",
+        description: "Description",
+        thumbnail: "Thumbnail",
+        image_video_url: "Image Video Url",
+        file_type: "File Type",
+        file_size: "File Size",
+        dimension: "Dimension",
+        width: "With",
+        height: "Height",
+        updated_at: "Last Updated"
+      },
+      primaryKey: "id",
+      dataUrl: "/admin/gallery/list",
+      actionButtons: {
+        edit: {
+          title: 'Edit this Photo',
+          name: 'Edit',
+          apiUrl: '',
+          routeName: 'gallery.edit',
+          button: '<i class="fas fa-edit"></i> Edit',
+          method: 'edit'
+        },
+      },
     };
   },
 
-  created() {
-    this.getImages();
-  },
-
   methods: {
-    getImages: function () {
-      axios.get('/admin/gallery/get-all')
-        .then(response => this.images = response.data.data);
+
+    editGallery: function (id) {
+      axios.get('/admin/gallery/' + id)
+        .then(response => {
+          var gallery = response.data.data;
+          this.gallery.id = gallery.id;
+          this.gallery.title = gallery.title;
+          this.gallery.caption = gallery.caption;
+          this.gallery.description = gallery.description;
+          this.gallery.image_video_url = window.location.origin + '/' + gallery.image_video_url;
+          this.gallery.file_type = gallery.file_type;
+          $('#gallery-form').modal('show');
+        });
     },
 
-
+    updateGallery: function () {
+      let formData = new FormData();
+      formData.append("id", this.gallery.id);
+      formData.append("title", this.gallery.title);
+      formData.append("caption", this.gallery.caption);
+      formData.append("description", this.gallery.description);
+      axios.post('/admin/gallery/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+      })
+        .then(response => {
+          toastr.success(response.data.message);
+          this.$refs.dataTable.fetchData();
+          $('#gallery-form').modal('hide');
+        })
+    },
   },
 
   components: {
-  //  Table
+    Table,
   }
 };
-</script>
-
+</script> 

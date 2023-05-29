@@ -17,7 +17,11 @@ class CreateGalleryTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
-            $table->mediumText('file_path')->nullable();
+            $table->string('title');
+            $table->string('caption');
+            $table->text('description');
+            $table->mediumText('thumbnail')->nullable();
+            $table->mediumText('image_video_url')->nullable();
             $table->string('file_type')->nullable();
             $table->string('file_size')->nullable();
             $table->string('dimension')->nullable();
