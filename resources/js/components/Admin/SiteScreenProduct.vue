@@ -74,9 +74,9 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Advertisement Type <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<select class="custom-select" v-model="pi_product.ad_type">
+									<select class="custom-select" v-model="pi_product.ad_type" @change="filterAdType(pi_product.ad_type)">
 										<option value="">Select Advertisement Type</option>
-										<option v-for="ad_type in ad_types" :value="ad_type.ad_type"> {{ ad_type.ad_type }}
+										<option v-for="ad_type in ad_types" :value="ad_type"> {{ ad_type.ad_type }}
 										</option>
 									</select>
 								</div>
@@ -233,6 +233,10 @@
 		getPiProducts: function() {
 			axios.get('/admin/site/pi-product/get-products')
 				.then(response => this.ad_types = response.data.data);
+		},
+
+		filterAdType: function(ad_type) {
+			console.log(ad_type);
 		},
 
 		screenDetails: function(screen) {
