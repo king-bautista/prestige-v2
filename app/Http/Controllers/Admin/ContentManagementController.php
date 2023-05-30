@@ -230,7 +230,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         ->select('content_screens.content_id', 'content_screens.site_screen_id', 'content_screens.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'brands.category_id', 'categories.parent_id as parent_category_id', 'categories.parent_id as main_category_id', 'advertisement_materials.advertisement_id')
         ->join('content_management', 'content_screens.content_id', '=', 'content_management.id')
         ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
-        ->join('advertisements', 'advertisement_materials.advertisement_idt', '=', 'advertisements.id')
+        ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
         ->join('brands', 'advertisements.brand_id', '=', 'brands.id')
         ->join('categories', 'brands.category_id', '=', 'categories.id')
         ->groupBy('categories.parent_id')
