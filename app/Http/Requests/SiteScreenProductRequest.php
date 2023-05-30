@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PiProductRequest extends FormRequest
+class SiteScreenProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,20 +24,23 @@ class PiProductRequest extends FormRequest
     public function rules()
     {
         return [
-            "physical_configuration" => "required",
-            "product_application" => "required",
-            "ad_type" => "required|string",
+            "site_screen_id" => "required",
+            "ad_type" => "required|array",
+            "width" => "required|not_in:0",
+            "height" => "required|not_in:0",
             "sec_slot" => "required|not_in:0",
             "slots" => "required|not_in:0",
         ];
     }
 
-     /**
+    
+    /**
      * @return array
      */
     public function messages()
     {
         return [
+            'site_screen_id.required' => 'The site screen is required.',
             'ad_type.required' => 'The advertisement type field is required.',
         ];
     }

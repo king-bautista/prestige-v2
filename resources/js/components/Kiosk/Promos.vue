@@ -23,8 +23,8 @@
                             <div class="row mb-3">
                                 <div v-for="promo in promos" class="col-12 col-sm-4 text-left mt-10 mb-6">
                                     <div class="text-center">
-                                        <a @click="helper.saveLogs(promo, 'Promos'); showPromo(promo.material_image_path)">
-                                            <img class="promo-tiles" :src="promo.material_image_path" :alt="promo.name" />
+                                        <a @click="helper.saveLogs(promo, 'Promos'); showPromo(promo.material_path)">
+                                            <img class="promo-tiles" :src="promo.material_path" :alt="promo.name" />
                                         </a>
                                         <a class="d-block text-left ti-30" @click="showTenant(promo.tenant_details)">
                                             <p class="label-2 cm-10-0">

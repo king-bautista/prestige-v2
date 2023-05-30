@@ -20,6 +20,7 @@ use App\Models\ViewModels\DirectoryCategoryViewModel;
 use App\Models\ViewModels\DirectorySiteTenantViewModel;
 use App\Models\ViewModels\AssistantMessageViewModel;
 use App\Models\ViewModels\TranslationViewModel;
+use App\Models\ViewModels\PlayListViewModel;
 use App\Models\Site;
 use App\Models\SitePoint;
 use App\Models\SiteMapPaths;
@@ -409,16 +410,26 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;
 
             $current_date = date('Y-m-d');
-            $contents = ContentManagementViewModel::where('site_id', $site->id)
-            ->where('status_id', 5)
-            ->where('active', 1)
-            ->whereDate('start_date', '<=', $current_date)
-            ->whereDate('end_date', '>=', $current_date)
+
+            $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
+            ->where('content_management.active', 1)
+            ->where('advertisement_screens.ad_type', '=', 'Banner Ad')
+            ->whereDate('content_management.start_date', '<=', $current_date)
+            ->whereDate('content_management.end_date', '>=', $current_date)
+            ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+            ->join('advertisement_screens', function($join) use ($site_screen_id)
+            {
+                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+                     ->where('advertisement_screens.site_screen_id', '=', $site_screen_id);
+            })
+            ->select('play_lists.*')
+            ->orderBy('play_lists.id', 'ASC')
             ->get();
 
-            $banners = $this->listToArray($contents->where('ad_type', 'Banners'));
+            $banners = $this->listToArray($playlist);
 
             return $this->response($banners, 'Successfully Retreived!', 200);
         }
@@ -436,17 +447,27 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            
+            $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;
+
             $current_date = date('Y-m-d');
-            $contents = ContentManagementViewModel::where('site_id', $site->id)
-            ->where('status_id', 5)
-            ->where('active', 1)
-            ->whereDate('start_date', '<=', $current_date)
-            ->whereDate('end_date', '>=', $current_date)
+
+            $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
+            ->where('content_management.active', 1)
+            ->where('advertisement_screens.ad_type', '=', 'Full Screen Ad')
+            ->whereDate('content_management.start_date', '<=', $current_date)
+            ->whereDate('content_management.end_date', '>=', $current_date)
+            ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+            ->join('advertisement_screens', function($join) use ($site_screen_id)
+            {
+                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+                     ->where('advertisement_screens.site_screen_id', '=', $site_screen_id);
+            })
+            ->select('play_lists.*')
+            ->orderBy('play_lists.id', 'ASC')
             ->get();
 
-            $fullscreens = $this->listToArray($contents->where('ad_type', 'Fullscreen'));
-            return $this->response($fullscreens, 'Successfully Retreived!', 200);
+            $banners = $this->listToArray($playlist);
+            return $this->response($banners, 'Successfully Retreived!', 200);
             
         }
         catch (\Exception $e)
@@ -463,16 +484,26 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            
+            $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;
+
             $current_date = date('Y-m-d');
-            $contents = ContentManagementViewModel::where('site_id', $site->id)
-            ->where('status_id', 5)
-            ->where('active', 1)
-            ->whereDate('start_date', '<=', $current_date)
-            ->whereDate('end_date', '>=', $current_date)
+
+            $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
+            ->where('content_management.active', 1)
+            ->where('advertisement_screens.ad_type', '=', 'Promo Page')
+            ->whereDate('content_management.start_date', '<=', $current_date)
+            ->whereDate('content_management.end_date', '>=', $current_date)
+            ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+            ->join('advertisement_screens', function($join) use ($site_screen_id)
+            {
+                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+                     ->where('advertisement_screens.site_screen_id', '=', $site_screen_id);
+            })
+            ->select('play_lists.*')
+            ->orderBy('play_lists.id', 'ASC')
             ->get();
 
-            $promos = $this->listToArray($contents->where('ad_type', 'Promos'));
+            $promos = $this->listToArray($playlist);
             $promos = array_chunk($promos, 6);
             
             return $this->response($promos, 'Successfully Retreived!', 200);

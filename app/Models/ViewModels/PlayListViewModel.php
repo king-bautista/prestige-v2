@@ -4,6 +4,7 @@ namespace App\Models\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\Brand;
 
 class PlayListViewModel extends Model
 {
@@ -47,7 +48,10 @@ class PlayListViewModel extends Model
         'company_name',
         'site_name',
         'screen_location',
-        'duration'
+        'duration',
+        'file_type',
+        'tenant_details',
+        'brand_name',
     ];
 
     public function getContentDetails()
@@ -145,6 +149,32 @@ class PlayListViewModel extends Model
         if($total_days)
             return $total_days. ' Days';
         return 0;
-
     }
+
+    public function getFileTypeAttribute()
+    {
+        $content_details = $this->getContentDetails()->first();
+        if($content_details)
+            return $content_details->advertisement_details->file_type;
+        return null;
+    }
+
+    public function getTenantDetailsAttribute()
+    {
+        $site_details = $this->getSiteScreenDetails()->first();
+        if($site_details) {
+            return SiteTenantViewModel::where('site_id', $site_details->id)->where('brand_id', $this->brand_id);
+        }
+        return null;
+    }
+
+    public function getBrandNameAttribute() 
+    {
+        $brand = Brand::find($this->brand_id);
+        if($brand)
+            return $brand->name;
+        return null;
+    }  
+
+
 }

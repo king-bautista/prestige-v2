@@ -258,7 +258,7 @@
             		delete: {
             			title: 'Delete this Content',
             			name: 'Delete',
-            			apiUrl: '/admin/advertisements/delete',
+            			apiUrl: '/admin/manage-ads/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'
@@ -369,7 +369,7 @@
 
 			getScreens: function(index) {
 				console.log(this.advertisement.materials);
-				axios.post('/admin/site/pi-product/get-screens', this.advertisement.materials[index])
+				axios.post('/admin/site/site-screen-product/get-screens', this.advertisement.materials[index])
                 .then(response => {
 					this.advertisement.materials[index].screens = response.data.data;
 					this.advertisement.materials[index].button_show = false;

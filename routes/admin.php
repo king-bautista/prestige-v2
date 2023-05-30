@@ -540,18 +540,32 @@ Route::group(['middleware' => 'auth:admin'], function () {
     */
     Route::get('/admin/transaction/statuses/get-all', 'Admin\TransactionStatusController@getAll')->name('admin.transaction.statuses.get-all');
 
+
         /*
+    |--------------------------------------------------------------------------
+    | Pi Products Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/site/pi-products', 'Admin\PiProductController@index')->name('admin.site.pi-product-product');
+    Route::get('/admin/site/pi-product/list', 'Admin\PiProductController@list')->name('admin.site.pi-product-product.list');
+    Route::post('/admin/site/pi-product/store', 'Admin\PiProductController@store')->name('admin.site.pi-product-product.store');
+    Route::get('/admin/site/pi-product/{id}', 'Admin\PiProductController@details')->where('id', '[0-9]+')->name('admin.site.pi-product-product.details');
+    Route::put('/admin/site/pi-product/update', 'Admin\PiProductController@update')->name('admin.site.pi-product-product.update');
+    Route::get('/admin/site/pi-product/delete/{id}', 'Admin\PiProductController@delete')->where('id', '[0-9]+')->name('admin.site.pi-product-product.delete');
+    Route::get('/admin/site/pi-product/get-products', 'Admin\PiProductController@getProducts')->where('id', '[0-9]+')->name('admin.site.pi-product-product.get-products');
+
+    /*
     |--------------------------------------------------------------------------
     | Sites Screen Products Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/site/pi-products', 'Admin\PiProductController@index')->name('admin.site.pi-product');
-    Route::get('/admin/site/pi-product/list', 'Admin\PiProductController@list')->name('admin.site.pi-product.list');
-    Route::post('/admin/site/pi-product/store', 'Admin\PiProductController@store')->name('admin.site.pi-product.store');
-    Route::get('/admin/site/pi-product/{id}', 'Admin\PiProductController@details')->where('id', '[0-9]+')->name('admin.site.pi-product.details');
-    Route::put('/admin/site/pi-product/update', 'Admin\PiProductController@update')->name('admin.site.pi-product.update');
-    Route::get('/admin/site/pi-product/delete/{id}', 'Admin\PiProductController@delete')->where('id', '[0-9]+')->name('admin.site.pi-product.delete');
-    Route::post('/admin/site/pi-product/get-screens', 'Admin\PiProductController@getScreen')->name('admin.site.pi-product.get-screens');
-  
+    Route::get('/admin/site/site-screen-products', 'Admin\SiteScreenProductController@index')->name('admin.site.site-screen-product');
+    Route::get('/admin/site/site-screen-product/list', 'Admin\SiteScreenProductController@list')->name('admin.site.site-screen-product.list');
+    Route::post('/admin/site/site-screen-product/store', 'Admin\SiteScreenProductController@store')->name('admin.site.site-screen-product.store');
+    Route::get('/admin/site/site-screen-product/{id}', 'Admin\SiteScreenProductController@details')->where('id', '[0-9]+')->name('admin.site.site-screen-product.details');
+    Route::put('/admin/site/site-screen-product/update', 'Admin\SiteScreenProductController@update')->name('admin.site.site-screen-product.update');
+    Route::get('/admin/site/site-screen-product/delete/{id}', 'Admin\SiteScreenProductController@delete')->where('id', '[0-9]+')->name('admin.site.site-screen-product.delete');
+    Route::post('/admin/site/site-screen-product/get-screens', 'Admin\SiteScreenProductController@getScreen')->name('admin.site.site-screen-product.get-screens');
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });

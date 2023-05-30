@@ -5,7 +5,7 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PiProductViewModel extends Model
+class SiteScreenProductViewModel extends Model
 {
     use SoftDeletes;
 
@@ -25,7 +25,7 @@ class PiProductViewModel extends Model
      *
      * @var string
     */
-    protected $table = 'pi_products';
+    protected $table = 'site_screen_products';
 
     /**
      * The primary key associated with the table.
