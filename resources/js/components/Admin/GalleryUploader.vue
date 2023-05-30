@@ -38,7 +38,7 @@ export default {
         dragCount: 0,
         files: [],
         images: [],
-        video_thumbnail: window.location.origin + '/uploads/media/gallery/videos/thumbnails/video_thumbnail.png',
+        video_thumbnail: window.location.origin + '/uploads/media/gallery/videos/thumbnails/video_image.png',
     }),
     methods: {
         OnDragEnter(e) {
