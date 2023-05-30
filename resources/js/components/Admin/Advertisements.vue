@@ -140,7 +140,7 @@
 											<img v-if="material.src" :src="material.src" class="img-thumbnail"/>
 										</span>
 										<span v-else-if="material.src && material.file_type == 'video'">
-											<video muted="muted" class="img-thumbnail" @load="onImgLoad(index)">
+											<video muted="muted" class="img-thumbnail" @load="onImgLoad(index)" controls>
 												<source :src="material.src" type="video/ogg">
 												Your browser does not support the video tag.
 											</video>
