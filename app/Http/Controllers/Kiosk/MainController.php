@@ -652,7 +652,7 @@ class MainController extends AppBaseController
                 $latlng[$coordinate['id']] = array($coordinate['lat'],$coordinate['lng'],$coordinate['level'],$coordinate['building'],$coordinate['map_id']);
             }
 
-            $map_paths = SiteMapPaths::where('site_id', $site->id)->where('point_orig', $origin)->where('point_dest', $destination)->get();
+            $map_paths = SiteMapPaths::where('site_id', $site->id)->where('site_screen_id', $site_screen->id)->where('point_orig', $origin)->where('point_dest', $destination)->get();
 
             if(count($map_paths)) {
                 $coordinates = array();

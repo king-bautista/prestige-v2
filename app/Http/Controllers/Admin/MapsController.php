@@ -553,12 +553,12 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 }
             }
 
-            $dijkstra = new DijkstraHelper($ourMap, $index_to_points, I, $site_id);
+            $dijkstra = new DijkstraHelper($ourMap, $index_to_points, I, $site_id, $screen_id);
             $dijkstra->findShortestPath($points_to_index[$origin]); 
             $routes = $dijkstra->getResults();
 
             // delete old records
-            SiteMapPaths::where('site_id', $site_id)->delete();
+            SiteMapPaths::where('site_id', $site_id)->where('site_screen_id', $screen_id)->delete();
             foreach($routes as $route) {
                 SiteMapPaths::create($route);
             }

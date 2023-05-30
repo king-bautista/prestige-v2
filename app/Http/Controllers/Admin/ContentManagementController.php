@@ -88,8 +88,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content = ContentManagement::create($data);
             $content->saveScreens($request->site_screen_ids);
-            // create playlist here
-
+            $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Created!', 200);
         }
@@ -199,8 +198,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $site_partner_ids = Company::whereIn('classification_id', [1,2])->get();
 
             // GET SITE PARTNER CONTENT
-            $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
-            $play_list = PlayList::insert($site_partner_content);            
+            // $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
+            // $play_list = PlayList::insert($site_partner_content);            
             // GET ADVERTISER CONTENT
             $advertiser_contents = $this->getContent($params, $play_list_ids, $site_partner_ids);            
             $play_list = PlayList::insert($advertiser_contents);

@@ -80,10 +80,7 @@
                                     Your browser does not support the video tag.
                                 </video>
                             </span>
-                            <span v-else-if="tHeader.type == 'logo'">
-                                <img class="img-logo" :src="data[key]" />
-                            </span>
-                            <!-- <span v-else-if="tHeader.type == 'logo' && helper.getFileExtension(data[key]) == 'image'">
+                            <span v-else-if="tHeader.type == 'logo' && helper.getFileExtension(data[key]) == 'image'">
                                 <img class="img-logo" :src="data[key]" />
                             </span>
                             <span v-else-if="tHeader.type == 'logo' && helper.getFileExtension(data[key]) == 'video'">
@@ -91,7 +88,7 @@
                                     <source :src="data[key]" type="video/ogg">
                                     Your browser does not support the video tag.
                                 </video>
-                            </span> -->
+                            </span>
                             <span v-else-if="tHeader.type == 'icon'">
                                 <i :class="data[key]" aria-hidden="true"></i>
                             </span>
