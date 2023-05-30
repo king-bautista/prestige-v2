@@ -137,7 +137,6 @@ export default {
   },
 
   methods: {
-
     editGallery: function (id) {
       axios.get('/admin/gallery/' + id)
         .then(response => {

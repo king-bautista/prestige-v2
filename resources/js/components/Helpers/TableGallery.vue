@@ -98,24 +98,6 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Modal -->
-        <!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
-                    </div>
-                    <div class="modal-body">
-                        <h6>Do you really want to delete?</h6>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="close">Cancel</button>
-                        <button type="button" class="btn btn-primary" @click="remove">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
 </template>
 <script>
@@ -266,29 +248,17 @@ export default {
         },
 
         doAction(method, routeName, apiUrl, id = 0, data, object) {
-            console.log(method);
-            console.log('>>>>>>>>>');
-            console.log(routeName);
-            console.log('>>>>>>>>>');
-            console.log(apiUrl);
-            console.log('>>>>>>>>>');
-            console.log(id);
-            console.log('>>>>>>>>>');
-            console.log(data);
-            console.log('>>>>>>>>>');
-            console.log(object);
-            console.log('>>>>>>>>>');
             switch (method) {
 
                 case "edit":
                     this.$emit("editButton", id);
                     break;
 
-                case "delete":
-                    this.deleteUrl = apiUrl;
-                    this.tobeDeleted = id;
-                    $('#deleteModal').modal('show');
-                    break;
+                // case "delete":
+                //     this.deleteUrl = apiUrl;
+                //     this.tobeDeleted = id;
+                //     $('#deleteModal').modal('show');
+                //     break;
 
                 case "custom_delete":
                     this.$emit(object.v_on, data);
@@ -329,15 +299,15 @@ export default {
 
         },
 
-        remove() {
-            axios.get(this.deleteUrl + "/" + this.tobeDeleted)
-                .then(response => {
-                    this.fetchData();
-                    this.deleteUrl = '';
-                    this.tobeDeleted = 0;
-                    $('#deleteModal').modal('hide');
-                });
-        },
+        // remove() {
+        //     axios.get(this.deleteUrl + "/" + this.tobeDeleted)
+        //         .then(response => {
+        //             this.fetchData();
+        //             this.deleteUrl = '';
+        //             this.tobeDeleted = 0;
+        //             $('#deleteModal').modal('hide');
+        //         });
+        // },
 
         close() {
             this.deleteUrl = '';
