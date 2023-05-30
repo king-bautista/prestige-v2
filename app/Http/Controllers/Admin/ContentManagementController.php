@@ -88,8 +88,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content = ContentManagement::create($data);
             $content->saveScreens($request->site_screen_ids);
-            // create playlist here
-
+            $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Created!', 200);
         }
@@ -199,8 +198,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $site_partner_ids = Company::whereIn('classification_id', [1,2])->get();
 
             // GET SITE PARTNER CONTENT
-            $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
-            $play_list = PlayList::insert($site_partner_content);            
+            // $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
+            // $play_list = PlayList::insert($site_partner_content);            
             // GET ADVERTISER CONTENT
             $advertiser_contents = $this->getContent($params, $play_list_ids, $site_partner_ids);            
             $play_list = PlayList::insert($advertiser_contents);
@@ -231,7 +230,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         ->select('content_screens.content_id', 'content_screens.site_screen_id', 'content_screens.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'brands.category_id', 'categories.parent_id as parent_category_id', 'categories.parent_id as main_category_id', 'advertisement_materials.advertisement_id')
         ->join('content_management', 'content_screens.content_id', '=', 'content_management.id')
         ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
-        ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+        ->join('advertisements', 'advertisement_materials.advertisement_idt', '=', 'advertisements.id')
         ->join('brands', 'advertisements.brand_id', '=', 'brands.id')
         ->join('categories', 'brands.category_id', '=', 'categories.id')
         ->groupBy('categories.parent_id')
