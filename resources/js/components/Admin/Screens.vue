@@ -115,28 +115,28 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size diagonal</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_diagonal"
-										placeholder="43 Inches" required>
+										placeholder="inches" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size width</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_width"
-										placeholder="43 Inches" required>
+										placeholder="inches" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Physical size height</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_height"
-										placeholder="43 Inches" required>
+										placeholder="inches" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Serial Number</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="screen.physical_size_height"
-										placeholder="43 Inches" required>
+										placeholder="Serial Number" required>
 								</div>
 							</div>
 							<div class="form-group row" v-if="screen.product_application == 'Directory'">
@@ -248,9 +248,10 @@ import Table from '../Helpers/Table';
                 orientations: ['Landscape','Portrait'],
                 product_applications: ['Directory','Digital Signage'],
             	dataFields: {
+					serial_number: "ID",
             		screen_location: "Location",
                     site_name: "Site Name",
-            		screen_type: "Physical Configuration", 
+            		screen_type: "Screen Type", 
             		orientation: "Orientation", 
             		product_application: "Product Application", 
             		active: {

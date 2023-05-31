@@ -36,8 +36,6 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     public function list(Request $request)
     {
         try {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $sites = SiteViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
@@ -116,6 +114,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'website' => $request->website,
                 'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
                 'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
+                'site_code' => $request->site_code,
             ];
 
             $site = Site::create($data);
@@ -180,6 +179,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'website' => $request->website,
                 'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
                 'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
+                'site_code' => $request->site_code,
             ];
 
             $site->update($data);

@@ -78,6 +78,7 @@ class CreateSitesTable extends Migration
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();
             $table->bigInteger('site_point_id')->unsigned();
+            $table->string('serial_number')->nullable();     
             $table->string('name');
             $table->enum('screen_type', ['LED','LFD','LCD']);
             $table->enum('orientation', ['Landscape', 'Portrait']);

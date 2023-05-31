@@ -35,7 +35,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function list(Request $request)
     {
-        try {
+        // try {
             $filters = json_decode($request->filters);
             $site_ids = [];
             if ($filters)
@@ -59,16 +59,16 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_screens.*')
             ->latest()
-            ->paginate(request('perPage'));
+            ->paginate(request('perPagei'));
 
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
-        } catch (\Exception $e) {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // } catch (\Exception $e) {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function details($id)
@@ -111,6 +111,9 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen = SiteScreen::create($data);
+            $site_screen->serial_number = 'SS-'.Str::padLeft($site_screen->id, 5, '0');
+            $site_screen->save();
+
             return $this->response($site_screen, 'Successfully Created!', 200);
         } catch (\Exception $e) {
             return response([
@@ -131,6 +134,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $data = [
+                'serial_number' => ($site_screen->serial_number) ? $site_screen->serial_number : 'SS-'.Str::padLeft($site_screen->id, 5, '0'),
                 'name' => $request->name,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
@@ -146,6 +150,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen->update($data);
+            
             return $this->response($site_screen, 'Successfully Modified!', 200);
         } catch (\Exception $e) {
             return response([
