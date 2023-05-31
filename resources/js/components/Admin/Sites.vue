@@ -42,6 +42,13 @@
 								</div>
 							</div>
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site Short Code/Name <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site.site_code" placeholder="Site Short Code/Name">
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -233,6 +240,7 @@ export default {
 				is_default: false,
 				is_premiere: false,
 				multilanguage: false,
+				site_code: '',
 			},
 			site_logo: '/images/no-image-available.png',
 			site_banner: '/images/no-image-available.png',
@@ -246,6 +254,7 @@ export default {
 			},
 			dataFields: {
 				name: "Name",
+				short_code: "Short Code",
 				descriptions_ellipsis: "Descriptions",
 				site_logo_path: {
 					name: "Logo",
@@ -368,14 +377,12 @@ export default {
 			this.add_record = true;
 			this.edit_record = false;
 			this.site.name = '';
+			this.site.site_code = '';
 			this.site.descriptions = '';
-			this.site.site_logo = '/images/no-image-available.png';
-			this.site.site_banner = '/images/no-image-available.png';
-			this.site.site_background = '/images/no-image-available.png';
 			this.site.active = false;
-			this.site_logo = '/images/no-image-available.png';
-			this.site_banner = '/images/no-image-available.png';
-			this.site_background = '/images/no-image-available.png';
+			this.site.is_default = false;
+			this.site.is_premiere = false;
+			this.site.multilanguage = false;
 			this.site.facebook = '';
 			this.site.instagram = '';
 			this.site.twitter = '';
@@ -384,6 +391,12 @@ export default {
 			this.site.website = '';
 			this.$refs.site_logo.value = null;
 			this.$refs.site_banner.value = null;
+			this.site.site_logo = '/images/no-image-available.png';
+			this.site.site_banner = '/images/no-image-available.png';
+			this.site.site_background = '/images/no-image-available.png';
+			this.site_logo = '/images/no-image-available.png';
+			this.site_banner = '/images/no-image-available.png';
+			this.site_background = '/images/no-image-available.png';
 
 			$('#site-form').modal('show');
 		},
@@ -404,6 +417,7 @@ export default {
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);
 			formData.append("multilanguage", this.site.multilanguage);
+			formData.append("site_code", this.site.site_code);
 			axios.post('/admin/site/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
@@ -437,6 +451,7 @@ export default {
 					this.site.is_default = (site.is_default ==  1) ? true : false;
 					this.site.is_premiere = parseInt(site.details.premiere);
 					this.site.multilanguage = parseInt(site.details.multilanguage);
+					this.site.site_code = site.details.site_code;
 					this.add_record = false;
 					this.edit_record = true;
 
@@ -486,6 +501,7 @@ export default {
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);
 			formData.append("multilanguage", this.site.multilanguage);
+			formData.append("site_code", this.site.site_code);
 
 			axios.post('/admin/site/update', formData, {
 				headers: {

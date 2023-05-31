@@ -25,6 +25,7 @@ class SiteRequest extends FormRequest
     {
         return [
             "name" => "required|string",
+            "site_code" => "required|string",
             "descriptions" => "required|string",
         ];
     }
