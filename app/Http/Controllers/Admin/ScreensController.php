@@ -35,7 +35,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function list(Request $request)
     {
-        // try {
+        try {
             $filters = json_decode($request->filters);
             $site_ids = [];
             if ($filters)
@@ -62,13 +62,13 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ->paginate(request('perPagei'));
 
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
-        // } catch (\Exception $e) {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function details($id)

@@ -15,7 +15,7 @@ class PiProduct extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'physical_configuration',
+        'serial_number',
         'product_application',
         'ad_type',
         'descriptions',

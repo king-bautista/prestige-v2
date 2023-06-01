@@ -39,16 +39,6 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Physical Configuration <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <select class="custom-select" v-model="pi_product.physical_configuration">
-										<option value="">Select Physical Configuration</option>
-										<option v-for="physical_configuration in physical_configurations" :value="physical_configuration"> {{ physical_configuration }}
-										</option>
-									</select>
-								</div>
-							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Product Application <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -70,23 +60,23 @@
 								<div class="col-sm-8">
                                     <textarea class="form-control" v-model="pi_product.descriptions" placeholder="Descriptions"></textarea>
 								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Remarks</label>
-								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="pi_product.remarks" placeholder="Remarks"></textarea>
-								</div>
-							</div>
+							</div>                            
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Sec/Slot <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Default Sec/Slot <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="pi_product.sec_slot" placeholder="10" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Slots <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Default Max Slots <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="pi_product.slots" placeholder="40" required>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Remarks</label>
+								<div class="col-sm-8">
+                                    <textarea class="form-control" v-model="pi_product.remarks" placeholder="Remarks"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -100,7 +90,7 @@
 								</div>
 							</div>
                             <div class="form-group row">
-								<label for="is_exclusive" class="col-sm-4 col-form-label">is_exclusive</label>
+								<label for="is_exclusive" class="col-sm-4 col-form-label">Is Exclusive?</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="is_exclusive"
@@ -135,7 +125,6 @@
             return {
                 pi_product: {
                     id: '',
-					physical_configuration: '',
                     product_application: '',
                     ad_type: '',
                     descriptions: '',
@@ -148,9 +137,8 @@
                 add_record: true,
                 edit_record: false,
 				product_applications: ['Digital Signage','Directory'],
-				physical_configurations: ['LCD','LED','LFD'],
             	dataFields: {
-            		physical_configuration: "Physical Configuration",
+            		serial_number: "ID",
             		product_application: "Product Application",
                     ad_type: "Advertisement Type",
             		descriptions: "Descriptions", 
@@ -189,7 +177,7 @@
             		delete: {
             			title: 'Delete this Product',
             			name: 'Delete',
-            			apiUrl: '/admin/site/site-screen-product/delete',
+            			apiUrl: '/admin/site/pi-product/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete',
@@ -219,7 +207,6 @@
                 this.add_record = true;
                 this.edit_record = false;
 
-                this.pi_product.physical_configuration = '';
                 this.pi_product.product_application = '';
                 this.pi_product.ad_type = '';
                 this.pi_product.descriptions = '';
@@ -249,7 +236,6 @@
 
                         var pi_product = response.data.data;
                         this.pi_product.id = pi_product.id;
-                        this.pi_product.physical_configuration = pi_product.physical_configuration;
                         this.pi_product.product_application = pi_product.product_application;
                         this.pi_product.ad_type = pi_product.ad_type;
                         this.pi_product.descriptions = pi_product.descriptions;

@@ -16,8 +16,8 @@ class CreatePiProductsTable extends Migration
         Schema::create('pi_products', function (Blueprint $table) {
             $table->engine = "InnoDB";
 
-            $table->bigIncrements('id');
-            $table->string('physical_configuration')->nullable();
+            $table->bigIncrements('id');            
+            $table->string('serial_number')->nullable();
             $table->string('product_application')->nullable();
             $table->string('ad_type')->nullable();
             $table->mediumText('descriptions')->nullable();  
