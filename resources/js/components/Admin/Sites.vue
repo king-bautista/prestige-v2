@@ -277,7 +277,7 @@ export default {
 					}
 				},
 				is_premiere: {
-					name: "Is Default",
+					name: "Is Premiere",
 					type: "Boolean",
 					status: {
 						0: '<span class="badge badge-danger">No</span>',
@@ -285,7 +285,7 @@ export default {
 					}
 				},
 				multilanguage: {
-					name: "Is Default",
+					name: "Multilanguage",
 					type: "Boolean",
 					status: {
 						0: '<span class="badge badge-danger">No</span>',

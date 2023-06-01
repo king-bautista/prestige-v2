@@ -47,6 +47,8 @@ class SiteViewModel extends Model
         'site_logo_path',
         'site_banner_path',
         'site_background_path',
+        'is_premiere',
+        'multilanguage',
     ];
 
     public function getSiteDetails()
@@ -96,5 +98,21 @@ class SiteViewModel extends Model
         if($site_details)
             return $site_details->meta_value;
         return null;
+    }
+
+    public function getIsPremiereAttribute()
+    {
+        $site_details = $this->getSiteDetails()->where('meta_key', 'is_premiere')->first();
+        if($site_details)
+            return $site_details->meta_value;
+        return 0;
+    }
+
+    public function getMultilanguageAttribute()
+    {
+        $site_details = $this->getSiteDetails()->where('meta_key', 'multilanguage')->first();
+        if($site_details)
+            return $site_details->meta_value;
+        return 0;
     }
 }
