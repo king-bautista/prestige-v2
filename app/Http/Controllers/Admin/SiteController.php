@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\SiteControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\SiteRequest;
+use Illuminate\Support\Str;
 
 use App\Models\Site;
 use App\Models\ViewModels\AdminViewModel;
@@ -118,6 +119,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ];
 
             $site = Site::create($data);
+            $site->serial_number = 'ST-'.Str::padLeft($pi_product->id, 5, '0');
+            $site->save();
             $site->saveMeta($meta_value);
 
             return $this->response($site, 'Successfully Created!', 200);
@@ -161,6 +164,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             }
 
             $data = [
+                'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-'.Str::padLeft($site->id, 5, '0'),
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,

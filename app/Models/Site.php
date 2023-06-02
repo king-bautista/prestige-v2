@@ -15,6 +15,7 @@ class Site extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'serial_number',
         'name',
         'descriptions',
         'site_logo',
@@ -23,6 +24,7 @@ class Site extends Model
         'active',
         'is_default',
     ];
+    
 
     /**
      * The attributes that should be cast.

@@ -88,7 +88,7 @@ class SiteViewModel extends Model
     public function getDescriptionsEllipsisAttribute()
     {
         if($this->descriptions)
-            return Str::limit($this->descriptions, 150);
+            return Str::limit($this->descriptions, 95);
         return null;
     }
     

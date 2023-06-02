@@ -17,6 +17,7 @@ class CreateSitesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->string('serial_number')->nullable();
             $table->string('name');
             $table->mediumText('descriptions')->nullable();      
             $table->mediumText('site_logo')->nullable();      
