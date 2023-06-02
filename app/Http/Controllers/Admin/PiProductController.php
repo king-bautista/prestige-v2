@@ -101,7 +101,7 @@ class PiProductController extends AppBaseController implements PiProductControll
             $pi_product = PiProduct::find($request->id);
 
             $data = [
-                'serial_number' => ($pi_product->serial_number) ? $pi_product->serial_number : 'SS-'.Str::padLeft($pi_product->id, 5, '0'),
+                'serial_number' => ($pi_product->serial_number) ? $pi_product->serial_number : 'PI-'.Str::padLeft($pi_product->id, 5, '0'),
                 'physical_configuration' => $request->physical_configuration,
                 'product_application' => $request->product_application,
                 'ad_type' => $request->ad_type,

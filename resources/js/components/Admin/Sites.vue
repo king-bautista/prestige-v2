@@ -253,6 +253,7 @@ export default {
 				useCurrent: false,
 			},
 			dataFields: {
+				serial_number: "ID",
 				name: "Name",
 				short_code: "Short Code",
 				descriptions_ellipsis: "Descriptions",
@@ -441,12 +442,12 @@ export default {
 					this.site.site_logo = site.site_logo;
 					this.site.site_banner = site.site_banner;
 					this.site.site_background = site.site_background;
-					this.site.facebook = site.details.facebook;
-					this.site.instagram = site.details.instagram;
-					this.site.twitter = site.details.twitter;
-					this.site.time_from = site.details.time_from;
-					this.site.time_to = site.details.time_to;
-					this.site.website = site.details.website;
+					this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
+					this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
+					this.site.twitter = (site.details.twitter == 'null') ? '' : site.details.twitter;
+					this.site.time_from = (site.details.time_from == 'null') ? '' : site.details.time_from;
+					this.site.time_to = (site.details.time_to == 'null') ? '' : site.details.time_to;
+					this.site.website = (site.details.website == 'null') ? '' : site.details.website;
 					this.site.active = site.active;
 					this.site.is_default = (site.is_default ==  1) ? true : false;
 					this.site.is_premiere = parseInt(site.details.premiere);
