@@ -135,7 +135,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Serial Number</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="screen.physical_size_height"
+									<input type="text" class="form-control" v-model="screen.physical_serial_number"
 										placeholder="Serial Number" required>
 								</div>
 							</div>
@@ -233,6 +233,7 @@ import Table from '../Helpers/Table';
                     physical_size_diagonal: '',
                     physical_size_width: '',
                     physical_size_height: '',
+					physical_serial_number: '',
 					active: false,
 					is_default: false,
                 },
@@ -350,6 +351,7 @@ import Table from '../Helpers/Table';
 			this.screen.physical_size_diagonal = '';
 			this.screen.physical_size_width = '';
 			this.screen.physical_size_height = '';
+			this.screen.physical_serial_number = '';
 			this.screen.active = false;
 			this.screen.is_default = false;
 
@@ -386,6 +388,7 @@ import Table from '../Helpers/Table';
 					this.screen.physical_size_diagonal = screen.physical_size_diagonal;
 					this.screen.physical_size_width = screen.physical_size_width;
 					this.screen.physical_size_height = screen.physical_size_height;
+					this.screen.physical_serial_number = screen.physical_serial_number;
 					this.screen.active = screen.active;
 					this.screen.is_default = screen.is_default;
                     $('#screen-form').modal('show');

@@ -75,8 +75,8 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     public function details($id)
     {
         try {
-            $pi_product = SiteScreenProductViewModel::find($id);
-            return $this->response($pi_product, 'Successfully Retreived!', 200);
+            $site_screen_product = SiteScreenProductViewModel::find($id);
+            return $this->response($site_screen_product, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -98,11 +98,15 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 'height' => $request->height,
                 'sec_slot' => $request->sec_slot,
                 'slots' => $request->slots,
-                'active' => 1,
+                'active' => $request->active,
+                'is_exclusive' => $request->is_exclusive,
             ];
 
-            $pi_product = SiteScreenProduct::create($data);
-            return $this->response($pi_product, 'Successfully Created!', 200);
+            $site_screen_product = SiteScreenProduct::create($data);
+            $site_screen_product->serial_number = 'SSP-'.Str::padLeft($site_screen->id, 5, '0');
+            $site_screen_product->save();
+
+            return $this->response($site_screen_product, 'Successfully Created!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -115,9 +119,10 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     public function update(SiteScreenProductRequest $request)
     {
         try {
-            $pi_product = SiteScreenProduct::find($request->id);
+            $site_screen_product = SiteScreenProduct::find($request->id);
 
             $data = [
+                'serial_number' => ($site_screen_product->serial_number) ? $site_screen_product->serial_number : 'SSP-'.Str::padLeft($site_screen_product->id, 5, '0'),
                 'site_screen_id' => $request->site_screen_id['id'],
                 'ad_type' => $request->ad_type['ad_type'],
                 'description' => $request->description,
@@ -127,11 +132,12 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 'sec_slot' => $request->sec_slot,
                 'slots' => $request->slots,
                 'active' => $request->active,
+                'is_exclusive' => $request->is_exclusive,
             ];
 
-            $pi_product->update($data);
+            $site_screen_product->update($data);
 
-            return $this->response($pi_product, 'Successfully Modified!', 200);
+            return $this->response($site_screen_product, 'Successfully Modified!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -144,9 +150,9 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     public function delete($id)
     {
         try {
-            $pi_product = SiteScreenProduct::find($id);
-            $pi_product->delete();
-            return $this->response($pi_product, 'Successfully Deleted!', 200);
+            $site_screen_product = SiteScreenProduct::find($id);
+            $site_screen_product->delete();
+            return $this->response($site_screen_product, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),

@@ -17,13 +17,18 @@ class CreateContractsTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->string('serial_number')->nullable();
             $table->bigInteger('company_id')->unsigned();
             $table->string('name')->nullable();
+            $table->string('reference_code')->nullable();
+            $table->string('remarks')->nullable();
             $table->boolean('is_indefinite')->default(false);
             $table->boolean('is_exclusive')->default(false);
             $table->integer('display_duration')->default(0);
             $table->integer('slots_per_loop')->default(0);
             $table->integer('exposure_per_day')->default(0);
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
