@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CompaniesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\ContractRequest;
@@ -284,6 +285,9 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             ];
 
             $contract = Contract::create($data);
+            $contract->serial_number = 'CTR-'.Str::padLeft($contract->id, 5, '0');
+            $contract->save();
+
             $contract->saveBrands($request->brands);
             $contract->saveScreens($request->screens);
 
@@ -308,6 +312,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $contract = Contract::find($request->id);
 
             $data = [
+                'serial_number' => ($contract->serial_number) ? $contract->serial_number : 'CTR-'.Str::padLeft($contract->id, 5, '0'),
                 'name' => $request->name,
                 'reference_code' => $request->reference_code,
                 'remarks' => $request->remarks,
