@@ -157,7 +157,7 @@
 										</thead>
 										<tbody>
 											<tr v-for="(data, index) in company.contracts" v-bind:key="index">
-												<td class="align-middle">{{ data.id }}</td>
+												<td class="align-middle">{{ data.serial_number }}</td>
 												<td>
 													<img v-for="(brand, index) in data.brands" class="img-thumbnail"
 														:src="brand.logo_image_path" />
