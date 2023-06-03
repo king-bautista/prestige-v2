@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\SiteControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\SiteRequest;
+use Illuminate\Support\Str;
 
 use App\Models\Site;
 use App\Models\ViewModels\AdminViewModel;
@@ -36,8 +37,6 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     public function list(Request $request)
     {
         try {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $sites = SiteViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
@@ -116,9 +115,12 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'website' => $request->website,
                 'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
                 'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
+                'site_code' => $request->site_code,
             ];
 
             $site = Site::create($data);
+            $site->serial_number = 'ST-'.Str::padLeft($pi_product->id, 5, '0');
+            $site->save();
             $site->saveMeta($meta_value);
 
             return $this->response($site, 'Successfully Created!', 200);
@@ -162,6 +164,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             }
 
             $data = [
+                'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-'.Str::padLeft($site->id, 5, '0'),
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
@@ -180,6 +183,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'website' => $request->website,
                 'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
                 'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
+                'site_code' => $request->site_code,
             ];
 
             $site->update($data);

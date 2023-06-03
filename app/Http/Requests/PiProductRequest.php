@@ -24,9 +24,8 @@ class PiProductRequest extends FormRequest
     public function rules()
     {
         return [
-            "physical_configuration" => "required",
             "product_application" => "required",
-            "ad_type" => "required|string",
+            "ad_type" => "required|string|unique:pi_products,ad_type,NULL,id,product_application,".$this->input('product_application'),
             "sec_slot" => "required|not_in:0",
             "slots" => "required|not_in:0",
         ];
@@ -39,6 +38,7 @@ class PiProductRequest extends FormRequest
     {
         return [
             'ad_type.required' => 'The advertisement type field is required.',
+            'ad_type.unique' => 'The advertisement type is already been taken.',
         ];
     }
 }

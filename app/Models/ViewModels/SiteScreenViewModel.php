@@ -58,23 +58,35 @@ class SiteScreenViewModel extends Model
     ****************************************/
     public function getSiteNameAttribute() 
     {
-        return Site::find($this->site_id)->name;
+        $site = Site::find($this->site_id);
+        if($site)
+            return $site->name;
+        return null;
     }
 
     public function getBuildingNameAttribute() 
     {
-        return SiteBuilding::find($this->site_building_id)->name;
+        $site_building = SiteBuilding::find($this->site_building_id);
+        if($site_building)
+            return $site_building->name;
+        return null;
     }
 
     public function getFloorNameAttribute() 
     {
-        return SiteBuildingLevel::find($this->site_building_level_id)->name;
+        $site_level = SiteBuildingLevel::find($this->site_building_level_id);
+        if($site_level)
+            return $site_level->name;
+        return null;
     }
 
     public function getScreenTypeNameAttribute() 
     {
-        $site_name = Site::find($this->site_id)->name;
-        return $site_name.' - '.$this->name . ' ( '.$this->screen_type.' )';
+        $site = Site::find($this->site_id);
+        if($site) {
+            return $site->name.' - '.$this->name . ' ( '.$this->screen_type.' )';
+        }
+        return null;
     }
 
     public function getScreenLocationAttribute() 

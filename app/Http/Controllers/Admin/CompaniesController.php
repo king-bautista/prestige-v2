@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CompaniesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\ContractRequest;
@@ -270,16 +271,23 @@ class CompaniesController extends AppBaseController implements CompaniesControll
     	{
             $data = [
                 'name' => $request->name,
+                'reference_code' => $request->reference_code,
+                'remarks' => $request->remarks,
                 'company_id' => $request->company_id,
                 'display_duration' => $request->display_duration,
                 'slots_per_loop' => $request->slots_per_loop,
                 'exposure_per_day' => $request->exposure_per_day,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
                 'is_exclusive' => ($request->is_exclusive == false) ? 0 : $request->is_exclusive,
                 'is_indefinite' => ($request->is_indefinite == false) ? 0 : $request->is_indefinite,
-                'active' => 1
+                'active' => $request->active
             ];
 
             $contract = Contract::create($data);
+            $contract->serial_number = 'CTR-'.Str::padLeft($contract->id, 5, '0');
+            $contract->save();
+
             $contract->saveBrands($request->brands);
             $contract->saveScreens($request->screens);
 
@@ -299,16 +307,21 @@ class CompaniesController extends AppBaseController implements CompaniesControll
 
     public function updateContract(ContractRequest $request)
     {
-        // try
-    	// {
+        try
+    	{
             $contract = Contract::find($request->id);
 
             $data = [
+                'serial_number' => ($contract->serial_number) ? $contract->serial_number : 'CTR-'.Str::padLeft($contract->id, 5, '0'),
                 'name' => $request->name,
+                'reference_code' => $request->reference_code,
+                'remarks' => $request->remarks,
                 'company_id' => $request->company_id,
                 'display_duration' => $request->display_duration,
                 'slots_per_loop' => $request->slots_per_loop,
                 'exposure_per_day' => $request->exposure_per_day,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
                 'is_exclusive' => ($request->is_exclusive == false) ? 0 : $request->is_exclusive,
                 'is_indefinite' => ($request->is_indefinite == false) ? 0 : $request->is_indefinite,
                 'active' => ($request->active == false) ? 0 : $request->active,
@@ -321,15 +334,15 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $contract = ContractViewModel::find($contract->id);
 
             return $this->response($contract, 'Successfully Created!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function deleteContract($id)

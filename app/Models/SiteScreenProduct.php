@@ -15,6 +15,7 @@ class SiteScreenProduct extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'serial_number',
         'site_screen_id',
         'ad_type',
         'description',
@@ -24,6 +25,7 @@ class SiteScreenProduct extends Model
         'sec_slot',
         'slots',
         'active',
+        'is_exclusive',
     ];
 
     /**

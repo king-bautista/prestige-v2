@@ -26,6 +26,7 @@ class CreateSiteScreenProductsTable extends Migration
             $table->integer('sec_slot')->default(0);
             $table->integer('slots')->default(0);
             $table->boolean('active')->default(true);
+            $table->boolean('is_exclusive')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

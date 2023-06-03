@@ -59,7 +59,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_screens.*')
             ->latest()
-            ->paginate(request('perPage'));
+            ->paginate(request('perPagei'));
 
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -105,12 +105,16 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
+                'physical_serial_number' => $request->physical_serial_number,
                 'kiosk_id' => $kiosk_id,
                 'active' => 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
 
             $site_screen = SiteScreen::create($data);
+            $site_screen->serial_number = 'SS-'.Str::padLeft($site_screen->id, 5, '0');
+            $site_screen->save();
+
             return $this->response($site_screen, 'Successfully Created!', 200);
         } catch (\Exception $e) {
             return response([
@@ -131,6 +135,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $data = [
+                'serial_number' => ($site_screen->serial_number) ? $site_screen->serial_number : 'SS-'.Str::padLeft($site_screen->id, 5, '0'),
                 'name' => $request->name,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
@@ -141,11 +146,13 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
+                'physical_serial_number' => $request->physical_serial_number,
                 'active' => ($request->active == 0) ? 0 : 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];
 
             $site_screen->update($data);
+            
             return $this->response($site_screen, 'Successfully Modified!', 200);
         } catch (\Exception $e) {
             return response([

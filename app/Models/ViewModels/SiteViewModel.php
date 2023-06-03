@@ -43,9 +43,12 @@ class SiteViewModel extends Model
 	public $appends = [
         'descriptions_ellipsis',
         'details',
+        'short_code',
         'site_logo_path',
         'site_banner_path',
         'site_background_path',
+        'is_premiere',
+        'multilanguage',
     ];
 
     public function getSiteDetails()
@@ -85,7 +88,31 @@ class SiteViewModel extends Model
     public function getDescriptionsEllipsisAttribute()
     {
         if($this->descriptions)
-            return Str::limit($this->descriptions, 150);
+            return Str::limit($this->descriptions, 95);
         return null;
-    }  
+    }
+    
+    public function getShortCodeAttribute()
+    {
+        $site_details = $this->getSiteDetails()->where('meta_key', 'site_code')->first();
+        if($site_details)
+            return $site_details->meta_value;
+        return null;
+    }
+
+    public function getIsPremiereAttribute()
+    {
+        $site_details = $this->getSiteDetails()->where('meta_key', 'is_premiere')->first();
+        if($site_details)
+            return $site_details->meta_value;
+        return 0;
+    }
+
+    public function getMultilanguageAttribute()
+    {
+        $site_details = $this->getSiteDetails()->where('meta_key', 'multilanguage')->first();
+        if($site_details)
+            return $site_details->meta_value;
+        return 0;
+    }
 }

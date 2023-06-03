@@ -157,7 +157,7 @@
 										</thead>
 										<tbody>
 											<tr v-for="(data, index) in company.contracts" v-bind:key="index">
-												<td class="align-middle">{{ data.id }}</td>
+												<td class="align-middle">{{ data.serial_number }}</td>
 												<td>
 													<img v-for="(brand, index) in data.brands" class="img-thumbnail"
 														:src="brand.logo_image_path" />
@@ -387,6 +387,32 @@
 							</div>
 						</div>
 						<div class="form-group row">
+							<label for="firstName" class="col-sm-4 col-form-label">Reference Code <span
+									class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" v-model="contract.reference_code" placeholder="Reference Code"
+									required>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="lastName" class="col-sm-4 col-form-label">Remarks</label>
+							<div class="col-sm-8">
+								<textarea class="form-control" v-model="contract.remarks" placeholder="Remarks"></textarea>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="userName" class="col-sm-4 col-form-label">Start Date <span class="font-italic text-danger">*</span></label>
+							<div class="col-sm-8">
+								<date-picker v-model="contract.start_date" placeholder="YYYY-MM-DD" :config="options" id="date_from" autocomplete="off"></date-picker>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="userName" class="col-sm-4 col-form-label">End Date <span class="font-italic text-danger">*</span></label>
+							<div class="col-sm-8">
+								<date-picker v-model="contract.end_date" placeholder="YYYY-MM-DD" :config="options" id="date_to" autocomplete="off"></date-picker>
+							</div>
+						</div>
+						<div class="form-group row">
 							<label for="isExclusive" class="col-sm-4 col-form-label">Is Indefinite? </label>
 							<div class="col-sm-8">
 								<div class="custom-control custom-switch">
@@ -453,7 +479,12 @@ import Table from '../Helpers/Table';
 import Treeselect from '@riophae/vue-treeselect'
 // import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+
 import Multiselect from 'vue-multiselect';
+
+import datePicker from 'vue-bootstrap-datetimepicker';    
+// Import date picker css
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 
 export default {
 	name: "Users",
@@ -477,12 +508,16 @@ export default {
 			contract: {
 				id: '',
 				name: '',
+				reference_code: '',
+				remarks: '',
 				company_id: '',
 				brands: [],
 				screens: [],
 				display_duration: '',
 				slots_per_loop: '',
 				exposure_per_day: '',
+				start_date: '',
+				end_date: '',
 				is_indefinite: false,
 				is_exclusive: false,
 				active: false,
@@ -492,6 +527,10 @@ export default {
 			parent_company: [],
 			classifications: [],
 			screens: [],
+			options: {
+				format: 'YYYY/MM/DD',
+				useCurrent: false,
+			},
 			add_record: true,
 			edit_record: false,
 			add_contract: true,
@@ -625,7 +664,7 @@ export default {
 			this.company.active = false;
 			this.company.brands = [];
 			this.data_list = false;
-			this.data_form = true;
+			this.data_form = true;	
 		},
 
 		modalAdd: function () {
@@ -704,16 +743,20 @@ export default {
 		AddNewContract: function () {
 			this.contract.company_id = this.company.id;
 			this.contract.name = '';
+			this.contract.reference_code = '';
+			this.contract.remarks = '';
 			this.contract.brands = '';
 			this.contract.screens = '';
 			this.contract.display_duration = '';
 			this.contract.slots_per_loop = '';
 			this.contract.exposure_per_day = '';
+			this.contract.start_date = '';
+			this.contract.end_date = '';
 			this.contract.is_indefinite = false;
 			this.contract.is_exclusive = false;
 			this.contract.active = false;
 			this.add_contract = true;
-			this.edit_contract = false;
+			this.edit_contract = false;		
 			$('#contract-form').modal('show');
 		},
 
@@ -771,10 +814,14 @@ export default {
 					this.contract.company_id = this.company.id;
 					this.contract.brands = contract.brands;
 					this.contract.name = contract.name;
+					this.contract.reference_code = contract.reference_code;
+					this.contract.remarks = contract.remarks;
 					this.contract.screens = contract.screens;
 					this.contract.display_duration = contract.display_duration;
 					this.contract.slots_per_loop = contract.slots_per_loop;
 					this.contract.exposure_per_day = contract.exposure_per_day;
+					this.contract.start_date = contract.start_date;
+					this.contract.end_date = contract.end_date;
 					this.contract.is_indefinite = contract.is_indefinite;
 					this.contract.is_exclusive = contract.is_exclusive;
 					this.contract.active = contract.active;
@@ -800,7 +847,8 @@ export default {
 	components: {
 		Table,
 		Treeselect,
-		Multiselect
+		Multiselect,
+		datePicker
 	}
 };
 </script> 

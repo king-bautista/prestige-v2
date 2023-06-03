@@ -17,6 +17,7 @@ class CreateSitesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->string('serial_number')->nullable();
             $table->string('name');
             $table->mediumText('descriptions')->nullable();      
             $table->mediumText('site_logo')->nullable();      
@@ -78,6 +79,7 @@ class CreateSitesTable extends Migration
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();
             $table->bigInteger('site_point_id')->unsigned();
+            $table->string('serial_number')->nullable();     
             $table->string('name');
             $table->enum('screen_type', ['LED','LFD','LCD']);
             $table->enum('orientation', ['Landscape', 'Portrait']);
@@ -85,6 +87,7 @@ class CreateSitesTable extends Migration
             $table->string('physical_size_diagonal')->nullable();
             $table->string('physical_size_width')->nullable();
             $table->string('physical_size_height')->nullable();
+            $table->string('physical_serial_number')->nullable();
             $table->string('kiosk_id')->nullable();     
             $table->string('token_key')->nullable();     
             $table->boolean('active')->default(true);
