@@ -26,6 +26,7 @@ class SiteScreen extends Model
         'physical_size_diagonal',
         'physical_size_width',
         'physical_size_height',
+        'physical_serial_number',
         'dimension',
         'width',
         'height',

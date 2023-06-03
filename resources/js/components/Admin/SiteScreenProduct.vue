@@ -31,8 +31,8 @@
 			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Product</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Product</h5>
+						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Site Screen Product</h5>
+						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Site Screen Product</h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -42,7 +42,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Site Screen <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<multiselect v-model="pi_product.site_screen_id" 
+									<multiselect v-model="site_screen_product.site_screen_id" 
 										:options="screens" 
 										:multiple="false"
 										:close-on-select="true" 
@@ -52,31 +52,49 @@
 										@input="screenDetails">
 									</multiselect>
 								</div>
+							</div>		
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Site Name</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site_screen_product.site_name" placeholder="Site Name" readonly/>
+								</div>
+							</div>					
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Screen type</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site_screen_product.screen_type" placeholder="Screen type" readonly/>
+								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Physical Configuration</label>
+								<label for="lastName" class="col-sm-4 col-form-label">Physical Size (WxH)</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.physical_configuration" placeholder="1920x1080" readonly/>
+									<input type="text" class="form-control" v-model="site_screen_product.physical_size_wh" placeholder="43x43 inches" readonly/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Physical size (Diagonal)</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="site_screen_product.physical_size_d" placeholder="52 inches" readonly/>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Orientation</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.orientation" placeholder="Orientation" readonly/>
+									<input type="text" class="form-control" v-model="site_screen_product.orientation" placeholder="Orientation" readonly/>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Product Application</label>
+								<label for="lastName" class="col-sm-4 col-form-label">Ad Type</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.product_application" placeholder="Product Application" readonly/>
+									<input type="text" class="form-control" v-model="site_screen_product.product_application" placeholder="Ad Type" readonly/>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Advertisement Type <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Product Type <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<select class="custom-select" v-model="pi_product.ad_type" @change="adTypeDetails(pi_product.ad_type)">
-										<option value="">Select Advertisement Type</option>
-										<option v-for="ad_type in ad_types" :value="ad_type"> {{ ad_type.ad_type }}
+									<select class="custom-select" v-model="site_screen_product.ad_type" @change="adTypeDetails(site_screen_product.ad_type)">
+										<option value="">Select Product Type</option>
+										<option v-for="ad_type in ad_types_temp" :value="ad_type"> {{ ad_type.ad_type }}
 										</option>
 									</select>
 								</div>
@@ -84,40 +102,50 @@
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions</label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" v-model="pi_product.description" placeholder="Descriptions"></textarea>
+                                    <textarea class="form-control" v-model="site_screen_product.description" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Width <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.width" placeholder="1920" required>
+									<input type="text" class="form-control" v-model="site_screen_product.width" placeholder="0" required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Height <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.height" placeholder="1080" required>
+									<input type="text" class="form-control" v-model="site_screen_product.height" placeholder="0" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Sec/Slot <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Default Sec/Slot <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.sec_slot" placeholder="10" required>
+									<input type="text" class="form-control" v-model="site_screen_product.sec_slot" placeholder="0" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Slots <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Default Max Slots <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="pi_product.slots" placeholder="40" required>
+									<input type="text" class="form-control" v-model="site_screen_product.slots" placeholder="0" required>
 								</div>
 							</div>
-							<div class="form-group row" v-show="edit_record">
+							<div class="form-group row">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="isActive"
-											v-model="pi_product.active">
+											v-model="site_screen_product.active">
 										<label class="custom-control-label" for="isActive"></label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="is_exclusive" class="col-sm-4 col-form-label">Is Exclusive?</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="is_exclusive"
+											v-model="site_screen_product.is_exclusive">
+										<label class="custom-control-label" for="is_exclusive"></label>
 									</div>
 								</div>
 							</div>
@@ -146,27 +174,33 @@
         name: "SiteScreenProduct",
         data() {
             return {
-                pi_product: {
+                site_screen_product: {
                     id: '',
 					site_screen_id: '',
-                    ad_type: '',
+					site_name: '',
+					screen_type: '',
+					physical_size_wh: '',
+					physical_size_d: '',
+					orientation: '',
+					product_application: '',
+					ad_type: '',
                     description: '',
                     width: '',
                     height: '',
                     sec_slot: '',
 					slots: '',
 					active: false,
-					physical_configuration: '',
-					orientation: '',
-					product_ppplication: '',
+					is_exclusive: false,
                 },
                 add_record: true,
                 edit_record: false,
 				screens: [],
 				ad_types: [],
+				ad_types_temp: [],
             	dataFields: {
+					serial_number: "ID",
             		site_screen_location: "Screen Location",
-                    ad_type: "Advertisement Type",
+                    ad_type: "Ad Type",
             		dimension: "Dimension", 
             		sec_slot: "Sec/Slot", 
             		slots: "Slot", 
@@ -236,38 +270,46 @@
 		},
 
 		adTypeDetails: function(ad_type) {
-			this.pi_product.sec_slot = ad_type.sec_slot;
-			this.pi_product.slots = ad_type.slots;
-
+			if(ad_type) {
+				this.site_screen_product.sec_slot = ad_type.sec_slot;
+				this.site_screen_product.slots = ad_type.slots;
+				this.site_screen_product.is_exclusive = ad_type.is_exclusive;
+			}
 		},
 
 		screenDetails: function(screen) {
-			this.pi_product.physical_configuration = screen.physical_size_width +' x '+screen.physical_size_height;
-			this.pi_product.orientation = screen.orientation;
-			this.pi_product.product_application = screen.product_application;
-			this.ad_types = this.ad_types.filter(option => option.product_application == screen.product_application);
+			this.site_screen_product.site_name = screen.site_name;
+			this.site_screen_product.screen_type = screen.screen_type;
+			this.site_screen_product.physical_size_wh = screen.physical_size_width +' x '+screen.physical_size_height+ ' inches';
+			this.site_screen_product.physical_size_d = screen.physical_size_diagonal;
+			this.site_screen_product.orientation = screen.orientation;
+			this.site_screen_product.product_application = screen.product_application;
+			this.ad_types_temp = this.ad_types.filter(option => option.product_application == screen.product_application);
 		},
 
 		AddNewProduct: function () {
 			this.add_record = true;
 			this.edit_record = false;
-			this.pi_product.site_screen_id = '';
-			this.pi_product.ad_type = '';
-			this.pi_product.description = '';
-			this.pi_product.width = '';
-			this.pi_product.height = '';
-			this.pi_product.sec_slot = '';
-			this.pi_product.slots = '';
-			this.pi_product.active = false;
-			this.pi_product.physical_configuration = '';
-			this.pi_product.orientation = '';
-			this.pi_product.product_ppplication = '';
-
+			this.site_screen_product.site_screen_id = '';
+			this.site_screen_product.site_name = '';
+			this.site_screen_product.screen_type = '';
+			this.site_screen_product.physical_size_wh = '';
+			this.site_screen_product.physical_size_d = '';
+			this.site_screen_product.orientation = '';
+			this.site_screen_product.product_application = '';
+			this.site_screen_product.ad_type = '';
+			this.site_screen_product.description = '';
+			this.site_screen_product.width = '';
+			this.site_screen_product.height = '';
+			this.site_screen_product.sec_slot = '';
+			this.site_screen_product.slots = '';
+			this.site_screen_product.active = false;
+			this.site_screen_product.is_exclusive = false;
 			$('#product-form').modal('show');
 		},
 
 		storeScreen: function () {
-			axios.post('/admin/site/site-screen-product/store', this.pi_product)
+			axios.post('/admin/site/site-screen-product/store', this.site_screen_product)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
@@ -280,30 +322,34 @@
 				.then(response => {
 					this.add_record = false;
 					this.edit_record = true;
+					var site_screen_product = response.data.data;
+					this.site_screen_product.id = site_screen_product.id;
+					this.site_screen_product.site_screen_id = site_screen_product.site_screen_details;
+					this.site_screen_product.site_name = site_screen_product.site_screen_details.site_name;
+					this.site_screen_product.screen_type = site_screen_product.site_screen_details.screen_type;
+					this.site_screen_product.physical_size_wh = site_screen_product.site_screen_details.physical_size_width +' x '+site_screen_product.site_screen_details.physical_size_height;
+					this.site_screen_product.physical_size_d = site_screen_product.site_screen_details.physical_size_diagonal;
+					this.site_screen_product.orientation = site_screen_product.site_screen_details.orientation;
+					this.site_screen_product.product_application = site_screen_product.site_screen_details.product_application;
+					this.site_screen_product.description = site_screen_product.description;
+					this.site_screen_product.width = site_screen_product.width;
+					this.site_screen_product.height = site_screen_product.height;
+					this.site_screen_product.sec_slot = site_screen_product.sec_slot;
+					this.site_screen_product.slots = site_screen_product.slots;
+					this.site_screen_product.active = site_screen_product.active;
+					this.site_screen_product.is_exclusive = site_screen_product.is_exclusive;
 
-					var pi_product = response.data.data;
-					this.pi_product.id = pi_product.id;
-					this.pi_product.site_screen_id = pi_product.site_screen_details;
-					this.pi_product.ad_type = pi_product.ad_type;
-					this.pi_product.description = pi_product.description;
-					this.pi_product.width = pi_product.width;
-					this.pi_product.height = pi_product.height;
-					this.pi_product.sec_slot = pi_product.sec_slot;
-					this.pi_product.slots = pi_product.slots;
-					this.pi_product.active = pi_product.active;
-
-					this.pi_product.physical_configuration = pi_product.site_screen_details.physical_size_width +' x '+pi_product.site_screen_details.physical_size_height;
-					this.pi_product.orientation = pi_product.site_screen_details.orientation;
-					this.pi_product.product_application = pi_product.site_screen_details.product_application;
-
-					this.ad_types = this.ad_types.filter(option => option.product_application == this.pi_product.product_application);					
-
+					this.ad_types_temp = this.ad_types.filter(option => option.product_application == this.site_screen_product.product_application);
+					this.site_screen_product.ad_type = this.ad_types.filter(function(option) {
+						return option.ad_type == site_screen_product.ad_type && option.product_application == site_screen_product.site_screen_details.product_application;
+					})[0];				
+					
                     $('#product-form').modal('show');
                 });
             },
 
 		updateScreen: function () {
-			axios.put('/admin/site/site-screen-product/update', this.pi_product)
+			axios.put('/admin/site/site-screen-product/update', this.site_screen_product)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();

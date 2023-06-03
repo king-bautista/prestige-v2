@@ -105,6 +105,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
+                'physical_serial_number' => $request->physical_serial_number,
                 'kiosk_id' => $kiosk_id,
                 'active' => 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
@@ -145,6 +146,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_diagonal' => $request->physical_size_diagonal,
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
+                'physical_serial_number' => $request->physical_serial_number,
                 'active' => ($request->active == 0) ? 0 : 1,
                 'is_default' => ($request->is_default == 0) ? 0 : 1,
             ];

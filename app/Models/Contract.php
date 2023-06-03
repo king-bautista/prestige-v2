@@ -15,15 +15,18 @@ class Contract extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'serial_number',
         'company_id',
-        'brand_id',
-        'site_screen_id',
+        'name',
+        'reference_code',
+        'remarks',
         'is_indefinite',
         'is_exclusive',
         'display_duration',
         'slots_per_loop',
         'exposure_per_day',
+        'start_date',
+        'end_date',
         'active',
     ];
 
