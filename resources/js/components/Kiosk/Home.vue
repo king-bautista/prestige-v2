@@ -696,7 +696,6 @@
                 this.category_label = category.label;
                 this.category_top_banner = '';
                 this.previous_page = 'Alphabetical';
-
                 this.tenant_list = category.alphabetical;
                 this.tenant_list_count = this.tenant_list.length -1;
                 this.home_category = false;
@@ -706,16 +705,20 @@
                 this.show_tenant = false;
                 this.navigationLetters = true;
                 this.isAlphabeticalClicked = true;
+
                 if(this.tenant_list.length == 0) {
                     this.no_record_found = true;  
-                        
                 }
+
                 this.initializeSwipe();
                 this.resetCarousel();
+
                 setTimeout(() => {
                     this.filterLetterNavigator();
                 }, 500);
+
                 this.TitleCasePerWord();
+
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set);
                 }, 100);
@@ -741,9 +744,11 @@
                     this.supplementals = false;
                     this.show_tenant = false;
                     this.tenant_list_count = this.tenant_list.length -1;
+
                     if(this.tenant_list.length == 0) {
                         this.no_record_found = true;         
                     }
+
                     this.initializeSwipe();
                     this.resetCarousel();
                     this.TitleCasePerWord();
@@ -771,9 +776,11 @@
                     this.show_tenant = false;
                     this.tenant_list_count = this.tenant_list.length -1;
                     this.navigationLetters = false;
+
                     if(this.tenant_list.length == 0) {
                         this.no_record_found = true;         
                     }
+
                     this.TitleCasePerWord();
                     this.resetCarousel();
 
@@ -829,6 +836,7 @@
                 this.supplementals = false;
                 this.show_tenant = false;
                 this.helper.saveLogs({category_id: category.id}, 'Category');
+
                 this.initializeSwipe();
                 this.tabs_container = true;
 
@@ -972,8 +980,6 @@
                     $(".translateme").each(function(){
                         let data_en = $(this).attr('data-en');
 
-                        // console.log($(this).attr("class") + " - " + data_en);
-
                         vm.translated = vm.translations_by_language.find(option => option.english == data_en);
 
                         if (vm.translated != null) {                         
@@ -1015,11 +1021,6 @@
 			},
 
             updateMainCategory: function(params) {
-                // axios.get('/api/v1/get-like-count/'+tenant.id)
-                // .then(response => {
-                //     new_like_count = response.data.data
-                // });
-
                 this.main_category.forEach(object => {
                     object.alphabetical.forEach(array => {
                         array.forEach(object => {
@@ -1105,11 +1106,7 @@
                     }
                     obj.current_nav_dot = $(this).find('.active').attr('data-slide-to');
                 });
-                
-                // $('.store-tabs-item').on('click', function(){
-                //     var page = $(this).data('link');
-                //     obj.helper.saveLogs({action: 'click'}, 'Category');
-                // });
+
             });
         },
     };
