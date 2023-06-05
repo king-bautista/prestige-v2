@@ -168,8 +168,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function generatePlayList($screens)
     {
-        //dd($screens);
-        // get main category
         $categories = Category::whereNull('parent_id')->where('category_type', 1)->get();
         $categories_ids = $categories->pluck('id');
 
@@ -198,8 +196,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $site_partner_ids = Company::whereIn('classification_id', [1,2])->get();
 
             // GET SITE PARTNER CONTENT
-            // $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
-            // $play_list = PlayList::insert($site_partner_content);            
+            $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
+            $play_list = PlayList::insert($site_partner_content);            
             // GET ADVERTISER CONTENT
             $advertiser_contents = $this->getContent($params, $play_list_ids, $site_partner_ids);            
             $play_list = PlayList::insert($advertiser_contents);
@@ -220,7 +218,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $contents = ContentScreenViewModel::where('site_screen_id', $params['site_screen_id'])
         ->whereIn('categories.parent_id', $params['categories_ids'])
         ->whereNotIn('content_screens.content_id', $play_list_ids)
-        // ->where('advertisement_materials.dimension', $params['dimension'])
         ->when($is_site_partner, function($query) use ($site_partner_ids){
             return $query->whereIn('advertisements.company_id',  $site_partner_ids);
         })

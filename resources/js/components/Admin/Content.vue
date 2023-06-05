@@ -277,18 +277,6 @@
                 .then(response => this.sites = response.data.data);
             },
 
-			getTenants: function(value, id) {
-                axios.get('/admin/site/tenant/get-tenants/'+value.id)
-                .then(response => this.tenants = response.data.data);
-
-                this.getScreens(value.id)
-            },
-
-            getScreens: function(id) {
-                axios.get('/admin/site/screen/get-screens/'+id)
-                .then(response => this.screens = response.data.data);
-            },
-
 			getStatuses: function(id) {
                 axios.get('/admin/content-management/transaction-statuses')
                 .then(response => this.transaction_statuses = response.data.data);
@@ -310,7 +298,7 @@
 				this.screens = [];
 				this.content.material_id = data.id
 				this.content.advertisement_details = data;
-				this.screens = data.pi_screens;
+				this.screens = data.site_screen_products;
 			},
 
             storeContent: function() {
@@ -327,7 +315,7 @@
                 .then(response => {
                     var content = response.data.data;
 					this.screens = [];
-					this.screens = content.advertisement_details.pi_screens;
+					this.screens = content.advertisement_details.site_screen_products;
 
 					this.content.id = content.id;
 					this.content.material_id = content.material_id;
