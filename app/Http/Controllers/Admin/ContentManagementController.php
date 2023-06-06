@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ContentManagementControllerInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Models\ContentManagement;
 use App\Models\Category;
@@ -87,6 +88,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ];
 
             $content = ContentManagement::create($data);
+            $content->serial_number = 'CAD-'.Str::padLeft($content->id, 5, '0');
+            $content->save();
             $content->saveScreens($request->site_screen_ids);
             $this->generatePlayList($request->site_screen_ids);
 
@@ -109,6 +112,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $content = ContentManagement::find($request->id);
 
             $data = [
+                'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-'.Str::padLeft($content->id, 5, '0'),
                 'material_id' => $request->material_id,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,

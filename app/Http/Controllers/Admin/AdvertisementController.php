@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\AdvertisementControllerInterface;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdvertisementRequest;
 
@@ -91,6 +91,8 @@ class AdvertisementController extends AppBaseController implements Advertisement
             ];
 
             $advertisement = Advertisement::create($data);
+            $advertisement->serial_number = 'AD-'.Str::padLeft($advertisement->id, 5, '0');
+            $advertisement->save();
             $advertisement->saveMaterials(json_decode($request->materials), $request->file('files'));
 
             return $this->response($advertisement, 'Successfully Created!', 200);
@@ -118,6 +120,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $status_id = json_decode($request->status_id);
 
             $data = [
+                'serial_number' => ($advertisement->serial_number) ? $advertisement->serial_number : 'AD-'.Str::padLeft($advertisement->id, 5, '0'),
                 'company_id' => ($company_id) ? $company_id->id : null,
                 'contract_id' => ($contract_id) ? $contract_id->id : null,
                 'brand_id' => ($brand_id) ? $brand_id->id : null,
