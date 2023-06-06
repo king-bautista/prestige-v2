@@ -15,6 +15,7 @@ class ContentManagement extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'serial_number',
         'material_id',
         'start_date',
         'end_date',

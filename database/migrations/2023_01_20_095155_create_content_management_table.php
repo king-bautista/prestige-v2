@@ -17,6 +17,7 @@ class CreateContentManagementTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->string('serial_number')->nullable();
             $table->bigInteger('material_id')->unsigned()->nullable()->index();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
