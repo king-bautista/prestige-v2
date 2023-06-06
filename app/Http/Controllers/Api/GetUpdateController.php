@@ -42,6 +42,7 @@ use App\Models\AdvertisementMaterial;
 use App\Models\AdvertisementScreen;
 use App\Models\ContentManagement;
 use App\Models\ContentScreen;
+use App\Models\PlayList;
 use App\Models\SiteFeedback;
 use App\Models\PiProduct;
 use App\Models\SiteScreenProduct;
@@ -563,7 +564,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     ]
                 );
 
-                $this->updateCompanyBrands($company->id)
+                $this->updateCompanyBrands($company->id);
             }
         }
     }
@@ -866,7 +867,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     ],
                     [
                         'serial_number' => $content->serial_number,
-                        'material_id' => $content->advertisement_id,
+                        'material_id' => $content->material_id,
                         'start_date' => $content->start_date,
                         'end_date' => $content->end_date,
                         'active' => $content->active,
@@ -896,6 +897,36 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     ],
                 );
             }
+            $this->updatePlaylist();
+        }
+    }
+
+    public function updatePlaylist()
+    {
+        $data = [];
+        $playlist = PlayList::on('mysql_server')->get();
+        if($playlist) {
+            ContentScreen::on('mysql')->delete();
+            foreach($playlist as $content) {
+
+                $this->data[] = PlayList::on('mysql')->updateOrCreate(
+                    [
+                        'id' => $content->id
+                    ],
+                    [
+                        'content_id' => $content->content_id,
+                        'site_screen_id' => $content->site_screen_id,
+                        'company_id' => $content->company_id,
+                        'brand_id' => $content->brand_id,
+                        'category_id' => $content->category_id,
+                        'parent_category_id' => $content->parent_category_id,
+                        'main_category_id' => $content->main_category_id,
+                        'advertisement_id' => $content->advertisement_id,
+                        'sequence' => $content->sequence
+                    ]
+                );
+            }
+            return $data;
         }
     }
 
