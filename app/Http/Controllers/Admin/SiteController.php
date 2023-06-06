@@ -75,7 +75,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             $site_logo_path = '';
             if ($site_logo) {
                 $originalname = $site_logo->getClientOriginalName();
-                $site_logo_path = $site_logo->move('uploads/media/sites/logos', str_replace(' ', '-', $originalname));
+                $site_logo_path = $site_logo->move('uploads/media/sites/logos/', str_replace(' ', '-', $originalname));
             }
 
             $site_banner = $request->file('site_banner');
