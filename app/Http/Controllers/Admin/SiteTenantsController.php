@@ -108,7 +108,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'company_id' => $request->company_id,
-                'active' => ($request->active) ? 1 : 0,
+                'active' => ($request->active == 'true') ? 1 : 0,
                 'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
             ];
 
@@ -160,8 +160,8 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'company_id' => $request->company_id,
-                'active' => ($request->active) ? 1 : 0,
-                'is_subscriber' => ($request->is_subscriber) ? 1 : 0,
+                'active' => ($request->active == 'true') ? 1 : 0,
+                'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
             ];
 
             $site_tenant->update($data);

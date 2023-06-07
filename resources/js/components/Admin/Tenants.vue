@@ -537,15 +537,15 @@ export default {
 					this.tenant.company_id = (tenant.company_id) ? tenant.company_id : null;
 					this.tenant.active = tenant.active;
 					this.tenant.is_subscriber = tenant.is_subscriber;
-					this.tenant.address = (tenant.tenant_details.address != 'undefined') ? tenant.tenant_details.address : '';
-					this.tenant.email = (tenant.tenant_details.email != 'undefined') ? tenant.tenant_details.email : '';
-					this.tenant.contact_number = (tenant.tenant_details.contact_number != 'undefined') ? tenant.tenant_details.contact_number : '';
-					this.tenant.facebook = (tenant.tenant_details.facebook != 'undefined') ? tenant.tenant_details.facebook : '';
-					this.tenant.twitter = (tenant.tenant_details.twitter != 'undefined') ? tenant.tenant_details.twitter : '';
-					this.tenant.instagram = (tenant.tenant_details.instagram != 'undefined') ? tenant.tenant_details.instagram : '';
-					this.tenant.website = (tenant.tenant_details.website != 'undefined') ? tenant.tenant_details.website : '';
+					this.tenant.address = (tenant.tenant_details.address != 'null') ? tenant.tenant_details.address : '';
+					this.tenant.email = (tenant.tenant_details.email != 'null') ? tenant.tenant_details.email : '';
+					this.tenant.contact_number = (tenant.tenant_details.contact_number != 'null') ? tenant.tenant_details.contact_number : '';
+					this.tenant.facebook = (tenant.tenant_details.facebook != 'null') ? tenant.tenant_details.facebook : '';
+					this.tenant.twitter = (tenant.tenant_details.twitter != 'null') ? tenant.tenant_details.twitter : '';
+					this.tenant.instagram = (tenant.tenant_details.instagram != 'null') ? tenant.tenant_details.instagram : '';
+					this.tenant.website = (tenant.tenant_details.website != 'null') ? tenant.tenant_details.website : '';
 
-					if (tenant.tenant_details.length == 0 || tenant.tenant_details.schedules === 'undefined') {
+					if (tenant.tenant_details.length == 0 || tenant.tenant_details.schedules === 'null') {
 						this.tenant.operational_hours = [];
 						this.addOperationalHours();
 					}
