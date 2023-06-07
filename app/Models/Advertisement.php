@@ -54,7 +54,7 @@ class Advertisement extends Model
     {
         if($files) {
             foreach($files as $file) {
-                $original_name = date('mdy').'-'.$file->getClientOriginalName();
+                $original_name = date('mdyhms').'-'.$file->getClientOriginalName();
                 $file_size = $file->getSize();
                 $file_path = $file->move('uploads/media/advertisements/materials/', str_replace(' ','-', $original_name));    
             }
