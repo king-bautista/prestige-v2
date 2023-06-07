@@ -64,7 +64,7 @@ class Advertisement extends Model
             foreach($materials as $index => $material) {
                 $material_data = AdvertisementMaterial::find($material->id);
 
-                $file_path = 'uploads/media/advertisements/materials\\';
+                $file_path = 'uploads/media/advertisements/materials/';
 
                 $data = [
                     'advertisement_id' => $this->id,

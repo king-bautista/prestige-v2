@@ -186,8 +186,10 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
 
     public function saveMaterial($folder_path='', $file_path='')
     {
-        $domain = env('DOMAIN_URL');
+        //$domain = env('DOMAIN_URL');
+        $domain = 'https://dashboard.prestigeinteractive.com.ph/';
         // SAVE FILE FROM URI
+        dd($domain.$file_path);
         $file = file_get_contents($domain.$file_path);            
         $file_name = basename($domain.$file_path);
         file_put_contents(public_path($folder_path.$file_name), $file);
@@ -904,29 +906,10 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
     public function updatePlaylist()
     {
         $data = [];
-        $playlist = PlayList::on('mysql_server')->get();
+        $playlist = PlayList::on('mysql_server')->get()->toArray();
         if($playlist) {
-            ContentScreen::on('mysql')->delete();
-            foreach($playlist as $content) {
-
-                $this->data[] = PlayList::on('mysql')->updateOrCreate(
-                    [
-                        'id' => $content->id
-                    ],
-                    [
-                        'content_id' => $content->content_id,
-                        'site_screen_id' => $content->site_screen_id,
-                        'company_id' => $content->company_id,
-                        'brand_id' => $content->brand_id,
-                        'category_id' => $content->category_id,
-                        'parent_category_id' => $content->parent_category_id,
-                        'main_category_id' => $content->main_category_id,
-                        'advertisement_id' => $content->advertisement_id,
-                        'sequence' => $content->sequence
-                    ]
-                );
-            }
-            return $data;
+            PlayList::on('mysql')->delete();
+            PlayList::on('mysql')->insert($playlist);
         }
     }
 
