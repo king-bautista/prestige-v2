@@ -189,7 +189,6 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         //$domain = env('DOMAIN_URL');
         $domain = 'https://dashboard.prestigeinteractive.com.ph/';
         // SAVE FILE FROM URI
-        dd($domain.$file_path);
         $file = file_get_contents($domain.$file_path);            
         $file_name = basename($domain.$file_path);
         file_put_contents(public_path($folder_path.$file_name), $file);
