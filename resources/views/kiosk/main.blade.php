@@ -29,14 +29,6 @@
     setTimeout(removeLoader, 20000);
     setInterval(screenUpTime, (60*60*100));
 
-    // setInterval(function(){ 
-    //     $.get( "/api/v1/get-update", function( data ) {
-    //         if(data.data.length > 0) {
-    //             location.reload();
-    //         }
-    //     });
-    // },(60000*5)) 
-
     // REMOVED PRELOADER
     function removeLoader(){
         $( "#loadingDiv" ).fadeOut(500, function() {

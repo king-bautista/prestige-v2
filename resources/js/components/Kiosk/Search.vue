@@ -347,11 +347,7 @@
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
                     this.tenant_list = response.data.data;
-                    // this.tenant_details = this.tenant_list.find(option => option.id === this.search.id);
                     this.tenant_details = response.data.data.shift();
-                    // Object.keys(this.tenant_list).forEach(list => {    
-                    //     this.tenant_details = this.tenant_list[list];
-                    // });
                     this.page_title = 'Store Page';
                     this.search_page = false;
                     this.show_tenant = true;
@@ -368,7 +364,6 @@
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
-                    // console.log(response.data.data);
                     this.tenant_list_temp = response.data.data;   
                     this.tenant_details = this.tenant_list_temp[0];
                     this.page_title = 'Store Page';
@@ -396,7 +391,6 @@
                 }
                 else if(this.fromAutoSuggest == true) {
                     this.tenant_list = [];
-                    // this.search.key_words = '';
                     this.search_page = true;
                     this.show_tenant = false;
                     this.search_results = false;
@@ -411,7 +405,6 @@
                 }
                 else if(this.show_tenant == false && this.search_results == true) {
                     this.tenant_list = [];
-                    // this.search.key_words = '';
                     this.search_page = true;
                     this.search_results = false;
                     this.getSuggestionList();
@@ -590,9 +583,7 @@
                     like_count: this.tenant_details.like_count
                 }
 
-                $.post( "/api/v1/like-count", params ,function(response) {
-                    // console.log(response);
-                });
+                $.post( "/api/v1/like-count", params ,function(response) {});
             },
 
             showSchedule: function() {
@@ -623,8 +614,6 @@
                 this.search_results = false;
                 this.show_tenant = false;
                 this.page_title = 'Search';
-
-                // this.$root.$emit('callAssistant','searchbox',content_language);
             },
 
             callHomeMethod: function(){
@@ -713,7 +702,6 @@
                         $(this).html("ABC");
                         $(".hidden-on-alt").hide();
                     }
-                    // console.log("click");
                 }).on('touchstart',function(){
                     if ($(this).html() === "ABC") {
                         $(this).html("#+=");
@@ -722,7 +710,6 @@
                         $(this).html("ABC");
                         $(".hidden-on-alt").hide();
                     }
-                    // console.log("touch");
                 });
 
                 $(".enter-key").on('click',function(event){

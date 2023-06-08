@@ -469,7 +469,6 @@
             },
 
             searchButton: function (event) {
-                // console.log(event.target.getAttribute("data-link"));
                 this.homeIsShown = false;
                 this.searchIsShown = true;
                 this.mapIsShown = false;
@@ -484,7 +483,6 @@
             },
 
             mapButton: function (event) {
-                // console.log(event.target.getAttribute("data-link"));
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = true;
@@ -496,7 +494,6 @@
             },
 
             promosButton: function (event) {
-                // console.log(event.target.getAttribute("data-link"));
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
@@ -508,7 +505,6 @@
             },
 
             cinemaButton: function (event) {
-                // console.log(event.target.getAttribute("data-link"));
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
@@ -1038,7 +1034,7 @@
             var obj = this;
 
             $(function() {
-                //--s Call Parent Method from Child Component
+                // --start Call Parent Method from Child Component
                 obj.$root.$on('MainCategories', () => {
                     obj.homeButton();
                 });
@@ -1063,7 +1059,8 @@
                 obj.$root.$on('callUpdateMainCategory', (params) => {
                     obj.updateMainCategory(params);
                 });
-                //--e
+                //-- end
+
                 $('.store-tabs-item').on('click', function () {
                     $('.store-tabs-item').removeClass('tab-item-selected');
                     $(this).addClass('tab-item-selected');

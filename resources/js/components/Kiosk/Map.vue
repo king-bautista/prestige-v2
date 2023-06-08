@@ -297,11 +297,6 @@
                     this.site_floors = response.data.data
                     this.map_form.floor_id = this.site_floors.find(option => option.is_default === 1);
                     this.active_map_details = this.site_floors.find(option => option.is_default === 1);
-                    // this.site_floors.forEach(floors => {
-                    //     if (floors.is_default == 1) {
-                    //         this.map_form.floor_id = floors
-                    //     }
-                    // });
                 });
             },
 
@@ -397,7 +392,6 @@
                 $('#repeatButton').hide();
                 $('#tenant-details').hide();
                 $('#zoomResetButton').addClass('last-border-radius');
-                // $('#zoomResetButton').trigger('click');
                 $(".map-search-modal").hide();
                 this.feedback_modal = false;
                 this.feedback_response = false;
@@ -477,7 +471,6 @@
                 this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
                 this.wayfindings.animate_marker_here_stop();
                 $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
-                // $('.map-tenant-option .multiselect__tags').prepend('<span class="label-3 directions-to translateme" data-en="Directions to:">Directions to:</span>');
 
                 axios.get('/api/v1/site/maps')
                 .then(response => {
@@ -502,11 +495,6 @@
                     $('#zoomOutButton').get(0).addEventListener('click', vm.panzoom.zoomOut)
                     $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 
-                    // Display Panzoom Values on Change Event
-                    // elem.addEventListener('panzoomchange', (event) => {
-                    //     console.log(event.detail) // => { x: 0, y: 0, scale: 1 }
-                    // })
-
                     // No function bind needed
                     parent.addEventListener('wheel', vm.panzoom.zoomWithWheel)
 
@@ -522,7 +510,6 @@
                     var body_width = 3000;
                     var scale = container_width / body_width; 
                     var left_position = (container_width-$('.zoomable-container').width()) / 2;
-                    // $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': left_position+'px', 'top': '-1120.5px'});
                     $(".pinch").hide();
     			});
 

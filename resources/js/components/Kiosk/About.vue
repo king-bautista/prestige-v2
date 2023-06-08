@@ -64,8 +64,6 @@
 			},
 
             goBack: function() {
-                // this.$router.push('/'); 
-                // $(".home-button").trigger('click');
                 if (this.trigger_from) {
                     this.$root.$emit('callAboutFrom',this.trigger_from);
                     $(".theme-bubble").removeClass("theme-bubble-none");

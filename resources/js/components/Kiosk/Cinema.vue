@@ -283,11 +283,6 @@
             },
 
             showTrailer: function(trailer_url) {
-                // var videoSrc = trailer_url;
-
-                // replace with embed link
-                // videoSrc = videoSrc.replace("watch?v=", "embed/");
-
                 //check internet connection
                 var ifConnected = window.navigator.onLine;
                 if (ifConnected) {
@@ -300,12 +295,7 @@
                     $("#novideo").show();
                 }
 
-                // var playlist = videoSrc.substr(30);
-                
-                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
-                // $("#video").attr('src',videoSrc + "?loop=1&playlist=" + playlist + "&autoplay=1"); 
-                $("#video").attr('src', "https://www.youtube.com/embed/"+ this.getYouTubeVideoIdByUrl(trailer_url) + "?loop=0&playlist=" + this.getYouTubeVideoIdByUrl(trailer_url) + "&autoplay=1"); 
-                                    
+                $("#video").attr('src', "https://www.youtube.com/embed/"+ this.getYouTubeVideoIdByUrl(trailer_url) + "?loop=0&playlist=" + this.getYouTubeVideoIdByUrl(trailer_url) + "&autoplay=1");
                 $("#schedule-modal").hide();
                 $("#myTrailerModal").show();
             },
@@ -325,7 +315,6 @@
                     this.$root.$emit('callSetTranslation');
                 }, 100);
 
-                // $('.resize-see-details').autoSizr(21);
             },
 
             callHomeMethod: function(){
@@ -382,17 +371,7 @@
                     $("#custom-modal").hide();
                 });
 
-                // $("#schedule-modal").on('click',function(){
-                //     $("#schedule-modal").hide();
-                // });
-
-                // $("#myTrailerModal").on('click',function(){
-                //     $("#myTrailerModal").hide();
-                //     $("#video").attr('src',"");
-                // });
-
                 $('#myMovies').on('slid.bs.carousel', function () {
-                    // $('.resize-see-details').autoSizr();
                     if($(this).find('.active').hasClass('last-item')){
                         $(".control-next-cps").hide();
                         $(".control-prev-cps").show();
