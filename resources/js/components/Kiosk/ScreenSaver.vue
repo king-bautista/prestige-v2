@@ -95,7 +95,7 @@
                 $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
                     $('#carousel-fullscreen .carousel-item:first').remove();
                     obj.appendFullscreen();
-                    // reset rotation
+                    // Reset Rotation
                     if(fullscreen_array.length == countscreen) {
                         countscreen = 0;                        
                     }
@@ -118,8 +118,6 @@
                             });
                         }, 5000); // 5 sec delay before showing screensaver
                         obj.callHomeMethod();
-                    // }, 5000); // SPEED TEST
-                    // }, 5000000000); // DEV MODE
                     }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
                 });
 
@@ -133,8 +131,6 @@
                         });
                     }, 5000); // 5 sec delay before showing screensaver
                     obj.callHomeMethod();
-                // }, 5000); // SPEED TEST
-                // }, 5000000000); // DEV MODE
                 }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
             });
         },

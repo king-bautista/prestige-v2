@@ -331,10 +331,6 @@
             showTenant: function(tenant) {
                 this.page_title = 'Store Page';
                 this.tenant_details = tenant;
-                // axios.get('/api/v1/get-like-count/'+tenant.id)
-                // .then(response => {
-                //     this.tenant_details.like_count = response.data.data
-                // });
                 this.show_tenant = true;
                 this.promo_page = false;
                 this.buildSchedule(this.tenant_details);
