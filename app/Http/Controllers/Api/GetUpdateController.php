@@ -433,6 +433,12 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($site_maps) {
             foreach($site_maps as $map) {
 
+                if($map->map_file)
+                    $this->saveMaterial('uploads/map/files/', $map->map_file);
+
+                if($map->map_preview)
+                    $this->saveMaterial('uploads/map/files/', $map->map_preview);
+
                 $this->data[] = SiteMap::on('mysql')->updateOrCreate(
                     [
                         'id' => $map->id
