@@ -746,8 +746,12 @@ class MainController extends AppBaseController
     {
         try
         {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+            $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();
+
             $site_map = SiteMapViewModel::where('site_building_level_id', $level_id)
             ->where('site_building_id', $buidlind_id)
+            ->where('site_screen_id', $site_screen->id)
             ->first();
             
             if($site_map)
