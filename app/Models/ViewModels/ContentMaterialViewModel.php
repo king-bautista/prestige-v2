@@ -36,7 +36,7 @@ class ContentMaterialViewModel extends Model
 
     public $appends = [
         'material_path',
-        'pi_screens',
+        'site_screen_products',
         'advertisement_name',
         'company_name',
         'brand_name',
@@ -64,7 +64,7 @@ class ContentMaterialViewModel extends Model
         return asset('/images/no-image-available.png');
     } 
 
-    public function getPiScreensAttribute()
+    public function getSiteScreenProductsAttribute()
     {
         $ids = $this->getScreens()->pluck('pi_product_id');
         $site_screen_products = SiteScreenProductViewModel::whereIn('id', $ids)->get();
@@ -108,7 +108,7 @@ class ContentMaterialViewModel extends Model
     
     public function getScreenAssignedAttribute()
     {
-        $screens = $this->pi_screens->pluck('site_screen_location')->toArray();
+        $screens = $this->site_screen_products->pluck('site_screen_location')->toArray();
         if($screens)
             return $screens;
         return null;

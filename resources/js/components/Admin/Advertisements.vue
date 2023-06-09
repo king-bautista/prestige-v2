@@ -212,6 +212,7 @@
                 add_record: true,
                 edit_record: false,
             	dataFields: {
+					serial_number: "ID",
 					material_image_path: {
             			name: "Preview", 
             			type: "logo", 

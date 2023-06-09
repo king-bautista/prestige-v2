@@ -403,7 +403,6 @@ WayFinding.prototype = {
         //         startY: map_details.default_y
         //     })  
         // }
-        
         this.settings.currentmap_id = id;
         this.settings.currentmap = map_details.site_building_level_id + '-' + map_details.site_building_id;
 

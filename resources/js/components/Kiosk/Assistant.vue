@@ -32,9 +32,7 @@
                     this.location_content = this.assitant_message.filter(option => option.location == this.location && option.content_language == this.content_language);
                 });   
 			},
-            filterAssist: function(location,content_language) {
-                // alert(location+" : "+content_language);
-                
+            filterAssist: function(location,content_language) {                
                 if (location == null) {      
                     this.content_language = content_language;           
                     this.location_content = this.assitant_message.filter(option => option.location == this.location && option.content_language == content_language);

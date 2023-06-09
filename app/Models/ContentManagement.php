@@ -15,6 +15,7 @@ class ContentManagement extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'serial_number',
         'material_id',
         'start_date',
         'end_date',
@@ -63,7 +64,7 @@ class ContentManagement extends Model
                 ContentScreen::updateOrCreate(
                     [
                        'content_id' => $this->id,
-                       'pi_product_id' => $data['id'],
+                       'site_screen_product_id' => $data['id'],
                        'site_screen_id' => $data['site_screen_id'],
                        'site_id' => $site_id,
                     ],
