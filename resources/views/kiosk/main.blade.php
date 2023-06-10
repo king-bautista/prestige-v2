@@ -27,7 +27,7 @@
     var helper_home = new Helpers();
 
     setTimeout(removeLoader, 20000);
-    setInterval(screenUpTime, (60*60*100));
+    setInterval(screenUpTime, (2000 * 60 * 2));
 
     // REMOVED PRELOADER
     function removeLoader(){

@@ -24,7 +24,7 @@ class UpTimeController extends AppBaseController implements UpTimeControllerInte
                 'up_time_date' => date('Y-m-d'),
                 'up_time_hours' => date('H:i:s')
             ];
-            $up_time = SiteScreenUptimeTemp::create($data);
+            $up_time = SiteScreenUptimeTemp::on('mysql_server')->create($data);
             return $this->response($up_time, 'Successfully Created!', 200);
         }
         catch (\Exception $e)
@@ -39,14 +39,14 @@ class UpTimeController extends AppBaseController implements UpTimeControllerInte
     public function yesterdayLogs($site_screen_id)
     {
         $yesterday = Carbon::yesterday()->format('Y-m-d');
-        $yesterday_first = SiteScreenUptimeTemp::where('up_time_date', $yesterday)->where('site_screen_id', $site_screen_id)->first();
+        $yesterday_first = SiteScreenUptimeTemp::on('mysql_server')->where('up_time_date', $yesterday)->where('site_screen_id', $site_screen_id)->first();
         if($yesterday_first) {
-            $yesterday_last = SiteScreenUptimeTemp::where('up_time_date', $yesterday)->where('site_screen_id', $site_screen_id)->latest()->first();
+            $yesterday_last = SiteScreenUptimeTemp::on('mysql_server')->where('up_time_date', $yesterday)->where('site_screen_id', $site_screen_id)->latest()->first();
             $uptime_start = Carbon::parse($yesterday_last->up_time_date.' '.$yesterday_last->up_time_hours);
             $uptime_end = Carbon::parse($yesterday_first->up_time_date.' '.$yesterday_first->up_time_hours);    
             $total_hours_up = $uptime_start->diffInHours($uptime_end);
 
-            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site = SiteViewModel::on('mysql_server')->where('is_default', 1)->where('active', 1)->first();
             $mall_hours_start = Carbon::parse($yesterday.' '.$site->details['time_from']);
             $mall_hours_end = Carbon::parse($yesterday.' '.$site->details['time_to']);
             $total_mall_hours = $mall_hours_start->diffInHours($mall_hours_end);
@@ -61,10 +61,10 @@ class UpTimeController extends AppBaseController implements UpTimeControllerInte
                 'percentage_uptime' => round(($total_hours_up/$total_mall_hours)*100, 2),
             ];
 
-            $screen_uptime = SiteScreenUptime::create($data);
+            $screen_uptime = SiteScreenUptime::on('mysql_server')->create($data);
 
             if($screen_uptime)
-                SiteScreenUptimeTemp::where('up_time_date', $yesterday)->where('site_screen_id', $site_screen_id)->delete();
+                SiteScreenUptimeTemp::on('mysql_server')->where('up_time_date', $yesterday)->where('site_screen_id', $site_screen_id)->delete();
         }
     }
 }
