@@ -39,6 +39,7 @@ class PlayListViewModel extends Model
      * @var string
      */
 	public $appends = [
+        'material_serial_number',
         'material_name',
         'material_path',
         'start_date',
@@ -52,6 +53,8 @@ class PlayListViewModel extends Model
         'file_type',
         'tenant_details',
         'brand_name',
+        'category_name',
+        'parent_category_name',
     ];
 
     public function getContentDetails()
@@ -67,6 +70,14 @@ class PlayListViewModel extends Model
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
+    public function getMaterialSerialNumberAttribute() 
+    {
+        $content_details = $this->getContentDetails()->first();
+        if($content_details)
+            return $content_details->serial_number;
+        return null;
+    }
+
     public function getMaterialNameAttribute() 
     {
         $content_details = $this->getContentDetails()->first();
@@ -175,6 +186,22 @@ class PlayListViewModel extends Model
             return $brand->name;
         return null;
     }  
+
+    public function getCategoryNameAttribute() 
+    {
+        $content_details = $this->getContentDetails()->first();
+        if($content_details)
+            return $content_details->category_name;
+        return null;
+    }
+
+    public function getParentCategoryNameAttribute() 
+    {
+        $content_details = $this->getContentDetails()->first();
+        if($content_details)
+            return $content_details->parent_category_name;
+        return null;
+    }
 
 
 }

@@ -107,7 +107,9 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'company_id' => $request->company_id,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'space_number' => $request->space_number,
+                'client_locator_number' => $request->client_locator_number,
                 'active' => ($request->active == 'true') ? 1 : 0,
                 'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
             ];
@@ -117,6 +119,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             $meta_details = [
                 "address" => $request->address, 
                 "email" => $request->email,
+                "contact_person" => $request->contact_person,
                 "contact_number" => $request->contact_number,
                 "facebook" => $request->facebook,
                 "twitter" => $request->twitter,
@@ -159,7 +162,9 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'company_id' => $request->company_id,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'space_number' => $request->space_number,
+                'client_locator_number' => $request->client_locator_number,
                 'active' => ($request->active == 'true') ? 1 : 0,
                 'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
             ];
@@ -169,6 +174,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             $meta_details = [
                 "address" => $request->address, 
                 "email" => $request->email,
+                "contact_person" => $request->contact_person,
                 "contact_number" => $request->contact_number,
                 "facebook" => $request->facebook,
                 "twitter" => $request->twitter,

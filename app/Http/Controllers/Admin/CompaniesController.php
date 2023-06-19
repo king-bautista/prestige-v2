@@ -307,8 +307,8 @@ class CompaniesController extends AppBaseController implements CompaniesControll
 
     public function updateContract(ContractRequest $request)
     {
-        try
-    	{
+        // try
+    	// {
             $contract = Contract::find($request->id);
 
             $data = [
@@ -334,15 +334,15 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $contract = ContractViewModel::find($contract->id);
 
             return $this->response($contract, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function deleteContract($id)

@@ -79,7 +79,7 @@ class ContractViewModel extends Model
                 $site_screens[] = [
                     'id' => 0,
                     'site_id' => $ad_screen->site_id,
-                    'site_screen_location' => $ad_screen->site_name.' - All ('.$ad_screen->product_application.')',
+                    'site_screen_location' => $ad_screen->site_code_name.' - All ('.$ad_screen->product_application.')',
                     'product_application' => $ad_screen->product_application
                 ];
             }            

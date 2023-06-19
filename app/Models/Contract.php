@@ -75,17 +75,26 @@ class Contract extends Model
     {
         if(count($screens) > 0) {
             ContractScreen::where('contract_id', $this->id)->delete();
+            
+            ContractScreen::updateOrCreate(
+                [
+                   'contract_id' => $this->id,
+                   'site_screen_id' => $screens['id'],
+                   'site_id' => $screens['site_id'],
+                   'product_application' => $screens['product_application'],
+                ],
+            );
 
-            foreach ($screens as $index => $data) {
-                ContractScreen::updateOrCreate(
-                    [
-                       'contract_id' => $this->id,
-                       'site_screen_id' => $data['id'],
-                       'site_id' => $data['site_id'],
-                       'product_application' => $data['product_application'],
-                    ],
-                );
-            }
+            // foreach ($screens as $data) {
+            //     ContractScreen::updateOrCreate(
+            //         [
+            //            'contract_id' => $this->id,
+            //            'site_screen_id' => $data['id'],
+            //            'site_id' => $data['site_id'],
+            //            'product_application' => $data['product_application'],
+            //         ],
+            //     );
+            // }
         }
     }
 }

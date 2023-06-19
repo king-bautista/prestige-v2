@@ -119,7 +119,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ];
 
             $site = Site::create($data);
-            $site->serial_number = 'ST-'.Str::padLeft($pi_product->id, 5, '0');
+            $site->serial_number = 'ST-'.Str::padLeft($site->id, 5, '0');
             $site->save();
             $site->saveMeta($meta_value);
 
