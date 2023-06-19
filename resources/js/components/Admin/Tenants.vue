@@ -47,6 +47,36 @@
 								</div>
 							</div>
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Logo </label>
+								<div class="col-sm-9">
+									<img :src="tenant.brand_id.logo_image_path ? tenant.brand_id.logo_image_path : '/images/no-image-available.png'" class="img-thumbnail" />
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Main Category </label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="Main Category" :value="tenant.brand_id.main_category_name" readonly>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Sub Category </label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="Sub Category" :value="tenant.brand_id.category_name" readonly>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Supplementals</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" placeholder="Supplementals" readonly>{{ tenant.brand_id.supplemental_names }}</textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Tags</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" placeholder="Tags" readonly>{{ tenant.brand_id.tag_names }}</textarea>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Site <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -80,10 +110,24 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-3 col-form-label">Company</label>
+								<label for="lastName" class="col-sm-3 col-form-label">Client Company</label>
 								<div class="col-sm-9">
 									<treeselect v-model="tenant.company_id" :options="companies"
 										placeholder="Select Company" />
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Space Number</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.space_number"
+										placeholder="Space Number">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Client Locator Number</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.client_locator_number"
+										placeholder="Client Locator Number">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -115,8 +159,7 @@
 										</div>
 										<div class="col-3">
 											<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{
-												operational.start_time }} <span v-if="operational.end_time">to</span> {{
-		operational.end_time }}</i>
+												operational.start_time }} <span v-if="operational.end_time">to</span> {{ operational.end_time }}</i>
 										</div>
 									</div>
 									<div class="form-group">
@@ -139,6 +182,13 @@
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.email"
 										placeholder="Store E-mail">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Contact Person</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.contact_person"
+										placeholder="Store Contact Person">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -296,11 +346,14 @@ export default {
 				site_building_id: '',
 				site_building_level_id: '',
 				company_id: '',
+				space_number: '',
+				client_locator_number: '',
 				active: true,
 				is_subscriber: false,
 				operational_hours: [],
 				address: '',
 				email: '',
+				contact_person: '',
 				contact_number: '',
 				facebook: '',
 				twitter: '',
@@ -472,6 +525,8 @@ export default {
 			this.tenant.site_building_id = '';
 			this.tenant.site_building_level_id = '';
 			this.tenant.company_id = null;
+			this.tenant.space_number = '';
+			this.tenant.client_locator_number = '';
 			this.tenant.operational_hours = [];
 			this.tenant.subscriber_logo = '';
 			this.tenant.active = true;
@@ -479,6 +534,7 @@ export default {
 			this.subscriber_logo = null;
 			this.tenant.address = '';
 			this.tenant.email = '';
+			this.tenant.contact_person = '';
 			this.tenant.contact_number = '';
 			this.tenant.facebook = '';
 			this.tenant.twitter = '';
@@ -495,12 +551,15 @@ export default {
 			formData.append("site_building_id", this.tenant.site_building_id);
 			formData.append("site_building_level_id", this.tenant.site_building_level_id);
 			formData.append("company_id", this.tenant.company_id);
+			formData.append("space_number", this.tenant.space_number);
+			formData.append("client_locator_number", this.tenant.client_locator_number);
 			formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
 			formData.append("active", this.tenant.active);
 			formData.append("is_subscriber", this.tenant.is_subscriber);
 			formData.append("subscriber_logo", this.tenant.subscriber_logo);
 			formData.append("address", this.tenant.address);
 			formData.append("email", this.tenant.email);
+			formData.append("contact_person", this.tenant.contact_person);
 			formData.append("contact_number", this.tenant.contact_number);
 			formData.append("facebook", this.tenant.facebook);
 			formData.append("twitter", this.tenant.twitter);
@@ -525,6 +584,7 @@ export default {
 					schedules = [];
 
 					var tenant = response.data.data;
+					console.log(tenant);
 					this.tenant.id = tenant.id;
 					this.tenant.brand_id = tenant.brand_details;
 					this.tenant.site_id = tenant.site_id;
@@ -534,11 +594,14 @@ export default {
 					this.getFloorLevel(tenant.site_building_id);
 
 					this.tenant.site_building_level_id = tenant.site_building_level_id;
-					this.tenant.company_id = (tenant.company_id) ? tenant.company_id : null;
+					this.tenant.company_id = (tenant.company_id) ? tenant.company_id : '';
+					this.tenant.space_number = (tenant.space_number) ? tenant.space_number : '';
+					this.tenant.client_locator_number = (tenant.client_locator_number) ? tenant.client_locator_number : '';
 					this.tenant.active = tenant.active;
 					this.tenant.is_subscriber = tenant.is_subscriber;
 					this.tenant.address = (tenant.tenant_details.address != 'null') ? tenant.tenant_details.address : '';
 					this.tenant.email = (tenant.tenant_details.email != 'null') ? tenant.tenant_details.email : '';
+					this.tenant.contact_person = (tenant.tenant_details.contact_person != 'null') ? tenant.tenant_details.contact_person : '';
 					this.tenant.contact_number = (tenant.tenant_details.contact_number != 'null') ? tenant.tenant_details.contact_number : '';
 					this.tenant.facebook = (tenant.tenant_details.facebook != 'null') ? tenant.tenant_details.facebook : '';
 					this.tenant.twitter = (tenant.tenant_details.twitter != 'null') ? tenant.tenant_details.twitter : '';
@@ -570,12 +633,15 @@ export default {
 			formData.append("site_building_id", this.tenant.site_building_id);
 			formData.append("site_building_level_id", this.tenant.site_building_level_id);
 			formData.append("company_id", this.tenant.company_id);
+			formData.append("space_number", this.tenant.space_number);
+			formData.append("client_locator_number", this.tenant.client_locator_number);
 			formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
 			formData.append("active", this.tenant.active);
 			formData.append("is_subscriber", this.tenant.is_subscriber);
 			formData.append("subscriber_logo", this.tenant.subscriber_logo);
 			formData.append("address", this.tenant.address);
 			formData.append("email", this.tenant.email);
+			formData.append("contact_person", this.tenant.contact_person);
 			formData.append("contact_number", this.tenant.contact_number);
 			formData.append("facebook", this.tenant.facebook);
 			formData.append("twitter", this.tenant.twitter);
@@ -687,3 +753,9 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+    .img-thumbnail {
+        max-width: 12rem;
+    }
+
+</style>

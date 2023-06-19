@@ -17,6 +17,7 @@ class ContentManagement extends Model
     protected $fillable = [
         'serial_number',
         'material_id',
+        'status_id',
         'start_date',
         'end_date',
         'active',

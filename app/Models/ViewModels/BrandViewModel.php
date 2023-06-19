@@ -45,6 +45,7 @@ class BrandViewModel extends Model
         'supplementals',
         'tags',
         'logo_image_path',
+        'main_category_name',
         'category_name',
         'supplemental_names',
         'tag_names',
@@ -92,6 +93,16 @@ class BrandViewModel extends Model
         $category = $this->getCategory()->first();
         if($category)
             return $category['name'];
+        return null;
+    } 
+
+    public function getMainCategoryNameAttribute()
+    {
+        $category = $this->getCategory()->first();
+        if($category) {
+            $main_category = Category::find($category->parent_id);
+            return $main_category->name;
+        }
         return null;
     } 
 

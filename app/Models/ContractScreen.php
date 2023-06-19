@@ -39,6 +39,7 @@ class ContractScreen extends Model
      */
 	public $appends = [
         'site_name',
+        'site_code_name',
     ];
 
     /****************************************
@@ -49,6 +50,14 @@ class ContractScreen extends Model
         $site = Site::find($this->site_id);
         if($site)
             return $site->name;
+        return null;
+    }
+
+    public function getSiteCodeNameAttribute() 
+    {
+        $site_meta = SiteMeta::where('site_id', $this->site_id)->where('meta_key', 'site_code')->first();
+        if($site_meta)
+            return $site_meta->meta_value;
         return null;
     }
 }

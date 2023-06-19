@@ -180,6 +180,9 @@
 														@click="deleteModal('removeContract', index)" title="Delete"><i
 															class="fas fa-trash-alt"></i></button>
 													<button type="button" class="btn btn-outline-danger"
+														@click="copyModal(index)" title="Duplicate"><i
+															class="fas fa-copy"></i></button>
+													<button type="button" class="btn btn-outline-danger"
 														@click="editContract(data.id)" title="Edit"><i
 															class="fas fa-edit"></i></button>
 												</td>
@@ -356,7 +359,7 @@
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-4 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
-								<multiselect v-model="contract.screens" :options="screens" :multiple="true"
+								<multiselect v-model="contract.screens" :options="screens" :multiple="false"
 									:close-on-select="true" placeholder="Select Screens" label="site_screen_location"
 									track-by="site_screen_location">
 								</multiselect>
@@ -401,13 +404,13 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="userName" class="col-sm-4 col-form-label">Start Date <span class="font-italic text-danger">*</span></label>
+							<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
 							<div class="col-sm-8">
 								<date-picker v-model="contract.start_date" placeholder="YYYY-MM-DD" :config="options" id="date_from" autocomplete="off"></date-picker>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="userName" class="col-sm-4 col-form-label">End Date <span class="font-italic text-danger">*</span></label>
+							<label for="userName" class="col-sm-4 col-form-label">End Date</label>
 							<div class="col-sm-8">
 								<date-picker v-model="contract.end_date" placeholder="YYYY-MM-DD" :config="options" id="date_to" autocomplete="off"></date-picker>
 							</div>
@@ -471,6 +474,23 @@
 			</div>
 		</div>
 
+		<div class="modal fade" id="copy-record" tabindex="-1" aria-labelledby="copy-record" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header bg-primary">
+						<h5 class="modal-title" id="exampleModalLabel">Duplicate</h5>
+					</div>
+					<div class="modal-body">
+						<h6>Do you really want to duplicate this record?</h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+						<button type="button" class="btn btn-primary" @click="duplicateContract">Yes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </template>
 <script>
@@ -512,7 +532,7 @@ export default {
 				remarks: '',
 				company_id: '',
 				brands: [],
-				screens: [],
+				screens: '',
 				display_duration: '',
 				slots_per_loop: '',
 				exposure_per_day: '',
@@ -788,6 +808,16 @@ export default {
 				});
 		},
 
+		duplicateContract: function (index) {
+			axios.get('/admin/company/contract/duplicate/' + this.company.contracts[index].id)
+				.then(response => {
+					if (response.data.data) {
+						this.company.contracts.splice(index, 1);
+						toastr.success('Contract has been copy.');
+					}
+				});
+		},
+
 		deleteModal: function (action, index) {
 			this.delete_action = action;
 			this.delete_index = index;
@@ -804,6 +834,11 @@ export default {
 			this.delete_action = '';
 			this.delete_index = '';
 			$('#delete-record').modal('hide');
+		},
+
+		copyModal: function (index) {
+			this.delete_index = index;
+			$('#copy-record').modal('show');
 		},
 
 		editContract: function (id) {

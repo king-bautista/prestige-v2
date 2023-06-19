@@ -16,6 +16,7 @@ use App\Models\Company;
 use App\Models\ViewModels\ContentManagementViewModel;
 use App\Models\ViewModels\ContentScreenViewModel;
 use App\Models\ViewModels\PlayListViewModel;
+use App\Models\ViewModels\SiteScreenViewModel;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -82,6 +83,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
     	{
             $data = [
                 'material_id' => $request->material_id,
+                'status_id' => $request->status_id['id'],
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'active' => $request->active,
@@ -114,6 +116,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $data = [
                 'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-'.Str::padLeft($content->id, 5, '0'),
                 'material_id' => $request->material_id,
+                'status_id' => $request->status_id['id'],
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'active' => $request->active,
@@ -255,6 +258,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $play_list = PlayListViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
+            ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+            ->join('advertisement_screens', function($join)
+             {
+                 $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+                      ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
+             })
+             ->where('advertisement_screens.ad_type', 'Banner Ad')
+            ->select('play_lists.*', 'advertisement_screens.ad_type')
             ->orderBy('play_lists.id', 'ASC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);

@@ -92,7 +92,7 @@
                                     </multiselect> 
 								</div>
 							</div>						
-							<div class="form-group row">
+							<!-- <div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
                                     <multiselect v-model="advertisement.status_id" 
@@ -106,7 +106,7 @@
 										placeholder="Select Status">
                                     </multiselect> 
 								</div>
-							</div>
+							</div> -->
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
                                 <div class="col-sm-2">
@@ -200,7 +200,7 @@
 					contract_id: '',
 					brand_id: '',
                     name: '',
-					status_id: '',
+					// status_id: '',
                     active: true,
 					display_duration: '',
 					materials: []
@@ -221,20 +221,20 @@
 					company_name: "Company Name",
 					brand_name: "Brand Name",
 					display_duration: "Duration (in sec)",
-            		status_id: {
-            			name: "Transaction Status", 
-            			type:"Boolean", 
-            			status: { 
-            				1: '<span class="badge badge-secondary">Draft</span>',
-            				2: '<span class="badge badge-primary">New</span>',
-            				3: '<span class="badge badge-info">Pending approval</span>',
-            				4: '<span class="badge badge-danger">Disapprove</span>',
-            				5: '<span class="badge badge-success">Approved</span>',
-            				6: '<span class="badge badge-secondary">For review</span>',
-            				7: '<span class="badge badge-info">Archive</span>',
-            				8: '<span class="badge badge-success">Saved</span>',
-            			}
-            		},
+            		// status_id: {
+            		// 	name: "Transaction Status", 
+            		// 	type:"Boolean", 
+            		// 	status: { 
+            		// 		1: '<span class="badge badge-secondary">Draft</span>',
+            		// 		2: '<span class="badge badge-primary">New</span>',
+            		// 		3: '<span class="badge badge-info">Pending approval</span>',
+            		// 		4: '<span class="badge badge-danger">Disapprove</span>',
+            		// 		5: '<span class="badge badge-success">Approved</span>',
+            		// 		6: '<span class="badge badge-secondary">For review</span>',
+            		// 		7: '<span class="badge badge-info">Archive</span>',
+            		// 		8: '<span class="badge badge-success">Saved</span>',
+            		// 	}
+            		// },
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -383,7 +383,7 @@
 				this.advertisement.company_id = '';
 				this.advertisement.contract_id = '';
 				this.advertisement.brand_id = '';
-				this.advertisement.status_id = '';
+				// this.advertisement.status_id = '';
 				this.advertisement.display_duration = '';
 				this.advertisement.active = true;
 				this.advertisement.materials = [];
@@ -400,7 +400,7 @@
 				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
 				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
 				formData.append("name", this.advertisement.name);
-				formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
+				// formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
 				formData.append("active", this.advertisement.active);
 				formData.append("display_duration", this.advertisement.display_duration);
 
@@ -436,7 +436,7 @@
 					this.advertisement.company_id = advertisement.company_details;
 					this.advertisement.contract_id = advertisement.contract_details;
 					this.advertisement.brand_id = advertisement.brand_details;
-					this.advertisement.status_id = advertisement.transaction_status;
+					// this.advertisement.status_id = advertisement.transaction_status;
 					this.advertisement.display_duration = advertisement.display_duration;
 					this.advertisement.active = advertisement.active;
 
@@ -474,7 +474,7 @@
 				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
 				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
 				formData.append("name", this.advertisement.name);
-				formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
+				// formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
 				formData.append("active", this.advertisement.active);
 				formData.append("display_duration", this.advertisement.display_duration);
 

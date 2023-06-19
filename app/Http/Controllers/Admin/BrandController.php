@@ -244,7 +244,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     {
         try
     	{
-            $brands = Brand::get();
+            $brands = BrandViewModel::get();
             return $this->response($brands, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
