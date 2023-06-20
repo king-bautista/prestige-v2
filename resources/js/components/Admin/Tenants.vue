@@ -230,7 +230,7 @@
 								<label for="tennat_active" class="col-sm-3 col-form-label">Active</label>
 								<div class="col-sm-3">
 									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="tennat_active"
+										<input type="checkbox" class="custom-control-input" id="tennat_active" value="1"
 											v-model="tenant.active">
 										<label class="custom-control-label" for="tennat_active"></label>
 									</div>
@@ -240,7 +240,7 @@
 								<label for="is_subscriber" class="col-sm-3 col-form-label">Is Subscriber</label>
 								<div class="col-sm-3">
 									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_subscriber"
+										<input type="checkbox" class="custom-control-input" id="is_subscriber" value="1"
 											v-model="tenant.is_subscriber">
 										<label class="custom-control-label" for="is_subscriber"></label>
 									</div>
@@ -370,6 +370,7 @@ export default {
 			floors: [],
 			companies: [],
 			dataFields: {
+				serial_number: "ID",
 				brand_logo: {
 					name: "Brand Logo",
 					type: "logo",
@@ -594,7 +595,7 @@ export default {
 					this.getFloorLevel(tenant.site_building_id);
 
 					this.tenant.site_building_level_id = tenant.site_building_level_id;
-					this.tenant.company_id = (tenant.company_id) ? tenant.company_id : '';
+					this.tenant.company_id = (tenant.company_id) ? tenant.company_id : null;
 					this.tenant.space_number = (tenant.space_number) ? tenant.space_number : '';
 					this.tenant.client_locator_number = (tenant.client_locator_number) ? tenant.client_locator_number : '';
 					this.tenant.active = tenant.active;
