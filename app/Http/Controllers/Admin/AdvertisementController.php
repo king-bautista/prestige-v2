@@ -77,13 +77,13 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $company_id = json_decode($request->company_id);
             $contract_id = json_decode($request->contract_id);
             $brand_id = json_decode($request->brand_id);
-            $status_id = json_decode($request->status_id);
+            // $status_id = json_decode($request->status_id);
 
             $data = [
                 'company_id' => ($company_id) ? $company_id->id : null,
                 'contract_id' => ($contract_id) ? $contract_id->id : null,
                 'brand_id' => ($brand_id) ? $brand_id->id : null,
-                'status_id' => ($status_id) ? $status_id->id : null,
+                'status_id' => 5,
                 'product_application' => $request->product_application,
                 'display_duration' => $request->display_duration,
                 'name' => $request->name,
@@ -117,14 +117,14 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $company_id = json_decode($request->company_id);
             $contract_id = json_decode($request->contract_id);
             $brand_id = json_decode($request->brand_id);
-            $status_id = json_decode($request->status_id);
+            // $status_id = json_decode($request->status_id);
 
             $data = [
                 'serial_number' => ($advertisement->serial_number) ? $advertisement->serial_number : 'AD-'.Str::padLeft($advertisement->id, 5, '0'),
                 'company_id' => ($company_id) ? $company_id->id : null,
                 'contract_id' => ($contract_id) ? $contract_id->id : null,
                 'brand_id' => ($brand_id) ? $brand_id->id : null,
-                'status_id' => ($status_id) ? $status_id->id : null,
+                'status_id' => 5,
                 'product_application' => $request->product_application,
                 'display_duration' => $request->display_duration,
                 'name' => $request->name,
