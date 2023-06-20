@@ -43,10 +43,6 @@ class SiteBuildingLevelViewModel extends Model
      * @var string
      */
 	public $appends = [
-        // 'map_details',
-        // 'map_file',
-        // 'map_preview_path',
-        // 'is_default',
         'building_name',
         'building_floor_name',
     ];
@@ -54,24 +50,6 @@ class SiteBuildingLevelViewModel extends Model
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    // public function getMapDetailsAttribute() 
-    // {
-    //     return SiteMap::where('site_building_level_id', $this->id)->first();
-    // }
-
-    // public function getMapPreviewPathAttribute()
-    // {
-    //     $site_map = SiteMap::where('site_building_level_id', $this->id)->first();
-    //     if($site_map->map_preview)
-    //         return asset($site_map->map_preview);
-    //     return asset('/images/no-image-available.png');
-    // }
-
-    // public function getIsDefaultAttribute() 
-    // {
-    //     return SiteMap::where('site_building_level_id', $this->id)->first()->is_default;
-    // }
-
     public function getBuildingNameAttribute() 
     {
         return SiteBuilding::find($this->site_building_id)->name;
@@ -80,10 +58,5 @@ class SiteBuildingLevelViewModel extends Model
     public function getBuildingFloorNameAttribute() 
     {
         return SiteBuilding::find($this->site_building_id)->name. ' - '.$this->name;
-    }
-
-    // public function getMapFileAttribute() 
-    // {
-    //     return SiteMap::where('site_building_level_id', $this->id)->first()->map_file;
-    // }    
+    } 
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Site;
+use App\Models\SiteMeta;
 use App\Models\SiteBuilding;
 use App\Models\SiteBuildingLevel;
 use App\Models\ExclusiveScreen;
@@ -46,6 +47,7 @@ class SiteScreenViewModel extends Model
      */
 	public $appends = [
         'site_name',
+        'site_code_name',
         'building_name',
         'floor_name',
         'screen_type_name',
@@ -61,6 +63,14 @@ class SiteScreenViewModel extends Model
         $site = Site::find($this->site_id);
         if($site)
             return $site->name;
+        return null;
+    }
+
+    public function getSiteCodeNameAttribute() 
+    {
+        $site_meta = SiteMeta::where('site_id', $this->site_id)->where('meta_key', 'site_code')->first();
+        if($site_meta)
+            return $site_meta->meta_value;
         return null;
     }
 
@@ -96,7 +106,7 @@ class SiteScreenViewModel extends Model
 
     public function getSiteScreenLocationAttribute() 
     {
-        return $this->site_name.' - '.$this->name.', '.$this->building_name.', '.$this->floor_name. ' ('.$this->product_application.' / '.$this->orientation.')';
+        return $this->site_code_name.' - '.$this->name.', '.$this->building_name.', '.$this->floor_name. ' ('.$this->product_application.' / '.$this->orientation.')';
     }
 
 }

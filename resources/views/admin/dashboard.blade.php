@@ -21,11 +21,11 @@
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-12">
         <admin-sceen_uptime></admin-sceen_uptime>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-lg-3">
         <admin-dashboard_is_helpful></admin-dashboard_is_helpful>

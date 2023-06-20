@@ -37,20 +37,7 @@
         data() {
             return {
             	dataFields: {
-					material_serial_number: "Content ID",
-					material_path: {
-            			name: "Preview", 
-            			type: "logo", 
-            		},
-					ad_type: "Ad Type",
-					parent_category_name: "Parent Category",
-					category_name: "Category Name",
-					site_name: "Site",
                     screen_location: "Screen Location",
-					company_name: "Company Name",
-					display_duration: "Duration(s)",
-					start_date: "Start Date",
-					end_date: "End Date",
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -59,7 +46,6 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    duration: "Duration"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/play-list/list",

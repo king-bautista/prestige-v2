@@ -40,6 +40,8 @@ class ContentMaterialViewModel extends Model
         'advertisement_name',
         'company_name',
         'brand_name',
+        'category_name',
+        'parent_category_name',
         'screen_assigned',
         'display_duration',
     ]; 
@@ -95,6 +97,22 @@ class ContentMaterialViewModel extends Model
         $advertisment = $this->getAdvertisement()->first();
         if($advertisment)
             return $advertisment->brand_name;
+        return null;
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        $advertisment = $this->getAdvertisement()->first();
+        if($advertisment)
+            return $advertisment->category_name;
+        return null;
+    }
+
+    public function getParentCategoryNameAttribute()
+    {
+        $advertisment = $this->getAdvertisement()->first();
+        if($advertisment)
+            return $advertisment->parent_category_name;
         return null;
     }
 

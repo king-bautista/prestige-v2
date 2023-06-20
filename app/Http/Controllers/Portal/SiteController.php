@@ -6,18 +6,20 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\SiteControllerInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Models\Site;
 use App\Models\ViewModels\SiteViewModel;
+use App\Models\UserSite;
 
 class SiteController extends AppBaseController implements SiteControllerInterface
 {
     /************************************
-    * 			SITES MANAGEMENT	 	*
-    ************************************/
+     * 			SITES MANAGEMENT	 	*
+     ************************************/
     public function __construct()
     {
-        $this->module_id = 53; 
+        $this->module_id = 53;
         $this->module_name = 'Property Details';
     }
 
@@ -28,18 +30,17 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function list(Request $request)
     {
-        try
-        {
-            $sites = SiteViewModel::when(request('search'), function($query){
+        try {
+            $site_ids = UserSite::where('user_id', Auth::guard('portal')->user()->id)->get()->pluck('site_id');
+            $sites = SiteViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->whereIn('id', $site_ids)
+                ->latest()
+                ->paginate(request('perPage')); 
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -50,13 +51,10 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function details($id)
     {
-        try
-        {
+        try {
             $site = SiteViewModel::find($id);
             return $this->response($site, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -67,30 +65,29 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function store(Request $request)
     {
-        try
-    	{
+        try {
             $site_logo = $request->file('site_logo');
             $site_logo_path = '';
-            if($site_logo) {
+            if ($site_logo) {
                 $originalname = $site_logo->getClientOriginalName();
-                $site_logo_path = $site_logo->move('uploads/media/sites/logos', str_replace(' ','-', $originalname)); 
+                $site_logo_path = $site_logo->move('uploads/media/sites/logos', str_replace(' ', '-', $originalname));
             }
 
             $site_banner = $request->file('site_banner');
             $site_banner_path = '';
-            if($site_banner) {
+            if ($site_banner) {
                 $originalname = $site_banner->getClientOriginalName();
-                $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
+                $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ', '-', $originalname));
             }
 
             $site_background = $request->file('site_background');
             $site_background_path = '';
-            if($site_background) {
+            if ($site_background) {
                 $originalname = $site_background->getClientOriginalName();
-                $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ','-', $originalname)); 
+                $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
             }
 
-            if($request->is_default == 'true') {
+            if ($request->is_default == 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
 
@@ -112,12 +109,21 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ];
 
             $site = Site::create($data);
+            $site->serial_number = 'ST-' . Str::padLeft($site->id, 5, '0');
+            $site->save();
+
+            //UserSite::where('user_id', Auth::guard('portal')->user()->id)->delete();
+
+            UserSite::updateOrCreate(
+                [
+                    'user_id' => Auth::guard('portal')->user()->id,
+                    'site_id' => $site->id
+                ]
+            );
             $site->saveMeta($meta_value);
 
             return $this->response($site, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -128,33 +134,32 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function update(Request $request)
     {
-        try
-    	{
+        try {
             $site = Site::find($request->id);
             $site->touch();
 
             $site_logo = $request->file('site_logo');
             $site_logo_path = '';
-            if($site_logo) {
+            if ($site_logo) {
                 $originalname = $site_logo->getClientOriginalName();
-                $site_logo_path = $site_logo->move('uploads/media/sites/logos', str_replace(' ','-', $originalname)); 
+                $site_logo_path = $site_logo->move('uploads/media/sites/logos', str_replace(' ', '-', $originalname));
             }
 
             $site_banner = $request->file('site_banner');
             $site_banner_path = '';
-            if($site_banner) {
+            if ($site_banner) {
                 $originalname = $site_banner->getClientOriginalName();
-                $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ','-', $originalname)); 
+                $site_banner_path = $site_banner->move('uploads/media/sites/banners/', str_replace(' ', '-', $originalname));
             }
 
             $site_background = $request->file('site_background');
             $site_background_path = '';
-            if($site_background) {
+            if ($site_background) {
                 $originalname = $site_background->getClientOriginalName();
-                $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ','-', $originalname)); 
+                $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
             }
 
-            if($request->is_default == 'true') {
+            if ($request->is_default == 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
 
@@ -179,9 +184,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             $site->saveMeta($meta_value);
 
             return $this->response($site, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -192,14 +195,11 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $site = Site::find($id);
             $site->delete();
             return $this->response($site, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -210,13 +210,10 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function getAll()
     {
-        try
-    	{
+        try {
             $sites = Site::get();
             return $this->response($sites, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -227,15 +224,12 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function setDefault($id)
     {
-        try
-    	{
+        try {
             Site::where('is_default', 1)->update(['is_default' => 0]);
             $site = Site::find($id);
             $site->update(['is_default' => 1]);
             return $this->response($site, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -243,5 +237,4 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ], 422);
         }
     }
-
 }

@@ -124,6 +124,21 @@
 									</div>
 								</div>
 								<div class="form-group row">
+									<label for="firstName" class="col-sm-4 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-8">
+										<multiselect v-model="content.status_id" 
+											:options="statuses" 
+											:multiple="false"
+											:close-on-select="true"
+											:searchable="true" 
+											:allow-empty="false"
+											track-by="name" 
+											label="name" 
+											placeholder="Select Status">
+										</multiselect> 
+									</div>
+								</div>
+								<div class="form-group row">
 									<label for="userName" class="col-sm-4 col-form-label">Start Date <span class="font-italic text-danger">*</span></label>
 									<div class="col-sm-8">
 										<date-picker v-model="content.start_date" placeholder="YYYY-MM-DD" :config="options" id="date_from" autocomplete="off"></date-picker>
@@ -177,6 +192,7 @@
                 content: {
                     id: '',
 					material_id: '',
+					status_id: '',
 					advertisement_details: '',
                     start_date: '',
 					end_date: '',
@@ -184,6 +200,7 @@
                     active: true,           
                 },
                 screens: [],
+				statuses: [],
 				options: {
                     format: 'YYYY/MM/DD',
                     useCurrent: false,
@@ -201,6 +218,20 @@
 					company_name: "Company Name",
 					brand_name: "Brand Name",
 					air_dates: "Airdates",
+					status_id: {
+            			name: "Transaction Status", 
+            			type:"Boolean", 
+            			status: { 
+            				1: '<span class="badge badge-secondary">Draft</span>',
+            				2: '<span class="badge badge-primary">New</span>',
+            				3: '<span class="badge badge-info">Pending approval</span>',
+            				4: '<span class="badge badge-danger">Disapprove</span>',
+            				5: '<span class="badge badge-success">Approved</span>',
+            				6: '<span class="badge badge-secondary">For review</span>',
+            				7: '<span class="badge badge-info">Archive</span>',
+            				8: '<span class="badge badge-success">Saved</span>',
+            			}
+            		},
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -278,15 +309,16 @@
                 .then(response => this.sites = response.data.data);
             },
 
-			getStatuses: function(id) {
-                axios.get('/admin/content-management/transaction-statuses')
-                .then(response => this.transaction_statuses = response.data.data);
-            },
+			getStatuses: function() {
+				axios.get('/admin/transaction/statuses/get-all')
+                .then(response => this.statuses = response.data.data);
+			},
 
 			AddNewContent: function() {
 				this.add_record = true;
 				this.edit_record = false;
 				this.content.material_id = '';
+				this.content.status_id = '';
 				this.content.advertisement_details = '';
 				this.content.start_date = '';
 				this.content.end_date = '';
@@ -320,6 +352,7 @@
 
 					this.content.id = content.id;
 					this.content.material_id = content.material_id;
+					this.content.status_id = content.status_id;
 					this.content.advertisement_details = content.advertisement_details;
 					this.content.start_date = content.start_date;
 					this.content.end_date = content.end_date;
@@ -341,9 +374,6 @@
 	              	$('#content-form').modal('hide');
 				})
             },
-
-			
-
         },
 
         components: {

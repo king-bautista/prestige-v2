@@ -4,16 +4,12 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h4 v-show="data_list"><i class="nav-icon fas fa-map"></i>&nbsp;&nbsp;Screens / Maps</h4>
-						<h4 v-show="add_record && data_form"><i class="nav-icon fas fa-plus"></i> Add New Screen</h4>
-						<h4 v-show="edit_record && data_form"><i class="nav-icon fas fa-user-edit"></i> Edit Sreen</h4>
+						<h4 v-show="data_list"><i class="nav-icon fas fa-map"></i>&nbsp;&nbsp;Screens</h4>
 					</div>
 					<div class="card-body" v-show="data_list">
 						<Table 
                         :dataFields="dataFields"
                         :dataUrl="dataUrl"
-                        :actionButtons="actionButtons"
-						:otherButtons="otherButtons"
                         :primaryKey="primaryKey"
 						v-on:AddNewScreen="AddNewScreen"
 						v-on:editButton="editScreen"
@@ -239,9 +235,6 @@
                     width: '',
                     height: '',
                     slots: '',
-					active: false,
-					is_default: false,
-					is_exclusive: false,
 					company: '',
 					brand: '',
                 },
@@ -267,63 +260,9 @@
             		orientation: "Orientation", 
             		product_application: "Product Application", 
             		slots: "Slots", 
-            		active: {
-            			name: "Status", 
-            			type:"Boolean", 
-            			status: { 
-            				0: '<span class="badge bg-danger">Deactivated</span>', 
-            				1: '<span class="badge bg-info text-dark">Active</span>'
-            			}
-            		},
-					is_exclusive: {
-            			name: "Is exclusive", 
-            			type:"Boolean", 
-            			status: { 
-							0: '<span class="badge bg-danger">No</span>', 
-            				1: '<span class="badge bg-info text-dark">Yes</span>'
-            			}
-            		},
-                    updated_at: "Last Updated"
             	},
             	primaryKey: "id",
             	dataUrl: "/portal/maps/list",
-            	actionButtons: {
-            		edit: {
-            			title: 'Edit this Screen',
-            			name: 'Edit',
-            			apiUrl: '',
-            			routeName: 'building.edit',
-            			button: '<i class="fas fa-edit"></i> Edit',
-            			method: 'edit'
-            		},
-            		delete: {
-            			title: 'Delete this Screen',
-            			name: 'Delete',
-            			apiUrl: '/portal/maps/delete',
-            			routeName: '',
-            			button: '<i class="fas fa-trash-alt"></i> Delete',
-            			method: 'custom_delete',
-						v_on: 'DeleteScreen',
-            		},
-					link: {
-            			title: 'Manage Maps',
-            			name: 'Manage Maps',
-            			apiUrl: '/portal/manage-map',
-            			routeName: '',
-            			button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
-            			method: 'link',
-						conditions: { product_application: 'Directory' }
-            		},
-            	},
-				otherButtons: {
-					addNew: {
-						title: 'New Screen',
-						v_on: 'AddNewScreen',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-				}
             };
         },
 
