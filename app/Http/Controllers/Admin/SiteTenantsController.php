@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\SiteTenantsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\TenantRequest;
+use Illuminate\Support\Str;
 
 use App\Models\SiteTenant;
 use App\Models\SiteTenantProduct;
@@ -110,11 +111,13 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'company_id' => ($request->company_id) ? $request->company_id : null,
                 'space_number' => $request->space_number,
                 'client_locator_number' => $request->client_locator_number,
-                'active' => ($request->active == 'true') ? 1 : 0,
-                'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
+                'active' => ($request->active == 1 || $request->active == 'true') ? 1 : 0,
+                'is_subscriber' => ($request->is_subscriber == 1 || $request->is_subscriber == 'true') ? 1 : 0,
             ];
 
             $site_tenant = SiteTenant::create($data);
+            $site_tenant->serial_number = 'TN-'.Str::padLeft($site_tenant->id, 5, '0');
+            $site_tenant->save();
 
             $meta_details = [
                 "address" => $request->address, 
@@ -158,6 +161,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
 
             $brand_id = json_decode($request->brand_id, 1);
             $data = [
+                'serial_number' => ($site_tenant->serial_number) ? $site_tenant->serial_number : 'TN-'.Str::padLeft($site_tenant->id, 5, '0'),
                 'brand_id' => $brand_id['id'],
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
@@ -165,8 +169,8 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'company_id' => ($request->company_id) ? $request->company_id : null,
                 'space_number' => $request->space_number,
                 'client_locator_number' => $request->client_locator_number,
-                'active' => ($request->active == 'true') ? 1 : 0,
-                'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
+                'active' => ($request->active == 1 || $request->active == 'true') ? 1 : 0,
+                'is_subscriber' => ($request->is_subscriber == 1 || $request->is_subscriber == 'true') ? 1 : 0,
             ];
 
             $site_tenant->update($data);

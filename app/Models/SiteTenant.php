@@ -15,6 +15,7 @@ class SiteTenant extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'serial_number',
         'brand_id',
         'site_id',
         'site_building_id',
