@@ -38,13 +38,14 @@
             return {
             	dataFields: {
 					material_serial_number: "Content ID",
-					material_path: {
-            			name: "Preview", 
-            			type: "logo", 
-            		},
+					// material_path: {
+            		// 	name: "Preview", 
+            		// 	type: "logo", 
+            		// },
 					ad_type: "Ad Type",
 					parent_category_name: "Parent Category",
 					category_name: "Category Name",
+					brand_name: "Brand Name",
 					site_name: "Site",
                     screen_location: "Screen Location",
 					company_name: "Company Name",
@@ -59,7 +60,8 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    duration: "Duration"
+                    duration: "Duration",
+                    updated_at: "Date Appoved"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/play-list/list",
