@@ -683,8 +683,10 @@ export default {
 			this.company.tin = '';
 			this.company.active = false;
 			this.company.brands = [];
+			this.company.contracts = [];
 			this.data_list = false;
-			this.data_form = true;	
+			this.data_form = true;
+			$('#company-details').modal('show');	
 		},
 
 		modalAdd: function () {
@@ -808,12 +810,14 @@ export default {
 				});
 		},
 
-		duplicateContract: function (index) {
-			axios.get('/admin/company/contract/duplicate/' + this.company.contracts[index].id)
+		duplicateContract: function () {
+			axios.get('/admin/company/contract/duplicate/' + this.company.contracts[this.delete_index].id)
 				.then(response => {
 					if (response.data.data) {
-						this.company.contracts.splice(index, 1);
+						this.company.contracts.push(response.data.data);
 						toastr.success('Contract has been copy.');
+						$('#copy-record').modal('hide');
+						this.editContract(response.data.data.id);
 					}
 				});
 		},

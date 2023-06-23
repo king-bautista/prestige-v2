@@ -134,7 +134,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/company/contract/{id}', 'Admin\CompaniesController@contractDetails')->name('admin.company.contract.details');
     Route::put('/admin/company/contract/update', 'Admin\CompaniesController@updateContract')->name('admin.company.contract.update');
     Route::get('/admin/company/contract/delete/{id}', 'Admin\CompaniesController@deleteContract')->where('id', '[0-9]+')->name('admin.company.contract.delete');
-
+    Route::get('/admin/company/contract/duplicate/{id}', 'Admin\CompaniesController@duplicateContract')->where('id', '[0-9]+')->name('admin.company.contract.duplicate');
+    
     /*
     |--------------------------------------------------------------------------
     | Company User Workflows Routes
