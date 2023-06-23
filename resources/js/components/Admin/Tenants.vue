@@ -81,10 +81,16 @@
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
 									<select class="custom-select" v-model="tenant.site_id"
-										@change="getBuildings($event.target.value)">
+										@change="getBuildings($event.target.value, $event)">
 										<option value="">Select Site</option>
-										<option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
+										<option v-for="site in sites" :data-siteinfo="site.property_owner" :value="site.id"> {{ site.name }}</option>
 									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Property Owner</label>
+								<div class="col-sm-9">
+									<input class="form-control" placeholder="Property Owner" :value="property_owner" readonly>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -366,6 +372,7 @@ export default {
 			subscriber_logo: '',
 			brands: [],
 			sites: [],
+			property_owner: '',
 			buildings: [],
 			floors: [],
 			companies: [],
@@ -379,6 +386,8 @@ export default {
 				site_name: "Site Name",
 				building_name: "Building Name",
 				floor_name: "Floor Name",
+				view_count: "Views",
+				like_count: "Likes",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -481,7 +490,11 @@ export default {
 				.then(response => this.companies = response.data.data);
 		},
 
-		getBuildings: function (id) {
+		getBuildings: function (id, event) {
+			this.property_owner = event;
+			if(event.target) {
+				this.property_owner = event.target.selectedOptions[0].dataset.siteinfo;
+			}
 			axios.get('/admin/site/get-buildings/' + id)
 				.then(response => this.buildings = response.data.data);
 		},
@@ -591,7 +604,7 @@ export default {
 					this.tenant.site_id = tenant.site_id;
 					this.tenant.site_building_id = tenant.site_building_id;
 
-					this.getBuildings(tenant.site_id);
+					this.getBuildings(tenant.site_id, tenant.property_owner);
 					this.getFloorLevel(tenant.site_building_id);
 
 					this.tenant.site_building_level_id = tenant.site_building_level_id;

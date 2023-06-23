@@ -5,6 +5,7 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Str;
+use App\Models\Company;
 
 class SiteViewModel extends Model
 {
@@ -49,6 +50,8 @@ class SiteViewModel extends Model
         'site_background_path',
         'is_premiere',
         'multilanguage',
+        'company_id',
+        'property_owner',
     ];
 
     public function getSiteDetails()
@@ -114,5 +117,21 @@ class SiteViewModel extends Model
         if($site_details)
             return $site_details->meta_value;
         return 0;
+    }
+
+    public function getCompanyIdAttribute()
+    {
+        $site_details = $this->getSiteDetails()->where('meta_key', 'company_id')->first();
+        if($site_details)
+            return $site_details->meta_value;
+        return null;
+    }
+
+    public function getPropertyOwnerAttribute()
+    {
+        $company_details = Company::find($this->company_id);
+        if($company_details)
+            return $company_details->name;
+        return null;
     }
 }
