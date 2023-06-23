@@ -87,6 +87,13 @@
 									<img v-if="site_background" :src="site_background" class="img-thumbnail" />
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Client Company</label>
+								<div class="col-sm-8">
+									<treeselect v-model="site.company_id" :options="companies"
+										placeholder="Select Company" />
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -218,6 +225,8 @@ import Table from '../Helpers/Table';
 import datePicker from 'vue-bootstrap-datetimepicker';
 // Import date picker css
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+// import the component
+import Treeselect from '@riophae/vue-treeselect'
 
 export default {
 	name: "Sites",
@@ -230,6 +239,7 @@ export default {
 				site_logo: '',
 				site_banner: '',
 				site_background: '',
+				company_id: null,
 				facebook: '',
 				instagram: '',
 				twitter: '',
@@ -248,6 +258,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			is_default: '',
+			companies: [],
 			options: {
 				format: 'hh:mm A',
 				useCurrent: false,
@@ -256,6 +267,7 @@ export default {
 				serial_number: "ID",
 				name: "Name",
 				short_code: "Short Code",
+				property_owner: "Property Owner",
 				descriptions_ellipsis: "Descriptions",
 				site_logo_path: {
 					name: "Logo",
@@ -352,7 +364,7 @@ export default {
 	},
 
 	created() {
-
+		this.getCompany();
 	},
 
 	methods: {
@@ -374,12 +386,18 @@ export default {
 			this.site.site_background = file;
 		},
 
+		getCompany: function () {
+			axios.get('/admin/company/get-all')
+				.then(response => this.companies = response.data.data);
+		},
+
 		AddNewSite: function () {
 			this.add_record = true;
 			this.edit_record = false;
 			this.site.name = '';
 			this.site.site_code = '';
 			this.site.descriptions = '';
+			this.site.company_id = null;
 			this.site.active = false;
 			this.site.is_default = false;
 			this.site.is_premiere = false;
@@ -409,6 +427,7 @@ export default {
 			formData.append("site_logo", this.site.site_logo);
 			formData.append("site_banner", this.site.site_banner);
 			formData.append("site_background", this.site.site_background);
+			formData.append("company_id", this.site.company_id);			
 			formData.append("facebook", this.site.facebook);
 			formData.append("instagram", this.site.instagram);
 			formData.append("twitter", this.site.twitter);
@@ -442,6 +461,7 @@ export default {
 					this.site.site_logo = site.site_logo;
 					this.site.site_banner = site.site_banner;
 					this.site.site_background = site.site_background;
+					this.site.company_id = (site.details.company_id == 'null') ? '' : site.details.company_id;
 					this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
 					this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
 					this.site.twitter = (site.details.twitter == 'null') ? '' : site.details.twitter;
@@ -492,6 +512,7 @@ export default {
 			formData.append("site_logo", this.site.site_logo);
 			formData.append("site_banner", this.site.site_banner);
 			formData.append("site_background", this.site.site_background);
+			formData.append("company_id", this.site.company_id);			
 			formData.append("facebook", this.site.facebook);
 			formData.append("instagram", this.site.instagram);
 			formData.append("twitter", this.site.twitter);
@@ -546,7 +567,8 @@ export default {
 
 	components: {
 		Table,
-		datePicker
+		datePicker,
+		Treeselect
 	}
 };
 </script> 
