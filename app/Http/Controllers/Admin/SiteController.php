@@ -107,6 +107,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ];
 
             $meta_value = [
+                'company_id' => $request->company_id,
                 'facebook' => $request->facebook,
                 'instagram' => $request->instagram,
                 'twitter' => $request->twitter,
@@ -175,6 +176,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ];
 
             $meta_value = [
+                'company_id' => $request->company_id,
                 'facebook' => $request->facebook,
                 'instagram' => $request->instagram,
                 'twitter' => $request->twitter,
@@ -217,7 +219,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     public function getAll()
     {
         try {
-            $sites = Site::orderBy('name')->get();
+            $sites = SiteViewModel::orderBy('name')->get();
             return $this->response($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([

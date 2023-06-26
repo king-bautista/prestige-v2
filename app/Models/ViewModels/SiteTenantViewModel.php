@@ -62,6 +62,7 @@ class SiteTenantViewModel extends Model
         'subscriber_logo',
         'operational_hours',
         'products',
+        'property_owner',
     ];
 
     public function getTenantDetails()
@@ -194,6 +195,14 @@ class SiteTenantViewModel extends Model
             }
             return $new_products;
         }
+        return null;
+    }
+
+    public function getPropertyOwnerAttribute()
+    {
+        $site_details = SiteViewModel::find($this->site_id);
+        if($site_details)
+            return $site_details->property_owner;
         return null;
     }
     

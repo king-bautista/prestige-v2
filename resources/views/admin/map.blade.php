@@ -250,11 +250,10 @@
 
       // GET TENANTS ASSIGN FROM FLOOR
       $.get("/admin/site/tenant/get-tenants-per-floor/"+floor_id, function(data) { 
-
-        $('#tenant_list').empty();
-        $('#tenant_list').append('<option value="">Select Tenant</option>');
+        $('#tenant_id').empty();
+        $('#tenant_id').append('<option value="">Select Tenant</option>');
         $.each(data.data, function(key,val) {             
-          $('#tenant_list').append('<option value="'+val.id+'">'+val.brand_name+'</option>');
+          $('#tenant_id').append('<option value="'+val.id+'">'+val.brand_name+'</option>');
         });
       });
 
