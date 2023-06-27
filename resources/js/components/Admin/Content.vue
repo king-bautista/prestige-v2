@@ -126,16 +126,11 @@
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-8">
-										<multiselect v-model="content.status_id" 
-											:options="statuses" 
-											:multiple="false"
-											:close-on-select="true"
-											:searchable="true" 
-											:allow-empty="false"
-											track-by="name" 
-											label="name" 
-											placeholder="Select Status">
-										</multiselect> 
+										<select class="custom-select" v-model="content.status_id">
+											<option value="">Select Status </option>
+											<option v-for="status in statuses" :value="status.id"> {{ status.name }}
+											</option>
+										</select>
 									</div>
 								</div>
 								<div class="form-group row">

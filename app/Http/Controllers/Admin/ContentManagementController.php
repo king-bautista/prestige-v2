@@ -83,7 +83,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
     	{
             $data = [
                 'material_id' => $request->material_id,
-                'status_id' => $request->status_id['id'],
+                'status_id' => $request->status_id,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'active' => $request->active,
@@ -116,7 +116,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $data = [
                 'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-'.Str::padLeft($content->id, 5, '0'),
                 'material_id' => $request->material_id,
-                'status_id' => $request->status_id['id'],
+                'status_id' => $request->status_id,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'active' => $request->active,
@@ -180,7 +180,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         foreach($screens as $screen) {
             $loop_count = 0;
-            $loop_count = $screen['slots']/$categories->count();
+            $loop_count = ($screen['slots']*2)/$categories->count();
             $params = [
                 'loop_count' => $loop_count,
                 'site_screen_id' => $screen['site_screen_id'],
@@ -222,8 +222,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
          * FILTER CONTENT ID FROM PLAYLIST
          * FILTER REMOVED SITE PARTNER CONTENT
         */
-        $contents = ContentScreenViewModel::where('site_screen_id', $params['site_screen_id'])
+        $contents = ContentScreenViewModel::where('content_screens.site_screen_id', $params['site_screen_id'])
         ->whereIn('categories.parent_id', $params['categories_ids'])
+        ->whereIn('advertisement_screens.ad_type', array('Full Screen Ad', 'Banner Ad'))
         ->whereNotIn('content_screens.content_id', $play_list_ids)
         ->when($is_site_partner, function($query) use ($site_partner_ids){
             return $query->whereIn('advertisements.company_id',  $site_partner_ids);
@@ -232,6 +233,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             return $query->whereNotIn('advertisements.company_id', $site_partner_ids);
         })        
         ->select('content_screens.content_id', 'content_screens.site_screen_id', 'content_screens.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'brands.category_id', 'categories.parent_id as parent_category_id', 'categories.parent_id as main_category_id', 'advertisement_materials.advertisement_id')
+        ->join('advertisement_screens', 'content_screens.site_screen_id', '=', 'advertisement_screens.site_screen_id')
         ->join('content_management', 'content_screens.content_id', '=', 'content_management.id')
         ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
         ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')

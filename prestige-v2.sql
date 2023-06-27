@@ -71,7 +71,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
-	(10, 3, 'last_login', '2023-06-26 10:19:54', '2023-04-26 02:53:48', '2023-06-26 02:19:54', NULL);
+	(10, 3, 'last_login', '2023-06-27 10:52:05', '2023-04-26 02:53:48', '2023-06-27 02:52:05', NULL);
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -114,9 +114,9 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `advertisements_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`),
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisements: ~33 rows (approximately)
+-- Dumping data for table prestige.advertisements: ~35 rows (approximately)
 INSERT INTO `advertisements` (`id`, `serial_number`, `company_id`, `contract_id`, `brand_id`, `status_id`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'AD-00001', 3, 12, 7671, 5, 10, 'Sample 1', 1, '2023-05-18 06:29:13', '2023-06-06 03:51:19', NULL),
 	(2, 'AD-00002', 3, 12, 7671, 5, 10, 'Sample 2', 1, '2023-05-18 06:31:56', '2023-06-06 03:50:59', NULL),
@@ -151,7 +151,8 @@ INSERT INTO `advertisements` (`id`, `serial_number`, `company_id`, `contract_id`
 	(31, NULL, 2, 13, 5861, 5, 10, 'dreame 1', 1, '2023-05-29 02:49:55', '2023-05-29 03:34:32', '2023-05-29 03:34:32'),
 	(32, NULL, 2, 13, 5861, 5, 10, 'dreame 2', 1, '2023-05-29 03:00:39', '2023-05-29 03:34:20', '2023-05-29 03:34:20'),
 	(33, 'AD-00033', 2, 13, 5861, 5, 10, 'DREAME PROMOS', 1, '2023-05-29 03:02:11', '2023-06-06 03:20:23', NULL),
-	(34, 'AD-00034', 2, 13, 7675, 5, 10, 'YELLOW CAB', 1, '2023-06-07 01:40:20', '2023-06-07 06:34:24', NULL);
+	(34, 'AD-00034', 2, 13, 7675, 5, 10, 'YELLOW CAB', 1, '2023-06-07 01:40:20', '2023-06-07 06:34:24', NULL),
+	(35, 'AD-00035', 2, 13, 7714, 5, 10, 'TRINOMA', 1, '2023-06-26 06:44:32', '2023-06-26 06:44:32', NULL);
 
 -- Dumping structure for table prestige.advertisement_materials
 DROP TABLE IF EXISTS `advertisement_materials`;
@@ -170,9 +171,9 @@ CREATE TABLE IF NOT EXISTS `advertisement_materials` (
   PRIMARY KEY (`id`),
   KEY `advertisement_materials_advertisement_id_index` (`advertisement_id`),
   CONSTRAINT `advertisement_materials_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_materials: ~77 rows (approximately)
+-- Dumping data for table prestige.advertisement_materials: ~80 rows (approximately)
 INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `file_type`, `file_size`, `dimension`, `width`, `height`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'uploads/media/advertisements/materials/70c97979-d315-f221.jpg', 'image', '290916', '470x1060', '470', '1060', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
 	(2, 1, 'uploads/media/advertisements/materials/70c97979-d376-0c3b-full.jpg', 'image', '963864', '1920x1080', '1920', '1080', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
@@ -250,7 +251,10 @@ INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `f
 	(74, 33, 'uploads/media/advertisements/materials/dreame1.jpg', 'image', '172228', '700x700', '700', '700', '2023-05-29 03:36:21', '2023-05-29 03:36:21', NULL),
 	(75, 33, 'uploads/media/advertisements/materials/dreame2.jpg', 'image', '154137', '700x700', '700', '700', '2023-05-29 03:36:21', '2023-05-29 03:36:21', NULL),
 	(76, 34, 'uploads/media/advertisements/materials/CFC_Digital_Poster_470x1060_SM_Seaside_(Portrait).png', 'image', '895512', '470x1060', '470', '1060', '2023-06-07 01:40:20', '2023-06-07 07:44:30', NULL),
-	(77, 34, 'uploads/media/advertisements/materials/CFC_Digital_Poster_1920x1080_SM_Seaside_(Landscape).png', 'image', '2737006', '1920x1080', '1920', '1080', '2023-06-07 01:40:21', '2023-06-07 07:44:31', NULL);
+	(77, 34, 'uploads/media/advertisements/materials/CFC_Digital_Poster_1920x1080_SM_Seaside_(Landscape).png', 'image', '2737006', '1920x1080', '1920', '1080', '2023-06-07 01:40:21', '2023-06-07 07:44:31', NULL),
+	(78, 35, 'uploads/media/advertisements/materials/Sunkissed-Lola-TAC-LED-1792x768.jpg', 'image', '2566401', '1792x768', '1792', '768', '2023-06-26 06:44:34', '2023-06-26 07:16:08', NULL),
+	(79, 35, 'uploads/media/advertisements/materials/TRINOMA-1792x768.jpg', 'image', '1453565', '1792x768', '1792', '768', '2023-06-26 06:44:34', '2023-06-26 07:16:08', NULL),
+	(80, 35, 'uploads/media/advertisements/materials/TAC-LED.jpg', 'image', '1320951', '1792x768', '1792', '768', '2023-06-26 06:44:35', '2023-06-26 07:25:17', NULL);
 
 -- Dumping structure for table prestige.advertisement_screens
 DROP TABLE IF EXISTS `advertisement_screens`;
@@ -275,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `advertisement_screens` (
   CONSTRAINT `advertisement_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_screens: ~152 rows (approximately)
+-- Dumping data for table prestige.advertisement_screens: ~157 rows (approximately)
 INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_product_id`, `site_screen_id`, `site_id`, `ad_type`, `created_at`, `updated_at`) VALUES
 	(31, 61, 101, 227, 46, 'Promo Page', NULL, NULL),
 	(31, 61, 102, 228, 46, 'Promo Page', NULL, NULL),
@@ -430,7 +434,10 @@ INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_prod
 	(34, 76, 45, 228, 46, 'Banner Ad', NULL, NULL),
 	(34, 76, 96, 227, 46, 'Banner Ad', NULL, NULL),
 	(34, 77, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
-	(34, 77, 95, 228, 46, 'Full Screen Ad', NULL, NULL);
+	(34, 77, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(35, 78, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
+	(35, 79, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
+	(35, 80, 106, 292, 50, 'Full Screen Ad', NULL, NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -713,7 +720,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   KEY `brands_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7715 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.brands: ~6,406 rows (approximately)
+-- Dumping data for table prestige.brands: ~6,445 rows (approximately)
 INSERT INTO `brands` (`id`, `category_id`, `name`, `descriptions`, `logo`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 6, '#328BATCHOYHOUSE, INC.', 'null', 'uploads/media/brand/70c974ad-27c4-23d6.jpg', 1, '2022-10-23 21:33:31', '2023-01-04 07:05:45', NULL),
 	(2, 0, '#53 BURGER STATION', NULL, NULL, 1, '2022-10-23 21:59:43', '2022-10-23 21:59:43', NULL),
@@ -11729,7 +11736,7 @@ CREATE TABLE IF NOT EXISTS `cinema_sites` (
   CONSTRAINT `cinema_sites_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.cinema_sites: ~0 rows (approximately)
+-- Dumping data for table prestige.cinema_sites: ~1 rows (approximately)
 INSERT INTO `cinema_sites` (`id`, `site_id`, `cinema_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, '2102', '2022-11-20 22:48:43', '2022-11-20 22:54:57', NULL);
 
@@ -12355,9 +12362,9 @@ CREATE TABLE IF NOT EXISTS `content_management` (
   PRIMARY KEY (`id`),
   KEY `content_management_material_id_index` (`material_id`),
   CONSTRAINT `content_management_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_management: ~28 rows (approximately)
+-- Dumping data for table prestige.content_management: ~31 rows (approximately)
 INSERT INTO `content_management` (`id`, `serial_number`, `material_id`, `status_id`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'CAD-00001', 2, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:10:21', '2023-06-05 08:10:21', NULL),
 	(2, 'CAD-00002', 1, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:10:48', '2023-06-05 08:10:48', NULL),
@@ -12386,7 +12393,10 @@ INSERT INTO `content_management` (`id`, `serial_number`, `material_id`, `status_
 	(25, 'CAD-00025', 53, 5, '2023-06-01', '2023-06-30', 1, '2023-06-10 05:57:57', '2023-06-19 09:59:59', NULL),
 	(26, 'CAD-00026', 54, 5, '2023-06-01', '2023-06-30', 1, '2023-06-10 05:57:57', '2023-06-19 10:00:08', NULL),
 	(27, 'CAD-00027', 55, 5, '2023-06-01', '2023-06-30', 1, '2023-06-14 02:24:36', '2023-06-19 09:59:50', NULL),
-	(28, 'CAD-00028', 56, 5, '2023-06-01', '2023-07-31', 1, '2023-06-14 02:34:06', '2023-06-19 09:59:25', NULL);
+	(28, 'CAD-00028', 56, 5, '2023-06-01', '2023-07-31', 1, '2023-06-14 02:34:06', '2023-06-19 09:59:25', NULL),
+	(29, 'CAD-00029', 80, 5, '2023-06-26', '2023-07-31', 1, '2023-06-26 06:44:35', '2023-06-26 07:45:16', NULL),
+	(30, 'CAD-00030', 79, 5, '2023-06-26', '2023-07-31', 1, '2023-06-26 06:44:36', '2023-06-26 07:45:07', NULL),
+	(31, 'CAD-00031', 78, 5, '2023-06-26', '2023-07-31', 1, '2023-06-26 06:51:03', '2023-06-26 07:45:02', NULL);
 
 -- Dumping structure for table prestige.content_screens
 DROP TABLE IF EXISTS `content_screens`;
@@ -12405,7 +12415,7 @@ CREATE TABLE IF NOT EXISTS `content_screens` (
   CONSTRAINT `content_screens_site_screen_product_id_foreign` FOREIGN KEY (`site_screen_product_id`) REFERENCES `site_screen_products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_screens: ~56 rows (approximately)
+-- Dumping data for table prestige.content_screens: ~59 rows (approximately)
 INSERT INTO `content_screens` (`content_id`, `site_screen_product_id`, `site_screen_id`, `site_id`) VALUES
 	(1, 44, 227, 46),
 	(1, 95, 228, 46),
@@ -12462,7 +12472,10 @@ INSERT INTO `content_screens` (`content_id`, `site_screen_product_id`, `site_scr
 	(27, 45, 228, 46),
 	(27, 96, 227, 46),
 	(28, 44, 227, 46),
-	(28, 95, 228, 46);
+	(28, 95, 228, 46),
+	(31, 106, 292, 50),
+	(30, 106, 292, 50),
+	(29, 106, 292, 50);
 
 -- Dumping structure for table prestige.contracts
 DROP TABLE IF EXISTS `contracts`;
@@ -12775,7 +12788,7 @@ CREATE TABLE IF NOT EXISTS `faqs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.faqs: ~0 rows (approximately)
+-- Dumping data for table prestige.faqs: ~1 rows (approximately)
 INSERT INTO `faqs` (`id`, `question`, `answer`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(12, '434343', 'Contrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transpa\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.\r\n\r\n\r\n\r\n\r\nContrary to what one might think, the Lorem ipsum text, despite being meaningless, has noble origins.\r\n\r\nObjectively composed of unrelated words, Lorem ipsum owes its existence to Marco Tullio Cicerone and to some steps of his De finibus bonorum et malorum (The highest good and the highest evil) written in 45 BC , a classic of Latin literature dating back more than 2000 years ago.\r\n\r\nThe discovery was made by Richard McClintock , a professor of Latin at Hampden-Sydney College in Virginia, who faced the impetuous recurrence of the dark word consectetur in the text Lorem ipsum researched its origins to identify them in sections 1.10.32 and 1.10.33 of the aforementioned Cicero\'s philosophical work.\r\n\r\nThe words taken from one of the dialogues contained in the De finibus are therefore the pieces of the most famous nonsensical text in the world.\r\n\r\nA discovery that has given greater importance to the Lorem ipsum which has remained on the crest of the wave since 500, that is when, according to Professor Richard McClintock, its use spread among the printers of the time.\r\n\r\nOf course we know that to make it known to most was a publicity of the Sixties, that of the transferable Letraset character sheets: transparent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.rent adhesive sheets on which the Lorem ipsum text was imprinted easily transferable on the editorial products before the advent of the computer.', 1, '2023-03-28 21:43:03', '2023-03-28 21:43:03', NULL);
 
@@ -12788,7 +12801,7 @@ CREATE TABLE IF NOT EXISTS `last_update_ats` (
 -- Dumping data for table prestige.last_update_ats: 1 rows
 /*!40000 ALTER TABLE `last_update_ats` DISABLE KEYS */;
 INSERT INTO `last_update_ats` (`last_updated_at`) VALUES
-	('2023-06-26 10:42:51');
+	('2023-06-27 09:59:05');
 /*!40000 ALTER TABLE `last_update_ats` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.logs
@@ -12823,7 +12836,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   KEY `logs_advertisement_id_index` (`advertisement_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=355 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.logs: ~338 rows (approximately)
+-- Dumping data for table prestige.logs: ~353 rows (approximately)
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_category_id`, `main_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `advertisement_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:42', '2023-02-28 06:31:42', NULL),
 	(2, 1, 2, 6, 1, 1, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:43', '2023-02-28 06:31:43', NULL),
@@ -13567,9 +13580,9 @@ CREATE TABLE IF NOT EXISTS `play_lists` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1710 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1727 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.play_lists: ~48 rows (approximately)
+-- Dumping data for table prestige.play_lists: ~51 rows (approximately)
 INSERT INTO `play_lists` (`id`, `content_id`, `site_screen_id`, `company_id`, `brand_id`, `category_id`, `parent_category_id`, `main_category_id`, `advertisement_id`, `sequence`, `created_at`, `updated_at`) VALUES
 	(1662, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
 	(1663, 17, 228, 2, 52, 11, 1, 1, 12, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
@@ -13618,7 +13631,10 @@ INSERT INTO `play_lists` (`id`, `content_id`, `site_screen_id`, `company_id`, `b
 	(1706, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
 	(1707, 23, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
 	(1708, 7, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
-	(1709, 24, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29');
+	(1709, 24, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1724, 31, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-06-26 07:45:16', '2023-06-26 07:45:16'),
+	(1725, 30, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-06-26 07:45:16', '2023-06-26 07:45:16'),
+	(1726, 29, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-06-26 07:45:16', '2023-06-26 07:45:16');
 
 -- Dumping structure for table prestige.roles
 DROP TABLE IF EXISTS `roles`;
@@ -13714,11 +13730,11 @@ INSERT INTO `sites` (`id`, `serial_number`, `name`, `descriptions`, `site_logo`,
 	(43, 'ST-00043', 'SM San Jose del Monte', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 07:26:39', '2023-06-01 10:09:50', NULL),
 	(44, 'ST-00044', 'SM San Pablo', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:08:08', '2023-06-01 10:09:44', NULL),
 	(45, 'ST-00045', 'SM Sta. Rosa', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:11:57', '2023-06-26 02:12:48', NULL),
-	(46, 'ST-00046', 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', 'uploads/media/sites/background/BG-Kiosk.jpg', 1, 1, '2023-04-19 09:14:12', '2023-06-26 02:22:41', NULL),
+	(46, 'ST-00046', 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', 'uploads/media/sites/background/BG-Kiosk.jpg', 1, 0, '2023-04-19 09:14:12', '2023-06-27 01:56:58', NULL),
 	(47, 'ST-00047', 'SM Telebastagan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:38:55', '2023-06-01 10:09:21', NULL),
 	(48, 'ST-00048', 'SM Tuguegarao Downtown', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:45:57', '2023-06-22 10:26:32', NULL),
 	(49, 'ST-00049', 'SM Urdaneta', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:51:50', '2023-06-22 10:01:22', NULL),
-	(50, 'ST-00050', 'TriNoma', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', '', '', '', 1, 0, '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL);
+	(50, 'ST-00050', 'TriNoma', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', '', '', '', 1, 1, '2023-06-26 02:42:49', '2023-06-27 01:56:58', NULL);
 
 -- Dumping structure for table prestige.sites_meta
 DROP TABLE IF EXISTS `sites_meta`;
@@ -19413,8 +19429,8 @@ INSERT INTO `site_screens` (`id`, `serial_number`, `site_id`, `site_building_id`
 	(224, 'SS-00224', 45, 50, NULL, 152, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'DDWFYeAgsq3wBelG', 'Krispy Kreme', 40, 1, 0, 0, '2023-04-19 08:15:30', '2023-06-26 01:57:15', NULL),
 	(225, 'SS-00225', 17, 51, NULL, 153, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'wvFqIb4yl1PfdrFN', 'Starbucks', 40, 1, 0, 0, '2023-04-19 08:59:00', '2023-05-31 07:55:45', NULL),
 	(226, 'SS-00226', 17, 51, NULL, 153, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'NZB6sSiOq2qTevbf', 'Mesa', 40, 1, 0, 0, '2023-04-19 08:59:19', '2023-05-31 07:55:41', NULL),
-	(227, 'SS-00227', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HiUqNengzXhJ33Nd', 'Starbucks', 40, 1, 0, 0, '2023-04-19 09:38:08', '2023-06-26 02:22:41', NULL),
-	(228, 'SS-00228', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'BMsKxsvKCe6ArQsx', 'Owndays', 40, 1, 1, 0, '2023-04-19 09:38:24', '2023-06-26 02:22:41', NULL),
+	(227, 'SS-00227', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HiUqNengzXhJ33Nd', 'Starbucks', 40, 1, 1, 0, '2023-04-19 09:38:08', '2023-06-27 01:53:46', NULL),
+	(228, 'SS-00228', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'BMsKxsvKCe6ArQsx', 'Owndays', 40, 1, 0, 0, '2023-04-19 09:38:24', '2023-06-26 10:01:02', NULL),
 	(229, 'SS-00229', 47, 53, NULL, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'ogaaB4DOHAnSeMmF', 'Tous Les Jours', 40, 1, 0, 0, '2023-04-19 09:39:37', '2023-05-31 07:55:27', NULL),
 	(230, 'SS-00230', 47, 53, NULL, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '8TRweDDRXNf3mrzs', 'Starbucks', 40, 1, 0, 0, '2023-04-19 09:39:56', '2023-05-31 07:55:24', NULL),
 	(231, 'SS-00231', 47, 53, NULL, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'JpJtreRpe5zSS3je', 'BDO', 40, 1, 0, 0, '2023-04-19 09:40:17', '2023-05-31 07:55:21', NULL),
@@ -19478,7 +19494,7 @@ INSERT INTO `site_screens` (`id`, `serial_number`, `site_id`, `site_building_id`
 	(289, 'SS-00289', 19, 60, NULL, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'IOD5pzYmD35fekpi', 'Samsung', 20, 1, 0, 1, '2023-04-20 09:48:39', '2023-05-31 07:50:46', NULL),
 	(290, 'SS-00290', 20, 54, NULL, 178, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'ShTMccf1uM5c1Gah', 'Lenovo', 20, 1, 0, 0, '2023-04-20 09:54:08', '2023-05-31 07:50:43', NULL),
 	(291, 'SS-00291', 20, 54, NULL, 178, 0, 'LFD', 'Portrait', 'Digital Signage', '53 Inch', NULL, NULL, NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-05-31 07:50:37', NULL),
-	(292, 'SS-00292', 50, 61, NULL, 180, 0, 'LFD', 'Landscape', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'efkj6xjCirjYgoNw', 'TriNoma', 0, 1, 0, 0, '2023-06-26 02:42:51', '2023-06-26 02:42:51', NULL);
+	(292, 'SS-00292', 50, 61, NULL, 180, 0, 'LFD', 'Landscape', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'efkj6xjCirjYgoNw', 'TriNoma', 0, 1, 1, 0, '2023-06-26 02:42:51', '2023-06-27 01:56:58', NULL);
 
 -- Dumping structure for table prestige.site_screen_products
 DROP TABLE IF EXISTS `site_screen_products`;
@@ -19501,9 +19517,9 @@ CREATE TABLE IF NOT EXISTS `site_screen_products` (
   PRIMARY KEY (`id`),
   KEY `pi_products_site_screen_id_foreign` (`site_screen_id`),
   CONSTRAINT `pi_products_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_products: ~101 rows (approximately)
+-- Dumping data for table prestige.site_screen_products: ~102 rows (approximately)
 INSERT INTO `site_screen_products` (`id`, `serial_number`, `site_screen_id`, `ad_type`, `description`, `dimension`, `width`, `height`, `sec_slot`, `slots`, `active`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'SSP-00001', 1, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, 0, '2023-05-08 06:50:08', '2023-05-08 06:50:08', NULL),
 	(2, 'SSP-00002', 1, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 15, 40, 1, 0, '2023-05-08 07:02:52', '2023-05-08 07:15:54', NULL),
@@ -19598,14 +19614,15 @@ INSERT INTO `site_screen_products` (`id`, `serial_number`, `site_screen_id`, `ad
 	(91, 'SSP-00091', 89, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, 0, '2023-05-08 09:35:47', '2023-06-02 08:37:37', NULL),
 	(92, 'SSP-00092', 90, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, 0, '2023-05-08 09:36:08', '2023-06-02 08:37:33', NULL),
 	(93, 'SSP-00093', 91, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, 0, '2023-05-08 09:36:29', '2023-06-02 08:37:30', NULL),
-	(94, 'SSP-00094', 92, 'Full Screen Ad', 'Admin', '384x1024', '384', '1024', 10, 40, 0, 0, '2023-05-08 09:36:56', '2023-06-02 08:37:26', NULL),
+	(94, 'SSP-00094', 92, 'Full Screen Ad', 'Admin', '384x1024', '384', '1024', 10, 40, 1, 0, '2023-05-08 09:36:56', '2023-06-26 06:28:27', NULL),
 	(95, 'SSP-00095', 228, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, 0, '2023-05-18 06:33:48', '2023-06-02 08:37:21', NULL),
 	(96, 'SSP-00096', 227, 'Banner Ad', 'test', '470x1060', '470', '1060', 10, 40, 1, 0, '2023-05-18 06:34:45', '2023-06-02 08:37:18', NULL),
 	(99, 'SSP-00099', 1, 'Full Screen Ad', 'this is test edit', '1920x1080', '1920', '1080', 15, 50, 0, 0, '2023-05-23 08:06:56', '2023-05-23 08:07:51', '2023-05-23 08:07:51'),
 	(100, 'SSP-00100', 1, 'Full Screen Ad', 'this is a test test test etst', '1920x1080', '1920', '1080', 10, 50, 1, 0, '2023-05-26 03:02:39', '2023-05-26 03:02:48', '2023-05-26 03:02:48'),
 	(101, 'SSP-00101', 227, 'Promo Page', NULL, '700x700', '700', '700', 10, 40, 1, 0, '2023-05-29 02:19:34', '2023-06-02 08:37:15', NULL),
 	(102, 'SSP-00102', 228, 'Promo Page', NULL, '700x700', '700', '700', 10, 40, 1, 0, '2023-05-29 02:43:59', '2023-06-02 08:37:04', NULL),
-	(103, 'SSP-00103', 1, 'Full Screen Ad', 'this is a test test', '700x700', '700', '700', 10, 50, 1, 0, '2023-05-30 07:06:51', '2023-06-02 08:36:55', NULL);
+	(103, 'SSP-00103', 1, 'Full Screen Ad', 'this is a test test', '700x700', '700', '700', 10, 50, 1, 0, '2023-05-30 07:06:51', '2023-06-02 08:36:55', NULL),
+	(106, 'SSP-00106', 292, 'Full Screen Ad', NULL, '1792x768', '1792', '768', 10, 40, 1, 0, '2023-06-26 06:04:49', '2023-06-26 06:04:49', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
 DROP TABLE IF EXISTS `site_screen_uptime`;
@@ -19640,7 +19657,7 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes` (
   CONSTRAINT `site_screen_uptimes_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes: ~14 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes: ~15 rows (approximately)
 INSERT INTO `site_screen_uptimes` (`id`, `site_screen_id`, `up_time_date`, `total_hours`, `opening_hour`, `closing_hour`, `hours_up`, `percentage_uptime`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 1, '2023-03-26', 6, '10:00:00', '22:00:00', 12, 50.00, '2023-03-27 06:46:55', '2023-03-27 06:46:55', NULL),
 	(4, 1, '2023-03-27', 7, '10:00:00', '22:00:00', 12, 58.33, '2023-03-28 02:16:44', '2023-03-28 02:16:44', NULL),
@@ -19670,7 +19687,7 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes_temp` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_uptimes_temp: ~519 rows (approximately)
+-- Dumping data for table prestige.site_screen_uptimes_temp: ~523 rows (approximately)
 INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, `up_time_hours`, `created_at`, `updated_at`) VALUES
 	(62, 4, '2023-03-28', '13:36:44', '2023-03-28 05:36:44', '2023-03-28 05:36:44'),
 	(69, 3, '2023-03-28', '14:18:44', '2023-03-28 06:18:44', '2023-03-28 06:18:44'),
@@ -21629,7 +21646,7 @@ CREATE TABLE IF NOT EXISTS `site_tenant_metas` (
   CONSTRAINT `site_tenant_metas_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=764 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_tenant_metas: ~755 rows (approximately)
+-- Dumping data for table prestige.site_tenant_metas: ~763 rows (approximately)
 INSERT INTO `site_tenant_metas` (`id`, `site_tenant_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1144, 'schedules', '[{"schedules":"       Wed, Tue","start_time":"09:00","end_time":"22:00"},{"schedules":"Thu, Fri, Sat, Sun, Mon","start_time":"10:00","end_time":"22:00"}]', '2022-11-06 22:33:34', '2022-11-07 01:41:21', NULL),
 	(2, 1144, 'subscriber_logo', 'uploads/media/subscriber/70c972c5-7b83-dfbd.jpg', '2022-11-06 22:33:34', '2022-11-06 22:58:21', NULL),
@@ -26510,7 +26527,7 @@ CREATE TABLE IF NOT EXISTS `user_sites` (
   CONSTRAINT `user_sites_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.user_sites: ~0 rows (approximately)
+-- Dumping data for table prestige.user_sites: ~1 rows (approximately)
 INSERT INTO `user_sites` (`user_id`, `site_id`) VALUES
 	(5, 1);
 
