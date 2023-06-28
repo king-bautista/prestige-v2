@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ContentManagementControllerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\ContentManagement;
 use App\Models\Category;
@@ -17,6 +18,8 @@ use App\Models\ViewModels\ContentManagementViewModel;
 use App\Models\ViewModels\ContentScreenViewModel;
 use App\Models\ViewModels\PlayListViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
+use App\Imports\PlaylistImport;
+
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -232,7 +235,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         ->when(!$is_site_partner, function($query) use ($site_partner_ids){
             return $query->whereNotIn('advertisements.company_id', $site_partner_ids);
         })        
-        ->select('content_screens.content_id', 'content_screens.site_screen_id', 'content_screens.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'brands.category_id', 'categories.parent_id as parent_category_id', 'categories.parent_id as main_category_id', 'advertisement_materials.advertisement_id')
+        ->select('content_screens.content_id', 'content_screens.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'brands.category_id', 'categories.parent_id as parent_category_id', 'categories.parent_id as main_category_id', 'advertisement_materials.advertisement_id')
         ->join('advertisement_screens', 'content_screens.site_screen_id', '=', 'advertisement_screens.site_screen_id')
         ->join('content_management', 'content_screens.content_id', '=', 'content_management.id')
         ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
@@ -262,12 +265,12 @@ class ContentManagementController extends AppBaseController implements ContentMa
             })
             ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
             ->join('advertisement_screens', function($join)
-             {
-                 $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
-                      ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
-             })
+            {
+                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+                     ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
+            })
              ->where('advertisement_screens.ad_type', 'Banner Ad')
-            ->select('play_lists.*', 'advertisement_screens.ad_type')
+            ->select('play_lists.*', 'advertisement_screens.ad_type', 'content_management.updated_at')
             ->orderBy('play_lists.id', 'ASC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
@@ -280,6 +283,23 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        // try
+        // {
+            Excel::import(new PlaylistImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
 }
