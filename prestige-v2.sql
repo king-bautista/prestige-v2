@@ -71,7 +71,11 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
+<<<<<<< HEAD
 	(10, 3, 'last_login', '2023-06-08 15:55:31', '2023-04-26 02:53:48', '2023-06-08 07:55:31', NULL);
+=======
+	(10, 3, 'last_login', '2023-06-27 10:52:05', '2023-04-26 02:53:48', '2023-06-27 02:52:05', NULL);
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -114,9 +118,13 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   CONSTRAINT `advertisements_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
   CONSTRAINT `advertisements_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`),
   CONSTRAINT `advertisements_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `transaction_statuses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 -- Dumping data for table prestige.advertisements: ~34 rows (approximately)
+=======
+-- Dumping data for table prestige.advertisements: ~35 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `advertisements` (`id`, `serial_number`, `company_id`, `contract_id`, `brand_id`, `status_id`, `display_duration`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'AD-00001', 3, 12, 7671, 5, 10, 'Sample 1', 1, '2023-05-18 06:29:13', '2023-06-06 03:51:19', NULL),
 	(2, 'AD-00002', 3, 12, 7671, 5, 10, 'Sample 2', 1, '2023-05-18 06:31:56', '2023-06-06 03:50:59', NULL),
@@ -151,7 +159,8 @@ INSERT INTO `advertisements` (`id`, `serial_number`, `company_id`, `contract_id`
 	(31, NULL, 2, 13, 5861, 5, 10, 'dreame 1', 1, '2023-05-29 02:49:55', '2023-05-29 03:34:32', '2023-05-29 03:34:32'),
 	(32, NULL, 2, 13, 5861, 5, 10, 'dreame 2', 1, '2023-05-29 03:00:39', '2023-05-29 03:34:20', '2023-05-29 03:34:20'),
 	(33, 'AD-00033', 2, 13, 5861, 5, 10, 'DREAME PROMOS', 1, '2023-05-29 03:02:11', '2023-06-06 03:20:23', NULL),
-	(34, 'AD-00034', 2, 13, 7675, 5, 10, 'YELLOW CAB', 1, '2023-06-07 01:40:20', '2023-06-07 06:34:24', NULL);
+	(34, 'AD-00034', 2, 13, 7675, 5, 10, 'YELLOW CAB', 1, '2023-06-07 01:40:20', '2023-06-07 06:34:24', NULL),
+	(35, 'AD-00035', 2, 13, 7714, 5, 10, 'TRINOMA', 1, '2023-06-26 06:44:32', '2023-06-26 06:44:32', NULL);
 
 -- Dumping structure for table prestige.advertisement_materials
 DROP TABLE IF EXISTS `advertisement_materials`;
@@ -170,9 +179,9 @@ CREATE TABLE IF NOT EXISTS `advertisement_materials` (
   PRIMARY KEY (`id`),
   KEY `advertisement_materials_advertisement_id_index` (`advertisement_id`),
   CONSTRAINT `advertisement_materials_advertisement_id_foreign` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.advertisement_materials: ~77 rows (approximately)
+-- Dumping data for table prestige.advertisement_materials: ~80 rows (approximately)
 INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `file_type`, `file_size`, `dimension`, `width`, `height`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'uploads/media/advertisements/materials\\70c97979-d315-f221.jpg', 'image', '290916', '470x1060', '470', '1060', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
 	(2, 1, 'uploads/media/advertisements/materials\\70c97979-d376-0c3b-full.jpg', 'image', '963864', '1920x1080', '1920', '1080', '2023-05-18 06:29:13', '2023-05-18 06:29:13', NULL),
@@ -250,7 +259,10 @@ INSERT INTO `advertisement_materials` (`id`, `advertisement_id`, `file_path`, `f
 	(74, 33, 'uploads/media/advertisements/materials\\dreame1.jpg', 'image', '172228', '700x700', '700', '700', '2023-05-29 03:36:21', '2023-05-29 03:36:21', NULL),
 	(75, 33, 'uploads/media/advertisements/materials\\dreame2.jpg', 'image', '154137', '700x700', '700', '700', '2023-05-29 03:36:21', '2023-05-29 03:36:21', NULL),
 	(76, 34, 'uploads/media/advertisements/materials/CFC_Digital_Poster_470x1060_SM_Seaside_(Portrait).png', 'image', '895512', '470x1060', '470', '1060', '2023-06-07 01:40:20', '2023-06-07 07:44:30', NULL),
-	(77, 34, 'uploads/media/advertisements/materials/CFC_Digital_Poster_1920x1080_SM_Seaside_(Landscape).png', 'image', '2737006', '1920x1080', '1920', '1080', '2023-06-07 01:40:21', '2023-06-07 07:44:31', NULL);
+	(77, 34, 'uploads/media/advertisements/materials/CFC_Digital_Poster_1920x1080_SM_Seaside_(Landscape).png', 'image', '2737006', '1920x1080', '1920', '1080', '2023-06-07 01:40:21', '2023-06-07 07:44:31', NULL),
+	(78, 35, 'uploads/media/advertisements/materials/Sunkissed-Lola-TAC-LED-1792x768.jpg', 'image', '2566401', '1792x768', '1792', '768', '2023-06-26 06:44:34', '2023-06-26 07:16:08', NULL),
+	(79, 35, 'uploads/media/advertisements/materials/TRINOMA-1792x768.jpg', 'image', '1453565', '1792x768', '1792', '768', '2023-06-26 06:44:34', '2023-06-26 07:16:08', NULL),
+	(80, 35, 'uploads/media/advertisements/materials/TAC-LED.jpg', 'image', '1320951', '1792x768', '1792', '768', '2023-06-26 06:44:35', '2023-06-26 07:25:17', NULL);
 
 -- Dumping structure for table prestige.advertisement_screens
 DROP TABLE IF EXISTS `advertisement_screens`;
@@ -275,7 +287,11 @@ CREATE TABLE IF NOT EXISTS `advertisement_screens` (
   CONSTRAINT `advertisement_screens_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 -- Dumping data for table prestige.advertisement_screens: ~154 rows (approximately)
+=======
+-- Dumping data for table prestige.advertisement_screens: ~157 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_product_id`, `site_screen_id`, `site_id`, `ad_type`, `created_at`, `updated_at`) VALUES
 	(31, 61, 101, 227, 46, 'Promo Page', NULL, NULL),
 	(31, 61, 102, 228, 46, 'Promo Page', NULL, NULL),
@@ -430,7 +446,10 @@ INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_prod
 	(34, 76, 45, 228, 46, 'Banner Ad', NULL, NULL),
 	(34, 76, 96, 227, 46, 'Banner Ad', NULL, NULL),
 	(34, 77, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
-	(34, 77, 95, 228, 46, 'Full Screen Ad', NULL, NULL);
+	(34, 77, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
+	(35, 78, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
+	(35, 79, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
+	(35, 80, 106, 292, 50, 'Full Screen Ad', NULL, NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -12354,6 +12373,7 @@ CREATE TABLE IF NOT EXISTS `content_management` (
   PRIMARY KEY (`id`),
   KEY `content_management_material_id_index` (`material_id`),
   CONSTRAINT `content_management_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.content_management: ~24 rows (approximately)
@@ -12382,6 +12402,43 @@ INSERT INTO `content_management` (`id`, `serial_number`, `material_id`, `start_d
 	(22, 'CAD-00022', 43, '2023-06-01', '2023-07-15', 1, '2023-06-07 01:40:24', '2023-06-07 01:40:24', NULL),
 	(23, 'CAD-00023', 76, '2023-06-01', '2023-06-10', 1, '2023-06-07 07:44:31', '2023-06-07 07:44:31', NULL),
 	(24, 'CAD-00024', 77, '2023-06-01', '2023-06-10', 1, '2023-06-07 07:44:31', '2023-06-07 07:44:31', NULL);
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.content_management: ~31 rows (approximately)
+INSERT INTO `content_management` (`id`, `serial_number`, `material_id`, `status_id`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'CAD-00001', 2, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:10:21', '2023-06-05 08:10:21', NULL),
+	(2, 'CAD-00002', 1, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:10:48', '2023-06-05 08:10:48', NULL),
+	(3, 'CAD-00003', 4, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:11:11', '2023-06-05 08:11:11', NULL),
+	(4, 'CAD-00004', 3, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:11:36', '2023-06-05 08:11:36', NULL),
+	(5, 'CAD-00005', 5, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:12:03', '2023-06-05 08:12:03', NULL),
+	(6, 'CAD-00006', 6, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:12:33', '2023-06-05 08:12:33', NULL),
+	(7, 'CAD-00007', 8, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:13:12', '2023-06-05 08:13:12', NULL),
+	(8, 'CAD-00008', 7, NULL, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:14:39', '2023-06-05 08:14:39', NULL),
+	(9, 'CAD-00009', 10, NULL, '2023-06-01', '2023-06-30', 1, '2023-06-05 08:15:22', '2023-06-05 08:15:22', NULL),
+	(10, 'CAD-00010', 9, NULL, '2023-06-01', '2023-06-30', 1, '2023-06-05 08:16:01', '2023-06-05 08:16:01', NULL),
+	(11, 'CAD-00011', 12, NULL, '2023-06-01', '2023-07-31', 1, '2023-06-05 08:18:34', '2023-06-05 08:18:34', NULL),
+	(12, 'CAD-00012', 18, NULL, '2023-06-01', '2023-06-30', 1, '2023-06-05 08:22:53', '2023-06-05 08:22:53', NULL),
+	(13, 'CAD-00013', 17, NULL, '2023-06-01', '2023-07-15', 1, '2023-06-05 08:23:21', '2023-06-05 08:23:21', NULL),
+	(14, 'CAD-00014', 22, NULL, '2023-06-01', '2023-07-31', 1, '2023-06-05 08:23:47', '2023-06-05 08:23:47', NULL),
+	(15, 'CAD-00015', 21, NULL, '2023-06-01', '2023-06-30', 1, '2023-06-05 08:24:10', '2023-06-05 08:24:10', NULL),
+	(16, 'CAD-00016', 24, NULL, '2023-06-01', '2023-06-15', 1, '2023-06-05 08:24:29', '2023-06-05 08:24:29', NULL),
+	(17, 'CAD-00017', 23, NULL, '2023-06-01', '2023-06-15', 1, '2023-06-05 08:24:51', '2023-06-05 08:24:51', NULL),
+	(18, 'CAD-00018', 26, NULL, '2023-06-01', '2023-07-20', 1, '2023-06-05 08:26:33', '2023-06-05 08:26:33', NULL),
+	(19, 'CAD-00019', 25, NULL, '2023-06-01', '2023-07-20', 1, '2023-06-05 08:26:58', '2023-06-06 05:54:00', NULL),
+	(20, 'CAD-00020', 30, NULL, '2023-06-01', '2023-06-30', 1, '2023-06-05 08:27:22', '2023-06-06 05:53:53', NULL),
+	(21, 'CAD-00021', 29, NULL, '2023-06-01', '2023-06-30', 1, '2023-06-05 08:27:42', '2023-06-06 05:53:44', NULL),
+	(22, 'CAD-00022', 43, 4, '2023-06-01', '2023-07-15', 1, '2023-06-07 01:40:24', '2023-06-20 08:38:29', NULL),
+	(23, 'CAD-00023', 76, 5, '2023-06-01', '2023-06-10', 1, '2023-06-07 07:44:31', '2023-06-19 10:00:19', NULL),
+	(24, 'CAD-00024', 77, 5, '2023-06-01', '2023-06-10', 1, '2023-06-07 07:44:31', '2023-06-19 10:00:28', NULL),
+	(25, 'CAD-00025', 53, 5, '2023-06-01', '2023-06-30', 1, '2023-06-10 05:57:57', '2023-06-19 09:59:59', NULL),
+	(26, 'CAD-00026', 54, 5, '2023-06-01', '2023-06-30', 1, '2023-06-10 05:57:57', '2023-06-19 10:00:08', NULL),
+	(27, 'CAD-00027', 55, 5, '2023-06-01', '2023-06-30', 1, '2023-06-14 02:24:36', '2023-06-19 09:59:50', NULL),
+	(28, 'CAD-00028', 56, 5, '2023-06-01', '2023-07-31', 1, '2023-06-14 02:34:06', '2023-06-19 09:59:25', NULL),
+	(29, 'CAD-00029', 80, 5, '2023-06-26', '2023-07-31', 1, '2023-06-26 06:44:35', '2023-06-26 07:45:16', NULL),
+	(30, 'CAD-00030', 79, 5, '2023-06-26', '2023-07-31', 1, '2023-06-26 06:44:36', '2023-06-26 07:45:07', NULL),
+	(31, 'CAD-00031', 78, 5, '2023-06-26', '2023-07-31', 1, '2023-06-26 06:51:03', '2023-06-26 07:45:02', NULL);
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.content_screens
 DROP TABLE IF EXISTS `content_screens`;
@@ -12400,7 +12457,11 @@ CREATE TABLE IF NOT EXISTS `content_screens` (
   CONSTRAINT `content_screens_site_screen_product_id_foreign` FOREIGN KEY (`site_screen_product_id`) REFERENCES `site_screen_products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 -- Dumping data for table prestige.content_screens: ~48 rows (approximately)
+=======
+-- Dumping data for table prestige.content_screens: ~59 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `content_screens` (`content_id`, `site_screen_product_id`, `site_screen_id`, `site_id`) VALUES
 	(1, 44, 227, 46),
 	(1, 95, 228, 46),
@@ -12449,7 +12510,22 @@ INSERT INTO `content_screens` (`content_id`, `site_screen_product_id`, `site_scr
 	(23, 45, 228, 46),
 	(23, 96, 227, 46),
 	(24, 44, 227, 46),
+<<<<<<< HEAD
 	(24, 95, 228, 46);
+=======
+	(24, 95, 228, 46),
+	(25, 45, 228, 46),
+	(25, 96, 227, 46),
+	(26, 44, 227, 46),
+	(26, 95, 228, 46),
+	(27, 45, 228, 46),
+	(27, 96, 227, 46),
+	(28, 44, 227, 46),
+	(28, 95, 228, 46),
+	(31, 106, 292, 50),
+	(30, 106, 292, 50),
+	(29, 106, 292, 50);
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.contracts
 DROP TABLE IF EXISTS `contracts`;
@@ -12474,9 +12550,9 @@ CREATE TABLE IF NOT EXISTS `contracts` (
   PRIMARY KEY (`id`),
   KEY `contracts_company_id_foreign` (`company_id`),
   CONSTRAINT `contracts_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contracts: ~14 rows (approximately)
+-- Dumping data for table prestige.contracts: ~19 rows (approximately)
 INSERT INTO `contracts` (`id`, `serial_number`, `company_id`, `name`, `reference_code`, `remarks`, `is_indefinite`, `is_exclusive`, `display_duration`, `slots_per_loop`, `exposure_per_day`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, NULL, 3, 'Sample Contract 1', NULL, NULL, 0, 1, 420, 3, 100, NULL, NULL, 1, '2023-05-03 09:04:08', '2023-05-05 09:33:41', '2023-05-05 09:33:41'),
 	(2, NULL, 3, 'Sample Contract 2', NULL, NULL, 0, 0, 300, 1, 100, NULL, NULL, 1, '2023-05-03 09:36:33', '2023-05-05 09:33:43', '2023-05-05 09:33:43'),
@@ -12489,9 +12565,18 @@ INSERT INTO `contracts` (`id`, `serial_number`, `company_id`, `name`, `reference
 	(9, NULL, 3, 'SM site partner contract 1', NULL, NULL, 0, 0, 360, 3, 100, NULL, NULL, 1, '2023-05-05 09:34:39', '2023-05-05 09:35:23', '2023-05-05 09:35:23'),
 	(10, NULL, 3, 'SM site partner contract 1', NULL, NULL, 0, 0, 360, 3, 100, NULL, NULL, 1, '2023-05-05 09:34:59', '2023-05-09 06:41:40', '2023-05-09 06:41:40'),
 	(11, NULL, 3, 'SM site partner contract 2', NULL, NULL, 0, 0, 360, 1, 100, NULL, NULL, 1, '2023-05-05 09:36:39', '2023-05-18 03:27:52', '2023-05-18 03:27:52'),
+<<<<<<< HEAD
 	(12, 'CTR-00012', 3, 'Site Partner Contract', 'test', 'test test', 1, 0, NULL, 4, 300, '2023-06-01', '2023-06-30', 1, '2023-05-18 05:58:27', '2023-06-03 08:19:26', NULL),
+=======
+	(12, 'CTR-00012', 3, 'Site Partner Contract', 'test', 'test test', 1, 0, NULL, 4, 300, '2023-06-01', '2023-06-30', 1, '2023-05-18 05:58:27', '2023-06-23 07:00:46', NULL),
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 	(13, NULL, 2, 'Initial Advertisement for all brands', NULL, NULL, 1, 0, NULL, 4, 300, NULL, NULL, 1, '2023-05-18 06:26:57', '2023-05-18 06:26:57', NULL),
-	(14, NULL, 3, 'Sample CRUD 2', NULL, NULL, 0, 0, 15, 30, 200, NULL, NULL, 1, '2023-05-23 07:23:05', '2023-05-23 07:45:46', '2023-05-23 07:45:46');
+	(14, NULL, 3, 'Sample CRUD 2', NULL, NULL, 0, 0, 15, 30, 200, NULL, NULL, 1, '2023-05-23 07:23:05', '2023-05-23 07:45:46', '2023-05-23 07:45:46'),
+	(15, 'CTR-00012', 3, 'Site Partner Contract', 'test', 'test test', 1, 0, NULL, 4, 300, '2023-06-01', '2023-06-30', 1, '2023-06-23 06:54:26', '2023-06-23 06:54:26', '2023-05-23 07:45:46'),
+	(16, 'CTR-00016', 3, 'Site Partner Contract', 'test', 'test test', 1, 0, NULL, 4, 300, '2023-06-01', '2023-06-30', 1, '2023-06-23 07:16:16', '2023-06-23 07:18:47', '2023-06-23 07:18:47'),
+	(17, 'CTR-00017', 3, 'Site Partner Contract', 'test', 'test test', 1, 0, NULL, 4, 300, '2023-06-01', '2023-06-30', 1, '2023-06-23 07:16:34', '2023-06-23 07:16:34', NULL),
+	(18, 'CTR-00018', 3, 'Site Partner Contract', 'test', 'test test', 1, 0, NULL, 4, 300, '2023-06-01', '2023-06-30', 1, '2023-06-23 07:19:37', '2023-06-23 07:19:37', NULL),
+	(19, 'CTR-00019', 3, 'Site Partner Contract', 'test', 'test test', 1, 0, NULL, 4, 300, '2023-06-01', '2023-06-30', 1, '2023-06-23 07:21:07', '2023-06-23 07:27:49', NULL);
 
 -- Dumping structure for table prestige.contract_brands
 DROP TABLE IF EXISTS `contract_brands`;
@@ -12504,7 +12589,7 @@ CREATE TABLE IF NOT EXISTS `contract_brands` (
   CONSTRAINT `contract_brands_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.contract_brands: ~76 rows (approximately)
+-- Dumping data for table prestige.contract_brands: ~153 rows (approximately)
 INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
 	(3, 7690),
 	(2, 7698),
@@ -12555,6 +12640,84 @@ INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
 	(13, 7675),
 	(13, 7714),
 	(13, 5861),
+	(19, 7214),
+	(19, 7216),
+	(19, 7217),
+	(19, 7218),
+	(19, 7219),
+	(19, 7220),
+	(19, 7221),
+	(19, 7222),
+	(19, 7223),
+	(19, 7224),
+	(19, 7225),
+	(19, 7226),
+	(19, 7227),
+	(19, 7228),
+	(19, 7229),
+	(19, 7230),
+	(19, 7231),
+	(19, 7232),
+	(19, 7233),
+	(19, 7234),
+	(19, 7235),
+	(19, 7236),
+	(19, 7237),
+	(19, 7239),
+	(19, 7241),
+	(19, 7398),
+	(18, 7214),
+	(18, 7216),
+	(18, 7217),
+	(18, 7218),
+	(18, 7219),
+	(18, 7220),
+	(18, 7221),
+	(18, 7222),
+	(18, 7223),
+	(18, 7224),
+	(18, 7225),
+	(18, 7226),
+	(18, 7227),
+	(18, 7228),
+	(18, 7229),
+	(18, 7230),
+	(18, 7231),
+	(18, 7232),
+	(18, 7233),
+	(18, 7234),
+	(18, 7235),
+	(18, 7236),
+	(18, 7237),
+	(18, 7239),
+	(18, 7241),
+	(18, 7398),
+	(17, 7214),
+	(17, 7216),
+	(17, 7217),
+	(17, 7218),
+	(17, 7219),
+	(17, 7220),
+	(17, 7221),
+	(17, 7222),
+	(17, 7223),
+	(17, 7224),
+	(17, 7225),
+	(17, 7226),
+	(17, 7227),
+	(17, 7228),
+	(17, 7229),
+	(17, 7230),
+	(17, 7231),
+	(17, 7232),
+	(17, 7233),
+	(17, 7234),
+	(17, 7235),
+	(17, 7236),
+	(17, 7237),
+	(17, 7239),
+	(17, 7241),
+	(17, 7398),
 	(12, 7214),
 	(12, 7216),
 	(12, 7217),
@@ -12580,7 +12743,6 @@ INSERT INTO `contract_brands` (`contract_id`, `brand_id`) VALUES
 	(12, 7237),
 	(12, 7239),
 	(12, 7241),
-	(12, 7246),
 	(12, 7398);
 
 -- Dumping structure for table prestige.contract_screens
@@ -12596,7 +12758,11 @@ CREATE TABLE IF NOT EXISTS `contract_screens` (
   CONSTRAINT `contract_screens_contract_id_foreign` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 -- Dumping data for table prestige.contract_screens: ~20 rows (approximately)
+=======
+-- Dumping data for table prestige.contract_screens: ~21 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `product_application`) VALUES
 	(3, 0, 1, 'Directory'),
 	(3, 0, 1, 'Digital Signage'),
@@ -12615,9 +12781,16 @@ INSERT INTO `contract_screens` (`contract_id`, `site_screen_id`, `site_id`, `pro
 	(14, 2, 1, 'Directory'),
 	(14, 5, 1, 'Directory'),
 	(13, 0, 0, 'All'),
+<<<<<<< HEAD
 	(12, 0, 1, 'Directory'),
 	(12, 0, 1, 'Digital Signage'),
 	(12, 0, 46, 'Directory');
+=======
+	(19, 0, 48, 'Directory'),
+	(18, 0, 44, 'Directory'),
+	(17, 0, 42, 'Directory'),
+	(12, 0, 24, 'Directory');
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.customer_care
 DROP TABLE IF EXISTS `customer_care`;
@@ -12692,7 +12865,11 @@ CREATE TABLE IF NOT EXISTS `last_update_ats` (
 -- Dumping data for table prestige.last_update_ats: 1 rows
 /*!40000 ALTER TABLE `last_update_ats` DISABLE KEYS */;
 INSERT INTO `last_update_ats` (`last_updated_at`) VALUES
+<<<<<<< HEAD
 	('2023-06-08 16:47:23');
+=======
+	('2023-06-27 09:59:05');
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 /*!40000 ALTER TABLE `last_update_ats` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.logs
@@ -12727,7 +12904,11 @@ CREATE TABLE IF NOT EXISTS `logs` (
   KEY `logs_advertisement_id_index` (`advertisement_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 -- Dumping data for table prestige.logs: ~344 rows (approximately)
+=======
+-- Dumping data for table prestige.logs: ~353 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_category_id`, `main_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `advertisement_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:42', '2023-02-28 06:31:42', NULL),
 	(2, 1, 2, 6, 1, 1, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:43', '2023-02-28 06:31:43', NULL),
@@ -13468,6 +13649,7 @@ CREATE TABLE IF NOT EXISTS `play_lists` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=1010 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.play_lists: ~40 rows (approximately)
@@ -13512,6 +13694,63 @@ INSERT INTO `play_lists` (`id`, `content_id`, `site_screen_id`, `company_id`, `b
 	(1007, 24, 228, 2, 7675, 6, 1, 1, 34, 0, '2023-06-06 23:28:48', '2023-06-06 23:28:48'),
 	(1008, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-06-06 23:28:48', '2023-06-06 23:28:48'),
 	(1009, 7, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-06-06 23:28:48', '2023-06-06 23:28:48');
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=1727 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.play_lists: ~51 rows (approximately)
+INSERT INTO `play_lists` (`id`, `content_id`, `site_screen_id`, `company_id`, `brand_id`, `category_id`, `parent_category_id`, `main_category_id`, `advertisement_id`, `sequence`, `created_at`, `updated_at`) VALUES
+	(1662, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1663, 17, 228, 2, 52, 11, 1, 1, 12, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1664, 11, 228, 2, 6162, 18, 3, 3, 6, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1665, 10, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1666, 19, 228, 2, 76, 30, 5, 5, 13, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1667, 1, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1668, 16, 228, 2, 52, 11, 1, 1, 12, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1669, 27, 228, 2, 6181, 19, 3, 3, 28, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1670, 9, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1671, 18, 228, 2, 76, 30, 5, 5, 13, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1672, 4, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1673, 20, 228, 2, 974, 11, 1, 1, 15, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1674, 28, 228, 2, 6181, 19, 3, 3, 28, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1675, 22, 228, 2, 5888, 25, 4, 4, 22, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1676, 3, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1677, 21, 228, 2, 974, 11, 1, 1, 15, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1678, 5, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1679, 25, 228, 2, 6174, 10, 1, 1, 27, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1680, 6, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1681, 26, 228, 2, 6174, 10, 1, 1, 27, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1682, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1683, 23, 228, 2, 7675, 6, 1, 1, 34, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1684, 7, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1685, 24, 228, 2, 7675, 6, 1, 1, 34, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1686, 2, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1687, 17, 227, 2, 52, 11, 1, 1, 12, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1688, 11, 227, 2, 6162, 18, 3, 3, 6, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1689, 10, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1690, 19, 227, 2, 76, 30, 5, 5, 13, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1691, 1, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1692, 16, 227, 2, 52, 11, 1, 1, 12, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1693, 27, 227, 2, 6181, 19, 3, 3, 28, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1694, 9, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1695, 18, 227, 2, 76, 30, 5, 5, 13, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1696, 4, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1697, 20, 227, 2, 974, 11, 1, 1, 15, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1698, 28, 227, 2, 6181, 19, 3, 3, 28, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1699, 22, 227, 2, 5888, 25, 4, 4, 22, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1700, 3, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1701, 21, 227, 2, 974, 11, 1, 1, 15, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1702, 5, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1703, 25, 227, 2, 6174, 10, 1, 1, 27, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1704, 6, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1705, 26, 227, 2, 6174, 10, 1, 1, 27, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1706, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1707, 23, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1708, 7, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1709, 24, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-06-19 16:38:29', '2023-06-19 16:38:29'),
+	(1724, 31, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-06-26 07:45:16', '2023-06-26 07:45:16'),
+	(1725, 30, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-06-26 07:45:16', '2023-06-26 07:45:16'),
+	(1726, 29, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-06-26 07:45:16', '2023-06-26 07:45:16');
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.roles
 DROP TABLE IF EXISTS `roles`;
@@ -13558,9 +13797,9 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sites_deleted_at_index` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.sites: ~49 rows (approximately)
+-- Dumping data for table prestige.sites: ~50 rows (approximately)
 INSERT INTO `sites` (`id`, `serial_number`, `name`, `descriptions`, `site_logo`, `site_banner`, `site_background`, `active`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'ST-00001', 'SM Megamall', 'KING SM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,<br>\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. <br>\r\n<br>\r\nFun and Festive Malling at SM City Tuguegarao!<br><br>\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/SMMG-Logo-positive.png', 'uploads/media/sites/banners/about-us-smmg.jpg', 'uploads/media/sites/background/SMMG-BG.jpg', 1, 0, '2022-10-24 00:54:28', '2023-06-02 02:38:06', NULL),
 	(2, NULL, 'SM Tuguegarao', 'KING\r\nSM City Tuguegarao fulfills the city\'s need for a new kind of destination. A meeting place for the local community that offers extensive leisure activities and interactive experiences,\r\nand multiple amenities for people to work, play and eat. SM City Tuguegarao offers all new shopping experience for shoppers to meet and socialize, be it indoor or outdoor. \r\n\r\nIt\'s Fun and Festive Malling at SM City Tuguegarao!\r\n\r\nExciting activities await you and your family and friends at SM City Tuguegarao! Keep updated with our latest events and promotions.', '', 'uploads/media/sites/banners/about-us-smtu.jpg', NULL, 1, 0, '2022-10-25 17:14:19', '2023-04-17 02:16:03', '2023-04-17 02:16:03'),
@@ -13606,11 +13845,20 @@ INSERT INTO `sites` (`id`, `serial_number`, `name`, `descriptions`, `site_logo`,
 	(42, 'ST-00042', 'SM Roxas', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 07:11:00', '2023-06-01 10:10:00', NULL),
 	(43, 'ST-00043', 'SM San Jose del Monte', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 07:26:39', '2023-06-01 10:09:50', NULL),
 	(44, 'ST-00044', 'SM San Pablo', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:08:08', '2023-06-01 10:09:44', NULL),
+<<<<<<< HEAD
 	(45, 'ST-00045', 'SM Sta. Rosa', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:11:57', '2023-06-01 10:09:27', NULL),
 	(46, 'ST-00046', 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', 'uploads/media/sites/background/BG-Kiosk.jpg', 1, 1, '2023-04-19 09:14:12', '2023-06-01 10:09:33', NULL),
 	(47, 'ST-00047', 'SM Telebastagan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:38:55', '2023-06-01 10:09:21', NULL),
 	(48, 'ST-00048', 'SM Tuguegarao Downtown', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:45:57', '2023-06-01 10:09:11', NULL),
 	(49, 'ST-00049', 'SM Urdaneta', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:51:50', '2023-06-01 10:09:05', NULL);
+=======
+	(45, 'ST-00045', 'SM Sta. Rosa', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:11:57', '2023-06-26 02:12:48', NULL),
+	(46, 'ST-00046', 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', 'uploads/media/sites/background/BG-Kiosk.jpg', 1, 0, '2023-04-19 09:14:12', '2023-06-27 01:56:58', NULL),
+	(47, 'ST-00047', 'SM Telebastagan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:38:55', '2023-06-01 10:09:21', NULL),
+	(48, 'ST-00048', 'SM Tuguegarao Downtown', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:45:57', '2023-06-22 10:26:32', NULL),
+	(49, 'ST-00049', 'SM Urdaneta', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:51:50', '2023-06-22 10:01:22', NULL),
+	(50, 'ST-00050', 'TriNoma', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', '', '', '', 1, 1, '2023-06-26 02:42:49', '2023-06-27 01:56:58', NULL);
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.sites_meta
 DROP TABLE IF EXISTS `sites_meta`;
@@ -13626,9 +13874,15 @@ CREATE TABLE IF NOT EXISTS `sites_meta` (
   KEY `sites_meta_site_id_foreign` (`site_id`),
   KEY `sites_meta_meta_key_index` (`meta_key`),
   CONSTRAINT `sites_meta_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=436 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.sites_meta: ~435 rows (approximately)
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=449 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.sites_meta: ~448 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'facebook', '@smmegamall', '2022-10-24 00:54:28', '2023-01-04 08:46:20', NULL),
 	(2, 1, 'instagram', '@smmegamall', '2022-10-24 00:54:28', '2023-01-04 08:46:20', NULL),
@@ -14064,7 +14318,24 @@ INSERT INTO `sites_meta` (`id`, `site_id`, `meta_key`, `meta_value`, `created_at
 	(432, 8, 'site_code', 'SMLA', '2023-05-31 06:52:14', '2023-05-31 06:52:14', NULL),
 	(433, 43, 'premiere', '0', '2023-06-01 10:09:50', '2023-06-01 10:09:50', NULL),
 	(434, 43, 'multilanguage', '0', '2023-06-01 10:09:50', '2023-06-01 10:09:50', NULL),
+<<<<<<< HEAD
 	(435, 43, 'site_code', 'undefined', '2023-06-01 10:09:50', '2023-06-01 10:09:50', NULL);
+=======
+	(435, 43, 'site_code', 'SMSJ', '2023-06-01 10:09:50', '2023-06-09 08:39:44', NULL),
+	(436, 49, 'company_id', '3', '2023-06-22 10:01:22', '2023-06-22 10:01:22', NULL),
+	(437, 48, 'company_id', '3', '2023-06-22 10:17:19', '2023-06-22 10:26:32', NULL),
+	(438, 46, 'company_id', '3', '2023-06-22 10:26:41', '2023-06-22 10:26:41', NULL),
+	(439, 50, 'company_id', NULL, '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(440, 50, 'facebook', 'null', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(441, 50, 'instagram', 'null', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(442, 50, 'twitter', 'null', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(443, 50, 'time_from', 'null', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(444, 50, 'time_to', 'null', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(445, 50, 'website', 'null', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(446, 50, 'premiere', '0', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(447, 50, 'multilanguage', '0', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL),
+	(448, 50, 'site_code', 'TRIN', '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL);
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.site_ads
 DROP TABLE IF EXISTS `site_ads`;
@@ -14220,9 +14491,9 @@ CREATE TABLE IF NOT EXISTS `site_buildings` (
   PRIMARY KEY (`id`),
   KEY `site_buildings_site_id_foreign` (`site_id`),
   CONSTRAINT `site_buildings_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_buildings: ~60 rows (approximately)
+-- Dumping data for table prestige.site_buildings: ~61 rows (approximately)
 INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 'Mega A', 'Mega A', 1, '2022-10-24 00:54:59', '2022-10-24 00:54:59', NULL),
 	(2, 1, 'Mega B', 'Mega B', 1, '2022-10-24 00:55:05', '2022-10-24 00:55:05', NULL),
@@ -14283,7 +14554,8 @@ INSERT INTO `site_buildings` (`id`, `site_id`, `name`, `descriptions`, `active`,
 	(57, 8, 'Main Building', 'Main Building', 1, '2023-04-20 07:16:31', '2023-04-20 07:16:31', NULL),
 	(58, 15, 'Main Building', 'Main Building', 1, '2023-04-20 08:40:11', '2023-04-20 08:40:11', NULL),
 	(59, 18, 'Main Building', 'Main Building', 1, '2023-04-20 09:43:58', '2023-04-20 09:43:58', NULL),
-	(60, 19, 'Bldg A', 'Bldg A', 1, '2023-04-20 09:51:32', '2023-04-20 09:51:32', NULL);
+	(60, 19, 'Bldg A', 'Bldg A', 1, '2023-04-20 09:51:32', '2023-04-20 09:51:32', NULL),
+	(61, 50, 'Main Building', 'Main Building', 1, '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL);
 
 -- Dumping structure for table prestige.site_building_levels
 DROP TABLE IF EXISTS `site_building_levels`;
@@ -14301,9 +14573,9 @@ CREATE TABLE IF NOT EXISTS `site_building_levels` (
   KEY `site_building_levels_site_building_id_foreign` (`site_building_id`),
   CONSTRAINT `site_building_levels_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_building_levels_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_building_levels: ~179 rows (approximately)
+-- Dumping data for table prestige.site_building_levels: ~180 rows (approximately)
 INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 1, 'LGF', 1, '2022-10-24 01:00:47', '2022-10-24 01:00:47', NULL),
 	(2, 1, 1, 'UGF', 1, '2022-10-24 01:00:53', '2022-10-24 01:00:53', NULL),
@@ -14483,7 +14755,8 @@ INSERT INTO `site_building_levels` (`id`, `site_id`, `site_building_id`, `name`,
 	(176, 19, 60, 'UGF', 1, '2023-04-20 09:51:44', '2023-04-20 09:51:44', NULL),
 	(177, 19, 60, '2F', 1, '2023-04-20 09:51:52', '2023-04-20 09:51:52', NULL),
 	(178, 20, 54, '2F', 1, '2023-04-20 09:53:59', '2023-04-20 09:53:59', NULL),
-	(179, 46, 52, '2F', 1, '2023-04-26 05:46:19', '2023-04-26 05:46:19', NULL);
+	(179, 46, 52, '2F', 1, '2023-04-26 05:46:19', '2023-04-26 05:46:19', NULL),
+	(180, 50, 61, 'GF', 1, '2023-06-26 02:42:49', '2023-06-26 02:42:49', NULL);
 
 -- Dumping structure for table prestige.site_feedback
 DROP TABLE IF EXISTS `site_feedback`;
@@ -19066,9 +19339,9 @@ CREATE TABLE IF NOT EXISTS `site_screens` (
   CONSTRAINT `site_screens_site_building_id_foreign` FOREIGN KEY (`site_building_id`) REFERENCES `site_buildings` (`id`),
   CONSTRAINT `site_screens_site_building_level_id_foreign` FOREIGN KEY (`site_building_level_id`) REFERENCES `site_building_levels` (`id`),
   CONSTRAINT `site_screens_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=293 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screens: ~285 rows (approximately)
+-- Dumping data for table prestige.site_screens: ~286 rows (approximately)
 INSERT INTO `site_screens` (`id`, `serial_number`, `site_id`, `site_building_id`, `physical_size_height`, `site_building_level_id`, `site_point_id`, `screen_type`, `orientation`, `product_application`, `physical_size_diagonal`, `physical_size_width`, `physical_serial_number`, `dimension`, `width`, `height`, `kiosk_id`, `name`, `slots`, `active`, `is_default`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'SS-00001', 1, 1, NULL, 1, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, '1920 x 1080', NULL, NULL, 'thBRpAF7GchJOrBFe', 'Food Court', 20, 1, 0, 0, '2022-10-25 01:28:36', '2023-05-31 09:13:18', NULL),
 	(2, 'SS-00002', 1, 1, NULL, 2, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HmcSeFjl3tsyn0mva', 'National Bookstore', 24, 1, 0, 0, '2022-10-25 01:39:22', '2023-05-31 09:13:15', NULL),
@@ -19286,12 +19559,17 @@ INSERT INTO `site_screens` (`id`, `serial_number`, `site_id`, `site_building_id`
 	(220, 'SS-00220', 16, 48, NULL, 150, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'jl3JmHupWw9mDJW9', 'Nailandia', 40, 1, 0, 0, '2023-04-19 08:06:06', '2023-05-31 07:56:03', NULL),
 	(221, 'SS-00221', 44, 49, NULL, 151, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'UDCxzLPmjYj1CToI', 'Starbucks', 40, 1, 0, 0, '2023-04-19 08:11:17', '2023-05-31 07:55:59', NULL),
 	(222, 'SS-00222', 44, 49, NULL, 151, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'Wkt2XelZwz107ao2', 'Pizza Hut', 40, 1, 0, 0, '2023-04-19 08:11:33', '2023-05-31 07:55:55', NULL),
-	(223, 'SS-00223', 45, 50, NULL, 152, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'aArryhGib1b7aTK6', 'Pizza Hut', 40, 1, 0, 0, '2023-04-19 08:15:12', '2023-05-31 07:55:51', NULL),
-	(224, 'SS-00224', 45, 50, NULL, 152, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'DDWFYeAgsq3wBelG', 'Krispy Kreme', 40, 1, 0, 0, '2023-04-19 08:15:30', '2023-05-31 07:55:48', NULL),
+	(223, 'SS-00223', 45, 50, NULL, 152, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'aArryhGib1b7aTK6', 'Pizza Hut', 40, 1, 1, 0, '2023-04-19 08:15:12', '2023-06-26 01:57:15', NULL),
+	(224, 'SS-00224', 45, 50, NULL, 152, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'DDWFYeAgsq3wBelG', 'Krispy Kreme', 40, 1, 0, 0, '2023-04-19 08:15:30', '2023-06-26 01:57:15', NULL),
 	(225, 'SS-00225', 17, 51, NULL, 153, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'wvFqIb4yl1PfdrFN', 'Starbucks', 40, 1, 0, 0, '2023-04-19 08:59:00', '2023-05-31 07:55:45', NULL),
 	(226, 'SS-00226', 17, 51, NULL, 153, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'NZB6sSiOq2qTevbf', 'Mesa', 40, 1, 0, 0, '2023-04-19 08:59:19', '2023-05-31 07:55:41', NULL),
+<<<<<<< HEAD
 	(227, 'SS-00227', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HiUqNengzXhJ33Nd', 'Starbucks', 40, 1, 0, 0, '2023-04-19 09:38:08', '2023-06-08 02:40:43', NULL),
 	(228, 'SS-00228', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'BMsKxsvKCe6ArQsx', 'Owndays', 40, 1, 1, 0, '2023-04-19 09:38:24', '2023-06-08 02:40:43', NULL),
+=======
+	(227, 'SS-00227', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'HiUqNengzXhJ33Nd', 'Starbucks', 40, 1, 1, 0, '2023-04-19 09:38:08', '2023-06-27 01:53:46', NULL),
+	(228, 'SS-00228', 46, 52, NULL, 154, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'BMsKxsvKCe6ArQsx', 'Owndays', 40, 1, 0, 0, '2023-04-19 09:38:24', '2023-06-26 10:01:02', NULL),
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 	(229, 'SS-00229', 47, 53, NULL, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'ogaaB4DOHAnSeMmF', 'Tous Les Jours', 40, 1, 0, 0, '2023-04-19 09:39:37', '2023-05-31 07:55:27', NULL),
 	(230, 'SS-00230', 47, 53, NULL, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, '8TRweDDRXNf3mrzs', 'Starbucks', 40, 1, 0, 0, '2023-04-19 09:39:56', '2023-05-31 07:55:24', NULL),
 	(231, 'SS-00231', 47, 53, NULL, 155, 0, 'LFD', 'Landscape', 'Directory', NULL, NULL, NULL, NULL, NULL, NULL, 'JpJtreRpe5zSS3je', 'BDO', 40, 1, 0, 0, '2023-04-19 09:40:17', '2023-05-31 07:55:21', NULL),
@@ -19354,7 +19632,8 @@ INSERT INTO `site_screens` (`id`, `serial_number`, `site_id`, `site_building_id`
 	(288, 'SS-00288', 19, 60, NULL, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'tIiLp2ypbPPoQkld', 'Huawei', 20, 1, 0, 1, '2023-04-20 09:48:07', '2023-05-31 07:50:50', NULL),
 	(289, 'SS-00289', 19, 60, NULL, 177, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'IOD5pzYmD35fekpi', 'Samsung', 20, 1, 0, 1, '2023-04-20 09:48:39', '2023-05-31 07:50:46', NULL),
 	(290, 'SS-00290', 20, 54, NULL, 178, 0, 'LFD', 'Portrait', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'ShTMccf1uM5c1Gah', 'Lenovo', 20, 1, 0, 0, '2023-04-20 09:54:08', '2023-05-31 07:50:43', NULL),
-	(291, 'SS-00291', 20, 54, NULL, 178, 0, 'LFD', 'Portrait', 'Digital Signage', '53 Inch', NULL, NULL, NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-05-31 07:50:37', NULL);
+	(291, 'SS-00291', 20, 54, NULL, 178, 0, 'LFD', 'Portrait', 'Digital Signage', '53 Inch', NULL, NULL, NULL, NULL, NULL, 'zYhRuJuKfQkJ85IU', 'Power Mac', 20, 1, 0, 0, '2023-04-20 09:54:26', '2023-05-31 07:50:37', NULL),
+	(292, 'SS-00292', 50, 61, NULL, 180, 0, 'LFD', 'Landscape', 'Digital Signage', NULL, NULL, NULL, NULL, NULL, NULL, 'efkj6xjCirjYgoNw', 'TriNoma', 0, 1, 1, 0, '2023-06-26 02:42:51', '2023-06-27 01:56:58', NULL);
 
 -- Dumping structure for table prestige.site_screen_products
 DROP TABLE IF EXISTS `site_screen_products`;
@@ -19377,9 +19656,9 @@ CREATE TABLE IF NOT EXISTS `site_screen_products` (
   PRIMARY KEY (`id`),
   KEY `pi_products_site_screen_id_foreign` (`site_screen_id`),
   CONSTRAINT `pi_products_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.site_screen_products: ~101 rows (approximately)
+-- Dumping data for table prestige.site_screen_products: ~102 rows (approximately)
 INSERT INTO `site_screen_products` (`id`, `serial_number`, `site_screen_id`, `ad_type`, `description`, `dimension`, `width`, `height`, `sec_slot`, `slots`, `active`, `is_exclusive`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'SSP-00001', 1, 'Full Screen Ad', '10 sec, per month', '1920x1080', '1920', '1080', 10, 40, 1, 0, '2023-05-08 06:50:08', '2023-05-08 06:50:08', NULL),
 	(2, 'SSP-00002', 1, 'Banner Ad', '10 sec, per month', '470x1060', '470', '1060', 15, 40, 1, 0, '2023-05-08 07:02:52', '2023-05-08 07:15:54', NULL),
@@ -19474,14 +19753,15 @@ INSERT INTO `site_screen_products` (`id`, `serial_number`, `site_screen_id`, `ad
 	(91, 'SSP-00091', 89, 'Full Screen Ad', NULL, '384x1024', '384', '1024', 10, 40, 1, 0, '2023-05-08 09:35:47', '2023-06-02 08:37:37', NULL),
 	(92, 'SSP-00092', 90, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, 0, '2023-05-08 09:36:08', '2023-06-02 08:37:33', NULL),
 	(93, 'SSP-00093', 91, 'Full Screen Ad', NULL, '448x1024', '448', '1024', 10, 40, 1, 0, '2023-05-08 09:36:29', '2023-06-02 08:37:30', NULL),
-	(94, 'SSP-00094', 92, 'Full Screen Ad', 'Admin', '384x1024', '384', '1024', 10, 40, 0, 0, '2023-05-08 09:36:56', '2023-06-02 08:37:26', NULL),
+	(94, 'SSP-00094', 92, 'Full Screen Ad', 'Admin', '384x1024', '384', '1024', 10, 40, 1, 0, '2023-05-08 09:36:56', '2023-06-26 06:28:27', NULL),
 	(95, 'SSP-00095', 228, 'Full Screen Ad', NULL, '1920x1080', '1920', '1080', 10, 40, 1, 0, '2023-05-18 06:33:48', '2023-06-02 08:37:21', NULL),
 	(96, 'SSP-00096', 227, 'Banner Ad', 'test', '470x1060', '470', '1060', 10, 40, 1, 0, '2023-05-18 06:34:45', '2023-06-02 08:37:18', NULL),
 	(99, 'SSP-00099', 1, 'Full Screen Ad', 'this is test edit', '1920x1080', '1920', '1080', 15, 50, 0, 0, '2023-05-23 08:06:56', '2023-05-23 08:07:51', '2023-05-23 08:07:51'),
 	(100, 'SSP-00100', 1, 'Full Screen Ad', 'this is a test test test etst', '1920x1080', '1920', '1080', 10, 50, 1, 0, '2023-05-26 03:02:39', '2023-05-26 03:02:48', '2023-05-26 03:02:48'),
 	(101, 'SSP-00101', 227, 'Promo Page', NULL, '700x700', '700', '700', 10, 40, 1, 0, '2023-05-29 02:19:34', '2023-06-02 08:37:15', NULL),
 	(102, 'SSP-00102', 228, 'Promo Page', NULL, '700x700', '700', '700', 10, 40, 1, 0, '2023-05-29 02:43:59', '2023-06-02 08:37:04', NULL),
-	(103, 'SSP-00103', 1, 'Full Screen Ad', 'this is a test test', '700x700', '700', '700', 10, 50, 1, 0, '2023-05-30 07:06:51', '2023-06-02 08:36:55', NULL);
+	(103, 'SSP-00103', 1, 'Full Screen Ad', 'this is a test test', '700x700', '700', '700', 10, 50, 1, 0, '2023-05-30 07:06:51', '2023-06-02 08:36:55', NULL),
+	(106, 'SSP-00106', 292, 'Full Screen Ad', NULL, '1792x768', '1792', '768', 10, 40, 1, 0, '2023-06-26 06:04:49', '2023-06-26 06:04:49', NULL);
 
 -- Dumping structure for table prestige.site_screen_uptime
 DROP TABLE IF EXISTS `site_screen_uptime`;
@@ -19516,7 +19796,11 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes` (
   CONSTRAINT `site_screen_uptimes_site_screen_id_foreign` FOREIGN KEY (`site_screen_id`) REFERENCES `site_screens` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 -- Dumping data for table prestige.site_screen_uptimes: ~12 rows (approximately)
+=======
+-- Dumping data for table prestige.site_screen_uptimes: ~15 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `site_screen_uptimes` (`id`, `site_screen_id`, `up_time_date`, `total_hours`, `opening_hour`, `closing_hour`, `hours_up`, `percentage_uptime`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(3, 1, '2023-03-26', 6, '10:00:00', '22:00:00', 12, 50.00, '2023-03-27 06:46:55', '2023-03-27 06:46:55', NULL),
 	(4, 1, '2023-03-27', 7, '10:00:00', '22:00:00', 12, 58.33, '2023-03-28 02:16:44', '2023-03-28 02:16:44', NULL),
@@ -19541,9 +19825,15 @@ CREATE TABLE IF NOT EXISTS `site_screen_uptimes_temp` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table prestige.site_screen_uptimes_temp: ~521 rows (approximately)
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=1102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table prestige.site_screen_uptimes_temp: ~523 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, `up_time_hours`, `created_at`, `updated_at`) VALUES
 	(62, 4, '2023-03-28', '13:36:44', '2023-03-28 05:36:44', '2023-03-28 05:36:44'),
 	(69, 3, '2023-03-28', '14:18:44', '2023-03-28 06:18:44', '2023-03-28 06:18:44'),
@@ -20022,6 +20312,7 @@ INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, 
 	(926, 227, '2023-06-05', '16:17:43', '2023-06-05 08:17:43', '2023-06-05 08:17:43'),
 	(927, 227, '2023-06-05', '16:23:16', '2023-06-05 08:23:16', '2023-06-05 08:23:16'),
 	(928, 227, '2023-06-05', '16:34:05', '2023-06-05 08:34:05', '2023-06-05 08:34:05'),
+<<<<<<< HEAD
 	(979, 227, '2023-06-08', '10:06:53', '2023-06-08 02:06:53', '2023-06-08 02:06:53'),
 	(980, 227, '2023-06-08', '10:13:53', '2023-06-08 02:13:53', '2023-06-08 02:13:53'),
 	(981, 228, '2023-06-08', '10:54:41', '2023-06-08 02:54:41', '2023-06-08 02:54:41'),
@@ -20089,6 +20380,54 @@ INSERT INTO `site_screen_uptimes_temp` (`id`, `site_screen_id`, `up_time_date`, 
 	(1043, 228, '2023-06-08', '17:53:05', '2023-06-08 09:53:05', '2023-06-08 09:53:05'),
 	(1044, 228, '2023-06-08', '17:59:05', '2023-06-08 09:59:05', '2023-06-08 09:59:05'),
 	(1045, 228, '2023-06-08', '18:05:26', '2023-06-08 10:05:26', '2023-06-08 10:05:26');
+=======
+	(1048, 227, '2023-06-09', '16:47:31', '2023-06-09 08:47:31', '2023-06-09 08:47:31'),
+	(1049, 227, '2023-06-09', '16:51:31', '2023-06-09 08:51:31', '2023-06-09 08:51:31'),
+	(1058, 228, '2023-06-10', '12:25:54', '2023-06-10 04:25:54', '2023-06-10 04:25:54'),
+	(1059, 228, '2023-06-10', '12:29:54', '2023-06-10 04:29:54', '2023-06-10 04:29:54'),
+	(1060, 228, '2023-06-10', '12:33:54', '2023-06-10 04:33:54', '2023-06-10 04:33:54'),
+	(1061, 228, '2023-06-10', '12:37:54', '2023-06-10 04:37:54', '2023-06-10 04:37:54'),
+	(1062, 228, '2023-06-10', '12:41:54', '2023-06-10 04:41:54', '2023-06-10 04:41:54'),
+	(1063, 228, '2023-06-10', '12:45:54', '2023-06-10 04:45:54', '2023-06-10 04:45:54'),
+	(1064, 228, '2023-06-10', '12:49:54', '2023-06-10 04:49:54', '2023-06-10 04:49:54'),
+	(1065, 228, '2023-06-10', '12:53:54', '2023-06-10 04:53:54', '2023-06-10 04:53:54'),
+	(1066, 228, '2023-06-10', '12:57:54', '2023-06-10 04:57:54', '2023-06-10 04:57:54'),
+	(1067, 228, '2023-06-10', '13:01:54', '2023-06-10 05:01:54', '2023-06-10 05:01:54'),
+	(1068, 228, '2023-06-10', '13:05:54', '2023-06-10 05:05:54', '2023-06-10 05:05:54'),
+	(1069, 228, '2023-06-10', '13:09:54', '2023-06-10 05:09:54', '2023-06-10 05:09:54'),
+	(1070, 228, '2023-06-10', '13:13:54', '2023-06-10 05:13:54', '2023-06-10 05:13:54'),
+	(1071, 228, '2023-06-10', '13:17:54', '2023-06-10 05:17:54', '2023-06-10 05:17:54'),
+	(1072, 228, '2023-06-10', '13:21:54', '2023-06-10 05:21:54', '2023-06-10 05:21:54'),
+	(1073, 228, '2023-06-10', '13:25:54', '2023-06-10 05:25:54', '2023-06-10 05:25:54'),
+	(1074, 228, '2023-06-10', '13:29:54', '2023-06-10 05:29:54', '2023-06-10 05:29:54'),
+	(1075, 228, '2023-06-10', '13:33:54', '2023-06-10 05:33:54', '2023-06-10 05:33:54'),
+	(1076, 228, '2023-06-10', '13:37:54', '2023-06-10 05:37:54', '2023-06-10 05:37:54'),
+	(1077, 228, '2023-06-10', '13:41:54', '2023-06-10 05:41:54', '2023-06-10 05:41:54'),
+	(1078, 228, '2023-06-10', '13:45:54', '2023-06-10 05:45:54', '2023-06-10 05:45:54'),
+	(1079, 228, '2023-06-10', '13:49:54', '2023-06-10 05:49:54', '2023-06-10 05:49:54'),
+	(1080, 228, '2023-06-10', '13:57:44', '2023-06-10 05:57:44', '2023-06-10 05:57:44'),
+	(1081, 228, '2023-06-10', '14:01:59', '2023-06-10 06:01:59', '2023-06-10 06:01:59'),
+	(1082, 228, '2023-06-10', '14:05:59', '2023-06-10 06:05:59', '2023-06-10 06:05:59'),
+	(1083, 228, '2023-06-10', '14:09:59', '2023-06-10 06:09:59', '2023-06-10 06:09:59'),
+	(1084, 228, '2023-06-10', '14:13:59', '2023-06-10 06:13:59', '2023-06-10 06:13:59'),
+	(1085, 228, '2023-06-10', '14:17:59', '2023-06-10 06:17:59', '2023-06-10 06:17:59'),
+	(1086, 228, '2023-06-10', '14:21:59', '2023-06-10 06:21:59', '2023-06-10 06:21:59'),
+	(1087, 228, '2023-06-10', '14:25:59', '2023-06-10 06:25:59', '2023-06-10 06:25:59'),
+	(1088, 228, '2023-06-10', '14:29:59', '2023-06-10 06:29:59', '2023-06-10 06:29:59'),
+	(1089, 228, '2023-06-10', '14:33:59', '2023-06-10 06:33:59', '2023-06-10 06:33:59'),
+	(1090, 228, '2023-06-10', '14:37:59', '2023-06-10 06:37:59', '2023-06-10 06:37:59'),
+	(1091, 228, '2023-06-10', '14:41:59', '2023-06-10 06:41:59', '2023-06-10 06:41:59'),
+	(1092, 228, '2023-06-10', '14:45:59', '2023-06-10 06:45:59', '2023-06-10 06:45:59'),
+	(1093, 228, '2023-06-10', '14:49:59', '2023-06-10 06:49:59', '2023-06-10 06:49:59'),
+	(1094, 228, '2023-06-10', '14:53:59', '2023-06-10 06:53:59', '2023-06-10 06:53:59'),
+	(1095, 228, '2023-06-10', '14:57:59', '2023-06-10 06:57:59', '2023-06-10 06:57:59'),
+	(1096, 228, '2023-06-10', '15:01:59', '2023-06-10 07:01:59', '2023-06-10 07:01:59'),
+	(1097, 228, '2023-06-10', '15:05:59', '2023-06-10 07:05:59', '2023-06-10 07:05:59'),
+	(1098, 228, '2023-06-10', '15:09:59', '2023-06-10 07:09:59', '2023-06-10 07:09:59'),
+	(1099, 228, '2023-06-10', '15:13:59', '2023-06-10 07:13:59', '2023-06-10 07:13:59'),
+	(1100, 228, '2023-06-24', '17:18:37', '2023-06-24 09:18:37', '2023-06-24 09:18:37'),
+	(1101, 228, '2023-06-24', '17:24:37', '2023-06-24 09:24:37', '2023-06-24 09:24:37');
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 
 -- Dumping structure for table prestige.site_tenants
 DROP TABLE IF EXISTS `site_tenants`;
@@ -21520,7 +21859,11 @@ CREATE TABLE IF NOT EXISTS `site_tenant_metas` (
   CONSTRAINT `site_tenant_metas_site_tenant_id_foreign` FOREIGN KEY (`site_tenant_id`) REFERENCES `site_tenants` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=755 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 -- Dumping data for table prestige.site_tenant_metas: ~754 rows (approximately)
+=======
+-- Dumping data for table prestige.site_tenant_metas: ~763 rows (approximately)
+>>>>>>> b4d560792cc4115131a5f67f47f3328b863e59d6
 INSERT INTO `site_tenant_metas` (`id`, `site_tenant_id`, `meta_key`, `meta_value`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1144, 'schedules', '[{"schedules":"       Wed, Tue","start_time":"09:00","end_time":"22:00"},{"schedules":"Thu, Fri, Sat, Sun, Mon","start_time":"10:00","end_time":"22:00"}]', '2022-11-06 22:33:34', '2022-11-07 01:41:21', NULL),
 	(2, 1144, 'subscriber_logo', 'uploads/media/subscriber/70c972c5-7b83-dfbd.jpg', '2022-11-06 22:33:34', '2022-11-06 22:58:21', NULL),

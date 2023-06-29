@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@riophae/vue-treeselect": "^0.4.0",
+        "bootstrap4-datetimepicker": "^5.2.3",
         "chart.js": "^4.2.0",
         "jquery-touchswipe": "^1.6.19",
         "pc-bootstrap4-datetimepicker": "^4.17.51",

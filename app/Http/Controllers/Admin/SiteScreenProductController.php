@@ -103,7 +103,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
             ];
 
             $site_screen_product = SiteScreenProduct::create($data);
-            $site_screen_product->serial_number = 'SSP-'.Str::padLeft($site_screen->id, 5, '0');
+            $site_screen_product->serial_number = 'SSP-'.Str::padLeft($site_screen_product->id, 5, '0');
             $site_screen_product->save();
 
             return $this->response($site_screen_product, 'Successfully Created!', 200);

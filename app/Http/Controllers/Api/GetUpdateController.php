@@ -875,6 +875,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     [
                         'serial_number' => $content->serial_number,
                         'material_id' => $content->material_id,
+                        'status_id' => $content->status_id,
                         'start_date' => $content->start_date,
                         'end_date' => $content->end_date,
                         'active' => $content->active,

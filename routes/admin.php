@@ -355,6 +355,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/content-management/transaction-statuses', 'Admin\ContentManagementController@getTransactionStatuses')->where('id', '[0-9]+')->name('admin.content-management.transaction-statuses');
     Route::get('/admin/play-list', 'Admin\ContentManagementController@playlist')->name('admin.play-list');
     Route::get('/admin/play-list/list', 'Admin\ContentManagementController@getPLayList')->name('admin.play-list.list');
+    Route::post('/admin/play-list/batch-upload', 'Admin\ContentManagementController@batchUpload')->name('admin.play-list.batch-upload');
 
     /*
     |--------------------------------------------------------------------------
