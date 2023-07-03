@@ -67,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer(
             'layout.portal.company-profile',
             function ($view) { 
-                if (Auth::guard('portal')->check()) {
+                if (Auth::guard('portal')->check()) { 
                     $user = UserViewModel::find(Auth::guard('portal')->user()->id);
                     $view->with('user', $user);
                 } else {

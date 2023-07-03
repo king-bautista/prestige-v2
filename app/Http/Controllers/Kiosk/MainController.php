@@ -415,6 +415,7 @@ class MainController extends AppBaseController
             $current_date = date('Y-m-d');
 
             $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
+            ->where('content_management.status_id', 5)
             ->where('content_management.active', 1)
             ->where('advertisement_screens.ad_type', '=', 'Banner Ad')
             ->whereDate('content_management.start_date', '<=', $current_date)
@@ -452,6 +453,7 @@ class MainController extends AppBaseController
             $current_date = date('Y-m-d');
 
             $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
+            ->where('content_management.status_id', 5)
             ->where('content_management.active', 1)
             ->where('advertisement_screens.ad_type', '=', 'Full Screen Ad')
             ->whereDate('content_management.start_date', '<=', $current_date)
