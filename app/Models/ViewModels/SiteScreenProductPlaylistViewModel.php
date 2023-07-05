@@ -42,6 +42,8 @@ class SiteScreenProductPlaylistViewModel extends Model
 	public $appends = [
         'site_screen_details',
         'site_screen_location',
+        'site_name',
+        'playlist',
     ];
 
     public function getSiteScreenDetailsAttribute() 
@@ -61,4 +63,32 @@ class SiteScreenProductPlaylistViewModel extends Model
         }
         return null;
     }
+
+    public function getSiteNameAttribute() 
+    {
+        if($this->site_screen_details) {
+            return $this->site_screen_details->site_name;
+        }
+        return null;
+    }
+
+    public function getPlaylistAttribute() 
+    {
+        $play_list = PlayListViewModel::where('play_lists.site_screen_id', $this->site_screen_id)
+        ->where('advertisement_screens.ad_type', $this->ad_type)
+        ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+        ->join('advertisement_screens', function($join)
+        {
+            $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+                 ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
+        })
+        ->select('play_lists.*', 'advertisement_screens.ad_type', 'content_management.updated_at')
+        ->orderBy('play_lists.sequence', 'ASC')
+        ->get();
+
+        if($play_list)
+            return $play_list;
+        return null;
+    }
+
 }

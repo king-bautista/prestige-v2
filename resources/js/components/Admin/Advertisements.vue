@@ -369,7 +369,6 @@
 			},
 
 			getScreens: function(index) {
-				console.log(this.advertisement.materials);
 				axios.post('/admin/site/site-screen-product/get-screens', this.advertisement.materials[index])
                 .then(response => {
 					this.advertisement.materials[index].screens = response.data.data;

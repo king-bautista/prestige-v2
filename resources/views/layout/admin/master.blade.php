@@ -59,6 +59,8 @@
     <script src="{{ URL::to('plugins/ekko-lightbox/ekko-lightbox.min.js') }}"></script>
     <!-- Filterizr-->
     <script src="{{ URL::to('plugins/filterizr/jquery.filterizr.min.js') }}"></script>
+    <!-- Jquery UI-->
+    <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 
     <!-- AdminLTE App -->
     <script src="{{ URL::to('dist/js/adminlte.min.js') }}"></script>

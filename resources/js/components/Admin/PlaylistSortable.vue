@@ -13,8 +13,7 @@
                         :actionButtons="actionButtons"
 						:otherButtons="otherButtons"
                         :primaryKey="primaryKey"
-						v-on:AddNewContent="AddNewContent"
-						v-on:editButton="editContent"
+						v-on:modalPlaylist="modalPlaylist"
 						v-on:modalBatchUpload="modalBatchUpload"
                         ref="dataTable">
 			          	</Table>
@@ -59,6 +58,64 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Playlist Content -->
+		<div class="modal fade" id="sortableContent" tabindex="-1" role="dialog" aria-labelledby="sortableContent" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Ad Playlist :<strong> {{ screen_location }} </strong><br>Ad Type :<strong> {{ ad_type }}</strong></h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<table class="table table-hover table-striped">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">ID</th>
+									<!-- <th scope="col">Preview</th> -->
+									<th scope="col">Parent Category</th>
+									<th scope="col">Category Name</th>
+									<th scope="col">Brand Name</th>
+									<th scope="col">Company Name</th>
+									<th scope="col">Duration(s)</th>
+									<th scope="col">Start Date</th>
+									<th scope="col">End Date</th>
+									<th scope="col">Status</th>
+									<th scope="col">Duration</th>
+									<th scope="col">Date Appoved</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(data, index) in playlist" v-bind:key="index" :id="data.id">
+									<td data-container="body" data-toggle="tooltip" data-placement="top" title="Drag rows up and down">{{ data.material_serial_number }}</td>
+									<!-- <td>{{ data.material_path }}</td> -->
+									<td>{{ data.parent_category_name }}</td>
+									<td>{{ data.category_name }}</td>
+									<td>{{ data.brand_name }}</td>
+									<td>{{ data.company_name }}</td>
+									<td>{{ data.display_duration }}</td>
+									<td>{{ data.start_date }}</td>
+									<td>{{ data.end_date }}</td>
+									<td>
+										<span v-if="data.active" class="badge badge-info">Active</span>
+										<span v-else class="badge badge-info">Deactivated</span>
+									</td>
+									<td>{{ data.duration }}</td>
+									<td>{{ data.updated_at }}</td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" @click="savePlaylist">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		
     </div>
 </template>
@@ -71,22 +128,15 @@
         data() {
             return {
 				file: '',
+				screen_location: '',
+				ad_type: '',
+				playlist: [],
+				sorted_data: [],
             	dataFields: {
-					material_serial_number: "Content ID",
-					// material_path: {
-            		// 	name: "Preview", 
-            		// 	type: "logo", 
-            		// },
-					ad_type: "Ad Type",
-					parent_category_name: "Parent Category",
-					category_name: "Category Name",
-					brand_name: "Brand Name",
+					serial_number: "ID",
+                    site_screen_location: "Screen Location",
 					site_name: "Site",
-                    screen_location: "Screen Location",
-					company_name: "Company Name",
-					display_duration: "Duration(s)",
-					start_date: "Start Date",
-					end_date: "End Date",
+					ad_type: "Ad Type",
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -95,11 +145,18 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    duration: "Duration",
-                    updated_at: "Date Appoved"
             	},
             	primaryKey: "id",
             	dataUrl: "/admin/play-list/list",
+				actionButtons: {
+            		edit: {
+            			title: 'Manage Playlist',
+            			name: 'Edit',
+						v_on: 'modalPlaylist',
+            			button: '<i class="fa fa-link"></i> Manage Playlist',
+            			method: 'view'
+            		},
+            	},
 				otherButtons: {
 					batchUpload: {
 						title: 'Batch Upload',
@@ -139,6 +196,40 @@
 					window.location.reload();
 				})
 			},
+
+			modalPlaylist: function(data) {
+				console.log(data);
+				this.playlist = [];
+				this.screen_location = data.site_screen_location;
+				this.ad_type = data.ad_type;
+				this.playlist = data.playlist;
+
+				$("#sortableContent").modal('show');
+			},
+
+			savePlaylist: function() {
+				var sorted_data = [];
+				$('tbody tr').each(function(){
+					var id = $(this).attr('id');
+					if(id) {
+						sorted_data.push(id);
+					}
+				});
+
+				axios.post('/admin/play-list/update-sequence', {sorted_data : sorted_data})
+                .then(response => {
+					if(response.data) {
+						$("#sortableContent").modal('hide');
+					}
+				});
+			}
+
+		},
+
+		mounted() {
+			$( function() {
+				$( "tbody" ).sortable();
+			} );
 		},
 
         components: {
