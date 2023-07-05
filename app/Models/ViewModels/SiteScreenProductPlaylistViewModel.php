@@ -76,6 +76,7 @@ class SiteScreenProductPlaylistViewModel extends Model
     {
         $play_list = PlayListViewModel::where('play_lists.site_screen_id', $this->site_screen_id)
         ->where('advertisement_screens.ad_type', $this->ad_type)
+        ->whereNull('content_management.deleted_at')
         ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
         ->join('advertisement_screens', function($join)
         {
