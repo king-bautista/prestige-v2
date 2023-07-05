@@ -42,6 +42,7 @@ class SiteScreenProductViewModel extends Model
 	public $appends = [
         'site_screen_details',
         'site_screen_location',
+        'site_name',
     ];
 
     public function getSiteScreenDetailsAttribute() 
@@ -61,4 +62,13 @@ class SiteScreenProductViewModel extends Model
         }
         return null;
     }
+
+    public function getSiteNameAttribute() 
+    {
+        if($this->site_screen_details) {
+            return $this->site_screen_details->site_name;
+        }
+        return null;
+    }
+    
 }

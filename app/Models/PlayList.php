@@ -13,7 +13,7 @@ class PlayList extends Model
      */
     protected $fillable = [
         'content_id',
-        'screen_id',
+        'site_screen_id',
         'company_id',
         'brand_id',
         'category_id',

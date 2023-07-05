@@ -18,6 +18,7 @@ use App\Models\ViewModels\ContentManagementViewModel;
 use App\Models\ViewModels\ContentScreenViewModel;
 use App\Models\ViewModels\PlayListViewModel;
 use App\Models\ViewModels\SiteScreenViewModel;
+use App\Models\ViewModels\SiteScreenProductPlaylistViewModel;
 use App\Imports\PlaylistImport;
 
 
@@ -260,18 +261,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
     {
         try
         {
-            $play_list = PlayListViewModel::when(request('search'), function($query){
+            $play_list = SiteScreenProductPlaylistViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
-            ->join('advertisement_screens', function($join)
-            {
-                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
-                     ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
-            })
-             ->where('advertisement_screens.ad_type', 'Banner Ad')
-            ->select('play_lists.*', 'advertisement_screens.ad_type', 'content_management.updated_at')
-            ->orderBy('play_lists.id', 'ASC')
+            ->join('content_screens', 'site_screen_products.id', '=', 'content_screens.site_screen_product_id')
+            ->select('site_screen_products.*')
+            ->groupBy('site_screen_products.id')
+            ->orderBy('site_screen_products.id', 'ASC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         }
@@ -284,6 +280,59 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ], 422);
         }
     }
+
+    public function updateSequence(Request $request)
+    {
+        try
+        {
+            $sequence = 1;
+            if(count($request->sorted_data) > 0) {
+                foreach($request->sorted_data as $id) {
+                    PlayList::where('id',$id)->update(['sequence' => $sequence]);
+                    $sequence++;
+                }
+            }
+
+            return $this->response(true, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    // public function getPLayListDetails(Request $request)
+    // {
+    //     try
+    //     {
+    //         $play_list = PlayListViewModel::when(request('search'), function($query){
+    //             return $query->where('name', 'LIKE', '%' . request('search') . '%');
+    //         })
+    //         ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+    //         ->join('advertisement_screens', function($join)
+    //         {
+    //             $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+    //                  ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
+    //         })
+    //          ->where('advertisement_screens.ad_type', 'Banner Ad')
+    //         ->select('play_lists.*', 'advertisement_screens.ad_type', 'content_management.updated_at')
+    //         ->orderBy('play_lists.id', 'ASC')
+    //         ->paginate(request('perPage'));
+    //         return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
+    //     }
+    //     catch (\Exception $e)
+    //     {
+    //         return response([
+    //             'message' => $e->getMessage(),
+    //             'status' => false,
+    //             'status_code' => 422,
+    //         ], 422);
+    //     }
+    // }
 
     public function batchUpload(Request $request)
     {
