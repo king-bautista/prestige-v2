@@ -259,8 +259,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function getPLayList(Request $request)
     {
-        try
-        {
+        // try
+        // {
             $play_list = SiteScreenProductPlaylistViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -270,15 +270,15 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ->orderBy('site_screen_products.id', 'ASC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function updateSequence(Request $request)
