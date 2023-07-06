@@ -184,7 +184,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         foreach($screens as $screen) {
             $loop_count = 0;
-            $loop_count = ($screen['slots']*2)/$categories->count();
+            $loop_count = ($screen['slots']*$categories->count());
             $params = [
                 'loop_count' => $loop_count,
                 'site_screen_id' => $screen['site_screen_id'],
@@ -207,8 +207,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $site_partner_ids = Company::whereIn('classification_id', [1,2])->get();
 
             // GET SITE PARTNER CONTENT
-            $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
-            $play_list = PlayList::insert($site_partner_content);            
+            // $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
+            // $play_list = PlayList::insert($site_partner_content);            
             // GET ADVERTISER CONTENT
             $advertiser_contents = $this->getContent($params, $play_list_ids, $site_partner_ids);            
             $play_list = PlayList::insert($advertiser_contents);
