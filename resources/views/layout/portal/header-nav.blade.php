@@ -18,7 +18,7 @@
             </div>
 
             <div class="float-end">
-                <div class="dropdown d-inline-block ms-1">
+                <!-- <div class="dropdown d-inline-block ms-1">
                     <button type="button" class="btn header-item noti-icon waves-effect"
                         id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
@@ -131,7 +131,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -139,7 +139,6 @@
                             src="{{ URL::to('images/user-icon.png') }}" alt="Header Avatar">
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <!-- item-->
                         <a class="dropdown-item" href="#"><i class="fa fa-address-card" aria-hidden="true"></i></i> Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">\
