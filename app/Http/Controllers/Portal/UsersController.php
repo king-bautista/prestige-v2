@@ -71,7 +71,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         }
     }
 
-    public function details($id)
+    public function details($id=null)
     {
         try
         {

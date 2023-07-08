@@ -337,13 +337,13 @@
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
-					batchUpload: {
-                        title: 'Batch Upload',
-                        v_on: 'modalBatchUpload',
-                        icon: '<i class="fas fa-upload"></i> Batch Upload',
-                        class: 'btn btn-primary btn-sm',
-                        method: 'add'
-		            },
+					// batchUpload: {
+                    //     title: 'Batch Upload',
+                    //     v_on: 'modalBatchUpload',
+                    //     icon: '<i class="fas fa-upload"></i> Batch Upload',
+                    //     class: 'btn btn-primary btn-sm',
+                    //     method: 'add'
+		            // },
 				}
             };
         },

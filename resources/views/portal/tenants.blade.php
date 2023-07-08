@@ -10,14 +10,15 @@
 @section('content')
 <!-- Main content -->
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-12">
     @include('layout.portal.company-profile')
   </div>
-  <div class="col-md-10">
+</div>
+<div class="row">
+  <div class="col-md-12">
     <portal-building-tenants></portal-building-tenants>
   </div>
 </div>
-
 <!-- /.content -->
 @stop
 

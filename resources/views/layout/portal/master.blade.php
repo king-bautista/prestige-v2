@@ -20,11 +20,10 @@
         <!-- App Css-->
         <link href="{{ URL::to('client/assets/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ URL::to('client/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="{{ URL::to('js/jquery-ui/jquery-ui.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/custom-portal.css') }}">
         <!-- Toastr --> 
         <link rel="stylesheet" href="{{ URL::to('plugins/toastr/toastr.min.css') }}">
-        <!-- Leaflet -->
-        <link rel="stylesheet" href="{{ URL::to('plugins/leaflet/leaflet.css') }}">
     </head>
 
     <body data-topbar="dark" data-layout="horizontal">
@@ -62,6 +61,8 @@
         <!-- ChartJS -->
         <script src="{{ URL::to('plugins/chart.js/Chart.min.js') }}"></script>
         <!-- AdminLTE App -->
+        <!-- Jquery UI-->
+        <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <!-- <script src="{{ URL::to('dist/js/portallte.min.js') }}"></script> -->
         <script src="{{ URL::to('js/helper.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}"></script>
@@ -73,8 +74,6 @@
         <script src="{{ URL::to('client/assets/libs/morris.js/morris.min.js') }}"></script>
         <script src="{{ URL::to('client/assets/libs/raphael/raphael.min.js') }}"></script>
         <script src="{{ URL::to('client/assets/js/pages/dashboard.init.js') }}"></script>
-        <!-- Leaflet -->
-        <script src="{{ URL::to('plugins/leaflet/leaflet.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>
 </html>

@@ -96,6 +96,7 @@ Vue.component('portal-products', require('./components/Portal/PortalProducts.vue
 Vue.component('portal-building-tenants', require('./components/Portal/PortalTenants.vue').default);
 Vue.component('portal-content', require('./components/Portal/Content.vue').default);
 Vue.component('portal-advertisements', require('./components/Portal/PortalAdvertisements.vue').default);
+Vue.component('portal-playlist', require('./components/Portal/PlaylistSortable.vue').default);
 Vue.component('portal-under-construction', require('./components/Portal/UnderConstruction.vue').default);
 
 Vue.component('portal-dashboard_population', require('./components/Portal/DashboardMerchantPopulation.vue').default);

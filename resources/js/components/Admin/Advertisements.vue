@@ -259,7 +259,7 @@
             		delete: {
             			title: 'Delete this Content',
             			name: 'Delete',
-            			apiUrl: '/admin/manage-ads/delete',
+            			apiUrl: '/portal/manage-ads/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'

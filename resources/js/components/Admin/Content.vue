@@ -375,7 +375,7 @@
         	Table,
             Multiselect,
 			datePicker
- 	   }
+ 	    }
     };
 </script>
 <style scoped>

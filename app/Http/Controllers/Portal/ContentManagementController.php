@@ -12,6 +12,8 @@ use App\Models\ContentManagement;
 use App\Models\TransactionStatus;
 use App\Models\ViewModels\UserViewModel;
 use App\Models\ViewModels\ContentManagementViewModel;
+use App\Models\ViewModels\ContentMaterialViewModel;
+use App\Models\ViewModels\SiteScreenProductPlaylistViewModel;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -29,14 +31,28 @@ class ContentManagementController extends AppBaseController implements ContentMa
         return view('portal.content_management');
     }
 
+    public function playlist()
+    {
+        return view('portal.playlist');
+    }
+
     public function list(Request $request)
     {
         try
         {
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+
             $contents = ContentManagementViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
+            ->whereNull('advertisement_materials.deleted_at')
+            ->whereNull('advertisements.deleted_at')
+            ->where('advertisements.company_id', $user->company_id)
+            ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
+            ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+            ->select('content_management.*')
+            ->orderBy('content_management.created_at', 'DESC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($contents, 'Successfully Retreived!', 200);
         }
@@ -50,12 +66,27 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function details($id)
+    public function getAllType(Request $request)
     {
         try
         {
-            $content = ContentManagementViewModel::find($id);
-            return $this->response($content, 'Successfully Retreived!', 200);
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+
+            $advertisements = ContentMaterialViewModel::when(request('search'), function($query){
+                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
+                             ->where('companies.name', 'LIKE', '%' . request('search') . '%')
+                             ->where('brands.name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->where('advertisements.status_id', 5)
+            ->where('advertisements.company_id', $user->company_id)
+            ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+            ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
+            ->select('advertisement_materials.*')
+            ->latest()
+            ->paginate(request('perPage'));
+            return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -67,94 +98,21 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function store(UploadContentRequest $request)
-    {  
-        try
-    	{
-            $data = [
-                'advertisement_id' => $request->advertisement_id['id'],
-                'site_id' => $request->site_id['id'],
-                'site_tenant_id' => $request->site_tenant_id['id'],
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'uom' => $request->uom,
-                'status_id' => 2,
-                'active' => 1,
-            ];
-
-            $content = ContentManagement::create($data);
-            $content->saveScreens($request->site_screen_id);
-
-            return $this->response($content, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
-    public function update(UploadContentRequest $request)
+    public function getPLayList(Request $request)
     {
         try
-    	{
-            $content = ContentManagement::find($request->id);
-
-            $data = [
-                'advertisement_id' => $request->advertisement_id['id'],
-                'site_id' => $request->site_id['id'],
-                'site_tenant_id' => $request->site_tenant_id['id'],
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'uom' => $request->uom,
-                'status_id' => 3,
-                'active' => ($request->active) ? 1 : 0,
-            ];
-
-            $content->update($data);
-            $content->saveScreens($request->site_screen_id);
-
-            return $this->response($content, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
         {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
+            $play_list = SiteScreenProductPlaylistViewModel::when(request('search'), function($query){
+                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->join('content_screens', 'site_screen_products.id', '=', 'content_screens.site_screen_product_id')
+            ->select('site_screen_products.*')
+            ->groupBy('site_screen_products.id')
+            ->orderBy('site_screen_products.id', 'ASC')
+            ->paginate(request('perPage'));
+            return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         }
-    }
-
-    public function delete($id)
-    {
-        try
-    	{
-            $content = ContentManagement::find($id);
-            $content->delete();
-            return $this->response($content, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
-    public function getTransactionStatuses()
-    {
-        try
-    	{
-            $transaction_statuses = TransactionStatus::get();
-            return $this->response($transaction_statuses, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),

@@ -8,9 +8,6 @@
 @endsection
 @section('content')
 <div class="row">
-  <div class="col-12">
-    <portal-dashboard_sceen_uptime></portal-dashboard_sceen_uptime>
-  </div>
   <div class="col-3">
     <portal-dashboard_is_helpful></portal-dashboard_is_helpful>
   </div>
