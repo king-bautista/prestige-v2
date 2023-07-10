@@ -21,6 +21,8 @@ use App\Models\ViewModels\SiteScreenViewModel;
 use App\Models\ViewModels\SiteScreenProductPlaylistViewModel;
 use App\Imports\PlaylistImport;
 
+use App\Http\Requests\ContentRequest;
+
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -81,7 +83,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function store(Request $request)
+    public function store(ContentRequest $request)
     {
         try
     	{
@@ -111,7 +113,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function update(Request $request)
+    public function update(ContentRequest $request)
     {
         try
     	{
