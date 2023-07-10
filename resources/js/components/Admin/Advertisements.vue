@@ -331,34 +331,41 @@
 
 			fileUpload: function(e, index) {
 				var file = e.target.files[0];
-				var file_type = e.target.files[0].type.split("/");
-				var file_path = URL.createObjectURL(file);
-				var obj = this;
-				var material;
+				if(e.target.files[0].type == 'image/jpeg' || e.target.files[0].type == 'image/jpg' || e.target.files[0].type == 'image/png' || e.target.files[0].type == 'video/ogg') {
+					var file_type = e.target.files[0].type.split("/");
+					var file_path = URL.createObjectURL(file);
+					var obj = this;
+					var material;
 
-				this.advertisement.materials[index].file = file;
-				this.advertisement.materials[index].name = file.name.replace(/\s+/g, '-');
-				this.advertisement.materials[index].size = file.size;
-				this.advertisement.materials[index].src = file_path;
-				this.advertisement.materials[index].file_type = file_type[0];
-				this.advertisement.materials[index].button_show = true;
-				this.advertisement.materials[index].list_show = false;
+					this.advertisement.materials[index].file = file;
+					this.advertisement.materials[index].name = file.name.replace(/\s+/g, '-');
+					this.advertisement.materials[index].size = file.size;
+					this.advertisement.materials[index].src = file_path;
+					this.advertisement.materials[index].file_type = file_type[0];
+					this.advertisement.materials[index].button_show = true;
+					this.advertisement.materials[index].list_show = false;
 
-				if(file_type[0] == 'image') {
-					material = new Image;
-					material.onload = function() {
-						obj.setfilter(index, material.height, material.width);
-					};
-						
-					material.src = file_path;
+					if(file_type[0] == 'image') {
+						material = new Image;
+						material.onload = function() {
+							obj.setfilter(index, material.height, material.width);
+						};
+							
+						material.src = file_path;
+					}
+					else if(file_type[0] == 'video') {
+						material = document.createElement("video");
+						material.src = file_path;
+						material.addEventListener("loadedmetadata", function () {						
+							obj.advertisement.display_duration = this.duration;
+							obj.setfilter(index, this.videoHeight, this.videoWidth);
+						});
+					}
 				}
-				else if(file_type[0] == 'video') {
-					material = document.createElement("video");
-					material.src = file_path;
-					material.addEventListener("loadedmetadata", function () {						
-						obj.advertisement.display_duration = this.duration;
-						obj.setfilter(index, this.videoHeight, this.videoWidth);
-					});
+				else {
+					toastr.error('Invalid file type.');
+					this.$refs.materials[index].value = null;
+					return false;
 				}
 			},
 
