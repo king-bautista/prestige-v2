@@ -363,7 +363,7 @@
 					}
 				}
 				else {
-					toastr.error('Invalid file type.');
+					toastr.error('Invalid file type. ');
 					this.$refs.materials[index].value = null;
 					return false;
 				}
