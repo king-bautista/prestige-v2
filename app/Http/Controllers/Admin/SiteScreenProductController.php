@@ -165,6 +165,9 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     public function getScreen(Request $request)
     {
         try {
+            return 'test';
+            return $request->all();
+
             $site_screen_products = [];
 
             $site_screen_ids = ContractScreen::where('contract_id', $request->contract_id)->where('site_screen_id', '>', 0)->get()->pluck('site_screen_id');
