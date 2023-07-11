@@ -52,7 +52,7 @@
                     class_name = 'carousel-item active';
                 }
 
-                if((banner_array.length) >= count) {
+                if((banner_array.length) > count) {
 
                     var carousel_item = '';
                     carousel_item += '<div data-interval="'+banner_array[count].display_duration*1000+'" data-index="'+count+'" class="'+class_name+'">';
@@ -83,9 +83,12 @@
         mounted() {
             var obj = this;
             $(document).ready(function(){
-                $('#banner-ads-carousel').on('slide.bs.carousel', function () {
-                    $('#carousel-banner .carousel-item:first').remove();
+                $('#banner-ads-carousel').on('slide.bs.carousel', function () {                    
                     obj.appendBanners();
+                    if($('#carousel-banner .carousel-item').length > 3) {
+                        $('#carousel-banner .carousel-item:first').remove();
+                    }
+
                     // reset rotation
                     if(banner_array.length == count) {
                         count = 0;                        

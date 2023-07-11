@@ -55,7 +55,7 @@
                     class_name = 'carousel-item active';
                 }
 
-                if((fullscreen_array.length) >= countscreen) {
+                if((fullscreen_array.length) > countscreen) {
 
                     var carousel_item = '';
                     carousel_item += '<div data-interval="'+fullscreen_array[countscreen].display_duration*1000+'" data-index="'+countscreen+'" data-id="'+fullscreen_array[countscreen].id+'" class="'+class_name+'">';
@@ -93,9 +93,12 @@
             var obj = this;
             $(document).ready(function(){
                 $('#fullscreen-ads-carousel').on('slide.bs.carousel', function () {
-                    $('#carousel-fullscreen .carousel-item:first').remove();
                     obj.appendFullscreen();
                     // Reset Rotation
+                    if($('#carousel-fullscreen .carousel-item').length > 3) {
+                        $('#carousel-fullscreen .carousel-item:first').remove();
+                    }
+                    
                     if(fullscreen_array.length == countscreen) {
                         countscreen = 0;                        
                     }
