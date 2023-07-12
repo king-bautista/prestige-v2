@@ -37,7 +37,7 @@
 									<th scope="col">Date Appoved</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="playlist_rows">
 								<tr v-for="(data, index) in playlist" v-bind:key="index" :id="data.id">
 									<td data-container="body" data-toggle="tooltip" data-placement="top" title="Drag rows up and down">{{ data.material_serial_number }}</td>
 									<!-- <td>{{ data.material_path }}</td> -->
@@ -166,7 +166,7 @@
 
 		mounted() {
 			$( function() {
-				$( "tbody" ).sortable();
+				$( "#playlist_rows" ).sortable();
 			} );
 		},
 
