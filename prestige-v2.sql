@@ -71,7 +71,7 @@ INSERT INTO `admins_meta` (`id`, `admin_id`, `meta_key`, `meta_value`, `created_
 	(6, 3, 'last_name', 'Bautista', '2022-08-10 18:52:17', '2022-08-10 18:52:17', NULL),
 	(7, 4, 'first_name', 'Admin', '2022-09-15 18:28:20', '2023-03-03 05:46:23', NULL),
 	(8, 4, 'last_name', 'Admin', '2022-09-15 18:28:20', '2022-09-15 18:28:20', NULL),
-	(10, 3, 'last_login', '2023-07-08 16:10:49', '2023-04-26 02:53:48', '2023-07-08 08:10:49', NULL);
+	(10, 3, 'last_login', '2023-07-11 14:42:21', '2023-04-26 02:53:48', '2023-07-11 06:42:21', NULL);
 
 -- Dumping structure for table prestige.admin_roles
 DROP TABLE IF EXISTS `admin_roles`;
@@ -180,7 +180,7 @@ INSERT INTO `advertisements` (`id`, `serial_number`, `company_id`, `contract_id`
 	(60, 'AD-00060', 2, 13, 7714, 5, 10, 'amazing is real', 1, '2023-07-06 09:06:25', '2023-07-06 09:06:25', NULL),
 	(61, 'AD-00061', 2, 13, 7714, 5, 35, 'little mermaid', 1, '2023-07-06 09:12:30', '2023-07-06 09:12:30', NULL),
 	(62, 'AD-00062', 2, 13, 7714, 5, 10, 'mermaid 10 sec', 1, '2023-07-06 09:14:34', '2023-07-07 08:52:02', NULL),
-	(63, 'AD-00063', 2, 13, 7714, 5, 7, 'Spiderverse 10 sec rename test', 1, '2023-07-07 00:55:03', '2023-07-07 09:27:21', NULL),
+	(63, 'AD-00063', 2, 13, 7714, 5, 7, 'Spiderverse 10 sec rename test', 1, '2023-07-07 00:55:03', '2023-07-10 03:45:07', NULL),
 	(64, 'AD-00064', 2, 13, 7714, 5, 10, 'Portal Test', 1, '2023-07-07 07:10:14', '2023-07-07 08:34:21', '2023-07-07 08:34:21');
 
 -- Dumping structure for table prestige.advertisement_materials
@@ -527,11 +527,11 @@ INSERT INTO `advertisement_screens` (`advertisement_id`, `material_id`, `pi_prod
 	(60, 105, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
 	(61, 106, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
 	(62, 107, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
-	(63, 108, 106, 292, 50, 'Full Screen Ad', NULL, NULL),
 	(64, 109, 44, 227, 46, 'Full Screen Ad', NULL, NULL),
 	(64, 109, 95, 228, 46, 'Full Screen Ad', NULL, NULL),
 	(64, 110, 45, 228, 46, 'Banner Ad', NULL, NULL),
-	(64, 110, 96, 227, 46, 'Banner Ad', NULL, NULL);
+	(64, 110, 96, 227, 46, 'Banner Ad', NULL, NULL),
+	(63, 108, 106, 292, 50, 'Full Screen Ad', NULL, NULL);
 
 -- Dumping structure for table prestige.amenities
 DROP TABLE IF EXISTS `amenities`;
@@ -12457,9 +12457,9 @@ CREATE TABLE IF NOT EXISTS `content_management` (
   PRIMARY KEY (`id`),
   KEY `content_management_material_id_index` (`material_id`),
   CONSTRAINT `content_management_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `advertisement_materials` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_management: ~71 rows (approximately)
+-- Dumping data for table prestige.content_management: ~72 rows (approximately)
 INSERT INTO `content_management` (`id`, `serial_number`, `material_id`, `status_id`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'CAD-00001', 2, 5, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:10:21', '2023-06-27 07:26:50', NULL),
 	(2, 'CAD-00002', 1, 5, '2023-06-01', '2023-12-31', 1, '2023-06-05 08:10:48', '2023-06-27 07:26:15', NULL),
@@ -12500,11 +12500,11 @@ INSERT INTO `content_management` (`id`, `serial_number`, `material_id`, `status_
 	(37, 'CAD-00037', 93, 5, '2023-07-05', '2023-07-08', 1, '2023-07-04 08:26:12', '2023-07-05 09:34:06', '2023-07-05 03:39:32'),
 	(38, 'CAD-00038', 101, 5, '2023-07-05', '2023-07-09', 1, '2023-07-05 02:33:43', '2023-07-05 09:34:07', '2023-07-05 03:39:35'),
 	(39, 'CAD-00039', 89, 5, '2023-07-10', '2023-07-11', 0, '2023-07-05 03:47:50', '2023-07-05 04:08:05', NULL),
-	(40, 'CAD-00040', 84, 5, '2023-07-09', '2023-07-09', 1, '2023-07-05 03:47:51', '2023-07-07 09:37:27', NULL),
-	(41, 'CAD-00041', 86, 5, '2023-07-09', '2023-07-09', 1, '2023-07-05 03:47:51', '2023-07-07 09:37:28', NULL),
-	(42, 'CAD-00042', 87, 5, '2023-07-09', '2023-07-09', 1, '2023-07-05 04:10:10', '2023-07-07 09:35:23', NULL),
-	(43, 'CAD-00043', 93, 5, '2023-07-05', '2023-07-08', 1, '2023-07-05 04:10:11', '2023-07-08 07:10:38', NULL),
-	(44, 'CAD-00044', 97, 5, '2023-07-09', '2023-07-10', 1, '2023-07-05 04:10:12', '2023-07-07 10:00:55', NULL),
+	(40, 'CAD-00040', 84, 5, '2023-07-09', '2023-07-09', 0, '2023-07-05 03:47:51', '2023-07-10 08:10:02', NULL),
+	(41, 'CAD-00041', 86, 5, '2023-07-09', '2023-07-09', 0, '2023-07-05 03:47:51', '2023-07-10 08:10:09', NULL),
+	(42, 'CAD-00042', 87, 5, '2023-07-09', '2023-07-09', 0, '2023-07-05 04:10:10', '2023-07-10 08:09:52', NULL),
+	(43, 'CAD-00043', 93, 5, '2023-07-05', '2023-07-08', 0, '2023-07-05 04:10:11', '2023-07-10 08:09:38', NULL),
+	(44, 'CAD-00044', 97, 5, '2023-07-09', '2023-07-10', 0, '2023-07-05 04:10:12', '2023-07-10 08:09:31', NULL),
 	(45, 'CAD-00045', 86, 5, '2023-07-05', '2023-07-08', 0, '2023-07-05 04:42:21', '2023-07-06 06:43:02', NULL),
 	(46, 'CAD-00046', 96, 5, '2023-07-05', '2023-07-08', 0, '2023-07-05 04:50:29', '2023-07-07 08:47:51', '2023-07-07 08:45:56'),
 	(47, 'CAD-00047', 88, 5, '2023-07-05', '2023-07-08', 0, '2023-07-05 04:54:33', '2023-07-07 08:49:58', '2023-07-07 08:48:41'),
@@ -12528,10 +12528,11 @@ INSERT INTO `content_management` (`id`, `serial_number`, `material_id`, `status_
 	(65, 'CAD-00065', 104, 5, '2023-07-06', '2023-07-08', 1, '2023-07-06 08:58:21', '2023-07-07 01:13:14', '2023-07-07 01:12:40'),
 	(66, 'CAD-00066', 108, 5, '2023-07-06', '2023-07-07', 0, '2023-07-07 00:55:04', '2023-07-07 08:43:27', '2023-07-07 08:41:56'),
 	(67, 'CAD-00067', 108, 5, '2023-07-06', '2023-07-07', 1, '2023-07-07 00:55:06', '2023-07-07 08:41:22', '2023-07-07 08:41:12'),
-	(68, 'CAD-00068', 108, 5, '2023-07-07', '2023-07-08', 1, '2023-07-07 08:54:05', '2023-07-07 08:54:05', NULL),
-	(69, 'CAD-00069', 107, 5, '2023-07-07', '2023-07-08', 1, '2023-07-07 08:54:06', '2023-07-07 08:54:06', NULL),
-	(70, 'CAD-00070', 101, 5, '2023-07-08', '2023-07-15', 1, '2023-07-08 06:54:13', '2023-07-08 06:54:13', NULL),
-	(71, 'CAD-00071', 108, 5, '2023-07-07', '2023-07-15', 1, '2023-07-08 06:57:45', '2023-07-08 06:57:45', NULL);
+	(68, 'CAD-00068', 108, 5, '2023-07-07', '2023-07-08', 0, '2023-07-07 08:54:05', '2023-07-10 08:09:23', NULL),
+	(69, 'CAD-00069', 107, 5, '2023-07-07', '2023-07-08', 0, '2023-07-07 08:54:06', '2023-07-10 08:09:17', NULL),
+	(70, 'CAD-00070', 101, 5, '2023-07-08', '2023-07-15', 1, '2023-07-08 06:54:13', '2023-07-10 09:59:41', NULL),
+	(71, 'CAD-00071', 108, 5, '2023-07-07', '2023-07-15', 0, '2023-07-08 06:57:45', '2023-07-11 02:54:19', NULL),
+	(72, 'CAD-00072', 98, 5, '2023-07-10', '2023-07-11', 1, '2023-07-10 02:04:18', '2023-07-11 02:53:18', NULL);
 
 -- Dumping structure for table prestige.content_screens
 DROP TABLE IF EXISTS `content_screens`;
@@ -12550,7 +12551,7 @@ CREATE TABLE IF NOT EXISTS `content_screens` (
   CONSTRAINT `content_screens_site_screen_product_id_foreign` FOREIGN KEY (`site_screen_product_id`) REFERENCES `site_screen_products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.content_screens: ~101 rows (approximately)
+-- Dumping data for table prestige.content_screens: ~102 rows (approximately)
 INSERT INTO `content_screens` (`content_id`, `site_screen_product_id`, `site_screen_id`, `site_id`) VALUES
 	(21, 45, 228, 46),
 	(21, 96, 227, 46),
@@ -12644,15 +12645,16 @@ INSERT INTO `content_screens` (`content_id`, `site_screen_product_id`, `site_scr
 	(50, 106, 292, 50),
 	(51, 106, 292, 50),
 	(47, 106, 292, 50),
-	(68, 106, 292, 50),
 	(69, 106, 292, 50),
+	(68, 106, 292, 50),
+	(44, 106, 292, 50),
+	(43, 106, 292, 50),
 	(42, 106, 292, 50),
 	(40, 106, 292, 50),
 	(41, 106, 292, 50),
-	(44, 106, 292, 50),
 	(70, 106, 292, 50),
-	(71, 106, 292, 50),
-	(43, 106, 292, 50);
+	(72, 106, 292, 50),
+	(71, 106, 292, 50);
 
 -- Dumping structure for table prestige.contracts
 DROP TABLE IF EXISTS `contracts`;
@@ -12978,7 +12980,7 @@ CREATE TABLE IF NOT EXISTS `last_update_ats` (
 -- Dumping data for table prestige.last_update_ats: 1 rows
 /*!40000 ALTER TABLE `last_update_ats` DISABLE KEYS */;
 INSERT INTO `last_update_ats` (`last_updated_at`) VALUES
-	('2023-07-07 18:04:59');
+	('2023-07-11 17:19:58');
 /*!40000 ALTER TABLE `last_update_ats` ENABLE KEYS */;
 
 -- Dumping structure for table prestige.logs
@@ -13011,9 +13013,9 @@ CREATE TABLE IF NOT EXISTS `logs` (
   KEY `logs_company_id_index` (`company_id`),
   KEY `logs_site_tenant_id_index` (`site_tenant_id`),
   KEY `logs_advertisement_id_index` (`advertisement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=355 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=359 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.logs: ~338 rows (approximately)
+-- Dumping data for table prestige.logs: ~342 rows (approximately)
 INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_category_id`, `main_category_id`, `brand_id`, `company_id`, `site_tenant_id`, `advertisement_id`, `action`, `page`, `key_words`, `results`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 1, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:42', '2023-02-28 06:31:42', NULL),
 	(2, 1, 2, 6, 1, 1, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-02-28 06:31:43', '2023-02-28 06:31:43', NULL),
@@ -13367,7 +13369,11 @@ INSERT INTO `logs` (`id`, `site_id`, `site_screen_id`, `category_id`, `parent_ca
 	(351, 46, 228, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Cinema', NULL, NULL, '2023-06-08 07:54:31', '2023-06-08 07:54:31', NULL),
 	(352, 46, 228, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Map', NULL, NULL, '2023-06-09 08:52:12', '2023-06-09 08:52:12', NULL),
 	(353, 46, 228, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Category', NULL, NULL, '2023-06-14 02:26:36', '2023-06-14 02:26:36', NULL),
-	(354, 46, 228, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Map', NULL, NULL, '2023-06-14 02:29:55', '2023-06-14 02:29:55', NULL);
+	(354, 46, 228, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Map', NULL, NULL, '2023-06-14 02:29:55', '2023-06-14 02:29:55', NULL),
+	(355, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Map', NULL, NULL, '2023-07-11 06:18:30', '2023-07-11 06:18:30', NULL),
+	(356, 46, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'click', 'Map', NULL, NULL, '2023-07-11 09:15:08', '2023-07-11 09:15:08', NULL),
+	(357, 46, 227, 30, 5, 5, 76, NULL, 1235, NULL, 'click', 'Map', NULL, NULL, '2023-07-11 09:15:19', '2023-07-11 09:15:19', NULL),
+	(358, 46, 227, 16, 2, 2, 837, NULL, 1160, NULL, 'click', 'Map', NULL, NULL, '2023-07-11 09:15:50', '2023-07-11 09:15:50', NULL);
 
 -- Dumping structure for table prestige.migrations
 DROP TABLE IF EXISTS `migrations`;
@@ -13777,107 +13783,108 @@ CREATE TABLE IF NOT EXISTS `play_lists` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4518 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5484 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table prestige.play_lists: ~97 rows (approximately)
+-- Dumping data for table prestige.play_lists: ~98 rows (approximately)
 INSERT INTO `play_lists` (`id`, `content_id`, `site_screen_id`, `company_id`, `brand_id`, `category_id`, `parent_category_id`, `main_category_id`, `advertisement_id`, `sequence`, `created_at`, `updated_at`) VALUES
-	(1951, 2, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1952, 16, 227, 2, 52, 11, 1, 1, 12, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1953, 11, 227, 2, 6162, 18, 3, 3, 6, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1954, 9, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1955, 18, 227, 2, 76, 30, 5, 5, 13, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1956, 1, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1957, 17, 227, 2, 52, 11, 1, 1, 12, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1958, 28, 227, 2, 6181, 19, 3, 3, 28, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1959, 10, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1960, 19, 227, 2, 76, 30, 5, 5, 13, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1961, 4, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1962, 20, 227, 2, 974, 11, 1, 1, 15, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1963, 27, 227, 2, 6181, 19, 3, 3, 28, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1964, 22, 227, 2, 5888, 25, 4, 4, 22, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1965, 3, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1966, 21, 227, 2, 974, 11, 1, 1, 15, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1967, 32, 227, 2, 7714, 21, 4, 4, 36, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1968, 5, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1969, 25, 227, 2, 6174, 10, 1, 1, 27, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1970, 33, 227, 2, 7714, 21, 4, 4, 37, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1971, 6, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1972, 26, 227, 2, 6174, 10, 1, 1, 27, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1973, 7, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1974, 23, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1975, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1976, 24, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1977, 14, 227, 3, 7398, 28, 5, 5, 11, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1978, 15, 227, 3, 7398, 28, 5, 5, 11, 0, '2023-07-04 01:53:16', '2023-07-04 01:53:16'),
-	(1979, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1980, 16, 228, 2, 52, 11, 1, 1, 12, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1981, 11, 228, 2, 6162, 18, 3, 3, 6, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1982, 9, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1983, 18, 228, 2, 76, 30, 5, 5, 13, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1984, 1, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1985, 17, 228, 2, 52, 11, 1, 1, 12, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1986, 28, 228, 2, 6181, 19, 3, 3, 28, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1987, 10, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1988, 19, 228, 2, 76, 30, 5, 5, 13, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1989, 4, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1990, 20, 228, 2, 974, 11, 1, 1, 15, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1991, 27, 228, 2, 6181, 19, 3, 3, 28, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1992, 22, 228, 2, 5888, 25, 4, 4, 22, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1993, 3, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1994, 21, 228, 2, 974, 11, 1, 1, 15, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1995, 32, 228, 2, 7714, 21, 4, 4, 36, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1996, 5, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1997, 25, 228, 2, 6174, 10, 1, 1, 27, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1998, 33, 228, 2, 7714, 21, 4, 4, 37, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(1999, 6, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(2000, 26, 228, 2, 6174, 10, 1, 1, 27, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(2001, 7, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(2002, 23, 228, 2, 7675, 6, 1, 1, 34, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(2003, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(2004, 24, 228, 2, 7675, 6, 1, 1, 34, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(2005, 14, 228, 3, 7398, 28, 5, 5, 11, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(2006, 15, 228, 3, 7398, 28, 5, 5, 11, 0, '2023-07-04 01:53:17', '2023-07-04 01:53:17'),
-	(4477, 29, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4478, 30, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4479, 31, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4480, 34, 292, 2, 7714, 21, 4, 4, 38, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4481, 35, 292, 2, 7714, 21, 4, 4, 39, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4482, 36, 292, 2, 7714, 21, 4, 4, 40, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4483, 37, 292, 2, 7714, 21, 4, 4, 48, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4484, 38, 292, 2, 7714, 21, 4, 4, 56, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4485, 39, 292, 2, 7714, 21, 4, 4, 44, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4486, 45, 292, 2, 7714, 21, 4, 4, 41, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4487, 63, 292, 2, 7714, 21, 4, 4, 59, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4488, 64, 292, 2, 7714, 21, 4, 4, 59, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4489, 65, 292, 2, 7714, 21, 4, 4, 59, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4490, 67, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4491, 62, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4492, 66, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4493, 48, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4494, 49, 292, 2, 7714, 21, 4, 4, 51, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4495, 52, 292, 2, 7714, 21, 4, 4, 56, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4496, 53, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4497, 54, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4498, 55, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4499, 56, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4500, 57, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4501, 58, 292, 2, 7714, 21, 4, 4, 58, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4502, 59, 292, 2, 7714, 21, 4, 4, 48, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4503, 60, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4504, 61, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4505, 46, 292, 2, 7714, 21, 4, 4, 51, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4506, 50, 292, 2, 7714, 21, 4, 4, 53, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4507, 51, 292, 2, 7714, 21, 4, 4, 53, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4508, 47, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4509, 68, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4510, 69, 292, 2, 7714, 21, 4, 4, 62, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4511, 42, 292, 2, 7714, 21, 4, 4, 42, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4512, 40, 292, 2, 7714, 21, 4, 4, 39, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4513, 41, 292, 2, 7714, 21, 4, 4, 41, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4514, 44, 292, 2, 7714, 21, 4, 4, 52, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4515, 70, 292, 2, 7714, 21, 4, 4, 56, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4516, 71, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38'),
-	(4517, 43, 292, 2, 7714, 21, 4, 4, 48, 0, '2023-07-08 07:10:38', '2023-07-08 07:10:38');
+	(1951, 2, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1952, 16, 227, 2, 52, 11, 1, 1, 12, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1953, 11, 227, 2, 6162, 18, 3, 3, 6, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1954, 9, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1955, 18, 227, 2, 76, 30, 5, 5, 13, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1956, 1, 227, 3, 7671, 21, 4, 4, 1, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1957, 17, 227, 2, 52, 11, 1, 1, 12, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1958, 28, 227, 2, 6181, 19, 3, 3, 28, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1959, 10, 227, 2, 7714, 21, 4, 4, 5, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1960, 19, 227, 2, 76, 30, 5, 5, 13, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1961, 4, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1962, 20, 227, 2, 974, 11, 1, 1, 15, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1963, 27, 227, 2, 6181, 19, 3, 3, 28, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1964, 22, 227, 2, 5888, 25, 4, 4, 22, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1965, 3, 227, 3, 7671, 21, 4, 4, 2, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1966, 21, 227, 2, 974, 11, 1, 1, 15, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1967, 32, 227, 2, 7714, 21, 4, 4, 36, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1968, 5, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1969, 25, 227, 2, 6174, 10, 1, 1, 27, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1970, 33, 227, 2, 7714, 21, 4, 4, 37, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1971, 6, 227, 3, 7714, 21, 4, 4, 3, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1972, 26, 227, 2, 6174, 10, 1, 1, 27, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1973, 7, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1974, 23, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1975, 8, 227, 3, 7671, 21, 4, 4, 4, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1976, 24, 227, 2, 7675, 6, 1, 1, 34, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1977, 14, 227, 3, 7398, 28, 5, 5, 11, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1978, 15, 227, 3, 7398, 28, 5, 5, 11, 0, '2023-07-03 09:53:16', '2023-07-03 09:53:16'),
+	(1979, 2, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1980, 16, 228, 2, 52, 11, 1, 1, 12, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1981, 11, 228, 2, 6162, 18, 3, 3, 6, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1982, 9, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1983, 18, 228, 2, 76, 30, 5, 5, 13, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1984, 1, 228, 3, 7671, 21, 4, 4, 1, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1985, 17, 228, 2, 52, 11, 1, 1, 12, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1986, 28, 228, 2, 6181, 19, 3, 3, 28, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1987, 10, 228, 2, 7714, 21, 4, 4, 5, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1988, 19, 228, 2, 76, 30, 5, 5, 13, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1989, 4, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1990, 20, 228, 2, 974, 11, 1, 1, 15, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1991, 27, 228, 2, 6181, 19, 3, 3, 28, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1992, 22, 228, 2, 5888, 25, 4, 4, 22, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1993, 3, 228, 3, 7671, 21, 4, 4, 2, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1994, 21, 228, 2, 974, 11, 1, 1, 15, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1995, 32, 228, 2, 7714, 21, 4, 4, 36, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1996, 5, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1997, 25, 228, 2, 6174, 10, 1, 1, 27, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1998, 33, 228, 2, 7714, 21, 4, 4, 37, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(1999, 6, 228, 3, 7714, 21, 4, 4, 3, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(2000, 26, 228, 2, 6174, 10, 1, 1, 27, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(2001, 7, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(2002, 23, 228, 2, 7675, 6, 1, 1, 34, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(2003, 8, 228, 3, 7671, 21, 4, 4, 4, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(2004, 24, 228, 2, 7675, 6, 1, 1, 34, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(2005, 14, 228, 3, 7398, 28, 5, 5, 11, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(2006, 15, 228, 3, 7398, 28, 5, 5, 11, 0, '2023-07-03 09:53:17', '2023-07-03 09:53:17'),
+	(5442, 29, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5443, 30, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5444, 31, 292, 2, 7714, 21, 4, 4, 35, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5445, 34, 292, 2, 7714, 21, 4, 4, 38, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5446, 35, 292, 2, 7714, 21, 4, 4, 39, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5447, 36, 292, 2, 7714, 21, 4, 4, 40, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5448, 37, 292, 2, 7714, 21, 4, 4, 48, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5449, 38, 292, 2, 7714, 21, 4, 4, 56, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5450, 39, 292, 2, 7714, 21, 4, 4, 44, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5451, 45, 292, 2, 7714, 21, 4, 4, 41, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5452, 63, 292, 2, 7714, 21, 4, 4, 59, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5453, 64, 292, 2, 7714, 21, 4, 4, 59, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5454, 65, 292, 2, 7714, 21, 4, 4, 59, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5455, 67, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5456, 62, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5457, 66, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5458, 48, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5459, 49, 292, 2, 7714, 21, 4, 4, 51, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5460, 52, 292, 2, 7714, 21, 4, 4, 56, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5461, 53, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5462, 54, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5463, 55, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5464, 56, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5465, 57, 292, 2, 7714, 21, 4, 4, 46, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5466, 58, 292, 2, 7714, 21, 4, 4, 58, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5467, 59, 292, 2, 7714, 21, 4, 4, 48, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5468, 60, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5469, 61, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5470, 46, 292, 2, 7714, 21, 4, 4, 51, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5471, 50, 292, 2, 7714, 21, 4, 4, 53, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5472, 51, 292, 2, 7714, 21, 4, 4, 53, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5473, 47, 292, 2, 7714, 21, 4, 4, 43, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5474, 69, 292, 2, 7714, 21, 4, 4, 62, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5475, 68, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5476, 44, 292, 2, 7714, 21, 4, 4, 52, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5477, 43, 292, 2, 7714, 21, 4, 4, 48, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5478, 42, 292, 2, 7714, 21, 4, 4, 42, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5479, 40, 292, 2, 7714, 21, 4, 4, 39, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5480, 41, 292, 2, 7714, 21, 4, 4, 41, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5481, 70, 292, 2, 7714, 21, 4, 4, 56, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5482, 72, 292, 2, 7714, 21, 4, 4, 53, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20'),
+	(5483, 71, 292, 2, 7714, 21, 4, 4, 63, 0, '2023-07-11 02:54:20', '2023-07-11 02:54:20');
 
 -- Dumping structure for table prestige.roles
 DROP TABLE IF EXISTS `roles`;
@@ -13973,11 +13980,11 @@ INSERT INTO `sites` (`id`, `serial_number`, `name`, `descriptions`, `site_logo`,
 	(43, 'ST-00043', 'SM San Jose del Monte', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 07:26:39', '2023-06-01 10:09:50', NULL),
 	(44, 'ST-00044', 'SM San Pablo', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:08:08', '2023-06-01 10:09:44', NULL),
 	(45, 'ST-00045', 'SM Sta. Rosa', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 08:11:57', '2023-06-26 02:12:48', NULL),
-	(46, 'ST-00046', 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', 'uploads/media/sites/background/BG-Kiosk.jpg', 1, 0, '2023-04-19 09:14:12', '2023-07-04 08:23:46', NULL),
+	(46, 'ST-00046', 'SM Tanza', 'SM City Tanza is a 2-level structure with open parking areas located along Antero Soriano highway corner San Agustin road in Brgy Daang Amaya II, Tanza, Cavite. \r\n\r\nThe mall is operating with 254 leasable rental units for fashion, dining and entertainment. The mall follows business operating hours at 10AM to 9PM daily and serve lifestyle needs of nearby towns. \r\n\r\nExciting activities await you and your family and friends at SM City Tanza! Keep updated with our latest events and promotions. Keep updated with our latest events and promotions.', 'uploads/media/sites/logos/logo-smtz.png', 'uploads/media/sites/banners/about-us-smtz.jpg', 'uploads/media/sites/background/BG-Kiosk.jpg', 1, 1, '2023-04-19 09:14:12', '2023-07-11 03:10:35', NULL),
 	(47, 'ST-00047', 'SM Telebastagan', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:38:55', '2023-06-01 10:09:21', NULL),
 	(48, 'ST-00048', 'SM Tuguegarao Downtown', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:45:57', '2023-06-22 10:26:32', NULL),
 	(49, 'ST-00049', 'SM Urdaneta', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', '', '', '', 1, 0, '2023-04-19 09:51:50', '2023-06-22 10:01:22', NULL),
-	(50, 'ST-00050', 'TriNoma', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', '', '', '', 1, 1, '2023-06-26 02:42:49', '2023-07-04 10:02:50', NULL);
+	(50, 'ST-00050', 'TriNoma', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', '', '', '', 1, 0, '2023-06-26 02:42:49', '2023-07-11 03:10:35', NULL);
 
 -- Dumping structure for table prestige.sites_meta
 DROP TABLE IF EXISTS `sites_meta`;
