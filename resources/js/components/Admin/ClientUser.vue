@@ -709,7 +709,7 @@
 				})
             },
 
-			editUser: function(id) {
+			editUser: function(id) { 
                 axios.get('/admin/client/users/'+id)
                 .then(response => {
 					this.user.roles = [];
@@ -717,7 +717,7 @@
 					this.user.sites = [];
 					this.user.screens = [];
 
-                    var user = response.data.data;
+                    var user = response.data.data; 
                     this.user.id = id;
                     this.user.company = user.company;
                     this.user.email = user.email;

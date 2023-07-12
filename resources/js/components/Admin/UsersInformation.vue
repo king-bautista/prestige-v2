@@ -5,13 +5,6 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card m-3">
-						<!-- <div class="card-header">
-								<h5 class="card-title" ><i class="fa fa-plus" aria-hidden="true"></i> Add
-									New Company</h5>
-								<h5 class="card-title" ><i class="fas fa-edit"></i> Edit Company</h5>
-								<button type="button" class="btn btn-secondary btn-sm float-right"><i
-										class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</button>
-							</div> -->
 						<div class="card-body">
 							<div class="row">
 								<div class="col-md-3">

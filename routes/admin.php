@@ -463,8 +463,10 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/gallery', 'Admin\GalleryController@index')->name('admin.gallery');
+    Route::get('/admin/gallery/list', 'Admin\GalleryController@list')->name('admin.galleryfaqs.list');
+    Route::get('/admin/gallery/{id}', 'Admin\GalleryController@details')->where('id', '[0-9]+')->name('admin.gallery.details');
+    Route::post('/admin/gallery/update', 'Admin\GalleryController@update')->name('admin.gallery.update');
     Route::post('/admin/gallery/upload', 'Admin\GalleryController@upload')->name('admin.gallery.upload');
-    Route::get('/admin/gallery/get-all', 'Admin\GalleryController@getAll')->name('admin.gallery.get-all');
     
     /*
     |--------------------------------------------------------------------------

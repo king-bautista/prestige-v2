@@ -73,7 +73,6 @@ Vue.component('admin-customer-care', require('./components/Admin/CustomerCare.vu
 Vue.component('admin-concerns', require('./components/Admin/Concerns.vue').default);
 Vue.component('admin-assistant-messages', require('./components/Admin/AssistantMessages.vue').default);
 Vue.component('admin-translations', require('./components/Admin/Translations.vue').default);
-//Vue.component('admin-workflows', require('./components/Admin/Workflows.vue').default);
 
 Vue.component('admin-users-information', require('./components/Admin/UsersInformation.vue').default);
 Vue.component('admin-site-screen-products', require('./components/Admin/SiteScreenProduct.vue').default);
@@ -81,6 +80,7 @@ Vue.component('admin-site-maps', require('./components/Admin/SiteMaps.vue').defa
 //Vue.component('admin-playlist', require('./components/Admin/PlayList.vue').default);
 Vue.component('admin-playlist', require('./components/Admin/PlaylistSortable.vue').default);
 Vue.component('admin-pi-products', require('./components/Admin/PiProducts.vue').default);
+Vue.component('admin-gallery', require('./components/Admin/Gallery.vue').default);
 
 
 /**

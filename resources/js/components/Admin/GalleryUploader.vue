@@ -20,7 +20,8 @@
 
         <div class="images-preview" v-show="images.length">
             <div class="img-wrapper" v-for="(image, index) in images" :key="index">
-                <img :src="image" :alt="`Media Library ${index}`">
+                <img v-if="files[index].type == 'video/mp4'" :src="video_thumbnail" :alt="`Media Library ${index}`" >
+                <img v-else :src="image" :alt="`Media Library ${index}`">
                 <div class="details">
                     <span class="name" v-text="files[index].name"></span>
                     <span class="size" v-text="getFileSize(files[index].size)"></span>
@@ -36,7 +37,8 @@ export default {
         isDragging: false,
         dragCount: 0,
         files: [],
-        images: []
+        images: [],
+        video_thumbnail: window.location.origin + '/uploads/media/gallery/videos/thumbnails/video_image.png',
     }),
     methods: {
         OnDragEnter(e) {
@@ -185,7 +187,7 @@ export default {
         margin-top: 20px;
 
         .img-wrapper {
-            width: 160px;
+            width: 120px;
             display: flex;
             flex-direction: column;
             margin: 10px;

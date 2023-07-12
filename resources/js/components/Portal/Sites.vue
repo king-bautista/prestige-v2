@@ -12,13 +12,8 @@
 						<Table 
                         :dataFields="dataFields"
                         :dataUrl="dataUrl"
-                        :actionButtons="actionButtons"
-						:otherButtons="otherButtons"
                         :primaryKey="primaryKey"
-						v-on:AddNewSite="AddNewSite"
-						v-on:editButton="editSite"
-						v-on:DefaultScreen="DefaultScreen"
-                        ref="dataTable">
+						ref="dataTable">
 			          	</Table>
 					</div>
 					<div class="card-body" v-show="data_form">
@@ -179,41 +174,6 @@
             	},
             	primaryKey: "id",
             	dataUrl: "/portal/property-details/list",
-            	actionButtons: {
-            		edit: {
-            			title: 'Edit this Site',
-            			name: 'Edit',
-            			apiUrl: '',
-            			routeName: 'brand.edit',
-            			button: '<i class="fas fa-edit"></i> Edit',
-            			method: 'edit'
-            		},
-            		delete: {
-            			title: 'Delete this Site',
-            			name: 'Delete',
-            			apiUrl: '/portal/property-details/delete',
-            			routeName: '',
-            			button: '<i class="fas fa-trash-alt"></i> Delete',
-            			method: 'delete'
-            		},
-					link: {
-            			title: 'Manage Site',
-            			name: 'Link',
-            			apiUrl: '/portal/property-details/buildings',
-            			routeName: '',
-            			button: '<i class="fa fa-link"></i> Manage Site',
-            			method: 'link'
-            		},
-            	},
-				otherButtons: {
-					addNew: {
-						title: 'New Site',
-						v_on: 'AddNewSite',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Site',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-				},
             };
         },
 
@@ -222,148 +182,6 @@
         },
 
         methods: {
-			siteLogoChange: function(e) {
-				const file = e.target.files[0];
-      			this.site_logo = URL.createObjectURL(file);
-				this.site.site_logo = file;
-			},
-
-            siteBannerChange: function(e) {
-				const file = e.target.files[0];
-      			this.site_banner = URL.createObjectURL(file);
-				this.site.site_banner = file;
-			},
-
-			siteBackgroundChange: function(e) {
-				const file = e.target.files[0];
-      			this.site_background = URL.createObjectURL(file);
-				this.site.site_background = file;
-			},
-
-			AddNewSite: function() {
-				this.add_record = true;
-				this.edit_record = false;
-                this.site.name = '';
-				this.site.descriptions = '';
-                this.site.site_logo = '/images/no-image-available.png';
-                this.site.site_banner = '/images/no-image-available.png';
-                this.site.site_background = '/images/no-image-available.png';
-                this.site.active = false;				
-                this.site_logo = '/images/no-image-available.png';		
-                this.site_banner = '/images/no-image-available.png';				
-                this.site_background = '/images/no-image-available.png';				
-				this.$refs.site_logo.value = null;
-				this.$refs.site_banner.value = null;
-				this.data_list = false;
-				this.data_form = true;
-            },
-
-            storeSite: function() {
-				let formData = new FormData();
-				formData.append("name", this.site.name);
-				formData.append("descriptions", this.site.descriptions);
-				formData.append("site_logo", this.site.site_logo);
-				formData.append("site_banner", this.site.site_banner);
-				formData.append("site_background", this.site.site_background);
-				formData.append("facebook", this.site.facebook);
-				formData.append("instagram", this.site.instagram);
-				formData.append("twitter", this.site.twitter);
-				formData.append("time_from", this.site.time_from);
-				formData.append("time_to", this.site.time_to);
-				formData.append("website", this.site.website);
-
-                axios.post('/portal/property-details/store', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-                    this.data_list = true;
-					this.data_form = false;
-				})
-				
-            },
-
-			editSite: function(id) {
-                axios.get('/portal/property-details/'+id)
-                .then(response => {
-                    var site = response.data.data;
-                    this.site.id = id;
-                    this.site.name = site.name;
-                    this.site.descriptions = site.descriptions;
-                    this.site.site_logo = site.site_logo;
-                    this.site.site_banner = site.site_banner;
-                    this.site.site_background = site.site_background;
-                    this.site.facebook = site.details.facebook;
-                    this.site.instagram = site.details.instagram;
-                    this.site.twitter = site.details.twitter;
-                    this.site.time_from = site.details.time_from;
-                    this.site.time_to = site.details.time_to;
-                    this.site.website = site.details.website;
-					this.site.active = site.active;
-					this.site.is_default = site.is_default;
-					this.add_record = false;
-					this.edit_record = true;
-
-					if(site.site_logo) {
-						this.site_logo = site.site_logo_path;
-					}
-					else {
-						this.site_logo = this.site.site_logo;
-					}
-
-                    if(site.site_banner) {
-						this.site_banner = site.site_banner_path;
-					}
-					else {
-						this.site_banner = this.site.site_banner;
-					}
-
-					if(site.site_background) {
-						this.site_background = site.site_background_path;
-					}
-					else {
-						this.site_background = this.site.site_background;
-					}
-
-                    this.$refs.site_logo.value = null;
-                    this.$refs.site_logo.value = null;
-					
-					this.data_list = false;
-					this.data_form = true;
-                });
-            },
-
-            updateSite: function() {
-				let formData = new FormData();
-				formData.append("id", this.site.id);
-				formData.append("name", this.site.name);
-				formData.append("descriptions", this.site.descriptions);
-				formData.append("site_logo", this.site.site_logo);
-				formData.append("site_banner", this.site.site_banner);
-				formData.append("site_background", this.site.site_background);
-				formData.append("facebook", this.site.facebook);
-				formData.append("instagram", this.site.instagram);
-				formData.append("twitter", this.site.twitter);
-				formData.append("time_from", this.site.time_from);
-				formData.append("time_to", this.site.time_to);
-				formData.append("website", this.site.website);
-
-                axios.post('/portal/property-details/update', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					},
-				})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-                    this.data_list = true;
-					this.data_form = false;
-				})
-            },
-
 			backToList: function() {
 				this.data_list = true;
 				this.data_form = false;
