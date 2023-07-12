@@ -7,13 +7,13 @@
                     <h3 class="card-title"><i class="nav-icon fas fa-list"></i> Top Tenant Search</h3>
                     <form class="form-inline ml-auto input-group-sm m-0">
                         <div class="input-group m-0">
-                            <select class="form-select form-select-sm me-2" v-model="filter.site_id" @change="filterChart()">
+                            <select class="form-select form-select-sm me-2" v-model="filter.site_id" @change="filterReport()">
                                 <option value="">Select Site</option>
                                 <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
                             </select>
-                            <a href="/portal/reports/top-tenant-search">
+                            <!-- <a href="/portal/reports/top-tenant-search">
                                 <button class="btn btn-outline-primary btn-sm" type="button">View Report</button>
-                            </a>
+                            </a> -->
                         </div>
                     </form>
                 </div>
@@ -68,7 +68,7 @@
 
         methods: {
             getSites: function() {
-                axios.get('/portal/property-details/get-all')
+                axios.get('/portal/site/get-all')
                 .then(response => this.sites = response.data.data);
             },
 
