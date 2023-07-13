@@ -79,6 +79,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
     {
         try
     	{
+            $materials = json_decode($request->materials);
+            if(!$materials[0]->src || $materials[0]->src == '') {
+                return response([
+                    'message' => 'material is required.',
+                    'status' => false,
+                    'status_code' => 422,
+                ], 422);    
+            }
+
             $company_id = json_decode($request->company_id);
             $contract_id = json_decode($request->contract_id);
             $brand_id = json_decode($request->brand_id);
@@ -116,6 +125,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
     {
         try
     	{
+            $materials = json_decode($request->materials);
+            if(!$materials[0]->src || $materials[0]->src == '') {
+                return response([
+                    'message' => 'material is required.',
+                    'status' => false,
+                    'status_code' => 422,
+                ], 422);    
+            }
+
             $advertisement = Advertisement::find($request->id);
             $advertisement->touch();
 
