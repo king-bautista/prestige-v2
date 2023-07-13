@@ -120,6 +120,9 @@ Vue.component('portal-tenant-products', require('./components/Portal/TenantProdu
 Vue.component('portal-customer-care', require('./components/Portal/PortalCustomerCare.vue').default);
 Vue.component('portal-faqs', require('./components/Portal/FAQs.vue').default);
 
+Vue.component('portal-report_kiosk_usage', require('./components/Portal/ReportKioskUsage.vue').default);
+Vue.component('portal-report_merchant_usage', require('./components/Portal/ReportMerchantUsage.vue').default);
+
 //Vue.component('portal-test', require('./components/Portal/Test.vue').default);
 
 

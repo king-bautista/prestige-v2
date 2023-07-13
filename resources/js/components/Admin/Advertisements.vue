@@ -133,6 +133,7 @@
 									<div class="col-sm-5">
 										<input type="file" accept="image/*" ref="materials" @change="fileUpload($event, index)" multiple>
 										<footer class="blockquote-footer">Max file size is 15MB</footer>
+										<footer class="blockquote-footer">Compatible file types: .jpg, .png, .ogv</footer>
 
 									</div>
 									<div class="col-sm-3 text-center">
@@ -259,7 +260,7 @@
             		delete: {
             			title: 'Delete this Content',
             			name: 'Delete',
-            			apiUrl: '/portal/manage-ads/delete',
+            			apiUrl: '/admin/manage-ads/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete'

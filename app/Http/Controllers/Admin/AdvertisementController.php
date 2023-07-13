@@ -37,9 +37,14 @@ class AdvertisementController extends AppBaseController implements Advertisement
         try
         {
             $advertisements = AdvertisementViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
+            ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+            ->select('advertisements.*')
+            ->orderBy('advertisements.created_at', 'DESC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
         }

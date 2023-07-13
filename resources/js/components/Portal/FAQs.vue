@@ -1,12 +1,8 @@
 <template>
   <div>
     <div class="card">
-      <div class="card-header border-0">
-        <nav class="navbar">
-          <div class="container-xl m-0 p-0">
-            <h3 class="card-title"><i class="nav-icon fa fa-question-circle"></i>FAQ's</h3>
-          </div>
-        </nav>
+      <div class="card-header">
+        <h4><i class="nav-icon fa fa-question-circle"></i>&nbsp;&nbsp;FAQ's</h4>
       </div>
       <div class="card-body">
         <div class="row">

@@ -11,9 +11,9 @@
                                 <option value="">Select Site</option>
                                 <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
                             </select>
-                            <a href="/portal/reports/monthly-usage">
+                            <!-- <a href="/portal/reports/monthly-usage">
                                 <button class="btn btn-outline-primary btn-sm" type="button">View Report</button>
-                            </a>
+                            </a> -->
                         </div>
                     </form>
                 </div>
@@ -50,7 +50,7 @@
 
         methods: {
             getSites: function() {
-                axios.get('/portal/property-details/get-all')
+                axios.get('/portal/site/get-all')
                 .then(response => this.sites = response.data.data);
             },
 

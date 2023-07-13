@@ -246,6 +246,10 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/reports/is-helpful/list', 'Admin\ReportsController@getIsHelpful')->name('portal.reports.is-helpful.list');
     Route::get('/portal/reports/screen-uptime', 'Portal\ReportsController@screenUptime')->name('portal.reports.screen-uptime');
 
+    Route::get('/portal/reports/kiosk-usage', 'Portal\ReportsController@kioskUsage')->name('portal.reports.kiosk-usage');
+    Route::get('/portal/reports/kiosk-usage/list', 'Admin\ReportsController@getKioskUsage')->name('portal.reports.kiosk-usage-list');
+    Route::get('/portal/reports/kiosk-usage/download-csv', 'Admin\ReportsController@downloadCsvKioskUsage')->name('portal.reports.kiosk-usage.download-csv');
+
     /*
     |--------------------------------------------------------------------------
     | Customer Care Routes
@@ -319,6 +323,13 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/portal/transaction/statuses/get-all', 'Admin\TransactionStatusController@getAll')->name('portal.transaction.statuses.get-all');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reports Routes
+    |--------------------------------------------------------------------------
+    */
+
     // end here
 
 

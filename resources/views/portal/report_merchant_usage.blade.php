@@ -1,25 +1,27 @@
-@extends('layout.admin.master')
+@extends('layout.portal.master')
+@section('Page-Title')
+<h4>Create Ad</h4>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="javascript: void(0);">Home&nbsp;</a></li>
+  <li class="breadcrumb-item"><a href="javascript: void(0);">Insights</a></li>
+  <li class="breadcrumb-item active">Merchant Usage</li>
+  </ol>
+</nav>
+@endsection
 @section('content')
-<!-- Content Header (Page header) -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Reports - Merchant Usage</h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-          <li class="breadcrumb-item active">Reports - Merchant Usage</li>
-        </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-
 <!-- Main content -->
-<admin-report_merchant_usage></admin-report_merchant_usage>
+<div class="row">
+  <div class="col-md-12">
+    @include('layout.portal.company-profile')
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <portal-report_merchant_usage></portal-report_merchant_usage>
+  </div>
+</div>
+
 <!-- /.content -->
 @stop
 
