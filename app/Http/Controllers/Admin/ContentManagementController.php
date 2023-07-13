@@ -50,9 +50,17 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try
         {
             $contents = ContentManagementViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
+
             })
-            ->latest()
+            ->leftJoin('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
+            ->leftJoin('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+            ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+            ->select('content_management.*')
+            ->orderBy('content_management.created_at', 'DESC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($contents, 'Successfully Retreived!', 200);
         }
