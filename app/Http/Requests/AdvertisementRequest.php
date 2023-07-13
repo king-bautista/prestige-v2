@@ -30,7 +30,6 @@ class AdvertisementRequest extends FormRequest
             "brand_id" => "required|string",
             // "status_id" => "required|string",
             "display_duration" => "required|numeric|min:0|not_in:0",
-            "materials" => "required",
         ];
     }
 
