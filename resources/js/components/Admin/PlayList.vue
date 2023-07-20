@@ -95,7 +95,7 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    duration: "Duration",
+                    duration: "Duration",	
                     updated_at: "Date Appoved"
             	},
             	primaryKey: "id",
