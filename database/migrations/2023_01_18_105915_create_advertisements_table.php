@@ -17,12 +17,12 @@ class CreateAdvertisementsTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('serial_number')->nullable();
             $table->bigInteger('company_id')->unsigned()->nullable()->index();
             $table->bigInteger('contract_id')->unsigned()->nullable()->index();
             $table->bigInteger('brand_id')->unsigned()->nullable()->index();
-            $table->bigInteger('status_id')->unsigned()->nullable()->index();
             $table->integer('display_duration')->default(0);
-            $table->string('name');
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
@@ -30,8 +30,6 @@ class CreateAdvertisementsTable extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('contract_id')->references('id')->on('contracts');
             $table->foreign('brand_id')->references('id')->on('brands');
-            $table->foreign('status_id')->references('id')->on('transaction_statuses');
-
         });
 
         Schema::create('advertisement_materials', function (Blueprint $table) {
@@ -39,6 +37,7 @@ class CreateAdvertisementsTable extends Migration
             
             $table->bigIncrements('id');
             $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
+            $table->mediumText('thumbnail_path')->nullable();
             $table->mediumText('file_path')->nullable();
             $table->string('file_type')->nullable();
             $table->string('file_size')->nullable();
@@ -56,7 +55,6 @@ class CreateAdvertisementsTable extends Migration
             
             $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
             $table->bigInteger('material_id')->unsigned()->nullable()->index();
-            $table->bigInteger('pi_product_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_id')->unsigned()->nullable()->index();
             $table->string('ad_type')->nullable();
@@ -64,9 +62,6 @@ class CreateAdvertisementsTable extends Migration
 
             $table->foreign('advertisement_id')->references('id')->on('advertisements');
             $table->foreign('material_id')->references('id')->on('advertisement_materials');
-            $table->foreign('pi_product_id')->references('id')->on('pi_products');
-            $table->foreign('site_screen_id')->references('id')->on('site_screens');
-            $table->foreign('site_id')->references('id')->on('sites');
         });
         
     }

@@ -28,7 +28,6 @@ class AdvertisementRequest extends FormRequest
             "company_id" => "required|string",
             "contract_id" => "required|string",
             "brand_id" => "required|string",
-            // "status_id" => "required|string",
             "display_duration" => "required|numeric|min:0|not_in:0",
         ];
     }
@@ -42,7 +41,6 @@ class AdvertisementRequest extends FormRequest
             'company_id.required' => 'The company field is required',
             'contract_id.required' => 'The contract field is required.',
             'brand_id.required' => 'The brand field is required.',
-            // 'status_id.required' => 'The status field is required.',
         ];
     }
 }

@@ -36,13 +36,12 @@ class ContentMaterialViewModel extends Model
 
     public $appends = [
         'material_path',
-        'site_screen_products',
+        'material_thumbnails_path',
         'advertisement_name',
         'company_name',
         'brand_name',
         'category_name',
         'parent_category_name',
-        'screen_assigned',
         'display_duration',
     ]; 
 
@@ -66,15 +65,12 @@ class ContentMaterialViewModel extends Model
         return asset('/images/no-image-available.png');
     } 
 
-    public function getSiteScreenProductsAttribute()
+    public function getMaterialThumbnailsPathAttribute()
     {
-        $ids = $this->getScreens()->pluck('pi_product_id');
-        $site_screen_products = SiteScreenProductViewModel::whereIn('id', $ids)->get();
-
-        if($site_screen_products)
-            return $site_screen_products;
-        return null;
-    } 
+        if($this->thumbnail_path)
+            return asset($this->thumbnail_path);
+        return asset('/images/no-image-available.png');
+    }
 
     public function getAdvertisementNameAttribute()
     {
@@ -123,14 +119,5 @@ class ContentMaterialViewModel extends Model
             return $advertisment->display_duration;
         return null;
     }
-    
-    public function getScreenAssignedAttribute()
-    {
-        $screens = $this->site_screen_products->pluck('site_screen_location')->toArray();
-        if($screens)
-            return $screens;
-        return null;
-    }
-
 
 }
