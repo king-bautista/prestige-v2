@@ -54,9 +54,14 @@ class ContentManagementViewModel extends Model
         'screens',
     ];
 
+    public function getAdvertisement()
+    {
+        return $this->hasOne('App\Models\ViewModels\AdvertisementViewModel', 'id', 'advertisement_id');
+    }
+
     public function getMaterialDetails()
     {
-        return $this->hasOne('App\Models\ViewModels\ContentMaterialViewModel', 'id', 'material_id');
+        return $this->hasMany('App\Models\ViewModels\AdvertisementMaterialViewModel', 'advertisement_id', 'advertisement_id');
     }
 
     public function getScreens()
@@ -71,15 +76,15 @@ class ContentManagementViewModel extends Model
     {
         $ad_details = $this->getMaterialDetails()->first();
         if($ad_details)
-            return $ad_details->material_path;
+            return $ad_details->material_thumbnails_path;
         return null;
     }
 
     public function getAdNameAttribute() 
     {
-        $ad_details = $this->getMaterialDetails()->first();
+        $ad_details = $this->getAdvertisement()->first();
         if($ad_details)
-            return $ad_details->advertisement_name;
+            return $ad_details->name;
         return null;
     }
     
@@ -93,7 +98,7 @@ class ContentManagementViewModel extends Model
 
     public function getCompanyNameAttribute() 
     {
-        $ad_details = $this->getMaterialDetails()->first();
+        $ad_details = $this->getAdvertisement()->first();
         if($ad_details)
             return $ad_details->company_name;
         return null;
@@ -101,7 +106,7 @@ class ContentManagementViewModel extends Model
 
     public function getBrandNameAttribute() 
     {
-        $ad_details = $this->getMaterialDetails()->first();
+        $ad_details = $this->getAdvertisement()->first();
         if($ad_details)
             return $ad_details->brand_name;
         return null;
@@ -109,7 +114,7 @@ class ContentManagementViewModel extends Model
 
     public function getCategoryNameAttribute()
     {
-        $ad_details = $this->getMaterialDetails()->first();
+        $ad_details = $this->getAdvertisement()->first();
         if($ad_details)
             return $ad_details->category_name;
         return null;
@@ -117,7 +122,7 @@ class ContentManagementViewModel extends Model
 
     public function getParentCategoryNameAttribute()
     {
-        $ad_details = $this->getMaterialDetails()->first();
+        $ad_details = $this->getAdvertisement()->first();
         if($ad_details)
             return $ad_details->parent_category_name;
         return null;
@@ -125,7 +130,7 @@ class ContentManagementViewModel extends Model
 
     public function getAdvertisementDetailsAttribute() 
     {
-        $ad_details = $this->getMaterialDetails()->first();
+        $ad_details = AdvertisementViewModel::find($this->advertisement_id);
         if($ad_details)
             return $ad_details;
         return null;
@@ -133,11 +138,35 @@ class ContentManagementViewModel extends Model
 
     public function getScreensAttribute() 
     {
-        $ids = $this->getScreens()->pluck('site_screen_product_id');
-        $site_screen_products = SiteScreenProductViewModel::whereIn('id', $ids)->get();
+        $ids = $this->getScreens()->where('site_screen_id', '>', 0)->pluck('site_screen_id');
+        $site_screens = SiteScreenViewModel::whereIn('id', $ids)->get();
 
-        if($site_screen_products)
-            return $site_screen_products;
+        $ad_screens_ids = $this->getScreens()->where('site_screen_id', '=', 0)->where('site_id', '>', 0)->pluck('site_id');
+        $ad_screens = SiteScreenViewModel::whereIn('site_id', $ad_screens_ids)->groupBy('site_id')->get();
+
+        if($ad_screens) {
+            foreach($ad_screens as $ad_screen) {
+                $site_screens[] = [
+                    'id' => 0,
+                    'site_id' => $ad_screen->site_id,
+                    'site_screen_location' => $ad_screen->site_code_name.' - All ('.$ad_screen->product_application.')',
+                    'product_application' => $ad_screen->product_application
+                ];
+            }            
+        }
+
+        $all = $this->getScreens()->where('product_application', 'All')->get();
+        if(count($all)) {
+            $site_screens[] = [
+                'id' => 0,
+                'site_id' => 0,
+                'site_screen_location' => 'All (Sites screens)',
+                'product_application' => 'All'
+            ];
+        }
+
+        if($site_screens)
+            return $site_screens;
         return null;
     }  
 

@@ -21,7 +21,7 @@ class CreateContractsTable extends Migration
             $table->bigInteger('company_id')->unsigned();
             $table->string('name')->nullable();
             $table->string('reference_code')->nullable();
-            $table->string('remarks')->nullable();
+            $table->mediumText('remarks')->nullable();
             $table->boolean('is_indefinite')->default(false);
             $table->boolean('is_exclusive')->default(false);
             $table->integer('display_duration')->default(0);
@@ -34,7 +34,6 @@ class CreateContractsTable extends Migration
             $table->softDeletes();
 
             $table->foreign('company_id')->references('id')->on('companies');
-
         });
 
         Schema::create('contract_brands', function (Blueprint $table) {

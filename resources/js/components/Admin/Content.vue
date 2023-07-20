@@ -54,16 +54,11 @@
 							<div v-if="content.advertisement_details">
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Material</label>
-									<div class="col-sm-3 text-center" id="ad-holder">
-										<span v-if="content.advertisement_details.file_type == 'image'">
-											<img :src="content.advertisement_details.material_path" class="img-thumbnail" />
-										</span>
-										<span v-else-if="content.advertisement_details.file_type == 'video'">
-											<video muted="muted" class="img-thumbnail">
-												<source :src="content.advertisement_details.material_path" type="video/ogg">
-												Your browser does not support the video tag.
-											</video>
-										</span>
+									<div class="col-sm-8 text-left" id="ad-holder">
+										<div v-for="(material, index) in content.advertisement_details.materials" v-bind:key="index" class="material_thumbnails bg-light">
+											<span><strong>{{ material.dimension }}</strong></span>
+											<img :src="material.material_thumbnails_path" class="img-thumbnail" />
+										</div>
 
 										<div class="edit-button"><a @click="content.advertisement_details = null" class="bg-success"><i class="fas fa-edit"></i> CHANGE </a></div>
 									</div>
@@ -72,7 +67,7 @@
 									<label for="firstName" class="col-sm-4 col-form-label">Ad Name</label>
 									<div class="col-sm-8">
 										<span>
-											{{ content.advertisement_details.advertisement_name }}
+											{{ content.advertisement_details.name }}
 										</span>
 									</div>
 								</div>
@@ -93,10 +88,26 @@
 									</div>
 								</div>
 								<div class="form-group row">
-									<label for="firstName" class="col-sm-4 col-form-label">Dimension</label>
+									<label for="firstName" class="col-sm-4 col-form-label">Contract ID</label>
 									<div class="col-sm-8">
 										<span>
-											{{ content.advertisement_details.dimension }}
+											{{ content.advertisement_details.contract_details.serial_number }}
+										</span>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="firstName" class="col-sm-4 col-form-label">Contract Name</label>
+									<div class="col-sm-8">
+										<span>
+											{{ content.advertisement_details.contract_details.name }}
+										</span>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="firstName" class="col-sm-4 col-form-label">Contract Remarks</label>
+									<div class="col-sm-8">
+										<span>
+											{{ content.advertisement_details.contract_details.remarks }}
 										</span>
 									</div>
 								</div>
@@ -186,7 +197,7 @@
                 helper: new Helpers(),
                 content: {
                     id: '',
-					material_id: '',
+					advertisement_id: '',
 					status_id: '',
 					advertisement_details: '',
                     start_date: '',
@@ -268,17 +279,17 @@
 				},
 
 				adsDataFields: {
-					material_path: {
+            		serial_number: "ID",
+					material_thumbnails_path: {
             			name: "Preview", 
             			type: "logo", 
             		},
-					screen_assigned: "Screen Assigned",
-            		advertisement_name: "Name", 
+            		name: "Name",
 					company_name: "Company Name",
 					brand_name: "Brand Name",
             	},
 				adsPrimaryKey: "id",
-            	adsDataUrl: "/admin/manage-ads/all",
+            	adsDataUrl: "/admin/manage-ads/list",
 				adsActionButtons: {
             		edit: {
             			title: 'Add',
@@ -299,6 +310,13 @@
         },
 
         methods: {
+			getScreens: function (id) {
+				axios.post('/admin/site/site-screen-product/get-screens', {contract_id: id})
+                .then(response => {
+					this.screens = response.data.data
+				});				
+			},
+
 			getSites: function() {
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
@@ -312,7 +330,7 @@
 			AddNewContent: function() {
 				this.add_record = true;
 				this.edit_record = false;
-				this.content.material_id = '';
+				this.content.advertisement_id = '';
 				this.content.status_id = '';
 				this.content.advertisement_details = '';
 				this.content.start_date = '';
@@ -323,10 +341,12 @@
             },
 
 			selectedAd: function(data) {
+				console.log(data);
 				this.screens = [];
-				this.content.material_id = data.id
+				this.content.site_screen_ids = [];
+				this.content.advertisement_id = data.id
 				this.content.advertisement_details = data;
-				this.screens = data.site_screen_products;
+				this.getScreens(data.contract_id);
 			},
 
             storeContent: function() {
@@ -343,15 +363,15 @@
                 .then(response => {
                     var content = response.data.data;
 					this.screens = [];
-					this.screens = content.advertisement_details.site_screen_products;
+					this.getScreens(content.advertisement_details.contract_id);
 
 					this.content.id = content.id;
-					this.content.material_id = content.material_id;
-					this.content.status_id = content.status_id;
+					this.content.advertisement_id = content.advertisement_id;
 					this.content.advertisement_details = content.advertisement_details;
+					this.content.site_screen_ids = content.screens;
+					this.content.status_id = content.status_id;
 					this.content.start_date = content.start_date;
 					this.content.end_date = content.end_date;
-					this.content.site_screen_ids = content.screens;
 					this.content.active = content.active;
 
 					this.add_record = false;
@@ -405,5 +425,15 @@
 
 	#ad-holder:hover .edit-button {
 		opacity: 1;
+	}
+
+	.material_thumbnails {
+		width: 160px;
+		text-align: center;
+		border: solid 1px;
+		padding: 5px;
+		margin: 0 5px;
+		border-radius: 5px;
+		display: inline-block;
 	}
 </style>

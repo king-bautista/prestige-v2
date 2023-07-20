@@ -364,8 +364,8 @@ class CompaniesController extends AppBaseController implements CompaniesControll
 
     function duplicateContract($id) 
     {
-        try
-    	{
+        // try
+    	// {
             $contract = Contract::find($id)->toArray();
             $contract_details = ContractViewModel::find($id);
 
@@ -379,15 +379,15 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $new_contract = ContractViewModel::find($new_contract->id);
 
             return $this->response($new_contract, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function downloadCsv()

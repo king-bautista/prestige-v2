@@ -36,7 +36,7 @@ class AdvertisementMaterialViewModel extends Model
 
     public $appends = [
         'material_path',
-        'pi_screens',
+        'material_thumbnails_path',
     ]; 
 
     public function getScreens()
@@ -52,16 +52,13 @@ class AdvertisementMaterialViewModel extends Model
         if($this->file_path)
             return asset($this->file_path);
         return asset('/images/no-image-available.png');
-    } 
+    }
 
-    public function getPiScreensAttribute()
+    public function getMaterialThumbnailsPathAttribute()
     {
-        $ids = $this->getScreens()->pluck('pi_product_id');
-        $site_screen_products = SiteScreenProductViewModel::whereIn('id', $ids)->get();
-
-        if($site_screen_products)
-            return $site_screen_products;
-        return null;
-    } 
+        if($this->thumbnail_path)
+            return asset($this->thumbnail_path);
+        return asset('/images/no-image-available.png');
+    }
 
 }

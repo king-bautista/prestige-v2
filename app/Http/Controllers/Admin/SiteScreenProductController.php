@@ -14,6 +14,7 @@ use App\Http\Requests\SiteScreenProductRequest;
 use App\Models\SiteScreenProduct;
 use App\Models\ContractScreen;
 use App\Models\ViewModels\SiteScreenProductViewModel;
+use App\Models\ViewModels\SiteScreenViewModel;
 use App\Exports\Export;
 use Storage;
 
@@ -165,39 +166,41 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     public function getScreen(Request $request)
     {
         try {
-            $site_screen_products = [];
+            $contract_screen = ContractScreen::where('contract_id', $request->contract_id)->first();
+            $site_screens_data = SiteScreenViewModel::when($contract_screen->site_screen_id > 0, function ($query) use ($contract_screen) {
+                return $query->where('site_screens.id', $contract_screen->site_screen_id);
+            })
+            ->when($contract_screen->site_id > 0, function ($query) use ($contract_screen) {
+                return $query->where('site_screens.site_id', $contract_screen->site_id);
+            })
+            ->when($contract_screen->product_application != 'All', function ($query) use ($contract_screen) {
+                return $query->where('site_screens.product_application', $contract_screen->product_application);
+            })
+            ->select('site_screens.*');
 
-            $site_screen_ids = ContractScreen::where('contract_id', $request->contract_id)->where('site_screen_id', '>', 0)->get()->pluck('site_screen_id');
-            if(count($site_screen_ids)) {
-                return $site_screen_ids;
+            $site_screens = $site_screens_data->get();
+
+            $site_all_directory = $site_screens_data->groupBy('site_screens.site_id', 'site_screens.product_application')->get();
+            if($site_all_directory) {
+                foreach($site_all_directory as $directory) {
+                    $site_screens[] = [
+                        'id' => 0,
+                        'site_id' => $directory->site_id,
+                        'site_screen_location' => $directory->site_code_name.' - All ('.$directory->product_application.')',
+                        'product_application' => $directory->product_application
+                    ];
+                }
             }
 
-            $site_ids = ContractScreen::where('contract_id', $request->contract_id)->where('site_id', '>', 0)->groupBy('site_id')->get()->pluck('site_id');
-            if(count($site_ids)) {
-                $site_screen_products = SiteScreenProductViewModel::whereIn('site_screens.site_id', $site_ids)
-                ->where('site_screen_products.width', $request->width)
-                ->where('site_screen_products.height', $request->height)
-                ->leftJoin('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
-                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
-                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_screen_products.*')
-                ->get();
-            }
+            if($contract_screen->product_application == 'All')
+                $site_screens[] = [
+                    'id' => 0,
+                    'site_id' => 0,
+                    'site_screen_location' => 'All (Sites screens)',
+                    'product_application' => 'All'
+                ];
 
-            $all_sites = ContractScreen::where('contract_id', $request->contract_id)->where('product_application', '=', 'All')->first();
-            if($all_sites) {
-                $site_screen_products = SiteScreenProductViewModel::where('site_screen_products.width', $request->width)
-                ->where('site_screen_products.height', $request->height)
-                ->leftJoin('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
-                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
-                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_screen_products.*')
-                ->get();
-            }
-
-            return $this->response($site_screen_products, 'Successfully Retreived!', 200);
+            return $this->response($site_screens, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -207,4 +210,83 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
         }
     }
 
+    public function getScreenSize(Request $request) 
+    {
+        try {
+            $is_all = false;
+            $site_ids = [];
+            $site_screen_id = [];
+            foreach ($request->all() as $key => $value) {
+                if($value['site_id'] && $value['id'] == 0)
+                    $site_ids[] = $value['site_id'];
+                
+                if($value['id'] > 0)
+                    $site_screen_id[] = $value['id'];
+
+                if($value['product_application'] == 'All')
+                    $is_all = true;
+            }
+
+            $screen_sizes = SiteScreenProductViewModel::when(!$is_all,function($query) use($site_ids, $site_screen_id){
+                $query->whereIn('site_screens.site_id', $site_ids)
+                      ->orWhereIn('site_screen_products.site_screen_id', $site_screen_id);
+            })
+            ->join('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
+            ->select('site_screen_products.dimension')
+            ->groupBy('site_screen_products.dimension')
+            ->get();
+
+            return $this->response($screen_sizes, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    // public function getScreen(Request $request)
+    // {
+    //     try {
+    //         $site_screen_products = [];
+
+    //         $site_screen_ids = ContractScreen::where('contract_id', $request->contract_id)->where('site_screen_id', '>', 0)->get()->pluck('site_screen_id');
+    //         if(count($site_screen_ids)) {
+    //             return $site_screen_ids;
+    //         }
+
+    //         $site_ids = ContractScreen::where('contract_id', $request->contract_id)->where('site_id', '>', 0)->groupBy('site_id')->get()->pluck('site_id');
+    //         if(count($site_ids)) {
+    //             $site_screen_products = SiteScreenProductViewModel::whereIn('site_screens.site_id', $site_ids)
+    //             ->leftJoin('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
+    //             ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+    //             ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+    //             ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+    //             ->select('site_screen_products.*')
+    //             ->get();
+    //         }
+
+    //         $all_sites = ContractScreen::where('contract_id', $request->contract_id)->where('product_application', '=', 'All')->first();
+    //         if($all_sites) {
+    //             $site_screen_products = SiteScreenProductViewModel::select('site_screen_products.*')
+    //             ->leftJoin('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
+    //             ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+    //             ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+    //             ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')                
+    //             ->get();
+    //         }
+
+    //         return $this->response($site_screen_products, 'Successfully Retreived!', 200);
+    //     } catch (\Exception $e) {
+    //         return response([
+    //             'message' => $e->getMessage(),
+    //             'status' => false,
+    //             'status_code' => 422,
+    //         ], 422);
+    //     }
+    // }
+
 }
+
+

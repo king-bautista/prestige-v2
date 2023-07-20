@@ -80,7 +80,12 @@ class AdvertisementController extends AppBaseController implements Advertisement
         try
     	{
             $materials = json_decode($request->materials);
-            if(!$materials[0]->src || $materials[0]->src == '') {
+            $count = 0;
+            foreach($materials as $index => $material) {
+                if($material->src)
+                    $count++;
+            }
+            if(!$count) {
                 return response([
                     'message' => 'material is required.',
                     'status' => false,
@@ -91,16 +96,13 @@ class AdvertisementController extends AppBaseController implements Advertisement
             $company_id = json_decode($request->company_id);
             $contract_id = json_decode($request->contract_id);
             $brand_id = json_decode($request->brand_id);
-            // $status_id = json_decode($request->status_id);
 
             $data = [
+                'name' => $request->name,
                 'company_id' => ($company_id) ? $company_id->id : null,
                 'contract_id' => ($contract_id) ? $contract_id->id : null,
                 'brand_id' => ($brand_id) ? $brand_id->id : null,
-                'status_id' => 5,
-                'product_application' => $request->product_application,
                 'display_duration' => $request->display_duration,
-                'name' => $request->name,
                 'active' => ($request->active == 'false') ? 0 : 1
             ];
 
@@ -189,14 +191,13 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
     public function getAllType(Request $request)
     {
-        try
-        {
+        // try
+        // {
             $advertisements = ContentMaterialViewModel::when(request('search'), function($query){
                 return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
                              ->where('companies.name', 'LIKE', '%' . request('search') . '%')
                              ->where('brands.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('advertisements.status_id', 5)
             ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
             ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
             ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
@@ -204,15 +205,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function getMaterialDetails($id)

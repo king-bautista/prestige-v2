@@ -18,28 +18,28 @@ class CreateContentManagementTable extends Migration
             
             $table->bigIncrements('id');
             $table->string('serial_number')->nullable();
-            $table->bigInteger('material_id')->unsigned()->nullable()->index();
+            $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
+            $table->bigInteger('status_id')->unsigned()->nullable()->index();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('material_id')->references('id')->on('advertisement_materials');
+            $table->foreign('advertisement_id')->references('id')->on('advertisements');
+            $table->foreign('status_id')->references('id')->on('transaction_statuses');
         });
 
         Schema::create('content_screens', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
             $table->bigInteger('content_id')->unsigned()->nullable()->index();
-            $table->bigInteger('site_screen_product_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
             $table->bigInteger('site_id')->unsigned()->nullable()->index();
+            $table->string('product_application')->nullable();
+            $table->timestamps();
 
             $table->foreign('content_id')->references('id')->on('content_management');
-            $table->foreign('site_screen_product_id')->references('id')->on('site_screen_products');
-            $table->foreign('site_screen_id')->references('id')->on('site_screens');
-            $table->foreign('site_id')->references('id')->on('sites');
         });
     }
 

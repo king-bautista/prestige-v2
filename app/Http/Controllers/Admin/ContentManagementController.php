@@ -55,7 +55,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                              ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
 
             })
-            ->leftJoin('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
+            ->leftJoin('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.id')
             ->leftJoin('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
             ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
             ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
@@ -96,7 +96,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try
     	{
             $data = [
-                'material_id' => $request->material_id,
+                'advertisement_id' => $request->advertisement_id,
                 'status_id' => $request->status_id,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
@@ -107,7 +107,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $content->serial_number = 'CAD-'.Str::padLeft($content->id, 5, '0');
             $content->save();
             $content->saveScreens($request->site_screen_ids);
-            $this->generatePlayList($request->site_screen_ids);
+            //$this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Created!', 200);
         }
@@ -129,7 +129,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $data = [
                 'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-'.Str::padLeft($content->id, 5, '0'),
-                'material_id' => $request->material_id,
+                'advertisement_id' => $request->advertisement_id,
                 'status_id' => $request->status_id,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
@@ -189,6 +189,12 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function generatePlayList($screens)
     {
+        
+
+
+
+        dd($screens);
+
         $categories = Category::whereNull('parent_id')->where('category_type', 1)->get();
         $categories_ids = $categories->pluck('id');
 
@@ -231,6 +237,22 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function getContent($params, $play_list_ids, $site_partner_ids, $is_site_partner = false)
     {
+//         SELECT content_management.id, site_screen_products.site_screen_id, advertisements.company_id, advertisements.brand_id, 
+// brands.category_id, categories.parent_id AS parent_category_id, categories.parent_id AS main_category_id, 
+// advertisement_materials.advertisement_id
+// FROM advertisement_materials
+// INNER JOIN advertisements ON advertisement_materials.advertisement_id = advertisements.id
+// INNER JOIN content_management ON advertisement_materials.advertisement_id = content_management.advertisement_id
+// LEFT JOIN companies ON advertisements.company_id = companies.id
+// LEFT JOIN brands ON advertisements.brand_id = brands.id
+// LEFT JOIN categories ON brands.category_id = categories.id
+// INNER JOIN site_screen_products ON advertisement_materials.dimension = site_screen_products.dimension
+// INNER JOIN site_screens ON site_screen_products.site_screen_id = site_screens.id
+// WHERE site_screen_products.deleted_at IS NULL 
+// AND advertisement_materials.deleted_at IS NULL 
+// AND site_screens.site_id IN (46, 50)
+
+
         /* GET SCREEN MATERIALS 
          * FILTER BY PARENT CATEGORY ID
          * FILTER CONTENT ID FROM PLAYLIST
@@ -249,7 +271,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         ->select('content_screens.content_id', 'content_screens.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'brands.category_id', 'categories.parent_id as parent_category_id', 'categories.parent_id as main_category_id', 'advertisement_materials.advertisement_id')
         ->join('advertisement_screens', 'content_screens.site_screen_id', '=', 'advertisement_screens.site_screen_id')
         ->join('content_management', 'content_screens.content_id', '=', 'content_management.id')
-        ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
+        ->join('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.id')
         ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
         ->join('brands', 'advertisements.brand_id', '=', 'brands.id')
         ->join('categories', 'brands.category_id', '=', 'categories.id')
@@ -325,7 +347,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
     //         ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
     //         ->join('advertisement_screens', function($join)
     //         {
-    //             $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+    //             $join->on('content_management.advertisement_id', '=', 'advertisement_screens.advertisement_id')
     //                  ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
     //         })
     //          ->where('advertisement_screens.ad_type', 'Banner Ad')

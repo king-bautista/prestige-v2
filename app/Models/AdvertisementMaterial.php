@@ -16,6 +16,7 @@ class AdvertisementMaterial extends Model
      */
     protected $fillable = [
         'advertisement_id',
+        'thumbnail_path',
         'file_path',
         'file_type',
         'file_size',
@@ -56,7 +57,6 @@ class AdvertisementMaterial extends Model
                     [
                        'advertisement_id' => $advertisement_id,
                        'material_id' => $this->id,
-                       'pi_product_id' => $data->id,
                        'site_screen_id' => $data->site_screen_id,
                        'site_id' => $site_id,
                        'ad_type' => $data->ad_type

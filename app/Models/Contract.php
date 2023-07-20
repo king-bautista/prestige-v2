@@ -73,9 +73,9 @@ class Contract extends Model
 
     public function saveScreens($screens)
     {
-        if(count($screens) > 0) {
-            ContractScreen::where('contract_id', $this->id)->delete();
-            
+        ContractScreen::where('contract_id', $this->id)->delete();
+
+        if(count(array_keys($screens)) > 1) {
             ContractScreen::updateOrCreate(
                 [
                    'contract_id' => $this->id,
@@ -85,16 +85,18 @@ class Contract extends Model
                 ],
             );
 
-            // foreach ($screens as $data) {
-            //     ContractScreen::updateOrCreate(
-            //         [
-            //            'contract_id' => $this->id,
-            //            'site_screen_id' => $data['id'],
-            //            'site_id' => $data['site_id'],
-            //            'product_application' => $data['product_application'],
-            //         ],
-            //     );
-            // }
+            return true;
+        }
+
+        foreach ($screens as $data) {
+            ContractScreen::updateOrCreate(
+                [
+                'contract_id' => $this->id,
+                'site_screen_id' => $data['id'],
+                'site_id' => $data['site_id'],
+                'product_application' => $data['product_application'],
+                ],
+            );
         }
     }
 }
