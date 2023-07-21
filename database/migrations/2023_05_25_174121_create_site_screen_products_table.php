@@ -17,6 +17,7 @@ class CreateSiteScreenProductsTable extends Migration
             $table->engine = "InnoDB";
 
             $table->bigIncrements('id');
+            $table->string('serial_number')->nullable();
             $table->bigInteger('site_screen_id')->unsigned();
             $table->string('ad_type')->nullable();
             $table->text('description')->nullable();

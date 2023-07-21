@@ -13,10 +13,6 @@ class CreateSiteTenantMetasTable extends Migration
      */
     public function up()
     {
-        Schema::table('site_tenants', function (Blueprint $table) {
-            $table->bigInteger('company_id')->after('site_building_level_id')->nullable()->index();
-        });
-
         Schema::create('site_tenant_metas', function (Blueprint $table) {
             $table->engine = "InnoDB";
             
