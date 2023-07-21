@@ -41,6 +41,7 @@ class CreateContentManagementTable extends Migration
 
             $table->foreign('content_id')->references('id')->on('content_management');
         });
+        
     }
 
     /**
