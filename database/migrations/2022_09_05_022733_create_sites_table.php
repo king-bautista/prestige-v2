@@ -75,23 +75,27 @@ class CreateSitesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->string('serial_number')->nullable();
             $table->bigInteger('site_id')->unsigned();
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();
             $table->bigInteger('site_point_id')->unsigned();
-            $table->string('serial_number')->nullable();     
-            $table->string('name');
             $table->enum('screen_type', ['LED','LFD','LCD']);
             $table->enum('orientation', ['Landscape', 'Portrait']);
             $table->enum('product_application', ['Directory','Digital Signage']);
-            $table->string('physical_size_diagonal')->nullable();
             $table->string('physical_size_width')->nullable();
             $table->string('physical_size_height')->nullable();
+            $table->string('physical_size_diagonal')->nullable();
             $table->string('physical_serial_number')->nullable();
+            $table->string('dimension')->nullable();
+            $table->string('width')->nullable();
+            $table->string('height')->nullable();
             $table->string('kiosk_id')->nullable();     
-            $table->string('token_key')->nullable();     
+            $table->string('name');
+            $table->integer('slots');
             $table->boolean('active')->default(true);
             $table->boolean('is_default')->default(false);
+            $table->boolean('is_exclusive')->default(false);
             $table->timestamps();
             $table->softDeletes();
 
@@ -120,6 +124,12 @@ class CreateSitesTable extends Migration
             $table->decimal('default_zoom', 10, 2);
             $table->decimal('default_zoom_desktop', 10, 2);
             $table->decimal('default_zoom_mobile', 10, 2);
+            $table->integer('start_x')->default(0);
+            $table->integer('start_y')->default(0);
+            $table->decimal('start_scale', 10, 2);
+            $table->integer('default_x')->default(0);
+            $table->integer('default_y')->default(0);
+            $table->decimal('default_scale', 10, 2);
             $table->boolean('active')->default(true);
             $table->boolean('is_default')->default(false);
             $table->timestamps();
@@ -135,10 +145,14 @@ class CreateSitesTable extends Migration
             $table->engine = "InnoDB";
             
             $table->bigIncrements('id');
+            $table->string('serial_number')->nullable();
             $table->bigInteger('brand_id')->unsigned();
             $table->bigInteger('site_id')->unsigned();
             $table->bigInteger('site_building_id')->unsigned();
             $table->bigInteger('site_building_level_id')->unsigned();
+            $table->bigInteger('company_id')->unsigned()->index();
+            $table->string('space_number')->nullable();
+            $table->string('client_locator_number')->nullable();
             $table->integer('view_count')->default(0);    
             $table->integer('like_count')->default(0);    
             $table->boolean('active')->default(true);
@@ -164,6 +178,7 @@ class CreateSitesTable extends Migration
             $table->decimal('point_z', 10, 2);
             $table->decimal('rotation_z', 10, 2);
             $table->decimal('text_size', 10, 2);
+            $table->decimal('text_width', 10, 2);
             $table->boolean('is_pwd')->default(true);
             $table->string('point_label')->nullable();
             $table->boolean('wrap_at')->default(true);

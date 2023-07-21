@@ -288,7 +288,7 @@
 						material.src = file_path;
 						material.addEventListener("loadedmetadata", function () {						
 							obj.advertisement.display_duration = this.duration;
-							obj.setfilter(index, this.videoHeight, this.videoWidth);
+							obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
 						});
 					}
 				}
@@ -299,9 +299,9 @@
 				}
 			},
 
-			setfilter: function(index, height, width) {
+			setfilter: function(index, height, width, file_type) {
 				var up_dimension = width+'x'+height;
-				if(this.advertisement.materials[index].dimension != up_dimension) {
+				if(this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
 					toastr.error('Invalid file dimension.');
 					this.$refs.materials[index].value = null;
 					this.advertisement.materials[index].src = '';

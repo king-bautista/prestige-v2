@@ -131,7 +131,7 @@ class Advertisement extends Model
                         public_path($file_path.$material->name),
                         public_path('uploads/media/advertisements/materials/thumbnails'),
                         $thumbnails_name,
-                        20,
+                        2,
                         $new_width,
                         $new_height
                     );
