@@ -42,6 +42,7 @@ class ContentManagementViewModel extends Model
      * @var string
      */
 	public $appends = [
+        'material_thumbnails_path',
         'material_path',
         'ad_name',
         'dimension',
@@ -72,11 +73,19 @@ class ContentManagementViewModel extends Model
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
+    public function getMaterialThumbnailsPathAttribute() 
+    {
+        $ad_details = $this->getMaterialDetails()->first();
+        if($ad_details)
+            return $ad_details->material_path;
+        return null;
+    }
+
     public function getMaterialPathAttribute() 
     {
         $ad_details = $this->getMaterialDetails()->first();
         if($ad_details)
-            return $ad_details->material_thumbnails_path;
+            return $ad_details->material_path;
         return null;
     }
 

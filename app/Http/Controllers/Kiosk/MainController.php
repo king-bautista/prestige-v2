@@ -417,16 +417,16 @@ class MainController extends AppBaseController
             $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
             ->where('content_management.status_id', 5)
             ->where('content_management.active', 1)
+            ->where('site_screen_products.ad_type', 'Banner Ad')
             ->whereNull('content_management.deleted_at')
-            ->where('advertisement_screens.ad_type', '=', 'Banner Ad')
             ->whereDate('content_management.start_date', '<=', $current_date)
             ->whereDate('content_management.end_date', '>=', $current_date)
             ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
-            ->join('advertisement_screens', function($join) use ($site_screen_id)
+            ->leftJoin('site_screen_products', function($join)
             {
-                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
-                     ->where('advertisement_screens.site_screen_id', '=', $site_screen_id);
-            })
+                $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                     ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+            })            
             ->select('play_lists.*')
             ->orderBy('play_lists.id', 'ASC')
             ->get();
@@ -446,8 +446,8 @@ class MainController extends AppBaseController
 
     public function getFullscreen()
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;
 
@@ -456,31 +456,31 @@ class MainController extends AppBaseController
             $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
             ->where('content_management.status_id', 5)
             ->where('content_management.active', 1)
+            ->where('site_screen_products.ad_type', 'Full Screen Ad')
             ->whereNull('content_management.deleted_at')
-            ->where('advertisement_screens.ad_type', '=', 'Full Screen Ad')
             ->whereDate('content_management.start_date', '<=', $current_date)
             ->whereDate('content_management.end_date', '>=', $current_date)
             ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
-            ->join('advertisement_screens', function($join) use ($site_screen_id)
+            ->leftJoin('site_screen_products', function($join)
             {
-                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
-                     ->where('advertisement_screens.site_screen_id', '=', $site_screen_id);
-            })
+                $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                     ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+            })            
             ->select('play_lists.*')
             ->orderBy('play_lists.id', 'ASC')
             ->get();
 
-            $banners = $this->listToArray($playlist);
-            return $this->response($banners, 'Successfully Retreived!', 200);
+            $fullscreens = $this->listToArray($playlist);
+            return $this->response($fullscreens, 'Successfully Retreived!', 200);
             
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Fullscreen to display!',
-                'status_code' => 200,
-            ], 200);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Fullscreen to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }
     }
 
     public function getPromos()
@@ -500,7 +500,7 @@ class MainController extends AppBaseController
             ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
             ->join('advertisement_screens', function($join) use ($site_screen_id)
             {
-                $join->on('content_management.material_id', '=', 'advertisement_screens.material_id')
+                $join->on('content_management.advertisement_id', '=', 'advertisement_screens.advertisement_id')
                      ->where('advertisement_screens.site_screen_id', '=', $site_screen_id);
             })
             ->select('play_lists.*')

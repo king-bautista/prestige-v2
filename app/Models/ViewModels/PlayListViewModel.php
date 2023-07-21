@@ -5,6 +5,8 @@ namespace App\Models\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Brand;
+use App\Models\Category;
+use App\Models\AdvertisementMaterial;
 
 class PlayListViewModel extends Model
 {
@@ -39,9 +41,10 @@ class PlayListViewModel extends Model
      * @var string
      */
 	public $appends = [
-        'material_serial_number',
-        'material_name',
+        'advertisement_serial_number',
+        'advertisement_name',
         'material_path',
+        'file_type',
         'start_date',
         'end_date',
         'active',
@@ -50,16 +53,27 @@ class PlayListViewModel extends Model
         'site_name',
         'screen_location',
         'duration',
-        'file_type',
         'tenant_details',
         'brand_name',
         'category_name',
         'parent_category_name',
+        'main_category_name',
     ];
 
-    public function getContentDetails()
-    {
-        return $this->hasOne('App\Models\ViewModels\ContentManagementViewModel', 'id', 'content_id');
+    public function getAdvertisementDetails() {
+        return $this->hasOne('App\Models\Advertisement', 'id', 'advertisement_id');
+    }
+
+    public function getMaterialDetails() {
+        return AdvertisementMaterial::where('advertisement_id', $this->advertisement_id)->where('dimension', $this->dimension)->first();
+    }
+
+    public function getContentDetails() {
+        return $this->hasOne('App\Models\ContentManagement', 'id', 'content_id');
+    }
+
+    public function getCompanyDetails() {
+        return $this->hasOne('App\Models\Company', 'id', 'company_id');
     }
 
     public function getSiteScreenDetails()
@@ -67,30 +81,45 @@ class PlayListViewModel extends Model
         return $this->hasOne('App\Models\ViewModels\SiteScreenViewModel', 'id', 'site_screen_id');
     }
 
+    // public function getContentDetails()
+    // {
+    //     return $this->hasOne('App\Models\ViewModels\ContentManagementViewModel', 'id', 'content_id');
+    // }
+
+
+
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
-    public function getMaterialSerialNumberAttribute() 
+    public function getAdvertisementSerialNumberAttribute() 
     {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->serial_number;
+        $advertisement = $this->getAdvertisementDetails()->first();
+        if($advertisement)
+            return $advertisement->serial_number;
         return null;
     }
 
-    public function getMaterialNameAttribute() 
+    public function getAdvertisementNameAttribute() 
     {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->ad_name;
+        $advertisement = $this->getAdvertisementDetails()->first();
+        if($advertisement)
+            return $advertisement->name;
         return null;
     }
 
     public function getMaterialPathAttribute() 
     {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->material_path;
+        $advertisement_material = $this->getMaterialDetails();
+        if($advertisement_material)
+            return $advertisement_material->file_path;
+        return null;
+    }
+
+    public function getFileTypeAttribute()
+    {
+        $advertisement_material = $this->getMaterialDetails();
+        if($advertisement_material)
+            return $advertisement_material->file_type;
         return null;
     }
 
@@ -120,17 +149,17 @@ class PlayListViewModel extends Model
 
     public function getDisplayDurationAttribute() 
     {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->advertisement_details->display_duration;
+        $advertisement = $this->getAdvertisementDetails()->first();
+        if($advertisement)
+            return $advertisement->display_duration;
         return null;
     }
 
     public function getCompanyNameAttribute() 
     {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->company_name;
+        $company_details = $this->getCompanyDetails()->first();
+        if($company_details)
+            return $company_details->name;
         return null;
     }
 
@@ -162,14 +191,6 @@ class PlayListViewModel extends Model
         return 0;
     }
 
-    public function getFileTypeAttribute()
-    {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->advertisement_details->file_type;
-        return null;
-    }
-
     public function getTenantDetailsAttribute()
     {
         $site_details = $this->getSiteScreenDetails()->first();
@@ -189,19 +210,26 @@ class PlayListViewModel extends Model
 
     public function getCategoryNameAttribute() 
     {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->category_name;
+        $category = Category::find($this->category_id);
+        if($category)
+            return $category->name;
         return null;
     }
 
     public function getParentCategoryNameAttribute() 
     {
-        $content_details = $this->getContentDetails()->first();
-        if($content_details)
-            return $content_details->parent_category_name;
+        $category = Category::where('parent_id', $this->parent_category_id)->first();
+        if($category)
+            return $category->name;
         return null;
     }
 
+    public function getMainCategoryNameAttribute() 
+    {
+        $category = Category::where('parent_id', $this->main_category_id)->first();
+        if($category)
+            return $category->name;
+        return null;
+    }
 
 }
