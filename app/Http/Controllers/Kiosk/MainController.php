@@ -446,8 +446,8 @@ class MainController extends AppBaseController
 
     public function getFullscreen()
     {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;
 
@@ -473,14 +473,14 @@ class MainController extends AppBaseController
             $fullscreens = $this->listToArray($playlist);
             return $this->response($fullscreens, 'Successfully Retreived!', 200);
             
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Fullscreen to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Fullscreen to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
 
     public function getPromos()
