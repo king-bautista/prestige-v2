@@ -16,7 +16,7 @@ class ContentManagement extends Model
      */
     protected $fillable = [
         'serial_number',
-        'material_id',
+        'advertisement_id',
         'status_id',
         'start_date',
         'end_date',
@@ -54,23 +54,16 @@ class ContentManagement extends Model
             $deleted = ContentScreen::where('content_id', $this->id)->delete();
 
             foreach ($screens as $data) {
-                $site_id = '';
-                if(isset($data->site_id)) {
-                    $site_id = $data->site_id;
-                }
-                else {
-                    $site_id = $data['site_screen_details']['site_id'];
-                }
-
                 ContentScreen::updateOrCreate(
                     [
-                       'content_id' => $this->id,
-                       'site_screen_product_id' => $data['id'],
-                       'site_screen_id' => $data['site_screen_id'],
-                       'site_id' => $site_id,
+                        'content_id' => $this->id,
+                        'site_screen_id' => $data['id'],
+                        'site_id' => $data['site_id'],
+                        'product_application' => $data['product_application'],
                     ],
                 );
             }
-        }    }
+        }    
+    }
 
 }

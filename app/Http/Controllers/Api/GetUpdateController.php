@@ -805,13 +805,12 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                         'id' => $ad->id
                     ],
                     [
+                        'name' => $ad->name,
                         'serial_number' => $ad->serial_number,
                         'company_id' => $ad->company_id,
                         'contract_id' => $ad->contract_id,
                         'brand_id' => $ad->brand_id,
-                        'status_id' => $ad->status_id,
                         'display_duration' => $ad->display_duration,
-                        'name' => $ad->name,
                         'active' => $ad->active,
                         'deleted_at' => $ad->deleted_at,
                     ]
@@ -827,6 +826,9 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         if($advertisement_materials) {
             foreach($advertisement_materials as $material) {
 
+                if($material->thumbnail_path)
+                    $this->saveMaterial('uploads/media/advertisements/materials/thumbnails/', $material->thumbnail_path);
+
                 if($material->file_path)
                     $this->saveMaterial('uploads/media/advertisements/materials/', $material->file_path);
 
@@ -836,6 +838,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     ],
                     [
                         'advertisement_id' => $material->advertisement_id,
+                        'thumbnail_path' => $material->thumbnail_path,
                         'file_path' => $material->file_path,
                         'file_type' => $material->file_type,
                         'file_size' => $material->file_size,
@@ -846,7 +849,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     ]
                 );
 
-                $this->updateAdvertisementScreens($material->id);
+                //$this->updateAdvertisementScreens($material->id);
             }
         }
     }
@@ -885,7 +888,7 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                     ],
                     [
                         'serial_number' => $content->serial_number,
-                        'material_id' => $content->material_id,
+                        'advertisement_id' => $content->advertisement_id,
                         'status_id' => $content->status_id,
                         'start_date' => $content->start_date,
                         'end_date' => $content->end_date,
@@ -910,9 +913,9 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
                 $this->data[] = ContentScreen::on('mysql')->updateOrCreate(
                     [
                         'content_id' => $screen->content_id,
-                        'site_screen_product_id' => $screen->site_screen_product_id,
                         'site_screen_id' => $screen->site_screen_id,
-                        'site_id' => $screen->site_id
+                        'site_id' => $screen->site_id,
+                        'product_application' => $screen->product_application
                     ],
                 );
             }

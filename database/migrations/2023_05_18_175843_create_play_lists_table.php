@@ -26,6 +26,7 @@ class CreatePlayListsTable extends Migration
             $table->bigInteger('main_category_id')->unsigned();
             $table->bigInteger('advertisement_id')->unsigned();
             $table->bigInteger('sequence')->unsigned();
+            $table->string('dimension')->nullable();
             $table->timestamps();
 
         });

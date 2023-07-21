@@ -27,12 +27,12 @@
 	    <!-- /.content -->
 
 		<!-- Modal Add New / Edit User -->
-		<div class="modal fade" id="site_ad-form" data-backdrop="static" tabindex="-1" aria-labelledby="site_ad-form" aria-hidden="true">
+		<div class="modal fade" id="site_ad-form" ref="form_modal" data-backdrop="static" tabindex="-1" aria-labelledby="site_ad-form" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Advertisements</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Advertisements</h5>
+						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Content</h5>
+						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Content</h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -76,7 +76,7 @@
 										@select="contractSelected">
                                     </multiselect> 
 								</div>
-							</div>
+							</div>	
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -91,22 +91,7 @@
 										placeholder="Select Brand">
                                     </multiselect> 
 								</div>
-							</div>						
-							<!-- <div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Status <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-9">
-                                    <multiselect v-model="advertisement.status_id" 
-										:options="statuses" 
-										:multiple="false"
-										:close-on-select="true"
-										:searchable="true" 
-										:allow-empty="false"
-										track-by="name" 
-										label="name" 
-										placeholder="Select Status">
-                                    </multiselect> 
-								</div>
-							</div> -->
+							</div>
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Duration <span class="font-italic text-danger"> *</span></label>
                                 <div class="col-sm-2">
@@ -123,18 +108,25 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">SSP/s</label>
+								<div class="col-sm-9">
+									<ul v-if="screens.length > 0" class="list-group" style="max-height: 200px; height: auto; overflow: hidden; overflow-y: auto;">
+										<li class="list-group-item" v-for="(screen, index) in screens" v-bind:key="index">{{ screen.site_screen_location }}</li>
+									</ul>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-12 col-form-label">Material <span class="font-italic text-danger"> *</span></label>
+							</div>
 							<div v-for="(material, index) in advertisement.materials" v-bind:key="index" v-if="advertisement.contract_id">
 								<hr/>
-								<div class="position-absolute" style="right: 2.5rem; z-index: 9;">
-									<button type="button" class="btn btn-outline-danger" @click="deleteRow(index, material.id)"><i class="fas fa-trash-alt"></i></button>
-								</div>
 								<div class="form-group row">
-									<label for="firstName" class="col-sm-3 col-form-label">Material <span class="font-italic text-danger"> *</span></label>								
+									<label for="firstName" class="col-sm-3 col-form-label">{{ material.dimension }}</label>								
 									<div class="col-sm-5">
 										<input type="file" accept="image/*" ref="materials" @change="fileUpload($event, index)" multiple>
 										<footer class="blockquote-footer">Max file size is 15MB</footer>
 										<footer class="blockquote-footer">Compatible file types: .jpg, .png, .ogv</footer>
-
 									</div>
 									<div class="col-sm-3 text-center">
 										<span v-if="material.src && material.file_type == 'image'">
@@ -147,27 +139,6 @@
 											</video>
 										</span>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="firstName" class="col-sm-3 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
-									<div class="col-sm-9">
-										<button type="button" v-show="material.button_show" class="btn btn-primary" @click="getScreens(index)">Evaluate</button>
-										<multiselect v-model="material.screen_ids" 
-										track-by="site_screen_location" 
-										label="site_screen_location" 
-										placeholder="Select Screens" 
-										:options="material.screens" 
-										:searchable="true" 
-										:multiple="true"
-										v-show="material.list_show">
-										</multiselect>
-									</div>
-								</div>
-							</div>
-							<hr v-if="advertisement.contract_id"/>
-							<div class="form-group row" v-if="advertisement.contract_id">
-								<div class="col-sm-12">
-									<button type="button" class="btn btn-primary" @click="addMaterial">Add Material</button>
 								</div>
 							</div>
 						</div>
@@ -201,20 +172,19 @@
 					contract_id: '',
 					brand_id: '',
                     name: '',
-					// status_id: '',
                     active: true,
-					display_duration: '',
+					display_duration: 10,
 					materials: []
                 },
                 companies: [],
                 contracts: [],
                 brands: [],
-                statuses: [],
+				screens: [],
                 add_record: true,
                 edit_record: false,
             	dataFields: {
 					serial_number: "ID",
-					material_image_path: {
+					material_thumbnails_path: {
             			name: "Preview", 
             			type: "logo", 
             		},
@@ -222,20 +192,6 @@
 					company_name: "Company Name",
 					brand_name: "Brand Name",
 					display_duration: "Duration (in sec)",
-            		// status_id: {
-            		// 	name: "Transaction Status", 
-            		// 	type:"Boolean", 
-            		// 	status: { 
-            		// 		1: '<span class="badge badge-secondary">Draft</span>',
-            		// 		2: '<span class="badge badge-primary">New</span>',
-            		// 		3: '<span class="badge badge-info">Pending approval</span>',
-            		// 		4: '<span class="badge badge-danger">Disapprove</span>',
-            		// 		5: '<span class="badge badge-success">Approved</span>',
-            		// 		6: '<span class="badge badge-secondary">For review</span>',
-            		// 		7: '<span class="badge badge-info">Archive</span>',
-            		// 		8: '<span class="badge badge-success">Saved</span>',
-            		// 	}
-            		// },
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -280,18 +236,20 @@
 
         created(){
 			this.getCompany();
-			this.getStatuses();
         },
 
         methods: {
+			getScreens: function (id) {
+				axios.post('/admin/site/site-screen-product/get-screens', {contract_id: id})
+                .then(response => {
+					this.screens = response.data.data
+					this.getMaterialSize();
+				});				
+			},
+			
 			getCompany: function() {
 				axios.get('/admin/company/get-all')
                 .then(response => this.companies = response.data.data);
-			},
-
-			getStatuses: function() {
-				axios.get('/admin/transaction/statuses/get-all')
-                .then(response => this.statuses = response.data.data);
 			},
 
 			companySelected: function(company) {
@@ -300,34 +258,7 @@
 
 			contractSelected: function(contract) {
 				this.brands = contract.brands;
-			},
-
-			addMaterial: function() {
-				this.advertisement.materials.push({
-					id: '',
-					file: '',
-					name: '',
-					size: '',
-					src: '',
-					file_type: '',
-					width: '',
-					height: '',
-					screens: [],
-					screen_ids: [],
-					button_show: true,
-					list_show: false,
-					contract_id: '',
-				});
-			},
-
-			deleteRow: function(index, id) {
-				axios.get('/admin/manage-ads/material/delete/'+id)
-                .then(response => {
-					if(response.status == false)
-						return false;
-					
-					this.advertisement.materials.splice(index, 1);
-				});
+				this.getScreens(contract.id);
 			},
 
 			fileUpload: function(e, index) {
@@ -343,8 +274,6 @@
 					this.advertisement.materials[index].size = file.size;
 					this.advertisement.materials[index].src = file_path;
 					this.advertisement.materials[index].file_type = file_type[0];
-					this.advertisement.materials[index].button_show = true;
-					this.advertisement.materials[index].list_show = false;
 
 					if(file_type[0] == 'image') {
 						material = new Image;
@@ -371,17 +300,38 @@
 			},
 
 			setfilter: function(index, height, width) {
+				var up_dimension = width+'x'+height;
+				if(this.advertisement.materials[index].dimension != up_dimension) {
+					toastr.error('Invalid file dimension.');
+					this.$refs.materials[index].value = null;
+					this.advertisement.materials[index].src = '';
+					return false;
+				}
+
 				this.advertisement.materials[index].height = height;
 				this.advertisement.materials[index].width = width;
-				this.advertisement.materials[index].contract_id = this.advertisement.contract_id.id;
 			},
 
-			getScreens: function(index) {
-				axios.post('/admin/site/site-screen-product/get-screens', this.advertisement.materials[index])
+			getMaterialSize: function() {
+				this.advertisement.materials = [];				
+				axios.post('/admin/site/site-screen-product/get-screen-size', this.screens)
                 .then(response => {
-					this.advertisement.materials[index].screens = response.data.data;
-					this.advertisement.materials[index].button_show = false;
-					this.advertisement.materials[index].list_show = true;
+					var screens = response.data.data;
+					screens.forEach(
+					key => {
+							this.advertisement.materials.push({
+								id: '',
+								file: '',
+								name: '',
+								dimension: key.dimension,
+								size: '',
+								src: '',
+								file_type: '',
+								width: '',
+								height: '',
+							});
+						}
+					);
 				});
 			},
 
@@ -390,12 +340,10 @@
 				this.advertisement.company_id = '';
 				this.advertisement.contract_id = '';
 				this.advertisement.brand_id = '';
-				// this.advertisement.status_id = '';
-				this.advertisement.display_duration = '';
+				this.advertisement.display_duration = 10;
 				this.advertisement.active = true;
 				this.advertisement.materials = [];
-				this.addMaterial();
-
+				this.screens = [];
 				this.add_record = true;
 				this.edit_record = false;
               	$('#site_ad-form').modal('show');
@@ -403,13 +351,12 @@
 
             storeAdvertisements: function() {
 				let formData = new FormData();
+				formData.append("name", this.advertisement.name);
 				formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
 				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
 				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
-				formData.append("name", this.advertisement.name);
-				// formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
-				formData.append("active", this.advertisement.active);
 				formData.append("display_duration", this.advertisement.display_duration);
+				formData.append("active", this.advertisement.active);
 
 				for( let index = 0; index < this.advertisement.materials.length; index++ ) {
 					formData.append('files[]', this.advertisement.materials[index].file);
@@ -432,43 +379,63 @@
 			editAdvertisements: function(id) {
                 axios.get('/admin/manage-ads/'+id)
                 .then(response => {
-                    var advertisement = response.data.data;
+					this.add_record = false;
+					this.edit_record = true;
+					this.advertisement.materials = [];
 
+                    var advertisement = response.data.data;
 					this.contracts = advertisement.company_details.contracts;
                 	this.brands = advertisement.contract_details.brands;
 
-					this.advertisement.materials = [];
 					this.advertisement.id = advertisement.id;
 					this.advertisement.name = advertisement.name;
 					this.advertisement.company_id = advertisement.company_details;
 					this.advertisement.contract_id = advertisement.contract_details;
 					this.advertisement.brand_id = advertisement.brand_details;
-					// this.advertisement.status_id = advertisement.transaction_status;
 					this.advertisement.display_duration = advertisement.display_duration;
 					this.advertisement.active = advertisement.active;
 
 					var obj = this;
-
 					advertisement.materials.forEach(function (material) {
 						obj.advertisement.materials.push({
 							id: material.id,
 							file: '',
 							name: '',
+							dimension: material.dimension,
 							size: material.file_size,
 							src: material.material_path,
 							file_type: material.file_type,
 							width: material.width,
-							height: material.height,
-							screens: [],
-							screen_ids: material.pi_screens,
-							button_show: true,
-							list_show: false,
-							contract_id: advertisement.contract_details.id,
+							height: material.height
 						});
 					});
 
-					this.add_record = false;
-					this.edit_record = true;
+					axios.post('/admin/site/site-screen-product/get-screens', {contract_id: advertisement.contract_id})
+					.then(response => {
+						this.screens = response.data.data;
+						axios.post('/admin/site/site-screen-product/get-screen-size', this.screens)
+						.then(response => {
+							var screens = response.data.data;
+							screens.forEach(
+							key => {
+									let obj = advertisement.materials.find(index => index.dimension === key.dimension);
+									if(!obj) {
+										this.advertisement.materials.push({
+											id: '',
+											file: '',
+											name: '',
+											dimension: key.dimension,
+											size: '',
+											src: '',
+											file_type: '',
+											width: '',
+											height: '',
+										});
+									}
+								}
+							);
+						});
+					});	
 
                     $('#site_ad-form').modal('show');
                 });
@@ -477,15 +444,13 @@
             updateAdvertisements: function() {
 				let formData = new FormData();
 				formData.append("id", this.advertisement.id);
+				formData.append("name", this.advertisement.name);
 				formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
 				formData.append("contract_id", (this.advertisement.contract_id) ? JSON.stringify(this.advertisement.contract_id) : '');
 				formData.append("brand_id", (this.advertisement.brand_id) ? JSON.stringify(this.advertisement.brand_id) : '');
-				formData.append("name", this.advertisement.name);
-				// formData.append("status_id", (this.advertisement.status_id) ? JSON.stringify(this.advertisement.status_id) : '');
-				formData.append("active", this.advertisement.active);
 				formData.append("display_duration", this.advertisement.display_duration);
+				formData.append("active", this.advertisement.active);
 
-				console.log(this.advertisement.materials.length);
 				for( let index = 0; index < this.advertisement.materials.length; index++ ) {
 					if(this.advertisement.materials[index].file) {
 						formData.append('files[]', this.advertisement.materials[index].file);
@@ -509,7 +474,15 @@
 				})
             },
 
+			modalOnHidden(){
+				this.advertisement.materials = [];
+			}
+
         },
+
+		mounted(){
+			$(this.$refs.form_modal).on("hidden.bs.modal", this.modalOnHidden);
+		},
 
         components: {
         	Table,

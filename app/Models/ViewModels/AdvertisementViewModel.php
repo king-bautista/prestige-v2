@@ -40,6 +40,7 @@ class AdvertisementViewModel extends Model
     protected $primaryKey = 'id';
 
     public $appends = [
+        'material_thumbnails_path',
         'material_image_path',
         'company_name',
         'company_details',
@@ -110,6 +111,14 @@ class AdvertisementViewModel extends Model
         $material = AdvertisementMaterialViewModel::where('advertisement_id', $this->id)->latest()->first();
         if($material)
             return asset($material->file_path);
+        return asset('/images/no-image-available.png');
+    } 
+
+    public function getMaterialThumbnailsPathAttribute()
+    {
+        $material = AdvertisementMaterialViewModel::where('advertisement_id', $this->id)->latest()->first();
+        if($material)
+            return asset($material->thumbnail_path);
         return asset('/images/no-image-available.png');
     } 
 
