@@ -308,7 +308,7 @@
 						</div>
 					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary btn-sm float-right" data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
@@ -467,8 +467,8 @@
 						<h6>Do you really want to delete?</h6>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary" @click="deleteRecord">OK</button>
+						<button type="button" class="btn btn-secondary btn-sm " data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary btn-sm " @click="deleteRecord">OK</button>
 					</div>
 				</div>
 			</div>
@@ -484,8 +484,8 @@
 						<h6>Do you really want to duplicate this record?</h6>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-						<button type="button" class="btn btn-primary" @click="duplicateContract">Yes</button>
+						<button type="button" class="btn btn-secondary btn-sm " data-bs-dismiss="modal">No</button>
+						<button type="button" class="btn btn-primary btn-sm " @click="duplicateContract">Yes</button>
 					</div>
 				</div>
 			</div>
@@ -698,8 +698,7 @@ export default {
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-					this.data_list = true;
-					this.data_form = false;
+					$('#company-details').modal('hide');
 				})
 		},
 
