@@ -39,11 +39,15 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
                     'site_building_level_id' => $level_id
                 ];
 
-                dd($data);
-
-                $brand = SiteTenant::updateOrCreate(
-                    
-                );
+                $tenant = SiteTenant::where('brand_id', $brand_id)->where('site_id', $site_id)->get()->count();
+                if($tenant > 0) {
+                    $tenant->update($data);
+                }
+                else {
+                    $tenant = SiteTenant::create($data);
+                    $tenant->serial_number = 'TN-'.Str::padLeft($tenant->id, 5, '0');
+                    $tenant->save();
+                }
             }
 	    }
     }
