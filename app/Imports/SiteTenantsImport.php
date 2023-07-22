@@ -28,6 +28,7 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) {
             if($row['store_name']) {
                 $brand_id = ($row['store_name']) ? $this->getBrandId($row['store_name']) : 0;
+                dd($brand_id);
                 $site_id = ($row['mall_name']) ? $this->getSiteId($row['mall_name']) : 0;
                 $building_id = ($row['building_name']) ? $this->getBuildingId($site_id, $row['building_name']) : 0;
                 $level_id = ($row['level_name']) ? $this->getBuildingLevelId($site_id, $building_id, $row['level_name']) : 0;
@@ -48,6 +49,7 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
     {
         if($brand) {
             $brand_id = Brand::where('name', '=', rtrim(ltrim($brand)))->first();
+            dd($brand_id);
             if($brand_id)
                 return $brand_id->id;
             return 0;
