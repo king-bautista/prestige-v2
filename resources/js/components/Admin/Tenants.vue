@@ -7,10 +7,19 @@
 					<div class="col-md-12">
 						<div class="card">
 							<div class="card-body">
-								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
-									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewTenant="AddNewTenant"
-									v-on:editButton="editTenant" v-on:DeleteTenant="DeleteTenant"
-									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv" ref="tenantsDataTable">
+								<Table 
+								:dataFields="dataFields" 
+								:dataUrl="dataUrl" 
+								:actionButtons="actionButtons"
+								:otherButtons="otherButtons" 
+								:primaryKey="primaryKey" 
+								v-on:AddNewTenant="AddNewTenant"
+								v-on:editButton="editTenant" 
+								v-on:DeleteTenant="DeleteTenant"
+								v-on:modalBatchUpload="modalBatchUpload" 
+								v-on:downloadCsv="downloadCsv" 
+								v-on:downloadTemplate="downloadTemplate"
+								ref="tenantsDataTable">
 								</Table>
 							</div>
 						</div>
@@ -458,6 +467,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'					
+				},
 			}
 		};
 	},
@@ -752,6 +768,14 @@ export default {
                 document.body.appendChild(link);
                 link.click();
               })
+		},
+
+		downloadTemplate: function () { 
+			const link = document.createElement('a');
+			link.href = '/uploads/csv/site-tenant-batch-upload.csv';
+			link.setAttribute('downloadFile', '/uploads/csv/site-tenant-batch-upload.csv'); //or any other extension
+			document.body.appendChild(link);
+			link.click();
 		},
 
 	},
