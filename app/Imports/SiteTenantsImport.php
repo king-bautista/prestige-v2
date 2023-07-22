@@ -49,7 +49,6 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
     {
         if($brand) {
             $brand_id = Brand::where('name', '=', rtrim(ltrim($brand)))->first();
-            dd($brand_id);
             if($brand_id)
                 return $brand_id->id;
             return 0;
