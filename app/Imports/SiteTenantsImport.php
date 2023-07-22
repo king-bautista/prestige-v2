@@ -32,13 +32,17 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
                 $building_id = ($row['building_name']) ? $this->getBuildingId($site_id, $row['building_name']) : 0;
                 $level_id = ($row['level_name']) ? $this->getBuildingLevelId($site_id, $building_id, $row['level_name']) : 0;
 
+                $data = [
+                    'brand_id' => $brand_id,
+                    'site_id' => $site_id,
+                    'site_building_id' => $building_id,
+                    'site_building_level_id' => $level_id
+                ];
+
+                dd($data);
+
                 $brand = SiteTenant::updateOrCreate(
-                    [
-                        'brand_id' => $brand_id,
-                        'site_id' => $site_id,
-                        'site_building_id' => $building_id,
-                        'site_building_level_id' => $level_id
-                    ]
+                    
                 );
             }
 	    }
