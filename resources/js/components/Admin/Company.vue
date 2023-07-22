@@ -705,6 +705,9 @@ export default {
 		editCompany: function (id) {
 			axios.get('/admin/company/' + id)
 				.then(response => {
+					this.company.brands = [];
+					this.company.contracts = [];
+
 					var company = response.data.data;
 					this.company.id = id;
 					this.company.name = company.name;
