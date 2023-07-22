@@ -32,6 +32,9 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
                 $building_id = ($row['building_name']) ? $this->getBuildingId($site_id, $row['building_name']) : 0;
                 $level_id = ($row['level_name']) ? $this->getBuildingLevelId($site_id, $building_id, $row['level_name']) : 0;
 
+                if(!$brand_id)
+                    continue;
+
                 $data = [
                     'brand_id' => $brand_id,
                     'site_id' => $site_id,
@@ -39,8 +42,8 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
                     'site_building_level_id' => $level_id
                 ];
 
-                $tenant = SiteTenant::where('brand_id', $brand_id)->where('site_id', $site_id)->get()->count();
-                if($tenant > 0) {
+                $tenant = SiteTenant::where('brand_id', $brand_id)->where('site_id', $site_id)->first();
+                if($tenant) {
                     $tenant->update($data);
                 }
                 else {
