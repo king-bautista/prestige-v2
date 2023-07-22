@@ -727,7 +727,7 @@ export default {
 					toastr.success(response.data.message);
 					$('#batchModal').modal('hide');
 					$('#batchInputLabel').html('Choose File');
-					window.location.reload();
+					//window.location.reload();
 				})
 		},
 
