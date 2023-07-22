@@ -280,7 +280,7 @@
 						</div>
 					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary btn-sm float-right" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary btn-sm float-right" v-show="add_record"
 							@click="storeCompany">Add New Company</button>
 						<button type="button" class="btn btn-primary btn-sm float-right" v-show="edit_record"
