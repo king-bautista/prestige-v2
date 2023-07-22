@@ -26,7 +26,6 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-            dd($row['store_name']);
             if($row['store_name']) {
                 $brand_id = ($row['store_name']) ? $this->getBrandId($row['store_name']) : 0;
                 $site_id = ($row['mall_name']) ? $this->getSiteId($row['mall_name']) : 0;
@@ -48,6 +47,7 @@ class SiteTenantsImport implements ToCollection, WithHeadingRow
     public function getBrandId($brand)
     {
         if($brand) {
+            dd($brand);
             $brand_id = Brand::where('name', '=', rtrim(ltrim($brand)))->first();
             if($brand_id)
                 return $brand_id['id'];
