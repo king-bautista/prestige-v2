@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
-                            <img :src="category.kiosk_image_primary_path">
+                                <img :src="category.kiosk_image_primary_path">
                             <div id="hc-button1" class="hc-button-align translateme resize" :data-en="category.label">{{ category.label }}</div>
                         </div>
                     </div>
@@ -298,8 +298,7 @@
         <map-page v-show="mapIsShown" ref="callMap"></map-page>
         <promos-page v-show="promosIsShown" ref="callPromo"></promos-page>
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
-        <assitant-page ref="callAssist"></assitant-page>
-        <div class="row">
+        <div class="row pt-3 bg-color">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
                     <div class="button-text-align translateme" data-en="Home">Home</div>
@@ -313,11 +312,12 @@
                 <div class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
                     <div class="button-text-align translateme resize" data-en="Promos">Promos</div>
                 </div>
-                <div class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
-                    <div class="button-text-align translateme" data-en="Cinema">Cinema</div>
+                <div class="h-button widget-button events-button logs" data-link='Cinema' @click="eventsButton">
+                    <div class="button-text-align translateme" data-en="Cinema">Events</div>
                 </div>
             </div>
         </div>
+        <!-- <assitant-page ref="callAssist"></assitant-page> -->
 
         <div class="multilanguage">
             <div class="btn-group dropup">
@@ -505,6 +505,16 @@
             },
 
             cinemaButton: function (event) {
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = true;
+                this.aboutIsShown = false;
+                this.$refs.callCinema.resetPage(this.current_language_set);
+            },
+
+            eventsButton: function (event) {
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
