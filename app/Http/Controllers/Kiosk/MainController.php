@@ -35,6 +35,7 @@ class MainController extends AppBaseController
         $site = Site::where('is_default', 1)->where('active', 1)->first();
         $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;            
         $site['site_screen_id'] = $site_screen_id;
+        $site['site_website'] = '';
         $site_name = $site->name;
         
         $siteMeta = SiteViewModel::find($site->id);
@@ -47,6 +48,9 @@ class MainController extends AppBaseController
             $site_name = 'generic';
             $site['site_name'] = $site_name;
         }
+
+        if($siteMeta->details['website'])
+            $site['site_website'] = $siteMeta->details['website'];
 
         return view('kiosk.main', $site);
     }
