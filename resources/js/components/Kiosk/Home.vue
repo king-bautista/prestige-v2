@@ -1,7 +1,22 @@
 <template>
     <div style="width: 100%;">
         <div class="router-page" v-show="homeIsShown">
-            <div class="row">
+            <div v-if="site_name == 'Parqal'" class="row">
+                <div class="col-md-6">
+                    <div v-if="child_category" class="datetime-holder text-left m-5">
+                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                    </div>                
+                </div>
+                <div class="col-md-6 text-right">
+                    <div v-if="home_category" class="datetime-holder m-5">
+                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                    </div>
+                    <div v-else class="m-5">
+                        <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                    </div>
+                </div>
+            </div>
+            <div v-else class="row">
                 <div class="col-md-6">
                     <div id="page-title" v-if="page_title != 'Category'" class="translateme" :data-en="page_title">{{ page_title }}</div>
                 </div>
@@ -37,7 +52,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
 
             <!-- SUB CATEGORY -->
@@ -73,7 +87,7 @@
 
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
-                <div class="row mb-27">
+                <div class="row mb-27" v-show="site_name != 'Parqal'">
                     <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{ current_category.label}}</div>
                 </div>
                 <div class="row col-md-10 offset-md-1 mb-3 w-1152">
@@ -106,14 +120,16 @@
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
-                    <img v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">
+                    <img v-if="site_name == 'Parqal'" v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
+                    <img v-else v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">
+                    
                 </div>
             </div>
 
             <!-- ALPHABETICAL -->
             <div v-show="alphabetical">
                 <div :class="(category_top_banner) ? 'row mt-14 mb-18' : 'row mb-27' ">
-                    <div class="col-md-12 home-title-sub text-center">
+                    <div v-show="site_name != 'Parqal'" class="col-md-12 home-title-sub text-center">
                         <div v-show="!category_top_banner" class="translateme" :data-en="category_label">{{ category_label }}</div>
                         <div class="hts-strip" v-show="category_top_banner">
                             <img class="tenant-category-strip" :src="category_top_banner" style="width:100%">
@@ -161,7 +177,8 @@
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
-                    <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
+                    <img v-if="site_name == 'Parqal'" v-show="no_record_found" src="images/empty-box.png" class="no-record-found mt-3">
+                    <img v-else v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
                 </div>
             </div>
 
@@ -398,6 +415,8 @@
         },
         data() {
             return {
+                current_date: "",
+                current_time: "",
                 main_category: [],
                 tenant_list: [],
                 site_name: '',
@@ -455,6 +474,7 @@
             this.getCategories();
             this.generateLetters();
             this.getTranslation();
+            setInterval(this.getDateNow, 1000);
         },
 
         watch: {
@@ -486,6 +506,15 @@
         },
 
         methods: {
+            getDateNow: function() {
+                const today = new Date();
+                //const date = today.toLocaleString([], { weekday:"long", day:"numeric", month:"long", year:"numeric"});
+                const date = today.toLocaleString([], { day:"numeric", month:"long", year:"numeric"});
+                const time = today.toLocaleString([], {hour: '2-digit', minute:'2-digit'});
+                this.current_date = date;
+                this.current_time = time;
+            },
+
             aboutButton: function (event) {
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -882,7 +911,7 @@
                 this.child_category_count = category.children.length;
                 this.current_supplementals = category.supplemental;
                 this.current_supplementals_count = this.current_supplementals.children.length - 1;
-                this.page_title = 'Store List';
+                this.page_title = 'Category';
                 this.category_label = category.label;
                 this.home_category = false;
                 this.child_category = true;

@@ -316,8 +316,9 @@ input[type="text"]:focus
 .client-website-holder {
     margin: auto;
     color: #DFBD69;
-    font-size: 24px;
+    font-size: 28px;
     padding-top: 30px;
+    font-weight: bold;
 }
 
 .category-container {
@@ -393,4 +394,28 @@ input[type="text"]:focus
     font-size: 1.5em;
     bottom: 9.6rem;
     right: 0.32rem;
+}
+
+.datetime-holder {
+    color: #DFBD69;
+    font-size: 35px;
+    font-weight: bolder;
+}
+
+.separator {
+    border-right: solid #DFBD69;
+    padding-right: 15px;
+}
+
+.popover {background-color: #DFBD69;}
+.popover.bottom .arrow::after {border-bottom-color: #DFBD69; }
+.popover-content {background-color: #DFBD69;}
+
+.btn-custom {
+    background-image: url(../images/parqal-btn-bg.png) !important;
+    width: 286px;
+    height: 64px;
+    font-size: 34px;
+    text-transform: uppercase;
+    font-weight: bold;
 }
