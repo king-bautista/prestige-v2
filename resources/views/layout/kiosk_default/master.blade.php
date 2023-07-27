@@ -17,13 +17,15 @@
         <link rel="stylesheet" href="{{ URL::to('css/softkeys-0.0.1.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/fancybox.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('owlcarousel/assets/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('owlcarousel/assets/owl.theme.default.min.css') }}">
         <!-- Set Custom Theme UI -->
         <link rel="stylesheet" href="{{ URL::to('css') }}/{{ $site_name }}-theme.css">
     </head>
 
     <body>
         <!-- LOADING VIDEO --> 
-        <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>    
+        <!-- <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>     -->
         <div id="app" app-env="{{ config('app.env') }}">
         
             @yield('content')
@@ -44,6 +46,7 @@
         <script src="{{ URL::to('js/way-finding.js') }}"></script>
         <script src="{{ URL::to('js/helper.js') }}"></script>
         <script src="{{ URL::to('js/autoSizr.js') }}"></script>
+        <script src="{{ URL::to('owlcarousel/owl.carousel.min.js') }}"></script>
         <script src="{{ mix('/js/app.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>

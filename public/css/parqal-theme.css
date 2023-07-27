@@ -1,0 +1,421 @@
+.home-button {
+    background-image: url('../assets/images/parqal-home.png');
+    color: #c15669;
+}
+
+.home-button:hover {
+    background-image: url('../assets/images/parqal-home.png') !important;
+}
+
+.home-button.active {
+    background-image: url('../assets/images/parqal-home.png') !important;
+}
+
+.search-button {
+    background-image: url('../assets/images/parqal-search.png');
+    color: #6051e3;
+    margin-right: -3px;
+}
+
+.search-button:hover {
+    background-image: url('../assets/images/parqal-search.png') !important;
+}
+
+.search-button.active {
+    background-image: url('../assets/images/parqal-search.png') !important;
+}
+
+.map-button {
+    background-image: url('../assets/images/parqal-map.png');
+    color: #6051e3;
+    margin-right: -5px;
+}
+
+.map-button:hover {
+    background-image: url('../assets/images/parqal-map.png') !important;
+}
+
+.map-button.active {
+    background-image: url('../assets/images/parqal-map.png') !important;
+}
+
+.promos-button {
+    background-image: url('../assets/images/parqal-promos.png');
+    color: #e89b12;
+    margin-right: -1px;
+}
+
+.promos-button:hover {
+    background-image: url('../assets/images/parqal-promos.png') !important;
+}
+
+.promos-button.active {
+    background-image: url('../assets/images/parqal-promos.png') !important;
+}
+
+.cinema-button {
+    background-image: url('../assets/images/Cinemav4.png');
+    color: #246c63;
+}
+
+.cinema-button:hover {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+}
+
+.cinema-button.active {
+    background-image: url('../assets/images/Cinemav4s.png') !important;
+}
+
+.events-button {
+    background-image: url('../assets/images/parqal-events.png');
+    color: #246c63;
+}
+
+.events-button:hover {
+    background-image: url('../assets/images/parqal-events.png') !important;
+}
+
+.events-button.active {
+    background-image: url('../assets/images/parqal-events.png') !important;
+}
+
+.c-category-1 {
+    color:#246c63;
+}
+
+.c-category-2 {
+    color:#823d3b;
+}
+
+.c-category-3 {
+    color:#c18c2f;
+}
+
+.c-category-4 {
+    color:#6051e3;
+}
+
+.c-category-5 {
+    color:#6051e3;
+}
+
+input[type="text"]:focus
+{
+    box-shadow: none !important;
+    border-color: #6051e3;
+}
+
+.search-box {
+    font-family: 'Henry Sans Medium';
+    font-size: 24px; 
+    width: 65%; 
+    padding-left: 10px; 
+    padding-top: 8px; 
+    padding-bottom: 8px; 
+    border-color: #6051e3;
+    border-width: 1px;
+    margin: auto;
+    border-radius: 10px;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    height: calc(1.5em + 0.75rem + 6px) !important;
+}
+
+.search-box-button {
+    font-size: 24px;
+    /* padding: 5px 20px; */
+    background-color: #0030ff;
+    border-radius: 10px;
+    margin-left: 5px;
+    width: 111px;
+    text-align: center;
+    color: #fff;
+}
+
+.search-box-button:focus
+{
+    outline: none;
+    box-shadow: none !important;
+    border-color: none;
+    color: #fff;
+}
+
+.carousel-indicators span {
+    background-color: #2e35a1;
+}
+
+.tab-item-selected > div {
+    background-color: #0030ff !important;
+    color: #000 !important;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 5px 10px 5px 10px;
+}
+
+.tab-item-selected > div > a {
+    color: #fff !important;
+}
+
+.custom-color {
+    color: #0030ff;
+}
+
+#guide-button {
+    background: #0030ff !important;
+}
+
+.multiselect__select {
+    position: absolute;
+    width: 0 !important;
+    height: 0 !important;
+    right: 6px !important;
+    top: 43% !important;
+    padding: 6px !important;
+    transition: transform .1s ease !important;
+    border: solid #0030ff!important;
+    display: inline-block !important;
+    border-width: 0 6px 6px 0 !important;
+    transform: rotate(-225deg) !important;
+    -webkit-transform: rotate(225deg) !important;
+    margin-right: 8px !important;
+}
+
+.multiselect__option--highlight {
+    background: #0030ff !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #0030ff !important;
+    box-shadow: none !important;
+}
+
+.softkeys__btn {
+    color: #6051e3;
+    border: 1px solid #6051e3 !important;
+}
+
+.delete-key {
+    background-image: url('../assets/images/key-delete-generic.png');
+    color: transparent;
+}
+
+.delete-key:hover, .delete-key:focus {
+    outline: none;
+    background-color: #98dad0 !important;
+    color: transparent !important;
+}
+
+.back-button {
+    z-index: 1;
+    position: absolute;
+    bottom: -100px;
+    left: 15px;
+    cursor: pointer;
+    width: 86px;
+    height: 68px;
+    background-image: url(../assets/images/parqal-back.png) !important;
+    background-repeat: no-repeat;
+}
+
+.back-overlay {
+    position: absolute;
+    bottom: -75px;
+    left: 75px;
+    z-index: 1;
+    color: #DFBD69;
+    font-size: 24px;
+    width: 65px;
+    text-align: center;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.assistance_tooltip {
+    position:absolute;
+    bottom: -100px;
+    right:0px;
+    z-index: 2;
+    width: 86px;
+    height: 68px;
+    border-radius: 15px 0 0 15px;
+    background-image: url('../assets/images/parqal-help.png') !important;
+    background-repeat: no-repeat;
+}
+
+.help-overlay {
+    position: absolute;
+    bottom: -75px;
+    right: 115px;
+    z-index: 2;
+    color: #DFBD69;
+    font-size: 24px;
+    width: 48px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.widget-button {
+    background-size: 75px auto;
+    background-repeat: no-repeat;
+    font-family: 'Henry Sans Medium';
+    background-position-x: center;
+}
+
+.h-button {
+    width: 230px;
+    height: 120px;
+}
+
+.button-text-align {
+    font-family: 'Henry Sans Regular';
+    position: absolute;
+    text-align: center;
+    width: 225px;
+    top: 80px;
+    left: 0;
+    color: #DFBD69;
+    text-transform: uppercase;
+}
+
+.router-page {
+    height: 845px;
+}
+
+.bg-color {
+    background-color: #000;
+}
+
+.food, .fashion, .electronics, .function, .finds, .health {
+    margin-top: 0;
+    margin-left: 0;
+    width: 335px;
+    height: 335px;
+    text-align: center;
+}
+
+.food div, .fashion div, .electronics div, .function div, .finds div, .health div {
+    top: 0;
+    left: 0;
+    color: #DFBD69;
+    text-transform: uppercase;
+    width: 200px;
+    height: auto;
+    margin: auto;
+}
+
+.hc-button-align {
+    position: relative;
+}
+
+.multilanguage {
+    display: none;
+}
+
+.client-website-holder {
+    margin: auto;
+    color: #DFBD69;
+    font-size: 28px;
+    padding-top: 30px;
+    font-weight: bold;
+}
+
+.category-container {
+    width: 100%;
+    height: 500px;
+}
+
+.main-category-holder {
+    width: 410px;
+    height: 411px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: solid 5px #DFBD69;
+    position: relative;
+}
+
+.ïtem-holder {
+    width: 410px;
+    height: 411px;
+    position: relative;
+}
+
+.rounded-container {
+    width: 310px;
+    height: 311px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: solid 5px #DFBD69;
+    position: relative;
+    margin: 44px 50px 50px 50px;
+    opacity: .5;
+}
+
+.category-name-holder {
+    position: absolute;
+    top: 7.5rem;
+    color: #fff;
+    font-size: 34px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    width: 310px;
+    text-align: center;
+}
+
+.center > .ïtem-holder > .rounded-container {
+    width: 410px;
+    height: 411px;
+    opacity: 1;
+    margin: 0;
+    transition:all 0s ease;
+}
+
+.center > .ïtem-holder > .rounded-container > .category-name-holder {
+    top: 11rem;
+    width: 410px;
+    opacity: 1;
+}
+
+.owl-carousel .owl-item img {
+    opacity: .5;
+}
+
+.ml-150 {
+    margin-left: 155px;
+}
+
+.mt-25 {
+    margin-top: 25px;
+}
+
+.tabs-container {
+    width: 100%;
+    font-size: 1.5em;
+    bottom: 9.6rem;
+    right: 0.32rem;
+}
+
+.datetime-holder {
+    color: #DFBD69;
+    font-size: 35px;
+    font-weight: bolder;
+}
+
+.separator {
+    border-right: solid #DFBD69;
+    padding-right: 15px;
+}
+
+.popover {background-color: #DFBD69;}
+.popover.bottom .arrow::after {border-bottom-color: #DFBD69; }
+.popover-content {background-color: #DFBD69;}
+
+.btn-custom {
+    background-image: url(../images/parqal-btn-bg.png) !important;
+    width: 286px;
+    height: 64px;
+    font-size: 34px;
+    text-transform: uppercase;
+    font-weight: bold;
+}

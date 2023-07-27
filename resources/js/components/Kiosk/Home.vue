@@ -1,7 +1,22 @@
 <template>
     <div style="width: 100%;">
         <div class="router-page" v-show="homeIsShown">
-            <div class="row">
+            <div v-if="site_name == 'Parqal'" class="row">
+                <div class="col-md-6">
+                    <div v-if="child_category" class="datetime-holder text-left m-5">
+                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                    </div>                
+                </div>
+                <div class="col-md-6 text-right">
+                    <div v-if="home_category" class="datetime-holder m-5">
+                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                    </div>
+                    <div v-else class="m-5">
+                        <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                    </div>
+                </div>
+            </div>
+            <div v-else class="row">
                 <div class="col-md-6">
                     <div id="page-title" v-if="page_title != 'Category'" class="translateme" :data-en="page_title">{{ page_title }}</div>
                 </div>
@@ -11,15 +26,29 @@
             </div>
 
             <!-- MAIN CATEGORY -->
-            <div v-show="home_category"> 
-                <div class="row mt-15 mb-55">
-                    <div class="col-md-12 main-home-title text-center translateme" data-en="Search your favorite stores">Search your favorite stores</div>
+            <div v-show="home_category">
+                <div v-if="site_name == 'Parqal'">
+                    <div class="row mt-25 mb-55 ml-15 ml-150">
+                        <div class="col-md-12">
+                            <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
+                                <div class="main-category-holder">
+                                    <img :src="category.kiosk_image_primary_path" width="100%">
+                                </div>
+                                <div id="hc-button1" class="hc-button-align translateme resize" :data-en="category.label">{{ category.label }}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
-                            <img :src="category.kiosk_image_primary_path">
-                            <div id="hc-button1" class="hc-button-align translateme resize" :data-en="category.label">{{ category.label }}</div>
+                <div v-else>
+                    <div class="row mt-15 mb-55">
+                        <div class="col-md-12 main-home-title text-center translateme" data-en="Search your favorite stores">Search your favorite stores</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
+                                    <img :src="category.kiosk_image_primary_path">
+                                <div id="hc-button1" class="hc-button-align translateme resize" :data-en="category.label">{{ category.label }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -27,16 +56,26 @@
 
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
-                <div v-if="child_category_count< 7" class="row mt-120 mb-41">
+                <div v-if="child_category_count< 7" v-show="site_name != 'Parqal'" class="row mt-120 mb-41">
                     <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
                 </div>
-                <div v-else-if="child_category_count< 11" class="row mb-27 mt-18">
+                <div v-else-if="child_category_count< 11" v-show="site_name != 'Parqal'" class="row mb-27 mt-18">
                     <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
                 </div>
-                <div v-else class="row mb-27">
+                <div v-else v-show="site_name != 'Parqal'" class="row mb-27">
                     <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
                 </div>
-                <div class="row col-md-6 offset-md-3 mb-3 mw-51p">
+                <div class="row col-md-12 mt-120 mb-41" v-if="site_name == 'Parqal'">
+                    <div class="owl-carousel">
+                        <div class="ïtem-holder" v-for="subcategory in current_category.children">
+                            <div class="rounded-container" @click="getTenantsByCategory(subcategory)">
+                                <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
+                                <div class="category-name-holder"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-6 offset-md-3 mb-3 mw-51p" v-else>
                     <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="getTenantsByCategory(subcategory)">			
                         <div class="c-button ml-0">						
                             <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
@@ -48,7 +87,7 @@
 
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
-                <div class="row mb-27">
+                <div class="row mb-27" v-show="site_name != 'Parqal'">
                     <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{ current_category.label}}</div>
                 </div>
                 <div class="row col-md-10 offset-md-1 mb-3 w-1152">
@@ -81,14 +120,16 @@
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
-                    <img v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">
+                    <img v-if="site_name == 'Parqal'" v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
+                    <img v-else v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">
+                    
                 </div>
             </div>
 
             <!-- ALPHABETICAL -->
             <div v-show="alphabetical">
                 <div :class="(category_top_banner) ? 'row mt-14 mb-18' : 'row mb-27' ">
-                    <div class="col-md-12 home-title-sub text-center">
+                    <div v-show="site_name != 'Parqal'" class="col-md-12 home-title-sub text-center">
                         <div v-show="!category_top_banner" class="translateme" :data-en="category_label">{{ category_label }}</div>
                         <div class="hts-strip" v-show="category_top_banner">
                             <img class="tenant-category-strip" :src="category_top_banner" style="width:100%">
@@ -136,7 +177,8 @@
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
-                    <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
+                    <img v-if="site_name == 'Parqal'" v-show="no_record_found" src="images/empty-box.png" class="no-record-found mt-3">
+                    <img v-else v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
                 </div>
             </div>
 
@@ -237,21 +279,37 @@
 
             <!-- TABS -->
             <div class="tabs-container" v-show="tabs_container">
-                <div class="tabs">
-                    <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme" data-en="View stores by">View stores by</span>: </span>
-                    <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" data-link="Category" @click="showCategories()">
-                        <div>
-                            <a class="translateme tenant-category" data-en="Category">Category</a>
+                <div v-if="site_name == 'Parqal'">
+                    <div class="btn-group dropup dropdown-menu-right">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            View stores by
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category);">Alphabetical</a>
+                            <a class="dropdown-item" id="category-tab" data-link="Category" @click="showCategories()">Category</a>
+                            <a class="dropdown-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals();">
+                                <span id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental" :data-en="current_category.supplemental.name">{{ current_category.supplemental.name }}</span>
+                            </a>
                         </div>
                     </div>
-                    <div class="tabs-item store-tabs-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category);">
-                        <div>
-                            <a class="translateme tenant-alphabet" data-en="Alphabetical">Alphabetical</a>
+                </div>
+                <div v-else>
+                    <div class="tabs">
+                        <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme" data-en="View stores by">View stores by</span>: </span>
+                        <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" data-link="Category" @click="showCategories()">
+                            <div>
+                                <a class="translateme tenant-category" data-en="Category">Category</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tabs-item store-tabs-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals();">
-                        <div>
-                            <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental" :data-en="current_category.supplemental.name">{{ current_category.supplemental.name }}</a>
+                        <div class="tabs-item store-tabs-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category);">
+                            <div>
+                                <a class="translateme tenant-alphabet" data-en="Alphabetical">Alphabetical</a>
+                            </div>
+                        </div>
+                        <div class="tabs-item store-tabs-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals();">
+                            <div>
+                                <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental" :data-en="current_category.supplemental.name">{{ current_category.supplemental.name }}</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -298,8 +356,7 @@
         <map-page v-show="mapIsShown" ref="callMap"></map-page>
         <promos-page v-show="promosIsShown" ref="callPromo"></promos-page>
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
-        <assitant-page ref="callAssist"></assitant-page>
-        <div class="row">
+        <div class="row pt-3 bg-color">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
                     <div class="button-text-align translateme" data-en="Home">Home</div>
@@ -313,10 +370,14 @@
                 <div class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
                     <div class="button-text-align translateme resize" data-en="Promos">Promos</div>
                 </div>
-                <div class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
-                    <div class="button-text-align translateme" data-en="Cinema">Cinema</div>
+                <div class="h-button widget-button events-button logs" data-link='Cinema' @click="eventsButton">
+                    <div class="button-text-align translateme" data-en="Cinema">Events</div>
                 </div>
             </div>
+        </div>
+        <assitant-page ref="callAssist"></assitant-page>
+        <div class="row col-12 text-center">
+            <span class="client-website-holder">{{site_website}}</span>
         </div>
 
         <div class="multilanguage">
@@ -350,12 +411,15 @@
             'map-page': map,
             'promos-page': promos,
             'cinema-page': cinema,
-            'assitant-page': assitant
+            'assitant-page': assitant,
         },
         data() {
             return {
+                current_date: "",
+                current_time: "",
                 main_category: [],
                 tenant_list: [],
+                site_name: '',
                 site_logo: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Category',
@@ -401,6 +465,7 @@
                 current_location: '',
                 see_details_font_size: '',
                 multilanguage: '',
+                site_website: '',
             };
         },
 
@@ -409,6 +474,7 @@
             this.getCategories();
             this.generateLetters();
             this.getTranslation();
+            setInterval(this.getDateNow, 1000);
         },
 
         watch: {
@@ -440,6 +506,15 @@
         },
 
         methods: {
+            getDateNow: function() {
+                const today = new Date();
+                //const date = today.toLocaleString([], { weekday:"long", day:"numeric", month:"long", year:"numeric"});
+                const date = today.toLocaleString([], { day:"numeric", month:"long", year:"numeric"});
+                const time = today.toLocaleString([], {hour: '2-digit', minute:'2-digit'});
+                this.current_date = date;
+                this.current_time = time;
+            },
+
             aboutButton: function (event) {
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -505,6 +580,16 @@
             },
 
             cinemaButton: function (event) {
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = true;
+                this.aboutIsShown = false;
+                this.$refs.callCinema.resetPage(this.current_language_set);
+            },
+
+            eventsButton: function (event) {
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
@@ -670,7 +755,9 @@
 			getSite: function() {
 				axios.get('/api/v1/site')
                 .then(response => {
+                    this.site_name = response.data.data.name
                     this.site_logo = response.data.data.site_logo
+                    this.site_website = response.data.data.details.website
                     this.multilanguage = (response.data.data.details.multilanguage == '1') ? true : false
 
                     if (this.multilanguage === false){         
@@ -824,7 +911,7 @@
                 this.child_category_count = category.children.length;
                 this.current_supplementals = category.supplemental;
                 this.current_supplementals_count = this.current_supplementals.children.length - 1;
-                this.page_title = 'Store List';
+                this.page_title = 'Category';
                 this.category_label = category.label;
                 this.home_category = false;
                 this.child_category = true;
@@ -833,12 +920,21 @@
                 this.show_tenant = false;
                 this.helper.saveLogs({category_id: category.id}, 'Category');
 
-                this.initializeSwipe();
+                //this.initializeSwipe();
                 this.tabs_container = true;
 
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set);
                 }, 100);
+
+                $(document).ready(function(){
+                    $(".owl-carousel").owlCarousel({
+                        center: true,
+                        items:3,
+                        loop:false,
+                        margin:0,
+                    });
+                });
             },
 
             goBack: function() {
@@ -1103,8 +1199,7 @@
                     }
                     obj.current_nav_dot = $(this).find('.active').attr('data-slide-to');
                 });
-
-            });
+            });            
         },
     };
     
