@@ -12,8 +12,8 @@
             
             <div id="tenant-details" class="card mb-3 label-3">
                 <div class="card-body text-info text-center">
-                    <div style="color:#6051e3;"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
-                    <div style="padding-left: 10px;margin-top: 19px;color:#6051e3;">
+                    <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
+                    <div class="guide-steps">
                         <img src="images/man-walk.svg" style="width:20px;">
                         <span style="font-weight: bold;">
                             <span class="map-minutes">0 minutes</span>,
@@ -30,11 +30,11 @@
 
                 <div>
                     <div class="" style="text-align: left;padding-left: 45px;margin-top: 48px;">
-                        <span class="translateme" data-en="Was this helpful?">Was this helpful?</span>
-                        <a href="#" class="response-btn btn-helpful" style="font-size:1rem;color:#6051e3;" @click="updateFeedback()">
+                        <span class="helpful-label translateme" data-en="Was this helpful?">Was this helpful?</span>
+                        <a href="#" class="response-btn btn-helpful" @click="updateFeedback()">
                             <span class="fa fa-thumbs-up"></span>
                         </a> 
-                        <a href="#" class="response-btn btn-nothelpful" style="font-size:1rem;color:#6051e3;">
+                        <a href="#" class="response-btn btn-nothelpful">
                             <span class="fa fa-thumbs-down"></span>
                         </a> 
                         <span class="translateme" v-show="feedback_response" data-en="Thank you!">Thank you!</span>
