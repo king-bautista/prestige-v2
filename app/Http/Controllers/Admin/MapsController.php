@@ -509,6 +509,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
             $network = array();
             $point_links = SitePointLink::where('site_maps.site_id', $site_id)
+            ->where('site_maps.site_screen_id', $screen_id)
             ->join('site_maps', 'site_point_links.site_map_id', '=', 'site_maps.id')
             ->get();
 
@@ -532,6 +533,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
             // Size of the matrix
             $matrixWidth = $max;
+            
             $ourMap = array();
             $points = $network;
 
