@@ -149,8 +149,32 @@ input[type="text"]:focus
     color: #0030ff;
 }
 
+.guide-title {
+    color: #000;
+}
+
+.guide-steps {
+    padding-left: 10px;
+    margin-top: 19px;
+    color:#6051e3;
+}
+
+.btn-nothelpful {
+    font-size:1rem;
+    color:#6051e3;
+}
+
+.btn-helpful {
+    font-size:1rem;
+    color:#6051e3;
+}
+
+.helpful-label {
+    color: #32213E;
+}
+
 #guide-button {
-    background: #0030ff !important;
+    background: #6051e3 !important;
 }
 
 .multiselect__select {

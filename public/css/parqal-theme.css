@@ -79,6 +79,19 @@
     background-image: url('../assets/images/parqal-events.png') !important;
 }
 
+.landmark-button {
+    background-image: url('../assets/images/parqal-landmark.png');
+    color: #246c63;
+}
+
+.landmark-button:hover {
+    background-image: url('../assets/images/parqal-landmark.png') !important;
+}
+
+.landmark-button.active {
+    background-image: url('../assets/images/parqal-landmark.png') !important;
+}
+
 .c-category-1 {
     color:#246c63;
 }
@@ -124,7 +137,7 @@ input[type="text"]:focus
 .search-box-button {
     font-size: 24px;
     /* padding: 5px 20px; */
-    background-color: #0030ff;
+    background-color: #DFBD69;
     border-radius: 10px;
     margin-left: 5px;
     width: 111px;
@@ -145,7 +158,7 @@ input[type="text"]:focus
 }
 
 .tab-item-selected > div {
-    background-color: #0030ff !important;
+    background-color: #DFBD69 !important;
     color: #000 !important;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
@@ -159,11 +172,85 @@ input[type="text"]:focus
 }
 
 .custom-color {
-    color: #0030ff;
+    color: #DFBD69;
+}
+
+.guide-title {
+    color: #fff;
+}
+
+.guide-steps {
+    padding-left: 10px;
+    margin-top: 19px;
+    color:#fff;
+}
+
+#tenant-details .assist {
+    color: #fff !important;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+}
+
+.assist li:before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    border-left: 1px dashed #fff !important;
+    height: 100%;
+    width: 3px;
+    top: 30px;
+}
+
+.assist li:last-child:after {
+    content: "\2022";
+    color: #fff;
+}
+
+.guide-steps {
+    padding-left: 10px;
+    margin-top: 19px;
+    color:#fff;
+}
+
+.btn-nothelpful {
+    font-size:1rem;
+    background-color: #fff;
+    color:#000;
+}
+
+.btn-helpful {
+    font-size:1rem;
+    background-color: #DFBD69;
+    color: #fff;
+}
+
+.helpful-label {
+    color: #fff;
 }
 
 #guide-button {
-    background: #0030ff !important;
+    background: #DFBD69 !important;
+    color: #000;
+}
+
+#tenant-details {
+    width: 485px;
+    min-height: 525px;
+    position: absolute;
+    top: 95px;
+    left: 970px;
+    display: none;
+    z-index: 1;
+    border-radius: 40px 0px 0px 40px;
+    border: 0;
+    background-color: rgba(143,143,143,0.8);
+}
+
+.arrow {
+    border: solid #000;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
 }
 
 .multiselect__select {
@@ -174,7 +261,7 @@ input[type="text"]:focus
     top: 43% !important;
     padding: 6px !important;
     transition: transform .1s ease !important;
-    border: solid #0030ff!important;
+    border: solid #DFBD69!important;
     display: inline-block !important;
     border-width: 0 6px 6px 0 !important;
     transform: rotate(-225deg) !important;
@@ -183,17 +270,18 @@ input[type="text"]:focus
 }
 
 .multiselect__option--highlight {
-    background: #0030ff !important;
+    background: #DFBD69 !important;
 }
 
 .btn-outline-secondary:hover {
-    background-color: #0030ff !important;
+    background-color: #DFBD69 !important;
     box-shadow: none !important;
 }
 
 .softkeys__btn {
-    color: #6051e3;
-    border: 1px solid #6051e3 !important;
+    color: #000;
+    border: 1px solid #000 !important;
+    background-color: #F1F0F5;
 }
 
 .delete-key {
@@ -418,4 +506,11 @@ input[type="text"]:focus
     font-size: 34px;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.map-holder {
+    background-color: #fff;
+    height: 747px;
+    margin-left: -2px;
+    width: 100%;
 }

@@ -367,11 +367,17 @@
                 <div class="h-button widget-button map-button logs" data-link='Map' @click="mapButton">
                     <div class="button-text-align translateme" data-en="Map">Map</div>    
                 </div>
-                <div class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
+                <div class="h-button widget-button landmark-button logs" data-link='Landmarks' @click="landmarksButton">
+                    <div class="button-text-align translateme" data-en="Events">Landmarks</div>    
+                </div>
+                <div class="h-button widget-button events-button logs" data-link='Events' @click="eventsButton">
+                    <div class="button-text-align translateme" data-en="Events">Events</div>    
+                </div>
+                <div v-show="site_name != 'Parqal'" class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
                     <div class="button-text-align translateme resize" data-en="Promos">Promos</div>
                 </div>
-                <div class="h-button widget-button events-button logs" data-link='Cinema' @click="eventsButton">
-                    <div class="button-text-align translateme" data-en="Cinema">Events</div>
+                <div v-show="site_name != 'Parqal'" class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
+                    <div class="button-text-align translateme" data-en="Cinema">Cinema</div>
                 </div>
             </div>
         </div>
@@ -597,6 +603,10 @@
                 this.cinemaIsShown = true;
                 this.aboutIsShown = false;
                 this.$refs.callCinema.resetPage(this.current_language_set);
+            },
+
+            landmarksButton: function (event) {
+
             },
 
             returnFromAbout: function (event) {
@@ -920,21 +930,21 @@
                 this.show_tenant = false;
                 this.helper.saveLogs({category_id: category.id}, 'Category');
 
-                //this.initializeSwipe();
+                this.initializeSwipe();
                 this.tabs_container = true;
 
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set);
-                }, 100);
-
-                $(document).ready(function(){
-                    $(".owl-carousel").owlCarousel({
-                        center: true,
-                        items:3,
-                        loop:false,
-                        margin:0,
+                    $(document).ready(function(){
+                        $(".owl-carousel").owlCarousel({
+                            center: true,
+                            items:3,
+                            loop:false,
+                            margin:0,
+                        });
                     });
-                });
+                }, 100);
+                
             },
 
             goBack: function() {
