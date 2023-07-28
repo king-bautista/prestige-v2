@@ -3,15 +3,15 @@
         <div class="router-page" v-show="homeIsShown">
             <div v-if="site_name == 'Parqal'" class="row">
                 <div class="col-md-6">
-                    <div v-if="child_category" class="datetime-holder text-left m-5">
+                    <div v-if="child_category || supplementals || alphabetical" class="datetime-holder text-left mt-4 mb-3">
                         <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                     </div>                
                 </div>
                 <div class="col-md-6 text-right">
-                    <div v-if="home_category" class="datetime-holder m-5">
+                    <div v-if="home_category" class="datetime-holder mt-3 mb-3 mr-5">
                         <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                     </div>
-                    <div v-else class="m-5">
+                    <div v-else class="mt-3 mb-3 mr-5">
                         <button type="button" class="btn btn-custom">{{ page_title }}</button>
                     </div>
                 </div>
@@ -56,74 +56,94 @@
 
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
-                <div v-if="child_category_count< 7" v-show="site_name != 'Parqal'" class="row mt-120 mb-41">
-                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
-                </div>
-                <div v-else-if="child_category_count< 11" v-show="site_name != 'Parqal'" class="row mb-27 mt-18">
-                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
-                </div>
-                <div v-else v-show="site_name != 'Parqal'" class="row mb-27">
-                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
-                </div>
-                <div class="row col-md-12 mt-120 mb-41" v-if="site_name == 'Parqal'">
-                    <div class="owl-carousel">
-                        <div class="ïtem-holder" v-for="subcategory in current_category.children">
-                            <div class="rounded-container" @click="getTenantsByCategory(subcategory)">
-                                <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                                <div class="category-name-holder"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
+                <div v-if="site_name == 'Parqal'">
+                    <div class="row col-md-12 mt-120 mb-41">
+                        <div class="owl-carousel" id="sub-category-carousel">
+                            <div class="ïtem-holder" v-for="subcategory in current_category.children">
+                                <div class="rounded-container" @click="getTenantsByCategory(subcategory)">
+                                    <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
+                                    <div class="category-name-holder"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row col-md-6 offset-md-3 mb-3 mw-51p" v-else>
-                    <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="getTenantsByCategory(subcategory)">			
-                        <div class="c-button ml-0">						
-                            <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                            <div class="c-button-align c-button-color2" v-bind:class="'c-category-'+ current_category.category_id"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>                        
-                        </div>					
+                <div v-else>
+                    <div v-if="child_category_count< 7" class="row mt-120 mb-41">
+                        <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
                     </div>
-                </div>
+                    <div v-else-if="child_category_count< 11" class="row mb-27 mt-18">
+                        <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
+                    </div>
+                    <div v-else class="row mb-27">
+                        <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{current_category.label}}</div>
+                    </div>
+                    <div class="row col-md-6 offset-md-3 mb-3 mw-51p">
+                        <div v-for="subcategory in current_category.children" class="col-12 col-sm-6 text-left mt-3 p-0-5" @click="getTenantsByCategory(subcategory)">			
+                            <div class="c-button ml-0">						
+                                <img class="tenant-category" :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
+                                <div class="c-button-align c-button-color2" v-bind:class="'c-category-'+ current_category.category_id"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>                        
+                            </div>					
+                        </div>
+                    </div>
+                </div>                
             </div>
 
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
-                <div class="row mb-27" v-show="site_name != 'Parqal'">
-                    <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{ current_category.label}}</div>
+                <div v-if="site_name == 'Parqal'">
+                    <div class="row col-md-12 mt-120 mb-41">
+                        <div class="owl-carousel" id="supplementals-carousel">
+                            <template v-for="supplementals in current_supplementals.children">
+                                <div class="ïtem-holder" v-for="supplemental in supplementals">
+                                    <div class="rounded-container" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)"">
+                                        <img :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
+                                        <div class="category-name-holder"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
                 </div>
-                <div class="row col-md-10 offset-md-1 mb-3 w-1152">
-                    <div id="alphabeticalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false" v-show="current_supplementals_count >= 0">
+                <div v-else>
+                    <div class="row mb-27">
+                        <div class="col-md-12 home-title-sub text-center translateme" :data-en="current_category.label">{{ current_category.label}}</div>
+                    </div>
+                    <div class="row col-md-10 offset-md-1 mb-3 w-1152">
+                        <div id="alphabeticalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false" v-show="current_supplementals_count >= 0">
 
-                        <!-- Indicators -->
-                        <ul class="carousel-indicators z-1" v-show="current_supplementals_count>1">
-                            <li data-target="#alphabeticalCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>                 
-                        </ul>
+                            <!-- Indicators -->
+                            <ul class="carousel-indicators z-1" v-show="current_supplementals_count>1">
+                                <li data-target="#alphabeticalCarousel" v-for="(supplementals, index) in current_supplementals.children" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>                 
+                            </ul>
 
-                        <!-- The slideshow -->
-                        <div class="carousel-inner carousel-mh-626">
-                            <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_supplementals_count? 'last-item':'']">
-                                <div class="row mb-3">
-                                    <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">			
-                                        <div class="c-button">						
-                                            <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
-                                            <div class="c-button-align c-button-color2" v-bind:class="'c-category-'+ current_category.category_id"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>                        
-                                        </div>					
+                            <!-- The slideshow -->
+                            <div class="carousel-inner carousel-mh-626">
+                                <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_supplementals_count? 'last-item':'']">
+                                    <div class="row mb-3">
+                                        <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">			
+                                            <div class="c-button">						
+                                                <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
+                                                <div class="c-button-align c-button-color2" v-bind:class="'c-category-'+ current_category.category_id"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>                        
+                                            </div>					
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Left and right controls -->
-                        <a class="carousel-control-prev control-prev-s p-l-z-a" href="#alphabeticalCarousel" data-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </a>
-                        <a class="carousel-control-next control-next-s n-l-z-a" href="#alphabeticalCarousel" data-slide="next" v-show="current_supplementals_count>=1">
-                            <span class="carousel-control-next-icon"></span>
-                        </a>
+                            <!-- Left and right controls -->
+                            <a class="carousel-control-prev control-prev-s p-l-z-a" href="#alphabeticalCarousel" data-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </a>
+                            <a class="carousel-control-next control-next-s n-l-z-a" href="#alphabeticalCarousel" data-slide="next" v-show="current_supplementals_count>=1">
+                                <span class="carousel-control-next-icon"></span>
+                            </a>
+                        </div>
+                        <img v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">                        
                     </div>
-                    <img v-if="site_name == 'Parqal'" v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
-                    <img v-else v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">
-                    
                 </div>
+
             </div>
 
             <!-- ALPHABETICAL -->
@@ -150,20 +170,39 @@
                             <div class="carousel-item tenant-store-carousel" v-for="(tenants, index) in tenant_list" :data-index="index" v-bind:class = "[index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']">
                                 <div class="row mb-3">
                                     <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                        <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
-                                            <div class="image-holder h-100">
-                                                <img :src="tenant.brand_logo" :alt="tenant.brand_name">
-                                            </div>
-                                            <div class="text-left pta-2 brand-name">
-                                                <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
-                                                <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
-                                                <div style="font-weight: bold;font-size: 0.7em">
-                                                    <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
-                                                    <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
-                                                    <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
+                                        <div v-if="site_name == 'Parqal'">
+                                            <div class="tenant-store text-center ml-3" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
+                                                <div class="image-holder h-100">
+                                                    <img :src="tenant.brand_logo" :alt="tenant.brand_name">
+                                                </div>
+                                                <div class="text-left pta-2 brand-name">
+                                                    <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
+                                                    <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
+                                                    <div style="font-weight: bold;font-size: 0.7em">
+                                                        <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
+                                                        <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
+                                                        <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div v-else>
+                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
+                                                <div class="image-holder h-100">
+                                                    <img :src="tenant.brand_logo" :alt="tenant.brand_name">
+                                                </div>
+                                                <div class="text-left pta-2 brand-name">
+                                                    <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
+                                                    <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
+                                                    <div style="font-weight: bold;font-size: 0.7em">
+                                                        <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
+                                                        <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
+                                                        <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>  
@@ -280,6 +319,11 @@
             <!-- TABS -->
             <div class="tabs-container" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
+                    <div v-if="child_category || supplementals" class="swipe-to-see-more">
+                        <img src="images/swipe.png">
+                        <p>SWIPE TO SEE MORE</p>
+                    </div>
+
                     <div class="btn-group dropup dropdown-menu-right float-right mr-5">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             View stores by
@@ -287,7 +331,7 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category);">Alphabetical</a>
                             <a class="dropdown-item" id="category-tab" data-link="Category" @click="showCategories()">Category</a>
-                            <a class="dropdown-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals();">
+                            <a class="dropdown-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals(current_category.supplemental.name);">
                                 <span id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental" :data-en="current_category.supplemental.name">{{ current_category.supplemental.name }}</span>
                             </a>
                         </div>
@@ -306,14 +350,14 @@
                                 <a class="translateme tenant-alphabet" data-en="Alphabetical">Alphabetical</a>
                             </div>
                         </div>
-                        <div class="tabs-item store-tabs-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals();">
+                        <div class="tabs-item store-tabs-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals(current_category.supplemental.name);">
                             <div>
                                 <a class="tenant-supplementals translateme" id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental" :data-en="current_category.supplemental.name">{{ current_category.supplemental.name }}</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="p-a">
+                <div class="p-a" v-if="site_name != 'Parqal'">
                     <ol class="navigation-letters" v-show="navigationLetters">
                         <li v-for="letter in navigation_letters" :class="(available_letters.includes(letter) ? '' : 'disabled')" @click="moveTo(letter)">{{letter}}</li>
                     </ol>
@@ -894,18 +938,34 @@
                 $(".navigation-letters li").removeClass('active'); 
             },
 
-            showSupplementals: function() {
+            showSupplementals: function(name = null) {
                 this.home_category = false;
                 this.child_category = false;
                 this.alphabetical = false;
                 this.supplementals = true;
                 this.show_tenant = false; 
                 this.navigationLetters = false;
+                if(this.site_name == 'Parqal') {
+                    this.page_title = name;
+                }
+
                 this.initializeSwipe();     
 
                 this.$refs.callAssist.filterAssist('supplementalcat',this.current_language_set);
 
                 $(".navigation-letters li").removeClass('active'); 
+
+                setTimeout(() => {
+                    this.setTranslation(this.current_language_set);
+                    $(document).ready(function(){
+                        $("#supplementals-carousel").owlCarousel({
+                            center: true,
+                            items:3,
+                            loop:false,
+                            margin:0,
+                        });
+                    });
+                }, 100);
             },     
 
             showChildren: function(category) {
@@ -930,7 +990,7 @@
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set);
                     $(document).ready(function(){
-                        $(".owl-carousel").owlCarousel({
+                        $("#sub-category-carousel").owlCarousel({
                             center: true,
                             items:3,
                             loop:false,
@@ -956,7 +1016,7 @@
                     this.isAlphabeticalClicked = false;
                 }
                 else if(this.previous_page == 'Supplementals' && this.alphabetical == true) {
-                    this.page_title = 'Store List';
+                    this.page_title = 'Supplementals';
                     this.supplementals = true;
                     this.alphabetical = false;
 

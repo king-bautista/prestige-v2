@@ -1,6 +1,18 @@
 <template>
     <div class="router-page" style="width: 100%;">
-        <div class="row">
+        <div v-if="site_name == 'Parqal'" class="row">
+            <div class="col-md-6">
+                <div class="datetime-holder text-left mt-4 mb-3">
+                    <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                </div>                
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="mt-3 mb-3 mr-5">
+                    <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                </div>
+            </div>
+        </div>
+        <div v-else class="row">
             <div class="col-md-6">
                 <div id="page-title" class="translateme" :data-en="page_title">{{ page_title }}</div>
             </div>
@@ -219,6 +231,7 @@
                     floor_id: '',
                 },
                 site_logo: '',
+                site_name: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Map',
                 tenant_list: [],
@@ -246,6 +259,7 @@
             this.getSite();
             this.getTenants();
             this.getFloors();
+            setInterval(this.getDateNow, 1000);
         },
 
         watch: {
@@ -277,9 +291,21 @@
         },
 
         methods: {
+            getDateNow: function() {
+                const today = new Date();
+                //const date = today.toLocaleString([], { weekday:"long", day:"numeric", month:"long", year:"numeric"});
+                const date = today.toLocaleString([], { day:"numeric", month:"long", year:"numeric"});
+                const time = today.toLocaleString([], {hour: '2-digit', minute:'2-digit'});
+                this.current_date = date;
+                this.current_time = time;
+            },
+
             getSite: function() {
 				axios.get('/api/v1/site')
-                .then(response => this.site_logo = response.data.data.site_logo);
+                .then(response => {
+                    this.site_name = response.data.data.name
+                    this.site_logo = response.data.data.site_logo
+                });
 			},
 
             getTenants: function() {

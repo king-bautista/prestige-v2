@@ -66,20 +66,39 @@
                             <div class="carousel-item" v-for="(tenants, index) in tenant_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_tenant_list_count? 'last-item':'']">
                                 <div class="row mb-3">
                                     <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
-                                        <div class="tenant-search bg-white text-center box-shadowed" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
-                                            <div class="image-holder h-100">
-                                                <img :src="tenant.brand_logo" :alt="tenant.brand_name">
-                                            </div>
-                                            <div class="text-left pta-2 brand-name">
-                                                <div class="shop_name">{{ tenant.brand_name }}</div>
-                                                <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }}</div>
-                                                <div style="font-weight: bold;font-size: 0.7em">
-                                                    <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
-                                                    <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
-                                                    <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
+                                        <div v-if="site_name == 'Parqal'">
+                                            <div class="tenant-search text-center" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
+                                                <div class="image-holder h-100">
+                                                    <img :src="tenant.brand_logo" :alt="tenant.brand_name">
+                                                </div>
+                                                <div class="text-left pta-2 brand-name">
+                                                    <div class="shop_name">{{ tenant.brand_name }}</div>
+                                                    <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }}</div>
+                                                    <div style="font-weight: bold;font-size: 0.7em">
+                                                        <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
+                                                        <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
+                                                        <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div v-else>
+                                            <div class="tenant-search bg-white text-center box-shadowed" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
+                                                <div class="image-holder h-100">
+                                                    <img :src="tenant.brand_logo" :alt="tenant.brand_name">
+                                                </div>
+                                                <div class="text-left pta-2 brand-name">
+                                                    <div class="shop_name">{{ tenant.brand_name }}</div>
+                                                    <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }}</div>
+                                                    <div style="font-weight: bold;font-size: 0.7em">
+                                                        <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
+                                                        <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
+                                                        <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>                        
@@ -360,7 +379,7 @@
                         this.current_tenant_list_count = this.tenant_list.length - 1;
                         this.current_subscriber_list_count = this.subscriber_list.length;
                         this.search.results = response.data.data_count;
-                        this.page_title = 'Search Results';
+                        this.page_title = 'Search';
                         this.helper.saveLogs(this.search, 'Search');
                         this.resetCarousel();
 
@@ -421,7 +440,7 @@
                     this.search_results = true;
                     this.show_tenant = false;
                     $("#code").val('');
-                    this.page_title = 'Search Results';
+                    this.page_title = 'Search';
 
                     setTimeout(() => {
                         this.$root.$emit('callSetTranslation');
