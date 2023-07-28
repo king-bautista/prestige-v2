@@ -280,7 +280,7 @@
             <!-- TABS -->
             <div class="tabs-container" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
-                    <div class="btn-group dropup dropdown-menu-right">
+                    <div class="btn-group dropup dropdown-menu-right float-right mr-5">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             View stores by
                         </button>
@@ -368,7 +368,7 @@
                     <div class="button-text-align translateme" data-en="Map">Map</div>    
                 </div>
                 <div class="h-button widget-button landmark-button logs" data-link='Landmarks' @click="landmarksButton">
-                    <div class="button-text-align translateme" data-en="Events">Landmarks</div>    
+                    <div class="button-text-align translateme" data-en="Landmarks">Landmarks</div>    
                 </div>
                 <div class="h-button widget-button events-button logs" data-link='Events' @click="eventsButton">
                     <div class="button-text-align translateme" data-en="Events">Events</div>    
@@ -596,13 +596,7 @@
             },
 
             eventsButton: function (event) {
-                this.homeIsShown = false;
-                this.searchIsShown = false;
-                this.mapIsShown = false;
-                this.promosIsShown = false;
-                this.cinemaIsShown = true;
-                this.aboutIsShown = false;
-                this.$refs.callCinema.resetPage(this.current_language_set);
+                
             },
 
             landmarksButton: function (event) {
