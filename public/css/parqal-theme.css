@@ -154,7 +154,7 @@ input[type="text"]:focus
 }
 
 .carousel-indicators span {
-    background-color: #2e35a1;
+    background-color: #DFBD69;
 }
 
 .tab-item-selected > div {
@@ -522,6 +522,7 @@ input[type="text"]:focus
     font-weight: bold;
     border-radius: 1rem;
     padding: 0.375rem 1.5rem;
+    z-index: 2;
 }
 
 .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
@@ -557,4 +558,64 @@ input[type="text"]:focus
     text-decoration: none;
     background-color: #DFBD69;
     border-radius: 1.5rem;
+}
+
+.swipe-to-see-more {
+    position: absolute;
+    text-align: center;
+    left: 37.5rem;
+    top: -7rem;
+    color: #DFBD69;
+    opacity: 0.9;
+    font-size: 18px;
+}
+
+.carousel-control-next-icon {
+    display: none;
+}
+
+.carousel-control-prev-icon {
+    display: none;
+}
+
+.carousel-control-next {
+    width: 2rem;
+    height: 539px;
+    border: none;
+    background: url(/images/parqal-right.png) no-repeat;
+    background-position: center;
+}
+
+.carousel-control-prev {
+    width: 2rem;
+    height: 539px;
+    border: none;
+    background: url(/images/parqal-left.png) no-repeat;
+    background-position: center;
+}
+
+.tenant-store, .tenant-search {
+    background: url(/images/parqal-tenant-big.png);
+    border: 1px solid #efefef;
+    padding: 5px;
+    border-radius: 16px;
+    height: 90px;
+    width: 330px;
+    cursor: pointer;
+}
+
+.home-title {
+    font-family: Henry Sans Regular;
+    font-weight: 400;
+    font-size: 2em;
+    padding: 15px 0 15px 0;
+    color: #DFBD69;
+    padding-right: 10px;
+}
+
+.label-4 {
+    color: #DFBD69;
+    font-size: 40px;
+    text-align: center;
+    margin-top: 290px;
 }
