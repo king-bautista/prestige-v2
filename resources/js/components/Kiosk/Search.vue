@@ -1,6 +1,18 @@
 <template>
     <div class="router-page" style="width: 100%;">
-        <div class="row">
+        <div v-if="site_name == 'Parqal'" class="row">
+            <div class="col-md-6">
+                <div class="datetime-holder text-left m-5">
+                    <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                </div>                
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="m-5">
+                    <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                </div>
+            </div>
+        </div>
+        <div v-else class="row">
             <div class="col-md-6">
                 <div id="page-title" class="translateme" :data-en="page_title">{{page_title}}</div>
             </div>
@@ -11,7 +23,17 @@
         <!-- SEARCH/ RESULT -->
         <div v-show="search_page">
             <div class="row keyboard-section" v-show="!search_results">
-                <div class="col-md-10 offset-md-1 mt-83 pt-5">
+                <div v-if="site_name == 'Parqal'" class="col-md-10 offset-md-1">
+                    <form class="row form text-center" v-on:submit.prevent="onEnter">
+                        <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
+                            <input type="text" id="code" name="code" class="form-control input-mg search-box">
+                            <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
+                            <label class="notification">Please type at least two (2) letters to search.</label>
+                        </div>                    
+                        <div class="softkeys mt-63" data-target="input[name='code']"></div>
+                    </form>
+                </div>
+                <div v-else class="col-md-10 offset-md-1 mt-83 pt-5">
                     <form class="row form text-center" v-on:submit.prevent="onEnter">
                         <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
                             <input type="text" id="code" name="code" class="form-control input-mg search-box">
@@ -215,6 +237,8 @@
         name: "Search",
         data() {
             return {
+                current_date: "",
+                current_time: "",
                 search: {
                     key_words: '',
                     results: '',
@@ -224,6 +248,7 @@
                 tenant_list_temp: [],
                 suggestion_list: '',
                 subscriber_list: '',
+                site_name: '',
                 site_logo: '',
                 back_button: 'assets/images/English/Back.png',
                 search_page: true,
@@ -248,12 +273,25 @@
         created() {
             this.getSite();
             this.getSuggestionList();
+            setInterval(this.getDateNow, 1000);
         },
 
         methods: {
+            getDateNow: function() {
+                const today = new Date();
+                //const date = today.toLocaleString([], { weekday:"long", day:"numeric", month:"long", year:"numeric"});
+                const date = today.toLocaleString([], { day:"numeric", month:"long", year:"numeric"});
+                const time = today.toLocaleString([], {hour: '2-digit', minute:'2-digit'});
+                this.current_date = date;
+                this.current_time = time;
+            },
+
 			getSite: function() {
 				axios.get('/api/v1/site')
-                .then(response => this.site_logo = response.data.data.site_logo);
+                .then(response => {
+                    this.site_name = response.data.data.name;
+                    this.site_logo = response.data.data.site_logo
+                });
 			},
 
             TitleCasePerWord: function() {
