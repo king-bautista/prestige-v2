@@ -233,17 +233,62 @@ input[type="text"]:focus
     color: #000;
 }
 
-#tenant-details {
-    width: 485px;
-    min-height: 525px;
+.tenant-details {
+    border-radius: 30px;
+    height: 670px;
+    width: auto;
+    font-size: 1.3em;
+    margin-left: 20px;
+    background-color: #DFBD69;
+}
+
+.tenant-details-logo {
+    max-height: 280px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px 2px rgb(192 192 192 / 80%);
+    float: none;
+}
+
+.tenant-details-floor {
+    color: #000000;
+    margin-top: -8px;
+    float: none;
+    margin-left: 0;
+}
+
+.tenant-details-views {
+    color: #000000;
+    margin-top: -8px;
+    margin-bottom: 5px;
+    margin-left: 0;
+    margin-top: 10px;
+}
+
+.btn-heart {
+    float: none;
+    margin: 0;
+}
+
+.btn-like-display {
+    font-size: 0.994em;
+    float: none;
+    margin: 8px 0 0 15px;
+    color: #000;
+}
+
+.tenant-products-container {
+    position: relative;
+    border: solid 2px #DFBD69;
+    height: 670px;
+    border-radius: 30px;
+}
+
+.centered-container {
     position: absolute;
-    top: 95px;
-    left: 970px;
-    display: none;
-    z-index: 1;
-    border-radius: 40px 0px 0px 40px;
-    border: 0;
-    background-color: rgba(143,143,143,0.8);
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .arrow {
@@ -618,4 +663,8 @@ input[type="text"]:focus
     font-size: 40px;
     text-align: center;
     margin-top: 290px;
+}
+
+..modal-content {
+    border-radius: 2rem;
 }

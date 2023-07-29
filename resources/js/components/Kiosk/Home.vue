@@ -223,7 +223,85 @@
 
             <!-- TENANT -->
             <div v-show="show_tenant">
-                <div class="row">
+                <div v-if="site_name == 'Parqal'" class="row">
+                    <div class="col-12 col-sm-3 mt-5">
+                        <div class="p-3 tenant-details">
+                            <div class="my-auto p-1 text-center">
+                                <img class="tenant-details-logo" :src="tenant_details.brand_logo">
+                                <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
+                                <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
+                                <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                <div>
+                                    <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
+                                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                        <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
+                                        <span v-else class="text-danger"><strong>Closed</strong></span>
+                                        | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
+                                        <i class="far fa-heart btn-heart"></i>
+                                        <a class="btn-like-display">{{ tenant_details.like_count }}
+                                            <span class="translateme" data-en="Likes">Likes</span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div v-if="tenant_details.is_subscriber" class="row mt-31 mb-4">
+                                <div class="text-left ml-36" v-if="tenant_details.tenant_details">
+                                    <div class="mb-24"><img src="assets/images/social-media-fb.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                    <div class="mb-24"><img src="assets/images/social-media-twitter.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                    <div class="mb-24"><img src="assets/images/social-media-ig.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                </div>
+                            </div>
+                            
+                            <div v-if="tenant_details.is_subscriber" class="row p-r-t-94">
+                                <div class="col-6 mt-3">
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop resize-get-direction translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page)">Get Directions</button>
+                                </div>
+                                <div class="col-6 mt-3">
+                                    <span class="text-danger ml-2 btn-like"  @click="updateLikeCount(tenant_details.id, tenant_details.like_count)">
+                                        <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
+                                        <a class="btn-like-display">{{ tenant_details.like_count }}
+                                            <span class="translateme" data-en="Likes">Likes</span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="col-6 mt-3">
+                                    <a type="button" class="btn btn-share" disabled>
+                                        <i class="fa fa-share-alt mr-10" aria-hidden="true"></i><div class="translateme resize-share" data-en="Share">Share</div>
+                                    </a>
+                                </div>
+                                <div class="col-6 mt-3">
+                                    <button class="btn w-100 btn-prestige-rounded btn-order-now translateme" data-en="Order Now">Order Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-8 text-center mt-5">
+                        <div v-if="tenant_details.is_subscriber && tenant_details.products.length != 0" class="tenant-products-container">
+                            <div class="row ml-1 mt-16" v-if="tenant_details.products.banners.length > 0">
+                                <div class="col-12 p-0">
+                                    <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                </div>
+                            </div>
+                            <div class="row subscriber-products mt-15 ml-0" v-bind:class = "(tenant_details.products.banners.length > 0) ? 'with-banner-height':'with-out-banner-height'">
+                                <div v-for="product in tenant_details.products.products" class="m-15-18">
+                                    <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path,'product')">
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="tenant-products-container">
+                            <div class="centered-container">
+                                <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="row">
                     <div class="col-12 col-sm-8 text-center">
                         <div v-if="tenant_details.is_subscriber && tenant_details.products.length != 0">
                             <div class="row ml-1 mt-16" v-if="tenant_details.products.banners.length > 0">
