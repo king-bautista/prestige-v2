@@ -569,5 +569,29 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/site-screen-product/get-screens', 'Admin\SiteScreenProductController@getScreen')->name('admin.site.site-screen-product.get-screens');
     Route::post('/admin/site/site-screen-product/get-screen-size', 'Admin\SiteScreenProductController@getScreenSize')->where('id', '[0-9]+')->name('admin.site.site-screen-product.get-screen-size');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Landmarks Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/landmarks', 'Admin\LandmarkController@index')->name('admin.landmarks');
+    Route::get('/admin/landmark/list', 'Admin\LandmarkController@list')->name('admin.landmark.list');
+    Route::post('/admin/landmark/store', 'Admin\LandmarkController@store')->name('admin.landmark.store');
+    Route::get('/admin/landmark/{id}', 'Admin\LandmarkController@details')->where('id', '[0-9]+')->name('admin.landmark.details');
+    Route::post('/admin/landmark/update', 'Admin\LandmarkController@update')->name('admin.landmark.update');
+    Route::get('/admin/landmark/delete/{id}', 'Admin\LandmarkController@delete')->where('id', '[0-9]+')->name('admin.landmark.delete');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Events Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/events', 'Admin\EventsController@index')->name('admin.event');
+    Route::get('/admin/event/list', 'Admin\EventsController@list')->name('admin.event.list');
+    Route::post('/admin/event/store', 'Admin\EventsController@store')->name('admin.event.store');
+    Route::get('/admin/event/{id}', 'Admin\EventsController@details')->where('id', '[0-9]+')->name('admin.event.details');
+    Route::post('/admin/event/update', 'Admin\EventsController@update')->name('admin.event.update');
+    Route::get('/admin/event/delete/{id}', 'Admin\EventsController@delete')->where('id', '[0-9]+')->name('admin.event.delete');
+
     Route::post('/admin/logout', 'AdminAuth\AuthController@adminLogout')->name('admin.logout');
 });
