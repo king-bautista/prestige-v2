@@ -281,6 +281,7 @@ input[type="text"]:focus
     border: solid 2px #DFBD69;
     height: 670px;
     border-radius: 30px;
+    width: 96%;
 }
 
 .centered-container {
@@ -665,6 +666,56 @@ input[type="text"]:focus
     margin-top: 290px;
 }
 
-..modal-content {
+.modal-content {
     border-radius: 2rem;
+}
+
+.social-holder {
+    font-size: 14px;
+    font-weight: bold;
+    color: #5E252C;
+}
+
+.subscriber-products {
+    overflow-y: auto;
+    width: 100%;
+}
+
+.with-height {
+    height: 670px;
+    position: relative
+}
+
+.with-out-height {
+    height: auto;
+    position: relative
+}
+
+.img-promo {
+    width: 260px;
+    height: auto;
+}
+
+.img-promo-4 {
+    width: 215px;
+    height: auto;
+}
+
+.m-auto {
+    margin: auto;
+}
+
+.f-left {
+    float: left;
+    margin: 20px;
+}
+
+.v-center {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 50%);
+}
+
+.rounded-corner {
+    border-radius: 20px;
 }

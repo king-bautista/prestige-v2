@@ -3,7 +3,7 @@
         <div class="router-page" v-show="homeIsShown">
             <div v-if="site_name == 'Parqal'" class="row">
                 <div class="col-md-6">
-                    <div v-if="child_category || supplementals || alphabetical" class="datetime-holder text-left mt-4 mb-3">
+                    <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-4 mb-3 ml-4">
                         <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                     </div>                
                 </div>
@@ -96,7 +96,7 @@
                         <div class="owl-carousel" id="supplementals-carousel">
                             <template v-for="supplementals in current_supplementals.children">
                                 <div class="ïtem-holder" v-for="supplemental in supplementals">
-                                    <div class="rounded-container" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)"">
+                                    <div class="rounded-container" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">
                                         <img :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
                                         <div class="category-name-holder"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>
                                     </div>
@@ -233,7 +233,6 @@
                                 <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                 <div>
                                     <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
-                                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                                         <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
                                         <span v-else class="text-danger"><strong>Closed</strong></span>
                                         | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
@@ -250,47 +249,25 @@
                                     </span>
                                 </div>
                             </div>
-                            <div v-if="tenant_details.is_subscriber" class="row mt-31 mb-4">
-                                <div class="text-left ml-36" v-if="tenant_details.tenant_details">
-                                    <div class="mb-24"><img src="assets/images/social-media-fb.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                    <div class="mb-24"><img src="assets/images/social-media-twitter.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                    <div class="mb-24"><img src="assets/images/social-media-ig.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
-                                </div>
-                            </div>
-                            
-                            <div v-if="tenant_details.is_subscriber" class="row p-r-t-94">
-                                <div class="col-6 mt-3">
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop resize-get-direction translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page)">Get Directions</button>
-                                </div>
-                                <div class="col-6 mt-3">
-                                    <span class="text-danger ml-2 btn-like"  @click="updateLikeCount(tenant_details.id, tenant_details.like_count)">
-                                        <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
-                                        <a class="btn-like-display">{{ tenant_details.like_count }}
-                                            <span class="translateme" data-en="Likes">Likes</span>
-                                        </a>
-                                    </span>
-                                </div>
-                                <div class="col-6 mt-3">
-                                    <a type="button" class="btn btn-share" disabled>
-                                        <i class="fa fa-share-alt mr-10" aria-hidden="true"></i><div class="translateme resize-share" data-en="Share">Share</div>
-                                    </a>
-                                </div>
-                                <div class="col-6 mt-3">
-                                    <button class="btn w-100 btn-prestige-rounded btn-order-now translateme" data-en="Order Now">Order Now</button>
+                            <div v-if="tenant_details.is_subscriber" class="row mt-1 mb-4">
+                                <div class="text-left ml-36 social-holder" v-if="tenant_details.tenant_details">
+                                    <div class="mb-2"><img src="assets/images/social-media-fb.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                    <div class="mb-2"><img src="assets/images/social-media-twitter.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                    <div class="mb-2"><img src="assets/images/social-media-ig.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-8 text-center mt-5">
-                        <div v-if="tenant_details.is_subscriber && tenant_details.products.length != 0" class="tenant-products-container">
-                            <div class="row ml-1 mt-16" v-if="tenant_details.products.banners.length > 0">
+                    <div class="col-12 col-sm-9 text-center mt-5">
+                        <div v-if="tenant_details.is_subscriber && tenant_details.products.product_list.length != 0" class="tenant-products-container">
+                            <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                 <div class="col-12 p-0">
                                     <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                 </div>
                             </div>
-                            <div class="row subscriber-products mt-15 ml-0" v-bind:class = "(tenant_details.products.banners.length > 0) ? 'with-banner-height':'with-out-banner-height'">
-                                <div v-for="product in tenant_details.products.products" class="m-15-18">
-                                    <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path,'product')">
+                            <div class="row subscriber-products ml-0" v-bind:class = "(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height'">
+                                <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
+                                    <img :src="product.image_url_path" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo'" @click="showProduct(product.image_url_path,'product')">
                                 </div>
                             </div>
                         </div>

@@ -211,24 +211,52 @@ class DirectorySiteTenantViewModel extends Model
         return asset('/images/no-image-available.png');
     }
 
-    public function getOperationalHoursAttribute() 
-    {
-        $new_schedule = [];
+    function getTodaySchedule($json_data) {
         $current_day = Carbon::now()->isoFormat('ddd');
-        $schedules = $this->getTenantDetails()->where('meta_key', 'schedules')->first();
-        if($schedules) {
-            $json_data = json_decode($schedules->meta_value);
-            
+
+        if(is_array($json_data)) {
             foreach($json_data as $data) {
-                if(strpos($data->schedules, $current_day)) {
+                if(strpos($data['schedules'], $current_day)) {
                     $new_schedule = [
-                        'is_open' => (strtotime($data->start_time) <= time() && strtotime($data->end_time) >= time()) ? 1 : 0,
-                        'start_time' => date("h:ia",strtotime($data->start_time)),
-                        'end_time' => date("h:ia",strtotime($data->end_time)),
+                        'is_open' => (strtotime($data['start_time']) <= time() && strtotime($data['end_time']) >= time()) ? 1 : 0,
+                        'start_time' => date("h:ia",strtotime($data['start_time'])),
+                        'end_time' => date("h:ia",strtotime($data['end_time'])),
                     ];
                     return $new_schedule;
                 }
             }
+            return null;
+        }
+
+        if(strpos($json_data->schedules, $current_day)) {
+            $new_schedule = [
+                'is_open' => (strtotime($json_data->start_time) <= time() && strtotime($json_data->end_time) >= time()) ? 1 : 0,
+                'start_time' => date("h:ia",strtotime($json_data->start_time)),
+                'end_time' => date("h:ia",strtotime($json_data->end_time)),
+            ];
+            return $new_schedule;
+        }
+
+        return null;        
+    }
+
+    public function getOperationalHoursAttribute() 
+    {
+        $new_schedule = [];
+        $schedules = $this->getTenantDetails()->where('meta_key', 'schedules')->first();
+        
+        if($schedules) {
+            $json_data = json_decode($schedules->meta_value);
+            
+            if(count($json_data) > 1) {
+                foreach($json_data as $data) {
+                    $today_schedule = $this->getTodaySchedule($data);
+                }
+                return $today_schedule;
+            }
+            else {
+                return $this->getTodaySchedule($json_data);
+            }            
         }
         return null;
     }
@@ -244,7 +272,7 @@ class DirectorySiteTenantViewModel extends Model
                     $new_products['banners'][] = $product;
                 }
                 else {
-                    $new_products['products'][] = $product;
+                    $new_products['product_list'][] = $product;
                 }
             }
             return $new_products;
