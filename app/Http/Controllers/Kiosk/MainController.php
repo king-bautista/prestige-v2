@@ -626,18 +626,18 @@ class MainController extends AppBaseController
 
     public function getPoints($id)
     {        
-        // try
-        // {
+        try
+        {
             $site_points = SitePointViewModel::where('site_map_id', $id)->get();          
             return $this->response($site_points, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // } 
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        } 
     }
 
     public function getRoutes($destination_id)
@@ -842,9 +842,12 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
-            $landmark = Landmark::where('site_id', $site->id)->get();
+            $landmark = Landmark::where('site_id', $site->id)->where('active', 1)->get();
+
+            $landmark = $this->listToArray($landmark);
+            $landmark = array_chunk($landmark, 6);
             
-            return $this->response($collection, 'Successfully Retreived!', 200);
+            return $this->response($landmark, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
@@ -854,4 +857,26 @@ class MainController extends AppBaseController
             ], 200);
         }
     }
+
+    function getEvents() 
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+            $events = Event::where('site_id', $site->id)->get();
+
+            $events = $this->listToArray($events);
+            $events = array_chunk($events, 8);
+            
+            return $this->response($events, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }
+    }
+
 }

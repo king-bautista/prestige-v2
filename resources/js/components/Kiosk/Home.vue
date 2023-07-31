@@ -455,6 +455,8 @@
         <map-page v-show="mapIsShown" ref="callMap"></map-page>
         <promos-page v-show="promosIsShown" ref="callPromo"></promos-page>
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
+        <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
+        <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
         <div class="row pt-3 bg-color">
             <div class="col-md-12 text-center pt-2 pr-136">
                 <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
@@ -507,6 +509,8 @@
     import promos from './Promos.vue';
     import cinema from './Cinema.vue';
     import assitant from './Assistant.vue';
+    import landmark from './Landmark.vue';
+    import events from './Events.vue';
 
 	export default {
         name: "Home",
@@ -517,6 +521,8 @@
             'promos-page': promos,
             'cinema-page': cinema,
             'assitant-page': assitant,
+            'landmark-page': landmark,
+            'events-page': events,
         },
         data() {
             return {
@@ -556,6 +562,8 @@
                 mapIsShown: false,
                 promosIsShown: false,
                 cinemaIsShown: false,
+                landmarkIsShown: false,
+                eventsIsShown: false,
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
                 tenantSchedule :[],
                 trigger_from: '',
@@ -627,6 +635,9 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = true;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
+
                 this.$refs.callAbout.setPage(event);
             },
 
@@ -644,6 +655,8 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
                 this.page_title = 'Category';
                 this.$refs.callAssist.filterAssist('tenantcategory',this.current_language_set);
             },
@@ -655,6 +668,8 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
                 this.$refs.callSearch.resetPage(this.current_language_set);
                 this.$refs.callPromo.resetPage();
                 this.$refs.callCinema.resetPage();
@@ -669,6 +684,8 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
                 this.$refs.callMap.resetPage();
                 this.$refs.callAssist.filterAssist('map',this.current_language_set);
             },
@@ -680,6 +697,8 @@
                 this.promosIsShown = true;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
                 this.$refs.callPromo.resetPage();
                 this.$refs.callAssist.filterAssist('promo',this.current_language_set);
             },
@@ -691,15 +710,33 @@
                 this.promosIsShown = false;
                 this.cinemaIsShown = true;
                 this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
                 this.$refs.callCinema.resetPage(this.current_language_set);
             },
 
             eventsButton: function (event) {
-                
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = true;
+                this.$refs.callPromo.resetPage();                
             },
 
             landmarksButton: function (event) {
-
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.aboutIsShown = false;
+                this.landmarkIsShown = true;
+                this.eventsIsShown = false;
+                this.$refs.callPromo.resetPage();
             },
 
             returnFromAbout: function (event) {
