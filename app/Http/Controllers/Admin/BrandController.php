@@ -42,8 +42,6 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $filters = json_decode($request->filters);
             $company_id = null;
             $brand_ids = [];

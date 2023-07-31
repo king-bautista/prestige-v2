@@ -81,6 +81,8 @@ Vue.component('admin-site-maps', require('./components/Admin/SiteMaps.vue').defa
 //Vue.component('admin-playlist', require('./components/Admin/PlayList.vue').default);
 Vue.component('admin-playlist', require('./components/Admin/PlaylistSortable.vue').default);
 Vue.component('admin-pi-products', require('./components/Admin/PiProducts.vue').default);
+Vue.component('admin-landmarks', require('./components/Admin/Landmarks.vue').default);
+Vue.component('admin-events', require('./components/Admin/Events.vue').default);
 
 
 /**
