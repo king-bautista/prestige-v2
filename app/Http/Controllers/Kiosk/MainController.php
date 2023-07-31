@@ -27,6 +27,8 @@ use App\Models\SiteMapPaths;
 use App\Models\SiteBuilding;
 use App\Models\SiteScreen;
 use App\Models\SiteFeedback;
+use App\Models\Landmark;
+use App\Models\Event;
 
 class MainController extends AppBaseController
 {
@@ -624,18 +626,18 @@ class MainController extends AppBaseController
 
     public function getPoints($id)
     {        
-        try
-        {
+        // try
+        // {
             $site_points = SitePointViewModel::where('site_map_id', $id)->get();          
             return $this->response($site_points, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // } 
     }
 
     public function getRoutes($destination_id)
@@ -832,7 +834,24 @@ class MainController extends AppBaseController
                 'translated' => $value->translated,
             ]);
         }
-        // dd($collection);
         return $this->response($collection, 'Successfully Retreived!', 200);
+    }
+
+    function getLandmark() 
+    {
+        try
+        {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+            $landmark = Landmark::where('site_id', $site->id)->get();
+            
+            return $this->response($collection, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }
     }
 }
