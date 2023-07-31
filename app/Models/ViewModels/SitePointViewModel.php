@@ -54,9 +54,12 @@ class SitePointViewModel extends Model
         if($this->point_label)
             return $this->point_label;
 
-        if($this->tenant_id) {
-            $site_tenant = SiteTenant::find($this->tenant_id);
-            return Brand::find($site_tenant->brand_id)->name;
+        $site_tenant = SiteTenant::find($this->tenant_id);
+        if($site_tenant) {
+            $brand = Brand::find($site_tenant->brand_id);
+            if($brand)
+                return $brand->name;
+            return null;
         }
         return null;
     }
