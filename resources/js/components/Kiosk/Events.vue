@@ -88,6 +88,8 @@
                 show_tenant: false,
                 tenant_details: [],
                 event_page: true,
+                current_date: '',
+                current_time: '',
             };
         },
 
