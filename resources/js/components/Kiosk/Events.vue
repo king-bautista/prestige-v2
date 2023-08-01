@@ -30,14 +30,15 @@
                     </ul>
 
                     <!-- The slideshow -->
-                    <div class="carousel-inner carousel-mh-830 custom-p-0-39">
+                    <div class="carousel-inner carousel-mh-690 custom-p-0-39">
                         <div class="carousel-item" v-for="(events, index) in event_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_event_list_count? 'last-item':'']">
                             <div class="row mb-3">
                                 <div v-for="event in events" class="col-sm-3 mt-10 mb-6">
-                                    <div class="text-center event-container" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
+                                    <div class="text-center event-container mb-3" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
                                         <img :src="event.image_url_path" :alt="event.name" />
-                                        <div>
-                                            {{event.name}}
+                                        <div class="event-name-holder">
+                                            {{event.event_name}} <br/>
+                                            {{event.location}}
                                         </div>
                                     </div>
                                 </div>
