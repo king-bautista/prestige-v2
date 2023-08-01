@@ -251,9 +251,9 @@
                             </div>
                             <div v-if="tenant_details.is_subscriber" class="row mt-1 mb-4">
                                 <div class="text-left ml-36 social-holder" v-if="tenant_details.tenant_details">
-                                    <div class="mb-2"><img src="assets/images/social-media-fb.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                    <div class="mb-2"><img src="assets/images/social-media-twitter.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                    <div class="mb-2"><img src="assets/images/social-media-ig.svg" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                    <div class="mb-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                    <div class="mb-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                    <div class="mb-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                 </div>
                             </div>
                         </div>
