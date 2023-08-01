@@ -863,7 +863,7 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
-            $events = Event::where('site_id', $site->id)->get();
+            $events = Event::where('site_id', $site->id)->where('active', 1)->get();
 
             $events = $this->listToArray($events);
             $events = array_chunk($events, 8);
