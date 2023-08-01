@@ -34,7 +34,7 @@
                         <div class="carousel-item" v-for="(events, index) in event_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_event_list_count? 'last-item':'']">
                             <div class="row mb-3">
                                 <div v-for="event in events" class="col-sm-3 mt-10 mb-6">
-                                    <div class="text-center">
+                                    <div class="text-center event-container" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
                                         <img :src="event.image_url_path" :alt="event.name" />
                                         <div>
                                             {{event.name}}
@@ -57,6 +57,17 @@
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
             </div>
         </div>
+        
+        <!-- MODAL -->
+        <div class="custom-modal p-l-490" id="myevent">
+            <div class="custom-modal-position set-width">                    
+                <img class="my-product-image" :src="event_image">
+                <div class="text-center parqal-color">
+                    <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 <script> 
@@ -124,7 +135,7 @@
                 });
 			},
 
-            showevent: function(event) {
+            showEvent: function(event) {
                 this.event_image = event;
                 $("#myevent").show();
                 $('.set-width').removeClass('banner-size');
