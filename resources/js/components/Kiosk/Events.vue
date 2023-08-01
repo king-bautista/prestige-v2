@@ -22,7 +22,7 @@
         </div>
         <div v-show="event_page">
             <div class="row col-md-10 offset-md-1">
-                <div id="eventCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="event_list.length > 3">
+                <div id="eventCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 3">
                         
                     <!-- Control dots -->
                     <ul class="carousel-indicators z-1">
@@ -47,7 +47,7 @@
                     </div>
 
                     <!-- Left and right controls -->
-                    <a class="carousel-control-prev control-prev-pp p-l-z-p ct-110" href="#eventCarousel" data-slide="prev">
+                    <a class="carousel-control-prev control-prev-pp p-l-z-p ct-110" href="#eventCarousel" data-slide="prev" v-show="current_event_list_count >= 1">
                         <span class="carousel-control-prev-icon"></span>
                     </a>
                     <a class="carousel-control-next control-next-pp n-l-z-p ct-110" href="#eventCarousel" data-slide="next" v-show="current_event_list_count >= 1">
@@ -56,10 +56,10 @@
 
                 </div>
                 
-                <div v-show="event_list.length < 3" class="row event-item-holder">
+                <div v-if="event_list[0].length <= 3" class="row event-item-holder">
                     <template v-for="(events, index) in event_list">
                         <div class="m-auto" v-for="event in events">
-                            <div class="event-container-custom">
+                            <div class="event-container-custom" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
                                 <img :src="event.image_url_path" :alt="event.name" />
                                 <div class="event-name-holder">
                                     {{event.event_name}} <br/>
