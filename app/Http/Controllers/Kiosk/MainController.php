@@ -158,7 +158,7 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+            $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('brand_supplementals.supplemental_id', $category_id)
             ->where('site_tenants.site_id', $site->id)
             ->join('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
