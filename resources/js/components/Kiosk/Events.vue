@@ -22,7 +22,7 @@
         </div>
         <div v-show="event_page">
             <div class="row col-md-10 offset-md-1">
-                <div id="eventCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="event_list.length > 0">
+                <div id="eventCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="event_list.length > 3">
                         
                     <!-- Control dots -->
                     <ul class="carousel-indicators z-1">
@@ -54,6 +54,20 @@
                         <span class="carousel-control-next-icon"></span>
                     </a>
 
+                </div>
+                
+                <div v-show="event_list.length < 3" class="row event-item-holder">
+                    <template v-for="(events, index) in event_list">
+                        <div class="m-auto" v-for="event in events">
+                            <div class="event-container-custom">
+                                <img :src="event.image_url_path" :alt="event.name" />
+                                <div class="event-name-holder">
+                                    {{event.event_name}} <br/>
+                                    {{event.location}}
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </div>
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
             </div>
