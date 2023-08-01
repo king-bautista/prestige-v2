@@ -74,6 +74,8 @@
                 show_tenant: false,
                 tenant_details: [],
                 landmark_page: true,
+                current_date: '',
+                current_time: '',
             };
         },
 
