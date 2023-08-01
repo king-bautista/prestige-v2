@@ -21,7 +21,7 @@
             </div>
         </div>
         <div v-show="event_page">
-            <div class="row col-md-10 offset-md-1">
+            <div class="row col-md-10 offset-md-1" v-if="event_list.length > 0">
                 <div id="eventCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 3">
                         
                     <!-- Control dots -->
@@ -169,7 +169,7 @@
         mounted() {
             $(function() {
                 $(".btn-close-modal,#modal-schedule-event").on('click',function(){
-                    $("#myevent,#modal-schedule-event").hide();
+                    $("#myevent, #modal-schedule-event").hide();
                 });
 
                 $("#myevent,#modal-schedule,#modal-schedule-event").on('click',function(){

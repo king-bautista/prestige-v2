@@ -29,7 +29,7 @@
                         <div class="carousel-item" v-for="(landmarks, index) in landmark_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_landmark_list_count? 'last-item':'']">
                             <div class="row mb-3">
                                 <div v-for="landmark in landmarks" class="col-sm-4 mt-45 mb-45">
-                                    <div class="text-center landmark-container">
+                                    <div class="text-center landmark-container" @click="showLandmark(landmark)">
                                         <img class="landmark-tiles" :src="landmark.image_url_path" :alt="landmark.name" />
                                         <div class="landmark-name">
                                             {{landmark.name}}
@@ -55,6 +55,23 @@
                 <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
             </div>
         </div>
+        <div v-show="show_landmark">
+            <div class="row">
+                <div class="col-sm-3 offset-sm-1 mt-5">
+                    <img :src="landmark_details.image_url_path" class="lanmark-img">
+                </div>
+                <div class="col-sm-7 mt-5">
+                    <div class="lanmark-detail-holder m-5">
+                        <h2>{{ landmark_details.landmark }}</h2>
+                        <p>{{ landmark_details.descriptions }}</p>
+                        <p>{{ landmark_details.name }}</p>
+                        <p>{{ landmark_details.title }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </template>
 <script> 
@@ -71,8 +88,8 @@
                 landmark_image: '',
                 helper: new Helpers(),
                 current_landmark_list_count: 0,
-                show_tenant: false,
-                tenant_details: [],
+                show_landmark: false,
+                landmark_details: [],
                 landmark_page: true,
                 current_date: '',
                 current_time: '',
@@ -96,13 +113,12 @@
 
             resetPage: function() {
                 this.page_title = 'landmarks';
-                this.show_tenant = false;
+                this.show_landmark = false;
                 this.landmark_page = true;
 
                 setTimeout(() => {
                     this.$root.$emit('callSetTranslation');
                 }, 100);
-                $('.first-item').trigger('click');
             },
 
             getSite: function() {
@@ -124,12 +140,10 @@
                 });
 			},
 
-            showlandmark: function(landmark) {
-                this.landmark_image = landmark;
-                $("#mylandmark").show();
-                $('.set-width').removeClass('banner-size');
-                $('.set-width').removeClass('product-size');
-                $('.set-width').addClass('product-size');
+            showLandmark: function(landmark) {
+                this.landmark_details = landmark;
+                this.show_landmark = true;
+                this.landmark_page = false;
             },
 
             callHomeMethod: function(){
