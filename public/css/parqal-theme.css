@@ -837,3 +837,11 @@ input[type="text"]:focus
     top: 0;
     left: 0;
 }
+
+.lanmark-img {
+    width: 100%;
+}
+
+.lanmark-detail-holder {
+    color: #E0BD69;
+}

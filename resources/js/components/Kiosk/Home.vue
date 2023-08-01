@@ -736,7 +736,7 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = true;
                 this.eventsIsShown = false;
-                this.$refs.callPromo.resetPage();
+                this.$refs.callLandmark.resetPage();
             },
 
             returnFromAbout: function (event) {
