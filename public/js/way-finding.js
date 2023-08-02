@@ -718,12 +718,16 @@ WayFinding.prototype = {
     //     var y = this.settings.locationy;
 
     //     var container_width = $('.map-holder').innerWidth();
-    //     var body_width = 3000;
+    //     var body_width = 5000;
     //     var scale = container_width / body_width; 
-    //     var left_position = (container_width-$('.zoomable-container').width()) / 2;
+    //     var left_position = (container_width- $('.zoomable-container').width()) / 2;
 
-    //     var scale = 0.60;
-    //     $('.zoomable-container').css({'transform':'scale(' + scale + ')', 'left': (left_position+x)+'px', 'top': (-1120.5 + (y-160))+'px' });
+    //     scale = 0.65;
+    //     console.log(left_position);
+    //     $('.zoomable-container').css({'transform':'scale(' + scale + ')'});
+    //     $('.zoomable-container').css({'translate': '(-2184.16px, -2556.51px)'});
+    //     // $('.zoomable-container').css({'translate':'scale(' + scale + ')', 'left': (left_position+x)+'px', 'top': (-1120.5 + (y-160))+'px' });
+        
     // },
 
     drawpoints: function() {
