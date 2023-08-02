@@ -40,8 +40,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function list(Request $request)
     {
-        try
-        {
+        // try
+        // {
             $filters = json_decode($request->filters);
             $company_id = null;
             $brand_ids = [];
@@ -63,15 +63,15 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function details($id)

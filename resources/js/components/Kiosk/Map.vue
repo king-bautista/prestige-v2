@@ -384,7 +384,7 @@
                 if ($("#app").attr('app-env') == 'local') {
                     $('#guide-button').trigger('click');
                 }
-                this.panzoom.zoom(this.active_map_details.default_scale)
+                this.panzoom.zoom(this.active_map_details.default_zoom)
                 setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
             },
 
@@ -519,7 +519,7 @@
                     // Zoom In / Zoom Out Controls
                     $('#zoomInButton').get(0).addEventListener('click', vm.panzoom.zoomIn)
                     $('#zoomOutButton').get(0).addEventListener('click', vm.panzoom.zoomOut)
-                    $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
+                    // $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 
                     // No function bind needed
                     parent.addEventListener('wheel', vm.panzoom.zoomWithWheel)
@@ -538,6 +538,10 @@
                     var left_position = (container_width-$('.zoomable-container').width()) / 2;
                     $(".pinch").hide();
     			});
+
+                $('#zoomResetButton, .pinch').on('click', function() {
+                    vm.panzoom.zoom((vm.active_map_details.default_zoom));
+                });
 
                 $(".map-tenant-option").on('focusin',function(){
                     $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '0px','border-top-right-radius': '0px'});

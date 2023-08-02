@@ -99,8 +99,8 @@ class BrandViewModel extends Model
     public function getMainCategoryNameAttribute()
     {
         $category = $this->getCategory()->first();
-        if($category) {
-            $main_category = Category::find($category->parent_id);
+        $main_category = Category::find($category->parent_id);
+        if($main_category) {
             return $main_category->name;
         }
         return null;
