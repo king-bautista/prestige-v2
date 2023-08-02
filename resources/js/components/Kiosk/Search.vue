@@ -51,7 +51,9 @@
                     </div>
                 </div>
 
-                <div class="label-4 translateme" data-en="No results found" v-show="current_tenant_list_count < 0">No results found</div>
+                <div class="label-4 translateme" data-en="No results found" v-show="current_tenant_list_count < 0">
+                    <img src="images/no-results.png" />
+                </div>
 
                 <div class="row col-md-10 offset-md-1">
                     <div id="searchCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">

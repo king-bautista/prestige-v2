@@ -171,7 +171,7 @@
         <div class="custom-modal p-l-490 map-search-modal">
             <div class="map-search-modal-position">                    
                 <div class="text-right text-white custom-w-1140">
-                    <span class="btn-close-modal">X</span>
+                    <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                 </div>        
                 <div class="softkeys-tenant mt-20" data-target="input[name=tenant-search]" v-show="softkeysTenant"></div>
             </div>
@@ -181,7 +181,7 @@
         <div class="custom-modal p-l-490 feedback-search-modal" v-show="feedback_modal">
             <div class="feedback-search-modal-position">                    
                 <div class="text-right text-white custom-w-1140">
-                    <span class="btn-close-modal">X</span>
+                    <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                 </div>   
                 <div class="feedback-section">
                     <div class="mb-18"><span class="label-2">How can we improve?</span></div>
