@@ -2,7 +2,7 @@
     <div class="" style="width: 100%;">
         <div id="popover-content" class="hide d-none" style="z-index:1">Need help? Touch here.</div>
         <div @click="generateAssist()">
-            <div tabindex="0" data-toggle="popover" data-container="body" data-placement="left" data-trigger="focus" type="button" data-html="true"  class="assistance_tooltip" data-content="Need help? Touch here.">
+            <div tabindex="0" data-toggle="popover" data-container="body" data-placement="top" data-trigger="focus" type="button" data-html="true"  class="assistance_tooltip" data-content="Need help? Touch here.">
             </div>
             <div class="help-overlay translateme" data-en="Help">Help</div>
         </div>

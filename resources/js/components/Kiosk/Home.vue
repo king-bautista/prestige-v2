@@ -397,7 +397,7 @@
                         <span class="mr-4 my-auto" style="color:#2a2a2a"><span class="translateme" data-en="View stores by">View stores by</span>: </span>
                         <div class="tabs-item store-tabs-item tab-item-selected" id="category-tab" data-link="Category" @click="showCategories()">
                             <div>
-                                <a class="translateme tenant-category" data-en="Category">Category</a>
+                                <a class="translateme tenant-category" data-en="Category">Categories</a>
                             </div>
                         </div>
                         <div class="tabs-item store-tabs-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category);">
