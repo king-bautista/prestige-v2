@@ -3,7 +3,7 @@
 <div class="container-fluid theme-bubble" style="background-image: url('{{ $site_background }}')">
     <div class="row">
         <div class="col-md-3 custom-p-1">
-            <div class="banner-ads">
+            <div class="banner-ads ml-3">
                 <rotating-banners></rotating-banners>               
             </div>
         </div>

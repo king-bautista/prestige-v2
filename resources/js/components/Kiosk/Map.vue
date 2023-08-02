@@ -26,7 +26,8 @@
                 <div class="card-body text-info text-center">
                     <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
                     <div class="guide-steps">
-                        <img src="images/man-walk.svg" style="width:20px;">
+                        <img src="images/parqal-man-walk.svg" style="width:20px;" v-if="site_name == 'Parqal'">
+                        <img src="images/man-walk.svg" style="width:20px;" v-else>
                         <span style="font-weight: bold;">
                             <span class="map-minutes">0 minutes</span>,
                             <span class="map-steps">0 steps,</span>,
