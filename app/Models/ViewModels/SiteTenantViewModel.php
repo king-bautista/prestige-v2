@@ -93,22 +93,34 @@ class SiteTenantViewModel extends Model
 
     public function getBrandNameAttribute() 
     {
-        return Brand::find($this->brand_id)->name;
+        $band = Brand::find($this->brand_id);
+        if($band)
+            return $band->name;
+        return null;
     }
 
     public function getBuildingNameAttribute() 
     {
-        return SiteBuilding::find($this->site_building_id)->name;
+        $site_building = SiteBuilding::find($this->site_building_id);
+        if($site_building)
+            return $site_building->name;
+        return null;
     }
 
     public function getFloorNameAttribute() 
     {
-        return SiteBuildingLevel::find($this->site_building_level_id)->name;
+        $site_building_level = SiteBuildingLevel::find($this->site_building_level_id);
+        if($site_building_level)
+            return $site_building_level->name;
+        return null;
     }
 
     public function getSiteNameAttribute() 
     {
-        return Site::find($this->site_id)->name;
+        $site = Site::find($this->site_id);
+        if($site)
+            return $site->name;
+        return null;
     }
 
     public function getBrandSiteNameAttribute() 
@@ -120,9 +132,9 @@ class SiteTenantViewModel extends Model
 
     public function getCategoryIdAttribute() 
     {
-        $brand_category_id = Brand::find($this->brand_id)->category_id;
-        if($brand_category_id)
-            return $brand_category_id;
+        $brand_category = Brand::find($this->brand_id);
+        if($brand_category)
+            return $brand_category->category_id;
         return null;
     }
 
