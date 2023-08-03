@@ -32,7 +32,7 @@
                                     <div class="text-center landmark-container" @click="showLandmark(landmark)">
                                         <img class="landmark-tiles" :src="landmark.image_url_path" :alt="landmark.name" />
                                         <div class="landmark-name">
-                                            {{landmark.name}}
+                                            {{landmark.landmark}}
                                         </div>
                                         <div class="landmark-info">
                                             Info
