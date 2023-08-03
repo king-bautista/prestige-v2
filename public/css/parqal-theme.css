@@ -940,3 +940,7 @@ input[type="text"]:focus
     margin-left: -15px;
     margin-top: 7px;
 }
+
+.multiselect__single {
+    overflow: hidden;
+}
