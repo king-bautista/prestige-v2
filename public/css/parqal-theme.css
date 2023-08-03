@@ -264,7 +264,7 @@ input[type="text"]:focus
 }
 
 .helpful-label {
-    color: #fff;
+    color: #000;
 }
 
 #guide-button {
@@ -909,7 +909,14 @@ input[type="text"]:focus
 
 .softkeys__btn {
     border-radius: 5px !important;
-    margin-left: 16px !important;
+    margin-left: 12px !important;
+    font-size: 1.2em !important;
+    width: 55px !important;
+    height: 55px !important;
+}
+
+.softkeys__btn--space {
+    width: 410px !important;
 }
 
 .custom-modal {
@@ -917,13 +924,19 @@ input[type="text"]:focus
 }
 
 .map-search-modal-position {
-    top: 45%;
-    width: 80%;
+    top: 44%;
+    left: 46%;
+    width: 55%;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 25px;
     padding-bottom: 35px;
 }
 
 .btn-close-modal {
-    margin-right: 25px;
+    margin-right: 375px;
+}
+
+.map-tenant-option .multiselect__content-wrapper {
+    margin-left: -15px;
+    margin-top: 7px;
 }
