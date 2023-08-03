@@ -114,7 +114,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 'descriptions' => $request->descriptions,
                 'class_name' => $request->class_name,
                 'category_type' => $request->category_type,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $request->active,
             ];
 
             $category->update($data);
