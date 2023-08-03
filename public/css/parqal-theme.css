@@ -136,13 +136,17 @@ input[type="text"]:focus
 
 .search-box-button {
     font-size: 24px;
-    /* padding: 5px 20px; */
-    background-color: #DFBD69;
-    border-radius: 10px;
+    background-color: #000;
+    border-radius: 5px;
     margin-left: 5px;
     width: 111px;
     text-align: center;
-    color: #fff;
+    color: #DFBD69 !important;
+    text-transform: uppercase;
+    position: absolute;
+    right: 7px;
+    top: 2px;
+    padding: 0.35rem 0.5rem;
 }
 
 .search-box-button:focus
@@ -900,4 +904,25 @@ input[type="text"]:focus
 
 .lanmark-detail-holder {
     color: #E0BD69;
+}
+
+.softkeys__btn {
+    border-radius: 5px !important;
+    margin-left: 16px !important;
+}
+
+.custom-modal {
+    background-color: transparent;
+}
+
+.map-search-modal-position {
+    top: 45%;
+    width: 80%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 25px;
+    padding-bottom: 35px;
+}
+
+.btn-close-modal {
+    margin-right: 25px;
 }
