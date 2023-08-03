@@ -790,6 +790,7 @@ input[type="text"]:focus
 
 .landmark-container img{
     width: 100%;
+    height: 264px;
 }
 
 .landmark-name {
