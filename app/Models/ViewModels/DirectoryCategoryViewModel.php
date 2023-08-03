@@ -71,7 +71,7 @@ class DirectoryCategoryViewModel extends Model
         self::$site_id = $site_id;
         self::$company_id = $company_id;
 
-        return self::whereNull('parent_id')->where('category_type', 1)->where('active', 1)->get();
+        return self::whereNull('parent_id')->where('category_type', 1)->where('active', 1);
     }
 
     public function getParentCategory()
@@ -363,7 +363,7 @@ class DirectoryCategoryViewModel extends Model
     public function getChildrenAttribute() 
     {
 
-        $child_categories = $this->getChildCategories()->get();
+        $child_categories = $this->getChildCategories()->orderBy('name', 'ASC')->get();
         if($child_categories)
             return $child_categories;
         return null;
@@ -374,7 +374,7 @@ class DirectoryCategoryViewModel extends Model
         $supplemental = Category::where('supplemental_category_id', $this->id)->first();
         if (config('app.env') == 'local') {
             if($supplemental) {
-                $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])->where('active', 1)->get()->toArray();
+                $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])->where('active', 1)->orderBy('name', 'ASC')->get()->toArray();
                 $supplemental['children'] = array_chunk($child_array, 15);
                 return $supplemental;
             }
@@ -386,6 +386,7 @@ class DirectoryCategoryViewModel extends Model
                 ->where('site_tenants.site_id', 1)
                 ->select('categories.*')
                 ->groupBy('name')
+                ->orderBy('name', 'ASC')
                 ->get()
                 ->toArray();
                 $supplemental['children'] = array_chunk($child_array, 15);
