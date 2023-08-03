@@ -1053,7 +1053,7 @@
                         $("#supplementals-carousel").owlCarousel({
                             center: true,
                             items:3,
-                            loop:false,
+                            loop:true,
                             margin:0,
                         });
                     });
@@ -1085,7 +1085,7 @@
                         $("#sub-category-carousel").owlCarousel({
                             center: true,
                             items:3,
-                            loop:false,
+                            loop:true,
                             margin:0,
                         });
                     });
