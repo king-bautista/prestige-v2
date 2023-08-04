@@ -69,9 +69,12 @@
                         </div>
                     </template>
                 </div>
-                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
+                <img v-show="no_record_found" src="images/no-results-2.png" style="margin: -14.4rem auto auto;">
             </div>
         </div>
+
+        <div class="back-button" :src="back_button" @click="goBack"></div>
+        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
         
         <!-- MODAL -->
         <div class="custom-modal p-l-490" id="myevent">
@@ -162,6 +165,13 @@
 
             callHomeMethod: function(){
                 this.$root.$emit('callAboutParent','event')
+            },
+
+            goBack: function() {
+                $('.h-button').removeClass('active');
+                $('.home-button').addClass('active');
+                this.$router.push("/").catch(()=>{});
+                this.$root.$emit('MainCategories');
             },
 
         },

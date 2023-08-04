@@ -2,19 +2,19 @@
     <div class="router-page" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left mt-4 mb-3">
+                <div class="datetime-holder text-left m-5">
                     <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mt-3 mb-3 mr-5">
+                <div class="m-5">
                     <button type="button" class="btn btn-custom">{{ page_title }}</button>
                 </div>
             </div>
         </div>
         <div v-else class="row">
             <div class="col-md-6">
-                <div id="page-title" class="translateme" :data-en="page_title">{{ page_title }}</div>
+                <div id="page-title" class="translateme" :data-en="page_title">{{page_title}}</div>
             </div>
             <div class="col-md-6 text-right">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">

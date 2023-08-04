@@ -52,7 +52,7 @@
                     </a>
 
                 </div>
-                <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: 0.6rem auto auto;">
+                <img v-show="no_record_found" src="images/no-results-2.png" style="margin: -14.4rem auto auto;">
             </div>
         </div>
         <div v-show="show_landmark">
@@ -70,6 +70,8 @@
                 </div>
             </div>
         </div>
+        <div class="back-button" :src="back_button" @click="goBack"></div>
+        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
 
     </div>
@@ -148,6 +150,22 @@
 
             callHomeMethod: function(){
                 this.$root.$emit('callAboutParent','landmark')
+            },
+
+            goBack: function() {
+                if (this.show_landmark == true) {
+                    this.show_landmark = false;
+                    this.landmark_page = true;
+
+                    setTimeout(() => {
+                        this.$root.$emit('callSetTranslation');
+                    }, 100);
+                }else {
+                    $('.h-button').removeClass('active');
+                    $('.home-button').addClass('active');
+                    this.$router.push("/").catch(()=>{});
+                    this.$root.$emit('MainCategories');
+                }
             },
 
         },

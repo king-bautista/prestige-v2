@@ -256,6 +256,11 @@
                                     <div class="mb-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                 </div>
                             </div>
+                            <div class="row mt-3">
+                                <div class="col-12 mt-3 text-center">
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-9 text-center mt-5">
@@ -384,7 +389,7 @@
                             View stores by
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category);">Alphabetical</a>
+                            <a class="dropdown-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category, 'Alphabetical');">Alphabetical</a>
                             <a class="dropdown-item" id="category-tab" data-link="Category" @click="showCategories()">Category</a>
                             <a class="dropdown-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals(current_category.supplemental.name);">
                                 <span id="tenant-supplemental-tabtext1" data-target="1" style="font-size: 1em;" v-if="current_category.supplemental" :data-en="current_category.supplemental.name">{{ current_category.supplemental.name }}</span>
@@ -724,7 +729,7 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = true;
-                this.$refs.callPromo.resetPage();                
+                this.$refs.callPromo.resetPage();               
             },
 
             landmarksButton: function (event) {
@@ -913,7 +918,7 @@
                 });
 			},
 
-            getTenants: function(category) {
+            getTenants: function(category, name = null) {
                 this.no_record_found = false;
                 this.tenant_list = [];
                 this.category_label = category.label;
@@ -931,6 +936,10 @@
 
                 if(this.tenant_list.length == 0) {
                     this.no_record_found = true;  
+                }
+
+                if(this.site_name == 'Parqal' && name) {
+                    this.page_title = name;
                 }
 
                 this.initializeSwipe();
@@ -958,6 +967,10 @@
                 this.navigationLetters = false;
                 this.previous_page = 'Sub Category';
 
+                if(this.site_name == 'Parqal') {
+                    this.page_title = category.category_name;
+                }
+
                 axios.get('/api/v1/tenants/category/'+category.id)
                 .then(response => {
                     this.tenant_list = response.data.data
@@ -972,8 +985,8 @@
                         this.no_record_found = true;         
                     }
 
-                    this.initializeSwipe();
-                    this.resetCarousel();
+                    // this.initializeSwipe();
+                    // this.resetCarousel();
                     this.TitleCasePerWord();
 
                     setTimeout(() => {
@@ -988,6 +1001,10 @@
                 this.category_label = category.label;
                 this.category_top_banner = category.kiosk_image_top_path;
                 this.previous_page = 'Supplementals';
+
+                if(this.site_name == 'Parqal') {
+                    this.page_title = category.category_name;
+                }
 
                 axios.get('/api/v1/tenants/supplemental/'+category.id)
                 .then(response => {
@@ -1022,8 +1039,12 @@
                 this.supplementals = false;
                 this.show_tenant = false;
                 this.navigationLetters = false;
-                this.initializeSwipe();
-                this.resetCarousel();
+                if(this.site_name == 'Parqal') {
+                    this.page_title = 'Categories';
+                }
+                
+                // this.initializeSwipe();
+                // this.resetCarousel();
 
                 this.$refs.callAssist.filterAssist('tenantcategory',this.current_language_set);
 
@@ -1041,7 +1062,7 @@
                     this.page_title = name;
                 }
 
-                this.initializeSwipe();     
+                // this.initializeSwipe();     
 
                 this.$refs.callAssist.filterAssist('supplementalcat',this.current_language_set);
 
@@ -1078,11 +1099,14 @@
                 this.show_tenant = false;
                 this.helper.saveLogs({category_id: category.id}, 'Category');
 
-                this.initializeSwipe();
+                // this.initializeSwipe();
                 this.tabs_container = true;
 
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set);
+                }, 200);
+
+                setTimeout(() => {
                     $(document).ready(function(){
                         $("#sub-category-carousel").owlCarousel({
                             center: true,
@@ -1091,7 +1115,7 @@
                             margin:0,
                         });
                     });
-                }, 100);
+                }, 200);
                 
             },
 
@@ -1161,7 +1185,7 @@
                     
                 }    
                 setTimeout(() => {
-                    this.setTranslation(this.current_language_set);
+                    this.setTranslation(this.current_language_set); 
                 }, 100);        
             },
 
