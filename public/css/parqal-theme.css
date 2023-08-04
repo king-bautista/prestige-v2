@@ -372,8 +372,8 @@ input[type="text"]:focus
 }
 
 .delete-key {
-    background-image: url('../assets/images/key-delete-generic.png');
-    color: transparent;
+    background-image: none;
+    color: #000;
 }
 
 .delete-key:hover, .delete-key:focus {
@@ -606,8 +606,8 @@ input[type="text"]:focus
 
 .map-holder {
     background-color: #fff;
-    height: 747px;
-    margin-left: -2px;
+    height: 685px;
+    margin-left: 7px;
     width: 100%;
 }
 
@@ -932,9 +932,9 @@ input[type="text"]:focus
     padding-bottom: 35px;
 }
 
-.btn-close-modal {
+/* .btn-close-modal {
     margin-right: 375px;
-}
+} */
 
 .map-tenant-option .multiselect__content-wrapper {
     margin-left: -15px;
@@ -943,4 +943,43 @@ input[type="text"]:focus
 
 .multiselect__single {
     overflow: hidden;
+}
+
+.ui-autocomplete {
+    top: 196px !important;
+    height: 105px !important;
+    width: 860px !important;
+}
+
+.product-size {
+    width: 600px;
+    height: 600px;
+}
+
+.custom-modal-position {
+    top: 43%;
+}
+
+.no-results-container img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}   
+
+.btn-direction-shop {
+    font-size: 16px;
+    background-image: url(/images/get-direction.png) !important;
+    background-repeat: no-repeat;
+    width: 169px !important;
+    height: 51px;
+    color: #000;
+    padding-left: 40px;
+    background-color: transparent !important;
+    border-color: transparent;
+}
+
+.btn-close-modal {
+    font-size: 2em;
+    margin-right: 380px;
 }
