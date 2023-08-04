@@ -89,7 +89,7 @@ class BrandsImport implements ToCollection, WithHeadingRow
                 $tag_ids .= $tag_id->id.',';
             }
 
-            return rtrim($tag_ids, ","); ;
+            return rtrim($tag_ids, ",");
         }
         return null;
     }
