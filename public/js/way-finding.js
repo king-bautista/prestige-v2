@@ -450,7 +450,12 @@ WayFinding.prototype = {
         var bldg_name = "";
 
         var node = document.createElement("li");
-        node.innerHTML = 'Proceed to <img src="images/services/smcg_escalator.png" align="middle">';
+        if((to>from)) {
+            node.innerHTML = 'Proceed to <img src="images/services/smcg_escalator.png" align="middle">';
+        }
+        else {
+            node.innerHTML = 'Proceed to <img src="images/services/smcg_stairs.png" align="middle">';
+        }
         $('.assist').append(node);
 
         $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
@@ -518,7 +523,7 @@ WayFinding.prototype = {
         var context = canvas.getContext('2d');
 
         context.clearRect(0,0,canvas.width,canvas.height);
-
+        console.log(direction);
         if(direction) {
             context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
             context.font = "bold 30px Henry Sans Medium";

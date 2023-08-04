@@ -1070,6 +1070,9 @@
 
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set);
+                }, 100);
+
+                setTimeout(() => {
                     $(document).ready(function(){
                         $("#supplementals-carousel").owlCarousel({
                             center: true,
@@ -1078,7 +1081,7 @@
                             margin:0,
                         });
                     });
-                }, 100);
+                }, 500);
             },     
 
             showChildren: function(category) {
@@ -1115,7 +1118,7 @@
                             margin:0,
                         });
                     });
-                }, 200);
+                }, 500);
                 
             },
 
