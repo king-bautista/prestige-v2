@@ -468,6 +468,29 @@ WayFinding.prototype = {
         setTimeout(function(){obj.drawpoints_resume(to);},4000);
     },
 
+    drawesstair: function(from,to,bldg) {
+        var text = "";
+        var bldg_name = "";
+
+        var node = document.createElement("li");
+        node.innerHTML = 'Proceed to <img src="images/services/smcg_stairs.png" align="middle">';
+        $('.assist').append(node);
+
+        $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
+            text = response.name;
+            bldg_name = response.building_name;
+
+            var node = document.createElement("li");
+            node.innerHTML = 'Go to ' + text + ', ' + bldg_name + '';
+            $('.assist').append(node);            
+        });
+
+        var obj = this;
+
+        if(!this.settings.escalator_id) this.settings.escalator_id = setInterval(function(){obj.animate_escalator((to>from),text);},200);
+        setTimeout(function(){obj.drawpoints_resume(to);},4000);
+    },
+
     drawdoor: function(bldg){
         var obj = this;
 
@@ -738,6 +761,7 @@ WayFinding.prototype = {
 
             var flr_build = this.settings.currentmap.split('-');
             if(flr_build[0] != this.settings.points.linePoint[this.settings.current_point].z && flr_build[1] == this.settings.points.linePoint[this.settings.current_point].z2) {
+                console.log(this.settings);
                 var to = this.settings.points.linePoint[this.settings.current_point].z;
                 var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
                 this.settings.current_point--;
