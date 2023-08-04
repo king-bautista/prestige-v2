@@ -93,7 +93,7 @@
             <div v-show="supplementals">
                 <div v-if="site_name == 'Parqal'">
                     <div class="row col-md-12 mt-120 mb-41">
-                        <div class="owl-carousel" id="supplementals-carousel">
+                        <div class="owl-carousel" id="supplementals-carousel" v-if="current_supplementals">
                             <template v-for="supplementals in current_supplementals.children">
                                 <div class="ïtem-holder" v-for="supplemental in supplementals">
                                     <div class="rounded-container" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">
@@ -1066,7 +1066,9 @@
                 this.current_category = category;
                 this.child_category_count = category.children.length;
                 this.current_supplementals = category.supplemental;
-                this.current_supplementals_count = this.current_supplementals.children.length - 1;
+                if(this.current_supplementals) {
+                    this.current_supplementals_count = this.current_supplementals.children.length - 1;
+                }
                 this.page_title = 'Category';
                 this.category_label = category.label;
                 this.home_category = false;

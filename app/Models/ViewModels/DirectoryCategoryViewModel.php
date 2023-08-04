@@ -362,8 +362,7 @@ class DirectoryCategoryViewModel extends Model
 
     public function getChildrenAttribute() 
     {
-
-        $child_categories = $this->getChildCategories()->orderBy('name', 'ASC')->get();
+        $child_categories = $this->getChildCategories()->where('active', 1)->orderBy('name', 'ASC')->get();
         if($child_categories)
             return $child_categories;
         return null;
