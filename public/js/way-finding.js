@@ -198,7 +198,7 @@ WayFinding.prototype = {
         var font_size = (tenant.text_size > 0) ? (tenant.text_size*16) : 16;
         var coord_x = tenant.point_x;
         var coord_y = tenant.point_y;
-        var rotation_z = tenant.rotation_z;
+        var deg = tenant.rotation_z;
         var font_face = 'Henry Sans Medium';
         var dot_radius = 1;
         var font_weight = 'bold';
@@ -219,13 +219,13 @@ WayFinding.prototype = {
         }
 
         if(text) {
-            var label = addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius,wrap);
+            var label = addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius,wrap,deg);
             if (tenant.point_type == 0) {
-                drawLabel(label, rotation_z);
+                drawLabel(label);
             }
         }
 
-        function addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius,wrap) {
+        function addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius,wrap,degree) {
             var font = font_weight + ' ' + font_size+'px '+ font_face;
             var title_width = longest(text);
             ctx.font = font;
@@ -237,7 +237,8 @@ WayFinding.prototype = {
                 id:nextId,
                 text:text,
                 x:coord_x-text_width/2,
-                y:coord_y-dot_radius-label_height,
+                //y:coord_y-dot_radius-label_height,
+                y:coord_y,
                 w:text_width,
                 h:label_height,
                 offsetY:0,
@@ -248,48 +249,148 @@ WayFinding.prototype = {
                 dotY:coord_y,
                 wrap:wrap,
                 size:font_size,
+                deg:degree,
             }; 
             labels.push(label);
 
             // try to position this new label in a non-colliding position
-            var positions = [
-                { x:coord_x-text_width/2, y:coord_y-dot_radius-label_height },  // N
-                { x:coord_x+dot_radius, y:coord_y-label_height/2 },    // E
-                { x:coord_x-text_width/2, y:coord_y+dot_radius },    // S
-                { x:coord_x-dot_radius-text_width, y:coord_y-label_height/2 },  // W
-            ];
+            // var positions = [
+            //     { x:coord_x-text_width/2, y:coord_y-dot_radius-label_height },  // N
+            //     { x:coord_x+dot_radius, y:coord_y-label_height/2 },    // E
+            //     { x:coord_x-text_width/2, y:coord_y+dot_radius },    // S
+            //     { x:coord_x-dot_radius-text_width, y:coord_y-label_height/2 },  // W
+            // ];
 
-            for(var i=0;i<positions.length;i++) {
-                var p=positions[i];
-                label.x=p.x;
-                label.y=p.y;
-                label.isColliding = thisLabelCollides(label);
-                if(!label.isColliding) { break; } //if false, break
-            } //end of for
+            // for(var i=0;i<positions.length;i++) {
+            //     var p=positions[i];
+            //     label.x=p.x;
+            //     label.y=p.y;
+            //     label.isColliding = thisLabelCollides(label);
+            //     if(!label.isColliding) { break; } //if false, break
+            // } //end of for
             return(label);
         }
 
-        function drawLabel(label, rotation_z) {
+        function drawLabel(label) {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
-            label_height = 14;
-
-            // if(rotation_z) {
-            //     console.log(label);
-            //     ctx.rotate(rotation_z);
-            // }
+            //label_height = 14;
 
             if(label.wrap == 0) {
-                var text_width = ctx.measureText(label.text.toUpperCase()).width/2;
                 ctx.textAlign='left';
-                ctx.font = label.font;
-                ctx.strokeStyle = 'white';
-                ctx.lineWidth = 2;   
-                ctx.strokeText(label.text.toUpperCase(),label.dotX-text_width,label.y+label_height);
-                ctx.fillStyle = "rgb(32,32,32)";
-                ctx.fillText(label.text.toUpperCase(),label.dotX-text_width,label.y+label_height);
+
+                if (parseInt(label.deg) == 0) {
+                    ctx.font = label.font;
+                    ctx.lineWidth = 2;
+                    vtop = (parseInt(label.y-(label.h/2)));
+                    ctx.fillStyle = "rgb(32,32,32)";
+                    ctx.fillText(label.text.toUpperCase(),label.x+3,vtop-2);
+                }
+                else {
+                    ctx.font = label.font;
+                    ctx.lineWidth = 2;
+
+                    if (label.deg<0) {
+                        x = label.x+(label.w/2)-10;
+                    } else {
+                        x = label.x+(label.w/2)+5;
+                    }	
+                    y = label.y;
+                
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(parseInt(label.deg) * Math.PI / 180);
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = "rgb(32,32,32)";
+                    ctx.fillText(label.text.toUpperCase(), 0, 0);
+                    ctx.clearRect(x, y, label.w, label.h);
+                    ctx.restore();
+                }
+
+                // var text_width = ctx.measureText(label.text.toUpperCase()).width/2;
+                // ctx.font = label.font;
+                // ctx.textAlign='left';
+                // ctx.strokeStyle = 'white';
+                // ctx.lineWidth = 2;   
+            
+
+                // if (label.deg<0) {
+                //     x = label.x+(text_width/2)-10;
+                // } else {
+                //     x = label.x+(text_width/2)+5;
+                // }	
+                // y = label.y;
+                // ctx.save();
+            	// ctx.translate(x, y);
+                // ctx.rotate(parseInt(label.deg) * Math.PI / 180);
+
+                // ctx.strokeText(label.text.toUpperCase(),label.dotX-text_width,label.y+label_height);
+                // ctx.fillStyle = "rgb(32,32,32)";
+                // ctx.fillText(label.text.toUpperCase(),label.dotX-text_width,label.y+label_height);
             }
             else {
+                function wrapText(context, text, x, y, maxWidth, lineHeight, h) {
+                    var words = text.split(' ');
+                    var line = '';
+                    y = (y - h);
+
+                    for(var n = 0; n < words.length; n++) {
+                        var testLine = line + words[n] + ' ';
+                        var metrics = context.measureText(testLine);
+                        var testWidth = metrics.width;
+
+                        if (testWidth > maxWidth && n > 0) {
+                            context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
+                            line = words[n] + ' ';
+                            y += (lineHeight/1.286)+1;
+                        }else {
+                            line = testLine;
+                        }
+                    }
+                    context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
+                }
+
+                function wrapText2(context, text, x, y, maxWidth, lineHeight, h,deg) {
+                    var words = text.split(' ');
+                    var line = '';
+                    y = (y - h);
+
+                    for(var n = 0; n < words.length; n++) {
+                        var testLine = line + words[n] + ' ';
+                        var metrics = context.measureText(testLine);
+                        var testWidth = metrics.width;
+
+                        if (testWidth > maxWidth && n > 0) {
+                            ctx.save();
+                            if (deg<0) {
+                                ctx.translate(x+(maxWidth/2)-10, y+ ((h/2)+4));
+                            } else {
+                                ctx.translate(x+(maxWidth/2)+10, y+ ((h/2)+4));
+                            }
+                            ctx.rotate(parseInt(deg) * Math.PI / 180);
+                            context.fillText(line.toUpperCase(), 0, 0);
+                            ctx.restore();
+                            line = words[n] + ' ';
+                            if (deg<0) {
+                                x += (lineHeight/1.286)+2;
+                            } else {
+                                x -= (lineHeight/1.286);
+                            }					        
+                        }else {
+                            line = testLine;
+                        }
+                    }
+                    ctx.save();
+                    if (deg<0) {
+                        ctx.translate(x+(maxWidth/2)-10, y+ ((h/2)+4));
+                    } else {
+                        ctx.translate(x+(maxWidth/2)+10, y+ ((h/2)+4));
+                    }
+                    ctx.rotate(parseInt(deg) * Math.PI / 180);
+                    context.fillText(line.toUpperCase(), 0, 0);
+                    ctx.restore();
+                }
+
                 ctx.font = label.font;
                 ctx.strokeStyle = 'white';
                 ctx.lineWidth = 2;
@@ -297,47 +398,65 @@ WayFinding.prototype = {
                 ctx.fillStyle = "Black";
                 ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
                 var text = label.text;
-                var stitle_w = longest(label.text);
-                var w = ctx.measureText(stitle_w.toUpperCase()).width + 10;
-                var words = text.split(' '),
-                    line = '',
-                    lineCount = 0,
-                    i,
-                    test,
-                    metrics;
+                var stitle_w = longest(label.text,label.size);
+                var w=ctx.measureText(stitle_w.toUpperCase()).width;
+                var array = text.split(" ");
+
+                if (parseInt(label.deg) == 0) {
+                    wrapText(ctx, label.text, label.x, label.y, w+2, parseInt(label.size), parseInt(label.h));
+                } else {
+                    wrapText2(ctx, label.text, label.x, label.y, w+2, parseInt(label.size), parseInt(label.h),label.deg);
+                }	
+
+
+                // ctx.font = label.font;
+                // ctx.strokeStyle = 'white';
+                // ctx.lineWidth = 2;
+                // ctx.shadowBlur = 2;
+                // ctx.fillStyle = "Black";
+                // ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
+                // var text = label.text;
+                // var stitle_w = longest(label.text);
+                // var w = ctx.measureText(stitle_w.toUpperCase()).width + 10;
+                // var words = text.split(' '),
+                //     line = '',
+                //     lineCount = 0,
+                //     i,
+                //     test,
+                //     metrics;
                 
-                for (i = 0; i < words.length; i++) {
-                    test = words[i];
-                    metrics = ctx.measureText(test);
-                    while (metrics.width > w) {
-                        // Determine how much of the word will fit
-                        test = test.substring(0, test.length - 1);
-                        metrics = ctx.measureText(test);
-                    }
-                    if (words[i] != test) {
-                        words.splice(i + 1, 0,  words[i].substr(test.length))
-                        words[i] = test;
-                    }  
+                // for (i = 0; i < words.length; i++) {
+                //     test = words[i];
+                //     metrics = ctx.measureText(test);
+                //     while (metrics.width > w) {
+                //         // Determine how much of the word will fit
+                //         test = test.substring(0, test.length - 1);
+                //         metrics = ctx.measureText(test);
+                //     }
+                //     if (words[i] != test) {
+                //         words.splice(i + 1, 0,  words[i].substr(test.length))
+                //         words[i] = test;
+                //     }  
 
-                    test = line + words[i] + ' ';  
-                    metrics = ctx.measureText(test);
+                //     test = line + words[i] + ' ';  
+                //     metrics = ctx.measureText(test);
                     
-                    if (metrics.width > w && i > 0) {
-                        ctx.strokeText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
-                        // ctx.rotate(Math.PI/rotation_z);
-                        ctx.fillText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
-                        line = words[i] + ' ';
-                        label.y += label.size - 1;
-                        label.dotY = parseInt(label.dotY) + label.size - 1;
-                        lineCount++;
-                    }
-                    else {
-                        line = test;
-                    }
-                }
+                //     if (metrics.width > w && i > 0) {
+                //         ctx.strokeText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
+                //         // ctx.rotate(Math.PI/rotation_z);
+                //         ctx.fillText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
+                //         line = words[i] + ' ';
+                //         label.y += label.size - 1;
+                //         label.dotY = parseInt(label.dotY) + label.size - 1;
+                //         lineCount++;
+                //     }
+                //     else {
+                //         line = test;
+                //     }
+                // }
 
-                ctx.strokeText(line.toUpperCase(), label.x + (w/2) - 5, label.y +label_height);
-                ctx.fillText(line.toUpperCase(), label.x + (w/2) - 5, label.y +label_height);				
+                // ctx.strokeText(line.toUpperCase(), label.x + (w/2) - 5, label.y +label_height);
+                // ctx.fillText(line.toUpperCase(), label.x + (w/2) - 5, label.y +label_height);		
             }
 
             //create dots
