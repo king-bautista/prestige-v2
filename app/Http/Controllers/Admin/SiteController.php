@@ -92,6 +92,13 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
             }
 
+            $site_background_portrait = $request->file('site_background_portrait');
+            $site_background_portrait_path = '';
+            if ($site_background_portrait) {
+                $originalname = $site_background_portrait->getClientOriginalName();
+                $site_background_portrait_path = $site_background_portrait->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
+            }
+
             if ($request->is_default === 'true') {
                 Site::where('is_default', 1)->update(['is_default' => 0]);
             }
@@ -102,6 +109,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_logo' => str_replace('\\', '/', $site_logo_path),
                 'site_banner' => str_replace('\\', '/', $site_banner_path),
                 'site_background' => str_replace('\\', '/', $site_background_path),
+                'site_background_portrait' => str_replace('\\', '/', $site_background_portrait_path),
                 'active' => 1,
                 'is_default' => ($request->is_default === 'false') ? 0 : 1,
             ];
@@ -164,6 +172,13 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 $site_background_path = $site_background->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
             }
 
+            $site_background_portrait = $request->file('site_background_portrait');
+            $site_background_portrait_path = '';
+            if ($site_background_portrait) {
+                $originalname = $site_background_portrait->getClientOriginalName();
+                $site_background_portrait_path = $site_background_portrait->move('uploads/media/sites/background/', str_replace(' ', '-', $originalname));
+            }
+
             $data = [
                 'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-'.Str::padLeft($site->id, 5, '0'),
                 'name' => $request->name,
@@ -171,6 +186,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
                 'site_background' => ($site_background_path) ? str_replace('\\', '/', $site_background_path) : $site->site_background,
+                'site_background_portrait' => ($site_background_portrait_path) ? str_replace('\\', '/', $site_background_portrait_path) : $site->site_background_portrait,
                 'active' => ($request->active == 'false') ? 0 : 1,
                 'is_default' => ($request->is_default == 'true') ? 1 : 0,
             ];
