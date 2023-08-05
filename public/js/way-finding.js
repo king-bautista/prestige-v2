@@ -211,7 +211,7 @@ WayFinding.prototype = {
             var imageObj = new Image();
 
             imageObj.onload = function() {
-                amenities_ctx.drawImage(imageObj, coord_x-30, coord_y-30, 60, 60);
+                amenities_ctx.drawImage(imageObj, coord_x-30, coord_y-30, 40, 40);
             };
             
             //replace with dynamic value from tenant.point_type_icon
