@@ -198,6 +198,7 @@ WayFinding.prototype = {
         var font_size = (tenant.text_size > 0) ? (tenant.text_size*16) : 16;
         var coord_x = tenant.point_x;
         var coord_y = tenant.point_y;
+        var rotation_z = tenant.rotation_z;
         var font_face = 'Henry Sans Medium';
         var dot_radius = 1;
         var font_weight = 'bold';
@@ -220,7 +221,7 @@ WayFinding.prototype = {
         if(text) {
             var label = addLabel(text,coord_x,coord_y,font_size,font_face,dot_radius,wrap);
             if (tenant.point_type == 0) {
-                drawLabel(label);
+                drawLabel(label, rotation_z);
             }
         }
 
@@ -268,10 +269,15 @@ WayFinding.prototype = {
             return(label);
         }
 
-        function drawLabel(label) {
+        function drawLabel(label, rotation_z) {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
             label_height = 14;
+
+            // if(rotation_z) {
+            //     console.log(label);
+            //     ctx.rotate(rotation_z);
+            // }
 
             if(label.wrap == 0) {
                 var text_width = ctx.measureText(label.text.toUpperCase()).width/2;
@@ -318,6 +324,7 @@ WayFinding.prototype = {
                     
                     if (metrics.width > w && i > 0) {
                         ctx.strokeText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
+                        // ctx.rotate(Math.PI/rotation_z);
                         ctx.fillText(line.toUpperCase(), label.x + (w/2) -5, label.y +label_height);
                         line = words[i] + ' ';
                         label.y += label.size - 1;
@@ -450,7 +457,12 @@ WayFinding.prototype = {
         var bldg_name = "";
 
         var node = document.createElement("li");
-        node.innerHTML = 'Proceed to <img src="images/services/smcg_escalator.png" align="middle">';
+        if((to>from)) {
+            node.innerHTML = 'Proceed to <img src="images/services/smcg_escalator.png" align="middle">';
+        }
+        else {
+            node.innerHTML = 'Proceed to <img src="images/services/smcg_stairs.png" align="middle">';
+        }
         $('.assist').append(node);
 
         $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
@@ -518,7 +530,7 @@ WayFinding.prototype = {
         var context = canvas.getContext('2d');
 
         context.clearRect(0,0,canvas.width,canvas.height);
-
+        console.log(direction);
         if(direction) {
             context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
             context.font = "bold 30px Henry Sans Medium";
