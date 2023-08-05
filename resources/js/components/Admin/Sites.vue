@@ -88,6 +88,17 @@
 								</div>
 							</div>
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Background Portrait Image </label>
+								<div class="col-sm-5">
+									<input type="file" accept="image/*" ref="site_background_portrait"
+										@change="siteBackgroundPortraitChange">
+									<footer class="blockquote-footer">image max size is 1080 x 1920 pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+									<img v-if="site_background" :src="site_background_portrait" class="img-thumbnail" />
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Client Company</label>
 								<div class="col-sm-8">
 									<treeselect v-model="site.company_id" :options="companies"
@@ -239,6 +250,7 @@ export default {
 				site_logo: '',
 				site_banner: '',
 				site_background: '',
+				site_background_portrait: '',
 				company_id: null,
 				facebook: '',
 				instagram: '',
@@ -255,6 +267,7 @@ export default {
 			site_logo: '/images/no-image-available.png',
 			site_banner: '/images/no-image-available.png',
 			site_background: '/images/no-image-available.png',
+			site_background_portrait: '/images/no-image-available.png',
 			add_record: true,
 			edit_record: false,
 			is_default: '',
@@ -386,6 +399,12 @@ export default {
 			this.site.site_background = file;
 		},
 
+		siteBackgroundPortraitChange: function (e) {
+			const file = e.target.files[0];
+			this.site_background_portrait = URL.createObjectURL(file);
+			this.site.site_background_portrait = file;
+		},
+
 		getCompany: function () {
 			axios.get('/admin/company/get-all')
 				.then(response => this.companies = response.data.data);
@@ -413,9 +432,11 @@ export default {
 			this.site.site_logo = '/images/no-image-available.png';
 			this.site.site_banner = '/images/no-image-available.png';
 			this.site.site_background = '/images/no-image-available.png';
+			this.site.site_background_portrait = '/images/no-image-available.png';
 			this.site_logo = '/images/no-image-available.png';
 			this.site_banner = '/images/no-image-available.png';
 			this.site_background = '/images/no-image-available.png';
+			this.site_background_portrait = '/images/no-image-available.png';
 
 			$('#site-form').modal('show');
 		},
@@ -427,6 +448,7 @@ export default {
 			formData.append("site_logo", this.site.site_logo);
 			formData.append("site_banner", this.site.site_banner);
 			formData.append("site_background", this.site.site_background);
+			formData.append("site_background_portrait", this.site.site_background_portrait);
 			formData.append("company_id", this.site.company_id);			
 			formData.append("facebook", this.site.facebook);
 			formData.append("instagram", this.site.instagram);
@@ -461,6 +483,7 @@ export default {
 					this.site.site_logo = site.site_logo;
 					this.site.site_banner = site.site_banner;
 					this.site.site_background = site.site_background;
+					this.site.site_background_portrait = site.site_background_portrait;
 					this.site.company_id = (site.details.company_id == 'null') ? '' : site.details.company_id;
 					this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
 					this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
@@ -497,8 +520,17 @@ export default {
 						this.site_background = this.site.site_background;
 					}
 
+					if (site.site_background_portrait) {
+						this.site_background_portrait = site.site_background_portrait_path;
+					}
+					else {
+						this.site_background_portrait = this.site.site_background_portrait;
+					}
+
 					this.$refs.site_logo.value = null;
-					this.$refs.site_logo.value = null;
+					this.$refs.site_banner.value = null;
+					this.$refs.site_background.value = null;
+					this.$refs.site_background_portrait.value = null;
 
 					$('#site-form').modal('show');
 				});
@@ -512,6 +544,7 @@ export default {
 			formData.append("site_logo", this.site.site_logo);
 			formData.append("site_banner", this.site.site_banner);
 			formData.append("site_background", this.site.site_background);
+			formData.append("site_background_portrait", this.site.site_background_portrait);
 			formData.append("company_id", this.site.company_id);			
 			formData.append("facebook", this.site.facebook);
 			formData.append("instagram", this.site.instagram);

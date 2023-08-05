@@ -48,6 +48,7 @@ class SiteViewModel extends Model
         'site_logo_path',
         'site_banner_path',
         'site_background_path',
+        'site_background_portrait_path',
         'is_premiere',
         'multilanguage',
         'company_id',
@@ -85,6 +86,13 @@ class SiteViewModel extends Model
     {
         if($this->site_background)
             return asset($this->site_background);
+        return asset('/images/no-image-available.png');
+    } 
+
+    public function getSiteBackgroundPortraitPathAttribute()
+    {
+        if($this->site_background_portrait)
+            return asset($this->site_background_portrait);
         return asset('/images/no-image-available.png');
     } 
 

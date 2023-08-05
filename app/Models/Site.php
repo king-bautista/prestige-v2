@@ -21,6 +21,7 @@ class Site extends Model
         'site_logo',
         'site_banner',
         'site_background',
+        'site_background_portrait',
         'active',
         'is_default',
     ];
