@@ -280,15 +280,34 @@ WayFinding.prototype = {
                 ctx.textAlign='left';
 
                 if (parseInt(label.deg) == 0) {
+
                     ctx.font = label.font;
+                    ctx.strokeStyle = 'white';
                     ctx.lineWidth = 2;
+                    ctx.shadowBlur = 2;
+                    ctx.fillStyle = "Black";
+                    ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
+                    var text = label.text;
+                    var stitle_w = longest(label.text);
+                    var w = ctx.measureText(stitle_w.toUpperCase()).width + 10;
                     vtop = (parseInt(label.y-(label.h/2)));
-                    ctx.fillStyle = "rgb(32,32,32)";
-                    ctx.fillText(label.text.toUpperCase(),label.x+3,vtop-2);
+
+                    ctx.strokeText(label.text.toUpperCase(), label.x + (w/2) - 5, vtop-2);
+                    ctx.fillText(label.text.toUpperCase(), label.x + (w/2) - 5, vtop-2);
+                    //ctx.fillText(label.text.toUpperCase(),label.x+3,vtop-2);
                 }
                 else {
+
                     ctx.font = label.font;
+                    ctx.strokeStyle = 'white';
                     ctx.lineWidth = 2;
+                    ctx.shadowBlur = 2;
+                    ctx.fillStyle = "Black";
+                    ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
+                    var text = label.text;
+                    var stitle_w = longest(label.text);
+                    var w = ctx.measureText(stitle_w.toUpperCase()).width + 10;
+                    vtop = (parseInt(label.y-(label.h/2)));
 
                     if (label.deg<0) {
                         x = label.x+(label.w/2)-10;
@@ -301,8 +320,10 @@ WayFinding.prototype = {
                     ctx.translate(x, y);
                     ctx.rotate(parseInt(label.deg) * Math.PI / 180);
                     ctx.textAlign = 'center';
-                    ctx.fillStyle = "rgb(32,32,32)";
+
+                    ctx.strokeText(label.text.toUpperCase(), 0, 0);
                     ctx.fillText(label.text.toUpperCase(), 0, 0);
+                    //ctx.fillText(label.text.toUpperCase(), 0, 0);
                     ctx.clearRect(x, y, label.w, label.h);
                     ctx.restore();
                 }
@@ -340,6 +361,7 @@ WayFinding.prototype = {
                         var testWidth = metrics.width;
 
                         if (testWidth > maxWidth && n > 0) {
+                            context.strokeText(line.toUpperCase(), x + ((w/2)+4), y+3);
                             context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
                             line = words[n] + ' ';
                             y += (lineHeight/1.286)+1;
@@ -347,6 +369,7 @@ WayFinding.prototype = {
                             line = testLine;
                         }
                     }
+                    context.strokeText(line.toUpperCase(), x + ((w/2)+4), y+3);
                     context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
                 }
 
@@ -368,6 +391,7 @@ WayFinding.prototype = {
                                 ctx.translate(x+(maxWidth/2)+10, y+ ((h/2)+4));
                             }
                             ctx.rotate(parseInt(deg) * Math.PI / 180);
+                            context.strokeText(line.toUpperCase(), 0, 0);
                             context.fillText(line.toUpperCase(), 0, 0);
                             ctx.restore();
                             line = words[n] + ' ';
@@ -387,6 +411,7 @@ WayFinding.prototype = {
                         ctx.translate(x+(maxWidth/2)+10, y+ ((h/2)+4));
                     }
                     ctx.rotate(parseInt(deg) * Math.PI / 180);
+                    context.strokeText(line.toUpperCase(), 0, 0);
                     context.fillText(line.toUpperCase(), 0, 0);
                     ctx.restore();
                 }
@@ -398,9 +423,12 @@ WayFinding.prototype = {
                 ctx.fillStyle = "Black";
                 ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
                 var text = label.text;
+                var stitle_w = longest(label.text);
+                var w = ctx.measureText(stitle_w.toUpperCase()).width + 10;
+                vtop = (parseInt(label.y-(label.h/2)));
+
                 var stitle_w = longest(label.text,label.size);
                 var w=ctx.measureText(stitle_w.toUpperCase()).width;
-                var array = text.split(" ");
 
                 if (parseInt(label.deg) == 0) {
                     wrapText(ctx, label.text, label.x, label.y, w+2, parseInt(label.size), parseInt(label.h));
