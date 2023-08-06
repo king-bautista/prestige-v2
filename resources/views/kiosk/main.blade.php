@@ -1,6 +1,27 @@
 @extends('layout.kiosk_default.master')
 @section('content')
-<div class="container-fluid theme-bubble" style="background-image: url('{{ $site_background }}')">
+
+@if($site_orientation == 'Portrait')
+<div class="container-fluid theme-portrait" style="background-image: url('{{ $site_background_portrait }}')">
+    <div class="row">
+        <div class="col-md-12 custom-p-1">
+            <div class="banner-ads-portrait">
+                <rotating-banners></rotating-banners>               
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 m-0 p-0">
+            <div class="row mr-0 ml-0">
+                <div class="col-md-12 main-content-holder m-0 p-0">
+                    <router-view></router-view>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>
+@else
+<div class="container-fluid theme-landscape" style="background-image: url('{{ $site_background }}')">
     <div class="row">
         <div class="col-md-3 custom-p-1">
             <div class="banner-ads ml-3">
@@ -16,6 +37,7 @@
         </div>
     </div>
 </div>
+@endif
 <rotating-screensaver></rotating-screensaver>
 
 <!-- /.content -->

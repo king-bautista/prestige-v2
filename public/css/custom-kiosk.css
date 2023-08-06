@@ -14,7 +14,18 @@ body,html {
     font-family: 'Henry Sans Regular';
     font-size: 1em; 
     scroll-behavior: smooth;
+}
+
+.theme-landscape {
     overflow: hidden;
+    height: 1080px;
+    width: 1920px;
+}
+
+.theme-portrait {
+    overflow: hidden;
+    height: 1920px;
+    width: 1080px;
 }
 
 .banner-ads {

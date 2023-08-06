@@ -1,5 +1,5 @@
 <template>
-    <div class="router-page" style="width: 100%;">
+    <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
                 <div id="page-title" class="translateme" :data-en="page_title">{{ page_title }}</div>
@@ -199,6 +199,7 @@
                 promo_page: true,
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
                 tenantSchedule :[],
+                site_orientation: '',
             };
         },
 

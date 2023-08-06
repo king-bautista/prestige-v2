@@ -1,20 +1,43 @@
 <template>
     <div style="width: 100%;">
-        <div class="router-page" v-show="homeIsShown">
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" v-show="homeIsShown">
             <div v-if="site_name == 'Parqal'" class="row">
-                <div class="col-md-6">
-                    <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-4 mb-3 ml-4">
-                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
-                    </div>                
-                </div>
-                <div class="col-md-6 text-right">
-                    <div v-if="home_category" class="datetime-holder mt-3 mb-3 mr-5">
-                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                <template v-if="site_orientation == 'Portrait'">
+                    <template v-if="home_category">
+                        <div class="col-md-12 text-center">
+                            <div class="datetime-holder">
+                                <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="col-md-6">
+                            <div class="datetime-holder text-left mt-4 mb-3 ml-4">
+                                <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                            </div>                
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="mt-3 mb-3 mr-5">
+                                <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+                <template v-else>
+                    <div class="col-md-6">
+                        <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-4 mb-3 ml-4">
+                            <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                        </div>                
                     </div>
-                    <div v-else class="mt-3 mb-3 mr-5">
-                        <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                    <div class="col-md-6 text-right">
+                        <div v-if="home_category" class="datetime-holder mt-3 mb-3 mr-5">
+                            <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                        </div>
+                        <div v-else class="mt-3 mb-3 mr-5">
+                            <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                        </div>
                     </div>
-                </div>
+                </template>
             </div>
             <div v-else class="row">
                 <div class="col-md-6">
@@ -28,9 +51,9 @@
             <!-- MAIN CATEGORY -->
             <div v-show="home_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div class="row mt-25 mb-55 ml-15 ml-150">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-150 mb-55 ml-25': 'mt-25 mb-55 ml-150'" class="row">
                         <div class="col-md-12">
-                            <div v-for="(category, index) in main_category" :class="[category.class_name, 'hc-button']" @click="showChildren(category);">
+                            <div v-for="(category, index) in main_category" v-bind:class="(site_orientation == 'Portrait') ? category.class_name +' category-portrait hc-button': category.class_name+' hc-button'" @click="showChildren(category);">
                                 <div class="main-category-holder">
                                     <img :src="category.kiosk_image_primary_path" width="100%">
                                 </div>
@@ -57,12 +80,12 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div class="row col-md-12 mt-120 mb-41">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" class="">
                         <div class="owl-carousel" id="sub-category-carousel">
-                            <div class="ïtem-holder" v-for="subcategory in current_category.children">
-                                <div class="rounded-container" @click="getTenantsByCategory(subcategory)">
+                            <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="subcategory in current_category.children">
+                                <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="getTenantsByCategory(subcategory)">
                                     <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                                    <div class="category-name-holder"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
+                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'category-name-holder-portrait ': 'category-name-holder'"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
                                 </div>
                             </div>
                         </div>
@@ -95,8 +118,8 @@
                     <div class="row col-md-12 mt-120 mb-41">
                         <div class="owl-carousel" id="supplementals-carousel" v-if="current_supplementals">
                             <template v-for="supplementals in current_supplementals.children">
-                                <div class="ïtem-holder" v-for="supplemental in supplementals">
-                                    <div class="rounded-container" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">
+                                <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="supplemental in supplementals">
+                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">
                                         <img :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
                                         <div class="category-name-holder"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>
                                     </div>
@@ -167,11 +190,11 @@
 
                         <!-- The slideshow -->
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
-                            <div class="carousel-item tenant-store-carousel" v-for="(tenants, index) in tenant_list" :data-index="index" v-bind:class = "[index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']">
-                                <div class="row mb-3">
+                            <div v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-item': 'carousel-item tenant-store-carousel', index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']" v-for="(tenants, index) in tenant_list" :data-index="index">
+                                <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-100': 'row mb-3'">
                                     <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div class="tenant-store text-center ml-3" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
+                                            <div v-bind:class="(site_orientation == 'Portrait') ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
                                                 <div class="image-holder h-100">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -209,10 +232,10 @@
                         </div>
 
                         <!-- Left and right controls -->
-                        <a class="carousel-control-prev control-prev-a p-l-z-a" href="#supplementalCarousel" data-slide="prev">
+                        <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev carousel-control-prev-portrait control-prev-a p-l-z-a': 'carousel-control-prev control-prev-a p-l-z-a'" href="#supplementalCarousel" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
-                        <a class="carousel-control-next control-next-a n-l-z-a" href="#supplementalCarousel" data-slide="next" v-show="tenant_list_count>=1">
+                        <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next carousel-control-next-portrait control-next-a n-l-z-a': 'carousel-control-next control-next-a n-l-z-a'" href="#supplementalCarousel" data-slide="next" v-show="tenant_list_count>=1">
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
@@ -377,9 +400,9 @@
             </div>
 
             <!-- TABS -->
-            <div class="tabs-container" v-show="tabs_container">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait ': 'tabs-container'" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-if="child_category || supplementals" class="swipe-to-see-more">
+                    <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
                         <img src="images/swipe.png">
                         <p>SWIPE TO SEE MORE</p>
                     </div>
@@ -388,7 +411,7 @@
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             View stores by
                         </button>
-                        <div class="dropdown-menu">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'dropdown-menu dropdown-menu-portrait': 'dropdown-menu'">
                             <a class="dropdown-item" id="alphabetical-tab" data-link="Alphabetical" @click="getTenants(current_category, 'Alphabetical');">Alphabetical</a>
                             <a class="dropdown-item" id="category-tab" data-link="Category" @click="showCategories()">Category</a>
                             <a class="dropdown-item" id="supplementals-tab" data-link="Supplementals" @click="showSupplementals(current_category.supplemental.name);">
@@ -423,8 +446,8 @@
                     </ol>
                 </div>
             </div>
-            <div v-show="!home_category" class="back-button" :src="back_button" @click="goBack"></div>
-            <div v-show="!home_category" class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
+            <div v-show="!home_category" v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
+            <div v-show="!home_category" v-bind:class="(site_orientation == 'Portrait') ? 'back-overlay back-overlay-portrait translateme': 'back-overlay translateme'" data-en="Back" @click="goBack">Back</div>
 
             <!-- MODAL -->
             <div class="custom-modal p-l-490" id="myProduct">
@@ -463,27 +486,27 @@
         <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
         <div class="row pt-3 bg-color">
-            <div class="col-md-12 text-center pt-2 pr-136">
-                <div class="h-button widget-button home-button active logs" data-link='Home' @click="homeButton">
-                    <div class="button-text-align translateme" data-en="Home">Home</div>
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 pr-136'" class="col-md-12 text-center">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
                 </div>
-                <div class="h-button widget-button search-button logs" data-link='Search' @click="searchButton">
-                    <div class="button-text-align translateme" data-en="Search">Search</div>
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button search-button logs': 'h-button widget-button search-button logs'" data-link='Search' @click="searchButton">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Search">Search</div>
                 </div>
-                <div class="h-button widget-button map-button logs" data-link='Map' @click="mapButton">
-                    <div class="button-text-align translateme" data-en="Map">Map</div>    
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button map-button logs': 'h-button widget-button map-button logs'" data-link='Map' @click="mapButton">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Map">Map</div>    
                 </div>
-                <div class="h-button widget-button landmark-button logs" data-link='Landmarks' @click="landmarksButton">
-                    <div class="button-text-align translateme" data-en="Landmarks">Landmarks</div>    
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button landmark-button logs': 'h-button widget-button landmark-button logs'" data-link='Landmarks' @click="landmarksButton">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Landmarks">Landmarks</div>    
                 </div>
-                <div class="h-button widget-button events-button logs" data-link='Events' @click="eventsButton">
-                    <div class="button-text-align translateme" data-en="Events">Events</div>    
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button events-button logs': 'h-button widget-button events-button logs'" data-link='Events' @click="eventsButton">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Events">Events</div>    
                 </div>
                 <div v-show="site_name != 'Parqal'" class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
-                    <div class="button-text-align translateme resize" data-en="Promos">Promos</div>
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Promos">Promos</div>
                 </div>
                 <div v-show="site_name != 'Parqal'" class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
-                    <div class="button-text-align translateme" data-en="Cinema">Cinema</div>
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Cinema">Cinema</div>
                 </div>
             </div>
         </div>
@@ -537,6 +560,7 @@
                 tenant_list: [],
                 site_name: '',
                 site_logo: '',
+                site_orientation: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Category',
                 home_category: true,
@@ -903,6 +927,7 @@
                     this.site_name = response.data.data.name
                     this.site_logo = response.data.data.site_logo
                     this.site_website = response.data.data.details.website
+                    this.site_orientation = response.data.data.site_orientation
                     this.multilanguage = (response.data.data.details.multilanguage == '1') ? true : false
 
                     if (this.multilanguage === false){         

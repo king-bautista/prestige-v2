@@ -1,5 +1,5 @@
 <template>
-    <div class="router-page" style="width: 100%;">
+    <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
                 <div class="datetime-holder text-left m-5">
@@ -304,8 +304,8 @@
             </div>
         </div>
 
-        <div class="back-button" :src="back_button" @click="goBack"></div>
-        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-overlay back-overlay-portrait translateme': 'back-overlay translateme'" data-en="Back" @click="goBack">Back</div>
     </div>
 </template>
 <script> 
@@ -326,6 +326,7 @@
                 subscriber_list: '',
                 site_name: '',
                 site_logo: '',
+                site_orientation: '',
                 back_button: 'assets/images/English/Back.png',
                 search_page: true,
                 page_title: 'Search',
@@ -366,7 +367,8 @@
 				axios.get('/api/v1/site')
                 .then(response => {
                     this.site_name = response.data.data.name;
-                    this.site_logo = response.data.data.site_logo
+                    this.site_logo = response.data.data.site_logo;
+                    this.site_orientation = response.data.data.site_orientation;
                 });
 			},
 
@@ -566,6 +568,9 @@
                     var obj = this;
                     $(function() {                       
                         $('#code').autocomplete({
+                            classes: {
+                                "ui-autocomplete": "auto_complete_portrait",
+                            },
                             minLength: 2,
                             source: titleCase,
                             select: function(event, ui){''

@@ -1,3 +1,15 @@
+.theme-landscape {
+    overflow: hidden;
+    height: 1080px;
+    width: 1920px;
+}
+
+.theme-portrait {
+    overflow: hidden;
+    height: 1920px;
+    width: 1080px;
+}
+
 .home-button {
     background-image: url('../assets/images/parqal-home.png');
     color: #c15669;
@@ -394,6 +406,10 @@ input[type="text"]:focus
     background-repeat: no-repeat;
 }
 
+.back-button-portrait {
+    bottom: -24rem;
+}
+
 .back-overlay {
     position: absolute;
     bottom: -75px;
@@ -407,6 +423,11 @@ input[type="text"]:focus
     text-transform: uppercase;
 }
 
+.back-overlay-portrait {
+    bottom: -22.5rem;
+}
+
+
 .assistance_tooltip {
     position:absolute;
     bottom: -100px;
@@ -417,6 +438,10 @@ input[type="text"]:focus
     border-radius: 15px 0 0 15px;
     background-image: url('../assets/images/parqal-help.png') !important;
     background-repeat: no-repeat;
+}
+
+.assistance_tooltip-portrait {
+    bottom: -24rem;
 }
 
 .help-overlay {
@@ -431,6 +456,10 @@ input[type="text"]:focus
     text-transform: uppercase;
 }
 
+.help-overlay-portrait {
+    bottom: -22.5rem;
+}
+
 .widget-button {
     background-size: 75px auto;
     background-repeat: no-repeat;
@@ -441,6 +470,10 @@ input[type="text"]:focus
 .h-button {
     width: 230px;
     height: 120px;
+}
+
+.h-button-portrait {
+    width: 195px;
 }
 
 .button-text-align {
@@ -454,12 +487,20 @@ input[type="text"]:focus
     text-transform: uppercase;
 }
 
+.button-text-align-portrait {
+    width: 195px;
+}
+
 .router-page {
     height: 845px;
 }
 
+.router-page-portrait {
+    height: 1125px;
+}
+
 .bg-color {
-    background-color: #000;
+    background-color: rgb(0, 0, 0, .8);
 }
 
 .food, .fashion, .electronics, .function, .finds, .health {
@@ -468,6 +509,10 @@ input[type="text"]:focus
     width: 335px;
     height: 335px;
     text-align: center;
+}
+
+.category-portrait {
+    height: 400px;
 }
 
 .food div, .fashion div, .electronics div, .function div, .finds div, .health div {
@@ -527,12 +572,42 @@ input[type="text"]:focus
     opacity: .5;
 }
 
+.ïtem-holder-portrait {
+    width: 360px;
+    height: 361px;
+    position: relative;
+}
+
+.rounded-container-portrait {
+    width: 260px;
+    height: 261px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: solid 5px #DFBD69;
+    position: relative;
+    margin: 44px 50px 50px 50px;
+    opacity: .5;
+}
+
 .category-name-holder {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     color: #fff;
     font-size: 34px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    width: 310px;
+    text-align: center;
+}
+
+.category-name-holder-portrait  {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 30px;
     text-transform: uppercase;
     font-weight: bolder;
     width: 310px;
@@ -547,8 +622,21 @@ input[type="text"]:focus
     transition:all 0s ease;
 }
 
+.center > .ïtem-holder-portrait > .rounded-container-portrait {
+    width: 360px;
+    height: 361px;
+    opacity: 1;
+    margin: 0;
+    transition:all 0s ease;
+}
+
 .center > .ïtem-holder > .rounded-container > .category-name-holder {
     width: 410px;
+    opacity: 1;
+}
+
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .category-name-holder {
+    width: 360px;
     opacity: 1;
 }
 
@@ -560,8 +648,16 @@ input[type="text"]:focus
     margin-left: 155px;
 }
 
+.ml-25 {
+    margin-left: 25px;
+}
+
 .mt-25 {
     margin-top: 25px;
+}
+
+.mt-150 {
+    margin-top: 155px;
 }
 
 .tabs-container {
@@ -571,9 +667,13 @@ input[type="text"]:focus
     right: 0.32rem;
 }
 
+.tabs-container-portrait {
+    bottom: -7.4rem;
+}
+
 .datetime-holder {
     color: #DFBD69;
-    font-size: 35px;
+    font-size: 30px;
     font-weight: bolder;
 }
 
@@ -596,12 +696,13 @@ input[type="text"]:focus
 .popover-content {background-color: #DFBD69;}
 
 .btn-custom {
-    background-image: url(../images/parqal-btn-bg.png) !important;
-    width: 286px;
+    min-width: 286px;
     height: 64px;
-    font-size: 34px;
+    font-size: 23px;
     text-transform: uppercase;
     font-weight: bold;
+    background-color: #DFBD69;
+    border-radius: 15px;
 }
 
 .map-holder {
@@ -645,6 +746,14 @@ input[type="text"]:focus
     min-width: 11rem;
 }
 
+.dropdown-menu-portrait {
+    background-color: #DFBD69;
+    border-radius: 0.7rem;
+    min-width: 11rem;
+    transform: none !important;
+    top: -95px !important;
+}
+
 .dropdown-item {
     display: block;
     width: 100%;
@@ -676,6 +785,17 @@ input[type="text"]:focus
     font-size: 18px;
 }
 
+.swipe-to-see-more-portrait {
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    top: 50%;
+    transform: translate( -50%, -250%);
+    color: #DFBD69;
+    opacity: 0.9;
+    font-size: 34px;
+}
+
 .carousel-control-next-icon {
     display: none;
 }
@@ -692,12 +812,20 @@ input[type="text"]:focus
     background-position: center;
 }
 
+.carousel-control-next-portrait {
+    height: 845px;
+}
+
 .carousel-control-prev {
     width: 2rem;
     height: 539px;
     border: none;
     background: url(/images/parqal-left.png) no-repeat;
     background-position: center;
+}
+
+.carousel-control-prev-portrait {
+    height: 845px;
 }
 
 .tenant-store, .tenant-search {
@@ -708,6 +836,11 @@ input[type="text"]:focus
     height: 90px;
     width: 330px;
     cursor: pointer;
+}
+
+.tenant-store-portrait, .tenant-search-portrait {
+    width: 270px;
+    margin-bottom: 25px;
 }
 
 .home-title {
@@ -830,6 +963,10 @@ input[type="text"]:focus
     margin-top: 45px;
 }
 
+.mt-100 {
+    margin-top: 100px;
+}
+
 #eventCarousel {
     width: 100%;
 }
@@ -841,9 +978,25 @@ input[type="text"]:focus
     position: relative;
 }
 
+.event-container-portrait {
+    width: 100%;
+    height: 235px;
+    overflow: hidden;
+    position: relative;
+}
+
 .event-container img{
     width: 220px;
     height: 220px;
+    border-radius: 25px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.event-container-portrait img{
+    width: 175px;
+    height: 175px;
     border-radius: 25px;
     position: absolute;
     top: 0;
@@ -951,13 +1104,35 @@ input[type="text"]:focus
     width: 860px !important;
 }
 
+.auto_complete_portrait {
+    top: 73% !important;
+    height: 105pxpx !important;
+    width: 648px !important;
+}
+
+.ui-autocomplete-portrait {
+    top: 73% !important;
+    height: 105px !important;
+    width: 648px !important;
+}
+
 .product-size {
     width: 600px;
     height: 600px;
 }
 
 .custom-modal-position {
+    position: relative;
     top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.custom-modal-position-portrait {
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .no-results-container img {
@@ -981,5 +1156,19 @@ input[type="text"]:focus
 
 .btn-close-modal {
     font-size: 2em;
-    margin-right: 380px;
+    /* margin-right: 380px; */
+}
+
+.banner-ads-portrait {
+    height: 448px;
+    width: 1010px;
+    display: block;
+    z-index: 1000;
+    margin: 30px;
+}
+
+.theme-portrait {
+    width: 1080px;
+    height: 1920px;
+    margin: auto;
 }

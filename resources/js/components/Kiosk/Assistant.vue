@@ -2,9 +2,9 @@
     <div class="" style="width: 100%;">
         <div id="popover-content" class="hide d-none" style="z-index:1">Need help? Touch here.</div>
         <div @click="generateAssist()">
-            <div tabindex="0" data-toggle="popover" data-container="body" data-placement="top" data-trigger="focus" type="button" data-html="true"  class="assistance_tooltip" data-content="Need help? Touch here.">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'assistance_tooltip assistance_tooltip-portrait': 'assistance_tooltip'" tabindex="0" data-toggle="popover" data-container="body" data-placement="top" data-trigger="focus" type="button" data-html="true" data-content="Need help? Touch here.">
             </div>
-            <div class="help-overlay translateme" data-en="Help">Help</div>
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'help-overlay help-overlay-portrait translateme': 'help-overlay translateme'" data-en="Help">Help</div>
         </div>
     </div>
 </template>
@@ -17,14 +17,23 @@
                 location: 'tenantcategory',
                 location_content: '',
                 content_language: 'english',
+                site_orientation: '',
             };
         },
 
         created() {
+            this.getSite();
             this.getAssistantMessage();
         },
 
         methods: {
+            getSite: function() {
+				axios.get('/api/v1/site')
+                .then(response => {
+                    this.site_orientation = response.data.data.site_orientation
+                });
+			},
+
             getAssistantMessage: function() {
 				axios.get('/api/v1/assistant-message')
                 .then(response => {

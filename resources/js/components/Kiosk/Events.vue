@@ -1,5 +1,5 @@
 <template>
-    <div class="router-page" style="width: 100%;">
+    <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
                 <div class="datetime-holder text-left m-5">
@@ -34,7 +34,7 @@
                         <div class="carousel-item" v-for="(events, index) in event_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_event_list_count? 'last-item':'']">
                             <div class="row mb-3">
                                 <div v-for="event in events" class="col-sm-3 mt-10 mb-6">
-                                    <div class="text-center event-container mb-3" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
+                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'text-center event-container-portrait mb-3': 'text-center event-container mb-3'" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
                                         <img :src="event.image_url_path" :alt="event.name" />
                                         <div class="event-name-holder">
                                             {{event.event_name}} <br/>
@@ -73,12 +73,12 @@
             </div>
         </div>
 
-        <div class="back-button" :src="back_button" @click="goBack"></div>
-        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-overlay back-overlay-portrait translateme': 'back-overlay translateme'" data-en="Back" @click="goBack">Back</div>
         
         <!-- MODAL -->
         <div class="custom-modal p-l-490" id="myevent">
-            <div class="custom-modal-position set-width">                    
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait set-width': 'custom-modal-position set-width'" class="">                    
                 <img class="my-product-image" :src="event_image">
                 <div class="text-center parqal-color">
                     <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
@@ -96,6 +96,7 @@
                 event_list: [],
                 site_name: '',
                 site_logo: '',
+                site_orientation: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'events',
                 no_record_found: false,
@@ -141,6 +142,7 @@
                 .then(response => {
                     this.site_name = response.data.data.name
                     this.site_logo = response.data.data.site_logo
+                    this.site_orientation = response.data.data.site_orientation
                 });
 			},
 
