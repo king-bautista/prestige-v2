@@ -20,77 +20,77 @@
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
-        <div class="row col-md-12 mb-3">
-            
-            <div id="tenant-details" class="card mb-3 label-3">
-                <div class="card-body text-info text-center">
-                    <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
-                    <div class="guide-steps">
-                        <img src="images/parqal-walk.png" style="width:20px;" v-if="site_name == 'Parqal'">
-                        <img src="images/man-walk.svg" style="width:20px;" v-else>
-                        <span style="font-weight: bold;">
-                            <span class="map-minutes">0 minutes</span>,
-                            <span class="map-steps">0 steps,</span>,
-                        </span>
-                        <span class="map-distance my-auto" style="color:#8c8d8d;font-size: .7em;">0m distance</span>			
+        <div class="row">
+            <div class="col-md-12 mb-3 pl-0">
+                <div id="tenant-details" class="card mb-3 label-3">
+                    <div class="card-body text-info text-center">
+                        <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
+                        <div class="guide-steps">
+                            <img src="images/parqal-walk.png" style="width:20px;" v-if="site_name == 'Parqal'">
+                            <img src="images/man-walk.svg" style="width:20px;" v-else>
+                            <span style="font-weight: bold;">
+                                <span class="map-minutes">0 minutes</span>,
+                                <span class="map-steps">0 steps,</span>,
+                            </span>
+                            <span class="map-distance my-auto" style="color:#8c8d8d;font-size: .7em;">0m distance</span>			
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="assist">
+
+                        </ul>              
+                    </div>
+
+                    <div>
+                        <div class="" style="text-align: left;padding-left: 45px;margin-top: 48px;">
+                            <span class="helpful-label translateme" data-en="Was this helpful?">Was this helpful?</span>
+                            <a href="#" class="response-btn btn-helpful" @click="updateFeedback()">
+                                <span class="fa fa-thumbs-up"></span>
+                            </a> 
+                            <a href="#" class="response-btn btn-nothelpful">
+                                <span class="fa fa-thumbs-down"></span>
+                            </a> 
+                            <span class="translateme" v-show="feedback_response" data-en="Thank you!">Thank you!</span>
+                        </div>             
                     </div>
                 </div>
-                <div class="card-body">
-                    <ul class="assist">
 
-                    </ul>              
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'map-holder-portrait': 'map-holder'">
+                    <div class="zoomable-container" id="zoomable-container"></div>
+                    <img src="images/Pinch1.gif" class="pinch"/>
                 </div>
 
-                <div>
-                    <div class="" style="text-align: left;padding-left: 45px;margin-top: 48px;">
-                        <span class="helpful-label translateme" data-en="Was this helpful?">Was this helpful?</span>
-                        <a href="#" class="response-btn btn-helpful" @click="updateFeedback()">
-                            <span class="fa fa-thumbs-up"></span>
-                        </a> 
-                        <a href="#" class="response-btn btn-nothelpful">
-                            <span class="fa fa-thumbs-down"></span>
-                        </a> 
-                        <span class="translateme" v-show="feedback_response" data-en="Thank you!">Thank you!</span>
-                    </div>             
+                <!-- you are here-->
+                <div class="marker-you-are-here">
+                    <img :src="'images/darker-you-are-here-01.png?'+current_time" id="marker-you-are-here">
                 </div>
-            </div>
 
-            <div class="map-holder">
-                <div class="zoomable-container" id="zoomable-container"></div>
-                <img src="images/Pinch1.gif" class="pinch"/>
-            </div>
+                <!-- escalator up-->
+                <div class="marker-escalator-up">
+                    <img :src="'images/escalator-up-sprite.png?'+current_time" id="marker-escalator-up">
+                </div>
 
-    		<!-- you are here-->
-            <div class="marker-you-are-here">
-                <img :src="'images/darker-you-are-here-01.png?'+current_time" id="marker-you-are-here">
-            </div>
+                <!-- escalator down-->
+                <div class="marker-escalator-down">
+                    <img :src="'images/escalator-down-sprite.png?'+current_time"  id="marker-escalator-down">
+                </div>
 
-            <!-- escalator up-->
-            <div class="marker-escalator-up">
-                <img :src="'images/escalator-up-sprite.png?'+current_time" id="marker-escalator-up">
-            </div>
+                <!-- door-->
+                <div class="marker-escalator-up">
+                    <img :src="'images/door-sprite.png?'+current_time" id="marker-door">
+                </div>
 
-            <!-- escalator down-->
-            <div class="marker-escalator-down">
-                <img :src="'images/escalator-down-sprite.png?'+current_time"  id="marker-escalator-down">
-            </div>
-
-            <!-- door-->
-            <div class="marker-escalator-up">
-                <img :src="'images/door-sprite.png?'+current_time" id="marker-door">
-            </div>
-
-            <!-- store here-->
-            <div class="marker-store-here hidden">
-                <img :src="'images/store-here-sprite.png?'+current_time" id="marker-store-here">
-            </div>
-
+                <!-- store here-->
+                <div class="marker-store-here hidden">
+                    <img :src="'images/store-here-sprite.png?'+current_time" id="marker-store-here">
+                </div>
+            </div>            
         </div>
         <!-- TABS -->
-        <div class="tabs-container cb-0 z-1">
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait cb-0 z-1': 'tabs-container cb-0 z-1'">
             <div class="row">
                 <div class="col-12 col-sm-4 offset-md-2">
-                    <div class="input-group map-input-group">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'input-group map-input-group map-input-group-portrait': 'input-group map-input-group'" class="">
                         <multiselect v-model="map_form.tenant"
                             class="custom-select map-tenant-option" 
                             ref="multiselectTenant"
@@ -169,8 +169,8 @@
 
         <!-- MODAL -->
         <div class="custom-modal p-l-490 map-search-modal">
-            <div class="map-search-modal-position">                    
-                <div class="text-right text-white custom-w-1140">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'map-search-modal-position-portrait': 'map-search-modal-position'">                    
+                <div class="text-right text-white">
                     <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                 </div>        
                 <div class="softkeys-tenant mt-20" data-target="input[name=tenant-search]" v-show="softkeysTenant"></div>
@@ -214,8 +214,8 @@
             </div>
         </div>
 
-        <div class="back-button" :src="back_button" @click="goBack"></div>
-        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-overlay back-overlay-portrait translateme': 'back-overlay translateme'" data-en="Back" @click="goBack">Back</div>
     </div>
 </template>
 <script>
