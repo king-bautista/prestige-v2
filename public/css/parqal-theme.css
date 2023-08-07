@@ -159,6 +159,7 @@ input[type="text"]:focus
     right: 7px;
     top: 2px;
     padding: 0.35rem 0.5rem;
+    z-index: 9;
 }
 
 .search-box-button:focus
@@ -668,7 +669,7 @@ input[type="text"]:focus
 }
 
 .tabs-container-portrait {
-    bottom: -7.4rem;
+    bottom: -4.4rem;
 }
 
 .datetime-holder {
@@ -708,6 +709,13 @@ input[type="text"]:focus
 .map-holder {
     background-color: #fff;
     height: 685px;
+    margin-left: 7px;
+    width: 100%;
+}
+
+.map-holder-portrait {
+    background-color: #fff;
+    height: 965px;
     margin-left: 7px;
     width: 100%;
 }
@@ -1085,13 +1093,32 @@ input[type="text"]:focus
     padding-bottom: 35px;
 }
 
+.map-search-modal-position-portrait {
+    top: 35%;
+    left: 50%;
+    width: 42%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 25px;
+    padding-bottom: 35px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
 /* .btn-close-modal {
     margin-right: 375px;
 } */
 
 .map-tenant-option .multiselect__content-wrapper {
     margin-left: -15px;
-    margin-top: 7px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.map-input-group-portrait > .map-tenant-option .multiselect__content-wrapper {
+    margin-left: -15px;
+    margin-top: 10px;
+    min-width: 335px !important;
+    border-radius: 10px;
 }
 
 .multiselect__single {
@@ -1156,7 +1183,7 @@ input[type="text"]:focus
 
 .btn-close-modal {
     font-size: 2em;
-    /* margin-right: 380px; */
+    margin-right: 10px;
 }
 
 .banner-ads-portrait {

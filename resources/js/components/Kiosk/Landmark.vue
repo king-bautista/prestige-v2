@@ -30,7 +30,7 @@
                             <div class="row mb-3">
                                 <div v-for="landmark in landmarks" v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-3 mb-3': 'col-sm-4 mt-45 mb-45'" class="">
                                     <div class="text-center landmark-container" @click="showLandmark(landmark)">
-                                        <img class="landmark-tiles" :src="landmark.image_url_path" :alt="landmark.name" />
+                                        <img class="landmark-tiles" :src="landmark.image_thumbnail_url" :alt="landmark.name" />
                                         <div class="landmark-name">
                                             {{landmark.landmark}}
                                         </div>
