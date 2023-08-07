@@ -566,10 +566,10 @@
                     });
 
                     var obj = this;
-                    $(function() {                       
+                    $(function() {                    
                         $('#code').autocomplete({
                             classes: {
-                                "ui-autocomplete": "auto_complete_portrait",
+                                "ui-autocomplete": (obj.site_orientation == 'Portrait') ? "auto_complete_portrait" : "",
                             },
                             minLength: 2,
                             source: titleCase,
