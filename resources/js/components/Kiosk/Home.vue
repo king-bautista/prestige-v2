@@ -251,7 +251,6 @@
                         <div class="p-3 tenant-details">
                             <div class="my-auto p-1 text-center">
                                 <img class="tenant-details-logo" :src="tenant_details.brand_logo">
-                                <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                                 <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
                                 <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                 <div>
@@ -261,6 +260,7 @@
                                         | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
                                     </span>
                                 </div>
+                                <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                             </div>
                             <div class="row">
                                 <div class="col-12 text-center">
@@ -272,11 +272,11 @@
                                     </span>
                                 </div>
                             </div>
-                            <div v-if="tenant_details.is_subscriber" class="row mt-1 mb-4">
+                            <div class="row mt-1 mb-4">
                                 <div class="text-left ml-36 social-holder" v-if="tenant_details.tenant_details">
-                                    <div class="mb-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                    <div class="mb-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                    <div class="mb-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                    <div v-if="tenant_details.tenant_details.facebook" class="mb-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                    <div v-if="tenant_details.tenant_details.twitter" class="mb-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                    <div v-if="tenant_details.tenant_details.instagram" class="mb-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -287,7 +287,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-9 text-center mt-5">
-                        <div v-if="tenant_details.is_subscriber && tenant_details.products.product_list.length != 0" class="tenant-products-container">
+                        <div v-if="tenant_details.is_subscriber && tenant_details.products != 0" class="tenant-products-container">
                             <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                 <div class="col-12 p-0">
                                     <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
