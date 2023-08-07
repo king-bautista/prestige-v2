@@ -570,7 +570,7 @@ input[type="text"]:focus
     border: solid 5px #DFBD69;
     position: relative;
     margin: 44px 50px 50px 50px;
-    opacity: .5;
+    background-color: #000;
 }
 
 .ïtem-holder-portrait {
@@ -587,7 +587,7 @@ input[type="text"]:focus
     border: solid 5px #DFBD69;
     position: relative;
     margin: 44px 50px 50px 50px;
-    opacity: .5;
+    background-color: #000;
 }
 
 .category-name-holder {
@@ -600,6 +600,7 @@ input[type="text"]:focus
     font-weight: bolder;
     width: 310px;
     text-align: center;
+    opacity: .5;
 }
 
 .category-name-holder-portrait  {
@@ -613,6 +614,7 @@ input[type="text"]:focus
     font-weight: bolder;
     width: 310px;
     text-align: center;
+    opacity: .5;
 }
 
 .center > .ïtem-holder > .rounded-container {
@@ -621,6 +623,7 @@ input[type="text"]:focus
     opacity: 1;
     margin: 0;
     transition:all 0s ease;
+    background-color: #000;
 }
 
 .center > .ïtem-holder-portrait > .rounded-container-portrait {
@@ -629,6 +632,7 @@ input[type="text"]:focus
     opacity: 1;
     margin: 0;
     transition:all 0s ease;
+    background-color: #000;
 }
 
 .center > .ïtem-holder > .rounded-container > .category-name-holder {
@@ -636,7 +640,7 @@ input[type="text"]:focus
     opacity: 1;
 }
 
-.center > .ïtem-holder-portrait > .rounded-container-portrait > .category-name-holder {
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .category-name-holder-portrait {
     width: 360px;
     opacity: 1;
 }
