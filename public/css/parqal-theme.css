@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "Overpass";
+    src: url("../assets/fonts/Overpass/Overpass-VariableFont_wght.ttf");
+}
+
+body,html {
+    font-family: 'Overpass' !important;
+}
+
 .theme-landscape {
     overflow: hidden;
     height: 1080px;
@@ -131,7 +140,7 @@ input[type="text"]:focus
 }
 
 .search-box {
-    font-family: 'Henry Sans Medium';
+    font-family: 'Overpass';
     font-size: 24px; 
     width: 65%; 
     padding-left: 10px; 
@@ -486,7 +495,7 @@ input[type="text"]:focus
 .widget-button {
     background-size: 75px auto;
     background-repeat: no-repeat;
-    font-family: 'Henry Sans Medium';
+    font-family: 'Overpass';
     background-position-x: center;
 }
 
