@@ -28,7 +28,7 @@
                     <div class="carousel-inner carousel-mh-830 custom-p-0-39">
                         <div class="carousel-item" v-for="(landmarks, index) in landmark_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_landmark_list_count? 'last-item':'']">
                             <div class="row mb-3">
-                                <div v-for="landmark in landmarks" v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-3 mb-3': 'col-sm-4 mt-45 mb-45'" class="">
+                                <div v-for="landmark in landmarks" v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-3 mb-3': 'col-sm-4 mt-45 mb-3'">
                                     <div class="text-center landmark-container" @click="showLandmark(landmark)">
                                         <img class="landmark-tiles" :src="landmark.image_thumbnail_url" :alt="landmark.name" />
                                         <div class="landmark-name">
