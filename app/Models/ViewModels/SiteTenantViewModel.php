@@ -85,9 +85,9 @@ class SiteTenantViewModel extends Model
 
     public function getBrandLogoAttribute() 
     {
-        $logo = Brand::find($this->brand_id)->logo;
-        if($logo)
-            return asset($logo);
+        $barnd = Brand::find($this->brand_id);
+        if($barnd)
+            return asset($barnd->logo);
         return asset('/images/no-image-available.png');
     }
 
@@ -125,9 +125,12 @@ class SiteTenantViewModel extends Model
 
     public function getBrandSiteNameAttribute() 
     {
-        $brand_name = Brand::find($this->brand_id)->name;
-        $site_name = Site::find($this->site_id)->name;
-        return $site_name.' - '.$brand_name;
+        $brand = Brand::find($this->brand_id);
+        $site = Site::find($this->site_id);
+
+        if($brand && $site)
+            return $site->name.' - '.$brand->name;
+        return null;
     }
 
     public function getCategoryIdAttribute() 
@@ -140,19 +143,25 @@ class SiteTenantViewModel extends Model
 
     public function getParentCategoryIdAttribute() 
     {
-        $brand_category_id = Brand::find($this->brand_id)->category_id;
-        $category = Category::find($brand_category_id);
-        if($category)
-            return $category['parent_id'];
+        $brand = Brand::find($this->brand_id);
+        if($brand) {
+            $category = Category::find($brand->category_id);
+            if($category)
+                return $category->parent_id;
+            return null;
+        }
         return null;
     }    
     
     public function getCategoryNameAttribute() 
     {
-        $brand_category_id = Brand::find($this->brand_id)->category_id;
-        $category_name = Category::find($brand_category_id);
-        if($category_name)
-            return $category_name['name'];
+        $brand = Brand::find($this->brand_id);
+        if($brand) {
+            $category = Category::find($brand->category_id);
+            if($category)
+                return $category->name;
+            return null;
+        }
         return null;
     }
 

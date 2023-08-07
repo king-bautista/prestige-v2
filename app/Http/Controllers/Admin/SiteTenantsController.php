@@ -45,8 +45,8 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
 
     public function list(Request $request)
     {
-        try
-        {
+        // try
+        // {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
 
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
@@ -63,15 +63,15 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_tenants, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function details($id)
