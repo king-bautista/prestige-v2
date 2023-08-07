@@ -294,6 +294,12 @@ input[type="text"]:focus
     background-color: #DFBD69;
 }
 
+.tenant-details-portrait {
+    border-radius: 30px;
+    font-size: 1.3em;
+    background-color: #DFBD69;
+}
+
 .tenant-details-logo {
     width: 185px;
     height: 185px;
@@ -311,6 +317,14 @@ input[type="text"]:focus
 }
 
 .tenant-details-views {
+    color: #000000;
+    margin-top: -8px;
+    margin-bottom: 5px;
+    margin-left: 0;
+    margin-top: 10px;
+}
+
+.tenant-details-views-portrait {
     color: #000000;
     margin-top: -8px;
     margin-bottom: 5px;
@@ -336,6 +350,14 @@ input[type="text"]:focus
     height: 670px;
     border-radius: 30px;
     width: 96%;
+}
+
+.tenant-products-container-portrait {
+    position: relative;
+    border: solid 2px #DFBD69;
+    height: 670px;
+    border-radius: 30px;
+    width: 95%;
 }
 
 .centered-container {
