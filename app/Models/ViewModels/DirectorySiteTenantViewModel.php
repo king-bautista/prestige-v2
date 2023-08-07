@@ -12,6 +12,7 @@ use App\Models\SiteBuildingLevel;
 use App\Models\Brand;
 use App\Models\Company;
 use App\Models\Category;
+use App\Models\CompanyCategory;
 
 class DirectorySiteTenantViewModel extends Model
 {
@@ -124,8 +125,20 @@ class DirectorySiteTenantViewModel extends Model
 
     public function getBrandLogoAttribute() 
     {
-        if($this->getBrand())
-            return asset($this->getBrand()->logo); 
+        $brand = $this->getBrand();
+        if($brand) {
+            if(strlen($brand->logo) > 0) 
+                return asset($brand->logo);            
+        }
+
+
+        if(isset($brand->category_id)) {
+            $illustration = CompanyCategory::where('sub_category_id', $this->category_id)->where('site_id', $this->site_id)->first();
+            if($illustration)
+                return asset($illustration->kiosk_image_primary);
+            return asset('/images/no-image-available.png');    
+        }
+
         return asset('/images/no-image-available.png');
     }
 
