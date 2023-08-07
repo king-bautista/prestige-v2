@@ -86,8 +86,11 @@ class SiteTenantViewModel extends Model
     public function getBrandLogoAttribute() 
     {
         $barnd = Brand::find($this->brand_id);
-        if($barnd)
-            return asset($barnd->logo);
+        if($barnd){
+            if(strlen($brand->logo) > 0) 
+                return asset($brand->logo);
+            return asset('/images/no-image-available.png');            
+        }
         return asset('/images/no-image-available.png');
     }
 
