@@ -608,6 +608,7 @@
                 see_details_font_size: '',
                 multilanguage: '',
                 site_website: '',
+                current_supplemental_title: '',
             };
         },
 
@@ -1085,6 +1086,7 @@
                 this.navigationLetters = false;
                 if(this.site_name == 'Parqal') {
                     this.page_title = name;
+                    this.current_supplemental_title = name;
                 }
 
                 // this.initializeSwipe();     
@@ -1162,10 +1164,9 @@
                     this.isAlphabeticalClicked = false;
                 }
                 else if(this.previous_page == 'Supplementals' && this.alphabetical == true) {
-                    this.page_title = 'Supplementals';
+                    this.page_title = this.current_supplemental_title;
                     this.supplementals = true;
                     this.alphabetical = false;
-
                 } 
                 else if(this.previous_page == 'Alphabetical' && this.alphabetical == true) {
                     this.page_title = 'Store List';
