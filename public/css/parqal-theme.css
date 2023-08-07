@@ -1080,9 +1080,6 @@ input[type="text"]:focus
     width: 410px !important;
 }
 
-.custom-modal {
-    background-color: transparent;
-}
 
 .map-search-modal-position {
     top: 44%;
