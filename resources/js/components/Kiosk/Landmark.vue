@@ -1,5 +1,5 @@
 <template>
-    <div class="router-page" style="width: 100%;">
+    <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
                 <div class="datetime-holder text-left m-5">
@@ -28,7 +28,7 @@
                     <div class="carousel-inner carousel-mh-830 custom-p-0-39">
                         <div class="carousel-item" v-for="(landmarks, index) in landmark_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_landmark_list_count? 'last-item':'']">
                             <div class="row mb-3">
-                                <div v-for="landmark in landmarks" class="col-sm-4 mt-45 mb-45">
+                                <div v-for="landmark in landmarks" v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-3 mb-3': 'col-sm-4 mt-45 mb-45'" class="">
                                     <div class="text-center landmark-container" @click="showLandmark(landmark)">
                                         <img class="landmark-tiles" :src="landmark.image_url_path" :alt="landmark.name" />
                                         <div class="landmark-name">
@@ -57,10 +57,10 @@
         </div>
         <div v-show="show_landmark">
             <div class="row">
-                <div class="col-sm-3 offset-sm-1 mt-5">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4 offset-sm-1 mt-150': 'col-sm-3 offset-sm-1 mt-5'">
                     <img :src="landmark_details.image_url_path" class="lanmark-img">
                 </div>
-                <div class="col-sm-7 mt-5">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-150': 'col-sm-7 mt-5'" >
                     <div class="lanmark-detail-holder m-5">
                         <h2>{{ landmark_details.landmark }}</h2>
                         <p>{{ landmark_details.descriptions }}</p>
@@ -70,10 +70,9 @@
                 </div>
             </div>
         </div>
-        <div class="back-button" :src="back_button" @click="goBack"></div>
-        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
 
-
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-overlay back-overlay-portrait translateme': 'back-overlay translateme'" data-en="Back" @click="goBack">Back</div>
     </div>
 </template>
 <script> 
@@ -84,6 +83,7 @@
                 landmark_list: [],
                 site_name: '',
                 site_logo: '',
+                site_orientation: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'landmarks',
                 no_record_found: false,
@@ -128,6 +128,7 @@
                 .then(response => {
                     this.site_name = response.data.data.name
                     this.site_logo = response.data.data.site_logo
+                    this.site_orientation = response.data.data.site_orientation
                 });
 			},
 

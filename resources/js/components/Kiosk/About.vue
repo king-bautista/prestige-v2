@@ -1,5 +1,5 @@
 <template>
-    <div class="router-page" style="width: 100%;">
+    <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div class="row m-0 p-0">
             <div class="col-12 m-0 p-0">
                 <img :src="site_details.site_banner_path" style="max-width: 100%;">
@@ -37,6 +37,7 @@
                 instagram: '',
                 website: '',
                 trigger_from: '',
+                site_orientation: '',
             };
         },
 

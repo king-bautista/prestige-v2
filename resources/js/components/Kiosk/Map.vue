@@ -1,5 +1,5 @@
 <template>
-    <div class="router-page" style="width: 100%;">
+    <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
                 <div class="datetime-holder text-left m-5">
@@ -233,6 +233,7 @@
                 },
                 site_logo: '',
                 site_name: '',
+                site_orientation: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Map',
                 tenant_list: [],
@@ -306,6 +307,7 @@
                 .then(response => {
                     this.site_name = response.data.data.name
                     this.site_logo = response.data.data.site_logo
+                    this.site_orientation = response.data.data.site_orientation
                 });
 			},
 

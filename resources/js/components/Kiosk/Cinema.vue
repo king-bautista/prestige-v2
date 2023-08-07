@@ -1,5 +1,5 @@
 <template>
-    <div class="router-page" style="width: 100%;">
+    <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div class="row">
             <div class="col-md-6">
                 <div id="page-title" class="translateme" :data-en="page_title">{{ page_title }}</div>
@@ -185,6 +185,7 @@
                 schedule_list: [],
                 tab_title: 'Cinema Locator',
                 site_logo: '',
+                site_orientation: '',
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Cinema',
                 cinema_locator: true,

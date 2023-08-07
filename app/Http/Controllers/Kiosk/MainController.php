@@ -35,8 +35,9 @@ class MainController extends AppBaseController
     public function index()
     {
         $site = Site::where('is_default', 1)->where('active', 1)->first();
-        $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;            
-        $site['site_screen_id'] = $site_screen_id;
+        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+        $site['site_screen_id'] = $site_screen->id;
+        $site['site_orientation'] = $site_screen->orientation;
         $site['site_website'] = '';
         $site_name = $site->name;
         
@@ -62,6 +63,9 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+            $site['site_orientation'] = $site_screen->orientation;
+
             return $this->response($site, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -863,10 +867,18 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+            $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+            
             $events = Event::where('site_id', $site->id)->where('active', 1)->get();
 
             $events = $this->listToArray($events);
-            $events = array_chunk($events, 8);
+
+            if($site_screen->orientation == 'Portrait') {
+                $events = array_chunk($events, 12);
+            }
+            else {
+                $events = array_chunk($events, 8);
+            }
             
             return $this->response($events, 'Successfully Retreived!', 200);
         }
