@@ -545,6 +545,7 @@
 
                 $('#zoomResetButton, .pinch').on('click', function() {
                     vm.panzoom.zoom((vm.active_map_details.default_zoom));
+                    setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
                 });
 
                 $(".map-tenant-option").on('focusin',function(){
