@@ -1136,7 +1136,7 @@ input[type="text"]:focus
 }
 
 .map-search-modal-position-portrait {
-    top: 35%;
+    top: 50%;
     left: 50%;
     width: 75%;
     background-color: rgba(0, 0, 0, 0.7);
