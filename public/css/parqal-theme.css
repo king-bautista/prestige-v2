@@ -426,8 +426,10 @@ input[type="text"]:focus
 }
 
 .delete-key {
-    background-image: none;
-    color: #000;
+    background-image: url(../assets/images/backspace-gold.png);
+    color: transparent;
+    background-position: center;
+    background-size: contain;
 }
 
 .delete-key:hover, .delete-key:focus {
