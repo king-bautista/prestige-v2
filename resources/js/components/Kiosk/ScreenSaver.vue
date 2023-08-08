@@ -16,7 +16,8 @@
                     </div>
                 </div>
             </div>
-            <img v-if="site_name=='Parqal'" src="/assets/images/TOUCH-HERE-TO-START.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">            
+            <img v-if="site_name=='Parqal' && site_orientation == 'Portrait'" src="/assets/images/TOUCH-HERE-TO-START-PORTRAIT.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">            
+            <img v-else-if="site_name=='Parqal' && site_orientation == 'Landscape'" src="/assets/images/TOUCH-HERE-TO-START-LANDSCAPE.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">            
             <img v-else src="/assets/images/7f000001-8357-dc26.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">
         </div>
     </div>
