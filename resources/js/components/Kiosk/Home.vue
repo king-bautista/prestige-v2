@@ -563,7 +563,7 @@
         </div>
         <assitant-page ref="callAssist"></assitant-page>
         <div class="row col-12 text-center">
-            <span class="client-website-holder">{{site_website}}</span>
+            <span class="client-website-holder" @click="aboutButton('home')">{{site_website}}</span>
         </div>
 
         <div class="multilanguage">

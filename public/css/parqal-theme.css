@@ -1243,3 +1243,11 @@ input[type="text"]:focus
     height: 1920px;
     margin: auto;
 }
+
+div.mall-details {
+    color: #fff !important;
+    font-size: 24px;
+    max-width: 100%;
+    min-height: 100%;
+    margin: auto;
+}
