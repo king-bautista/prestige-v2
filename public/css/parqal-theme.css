@@ -224,6 +224,11 @@ input[type="text"]:focus
     background-color: rgba(143,143,143,0.8);
 }
 
+.tenant-details-portrait {
+    top: 200px !important;
+    left: 600px !important;
+}
+
 #tenant-details .assist {
     color: #fff !important;
     border-bottom-color: transparent;
@@ -244,6 +249,11 @@ input[type="text"]:focus
     height: 100px;
     border-radius: 50%;
     z-index: 2;
+}
+
+.guide-button-portrait {
+    top: 855px !important;
+    right: 10px !important;
 }
 
 #toggle-updown-text {
@@ -1128,7 +1138,7 @@ input[type="text"]:focus
 .map-search-modal-position-portrait {
     top: 35%;
     left: 50%;
-    width: 42%;
+    width: 75%;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 25px;
     padding-bottom: 35px;

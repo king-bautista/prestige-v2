@@ -22,7 +22,7 @@
         </div>
         <div class="row">
             <div class="col-md-12 mb-3 pl-0">
-                <div id="tenant-details" class="card mb-3 label-3">
+                <div id="tenant-details" v-bind:class="(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait': 'card mb-3 label-3'">
                     <div class="card-body text-info text-center">
                         <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
                         <div class="guide-steps">
@@ -162,7 +162,7 @@
                 </div>
             </div>
         </div>
-        <div id="guide-button" v-show="guide_button">
+        <div id="guide-button" v-show="guide_button" v-bind:class="(site_orientation == 'Portrait') ? 'guide-button-portrait': ''">
             <div class="toggle-arrow mt-7"><i class="arrow up"></i></div>   
             <div id="toggle-updown-text" class="translateme" data-en="Show Text Guide">Show Text Guide</div>
         </div>
