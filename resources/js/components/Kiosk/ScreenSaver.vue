@@ -16,7 +16,8 @@
                     </div>
                 </div>
             </div>
-            <img src="/assets/images/7f000001-8357-dc26.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">
+            <img v-if="site_name=='Parqal'" src="/assets/images/TOUCH-HERE-TO-START.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">            
+            <img v-else src="/assets/images/7f000001-8357-dc26.png" style="width:100%;position:absolute;bottom:0px;left:0px;height:158px;z-index:9999">
         </div>
     </div>
 </template>
@@ -28,16 +29,27 @@
         name: "Fullscreen",
         data() {
             return {
+                site_name: '',
+                site_orientation: '',
                 fullscreens: [],
                 helper: new Helpers(),
             };
         },
 
         created() {
+            this.getSite();
             this.getFullscreen();
         },
 
         methods: {          
+            getSite: function() {
+				axios.get('/api/v1/site')
+                .then(response => {
+                    this.site_name = response.data.data.name
+                    this.site_orientation = response.data.data.site_orientation
+                });
+			},
+
             getFullscreen: function() {
                 axios.get('/api/v1/advertisements/fullscreen')
                 .then(response => {
