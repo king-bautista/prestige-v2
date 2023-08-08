@@ -69,7 +69,7 @@
                                 <div class="row mb-3">
                                     <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div class="tenant-search text-center" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
+                                            <div v-bind:class="(site_orientation == 'Portrait') ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
                                                 <div class="image-holder h-100">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>

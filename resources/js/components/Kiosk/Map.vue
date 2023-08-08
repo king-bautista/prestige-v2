@@ -484,6 +484,29 @@
                             ]
                         ]
                     });
+
+                    $(".softkeys__btn").each(function(){
+                        if($(this).attr('data-type') === "shift"){                  
+                            $(this).first().addClass('ABC');
+                            $(this).first().html("#+=");
+                        };
+                        if($(this).attr('data-type') === "delete"){
+                            $(this).addClass('delete');
+                        };
+                        if($(this).attr('data-type') === "space"){
+                            $(this).addClass('space-key');
+                            $(this).first().html("SPACE");
+                        };
+                        if($(this).attr('data-type') === "delete"){
+                            $(this).addClass('delete-key');
+                        };
+                        if($(this).children().eq(1).html() === "null"){
+                            $(this).addClass('hidden-on-alt');
+                        }
+                        if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Enter"){                  
+                            $(this).addClass('enter-key');
+                        };
+                    });
                 })
             },
 
