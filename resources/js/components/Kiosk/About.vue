@@ -16,17 +16,37 @@
                 </div>
             </template>
         </div>
-        <div class="row m-0 p-0">
-            <div class="col-md-10 offset-md-1 m-0 p-0">
-                <img :src="site_details.site_banner_path" style="width: 100%;">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="about-banner-holder">
+                    <img :src="site_details.site_banner_path" style="width: 100%;">
+                </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <template v-if="site_name == 'Parqal'">
                 <div class="col-md-10 offset-md-1">
                     <div class="mall-details" v-html="site_details.descriptions">
                     </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="socmediconcontainer">
+                                <img src="assets/images/parqal-facebook.png" class="socmedicon mr-2"> {{ facebook }}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="socmediconcontainer">
+                                <img src="assets/images/parqal-twitter.png" class="socmedicon mr-2"> {{ twitter }}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="socmediconcontainer">
+                                <img src="assets/images/parqal-instagram.png" class="socmedicon mr-2"> {{ instagram }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
             </template>
             <template v-else>
                 <div class="col-6 col-sm-4 mt-50">
