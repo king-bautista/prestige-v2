@@ -1246,8 +1246,30 @@ input[type="text"]:focus
 
 div.mall-details {
     color: #fff !important;
-    font-size: 24px;
+    font-size: 20px;
     max-width: 100%;
     min-height: 100%;
     margin: auto;
+    height: 200px;
+}
+
+.about-banner-holder {
+    width: 100%;
+    height: 390px;
+    overflow: hidden;
+    border-radius: 25px;
+}
+
+.socmediconcontainer
+{
+    font-size: 16px;
+    margin-top: 0;
+    color: #fff;
+    margin-left: 0 !important;
+}
+
+.socmedicon {
+    max-width: 35px;
+    vertical-align: middle;
+    margin-bottom: 0.2em;
 }
