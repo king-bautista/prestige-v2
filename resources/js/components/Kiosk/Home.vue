@@ -200,7 +200,8 @@
                                                 </div>
                                                 <div class="text-left pta-2 brand-name">
                                                     <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
-                                                    <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
+                                                    <div v-if="tenant.tenant_details" style="font-size: 0.7em;color:#2a2a2a">{{ tenant.tenant_details.address }}</div>
+                                                    <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                     <div style="font-weight: bold;font-size: 0.7em">
                                                         <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
                                                         <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
@@ -224,8 +225,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>  
@@ -258,7 +258,8 @@
                                 </div>
                                 <div class="col-sm-6 text-center p-3">
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
-                                    <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor">{{ tenant_details.tenant_details.address }}</div>
+                                    <div v-else class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                     <div>
                                         <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                             <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
@@ -297,12 +298,13 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-sm-3 mt-5">
+                        <div class="col-sm-3 mt-3">
                             <div class="p-3 tenant-details">
                                 <div class="my-auto p-1 text-center">
                                     <img class="tenant-details-logo" :src="tenant_details.brand_logo">
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
-                                    <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor">{{ tenant_details.tenant_details.address }}</div>
+                                    <div v-else class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                     <div>
                                         <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                             <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
@@ -336,7 +338,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-9 text-center mt-5">
+                        <div class="col-sm-9 text-center mt-3">
                             <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container">
                                 <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                     <div class="col-12 p-0">
