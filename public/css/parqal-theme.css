@@ -215,7 +215,8 @@ input[type="text"]:focus
     width: 485px;
     min-height: 525px;
     position: absolute;
-    top: 95px;
+    top: 43%;
+    transform: translateY(-50%);
     left: 920px;
     display: none;
     z-index: 1;
