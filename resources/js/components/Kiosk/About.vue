@@ -26,7 +26,8 @@
         <div class="row mt-3">
             <template v-if="site_name == 'Parqal'">
                 <div class="col-md-10 offset-md-1">
-                    <div class="mall-details" v-html="site_details.descriptions">
+                    <div class="mall-details">
+                        <pre>{{ site_details.descriptions }}</pre>
                     </div>
                     <div class="row">
                         <div class="col-4">
