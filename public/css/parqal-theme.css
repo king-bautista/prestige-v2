@@ -226,7 +226,7 @@ input[type="text"]:focus
 }
 
 .tenant-details-portrait {
-    top: 200px !important;
+    top: 50% !important;
     left: 600px !important;
 }
 
