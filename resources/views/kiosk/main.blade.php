@@ -23,8 +23,8 @@
 @else
 <div class="container-fluid theme-landscape" style="background-image: url('{{ $site_background }}')">
     <div class="row">
-        <div class="col-md-3 custom-p-1">
-            <div class="banner-ads ml-3">
+        <div class="col-md-3 m-0 p-0">
+            <div class="banner-ads">
                 <rotating-banners></rotating-banners>               
             </div>
         </div>

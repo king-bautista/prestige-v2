@@ -17,7 +17,7 @@
                             </div>                
                         </div>
                         <div class="col-md-6 text-right">
-                            <div class="mt-3 mb-3 mr-5">
+                            <div class="mt-4 mb-3 mr-5">
                                 <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
                             </div>
                         </div>
@@ -30,10 +30,10 @@
                         </div>                
                     </div>
                     <div class="col-md-6 text-right">
-                        <div v-if="home_category" class="datetime-holder mt-3 mb-3 mr-5">
+                        <div v-if="home_category" class="datetime-holder mt-4 mb-3 mr-5">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>
-                        <div v-else class="mt-3 mb-3 mr-5">
+                        <div v-else class="mt-4 mb-3 mr-5">
                             <button type="button" class="btn btn-custom">{{ page_title }}</button>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
             </div>
             <div v-else class="row">
                 <div class="col-md-6">
-                    <div id="page-title" v-if="page_title != 'Category'" class="translateme" :data-en="page_title">{{ page_title }}</div>
+                    <div id="page-title" v-if="page_title != 'Categories'" class="translateme" :data-en="page_title">{{ page_title }}</div>
                 </div>
                 <div class="col-md-6 text-right">
                     <img :src="site_logo" class="logo-holder" @click="aboutButton('home')">
@@ -52,7 +52,7 @@
             <div v-show="home_category">
                 <div v-if="site_name == 'Parqal'">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-150 mb-55 ml-25': 'mt-25 mb-55 ml-150'" class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-10 offset-md-1 mt-5 ">
                             <div v-for="(category, index) in main_category" v-bind:class="(site_orientation == 'Portrait') ? category.class_name +' category-portrait hc-button': category.class_name+' hc-button'" @click="showChildren(category);">
                                 <div class="main-category-holder">
                                     <img :src="category.kiosk_image_primary_path" width="100%">
@@ -119,7 +119,7 @@
                         <div class="owl-carousel" id="supplementals-carousel" v-if="current_supplementals">
                             <template v-for="supplementals in current_supplementals.children">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="supplemental in supplementals">
-                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">
+                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="helper.saveLogs(supplemental, 'Categories'); getTenantsBySupplementals(supplemental)">
                                         <img :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
                                         <div class="category-name-holder"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>
                                     </div>
@@ -145,7 +145,7 @@
                             <div class="carousel-inner carousel-mh-626">
                                 <div class="carousel-item" v-for="(supplementals, index) in current_supplementals.children" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_supplementals_count? 'last-item':'']">
                                     <div class="row mb-3">
-                                        <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Category'); getTenantsBySupplementals(supplemental)">			
+                                        <div v-for="supplemental in supplementals" class="col-12 col-sm-4 text-left mt-3" @click="helper.saveLogs(supplemental, 'Categories'); getTenantsBySupplementals(supplemental)">			
                                             <div class="c-button">						
                                                 <img class="tenant-category" :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
                                                 <div class="c-button-align c-button-color2" v-bind:class="'c-category-'+ current_category.category_id"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>                        
@@ -180,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row col-md-10 offset-md-1">
+                <div class="row col-md-12 ml-2">
                     <div id="supplementalCarousel" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false" v-show="!no_record_found">
 
                         <!-- Indicators -->
@@ -194,11 +194,11 @@
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-100': 'row mb-3'">
                                     <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="(site_orientation == 'Portrait') ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
-                                                <div class="image-holder h-100">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenants.length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
+                                                <div v-bind:class="tenants.length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
-                                                <div class="text-left pta-2 brand-name">
+                                                <div v-bind:class="tenants.length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
                                                     <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
                                                     <div v-if="tenant.tenant_details" style="font-size: 0.7em;color:#2a2a2a">{{ tenant.tenant_details.address }}</div>
                                                     <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
@@ -211,7 +211,7 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Category'); showTenant(tenant)">
+                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
                                                 <div class="image-holder h-100">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -298,8 +298,8 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-sm-3 mt-3">
-                            <div class="p-3 tenant-details">
+                        <div class="col-sm-2 mt-3 mr-0 p-0 pl-3">
+                            <div class="p-2 tenant-details">
                                 <div class="my-auto p-1 text-center">
                                     <img class="tenant-details-logo" :src="tenant_details.brand_logo">
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
@@ -338,7 +338,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-9 text-center mt-3">
+                        <div class="col-sm-10 text-center mt-3">
                             <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container">
                                 <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                     <div class="col-12 p-0">
@@ -615,7 +615,7 @@
                 site_logo: '',
                 site_orientation: '',
                 back_button: 'assets/images/English/Back.png',
-                page_title: 'Category',
+                page_title: 'Categories',
                 home_category: true,
                 child_category: false,
                 child_category_count: 0,
@@ -740,7 +740,7 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                this.page_title = 'Category';
+                this.page_title = 'Categories';
                 this.$refs.callAssist.filterAssist('tenantcategory',this.current_language_set);
             },
 
@@ -1042,7 +1042,7 @@
                 this.tenant_list = [];
                 this.category_label = category.label;
                 this.category_top_banner = category.kiosk_image_top_path;
-                this.helper.saveLogs(category, 'Category');
+                this.helper.saveLogs(category, 'Categories');
                 this.navigationLetters = false;
                 this.previous_page = 'Sub Category';
 
@@ -1173,14 +1173,14 @@
                 if(this.current_supplementals) {
                     this.current_supplementals_count = this.current_supplementals.children.length - 1;
                 }
-                this.page_title = 'Category';
+                this.page_title = 'Categories';
                 this.category_label = category.label;
                 this.home_category = false;
                 this.child_category = true;
                 this.alphabetical = false;
                 this.supplementals = false;
                 this.show_tenant = false;
-                this.helper.saveLogs({category_id: category.id}, 'Category');
+                this.helper.saveLogs({category_id: category.id}, 'Categories');
 
                 // this.initializeSwipe();
                 this.tabs_container = true;
@@ -1210,7 +1210,7 @@
                     this.tabs_container = true;
                 }
                 else if(this.child_category == true) {
-                    this.page_title = 'Category';
+                    this.page_title = 'Categories';
                     this.home_category = true;
                     this.child_category = false;
                     this.tabs_container = false;
@@ -1236,19 +1236,19 @@
 
                 } 
                 else if(this.alphabetical == true) {
-                    this.page_title = 'Category';
+                    this.page_title = 'Categories';
                     this.home_category = true;
                     this.alphabetical = false;
                 }  
                 else if(this.previous_page == 'Alphabetical' && this.supplementals == true) {
-                    this.page_title = 'Category';
+                    this.page_title = 'Categories';
                     this.home_category = false;
                     this.supplementals = false;
                     $('#alphabetical-tab').trigger('click');
                     this.previous_page = 'Sub Category';
                 }       
                 else if(this.supplementals == true) {
-                    this.page_title = 'Category';
+                    this.page_title = 'Categories';
                     this.home_category = true;
                     this.supplementals = false;
                     if (this.previous_page == 'Alphabetical'){
