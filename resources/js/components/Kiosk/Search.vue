@@ -25,7 +25,7 @@
             <div class="row keyboard-section" v-show="!search_results">
                 <div v-if="site_name == 'Parqal'" class="col-md-10 offset-md-1">
                     <form class="row form text-center" v-on:submit.prevent="onEnter">
-                        <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
+                        <div class="input-group mb-5 mt-5" style="width: 64%; margin: auto;"> 
                             <input type="text" id="code" name="code" class="form-control input-mg search-box">
                             <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
                             <label class="notification">Please type at least two (2) letters to search.</label>
@@ -47,7 +47,8 @@
             <div class="result-section" v-show="search_results">
                 <div class="row mb-23">
                     <div class="col-md-12 home-title text-center">
-                        <div><span class="translateme" data-en="You searched for">You searched for</span>: ‘{{this.search.key_words}}’</div>                  
+                        <div><span class="translateme" data-en="You searched for">You searched for</span><br/>
+                            <p>‘{{this.search.key_words}}’</p></div>                  
                     </div>
                 </div>
 
@@ -55,7 +56,7 @@
                     <img src="images/no-results.png" />
                 </div>
 
-                <div class="row col-md-10 offset-md-1">
+                <div class="row col-md-12 ml-2">
                     <div id="searchCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">
                                     
                         <!-- Control dots -->
@@ -64,17 +65,17 @@
                         </ul>
 
                         <!-- The slideshow -->
-                        <div class="carousel-inner custom-p-0-18" v-bind:class = "(current_subscriber_list_count > 0) ? 'carousel-mh-528':'carousel-mh-605'">
-                            <div class="carousel-item" v-for="(tenants, index) in tenant_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_tenant_list_count? 'last-item':'']">
-                                <div class="row mb-3">
-                                    <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
+                        <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
+                            <div v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-item': 'carousel-item tenant-store-carousel', index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']" v-for="(tenants, index) in tenant_list" :data-index="index">
+                                <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-100': 'row mb-3'">
+                                    <div v-for="tenant in tenants" v-bind:class="tenants.length <= 2 ? 'col-12 col-sm-6 text-left mt-3' : 'col-12 col-sm-4 text-left mt-3'" class="">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="(site_orientation == 'Portrait') ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
-                                                <div class="image-holder h-100">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenants.length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
+                                                <div v-bind:class="tenants.length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
-                                                <div class="text-left pta-2 brand-name">
-                                                    <div class="shop_name">{{ tenant.brand_name }}</div>
+                                                <div v-bind:class="tenants.length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
+                                                    <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
                                                     <div v-if="tenant.tenant_details" style="font-size: 0.7em;color:#2a2a2a">{{ tenant.tenant_details.address }}</div>
                                                     <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                     <div style="font-weight: bold;font-size: 0.7em">
@@ -86,13 +87,13 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <div class="tenant-search bg-white text-center box-shadowed" @click="helper.saveLogs(tenant, 'Search'); showTenant(tenant)">
+                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
                                                 <div class="image-holder h-100">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
                                                 <div class="text-left pta-2 brand-name">
-                                                    <div class="shop_name">{{ tenant.brand_name }}</div>
-                                                    <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }}</div>
+                                                    <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
+                                                    <div style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                     <div style="font-weight: bold;font-size: 0.7em">
                                                         <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
                                                         <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
@@ -100,11 +101,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
+                                        </div>                                        
                                     </div>
                                 </div>
-                            </div>                        
+                            </div>  
                         </div>
 
                         <!-- Left and right controls -->
@@ -159,7 +159,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 text-center mt-4 ml-4 mr-4">
+                    <div class="col-sm-12 text-center mt-5 ml-4 mr-4">
                         <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container-portrait">
                             <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                 <div class="col-12 p-0">
@@ -180,8 +180,8 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div class="col-sm-3 mt-3">
-                        <div class="p-3 tenant-details">
+                    <div class="col-sm-2 mt-3 mr-0 p-0 pl-3">
+                        <div class="p-2 tenant-details">
                             <div class="my-auto p-1 text-center">
                                 <img class="tenant-details-logo" :src="tenant_details.brand_logo">
                                 <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
@@ -220,7 +220,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-9 text-center mt-3">
+                    <div class="col-sm-10 text-center mt-3">
                         <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container">
                             <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                 <div class="col-12 p-0">
@@ -239,7 +239,7 @@
                             </div>
                         </div>
                     </div>
-                </template>
+                </template>                    
             </div>
             <div v-else class="row">
                 <div class="col-12 col-sm-8 text-center">
@@ -372,6 +372,7 @@
         name: "Search",
         data() {
             return {
+                category_top_banner: "",
                 current_date: "",
                 current_time: "",
                 search: {
@@ -396,6 +397,7 @@
                 product_image: '',
                 helper: new Helpers(),
                 fromAutoSuggest: false,
+                tenant_list_count: 0,
                 current_tenant_list_count: 0,
                 current_subscriber_list_count: 0,
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
@@ -496,6 +498,7 @@
 
                         this.current_tenant_list_count = this.tenant_list.length - 1;
                         this.current_subscriber_list_count = this.subscriber_list.length;
+                        console.log(this.current_subscriber_list_count);
                         this.search.results = response.data.data_count;
                         this.page_title = 'Search';
                         this.helper.saveLogs(this.search, 'Search');
