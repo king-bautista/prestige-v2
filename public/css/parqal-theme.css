@@ -1217,7 +1217,7 @@ input[type="text"]:focus
 .map-search-modal-position {
     top: 44%;
     left: 46%;
-    width: 55%;
+    width: 60%;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 25px;
     padding-bottom: 35px;
