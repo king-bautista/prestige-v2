@@ -61,7 +61,7 @@
                     <img :src="landmark_details.image_url_path" class="lanmark-img">
                 </div>
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-150': 'col-sm-7'" >
-                    <div class="lanmark-detail-holder m-5">
+                    <div class="lanmark-detail-holder m-5 mt-100">
                         <h2>{{ landmark_details.landmark }}</h2>
                         <p>{{ landmark_details.descriptions }}</p>
                         <p>{{ landmark_details.name }}</p>
