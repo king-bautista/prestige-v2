@@ -1361,6 +1361,8 @@ div.mall-details {
     margin-top: 0;
     color: #fff;
     margin-left: 0 !important;
+    font-family: 'Overpass' !important;
+    font-weight: 500;
 }
 
 .socmedicon {
