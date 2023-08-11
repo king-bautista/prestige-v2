@@ -36,19 +36,19 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <ul class="assist p">
+                        <ul class="assist p-0">
 
                         </ul>              
                     </div>
 
                     <div>
-                        <div class="" style="text-align: left;padding-left: 45px;margin-top: 48px;">
+                        <div class="" style="text-align: left;padding-left: 20px;margin-top: 48px;">
                             <span class="helpful-label translateme" data-en="Was this helpful?">Was this helpful?</span>
                             <a href="#" class="response-btn btn-helpful" @click="updateFeedback()">
-                                <span class="fa fa-thumbs-up"></span>
+                                <span class="far fa-thumbs-up"></span>
                             </a> 
                             <a href="#" class="response-btn btn-nothelpful">
-                                <span class="fa fa-thumbs-down"></span>
+                                <span class="far fa-thumbs-down"></span>
                             </a> 
                             <span class="translateme" v-show="feedback_response" data-en="Thank you!">Thank you!</span>
                         </div>             
@@ -179,10 +179,7 @@
 
         <!-- MODAL -->
         <div class="custom-modal p-l-490 feedback-search-modal" v-show="feedback_modal">
-            <div class="feedback-search-modal-position">                    
-                <div class="text-right text-white custom-w-1140">
-                    <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
-                </div>   
+            <div class="feedback-search-modal-position">                      
                 <div class="feedback-section">
                     <div class="mb-18"><span class="label-2">How can we improve?</span></div>
                     <div class="feedback-flex mb-18">
@@ -208,6 +205,7 @@
                     </div>
                     <div>
                         <button class="c-submit"  v-bind:class="[submit_disable? 'disabled-btn':'']" @click="updateFeedback()">Submit</button>
+                        <span class="btn-close-modal"><i class="far fa-times-circle" style="color:#E0BD69;"></i></span>
                     </div>
                 </div>     
                 <div class="softkeys-feedback mt-20" data-target="textarea[name=feedback]" v-bind:class="[disable? 'disabled':'']" v-show="softkeysFeedback"></div>

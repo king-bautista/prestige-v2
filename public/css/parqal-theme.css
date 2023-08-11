@@ -1434,3 +1434,42 @@ pre {
     padding-left: 30px;
     padding-top: 0px;
 }
+
+.feedback-section {
+    width: 885px;
+    height: 305px;
+    padding: 35px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 18px;
+}
+
+.feedback-child {
+    width: 400px;
+    font-size: 24px;
+}
+
+#feedback-textarea {
+    border-radius: 15px !important;
+}
+
+.c-submit {
+    padding: 8px 50px 8px 50px;
+    border-radius: 10px;
+    border: 1px solid #E0BD69 !important;
+    background-color: #E0BD69 !important;
+    color: #fff;
+    box-shadow: none;
+    outline: none;
+    margin-bottom: 15px;
+}
+
+.softkeys-feedback {
+    height: 395px;
+    width: 885px;
+    margin: auto;
+    padding-top: 15px;
+    margin-top: 15px;
+    background-color: rgb(0,0,0,.5);
+    border-radius: 15px;
+}
