@@ -60,7 +60,7 @@
                     <div id="searchCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">
                                     
                         <!-- Control dots -->
-                        <ul class="carousel-indicators z-1" v-show="current_tenant_list_count>0">
+                        <ul v-bind:class="current_subscriber_list_count > 0 ? 'carousel-indicators carousel-indicators-search-custom z-1': 'carousel-indicators z-1'" v-show="current_tenant_list_count>0">
                             <li data-target="#searchCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                         </ul>
 
@@ -108,17 +108,25 @@
                         </div>
 
                         <!-- Left and right controls -->
-                        <a class="carousel-control-prev control-prev-sp p-l-z-a" href="#searchCarousel" data-slide="prev">
+                        <a class="carousel-control-prev carousel-control-prev-search-custom control-prev-sp p-l-z-a" href="#searchCarousel" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
-                        <a class="carousel-control-next control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>=1">
+                        <a class="carousel-control-next carousel-control-next-search-custom control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>=1">
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
 
-                    <div class="tabs m-a mt-42" v-show="current_subscriber_list_count>0">
-                        <span class="mr-10 my-auto translateme label-2" data-en="You might want to try : ">You might want to try : </span>
-                        <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.subscriber_logo" :alt="subscriber.brand_name" @click="onClickSuggestedSubsriber(subscriber.id)">
+                    <div class="want-to-try" v-show="current_subscriber_list_count>0">
+                        <div class="row">
+                            <div class="col-12 pl-100">
+                                <span class="translateme" data-en="You might want to try : ">You might want to try : </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pl-100">
+                                <img v-for="subscriber in subscriber_list" class="shop-logo tenant-store" :src="subscriber.subscriber_logo" :alt="subscriber.brand_name" @click="onClickSuggestedSubsriber(subscriber.id)">
+                            </div>
+                        </div>
                     </div>
 
                     <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" style="margin: auto;">
