@@ -192,7 +192,7 @@
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
                             <div v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-item': 'carousel-item tenant-store-carousel', index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']" v-for="(tenants, index) in tenant_list" :data-index="index">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-100': 'row mb-3'">
-                                    <div v-for="tenant in tenants" class="col-12 col-sm-4 text-left mt-3">
+                                    <div v-for="tenant in tenants" v-bind:class="tenants.length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
                                         <div v-if="site_name == 'Parqal'">
                                             <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenants.length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
                                                 <div v-bind:class="tenants.length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">

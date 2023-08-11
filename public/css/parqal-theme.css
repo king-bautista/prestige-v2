@@ -897,6 +897,10 @@ input[type="text"]:focus
     background-position: center;
 }
 
+.carousel-control-next-search-custom {
+    height: 365px;
+}
+
 .carousel-control-next-portrait {
     height: 845px;
 }
@@ -907,6 +911,10 @@ input[type="text"]:focus
     border: none;
     background: url(/images/parqal-left.png) no-repeat;
     background-position: center;
+}
+
+.carousel-control-prev-search-custom {
+    height: 365px;
 }
 
 .carousel-control-prev-portrait {
@@ -1131,6 +1139,10 @@ input[type="text"]:focus
 
 .carousel-indicators {
     bottom: -4rem;
+}
+
+.carousel-indicators-search-custom {
+    bottom: 13rem;
 }
 
 .control-next-pp {
@@ -1377,4 +1389,19 @@ pre {
     max-width: 65%;
     margin: 5px;
     border-radius: 15px;
+}
+
+.want-to-try {
+    position: absolute;
+    bottom: 45px;
+    width: 100%;
+}
+
+.want-to-try span{
+    color: #E0BD69;
+    font-size: 24px;
+}
+
+.pl-100 {
+    padding-left: 100px;
 }
