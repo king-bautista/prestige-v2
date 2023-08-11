@@ -238,7 +238,7 @@ input[type="text"]:focus
 
 #guide-button {
     position: absolute;
-    font-family: 'Henry Sans Regular';
+    font-family: 'Overpass' !important;
     font-size: 15px;
     text-align: center;
     font-weight: 600;
@@ -315,7 +315,7 @@ input[type="text"]:focus
 }
 
 .tenant-details-name {
-    font-family: 'Henry Sans Medium';
+    font-family: 'Overpass' !important;
     font-weight: 800;
     color: #2a2a2a;
     font-size: 1.1em;
@@ -517,7 +517,7 @@ input[type="text"]:focus
 .widget-button {
     background-size: 75px auto;
     background-repeat: no-repeat;
-    font-family: 'Overpass';
+    font-family: 'Overpass' !important;
     background-position-x: center;
 }
 
@@ -531,7 +531,7 @@ input[type="text"]:focus
 }
 
 .button-text-align {
-    font-family: 'Henry Sans Regular';
+    font-family: 'Overpass' !important;
     position: absolute;
     text-align: center;
     width: 225px;
@@ -1345,12 +1345,12 @@ div.mall-details {
     max-width: 100%;
     min-height: 100%;
     margin: auto;
-    height: 200px;
+    height: 375px;
 }
 
 .about-banner-holder {
     width: 100%;
-    height: 390px;
+    height: 290px;
     overflow: hidden;
     border-radius: 25px;
 }
@@ -1370,13 +1370,14 @@ div.mall-details {
 }
 
 pre {
-    font-size: 20px;
+    font-size: 30px;
     color: #fff;
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    font-family: 'Overpass' !important;
 }
 
 .n-l-z-a {
@@ -1408,4 +1409,16 @@ pre {
 
 .pl-100 {
     padding-left: 100px;
+}
+
+.widget-button.active div {
+    font-family: 'Overpass' !important;
+}
+
+.shop_name {
+    font-size: 0.875em;
+    color: #2a2a2a;
+    width: 98%;
+    font-family: 'Overpass' !important;
+    font-weight: 500;
 }
