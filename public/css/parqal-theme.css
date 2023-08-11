@@ -198,7 +198,7 @@ input[type="text"]:focus
 }
 
 .custom-color {
-    color: #DFBD69;
+    color: #000;
 }
 
 .guide-title {
@@ -212,17 +212,18 @@ input[type="text"]:focus
 }
 
 #tenant-details {
-    width: 485px;
-    min-height: 525px;
+    width: 363px;
+    min-height: 417px;
     position: absolute;
     top: 43%;
     transform: translateY(-50%);
-    left: 920px;
+    left: 1070px;
     display: none;
     z-index: 1;
     border-radius: 40px;
     border: 0;
     background-color: rgba(143,143,143,0.8);
+    font-family: 'Overpass' !important;
 }
 
 .tenant-details-portrait {
@@ -234,6 +235,7 @@ input[type="text"]:focus
     color: #fff !important;
     border-bottom-color: transparent;
     border-top-color: transparent;
+    font-family: 'Overpass' !important;
 }
 
 #guide-button {
@@ -242,8 +244,8 @@ input[type="text"]:focus
     font-size: 15px;
     text-align: center;
     font-weight: 600;
-    top: 646px;
-    right: 60px;
+    top: 631px;
+    right: 15px;
     background: #98dad0;
     color: #fff;
     width: 100px;
@@ -412,7 +414,7 @@ input[type="text"]:focus
     top: 43% !important;
     padding: 6px !important;
     transition: transform .1s ease !important;
-    border: solid #DFBD69!important;
+    border: solid #000!important;
     display: inline-block !important;
     border-width: 0 6px 6px 0 !important;
     transform: rotate(-225deg) !important;
@@ -1423,4 +1425,12 @@ pre {
     width: 98%;
     font-family: 'Overpass' !important;
     font-weight: 500;
+}
+
+.assist li {
+    position: relative;
+    margin: 0;
+    padding-bottom: 9px;
+    padding-left: 30px;
+    padding-top: 0px;
 }

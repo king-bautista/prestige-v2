@@ -199,7 +199,7 @@ WayFinding.prototype = {
         var coord_x = tenant.point_x;
         var coord_y = tenant.point_y;
         var deg = tenant.rotation_z;
-        var font_face = 'Henry Sans Medium';
+        var font_face = 'Overpass';
         var dot_radius = 1;
         var font_weight = 'bold';
         var labels=[];
@@ -680,13 +680,13 @@ WayFinding.prototype = {
         console.log(direction);
         if(direction) {
             context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
-            context.font = "bold 30px Henry Sans Medium";
+            context.font = "bold 30px Overpass";
             context.fillStyle = "rgb(71, 131, 162)";
             context.fillText(text.toUpperCase(),(this.settings.points.linePoint[this.settings.current_point].x+65),(this.settings.points.linePoint[this.settings.current_point].y-37));
         }
         else {
             context.drawImage(document.getElementById('marker-escalator-down'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
-            context.font = "bold 30px Henry Sans Medium";
+            context.font = "bold 30px Overpass";
             context.fillStyle = "rgb(71, 131, 162)";
             context.fillText(text.toUpperCase(),(this.settings.points.linePoint[this.settings.current_point].x+65),(this.settings.points.linePoint[this.settings.current_point].y-37));
         }
