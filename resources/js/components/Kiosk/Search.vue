@@ -79,8 +79,8 @@
                                                     <div v-if="tenant.tenant_details" style="font-size: 0.7em;color:#2a2a2a">{{ tenant.tenant_details.address }}</div>
                                                     <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                     <div style="font-weight: bold;font-size: 0.7em">
-                                                        <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
-                                                        <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span>
+                                                        <!-- <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
+                                                        <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span> -->
                                                         <span class="featured_shop" v-if="tenant.is_subscriber==1">Featured</span>
                                                     </div>
                                                 </div>
