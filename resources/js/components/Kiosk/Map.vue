@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-md-12 mb-3 pl-0">
                 <div id="tenant-details" v-bind:class="(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait': 'card mb-3 label-3'">
-                    <div class="card-body text-info text-center">
+                    <div class="card-body text-info text-center p-0">
                         <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
                         <div class="guide-steps">
                             <img src="images/parqal-walk.png" style="width:20px;" v-if="site_name == 'Parqal'">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <ul class="assist">
+                        <ul class="assist p">
 
                         </ul>              
                     </div>
@@ -603,9 +603,9 @@
 
                 $('#repeatButton').on('click',function(){
                     $('.map-floor-option .multiselect__tags .multiselect__single').html(vm.active_map_details.building_floor_name);
-                    obj.wayfindings.replay();
-                    vm.panzoom.zoom(vm.active_map_details.default_scale)
+                    vm.panzoom.zoom((vm.active_map_details.default_zoom));
                     setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
+                    obj.wayfindings.replay();
     			});
 
                 $('#guide-button').on('click',function(){
