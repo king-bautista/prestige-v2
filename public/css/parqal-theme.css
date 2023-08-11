@@ -1141,8 +1141,12 @@ input[type="text"]:focus
     bottom: -4rem;
 }
 
-.carousel-indicators-search-custom {
+.carousel-indicators-with-subscriber {
     bottom: 13rem;
+}
+
+.carousel-indicators-search {
+    bottom: 6rem;
 }
 
 .control-next-pp {

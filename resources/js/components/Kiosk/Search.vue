@@ -60,7 +60,7 @@
                     <div id="searchCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">
                                     
                         <!-- Control dots -->
-                        <ul v-bind:class="current_subscriber_list_count > 0 ? 'carousel-indicators carousel-indicators-search-custom z-1': 'carousel-indicators z-1'" v-show="current_tenant_list_count>0">
+                        <ul v-bind:class="current_subscriber_list_count > 0 ? 'carousel-indicators carousel-indicators-with-subscriber z-1': 'carousel-indicators carousel-indicators-search z-1'" v-show="current_tenant_list_count>0">
                             <li data-target="#searchCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                         </ul>
 
@@ -506,7 +506,6 @@
 
                         this.current_tenant_list_count = this.tenant_list.length - 1;
                         this.current_subscriber_list_count = this.subscriber_list.length;
-                        console.log(this.current_subscriber_list_count);
                         this.search.results = response.data.data_count;
                         this.page_title = 'Search';
                         this.helper.saveLogs(this.search, 'Search');

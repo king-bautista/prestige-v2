@@ -354,7 +354,7 @@ class MainController extends AppBaseController
                 $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
                 ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                // ->whereIn('brands.category_id',  $suggest_cat)
+                ->whereIn('brands.category_id',  $suggest_cat)
                 ->select('site_tenants.*')
                 ->distinct()
                 ->get();
@@ -365,7 +365,7 @@ class MainController extends AppBaseController
                 if ($suggest_subscribers_counts > 0) {
                     $site_tenants = array_chunk($site_tenants->toArray(), 9);
                 } else {
-                    $site_tenants = array_chunk($site_tenants->toArray(), 15);
+                    $site_tenants = array_chunk($site_tenants->toArray(), 12);
                 }
 
                 // dd($site_tenants);
