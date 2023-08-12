@@ -179,7 +179,7 @@
 
         <!-- MODAL -->
         <div class="custom-modal p-l-490 feedback-search-modal" v-show="feedback_modal">
-            <div class="feedback-search-modal-position">                      
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'feedback-search-modal-position-portrait': 'feedback-search-modal-position'" class="">                      
                 <div class="feedback-section">
                     <div class="mb-18"><span class="label-2">How can we improve?</span></div>
                     <div class="feedback-flex mb-18">

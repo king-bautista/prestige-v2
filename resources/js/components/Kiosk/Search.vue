@@ -25,7 +25,7 @@
             <div class="row keyboard-section" v-show="!search_results">
                 <div v-if="site_name == 'Parqal'" class="col-md-10 offset-md-1">
                     <form class="row form text-center" v-on:submit.prevent="onEnter">
-                        <div class="input-group mb-5 mt-5" style="width: 64%; margin: auto;"> 
+                        <div class="input-group mb-5 mt-5" v-bind:style="(site_orientation == 'Portrait') ? 'width: 90%;': 'width: 64%;'" style="margin: auto;"> 
                             <input type="text" id="code" name="code" class="form-control input-mg search-box">
                             <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
                             <label class="notification">Please type at least two (2) letters to search.</label>
@@ -57,16 +57,16 @@
                 </div>
 
                 <div class="row col-md-12 ml-2">
-                    <div id="searchCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">
+                    <div id="searchCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">
                                     
                         <!-- Control dots -->
-                        <ul v-bind:class="current_subscriber_list_count > 0 ? 'carousel-indicators carousel-indicators-with-subscriber z-1': 'carousel-indicators carousel-indicators-search z-1'" v-show="current_tenant_list_count>0">
+                        <ul v-bind:class="[(current_subscriber_list_count > 0 ? 'carousel-indicators carousel-indicators-with-subscriber z-1': 'carousel-indicators carousel-indicators-search z-1'), (site_orientation == 'Portrait' ? 'carousel-indicators-with-subscriber-portrait' : '')]" v-show="current_tenant_list_count>0">
                             <li data-target="#searchCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                         </ul>
 
                         <!-- The slideshow -->
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
-                            <div v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-item': 'carousel-item tenant-store-carousel', index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']" v-for="(tenants, index) in tenant_list" :data-index="index">
+                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'carousel-item': 'carousel-item tenant-store-carousel'), (index == 0 ? 'first-item active':''), (index == tenant_list_count? 'last-item':'')]" v-for="(tenants, index) in tenant_list" :data-index="index">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-100': 'row mb-3'">
                                     <div v-for="tenant in tenants" v-bind:class="tenants.length <= 2 ? 'col-12 col-sm-6 text-left mt-3' : 'col-12 col-sm-4 text-left mt-3'" class="">
                                         <div v-if="site_name == 'Parqal'">
@@ -108,15 +108,15 @@
                         </div>
 
                         <!-- Left and right controls -->
-                        <a class="carousel-control-prev carousel-control-prev-search-custom control-prev-sp p-l-z-a" href="#searchCarousel" data-slide="prev">
+                        <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev-search-custom-portrait': 'carousel-control-prev-search-custom'" class="carousel-control-prev control-prev-sp p-l-z-a" href="#searchCarousel" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
-                        <a class="carousel-control-next carousel-control-next-search-custom control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>=1">
+                        <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next-search-custom-portrait': 'carousel-control-next-search-custom'" class="carousel-control-next control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>=1">
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
 
-                    <div class="want-to-try" v-show="current_subscriber_list_count>0">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'want-to-try-portrait': 'want-to-try'" v-show="current_subscriber_list_count>0">
                         <div class="row">
                             <div class="col-12 pl-100">
                                 <span class="translateme" data-en="You might want to try : ">You might want to try : </span>
@@ -504,6 +504,7 @@
                             this.temp = this.subscriber_list;
                         }
 
+                        this.tenant_list_count = this.tenant_list.length - 1;
                         this.current_tenant_list_count = this.tenant_list.length - 1;
                         this.current_subscriber_list_count = this.subscriber_list.length;
                         this.search.results = response.data.data_count;

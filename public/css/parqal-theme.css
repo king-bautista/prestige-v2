@@ -32,6 +32,19 @@ body,html {
     background-image: url('../assets/images/parqal-home.png') !important;
 }
 
+.home-button-portrait {
+    background-image: url('../assets/images/parqal-home-portrait.png');
+    color: #c15669;
+}
+
+.home-button-portrait:hover {
+    background-image: url('../assets/images/parqal-home-portrait.png') !important;
+}
+
+.home-button-portrait.active {
+    background-image: url('../assets/images/parqal-home-portrait.png') !important;
+}
+
 .search-button {
     background-image: url('../assets/images/parqal-search.png');
     color: #6051e3;
@@ -46,6 +59,20 @@ body,html {
     background-image: url('../assets/images/parqal-search.png') !important;
 }
 
+.search-button-portrait {
+    background-image: url('../assets/images/parqal-search-portrait.png');
+    color: #6051e3;
+    margin-right: -3px;
+}
+
+.search-button-portrait:hover {
+    background-image: url('../assets/images/parqal-search-portrait.png') !important;
+}
+
+.search-button-portrait.active {
+    background-image: url('../assets/images/parqal-search-portrait.png') !important;
+}
+
 .map-button {
     background-image: url('../assets/images/parqal-map.png');
     color: #6051e3;
@@ -58,6 +85,20 @@ body,html {
 
 .map-button.active {
     background-image: url('../assets/images/parqal-map.png') !important;
+}
+
+.map-button-portrait {
+    background-image: url('../assets/images/parqal-map-portrait.png');
+    color: #6051e3;
+    margin-right: -5px;
+}
+
+.map-button-portrait:hover {
+    background-image: url('../assets/images/parqal-map-portrait.png') !important;
+}
+
+.map-button-portrait.active {
+    background-image: url('../assets/images/parqal-map-portrait.png') !important;
 }
 
 .promos-button {
@@ -100,6 +141,19 @@ body,html {
     background-image: url('../assets/images/parqal-events.png') !important;
 }
 
+.events-button-portrait {
+    background-image: url('../assets/images/parqal-events-portrait.png');
+    color: #246c63;
+}
+
+.events-button-portrait:hover {
+    background-image: url('../assets/images/parqal-events-portrait.png') !important;
+}
+
+.events-button-portrait.active {
+    background-image: url('../assets/images/parqal-events-portrait.png') !important;
+}
+
 .landmark-button {
     background-image: url('../assets/images/parqal-landmark.png');
     color: #246c63;
@@ -110,6 +164,19 @@ body,html {
 }
 
 .landmark-button.active {
+    background-image: url('../assets/images/parqal-landmark.png') !important;
+}
+
+.landmark-button-portrait {
+    background-image: url('../assets/images/parqal-landmark.png');
+    color: #246c63;
+}
+
+.landmark-button-portrait:hover {
+    background-image: url('../assets/images/parqal-landmark.png') !important;
+}
+
+.landmark-button-portrait.active {
     background-image: url('../assets/images/parqal-landmark.png') !important;
 }
 
@@ -228,7 +295,7 @@ input[type="text"]:focus
 
 .tenant-details-portrait {
     top: 50% !important;
-    left: 600px !important;
+    left: 65% !important;
 }
 
 #tenant-details .assist {
@@ -255,7 +322,7 @@ input[type="text"]:focus
 }
 
 .guide-button-portrait {
-    top: 855px !important;
+    top: 84% !important;
     right: 10px !important;
 }
 
@@ -463,7 +530,8 @@ input[type="text"]:focus
 }
 
 .back-button-portrait {
-    bottom: -24rem;
+    bottom: -23rem;
+    left: 35px;
 }
 
 .back-overlay {
@@ -480,7 +548,8 @@ input[type="text"]:focus
 }
 
 .back-overlay-portrait {
-    bottom: -22.5rem;
+    left: 30px;
+    bottom: -24rem;
 }
 
 
@@ -497,7 +566,7 @@ input[type="text"]:focus
 }
 
 .assistance_tooltip-portrait {
-    bottom: -24rem;
+    bottom: -23rem;
 }
 
 .help-overlay {
@@ -513,7 +582,8 @@ input[type="text"]:focus
 }
 
 .help-overlay-portrait {
-    bottom: -22.5rem;
+    bottom: -24rem;
+    right: 43px;
 }
 
 .widget-button {
@@ -529,7 +599,7 @@ input[type="text"]:focus
 }
 
 .h-button-portrait {
-    width: 195px;
+    width: 212px;
 }
 
 .button-text-align {
@@ -544,7 +614,7 @@ input[type="text"]:focus
 }
 
 .button-text-align-portrait {
-    width: 195px;
+    width: 212px;
 }
 
 .router-page {
@@ -552,7 +622,7 @@ input[type="text"]:focus
 }
 
 .router-page-portrait {
-    height: 1125px;
+    height: 1111px;
 }
 
 .bg-color {
@@ -596,7 +666,7 @@ input[type="text"]:focus
     margin: auto;
     color: #DFBD69;
     font-size: 30px;
-    padding-top: 30px;
+    padding-top: 45px;
     font-weight: bold;
 }
 
@@ -669,7 +739,7 @@ input[type="text"]:focus
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 30px;
+    font-size: 45px;
     text-transform: uppercase;
     font-weight: bolder;
     width: 240px;
@@ -713,6 +783,10 @@ input[type="text"]:focus
     margin-left: 155px;
 }
 
+.ml-80 {
+    margin-left: 80px;
+}
+
 .ml-25 {
     margin-left: 25px;
 }
@@ -733,13 +807,14 @@ input[type="text"]:focus
 }
 
 .tabs-container-portrait {
-    bottom: -4.4rem;
+    bottom: -7rem;
 }
 
 .datetime-holder {
     color: #DFBD69;
     font-size: 30px;
     font-weight: bolder;
+    font-family: 'Overpass' !important;
 }
 
 .separator {
@@ -825,9 +900,9 @@ input[type="text"]:focus
 .dropdown-menu-portrait {
     background-color: #DFBD69;
     border-radius: 0.7rem;
-    min-width: 11rem;
+    min-width: 12rem;
     transform: none !important;
-    top: -95px !important;
+    top: -75px !important;
 }
 
 .dropdown-item {
@@ -880,7 +955,7 @@ input[type="text"]:focus
     transform: translate( -50%, -250%);
     color: #DFBD69;
     opacity: 0.9;
-    font-size: 34px;
+    font-size: 40px;
 }
 
 .carousel-control-next-icon {
@@ -903,8 +978,24 @@ input[type="text"]:focus
     height: 365px;
 }
 
+.carousel-control-next-search-custom-portrait {
+    height: 622px;
+    right: -40px !important;
+}
+
+.carousel-control-next-event-portrait {
+    height: 615px !important;
+    right: 0px !important;
+}
+
+.carousel-control-prev-event-portrait {
+    height: 615px !important;
+    left: 0px !important;
+}
+
 .carousel-control-next-portrait {
-    height: 845px;
+    height: 890px;
+    right: -40px !important;
 }
 
 .carousel-control-prev {
@@ -919,8 +1010,14 @@ input[type="text"]:focus
     height: 365px;
 }
 
+.carousel-control-prev-search-custom-portrait {
+    height: 622px;
+    left: -50px !important;
+}
+
 .carousel-control-prev-portrait {
-    height: 845px;
+    height: 890px;
+    left: -50px !important;
 }
 
 .tenant-store, .tenant-search {
@@ -934,7 +1031,7 @@ input[type="text"]:focus
 }
 
 .tenant-store-portrait, .tenant-search-portrait {
-    width: 270px;
+    width: 300px;
     margin-bottom: 25px;
 }
 
@@ -1041,7 +1138,15 @@ input[type="text"]:focus
     position: relative;
 }
 
-.landmark-container img{
+.landmark-container-portrait {
+    width: 90%;
+    height: 264px;
+    overflow: hidden;
+    border-radius: 25px;
+    position: relative;
+}
+
+.landmark-container img, .landmark-container-portrait img{
     width: 100%;
     height: 264px;
 }
@@ -1087,8 +1192,17 @@ input[type="text"]:focus
     margin-top: 100px !important;
 }
 
+.mt-80 {
+    margin-top: 80px !important;
+}
+
 #eventCarousel {
     width: 100%;
+}
+
+.event-carousel-portrait {
+    left: 51.5%;
+    transform: translateX(-50%);
 }
 
 .event-container {
@@ -1100,7 +1214,7 @@ input[type="text"]:focus
 
 .event-container-portrait {
     width: 100%;
-    height: 315px;
+    height: 275px;
     overflow: hidden;
     position: relative;
 }
@@ -1115,12 +1229,8 @@ input[type="text"]:focus
 }
 
 .event-container-portrait img{
-    width: 175px;
-    height: 175px;
+    width: 90%;
     border-radius: 25px;
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 
 .event-name-holder {
@@ -1144,8 +1254,16 @@ input[type="text"]:focus
     bottom: -4rem;
 }
 
+.carousel-indicators-event {
+    bottom: -1rem;
+}
+
 .carousel-indicators-with-subscriber {
     bottom: 13rem;
+}
+
+.carousel-indicators-with-subscriber-portrait {
+    bottom: 0;
 }
 
 .carousel-indicators-search {
@@ -1265,9 +1383,9 @@ input[type="text"]:focus
 }
 
 .auto_complete_portrait {
-    top: 73% !important;
-    height: 105pxpx !important;
-    width: 648px !important;
+    top: 80% !important;
+    height: 105px !important;
+    width: 832px !important;
 }
 
 .ui-autocomplete-portrait {
@@ -1407,7 +1525,14 @@ pre {
     width: 100%;
 }
 
-.want-to-try span{
+.want-to-try-portrait {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+.want-to-try span, .want-to-try-portrait span{
     color: #E0BD69;
     font-size: 24px;
 }
@@ -1475,6 +1600,15 @@ pre {
     border-radius: 15px;
 }
 
-.map-floor-option {
+.carousel-portrait {
+    width: 90% !important;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
+.feedback-search-modal-position-portrait {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

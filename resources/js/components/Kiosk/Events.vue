@@ -21,19 +21,19 @@
             </div>
         </div>
         <div v-show="event_page">
-            <div class="row col-md-10 offset-md-1" v-if="event_list.length > 0">
-                <div id="eventCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 3">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12': 'col-md-10 offset-md-1'" class="row" v-if="event_list.length > 0">
+                <div id="eventCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 2">
                         
                     <!-- Control dots -->
-                    <ul class="carousel-indicators z-1">
+                    <ul class="carousel-indicators carousel-indicators-event z-1">
                         <li data-target="#eventCarousel" v-for="(events, index) in event_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                     </ul>
 
                     <!-- The slideshow -->
                     <div class="carousel-inner carousel-mh-690 custom-p-0-39">
-                        <div class="carousel-item" v-for="(events, index) in event_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_event_list_count? 'last-item':'']">
+                        <div class="carousel-item" v-for="(events, index) in event_list" v-bind:class = "[(index == 0 ? 'first-item active':''), (index == current_event_list_count? 'last-item':'')]">
                             <div class="row mb-3">
-                                <div v-for="event in events" class="col-sm-3 mt-10 mb-6">
+                                <div v-for="event in events" v-bind:class="(events.length == 3) ? 'col-sm-4 mt-10 mb-6': 'col-sm-3 mt-10 mb-6'" class="">
                                     <div v-bind:class="(site_orientation == 'Portrait') ? 'text-center event-container-portrait mb-3': 'text-center event-container mb-3'" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
                                         <img :src="event.image_url_path" :alt="event.name" />
                                         <div class="event-name-holder">
@@ -47,16 +47,16 @@
                     </div>
 
                     <!-- Left and right controls -->
-                    <a class="carousel-control-prev control-prev-pp p-l-z-p ct-110" href="#eventCarousel" data-slide="prev" v-show="current_event_list_count >= 1">
+                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev-event-portrait': ''" class="carousel-control-prev control-prev-pp p-l-z-p ct-110" href="#eventCarousel" data-slide="prev" v-show="current_event_list_count >= 1">
                         <span class="carousel-control-prev-icon"></span>
                     </a>
-                    <a class="carousel-control-next control-next-pp n-l-z-p ct-110" href="#eventCarousel" data-slide="next" v-show="current_event_list_count >= 1">
+                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next-event-portrait': ''" class="carousel-control-next control-next-pp n-l-z-p ct-110" href="#eventCarousel" data-slide="next" v-show="current_event_list_count >= 1">
                         <span class="carousel-control-next-icon"></span>
                     </a>
 
                 </div>
                 
-                <div v-if="event_list[0].length <= 3" class="row event-item-holder">
+                <div v-if="event_list[0].length <= 2" class="row event-item-holder">
                     <template v-for="(events, index) in event_list">
                         <div class="m-auto" v-for="event in events">
                             <div class="event-container-custom" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
@@ -69,6 +69,7 @@
                         </div>
                     </template>
                 </div>
+
                 <img v-show="no_record_found" src="images/no-results-2.png" style="margin: -14.4rem auto auto;">
             </div>
         </div>
