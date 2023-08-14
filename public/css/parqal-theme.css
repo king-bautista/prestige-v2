@@ -1643,3 +1643,8 @@ pre {
 .pinch {
     filter: none;
 }
+
+#myCarousel, #myTenants, #myCinemas, #myMovies, #supplementalCarousel, #alphabeticalCarousel, #searchCarousel, #promoCarousel {
+    width: 100%;
+    min-height: 628px;
+}
