@@ -1266,7 +1266,11 @@
                         $('#category-tab').trigger('click');
                     }
                     
-                }    
+                }
+
+                if(this.home_category == true) {
+                    this.$router.go();
+                }
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set); 
                 }, 100);        
