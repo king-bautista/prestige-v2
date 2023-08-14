@@ -213,7 +213,7 @@ input[type="text"]:focus
     padding-left: 10px; 
     padding-top: 8px; 
     padding-bottom: 8px; 
-    border-color: #6051e3;
+    border-color: #000;
     border-width: 1px;
     margin: auto;
     border-radius: 10px;
@@ -247,6 +247,8 @@ input[type="text"]:focus
 }
 
 .carousel-indicators span {
+    width: 22px;
+    height: 22px;
     background-color: #DFBD69;
 }
 
@@ -366,7 +368,8 @@ input[type="text"]:focus
 }
 
 .helpful-label {
-    color: #000;
+    color: #fff;
+    font-family: 'Overpass' !important;
 }
 
 #guide-button {
@@ -579,6 +582,7 @@ input[type="text"]:focus
     width: 48px;
     text-align: center;
     text-transform: uppercase;
+    font-family: 'Overpass' !important;
 }
 
 .help-overlay-portrait {
@@ -665,9 +669,13 @@ input[type="text"]:focus
 .client-website-holder {
     margin: auto;
     color: #DFBD69;
-    font-size: 30px;
+    font-size: 35px;
+    padding-top: 20px;
+    font-family: 'Overpass' !important;
+}
+
+.client-website-holder-portrait {
     padding-top: 45px;
-    font-weight: bold;
 }
 
 .category-container {
@@ -702,14 +710,14 @@ input[type="text"]:focus
 }
 
 .ïtem-holder-portrait {
-    width: 360px;
-    height: 361px;
+    width: 391px;
+    height: 391px;
     position: relative;
 }
 
 .rounded-container-portrait {
-    width: 260px;
-    height: 261px;
+    width: 291px;
+    height: 291px;
     overflow: hidden;
     border-radius: 50%;
     border: solid 5px #DFBD69;
@@ -724,11 +732,10 @@ input[type="text"]:focus
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 45px;
-    line-height: 55px;
     text-transform: uppercase;
     font-weight: bolder;
-    width: 310px;
+    font-size: 45px;
+    width: 255px;
     text-align: center;
     opacity: .5;
 }
@@ -739,10 +746,10 @@ input[type="text"]:focus
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 45px;
     text-transform: uppercase;
     font-weight: bolder;
-    width: 240px;
+    font-size: 45px;
+    width: 235px;
     text-align: center;
     opacity: .5;
 }
@@ -757,8 +764,8 @@ input[type="text"]:focus
 }
 
 .center > .ïtem-holder-portrait > .rounded-container-portrait {
-    width: 360px;
-    height: 361px;
+    width: 391px;
+    height: 391px;
     opacity: 1;
     margin: 0;
     transition:all 0s ease;
@@ -766,12 +773,14 @@ input[type="text"]:focus
 }
 
 .center > .ïtem-holder > .rounded-container > .category-name-holder {
-    width: 330px;
+    font-size: 54px;
+    width: 345px;
     opacity: 1;
 }
 
 .center > .ïtem-holder-portrait > .rounded-container-portrait > .category-name-holder-portrait {
-    width: 330px;
+    font-size: 54px;
+    width: 355px;
     opacity: 1;
 }
 
@@ -813,7 +822,6 @@ input[type="text"]:focus
 .datetime-holder {
     color: #DFBD69;
     font-size: 30px;
-    font-weight: bolder;
     font-family: 'Overpass' !important;
 }
 
@@ -979,7 +987,7 @@ input[type="text"]:focus
 }
 
 .carousel-control-next-search-custom-portrait {
-    height: 622px;
+    height: 590px;
     right: -40px !important;
 }
 
@@ -1011,7 +1019,7 @@ input[type="text"]:focus
 }
 
 .carousel-control-prev-search-custom-portrait {
-    height: 622px;
+    height: 590px;
     left: -50px !important;
 }
 
@@ -1022,7 +1030,7 @@ input[type="text"]:focus
 
 .tenant-store, .tenant-search {
     background: url(/images/parqal-tenant-big.png);
-    border: 1px solid #efefef;
+    border: 1px solid #000;
     padding: 5px;
     border-radius: 16px;
     height: 100px;
@@ -1031,7 +1039,8 @@ input[type="text"]:focus
 }
 
 .tenant-store-portrait, .tenant-search-portrait {
-    width: 300px;
+    width: 295px;
+    height: 90px;
     margin-bottom: 25px;
 }
 
@@ -1184,6 +1193,10 @@ input[type="text"]:focus
     margin-bottom: 45px;
 }
 
+.mb-75 {
+    margin-bottom: 75px;
+}
+
 .mt-45 {
     margin-top: 45px;
 }
@@ -1255,7 +1268,7 @@ input[type="text"]:focus
 }
 
 .carousel-indicators-event {
-    bottom: -1rem;
+    bottom: 0;
 }
 
 .carousel-indicators-with-subscriber {
@@ -1305,6 +1318,12 @@ input[type="text"]:focus
 
 .lanmark-detail-holder {
     color: #E0BD69;
+    font-family: 'Overpass' !important;
+}
+
+.lanmark-detail-holder p{
+    font-size: 18px;
+    font-family: 'Overpass' !important;
 }
 
 .softkeys {
@@ -1312,7 +1331,7 @@ input[type="text"]:focus
     list-style: none;
     margin: 2em auto;
     padding: 0;
-    width: 803px !important;
+    width: 935px !important;
     text-align: center;
     font-size: 1em;
     -webkit-user-select: none;
@@ -1324,10 +1343,10 @@ input[type="text"]:focus
 
 .softkeys__btn {
     border-radius: 5px !important;
-    margin-left: 12px !important;
-    font-size: 1.2em !important;
-    width: 58px!important;
-    height: 58px !important;
+    margin-left: 16px !important;
+    font-size: 1.5em !important;
+    width: 65px!important;
+    height: 65px !important;
 }
 
 .softkeys__btn--space {
@@ -1337,8 +1356,8 @@ input[type="text"]:focus
 
 .map-search-modal-position {
     top: 44%;
-    left: 46%;
-    width: 60%;
+    left: 50%;
+    width: 65%;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 15px;
     padding-bottom: 5px;
@@ -1347,7 +1366,7 @@ input[type="text"]:focus
 .map-search-modal-position-portrait {
     top: 75%;
     left: 50%;
-    width: 75%;
+    width: 80%;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 25px;
     padding-bottom: 35px;
@@ -1408,7 +1427,7 @@ input[type="text"]:focus
 
 .custom-modal-position-portrait {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -1433,7 +1452,7 @@ input[type="text"]:focus
 }
 
 .btn-close-modal {
-    font-size: 2em;
+    font-size: 3em;
     margin-right: 10px;
 }
 
@@ -1442,8 +1461,8 @@ input[type="text"]:focus
     width: 448px;
     display: block;
     z-index: 1000;
-    margin-top: 31px;
-    margin-left: 35px;
+    margin-top: 29px;
+    margin-left: 33px;
 }
 
 .banner-ads-portrait {
@@ -1451,7 +1470,7 @@ input[type="text"]:focus
     width: 1010px;
     display: block;
     z-index: 1000;
-    margin: 30px;
+    margin: 28px auto;
 }
 
 .theme-portrait {
@@ -1466,7 +1485,6 @@ div.mall-details {
     max-width: 100%;
     min-height: 100%;
     margin: auto;
-    height: 375px;
 }
 
 .about-banner-holder {
@@ -1521,7 +1539,7 @@ pre {
 
 .want-to-try {
     position: absolute;
-    bottom: 45px;
+    bottom: 70px;
     width: 100%;
 }
 
@@ -1611,4 +1629,17 @@ pre {
     top: 48%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.ui-widget-content {
+    font-family: 'Overpass' !important;
+    font-size: 1.3rem !important;
+}
+
+.prestige-text-color {
+    color: #E0BD69;
+}
+
+.pinch {
+    filter: none;
 }

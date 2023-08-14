@@ -47,8 +47,14 @@
             <div class="result-section" v-show="search_results">
                 <div class="row mb-23">
                     <div class="col-md-12 home-title text-center">
-                        <div><span class="translateme" data-en="You searched for">You searched for</span><br/>
-                            <p>‘{{this.search.key_words}}’</p></div>                  
+                        <div v-if="current_tenant_list_count < 0">
+                            <span class="translateme" data-en="You searched for">We couldn’t find a match for</span>
+                            &nbsp;<span>‘{{this.search.key_words}}’.</span>
+                            &nbsp; <span>Please try another search.</span>
+                        </div>
+                        <div v-else><span class="translateme" data-en="You searched for">You searched for</span><br/>
+                            <p style="font-size: 45px;">‘{{this.search.key_words}}’</p>
+                        </div>            
                     </div>
                 </div>
 
@@ -119,7 +125,7 @@
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'want-to-try-portrait': 'want-to-try'" v-show="current_subscriber_list_count>0">
                         <div class="row">
                             <div class="col-12 pl-100">
-                                <span class="translateme" data-en="You might want to try : ">You might want to try : </span>
+                                <span class="translateme" data-en="You might want to try : ">&ldquo;You might want to try : </span>
                             </div>
                         </div>
                         <div class="row">

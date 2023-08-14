@@ -22,11 +22,11 @@
         </div>
         <div v-show="event_page">
             <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12': 'col-md-10 offset-md-1'" class="row" v-if="event_list.length > 0">
-                <div id="eventCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 2">
+                <div id="eventsListCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 2">
                         
                     <!-- Control dots -->
                     <ul class="carousel-indicators carousel-indicators-event z-1">
-                        <li data-target="#eventCarousel" v-for="(events, index) in event_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
+                        <li data-target="#eventsListCarousel" v-for="(events, index) in event_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                     </ul>
 
                     <!-- The slideshow -->
@@ -38,7 +38,7 @@
                                         <img :src="event.image_url_path" :alt="event.name" />
                                         <div class="event-name-holder">
                                             {{event.event_name}} <br/>
-                                            {{event.location}}
+                                            {{event.event_date}}
                                         </div>
                                     </div>
                                 </div>
@@ -47,10 +47,10 @@
                     </div>
 
                     <!-- Left and right controls -->
-                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev-event-portrait': ''" class="carousel-control-prev control-prev-pp p-l-z-p ct-110" href="#eventCarousel" data-slide="prev" v-show="current_event_list_count >= 1">
+                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev-event-portrait': ''" id="control-prev" class="carousel-control-prev control-prev-pp p-l-z-p ct-110" href="#eventsListCarousel" data-slide="prev">
                         <span class="carousel-control-prev-icon"></span>
                     </a>
-                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next-event-portrait': ''" class="carousel-control-next control-next-pp n-l-z-p ct-110" href="#eventCarousel" data-slide="next" v-show="current_event_list_count >= 1">
+                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next-event-portrait': ''" id="control-next" class="carousel-control-next control-next-pp n-l-z-p ct-110" href="#eventsListCarousel" data-slide="next" v-show="current_event_list_count >= 1">
                         <span class="carousel-control-next-icon"></span>
                     </a>
 
@@ -70,6 +70,12 @@
                     </template>
                 </div>
 
+                <div v-show="no_record_found" class="row mb-23">
+                    <div class="col-md-12 home-title text-center">
+                        <div><span class="translateme" data-en="You searched for">Stay tuned for more!</span>
+                        </div>            
+                    </div>
+                </div>
                 <img v-show="no_record_found" src="images/no-results-2.png" style="margin: -14.4rem auto auto;">
             </div>
         </div>
@@ -181,6 +187,22 @@
 
         mounted() {
             $(function() {
+                $("#control-prev").hide();
+                $("#control-next").hide();
+
+                $('#eventsListCarousel').on('slid.bs.carousel', function () {
+                    if($(this).find('.active').hasClass('last-item')){
+                        $(".control-next-sp").hide();
+                        $(".control-prev-sp").show();
+                    }else if($(this).find('.active').hasClass('first-item')){
+                        $(".control-prev-sp").hide();
+                        $(".control-next-sp").show();
+                    }else{
+                        $(".control-prev-sp").show();
+                        $(".control-next-sp").show();
+                    }
+                });
+
                 $(".btn-close-modal,#modal-schedule-event").on('click',function(){
                     $("#myevent, #modal-schedule-event").hide();
                 });
@@ -189,21 +211,6 @@
                     $("#myevent,#modal-schedule,#modal-schedule-event").hide();
                 });
 
-                $(".control-prev-pp").hide();
-                $(".control-next-pp").hide();
-
-                $('#eventCarousel').on('slid.bs.carousel', function () {
-                    if($(this).find('.active').hasClass('last-item')){
-                        $(".control-next-pp").hide();
-                        $(".control-prev-pp").show();
-                    }else if($(this).find('.active').hasClass('first-item')){
-                        $(".control-prev-pp").hide();
-                        $(".control-next-pp").show();
-                    }else{
-                        $(".control-prev-pp").show();
-                        $(".control-next-pp").show();
-                    }
-                });
             })
         },
 

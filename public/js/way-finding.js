@@ -605,10 +605,10 @@ WayFinding.prototype = {
 
         var node = document.createElement("li");
         if((to>from)) {
-            node.innerHTML = 'Proceed to <img src="images/services/smcg_escalator.png" align="middle">';
+            node.innerHTML = 'Proceed to <img src="images/services/escalator-black.png" align="middle">';
         }
         else {
-            node.innerHTML = 'Proceed to <img src="images/services/smcg_stairs.png" align="middle">';
+            node.innerHTML = 'Proceed to <img src="images/services/stairs-black.png" align="middle">';
         }
         $('.assist').append(node);
 

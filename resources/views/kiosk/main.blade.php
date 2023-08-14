@@ -4,7 +4,7 @@
 @if($site_orientation == 'Portrait')
 <div class="container-fluid theme-portrait" style="background-image: url('{{ $site_background_portrait }}')">
     <div class="row">
-        <div class="col-md-12 custom-p-1">
+        <div class="col-md-12 m-0 p-0">
             <div class="banner-ads-portrait">
                 <rotating-banners></rotating-banners>               
             </div>

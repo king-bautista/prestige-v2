@@ -57,12 +57,12 @@
         </div>
         <div v-show="show_landmark">
             <div class="row">
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4 offset-sm-1 mt-150': 'col-sm-3 offset-sm-1'">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4 offset-sm-1 mt-100': 'col-sm-3 offset-sm-1'">
                     <img :src="landmark_details.image_url_path" class="lanmark-img">
                 </div>
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-150': 'col-sm-7'" >
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-50': 'col-sm-7'" >
                     <div class="lanmark-detail-holder m-5 mt-100">
-                        <h2>{{ landmark_details.landmark }}</h2>
+                        <h1>{{ landmark_details.landmark }}</h1>
                         <p>{{ landmark_details.descriptions }}</p>
                         <p>{{ landmark_details.name }}</p>
                         <p>{{ landmark_details.title }}</p>

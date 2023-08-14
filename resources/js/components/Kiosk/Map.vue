@@ -42,7 +42,7 @@
                     </div>
 
                     <div>
-                        <div class="" style="text-align: left;padding-left: 20px;margin-top: 48px;">
+                        <div class="" style="text-align: left;padding-left: 20px;">
                             <span class="helpful-label translateme" data-en="Was this helpful?">Was this helpful?</span>
                             <a href="#" class="response-btn btn-helpful" @click="updateFeedback()">
                                 <span class="far fa-thumbs-up"></span>
@@ -57,7 +57,7 @@
 
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'map-holder-portrait': 'map-holder'">
                     <div class="zoomable-container" id="zoomable-container"></div>
-                    <img src="images/Pinch1.gif" class="pinch"/>
+                    <img src="images/parqal-pinch.gif" class="pinch"/>
                 </div>
 
                 <!-- you are here-->
@@ -89,8 +89,8 @@
         <!-- TABS -->
         <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait cb-0 z-1': 'tabs-container cb-0 z-1'">
             <div class="row">
-                <div class="col-12 col-sm-4 offset-md-2">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'input-group map-input-group map-input-group-portrait': 'input-group map-input-group'" class="">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 offset-md-1': 'col-sm-5 offset-md-2'">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'input-group map-input-group map-input-group-portrait': 'input-group map-input-group'">
                         <multiselect v-model="map_form.tenant"
                             class="custom-select map-tenant-option" 
                             ref="multiselectTenant"
@@ -121,7 +121,7 @@
                         <span class="destination"></span>
                     </div>
                 </div>
-                <div class="col-12 custom-col-sm-3">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4': 'custom-col-sm-3'">
                     <div class="input-group map-input-group">
                         <multiselect v-model="map_form.floor_id"
                             class="custom-select map-floor-option" 
