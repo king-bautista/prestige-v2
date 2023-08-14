@@ -565,7 +565,7 @@
         </div>
         <assitant-page ref="callAssist"></assitant-page>
         <div class="row col-12 text-center">
-            <span class="client-website-holder" @click="aboutButton('home')">{{site_website}}</span>
+            <span v-bind:class="(site_orientation == 'Portrait') ? 'client-website-holder-portrait': ''" class="client-website-holder" @click="aboutButton('home')">{{site_website}}</span>
         </div>
 
         <div class="multilanguage">
@@ -725,6 +725,7 @@
             },
 
             homeButton: function (event) {
+                this.$router.go();
                 this.home_category = true;
                 this.child_category = false;
                 this.tabs_container = false;

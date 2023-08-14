@@ -73,6 +73,12 @@
                                     <input type="text" class="form-control" v-model="event.location" placeholder="Location" required>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-4 col-form-label">Event Date <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <input type="text" class="form-control" v-model="event.event_date" placeholder="Event Date" required>
+								</div>
+							</div>
                             <div class="form-group row">
                                 <label for="userName" class="col-sm-4 col-form-label">Start Date</label>
                                 <div class="col-sm-8">
@@ -127,6 +133,7 @@ export default {
 				site_id: null,
 				event_name: '',
 				location: '',
+				event_date: '',
 				image_url: '/images/no-image-available.png',
 				start_date: '',
 				end_date: '',
@@ -214,6 +221,7 @@ export default {
 			this.event.site_id = '';
 			this.event.event_name = '';
 			this.event.location = '';
+			this.event.event_date = '';
 			this.event.start_date = '';
 			this.event.end_date = '';
 			this.event.imgBanner = '';
@@ -228,6 +236,7 @@ export default {
 			formData.append("site_id", this.event.site_id);
 			formData.append("event_name", this.event.event_name);
 			formData.append("location", this.event.location);
+			formData.append("event_date", this.event.event_date);
 			formData.append("start_date", this.event.start_date);
 			formData.append("end_date", this.event.end_date);
 			formData.append("imgBanner", this.event.image_url);
@@ -252,6 +261,7 @@ export default {
 					this.event.site_id = event.site_id;
                     this.event.event_name = event.event_name;
                     this.event.location = event.location;
+                    this.event.event_date = event.event_date;
                     this.event.start_date = event.start_date;
                     this.event.end_date = event.end_date;
                     this.imgBanner = event.image_url_path;
@@ -270,6 +280,7 @@ export default {
 			formData.append("site_id", this.event.site_id);
 			formData.append("event_name", this.event.event_name);
 			formData.append("location", this.event.location);
+			formData.append("event_date", this.event.event_date);
 			formData.append("start_date", this.event.start_date);
 			formData.append("end_date", this.event.end_date);
 			formData.append("imgBanner", this.event.image_url);

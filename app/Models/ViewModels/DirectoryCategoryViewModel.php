@@ -364,7 +364,7 @@ class DirectoryCategoryViewModel extends Model
     {
         $child_categories = $this->getChildCategories()->where('active', 1)->orderBy('name', 'ASC')->get();
         if($child_categories)
-            return $child_categories;
+            return $child_categories->sortBy('label');
         return null;
     }
 

@@ -29,20 +29,22 @@
                     <div class="mall-details">
                         <pre>{{ site_details.descriptions }}</pre>
                     </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="socmediconcontainer">
-                                <img src="assets/images/parqal-facebook.png" class="socmedicon mr-2"> {{ facebook }}
+                    <div class="social-media-holder">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="socmediconcontainer">
+                                    <img src="assets/images/parqal-facebook.png" class="socmedicon mr-2"> {{ facebook }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="socmediconcontainer">
-                                <img src="assets/images/parqal-twitter.png" class="socmedicon mr-2"> {{ twitter }}
+                            <div class="col-4">
+                                <div class="socmediconcontainer">
+                                    <img src="assets/images/parqal-twitter.png" class="socmedicon mr-2"> {{ twitter }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="socmediconcontainer">
-                                <img src="assets/images/parqal-instagram.png" class="socmedicon mr-2"> {{ instagram }}
+                            <div class="col-4">
+                                <div class="socmediconcontainer">
+                                    <img src="assets/images/parqal-instagram.png" class="socmedicon mr-2"> {{ instagram }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -65,8 +67,9 @@
                 </div>
             </template>
         </div>
-        <div class="back-button" :src="back_button" @click="goBack"></div>
-        <div class="back-overlay translateme" data-en="Back" @click="goBack">Back</div>
+
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
+        <div v-bind:class="(site_orientation == 'Portrait') ? 'back-overlay back-overlay-portrait translateme': 'back-overlay translateme'" data-en="Back" @click="goBack">Back</div>
 
     </div>
 </template>

@@ -18,6 +18,7 @@ class Event extends Model
         'site_id',
         'event_name',
         'location',
+        'event_date',
         'image_url',
         'start_date',
         'end_date',
