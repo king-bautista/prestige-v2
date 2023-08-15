@@ -17,8 +17,8 @@
         <link rel="stylesheet" href="{{ URL::to('css/softkeys-0.0.1.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/fancybox.css') }}">
         <link rel="stylesheet" href="{{ URL::to('css/jquery.zoom.css') }}">
-        <link rel="stylesheet" href="{{ URL::to('owlcarousel/assets/owl.carousel.min.css') }}">
-        <link rel="stylesheet" href="{{ URL::to('owlcarousel/assets/owl.theme.default.min.css') }}">
+        <!-- <link rel="stylesheet" href="{{ URL::to('owlcarousel/assets/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('owlcarousel/assets/owl.theme.default.min.css') }}"> -->
         <!-- Set Custom Theme UI -->
         <link rel="stylesheet" href="{{ URL::to('css') }}/{{ $site_name }}-theme.css">
     </head>
@@ -46,7 +46,7 @@
         <script src="{{ URL::to('js/way-finding.js') }}"></script>
         <script src="{{ URL::to('js/helper.js') }}"></script>
         <script src="{{ URL::to('js/autoSizr.js') }}"></script>
-        <script src="{{ URL::to('owlcarousel/owl.carousel.min.js') }}"></script>
+        <!-- <script src="{{ URL::to('owlcarousel/owl.carousel.min.js') }}"></script> -->
         <script src="{{ mix('/js/app.js') }}"></script>
         @stack('scripts') <!-- To include script links -->
     </body>
