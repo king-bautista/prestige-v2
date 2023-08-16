@@ -81,14 +81,7 @@
             <div v-show="child_category">
                 <div v-if="site_name == 'Parqal'">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" id="child-category-holder">
-                        <!-- <div class="owl-carousel" id="sub-category-carousel">
-                            <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="subcategory in current_category.children">
-                                <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="getTenantsByCategory(subcategory)">
-                                    <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'category-name-holder-portrait ': 'category-name-holder'"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
-                                </div>
-                            </div>
-                        </div> -->
+                        
                     </div>
                 </div>
                 <div v-else>
@@ -115,17 +108,8 @@
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
                 <div v-if="site_name == 'Parqal'">
-                    <div class="row col-md-12 mt-120 mb-41">
-                        <div class="owl-carousel" id="supplementals-carousel" v-if="current_supplementals">
-                            <template v-for="supplementals in current_supplementals.children">
-                                <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="supplemental in supplementals">
-                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="helper.saveLogs(supplemental, 'Categories'); getTenantsBySupplementals(supplemental)">
-                                        <img :src="supplemental.kiosk_image_primary_path" style="max-width:100%">
-                                        <div class="category-name-holder"><p class="translateme" :data-en="supplemental.label">{{supplemental.label}}</p></div>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
+                    <div class="row col-md-12 mt-120 mb-41" id="child-supplementals-holder">
+                        
                     </div>
                     <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
                 </div>
@@ -1155,9 +1139,39 @@
                     this.setTranslation(this.current_language_set);
                 }, 100);
 
+                var obj = this;
+
                 setTimeout(() => {
                     $(document).ready(function(){
-                        $("#supplementals-carousel").owlCarousel({
+                        console.log(obj.current_supplementals);
+                        $('#child-supplementals-holder').html('<div id="supplementals-carousel" class="owl-carousel"></div>');
+                        $.each(obj.current_supplementals.children, function(index, supplementals) {
+                            $.each(supplementals, function(index, supplemental){
+                                var ïtem_holder_class = 'ïtem-holder';
+                                var rounded_container_class = 'rounded-container';
+                                var category_name_holder_class = 'category-name-holder';
+                                if(obj.site_orientation == 'Portrait') {
+                                    ïtem_holder_class = 'ïtem-holder-portrait';
+                                    rounded_container_class = 'rounded-container-portrait';
+                                    category_name_holder_class = 'category-name-holder-portrait';
+                                }
+
+                                var html = '<div class="'+ïtem_holder_class+'">';
+                                    html += '<div class="'+rounded_container_class+'" id="supplemental_'+supplemental.id+'">';
+                                    html += '<img src="'+supplemental.kiosk_image_primary_path+'" style="max-width:100%">';
+                                    html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+supplemental.label+'">'+supplemental.label+'</p></div>';
+                                    html += '</div';
+                                    html += '</div';
+                                
+                                $("#supplementals-carousel").append(html);
+                                $("#supplemental_"+supplemental.id).click(function(){
+                                    obj.getTenantsBySupplementals(supplemental);
+                                });
+                            })                     
+                        });
+
+                        var owl = $("#supplementals-carousel");
+                        owl.owlCarousel({
                             center: true,
                             items:3,
                             loop:true,
