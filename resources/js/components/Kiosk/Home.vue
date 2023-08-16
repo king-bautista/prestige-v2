@@ -184,7 +184,7 @@
                                                 </div>
                                                 <div v-bind:class="tenants.length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
                                                     <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
-                                                    <div v-if="tenant.tenant_details" style="font-size: 0.7em;color:#2a2a2a">{{ tenant.tenant_details.address }}</div>
+                                                    <div v-if="tenant.tenant_details" style="font-size: 13px;font-weight: bold;color:#2a2a2a;">{{ tenant.tenant_details.address }}</div>
                                                     <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                     <div style="font-weight: bold;font-size: 0.7em">
                                                         <!-- <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
@@ -1141,44 +1141,41 @@
 
                 var obj = this;
 
-                setTimeout(() => {
-                    $(document).ready(function(){
-                        console.log(obj.current_supplementals);
-                        $('#child-supplementals-holder').html('<div id="supplementals-carousel" class="owl-carousel"></div>');
-                        $.each(obj.current_supplementals.children, function(index, supplementals) {
-                            $.each(supplementals, function(index, supplemental){
-                                var ïtem_holder_class = 'ïtem-holder';
-                                var rounded_container_class = 'rounded-container';
-                                var category_name_holder_class = 'category-name-holder';
-                                if(obj.site_orientation == 'Portrait') {
-                                    ïtem_holder_class = 'ïtem-holder-portrait';
-                                    rounded_container_class = 'rounded-container-portrait';
-                                    category_name_holder_class = 'category-name-holder-portrait';
-                                }
+                $(document).ready(function(){
+                    $('#child-supplementals-holder').html('<div id="supplementals-carousel" class="owl-carousel"></div>');
+                    $.each(obj.current_supplementals.children, function(index, supplementals) {
+                        $.each(supplementals, function(index, supplemental){
+                            var ïtem_holder_class = 'ïtem-holder';
+                            var rounded_container_class = 'rounded-container';
+                            var category_name_holder_class = 'category-name-holder';
+                            if(obj.site_orientation == 'Portrait') {
+                                ïtem_holder_class = 'ïtem-holder-portrait';
+                                rounded_container_class = 'rounded-container-portrait';
+                                category_name_holder_class = 'category-name-holder-portrait';
+                            }
 
-                                var html = '<div class="'+ïtem_holder_class+'">';
-                                    html += '<div class="'+rounded_container_class+'" id="supplemental_'+supplemental.id+'">';
-                                    html += '<img src="'+supplemental.kiosk_image_primary_path+'" style="max-width:100%">';
-                                    html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+supplemental.label+'">'+supplemental.label+'</p></div>';
-                                    html += '</div';
-                                    html += '</div';
-                                
-                                $("#supplementals-carousel").append(html);
-                                $("#supplemental_"+supplemental.id).click(function(){
-                                    obj.getTenantsBySupplementals(supplemental);
-                                });
-                            })                     
-                        });
-
-                        var owl = $("#supplementals-carousel");
-                        owl.owlCarousel({
-                            center: true,
-                            items:3,
-                            loop:true,
-                            margin:0,
-                        });
+                            var html = '<div class="'+ïtem_holder_class+'">';
+                                html += '<div class="'+rounded_container_class+'" id="supplemental_'+supplemental.id+'">';
+                                html += '<img src="'+supplemental.kiosk_image_primary_path+'" style="max-width:100%">';
+                                html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+supplemental.label+'">'+supplemental.label+'</p></div>';
+                                html += '</div';
+                                html += '</div';
+                            
+                            $("#supplementals-carousel").append(html);
+                            $("#supplemental_"+supplemental.id).click(function(){
+                                obj.getTenantsBySupplementals(supplemental);
+                            });
+                        })                     
                     });
-                }, 500);
+
+                    var owl = $("#supplementals-carousel");
+                    owl.owlCarousel({
+                        center: true,
+                        items:3,
+                        loop:true,
+                        margin:0,
+                    });
+                });
             },     
 
             showChildren: function(category) {
@@ -1208,41 +1205,39 @@
 
                 var obj = this;
 
-                setTimeout(() => {
-                    $(document).ready(function(){
-                        $('#child-category-holder').html('<div id="sub-category-carousel" class="owl-carousel"></div>');
-                        $.each(obj.current_category.children, function(index, sub_category) {
-                            var ïtem_holder_class = 'ïtem-holder';
-                            var rounded_container_class = 'rounded-container';
-                            var category_name_holder_class = 'category-name-holder';
-                            if(obj.site_orientation == 'Portrait') {
-                                ïtem_holder_class = 'ïtem-holder-portrait';
-                                rounded_container_class = 'rounded-container-portrait';
-                                category_name_holder_class = 'category-name-holder-portrait';
-                            }
+                $(document).ready(function(){
+                    $('#child-category-holder').html('<div id="sub-category-carousel" class="owl-carousel"></div>');
+                    $.each(obj.current_category.children, function(index, sub_category) {
+                        var ïtem_holder_class = 'ïtem-holder';
+                        var rounded_container_class = 'rounded-container';
+                        var category_name_holder_class = 'category-name-holder';
+                        if(obj.site_orientation == 'Portrait') {
+                            ïtem_holder_class = 'ïtem-holder-portrait';
+                            rounded_container_class = 'rounded-container-portrait';
+                            category_name_holder_class = 'category-name-holder-portrait';
+                        }
 
-                            var html = '<div class="'+ïtem_holder_class+'">';
-                                html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
-                                html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
-                                html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
-                                html += '</div';
-                                html += '</div';
-                            
-                            $("#sub-category-carousel").append(html);
-                            $("#category_"+sub_category.id).click(function(){
-                                obj.getTenantsByCategory(sub_category);
-                            });
-                        });
-
-                        var owl = $("#sub-category-carousel");
-                        owl.owlCarousel({
-                            center: true,
-                            items:3,
-                            loop:true,
-                            margin:0,
+                        var html = '<div class="'+ïtem_holder_class+'">';
+                            html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
+                            html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
+                            html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
+                            html += '</div';
+                            html += '</div';
+                        
+                        $("#sub-category-carousel").append(html);
+                        $("#category_"+sub_category.id).click(function(){
+                            obj.getTenantsByCategory(sub_category);
                         });
                     });
-                }, 500);
+
+                    var owl = $("#sub-category-carousel");
+                    owl.owlCarousel({
+                        center: true,
+                        items:3,
+                        loop:true,
+                        margin:0,
+                    });
+                });
                 
             },
 

@@ -47,10 +47,10 @@
                     </div>
 
                     <!-- Left and right controls -->
-                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev-event-portrait': ''" id="control-prev" class="carousel-control-prev control-prev-pp p-l-z-p ct-110" href="#eventsListCarousel" data-slide="prev">
+                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev-event-portrait': ''" class="carousel-control-prev control-prev-event p-l-z-p ct-110" href="#eventsListCarousel" data-slide="prev">
                         <span class="carousel-control-prev-icon"></span>
                     </a>
-                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next-event-portrait': ''" id="control-next" class="carousel-control-next control-next-pp n-l-z-p ct-110" href="#eventsListCarousel" data-slide="next" v-show="current_event_list_count >= 1">
+                    <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next-event-portrait': ''" class="carousel-control-next control-next-event n-l-z-p ct-110" href="#eventsListCarousel" data-slide="next">
                         <span class="carousel-control-next-icon"></span>
                     </a>
 
@@ -161,7 +161,33 @@
                     if(!this.event_list.length > 0) {
                         this.no_record_found = true;         
                     }
+
+                    var obj = this;
+
+                    $(function() {
+                        $('.control-prev-event').hide();
+                        $('.control-next-event').hide();
+                        if(obj.current_event_list_count >= 1)
+                            $('.control-next-event').show();
+
+                        $('#eventsListCarousel').on('slid.bs.carousel', function () {
+                            if($(this).find('.active').hasClass('last-item')){
+                                $(".control-next-event").hide();
+                                $(".control-prev-event").show();
+                            }else if($(this).find('.active').hasClass('first-item')){
+                                $(".control-prev-event").hide();
+                                $(".control-next-event").show();
+                            }else{
+                                $(".control-prev-event").show();
+                                $(".control-next-event").show();
+                            }
+                        });
+                    })
+
+                    
                 });
+                
+                
 			},
 
             showEvent: function(event) {
@@ -170,7 +196,7 @@
                 $('.set-width').removeClass('banner-size');
                 $('.set-width').removeClass('product-size');
                 $('.set-width').addClass('product-size');
-            },
+           },
 
             callHomeMethod: function(){
                 this.$root.$emit('callAboutParent','event')
@@ -187,22 +213,6 @@
 
         mounted() {
             $(function() {
-                $("#control-prev").hide();
-                $("#control-next").hide();
-
-                $('#eventsListCarousel').on('slid.bs.carousel', function () {
-                    if($(this).find('.active').hasClass('last-item')){
-                        $(".control-next-sp").hide();
-                        $(".control-prev-sp").show();
-                    }else if($(this).find('.active').hasClass('first-item')){
-                        $(".control-prev-sp").hide();
-                        $(".control-next-sp").show();
-                    }else{
-                        $(".control-prev-sp").show();
-                        $(".control-next-sp").show();
-                    }
-                });
-
                 $(".btn-close-modal,#modal-schedule-event").on('click',function(){
                     $("#myevent, #modal-schedule-event").hide();
                 });
