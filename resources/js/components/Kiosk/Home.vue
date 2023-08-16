@@ -80,27 +80,7 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" class="">
-                        <carousel :name="Food" :autoplay="false" :loop="true" :center="true" v-if="current_category == 'Food'">
-                            <template v-for="subcategory in main_category[0].children">
-                                <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'">
-                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="getTenantsByCategory(subcategory)">
-                                        <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                                        <div v-bind:class="(site_orientation == 'Portrait') ? 'category-name-holder-portrait ': 'category-name-holder'"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
-                                    </div>
-                                </div>                                
-                            </template>
-                        </carousel>
-                        <carousel :name="Food" :autoplay="false" :loop="true" :center="true" v-if="current_category == 'Fashion'">
-                            <template v-for="subcategory in main_category[1].children">
-                                <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'">
-                                    <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="getTenantsByCategory(subcategory)">
-                                        <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                                        <div v-bind:class="(site_orientation == 'Portrait') ? 'category-name-holder-portrait ': 'category-name-holder'"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
-                                    </div>
-                                </div>                                
-                            </template>
-                        </carousel>
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" id="child-category-holder">
                         <!-- <div class="owl-carousel" id="sub-category-carousel">
                             <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="subcategory in current_category.children">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="getTenantsByCategory(subcategory)">
@@ -1190,8 +1170,7 @@
             showChildren: function(category) {
                 $('#category-tab').trigger('click');
                 this.previous_page = 'Sub Category';
-                this.current_category = category.category_name;
-
+                this.current_category = category;
                 this.child_category_count = category.children.length;
                 this.current_supplementals = category.supplemental;
                 if(this.current_supplementals) {
@@ -1200,7 +1179,7 @@
                 this.page_title = 'Categories';
                 this.category_label = category.label;
                 this.home_category = false;
-                this.child_category = true;
+                this.child_category = true;                
                 this.alphabetical = false;
                 this.supplementals = false;
                 this.show_tenant = false;
@@ -1217,60 +1196,37 @@
 
                 setTimeout(() => {
                     $(document).ready(function(){
-                        // $("#sub-category-carousel").trigger("destroy.owl.carousel");
+                        $('#child-category-holder').html('<div id="sub-category-carousel" class="owl-carousel"></div>');
+                        $.each(obj.current_category.children, function(index, sub_category) {
+                            var ïtem_holder_class = 'ïtem-holder';
+                            var rounded_container_class = 'rounded-container';
+                            var category_name_holder_class = 'category-name-holder';
+                            if(obj.site_orientation == 'Portrait') {
+                                ïtem_holder_class = 'ïtem-holder-portrait';
+                                rounded_container_class = 'rounded-container-portrait';
+                                category_name_holder_class = 'category-name-holder-portrait';
+                            }
 
-                        // setTimeout(() => {
-                        //     var children_category = obj.current_category.children;
-                        //     var item_element = '';
-                        //     $.each(children_category, function(index,category) {
-                        //         var item_holder_class = 'ïtem-holder';
-                        //         var round_container_class = 'rounded-container';
-                        //         var category_name_class = 'category-name-holder';
-                        //         if(obj.site_orientation == 'Portrait') {
-                        //             item_holder_class = 'ïtem-holder-portrait';
-                        //             round_container_class = 'rounded-container-portrait';
-                        //             category_name_class = 'category-name-holder-portrait';
-                        //         }
-
-
-                        //         item_element = '<div class="'+item_holder_class+'">';
-                        //         item_element += '<div class="'+round_container_class+'" onclick="">';
-                        //         item_element += '<img src="'+category.kiosk_image_primary_path+'" style="max-width:100%">';
-                        //         item_element += '</div>';
-                        //         item_element += '</div>';
-
-                        //         $("#sub-category-carousel").append(item_element);
-                        //     }); 
-
-                        //     var owl = $("#sub-category-carousel");
-
-                        //     setTimeout(() => {
-                        //         owl.owlCarousel({
-                        //             center: true,
-                        //             items:3,
-                        //             loop:true,
-                        //             margin:0,
-                        //         });
-                        //     }, 500);
+                            var html = '<div class="'+ïtem_holder_class+'">';
+                                html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
+                                html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
+                                html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
+                                html += '</div';
+                                html += '</div';
                             
-                        // }, 1000);
+                            $("#sub-category-carousel").append(html);
+                            $("#category_"+sub_category.id).click(function(){
+                                obj.getTenantsByCategory(sub_category);
+                            });
+                        });
 
-                        
-
-                        // <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="subcategory in current_category.children">
-                        //         <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="getTenantsByCategory(subcategory)">
-                        //             <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
-                        //             <div v-bind:class="(site_orientation == 'Portrait') ? 'category-name-holder-portrait ': 'category-name-holder'"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
-                        //         </div>
-                        //     </div>
-                        // setTimeout(() => {
-                        //     $("#sub-category-carousel").owlCarousel({
-                        //         center: true,
-                        //         items:3,
-                        //         loop:true,
-                        //         margin:0,
-                        //     });
-                        // }, 200);
+                        var owl = $("#sub-category-carousel");
+                        owl.owlCarousel({
+                            center: true,
+                            items:3,
+                            loop:true,
+                            margin:0,
+                        });
                     });
                 }, 500);
                 
