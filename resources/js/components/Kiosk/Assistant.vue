@@ -78,6 +78,7 @@
                     obj.filterAssist(location,content_language);
                 });
                 obj.$root.$on('callMutateLocation', (location) => {
+                    alert('here');
                     obj.filterAssist(location,null);
                 });
             });

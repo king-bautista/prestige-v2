@@ -80,15 +80,15 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" class="">
-                        <div class="owl-carousel" id="sub-category-carousel">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" id="child-category-holder">
+                        <!-- <div class="owl-carousel" id="sub-category-carousel">
                             <div v-bind:class="(site_orientation == 'Portrait') ? 'ïtem-holder-portrait': 'ïtem-holder'" v-for="subcategory in current_category.children">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'rounded-container-portrait ': 'rounded-container'" @click="getTenantsByCategory(subcategory)">
                                     <img :src="subcategory.kiosk_image_primary_path" style="max-width:100%">
                                     <div v-bind:class="(site_orientation == 'Portrait') ? 'category-name-holder-portrait ': 'category-name-holder'"><p class="translateme" :data-en="subcategory.label">{{subcategory.label}}</p></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div v-else>
@@ -592,6 +592,7 @@
     import assitant from './Assistant.vue';
     import landmark from './Landmark.vue';
     import events from './Events.vue';
+    import carousel from 'vue-owl-carousel';
 
 	export default {
         name: "Home",
@@ -604,6 +605,7 @@
             'assitant-page': assitant,
             'landmark-page': landmark,
             'events-page': events,
+            carousel,
         },
         data() {
             return {
@@ -725,7 +727,7 @@
             },
 
             homeButton: function (event) {
-                this.$router.go();
+                //this.$router.go();
                 this.home_category = true;
                 this.child_category = false;
                 this.tabs_container = false;
@@ -1177,7 +1179,7 @@
                 this.page_title = 'Categories';
                 this.category_label = category.label;
                 this.home_category = false;
-                this.child_category = true;
+                this.child_category = true;                
                 this.alphabetical = false;
                 this.supplementals = false;
                 this.show_tenant = false;
@@ -1190,9 +1192,36 @@
                     this.setTranslation(this.current_language_set);
                 }, 200);
 
+                var obj = this;
+
                 setTimeout(() => {
                     $(document).ready(function(){
-                        $("#sub-category-carousel").owlCarousel({
+                        $('#child-category-holder').html('<div id="sub-category-carousel" class="owl-carousel"></div>');
+                        $.each(obj.current_category.children, function(index, sub_category) {
+                            var ïtem_holder_class = 'ïtem-holder';
+                            var rounded_container_class = 'rounded-container';
+                            var category_name_holder_class = 'category-name-holder';
+                            if(obj.site_orientation == 'Portrait') {
+                                ïtem_holder_class = 'ïtem-holder-portrait';
+                                rounded_container_class = 'rounded-container-portrait';
+                                category_name_holder_class = 'category-name-holder-portrait';
+                            }
+
+                            var html = '<div class="'+ïtem_holder_class+'">';
+                                html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
+                                html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
+                                html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
+                                html += '</div';
+                                html += '</div';
+                            
+                            $("#sub-category-carousel").append(html);
+                            $("#category_"+sub_category.id).click(function(){
+                                obj.getTenantsByCategory(sub_category);
+                            });
+                        });
+
+                        var owl = $("#sub-category-carousel");
+                        owl.owlCarousel({
                             center: true,
                             items:3,
                             loop:true,
@@ -1269,7 +1298,7 @@
                 }
 
                 if(this.home_category == true) {
-                    this.$router.go();
+                    //this.$router.go();
                 }
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set); 
