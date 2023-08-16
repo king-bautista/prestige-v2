@@ -320,14 +320,14 @@ class MainController extends AppBaseController
                 ->where(function ($query) use($keyword) {
                     // foreach($array_words as $key) {
                         $query->orWhere('brands.name', 'like', '%'.$keyword.'%')
-                        ->orWhere('brands.name', 'like', '%'.$keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
-                        ->orWhere('brands.name', 'like', '%'.$keyword.'%') #FIRST WORD but start on first letter
-                        ->orWhere('categories.name', 'like', '%'.$keyword.'%')
-                        ->orWhere('categories.name', 'like', '%'.$keyword.'%')
-                        ->orWhere('supp.name', 'like', '%'.$keyword.'%')
-                        ->orWhere('supp.name', 'like', '%'.$keyword.'%')
-                        ->orWhere('tags.name', 'like', '%'.$keyword.'%')
-                        ->orWhere('tags.name', 'like', '%'.$keyword.'%');
+                        ->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
+                        ->orWhere('brands.name', 'like', '%'.$keyword) #FIRST WORD but start on first letter
+                        ->orWhere('categories.name', 'like', '%'.$keyword)
+                        ->orWhere('categories.name', 'like', $keyword.'%')
+                        ->orWhere('supp.name', 'like', $keyword.'%')
+                        ->orWhere('supp.name', 'like', '%'.$keyword)
+                        ->orWhere('tags.name', 'like', $keyword.'%')
+                        ->orWhere('tags.name', 'like', '%'.$keyword);
                     // }
                 })
                 ->where('site_tenants.site_id', $site->id)

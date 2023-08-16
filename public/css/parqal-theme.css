@@ -48,7 +48,7 @@ body,html {
 
 .search-button {
     background-image: url('../assets/images/parqal-search.png');
-    color: #6051e3;
+    color: #000;
     margin-right: -3px;
 }
 
@@ -62,7 +62,7 @@ body,html {
 
 .search-button-portrait {
     background-image: url('../assets/images/parqal-search-portrait.png');
-    color: #6051e3;
+    color: #000;
     margin-right: -3px;
 }
 
@@ -76,7 +76,7 @@ body,html {
 
 .map-button {
     background-image: url('../assets/images/parqal-map.png');
-    color: #6051e3;
+    color: #000;
     margin-right: -5px;
 }
 
@@ -90,7 +90,7 @@ body,html {
 
 .map-button-portrait {
     background-image: url('../assets/images/parqal-map-portrait.png');
-    color: #6051e3;
+    color: #000;
     margin-right: -5px;
 }
 
@@ -194,17 +194,17 @@ body,html {
 }
 
 .c-category-4 {
-    color:#6051e3;
+    color:#000;
 }
 
 .c-category-5 {
-    color:#6051e3;
+    color:#000;
 }
 
 input[type="text"]:focus
 {
     box-shadow: none !important;
-    border-color: #6051e3;
+    border-color: #000;
 }
 
 .search-box {
@@ -1358,7 +1358,7 @@ input[type="text"]:focus
 .map-search-modal-position {
     top: 44%;
     left: 50%;
-    width: 65%;
+    width: 68%;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 15px;
     padding-bottom: 5px;
@@ -1503,6 +1503,7 @@ div.mall-details {
     margin-left: 0 !important;
     font-family: 'Overpass' !important;
     font-weight: 500;
+    text-transform: uppercase;
 }
 
 .socmedicon {
@@ -1565,11 +1566,11 @@ pre {
 }
 
 .shop_name {
-    font-size: 0.875em;
+    font-size: 16px;
     color: #2a2a2a;
     width: 98%;
     font-family: 'Overpass' !important;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .assist li {
@@ -1648,4 +1649,12 @@ pre {
 #myCarousel, #myTenants, #myCinemas, #myMovies, #supplementalCarousel, #alphabeticalCarousel, #searchCarousel, #promoCarousel {
     width: 100%;
     min-height: 628px;
+}
+
+div.mall-details {
+    height: 375px;
+}
+
+.control-next-event, .control-prev-event {
+    height: 390px;
 }
