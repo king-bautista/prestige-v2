@@ -23,9 +23,9 @@
         <!-- SEARCH/ RESULT -->
         <div v-show="search_page">
             <div class="row keyboard-section" v-show="!search_results">
-                <div v-if="site_name == 'Parqal'" class="col-md-10 offset-md-1">
+                <div v-if="site_name == 'Parqal'" class="col-md-12">
                     <form class="row form text-center" v-on:submit.prevent="onEnter">
-                        <div class="input-group mb-5 mt-5" v-bind:style="(site_orientation == 'Portrait') ? 'width: 90%;': 'width: 64%;'" style="margin: auto;"> 
+                        <div class="input-group mb-5 mt-5" v-bind:style="(site_orientation == 'Portrait') ? 'width: 80%;': 'width: 64%;'" style="margin: auto;"> 
                             <img src="images/search-icon.png" class="search-icon">
                             <input type="text" id="code" name="code" class="form-control input-mg search-box">
                             <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
