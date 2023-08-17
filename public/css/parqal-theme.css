@@ -1516,12 +1516,14 @@ input[type="text"]:focus
     margin: auto;
 }
 
-div.mall-details {
+.mall-details {
     color: #fff !important;
     font-size: 20px;
     max-width: 100%;
     min-height: 100%;
     margin: auto;
+    max-height: none;
+    height: 390px;
 }
 
 .about-banner-holder {
@@ -1687,20 +1689,24 @@ pre {
     min-height: 628px;
 }
 
-div.mall-details {
-    height: 375px;
+.mall-details-portrait {
+    height: 645px;
 }
 
 .control-next-event, .control-prev-event {
     height: 390px;
 }
 
-.no-record-found-portrait {
+.no-record-found {
     width: 400px;
     position: absolute;
-    top: 70%;
+    top: 65%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.no-record-found-portrait {
+    top: 70%;
 }
 
 .softkeys__btn:hover, .softkeys__btn:focus {

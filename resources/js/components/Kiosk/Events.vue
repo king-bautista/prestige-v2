@@ -77,7 +77,7 @@
                     </div>            
                 </div>
             </div>
-            <img v-show="no_record_found" src="images/no-results-2.png" class="no-record-found-portrait">
+            <img v-show="no_record_found" src="images/no-results-2.png" v-bind:class="(site_orientation == 'Portrait') ? 'no-record-found-portrait': ''" class="no-record-found">
         </div>
 
         <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>

@@ -231,7 +231,7 @@
                         </div>            
                     </div>
                 </div>
-                <img v-if="site_name == 'Parqal'" v-show="no_record_found" src="images/empty-box.png" class="no-record-found-portrait">
+                <img v-if="site_name == 'Parqal'" v-show="no_record_found" src="images/empty-box.png" v-bind:class="(site_orientation == 'Portrait') ? 'no-record-found-portrait': ''" class="no-record-found">
                 <img v-else v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
             </div>
 
