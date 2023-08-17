@@ -20,6 +20,7 @@ class SiteMapPaths extends Model
         'distance',
         'site_id',
         'site_screen_id',
+        'with_disability',
     ];
 
     /**

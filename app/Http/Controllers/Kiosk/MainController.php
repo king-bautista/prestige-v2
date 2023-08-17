@@ -644,7 +644,7 @@ class MainController extends AppBaseController
         } 
     }
 
-    public function getRoutes($destination_id)
+    public function getRoutes($destination_id, $with_disability = 0)
     {
         try
         {
@@ -666,7 +666,14 @@ class MainController extends AppBaseController
                 $latlng[$coordinate['id']] = array($coordinate['lat'],$coordinate['lng'],$coordinate['level'],$coordinate['building'],$coordinate['map_id']);
             }
 
-            $map_paths = SiteMapPaths::where('site_id', $site->id)->where('site_screen_id', $site_screen->id)->where('point_orig', $origin)->where('point_dest', $destination)->get();
+            $map_paths = SiteMapPaths::where('site_id', $site->id)
+            ->where('site_screen_id', $site_screen->id)
+            ->when($with_disability, function ($query) {
+                return $query->where('with_disability', 1);
+            })
+            ->where('point_orig', $origin)
+            ->where('point_dest', $destination)
+            ->get();
 
             if(count($map_paths)) {
                 $coordinates = array();

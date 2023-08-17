@@ -17,9 +17,10 @@ class DijkstraHelper
 	var $allowedVisit = array();
 	var $instance_id = 0;
 	var $screen_id = 0;
+	var $with_disability = 0;
 	var $i2p = array();
 	
-	public function __construct($points, $index_to_points, $infiniteDistance=I, $instance_id=0, $screen_id=0) {
+	public function __construct($points, $index_to_points, $infiniteDistance=I, $instance_id=0, $screen_id=0, $with_disability=0) {
 		$ourMap = $points;
 	
 		$this->map = $ourMap;
@@ -28,6 +29,7 @@ class DijkstraHelper
 		$this->bestPath = 0;
 		$this->instance_id = $instance_id;
 		$this->screen_id = $screen_id;
+		$this->with_disability = $with_disability;
 		$this->i2p = $index_to_points;
 	}
 	
@@ -134,7 +136,8 @@ class DijkstraHelper
                                                 'distance' => $this->distance[$i],
                                                 'path' => implode('-',$ipath),
                                                 'site_id'=>$this->instance_id,
-                                                'site_screen_id'=>$this->screen_id
+                                                'site_screen_id'=>$this->screen_id,
+                                                'with_disability'=>$this->with_disability,
                                         );
                                 }
 

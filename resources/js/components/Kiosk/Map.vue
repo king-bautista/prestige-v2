@@ -112,8 +112,8 @@
                                 List is empty
                             </span>
                         </multiselect>
-                        <div class="input-group-append" v-show="false">
-                            <button class="btn btn-outline-secondary is-pwd-button" type="button">
+                        <div class="input-group-append">
+                            <button id="withDisabilityButton" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -252,6 +252,7 @@
                 feedback_response: false,
                 called_from: '',
                 panzoom: '',
+                with_disability: 0,
             };
         },
 
@@ -505,6 +506,8 @@
                             $(this).addClass('enter-key');
                         };
                     });
+
+
                 })
             },
 
@@ -521,7 +524,7 @@
                 var obj = this;        
                 this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
                 this.wayfindings.animate_marker_here_stop();
-                $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
+                // $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
 
                 axios.get('/api/v1/site/maps')
                 .then(response => {
@@ -570,7 +573,7 @@
                 });
 
                 $(".map-tenant-option").on('focusin',function(){
-                    $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '0px','border-top-right-radius': '0px'});
+                    // $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '0px','border-top-right-radius': '0px'});
                     $('.map-search-modal').show();
                     $(".pinch").hide();
                     $('#tenant-details').hide();
@@ -581,7 +584,7 @@
                     vm.softkeysFeedback = false;
                 });
                 $(".map-tenant-option").on('focusout',function(){
-                    $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '18px','border-top-right-radius': '18px'});
+                    //$('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '18px','border-top-right-radius': '18px'});
                 });
 
                 $(".map-floor-option").on('focusin',function(){
@@ -659,6 +662,8 @@
                     vm.feedback_helpful = 'No';
                     $(this).addClass('response-active-color');
                 });
+
+                $('.enter-key span').text('Search');
             });
         },
 

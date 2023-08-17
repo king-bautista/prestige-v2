@@ -1713,3 +1713,7 @@ pre {
 .softkeys__btn:hover, .softkeys__btn:focus {
     background-color: #E0BD69 !important;
 }
+
+.enter-key {
+    width: 100px !important;
+}
