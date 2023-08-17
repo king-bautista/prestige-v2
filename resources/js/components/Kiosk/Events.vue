@@ -69,15 +69,15 @@
                         </div>
                     </template>
                 </div>
-
-                <div v-show="no_record_found" class="row mb-23">
-                    <div class="col-md-12 home-title text-center">
-                        <div><span class="translateme" data-en="You searched for">Stay tuned for more!</span>
-                        </div>            
-                    </div>
-                </div>
-                <img v-show="no_record_found" src="images/no-results-2.png" style="margin: -14.4rem auto auto;">
             </div>
+            
+            <div v-show="no_record_found" class="row mb-23 mt-5">
+                <div class="col-md-12 home-title text-center">
+                    <div><span class="translateme" data-en="Stay tuned for more!">Stay tuned for more!</span>
+                    </div>            
+                </div>
+            </div>
+            <img v-show="no_record_found" src="images/no-results-2.png" v-bind:class="(site_orientation == 'Portrait') ? 'no-record-found-portrait': ''" class="no-record-found">
         </div>
 
         <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
@@ -158,7 +158,7 @@
                 .then(response => {
                     this.event_list = response.data.data
                     this.current_event_list_count = this.event_list.length -1
-                    if(!this.event_list.length > 0) {
+                    if(!this.event_list.length) {
                         this.no_record_found = true;         
                     }
 

@@ -722,7 +722,7 @@ span.movie-rating {
     z-index: 1080;
 }
 
-div.mall-details {
+.mall-details {
     color: #3b3b3b;
     max-height: 470px;
     overflow-y: auto;
@@ -1666,19 +1666,19 @@ ul.assist{
     margin-left: 70px !important;
 }
 
-div.mall-details::-webkit-scrollbar-track
+.mall-details::-webkit-scrollbar-track
 {
     -webkit-box-shadow: inset 0 0 6px rgba(191,191,191,0.3);
     border-radius: 18px;
     background-color: #FFFFFF;
 }
 
-div.mall-details::-webkit-scrollbar
+.mall-details::-webkit-scrollbar
 {
     width: 12px;
 }
 
-div.mall-details::-webkit-scrollbar-thumb
+.mall-details::-webkit-scrollbar-thumb
 {
     border-radius: 18px;
     -webkit-box-shadow: inset 0 0 6px rgba(191,191,191,.3);

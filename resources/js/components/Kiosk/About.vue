@@ -23,10 +23,10 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row">
             <template v-if="site_name == 'Parqal'">
                 <div class="col-md-10 offset-md-1">
-                    <div class="mall-details">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'mall-details-portrait': ''" class="mall-details">
                         <pre>{{ site_details.descriptions }}</pre>
                     </div>
                     <div class="social-media-holder">
