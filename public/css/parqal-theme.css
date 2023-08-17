@@ -5,7 +5,7 @@
 
 body,html {
     font-family: 'Overpass' !important;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .theme-landscape {
@@ -207,6 +207,17 @@ input[type="text"]:focus
     border-color: #000;
 }
 
+.search-icon {
+    font-size: 35px;
+    position: absolute;
+    z-index: 9;
+    color: #DFBD69 !important;
+    top: 10px;
+    left: 10px;
+    opacity: 0.6;
+    width: 35px;
+}
+
 .search-box {
     font-family: 'Overpass';
     font-size: 24px; 
@@ -217,10 +228,11 @@ input[type="text"]:focus
     border-color: #000;
     border-width: 1px;
     margin: auto;
-    border-radius: 10px;
+    border-radius: 10px !important;
     border-top-right-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
     height: calc(1.5em + 0.75rem + 6px) !important;
+    padding-left: 55px;
 }
 
 .search-box-button {
@@ -391,7 +403,7 @@ input[type="text"]:focus
     font-family: 'Overpass' !important;
     font-weight: 800;
     color: #2a2a2a;
-    font-size: 1.1em;
+    font-size: 23px;
     margin-top: 3px;
     line-height: 50px;
 }
@@ -627,7 +639,7 @@ input[type="text"]:focus
 }
 
 .router-page-portrait {
-    height: 1111px;
+    height: 1090px;
 }
 
 .bg-color {
@@ -644,6 +656,7 @@ input[type="text"]:focus
 
 .category-portrait {
     height: 400px;
+    width: 280px;
 }
 
 .food div, .fashion div, .electronics div, .function div, .finds div, .health div {
@@ -676,7 +689,7 @@ input[type="text"]:focus
 }
 
 .client-website-holder-portrait {
-    padding-top: 45px;
+    padding-top: 70px;
 }
 
 .category-container {
@@ -749,8 +762,8 @@ input[type="text"]:focus
     color: #fff;
     text-transform: uppercase;
     font-weight: bolder;
-    font-size: 45px;
-    width: 235px;
+    font-size: 35px;
+    width: 270px;
     text-align: center;
     opacity: .5;
 }
@@ -791,6 +804,10 @@ input[type="text"]:focus
 
 .ml-150 {
     margin-left: 155px;
+}
+
+.ml-120 {
+    margin-left: 120px;
 }
 
 .ml-80 {
@@ -846,7 +863,7 @@ input[type="text"]:focus
 
 .btn-custom {
     min-width: 286px;
-    height: 64px;
+    height: auto;
     font-size: 35px;
     text-transform: uppercase;
     font-weight: 500;
@@ -866,7 +883,7 @@ input[type="text"]:focus
 
 .map-holder-portrait {
     background-color: #fff;
-    height: 965px;
+    height: 925px;
     margin-left: 7px;
     width: 100%;
 }
@@ -959,12 +976,13 @@ input[type="text"]:focus
 .swipe-to-see-more-portrait {
     position: absolute;
     text-align: center;
-    left: 50%;
+    left: 52%;
     top: 50%;
     transform: translate( -50%, -250%);
     color: #DFBD69;
     opacity: 0.9;
-    font-size: 40px;
+    font-size: 45px;
+    font-family: 'Overpass' !important;
 }
 
 .carousel-control-next-icon {
@@ -1046,7 +1064,7 @@ input[type="text"]:focus
 }
 
 .tenant-store-custom {
-    width: 512px;
+    width: 100%px;
     height: 146px;
 }
 
@@ -1071,12 +1089,16 @@ input[type="text"]:focus
 }
 
 .home-title {
-    font-family: Henry Sans Regular;
-    font-weight: 400;
-    font-size: 2em;
+    font-family: 'Overpass' !important;
+    font-weight: 500;
+    font-size: 60px;
     padding: 15px 0 15px 0;
     color: #DFBD69;
     padding-right: 10px;
+}
+
+.home-title-custom {
+    font-size: 36px;
 }
 
 .label-4 {
@@ -1094,6 +1116,16 @@ input[type="text"]:focus
     font-size: 14px;
     font-weight: bold;
     color: #5E252C;
+}
+
+.social-holder-portrait {
+    font-size: 14px;
+    font-weight: bold;
+    color: #5E252C;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Overpass' !important;
 }
 
 .subscriber-products {
@@ -1208,6 +1240,10 @@ input[type="text"]:focus
 
 .mt-80 {
     margin-top: 80px !important;
+}
+
+.mt-60 {
+    margin-top: 60px !important;
 }
 
 #eventCarousel {
@@ -1403,7 +1439,7 @@ input[type="text"]:focus
 }
 
 .auto_complete_portrait {
-    top: 80% !important;
+    top: 76.5% !important;
     height: 105px !important;
     width: 832px !important;
 }
@@ -1657,4 +1693,16 @@ div.mall-details {
 
 .control-next-event, .control-prev-event {
     height: 390px;
+}
+
+.no-record-found-portrait {
+    width: 400px;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.softkeys__btn:hover, .softkeys__btn:focus {
+    background-color: #E0BD69 !important;
 }

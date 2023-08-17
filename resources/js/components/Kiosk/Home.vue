@@ -51,7 +51,7 @@
             <!-- MAIN CATEGORY -->
             <div v-show="home_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-150 mb-55 ml-80': 'mt-25 mb-55 ml-150'" class="row">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-150 mb-55 ml-120': 'mt-25 mb-55 ml-150'" class="row">
                         <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12 mt-5': 'col-md-10 offset-md-1 mt-5'">
                             <div v-for="(category, index) in main_category" v-bind:class="(site_orientation == 'Portrait') ? category.class_name +' category-portrait hc-button': category.class_name+' hc-button'" @click="showChildren(category);">
                                 <div class="main-category-holder">
@@ -175,7 +175,7 @@
                         <!-- The slideshow -->
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
                             <div v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-item': 'carousel-item tenant-store-carousel', index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']" v-for="(tenants, index) in tenant_list" :data-index="index">
-                                <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-80': 'row mb-3'">
+                                <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-60': 'row mb-3'">
                                     <div v-for="tenant in tenants" v-bind:class="tenants.length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
                                         <div v-if="site_name == 'Parqal'">
                                             <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenants.length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
@@ -223,9 +223,16 @@
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
-                    <img v-if="site_name == 'Parqal'" v-show="no_record_found" src="images/empty-box.png" class="no-record-found mt-3">
-                    <img v-else v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
+
                 </div>
+                <div v-if="site_name == 'Parqal'" v-show="no_record_found" class="row mb-23 mt-5">
+                    <div class="col-md-12 home-title text-center">
+                        <div><span class="translateme" data-en="Stay tuned for more!">Stay tuned for more!</span>
+                        </div>            
+                    </div>
+                </div>
+                <img v-if="site_name == 'Parqal'" v-show="no_record_found" src="images/empty-box.png" class="no-record-found-portrait">
+                <img v-else v-show="no_record_found" src="images/stick-around-for-future-deals.png" class="no-record-found">
             </div>
 
             <!-- TENANT -->
@@ -240,11 +247,11 @@
                                         <div class="tenant-details-views-portrait"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 text-center p-3">
+                                <div class="col-sm-4 offset-sm-1 text-center p-3">
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
                                     <div v-if="tenant_details.tenant_details" class="tenant-details-floor">{{ tenant_details.tenant_details.address }}</div>
                                     <div v-else class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
-                                    <div>
+                                    <div class="mt-4">
                                         <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                             <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
                                             <span v-else class="text-danger"><strong>Closed</strong></span>
@@ -252,11 +259,11 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-sm-3 text-center">
-                                    <div class="text-left ml-36 social-holder" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook" class="mb-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                        <div v-if="tenant_details.tenant_details.twitter" class="mb-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                        <div v-if="tenant_details.tenant_details.instagram" class="mb-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                <div class="col-sm-4 text-center">
+                                    <div class="text-left ml-36 social-holder-portrait" v-if="tenant_details.tenant_details">
+                                        <div v-if="tenant_details.tenant_details.facebook" class="mb-4 mt-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                        <div v-if="tenant_details.tenant_details.twitter" class="mb-4 mt-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                        <div v-if="tenant_details.tenant_details.instagram" class="mb-4 mt-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -523,7 +530,7 @@
         <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
         <div class="row pt-3 bg-color">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 pr-136'" class="col-md-12 text-center">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2'" class="col-md-12 text-center">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
                 </div>

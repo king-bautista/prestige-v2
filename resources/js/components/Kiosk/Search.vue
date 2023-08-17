@@ -26,6 +26,7 @@
                 <div v-if="site_name == 'Parqal'" class="col-md-10 offset-md-1">
                     <form class="row form text-center" v-on:submit.prevent="onEnter">
                         <div class="input-group mb-5 mt-5" v-bind:style="(site_orientation == 'Portrait') ? 'width: 90%;': 'width: 64%;'" style="margin: auto;"> 
+                            <img src="images/search-icon.png" class="search-icon">
                             <input type="text" id="code" name="code" class="form-control input-mg search-box">
                             <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
                             <label class="notification">Please type at least two (2) letters to search.</label>
@@ -45,11 +46,11 @@
                 </div>
             </div>
             <div class="result-section" v-show="search_results">
-                <div class="row mb-23">
-                    <div class="col-md-12 home-title text-center">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-5': ''" class="row mb-23">
+                    <div class="col-md-12 home-title text-center home-title-custom">
                         <div v-if="current_tenant_list_count < 0">
                             <span class="translateme" data-en="You searched for">We couldn’t find a match for</span>
-                            &nbsp;<span>‘{{this.search.key_words}}’.</span>
+                            &nbsp;<span>‘{{this.search.key_words}}’.</span><br/>
                             &nbsp; <span>Please try another search.</span>
                         </div>
                         <div v-else><span class="translateme" data-en="You searched for">You searched for</span><br/>
@@ -58,7 +59,7 @@
                     </div>
                 </div>
 
-                <div class="label-4 translateme no-results-container" v-show="current_tenant_list_count < 0">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-5': ''" class="label-4 translateme no-results-container" v-show="current_tenant_list_count < 0">
                     <img src="images/no-results.png" />
                 </div>
 
