@@ -834,7 +834,7 @@ input[type="text"]:focus
 }
 
 .tabs-container-portrait {
-    bottom: -7rem;
+    bottom: -6rem;
 }
 
 .datetime-holder {
@@ -1401,9 +1401,9 @@ input[type="text"]:focus
 }
 
 .map-search-modal-position-portrait {
-    top: 37%;
+    top: 60%;
     left: 50%;
-    width: 80%;
+    width: 90%;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 25px;
     padding-bottom: 35px;
