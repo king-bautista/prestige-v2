@@ -1401,7 +1401,7 @@ input[type="text"]:focus
 }
 
 .map-search-modal-position-portrait {
-    top: 75%;
+    top: 37%;
     left: 50%;
     width: 80%;
     background-color: rgba(0, 0, 0, 0.7);
@@ -1439,7 +1439,7 @@ input[type="text"]:focus
 }
 
 .auto_complete_portrait {
-    top: 76.5% !important;
+    top: 65.4% !important;
     height: 105px !important;
     width: 832px !important;
 }
