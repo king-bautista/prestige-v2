@@ -5,7 +5,7 @@
 
 body,html {
     font-family: 'Overpass' !important;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .theme-landscape {
@@ -1380,7 +1380,7 @@ input[type="text"]:focus
 
 .softkeys__btn {
     border-radius: 5px !important;
-    margin-left: 16px !important;
+    margin-left: 14px !important;
     font-size: 1.5em !important;
     width: 65px!important;
     height: 65px !important;
