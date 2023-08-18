@@ -127,8 +127,10 @@
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-3 col-form-label">Client Company</label>
 								<div class="col-sm-9">
-									<treeselect v-model="tenant.company_id" :options="companies"
-										placeholder="Select Company" />
+									<select class="custom-select" v-model="tenant.company_id">
+										<option value="">Select Company</option>
+										<option v-for="company in companies" :value="company.id"> {{ company.name }}</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -554,7 +556,7 @@ export default {
 			this.tenant.site_id = '';
 			this.tenant.site_building_id = '';
 			this.tenant.site_building_level_id = '';
-			this.tenant.company_id = null;
+			this.tenant.company_id = '';
 			this.tenant.space_number = '';
 			this.tenant.client_locator_number = '';
 			this.tenant.operational_hours = [];
@@ -595,16 +597,18 @@ export default {
 			formData.append("twitter", this.tenant.twitter);
 			formData.append("instagram", this.tenant.instagram);
 			formData.append("website", this.tenant.website);
+
+			
 			axios.post('/admin/site/tenant/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.tenantsDataTable.fetchData();
-					$('#tenant-form').modal('hide');
-				});
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.tenantsDataTable.fetchData();
+				$('#tenant-form').modal('hide');
+			});
 		},
 
 		editTenant: function (id) {

@@ -32,6 +32,7 @@ var defaults = {
     mapchange: 0,
     storefound: 0,
     store_id: 0,
+    tenant_store_address: '',
 }
 
 var Point = function Point(x,y,z,z2,map_id) {
@@ -602,6 +603,7 @@ WayFinding.prototype = {
     drawescalator: function(from,to,bldg) {
         var text = "";
         var bldg_name = "";
+        var store_address = "";
 
         var node = document.createElement("li");
         if((to>from)) {
@@ -611,15 +613,26 @@ WayFinding.prototype = {
             node.innerHTML = 'Proceed to <img src="images/services/stairs-black.png" align="middle">';
         }
         $('.assist').append(node);
+        
 
-        $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
-            text = response.name;
-            bldg_name = response.building_name;
+        if(this.settings.tenant_store_address) {
+            store_address = this.settings.tenant_store_address;
 
             var node = document.createElement("li");
-            node.innerHTML = 'Go to ' + text + ', ' + bldg_name + '';
+            node.innerHTML = 'Go to ' + store_address + '';
             $('.assist').append(node);            
-        });
+        }
+        else {
+            $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
+                text = response.name;
+                bldg_name = response.building_name;
+                store_address = text + ', ' + bldg_name;
+
+                var node = document.createElement("li");
+                node.innerHTML = 'Go to ' + store_address + '';
+                $('.assist').append(node);            
+            });
+        }
 
         var obj = this;
 
@@ -630,19 +643,30 @@ WayFinding.prototype = {
     drawesstair: function(from,to,bldg) {
         var text = "";
         var bldg_name = "";
+        var store_address = "";
 
         var node = document.createElement("li");
         node.innerHTML = 'Proceed to <img src="images/services/smcg_stairs.png" align="middle">';
         $('.assist').append(node);
 
-        $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
-            text = response.name;
-            bldg_name = response.building_name;
+        if(this.settings.tenant_store_address) {
+            store_address = this.settings.tenant_store_address;
 
             var node = document.createElement("li");
-            node.innerHTML = 'Go to ' + text + ', ' + bldg_name + '';
+            node.innerHTML = 'Go to ' + store_address + '';
             $('.assist').append(node);            
-        });
+        }
+        else {
+            $.get( "/api/v1/site/maps/get-floor-name/"+to, function(response) {
+                text = response.name;
+                bldg_name = response.building_name;
+                store_address = text + ', ' + bldg_name;
+
+                var node = document.createElement("li");
+                node.innerHTML = 'Go to ' + store_address + '';
+                $('.assist').append(node);            
+            });
+        }
 
         var obj = this;
 
@@ -784,6 +808,11 @@ WayFinding.prototype = {
         var tenant_name = tenant.brand_name;
         var tenant_location = tenant.floor_name + ', '+tenant.building_name;
         var tenant_category = tenant.category_name;
+
+        if(tenant.tenant_details) {
+            tenant_location = tenant.tenant_details.address;
+            this.settings.tenant_store_address = tenant_location;
+        }
 
         $('.tenant-name').html(tenant_name + ', ' +tenant_location);
         $('.tenant-floor').html(tenant_location);

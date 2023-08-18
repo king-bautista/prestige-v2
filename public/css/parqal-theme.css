@@ -1651,7 +1651,7 @@ pre {
 
 .softkeys-feedback {
     height: 395px;
-    width: 885px;
+    width: 950px;
     margin: auto;
     padding-top: 15px;
     margin-top: 15px;
@@ -1712,4 +1712,8 @@ pre {
 
 .softkeys__btn:hover, .softkeys__btn:focus {
     background-color: #E0BD69 !important;
+}
+
+.enter-key {
+    width: 100px !important;
 }
