@@ -173,7 +173,7 @@
                 <div class="text-right text-white">
                     <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                 </div>        
-                <div class="softkeys-tenant mt-20" data-target="input[name=tenant-search]" v-show="softkeysTenant"></div>
+                <div class="softkeys-tenant mt-20" data-target="input[name=tenant-search]"></div>
             </div>
         </div>
 
