@@ -495,19 +495,16 @@
 
             <!-- MODAL -->
             <div class="custom-modal p-l-490" id="myProduct">
-                <div class="custom-modal-position set-width">                    
-                    <div class="text-right text-white">
-                        <span class="btn-close-modal">X</span>
-                    </div>
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait': ''" class="custom-modal-position set-width">                    
                     <img class="my-product-image" :src="product_image">
-                </div>
+                    <div class="text-center parqal-color">
+                        <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
+                    </div> 
+                </div>                 
             </div>
 
             <div class="custom-modal p-l-490" id="modal-schedule">
-                <div class="custom-modal-position set-width-schedule">                    
-                    <div class="text-right text-white">
-                        <span class="btn-close-modal">X</span>
-                    </div>
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait': ''" class="custom-modal-position set-width-schedule">                    
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="label-1">Operating Hours</div>
@@ -517,7 +514,10 @@
                             <div class="modal-body-schedule-time">
                                 <div class="m-15-0" v-for="schedule in tenantSchedule">{{schedule}}</div>
                             </div>   
-                        </div>                   
+                        </div>   
+                    </div>
+                    <div class="text-center parqal-color">
+                        <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                     </div>       
                 </div>
             </div>
@@ -840,7 +840,8 @@
                 }
             },
 
-            buildSchedule: function (data) {              
+            buildSchedule: function (data) {       
+                        
                 let tempSchedule = [];
                 var currentSchedule = eval(data.tenant_details['schedules']);
                     if (currentSchedule) {
@@ -849,7 +850,11 @@
                                 Object.keys(obj).forEach(key => {
                                     if (key == 'schedules') {
                                         if (obj['schedules'].match(day)) {
-                                            tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
+                                            var start_time = new Date('7/10/2013 '+obj['start_time']).toLocaleString([], { hour: 'numeric', minute: 'numeric', hour12: true });
+                                            var end_time = new Date('7/10/2013 '+obj['end_time']).toLocaleString([], { hour: 'numeric', minute: 'numeric', hour12: true });
+                                            tempSchedule.push(start_time + " - " + end_time);
+                                            
+                                            //tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
                                         }                               
                                     }
                                 });
@@ -1324,6 +1329,7 @@
             showTenant: function(tenant) {
                 this.page_title = 'Store Page';   
                 this.tenant_details = tenant;
+                console.log(this.tenant_details);
                 this.alphabetical = false;
                 this.show_tenant = true;
                 this.tabs_container = false;

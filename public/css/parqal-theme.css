@@ -5,7 +5,7 @@
 
 body,html {
     font-family: 'Overpass' !important;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .theme-landscape {
@@ -1117,6 +1117,12 @@ input[type="text"]:focus
     border-radius: 2rem;
 }
 
+.modal-content-custom {
+    width: 618px;
+    height: 544px;
+}
+
+
 .social-holder {
     font-size: 14px;
     font-weight: bold;
@@ -1475,11 +1481,16 @@ input[type="text"]:focus
 }
 
 .custom-modal-position {
-    position: relative;
-    top: 43%;
-    left: 50%;
+    position: absolute;
+    top: 50%;
+    left: 65%;
     transform: translate(-50%, -50%);
 }
+
+.custom-modal-position-portrait {
+    left: 60%;
+}
+
 
 .custom-modal-position-portrait {
     position: absolute;
@@ -1754,4 +1765,38 @@ pre {
 
 #eventsListCarousel {
     height: 915px;
+}
+
+.text-black {
+    color: #000;
+}
+
+.modal-body-schedule-days {
+    display: inline-block;
+    text-align: left;
+    width: 40%;
+    color: #000;
+    font-size: 26px;
+    font-family: 'Overpass' !important;
+}
+
+.modal-body-schedule-time {
+    display: inline-block;
+    color: #000000;
+    font-size: 26px;
+    font-family: 'Overpass' !important;
+    width: 50%;
+    font-weight: 500;
+}
+
+.label-1 {
+    color: #000000;
+    font-size: 26px;
+    font-family: 'Overpass' !important;
+    font-weight: 500;
+}
+
+.softkeys--alt .softkeys__btn[data-type=shift] {
+    background-color: #DFBD69 !important;
+    color: #000;
 }
