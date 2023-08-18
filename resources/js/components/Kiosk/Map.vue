@@ -113,7 +113,7 @@
                             </span>
                         </multiselect>
                         <div class="input-group-append">
-                            <button id="withDisabilityButton" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button">
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -361,10 +361,10 @@
 			},
 
             find_store: function(value, called_from) {
-                console.log(value);
                 this.called_from = called_from;
                 this.helper.saveLogs(value, 'Map');
                 this.feedback_response = false;
+
                 $(function() {
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
@@ -373,7 +373,7 @@
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
-                    this.wayfindings.drawline(value.id, value);
+                    this.wayfindings.drawline(value.id, value, this.with_disability);
                     $('#guide-button').show();
                     $('.map-search-modal').hide();
                     $('.pinch').hide();
@@ -387,8 +387,10 @@
                 if ($("#app").attr('app-env') == 'local') {
                     $('#guide-button').trigger('click');
                 }
+
                 this.panzoom.zoom(this.active_map_details.default_zoom)
                 setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
+
             },
 
             updateFeedback: function(id) {
@@ -606,7 +608,7 @@
                     $('.map-floor-option .multiselect__tags .multiselect__single').html(vm.active_map_details.building_floor_name);
                     vm.panzoom.zoom((vm.active_map_details.default_zoom));
                     setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
-                    obj.wayfindings.replay();
+                    obj.wayfindings.replay(obj.with_disability);
     			});
 
                 $('#guide-button').on('click',function(){
@@ -662,8 +664,6 @@
                     vm.feedback_helpful = 'No';
                     $(this).addClass('response-active-color');
                 });
-
-                $('.enter-key span').text('Search');
             });
         },
 

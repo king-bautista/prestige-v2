@@ -275,9 +275,9 @@
                                         <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                     </div>
                                 </div>
-                                <div class="row subscriber-products ml-0" v-bind:class = "(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height'">
-                                    <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
-                                        <img :src="product.image_url_path" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo'" @click="showProduct(product.image_url_path,'product')">
+                                <div class="row subscriber-products ml-0" v-bind:class = "(tenant_details.products.product_list.length <= 3) ? 'with-height':'with-out-height'">
+                                    <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length <= 3) ? 'm-auto': 'f-left'">
+                                        <img :src="product.image_url_path" v-bind:class="[(tenant_details.products.product_list.length == 3 ? 'rounded-corner img-promo-3' : 'rounded-corner img-promo'), (tenant_details.products.product_list.length > 3 ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo')]" @click="showProduct(product.image_url_path,'product')">
                                     </div>
                                 </div>
                             </div>
@@ -447,7 +447,7 @@
             <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait ': 'tabs-container'" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
                     <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
-                        <img src="images/swipe.png">
+                        <img src="images/swipe.png" >
                         <p>SWIPE TO SEE MORE</p>
                     </div>
 

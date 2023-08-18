@@ -58,7 +58,7 @@
                 
                 <div v-if="event_list[0].length <= 2" class="row event-item-holder">
                     <template v-for="(events, index) in event_list">
-                        <div class="m-auto" v-for="event in events">
+                        <div class="m-auto t-auto" v-for="event in events">
                             <div class="event-container-custom" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
                                 <img :src="event.image_url_path" :alt="event.name" />
                                 <div class="event-name-holder">
