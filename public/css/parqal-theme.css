@@ -1717,3 +1717,8 @@ pre {
 .enter-key {
     width: 100px !important;
 }
+
+.disability-active {
+    background-color: #DFBD69 !important;
+    box-shadow: none !important;
+}

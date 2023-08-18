@@ -801,7 +801,7 @@ WayFinding.prototype = {
     show_tenant_details: function(id) {
     },
 
-    drawline: function(id, tenant) {
+    drawline: function(id, tenant, with_disability = 0) {
         this.showmap(this.settings.defaultmap);
         $('#repeatButton').hide();
         $('#zoomResetButton').addClass('last-border-radius');
@@ -829,7 +829,9 @@ WayFinding.prototype = {
         var obj = this;
         var distance = '';
 
-        $.get( "/api/v1/site/maps/get-routes/"+id, function(response) {
+        $.get( "/api/v1/site/maps/get-routes/"+id+"/"+with_disability, function(response) {
+            console.log('test');
+            console.log(response);
             if(response.data.length) {
                 obj.settings.points = { linePoint : []};
 
@@ -910,13 +912,13 @@ WayFinding.prototype = {
         });
     },
 
-    replay: function(){
+    replay: function(with_disability = 0){
         this.stopall();
         this.clearLine();
         this.clearAmenitiesLayer();
         this.clearTextlayer();
         this.clearEscalator();
-        this.drawline(this.settings.destination,this.settings.tenant_details);
+        this.drawline(this.settings.destination,this.settings.tenant_details, with_disability);
     },
 
     drawpoints_stop: function() {
