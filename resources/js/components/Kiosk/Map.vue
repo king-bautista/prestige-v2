@@ -364,6 +364,7 @@
                 this.called_from = called_from;
                 this.helper.saveLogs(value, 'Map');
                 this.feedback_response = false;
+
                 $(function() {
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
@@ -386,8 +387,10 @@
                 if ($("#app").attr('app-env') == 'local') {
                     $('#guide-button').trigger('click');
                 }
+
                 this.panzoom.zoom(this.active_map_details.default_zoom)
                 setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
+
             },
 
             updateFeedback: function(id) {
@@ -661,8 +664,6 @@
                     vm.feedback_helpful = 'No';
                     $(this).addClass('response-active-color');
                 });
-
-                $('.enter-key span').text('Search');
             });
         },
 

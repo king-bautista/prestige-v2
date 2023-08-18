@@ -581,7 +581,11 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         $routes = $dijkstra->getResults();
 
         // delete old records
-        SiteMapPaths::where('site_id', $site_id)->where('site_screen_id', $screen_id)->delete();
+        SiteMapPaths::where('site_id', $site_id)->where('site_screen_id', $screen_id)
+        ->when($with_disability, function ($query) {
+            return $query->where('with_disability', 1);
+        })
+        ->delete();
         foreach($routes as $route) {
             SiteMapPaths::create($route);
         }

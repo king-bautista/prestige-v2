@@ -646,8 +646,8 @@ class MainController extends AppBaseController
 
     public function getRoutes($destination_id, $with_disability = 0)
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
             $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();
             
@@ -668,9 +668,7 @@ class MainController extends AppBaseController
 
             $map_paths = SiteMapPaths::where('site_id', $site->id)
             ->where('site_screen_id', $site_screen->id)
-            ->when($with_disability, function ($query) {
-                return $query->where('with_disability', 1);
-            })
+            ->where('with_disability', $with_disability)
             ->where('point_orig', $origin)
             ->where('point_dest', $destination)
             ->get();
@@ -687,14 +685,14 @@ class MainController extends AppBaseController
             }
 
             return $this->response($coordinates, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // } 
 
     }
 

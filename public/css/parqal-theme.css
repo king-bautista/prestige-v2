@@ -330,8 +330,8 @@ input[type="text"]:focus
     right: 15px;
     background: #98dad0;
     color: #fff;
-    width: 100px;
-    height: 100px;
+    width: 106px;
+    height: 106px;
     border-radius: 50%;
     z-index: 2;
 }
@@ -978,11 +978,16 @@ input[type="text"]:focus
     text-align: center;
     left: 52%;
     top: 50%;
-    transform: translate( -50%, -250%);
+    transform: translate( -50%, -195%);
     color: #DFBD69;
     opacity: 0.9;
     font-size: 45px;
     font-family: 'Overpass' !important;
+}
+
+.swipe-to-see-more-portrait img{
+    width: 90px;
+    margin-bottom: 20px;
 }
 
 .carousel-control-next-icon {
@@ -1064,7 +1069,7 @@ input[type="text"]:focus
 }
 
 .tenant-store-custom {
-    width: 100%px;
+    width: 100%;
     height: 146px;
 }
 
@@ -1144,17 +1149,26 @@ input[type="text"]:focus
 }
 
 .img-promo {
-    width: 260px;
+    width: 321px;
+    height: auto;
+}
+
+.img-promo-3 {
+    width: 247px;
     height: auto;
 }
 
 .img-promo-4 {
-    width: 215px;
+    width: 191px;
     height: auto;
 }
 
 .m-auto {
     margin: auto;
+}
+
+.t-auto {
+    margin-top: 0 !important;
 }
 
 .f-left {
@@ -1341,16 +1355,14 @@ input[type="text"]:focus
 }
 
 .event-container-custom img{
-    width: 300px;
-    height: 300px;
+    width: 387px;
+    height: 387px;
     border-radius: 25px;
-    /* position: absolute;
-    top: 0;
-    left: 0; */
 }
 
 .lanmark-img {
-    width: 100%;
+    width: 350px;
+    height: 660px;
 }
 
 .lanmark-detail-holder {
@@ -1359,7 +1371,7 @@ input[type="text"]:focus
 }
 
 .lanmark-detail-holder p{
-    font-size: 18px;
+    font-size: 22px;
     font-family: 'Overpass' !important;
 }
 
@@ -1721,4 +1733,18 @@ pre {
 .disability-active {
     background-color: #DFBD69 !important;
     box-shadow: none !important;
+}
+
+.notification {
+    font-family: 'Overpass' !important;
+    color: #DFBD69;
+    width: 380px;
+}
+
+#supplementalCarousel {
+    height: 763px;
+}
+
+#eventsListCarousel {
+    height: 915px;
 }
