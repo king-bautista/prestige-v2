@@ -33,6 +33,7 @@ var defaults = {
     storefound: 0,
     store_id: 0,
     tenant_store_address: '',
+    panzoom: '',
 }
 
 var Point = function Point(x,y,z,z2,map_id) {
@@ -988,15 +989,27 @@ WayFinding.prototype = {
 
             if(!this.settings.store_id)
             {
+                const elem = document.getElementById('zoomable-container')
+                const panzoom = Panzoom(elem, {
+                    maxScale: 5,
+                    canvas: true,
+                    startScale: this.settings.defaultmap.default_scale,
+                    startX: this.settings.defaultmap.default_x,
+                    startY: this.settings.defaultmap.default_y
+                })
+
                 var obj = this;
                 this.settings.store_id = setInterval(function(){obj.animate_marker_store();},50);
 
                 var x = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].x
                 var y = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].y
-                var scale = 0.50;
+                var scale = 0.60;
 
                 console.log(x);
                 console.log(y);
+
+                panzoom.zoom(scale);
+                setTimeout(() => panzoom.pan('-'+x, '-'+(y)));
             }
         }
 
