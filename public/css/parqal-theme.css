@@ -1370,9 +1370,16 @@ input[type="text"]:focus
     font-family: 'Overpass' !important;
 }
 
+.lanmark-detail-holder h1{
+    font-size: 45px;
+    font-family: 'Overpass' !important;
+    text-transform: uppercase;
+}
+
 .lanmark-detail-holder p{
     font-size: 22px;
     font-family: 'Overpass' !important;
+    text-align: justify;
 }
 
 .softkeys {
