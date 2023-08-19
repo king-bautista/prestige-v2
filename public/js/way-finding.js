@@ -803,6 +803,7 @@ WayFinding.prototype = {
     },
 
     drawline: function(id, tenant, with_disability = 0) {
+        console.log(with_disability);
         this.showmap(this.settings.defaultmap);
         $('#repeatButton').hide();
         $('#zoomResetButton').addClass('last-border-radius');
@@ -1003,13 +1004,16 @@ WayFinding.prototype = {
 
                 var x = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].x
                 var y = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].y
-                var scale = 0.60;
+                var scale = 0.40;
 
                 console.log(x);
                 console.log(y);
 
-                panzoom.zoom(scale);
-                setTimeout(() => panzoom.pan('-'+x, '-'+(y)));
+                
+                setTimeout(() => {
+                    panzoom.pan('-'+(x-500), '-'+(y-500));
+                    panzoom.zoom(scale);
+                }, 500);
             }
         }
 

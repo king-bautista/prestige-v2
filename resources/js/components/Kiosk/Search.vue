@@ -49,7 +49,7 @@
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-5': ''" class="row">
                     <div class="col-md-12 home-title text-center home-title-custom">
                         <div v-if="current_tenant_list_count < 0">
-                            <span class="translateme" data-en="You searched for">We couldn’t find a match for</span>
+                            <span class="translateme" data-en="We couldn’t find a match for">We couldn’t find a match for</span>
                             &nbsp;<span>‘{{this.search.key_words}}’.</span><br/>
                             &nbsp; <span>Please try another search.</span>
                         </div>
