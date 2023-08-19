@@ -478,7 +478,7 @@ input[type="text"]:focus
 .tenant-products-container-portrait {
     position: relative;
     border: solid 2px #DFBD69;
-    height: 670px;
+    height: 600px;
     border-radius: 30px;
     width: 95%;
 }
@@ -653,6 +653,10 @@ input[type="text"]:focus
 
 .bg-color {
     background-color: rgb(0, 0, 0, .8);
+}
+
+.bg-white {
+    background-color: #fff;
 }
 
 .food, .fashion, .electronics, .function, .finds, .health {
@@ -1036,7 +1040,7 @@ input[type="text"]:focus
 }
 
 .carousel-control-next-portrait {
-    height: 890px;
+    height: 770px;
     right: -40px !important;
 }
 
@@ -1058,7 +1062,7 @@ input[type="text"]:focus
 }
 
 .carousel-control-prev-portrait {
-    height: 890px;
+    height: 770px;
     left: -50px !important;
 }
 
@@ -1768,7 +1772,7 @@ pre {
 }
 
 #supplementalCarousel {
-    height: 763px;
+    height: 875px;
 }
 
 .supplementalCarousel-ladscape {
@@ -1837,4 +1841,10 @@ pre {
     border-radius: 20px;
     width: 75%;
     height: auto;
+}
+
+.btn-like-portrait {
+    padding: 15px;
+    width: 169px !important;
+    height: 51px;
 }

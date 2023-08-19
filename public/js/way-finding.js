@@ -34,6 +34,7 @@ var defaults = {
     store_id: 0,
     tenant_store_address: '',
     panzoom: '',
+    with_disability: 0,
 }
 
 var Point = function Point(x,y,z,z2,map_id) {
@@ -607,15 +608,19 @@ WayFinding.prototype = {
         var store_address = "";
 
         var node = document.createElement("li");
-        if((to>from)) {
-            node.innerHTML = 'Proceed to <img src="images/services/escalator-black.png" align="middle">';
-        }
+        if(this.settings.with_disability) {
+            node.innerHTML = 'Proceed to <img src="images/services/smcg_elevator.png" align="middle">';
+        } 
         else {
-            node.innerHTML = 'Proceed to <img src="images/services/stairs-black.png" align="middle">';
+            if((to>from)) {
+                node.innerHTML = 'Proceed to <img src="images/services/escalator-black.png" align="middle">';
+            }
+            else {
+                node.innerHTML = 'Proceed to <img src="images/services/stairs-black.png" align="middle">';
+            }
         }
-        $('.assist').append(node);
-        
 
+        $('.assist').append(node);
         if(this.settings.tenant_store_address) {
             store_address = this.settings.tenant_store_address;
 
@@ -803,7 +808,7 @@ WayFinding.prototype = {
     },
 
     drawline: function(id, tenant, with_disability = 0) {
-        console.log(with_disability);
+        this.settings.with_disability = with_disability;
         this.showmap(this.settings.defaultmap);
         $('#repeatButton').hide();
         $('#zoomResetButton').addClass('last-border-radius');
@@ -937,6 +942,7 @@ WayFinding.prototype = {
             var flr_build = this.settings.currentmap.split('-');
             if(flr_build[0] != this.settings.points.linePoint[this.settings.current_point].z && flr_build[1] == this.settings.points.linePoint[this.settings.current_point].z2) {
                 console.log(this.settings);
+                console.log(this.settings.current_point);
                 var to = this.settings.points.linePoint[this.settings.current_point].z;
                 var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
                 this.settings.current_point--;
@@ -1006,10 +1012,6 @@ WayFinding.prototype = {
                 var y = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].y
                 var scale = 0.40;
 
-                console.log(x);
-                console.log(y);
-
-                
                 setTimeout(() => {
                     panzoom.pan('-'+(x-500), '-'+(y-500));
                     panzoom.zoom(scale);
