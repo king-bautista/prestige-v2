@@ -404,8 +404,8 @@ input[type="text"]:focus
     font-weight: 800;
     color: #2a2a2a;
     font-size: 23px;
-    margin-top: 3px;
-    line-height: 50px;
+    margin-top: 15px;
+    line-height: 23px;
 }
 
 .tenant-details-portrait {
@@ -425,17 +425,23 @@ input[type="text"]:focus
 
 .tenant-details-floor {
     color: #000000;
-    margin-top: -8px;
+    margin-top: 0;
     float: none;
     margin-left: 0;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Overpass' !important;
 }
 
 .tenant-details-views {
     color: #000000;
     margin-top: -8px;
-    margin-bottom: 5px;
+    margin-bottom: -10px;
     margin-left: 0;
     margin-top: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Overpass' !important;
 }
 
 .tenant-details-views-portrait {
@@ -449,13 +455,16 @@ input[type="text"]:focus
 .btn-heart {
     float: none;
     margin: 0;
+    font-size: 16px;
 }
 
 .btn-like-display {
-    font-size: 0.994em;
+    font-size: 16px;
+    font-weight: 500;
     float: none;
     margin: 8px 0 0 15px;
     color: #000;
+    font-family: 'Overpass' !important;
 }
 
 .tenant-products-container {
@@ -868,10 +877,11 @@ input[type="text"]:focus
     text-transform: uppercase;
     font-weight: 500;
     background: url(/images/parqal-tenant-big.png);
+    background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
     border-radius: 15px;
-    font-family: 'Overpass' !important;
+    font-family: 'Overpass' !important;    
 }
 
 .map-holder {
@@ -1000,7 +1010,7 @@ input[type="text"]:focus
 
 .carousel-control-next {
     width: 2rem;
-    height: 600px;
+    height: 575px;
     border: none;
     background: url(/images/parqal-right.png) no-repeat;
     background-position: center;
@@ -1032,7 +1042,7 @@ input[type="text"]:focus
 
 .carousel-control-prev {
     width: 2rem;
-    height: 600px;
+    height: 575px;
     border: none;
     background: url(/images/parqal-left.png) no-repeat;
     background-position: center;
@@ -1054,10 +1064,11 @@ input[type="text"]:focus
 
 .tenant-store, .tenant-search {
     background: url(/images/parqal-tenant-big.png);
+    background-repeat: no-repeat;
     border: 1px solid #000;
     padding: 5px;
     border-radius: 16px;
-    height: 100px;
+    height: 111px;
     width: 369px;
     cursor: pointer;
 }
@@ -1127,6 +1138,8 @@ input[type="text"]:focus
     font-size: 14px;
     font-weight: bold;
     color: #5E252C;
+    overflow: hidden;
+    width: 168px;
 }
 
 .social-holder-portrait {
@@ -1329,7 +1342,7 @@ input[type="text"]:focus
 }
 
 .carousel-indicators-with-subscriber {
-    bottom: 13rem;
+    bottom: 11rem;
 }
 
 .carousel-indicators-with-subscriber-portrait {
@@ -1514,8 +1527,8 @@ input[type="text"]:focus
 }
 
 .btn-close-modal {
-    font-size: 3em;
-    margin-right: 10px;
+    font-size: 4em;
+    margin-right: 0;
 }
 
 .banner-ads {
@@ -1548,14 +1561,14 @@ input[type="text"]:focus
     min-height: 100%;
     margin: auto;
     max-height: none;
-    height: 390px;
+    height: 355px;
 }
 
 .about-banner-holder {
     width: 100%;
     height: 290px;
     overflow: hidden;
-    border-radius: 25px;
+    /* border-radius: 25px; */
 }
 
 .socmediconcontainer
@@ -1570,7 +1583,7 @@ input[type="text"]:focus
 }
 
 .socmedicon {
-    max-width: 35px;
+    max-width: 50px;
     vertical-align: middle;
     margin-bottom: 0.2em;
 }
@@ -1716,7 +1729,7 @@ pre {
 }
 
 .mall-details-portrait {
-    height: 645px;
+    height: 595px;
 }
 
 .control-next-event, .control-prev-event {
@@ -1756,6 +1769,10 @@ pre {
 
 #supplementalCarousel {
     height: 763px;
+}
+
+.supplementalCarousel-ladscape {
+    height: 635px !important;
 }
 
 #eventsListCarousel {
@@ -1798,4 +1815,26 @@ pre {
 
 .custom-modal {
     z-index: 0;
+}
+
+.shop-logo {
+    max-width: 240px;
+    height: 89px !important;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.w-500 {
+    width: 500px;
+}
+
+.btn-schedule {
+    font-size: 14px;
+    font-family: 'Overpass' !important;
+}
+
+.my-product-image {
+    border-radius: 20px;
+    width: 75%;
+    height: auto;
 }

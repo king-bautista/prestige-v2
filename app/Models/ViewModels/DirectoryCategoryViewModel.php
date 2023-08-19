@@ -103,7 +103,7 @@ class DirectoryCategoryViewModel extends Model
                 ->get()->toArray();
         
             if($tenants) {
-                $tenants = array_chunk($tenants, 15);
+                $tenants = array_chunk($tenants, 12);
                 return $tenants;
             }
             return null;

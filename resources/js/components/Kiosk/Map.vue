@@ -365,6 +365,8 @@
                 this.helper.saveLogs(value, 'Map');
                 this.feedback_response = false;
 
+                var obj = this;
+
                 $(function() {
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
@@ -373,7 +375,7 @@
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
-                    this.wayfindings.drawline(value.id, value, this.with_disability);
+                    this.wayfindings.drawline(value.id, value, obj.with_disability);
                     $('#guide-button').show();
                     $('.map-search-modal').hide();
                     $('.pinch').hide();

@@ -145,7 +145,7 @@ class MainController extends AppBaseController
                 ->get()->toArray();
             }
             
-            $site_tenants = array_chunk($site_tenants, 15);
+            $site_tenants = array_chunk($site_tenants, 12);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -666,7 +666,7 @@ class MainController extends AppBaseController
                 $latlng[$coordinate['id']] = array($coordinate['lat'],$coordinate['lng'],$coordinate['level'],$coordinate['building'],$coordinate['map_id']);
             }
 
-            $map_paths = SiteMapPaths::where('site_id', $site->id)
+            $map_paths = SiteMapPaths::where('site_idt', $site->id)
             ->where('site_screen_id', $site_screen->id)
             ->where('with_disability', $with_disability)
             ->where('point_orig', $origin)
