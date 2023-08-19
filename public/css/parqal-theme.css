@@ -1488,13 +1488,8 @@ input[type="text"]:focus
 }
 
 .custom-modal-position-portrait {
-    left: 60%;
-}
-
-
-.custom-modal-position-portrait {
     position: absolute;
-    top: 60%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -1799,4 +1794,8 @@ pre {
 .softkeys--alt .softkeys__btn[data-type=shift] {
     background-color: #DFBD69 !important;
     color: #000;
+}
+
+.custom-modal {
+    z-index: 0;
 }
