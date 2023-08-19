@@ -64,8 +64,8 @@
                     <div class="lanmark-detail-holder m-5 mt-100">
                         <h1>{{ landmark_details.landmark }}</h1>
                         <p>{{ landmark_details.descriptions }}</p>
-                        <p>{{ landmark_details.name }}</p>
-                        <p>{{ landmark_details.title }}</p>
+                        <!-- <p>{{ landmark_details.name }}</p>
+                        <p>{{ landmark_details.title }}</p> -->
                     </div>
                 </div>
             </div>
