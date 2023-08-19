@@ -24,12 +24,12 @@
                     </template>
                 </template>
                 <template v-else>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-4 mb-3 ml-4">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>                
                     </div>
-                    <div class="col-md-6 text-right">
+                    <div class="col-md-7 text-right">
                         <div v-if="home_category" class="datetime-holder mt-4 mb-3 mr-5">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>
@@ -165,7 +165,7 @@
                     </div>
                 </div>
                 <div class="row col-md-12 ml-2">
-                    <div id="supplementalCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false" v-show="!no_record_found">
+                    <div id="supplementalCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'carousel-portrait': 'supplementalCarousel-ladscape'" class="carousel slide" data-ride="false" data-interval="false" data-wrap="false" v-show="!no_record_found">
 
                         <!-- Indicators -->
                         <ul class="carousel-indicators carousel-indicators-a z-1" v-show="tenant_list_count>0">
@@ -176,13 +176,13 @@
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
                             <div v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-item': 'carousel-item tenant-store-carousel', index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']" v-for="(tenants, index) in tenant_list" :data-index="index">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-60': 'row mb-3'">
-                                    <div v-for="tenant in tenants" v-bind:class="tenants.length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
+                                    <div v-for="tenant in tenants" v-bind:class="tenant_list[0].length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenants.length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
-                                                <div v-bind:class="tenants.length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
+                                                <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
-                                                <div v-bind:class="tenants.length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
+                                                <div v-bind:class="tenant_list[0].length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
                                                     <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
                                                     <div v-if="tenant.tenant_details" style="font-size: 13px;font-weight: bold;color:#2a2a2a;">{{ tenant.tenant_details.address }}</div>
                                                     <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
@@ -249,8 +249,8 @@
                                 </div>
                                 <div class="col-sm-4 offset-sm-1 text-center p-3">
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
-                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor">{{ tenant_details.tenant_details.address }}</div>
-                                    <div v-else class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
+                                    <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                     <div class="mt-4">
                                         <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                             <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
@@ -275,11 +275,13 @@
                                         <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                     </div>
                                 </div>
-                                <div class="row subscriber-products ml-0" v-bind:class = "(tenant_details.products.product_list.length <= 3) ? 'with-height':'with-out-height'">
-                                    <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length <= 3) ? 'm-auto': 'f-left'">
-                                        <img :src="product.image_url_path" v-bind:class="[(tenant_details.products.product_list.length == 3 ? 'rounded-corner img-promo-3' : 'rounded-corner img-promo'), (tenant_details.products.product_list.length > 3 ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo')]" @click="showProduct(product.image_url_path,'product')">
+                                <template v-if="tenant_details.products.length > 0">
+                                    <div class="row subscriber-products ml-0" v-bind:class = "(tenant_details.products.product_list.length <= 3) ? 'with-height':'with-out-height'">
+                                        <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length <= 3) ? 'm-auto': 'f-left'">
+                                            <img :src="product.image_url_path" v-bind:class="[(tenant_details.products.product_list.length == 3 ? 'rounded-corner img-promo-3' : 'rounded-corner img-promo'), (tenant_details.products.product_list.length > 3 ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo')]" @click="showProduct(product.image_url_path,'product')">
+                                        </div>
                                     </div>
-                                </div>
+                                </template>
                             </div>
                             <div v-else class="tenant-products-container-portrait">
                                 <div class="centered-container">
@@ -294,8 +296,8 @@
                                 <div class="my-auto p-1 text-center">
                                     <img class="tenant-details-logo" :src="tenant_details.brand_logo">
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
-                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor">{{ tenant_details.tenant_details.address }}</div>
-                                    <div v-else class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
+                                    <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                     <div>
                                         <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                             <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
@@ -317,9 +319,9 @@
                                 </div>
                                 <div class="row mt-1 mb-4">
                                     <div class="text-left ml-36 social-holder" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook" class="mb-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                        <div v-if="tenant_details.tenant_details.twitter" class="mb-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                        <div v-if="tenant_details.tenant_details.instagram" class="mb-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                        <div v-if="tenant_details.tenant_details.facebook" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                        <div v-if="tenant_details.tenant_details.twitter" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                        <div v-if="tenant_details.tenant_details.instagram" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -331,16 +333,18 @@
                         </div>
                         <div class="col-sm-10 text-center mt-3">
                             <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container">
-                                <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
-                                    <div class="col-12 p-0">
+                                <div class="row ml-1 mt-16" v-if="tenant_details.products">
+                                    <div class="col-12 p-0" v-if="tenant_details.products.banners">
                                         <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                     </div>
                                 </div>
-                                <div class="row subscriber-products ml-0" v-bind:class = "(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height'">
-                                    <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
-                                        <img :src="product.image_url_path" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo'" @click="showProduct(product.image_url_path,'product')">
+                                <template v-if="tenant_details.products.length > 0">
+                                    <div class="row subscriber-products ml-0" v-bind:class = "(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height'">
+                                        <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
+                                            <img :src="product.image_url_path" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo'" @click="showProduct(product.image_url_path,'product')">
+                                        </div>
                                     </div>
-                                </div>
+                                </template>
                             </div>
                             <div v-else class="tenant-products-container">
                                 <div class="centered-container">
@@ -352,17 +356,19 @@
                 </div>
                 <div v-else class="row">
                     <div class="col-12 col-sm-8 text-center">
-                        <div v-if="tenant_details.is_subscriber && tenant_details.products.length != 0">
-                            <div class="row ml-1 mt-16" v-if="tenant_details.products.banners.length > 0">
+                        <div v-if="tenant_details.is_subscriber && tenant_details.products">
+                            <div class="row ml-1 mt-16" v-if="tenant_details.products">
                                 <div class="col-12 p-0">
                                     <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                 </div>
                             </div>
-                            <div class="row subscriber-products mt-15 ml-0" v-bind:class = "(tenant_details.products.banners.length > 0) ? 'with-banner-height':'with-out-banner-height'">
-                                <div v-for="product in tenant_details.products.products" class="m-15-18">
-                                    <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path,'product')">
+                            <template v-if="tenant_details.products.length > 0">
+                                <div class="row subscriber-products mt-15 ml-0" v-bind:class = "(tenant_details.products.banners.length > 0) ? 'with-banner-height':'with-out-banner-height'">
+                                    <div v-for="product in tenant_details.products.products" class="m-15-18">
+                                        <img :src="product.image_url_path" class="rounded-corner box-shadowed img-promo" @click="showProduct(product.image_url_path,'product')">
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
                         </div>
                         <div v-else>
                             <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo box-shadowed mt-82 ml-94">
@@ -375,7 +381,7 @@
                                 <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
                                 <div class="tenant-details-floor">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
                                 <div class="tenant-details-views"><span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
-                                <div>
+                                <div class="mt-2 mb-2">
                                     <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                         <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                                         <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
@@ -530,7 +536,7 @@
         <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
         <div class="row pt-3 bg-color">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2'" class="col-md-12 text-center">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4'" class="col-md-12 text-center">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
                 </div>
@@ -1058,13 +1064,12 @@
                     this.supplementals = false;
                     this.show_tenant = false;
                     this.tenant_list_count = this.tenant_list.length -1;
-
                     if(this.tenant_list.length == 0) {
                         this.no_record_found = true;         
                     }
 
-                    // this.initializeSwipe();
-                    // this.resetCarousel();
+                    this.initializeSwipe();
+                    this.resetCarousel();
                     this.TitleCasePerWord();
 
                     setTimeout(() => {
@@ -1329,7 +1334,6 @@
             showTenant: function(tenant) {
                 this.page_title = 'Store Page';   
                 this.tenant_details = tenant;
-                console.log(this.tenant_details);
                 this.alphabetical = false;
                 this.show_tenant = true;
                 this.tabs_container = false;
