@@ -5,19 +5,19 @@
                 <template v-if="site_orientation == 'Portrait'">
                     <template v-if="home_category">
                         <div class="col-md-12 text-center">
-                            <div class="datetime-holder">
+                            <div class="datetime-holder mt-4 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                             </div>
                         </div>
                     </template>
                     <template v-else>
                         <div class="col-md-6">
-                            <div class="datetime-holder text-left mt-4 mb-3 ml-4">
+                            <div class="datetime-holder text-left ml-5 mt-4 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                             </div>                
                         </div>
                         <div class="col-md-6 text-right">
-                            <div class="mt-4 mb-3 mr-5">
+                            <div class="mr-5 mt-4 mb-5">
                                 <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
                             </div>
                         </div>
@@ -25,15 +25,15 @@
                 </template>
                 <template v-else>
                     <div class="col-md-5">
-                        <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-4 mb-3 ml-4">
+                        <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-5 mb-3 ml-4 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>                
                     </div>
                     <div class="col-md-7 text-right">
-                        <div v-if="home_category" class="datetime-holder mt-4 mb-3 mr-5">
+                        <div v-if="home_category" class="datetime-holder mt-5 mb-3 mr-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>
-                        <div v-else class="mt-4 mb-3 mr-5">
+                        <div v-else class="mt-5 mb-3 mr-5">
                             <button type="button" class="btn btn-custom">{{ page_title }}</button>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
             <div v-show="home_category">
                 <div v-if="site_name == 'Parqal'">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-150 mb-55 ml-120': 'mt-25 mb-55 ml-150'" class="row">
-                        <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12 mt-5': 'col-md-10 offset-md-1 mt-5'">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12 mt-5': 'col-md-10 offset-md-2 mt-5 ml-150'">
                             <div v-for="(category, index) in main_category" v-bind:class="(site_orientation == 'Portrait') ? category.class_name +' category-portrait hc-button': category.class_name+' hc-button'" @click="showChildren(category);">
                                 <div class="main-category-holder">
                                     <img :src="category.kiosk_image_primary_path" width="100%">
@@ -80,7 +80,7 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" id="child-category-holder">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-120 mb-41'" id="child-category-holder">
                         
                     </div>
                 </div>
@@ -108,7 +108,7 @@
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
                 <div v-if="site_name == 'Parqal'">
-                    <div class="row col-md-12 mt-120 mb-41" id="child-supplementals-holder">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-120 mb-41'" id="child-supplementals-holder">
                         
                     </div>
                     <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
@@ -560,8 +560,8 @@
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
         <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
-        <div class="row pt-3 bg-color">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4'" class="col-md-12 text-center">
+        <div class="row pt-3">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4'" class="col-md-12 text-center bg-color ml-5">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
                 </div>

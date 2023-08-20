@@ -2,12 +2,12 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left mt-4 mb-3 ml-4">
+                <div class="datetime-holder text-left ml-5 mt-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mt-3 mb-3 mr-5">
+                <div class="mr-5 mt-5 mb-5">
                     <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
                 </div>
             </div>
@@ -75,13 +75,13 @@
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
                             <div v-bind:class="[(site_orientation == 'Portrait' ? 'carousel-item': 'carousel-item tenant-store-carousel'), (index == 0 ? 'first-item active':''), (index == tenant_list_count? 'last-item':'')]" v-for="(tenants, index) in tenant_list" :data-index="index">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-100': 'row mb-3'">
-                                    <div v-for="tenant in tenants" v-bind:class="tenants.length <= 2 ? 'col-12 col-sm-6 text-left mt-3' : 'col-12 col-sm-4 text-left mt-3'" class="">
+                                    <div v-for="tenant in tenants" v-bind:class="tenants[0].length <= 2 ? 'col-12 col-sm-6 text-left mt-3' : 'col-12 col-sm-4 text-left mt-3'" class="">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenants.length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
-                                                <div v-bind:class="tenants.length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenants[0].length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
+                                                <div v-bind:class="tenants[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
-                                                <div v-bind:class="tenants.length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
+                                                <div v-bind:class="tenants[0].length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
                                                     <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
                                                     <div v-if="tenant.tenant_details" style="font-size: 0.7em;color:#2a2a2a">{{ tenant.tenant_details.address }}</div>
                                                     <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>

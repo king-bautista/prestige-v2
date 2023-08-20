@@ -122,8 +122,8 @@ class MainController extends AppBaseController
 
     public function getTenantsByCategory($category_id)
     {
-        try
-        {
+        // try
+        // {
             if (config('app.env') == 'local') {
                 $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
@@ -154,14 +154,14 @@ class MainController extends AppBaseController
 
             $site_tenants = array_chunk($site_tenants, $per_set);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        }    
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }    
     }
 
     public function getTenantsBySupplementals($category_id)

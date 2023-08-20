@@ -2,12 +2,12 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left m-5">
+                <div class="datetime-holder text-left ml-5 mt-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="m-5">
+                <div class="mr-5 mt-5 mb-5">
                     <button type="button" class="btn btn-custom">{{ page_title }}</button>
                 </div>
             </div>
@@ -22,7 +22,7 @@
         </div>
         <div v-show="event_page">
             <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12': 'col-md-10 offset-md-1'" class="row" v-if="event_list.length > 0">
-                <div id="eventsListCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 2">
+                <div id="eventsListCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 3">
                         
                     <!-- Control dots -->
                     <ul class="carousel-indicators carousel-indicators-event z-1">
@@ -56,11 +56,11 @@
 
                 </div>
                 
-                <div v-if="event_list[0].length <= 2" class="row event-item-holder">
+                <div v-if="event_list[0].length <= 3" class="row event-item-holder">
                     <template v-for="(events, index) in event_list">
-                        <div class="m-auto t-auto" v-for="event in events">
+                        <div class="m-auto" v-for="event in events">
                             <div class="event-container-custom" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
-                                <img :src="event.image_url_path" :alt="event.name" />
+                                <img v-bind:class="(event_list[0].length <= 3) ? 'event-custom-img': ''" class="" :src="event.image_url_path" :alt="event.name" />
                                 <div class="event-name-holder">
                                     {{event.event_name}} <br/>
                                     {{event.location}}

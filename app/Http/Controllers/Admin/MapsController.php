@@ -512,6 +512,9 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         ->when($with_disability, function ($query) use ($amenities) {
             return $query->whereNotIn('site_points.point_type', $amenities);
         })
+        ->when(!$with_disability, function ($query) {
+            return $query->whereNotIn('site_points.point_type', [9]);
+        })
         ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
         ->select('site_points.id','site_points.point_x as lat', 'site_points.point_y as lng')
         ->get();

@@ -2,12 +2,12 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left m-5">
+                <div class="datetime-holder text-left ml-5 mt-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="m-5">
+                <div class="mr-5 mt-5 mb-5">
                     <button type="button" class="btn btn-custom">{{ page_title }}</button>
                 </div>
             </div>
@@ -203,9 +203,9 @@
                             <textarea name="feedback" id="feedback-textarea" class="po-a" for="option4" v-bind:class="[disable? 'disabled':'']" v-model="feedback_others"  placeholder="Others"></textarea>
                         </div>                    
                     </div>
-                    <div>
+                    <div class="c-submit-holder">
                         <button class="c-submit"  v-bind:class="[submit_disable? 'disabled-btn':'']" @click="updateFeedback()">Submit</button>
-                        <span class="btn-close-modal"><i class="far fa-times-circle" style="color:#E0BD69;"></i></span>
+                        <i class="btn-close-modal c-close-modal far fa-times-circle" style="color:#E0BD69;"></i>
                     </div>
                 </div>     
                 <div class="softkeys-feedback mt-20" data-target="textarea[name=feedback]" v-bind:class="[disable? 'disabled':'']" v-show="softkeysFeedback"></div>
