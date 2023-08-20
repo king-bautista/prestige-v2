@@ -268,7 +268,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 text-center mt-5 ml-4 mr-4">
+                        <div class="col-sm-12 text-center mt-4 ml-4 mr-4">
                             <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container-portrait mb-3">
                                 <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                     <div class="col-12 p-0">
@@ -295,17 +295,17 @@
                             </div>
                             <div class="row">
                                 <div class="col-6 text-left">
-                                    <div class="btn btn-prestige-rounded w-100 bg-white btn-like-portrait">
+                                    <div class="btn btn-prestige-rounded w-100 bg-white btn-like-portrait ">
                                         <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
-                                            <i class="fa fa-heart btn-heart" aria-hidden="true"></i>
-                                            <a class="btn-like-display">{{ tenant_details.like_count }}
+                                            <i class="far fa-heart btn-heart btn-heart-portrait" aria-hidden="true"></i>
+                                            <a class="btn-like-display btn-like-display-portrait">{{ tenant_details.like_count }}
                                                 <span class="translateme" data-en="Likes">Likes</span>
                                             </a>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme mr-5" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop btn-direction-shop-portrait translateme mr-5" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                             </div>
                         </div>

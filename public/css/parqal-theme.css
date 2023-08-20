@@ -458,6 +458,11 @@ input[type="text"]:focus
     font-size: 16px;
 }
 
+.btn-heart-portrait {
+    font-size: 35px;
+    color: #DFBD69;
+}
+
 .btn-like-display {
     font-size: 16px;
     font-weight: 500;
@@ -465,6 +470,10 @@ input[type="text"]:focus
     margin: 8px 0 0 15px;
     color: #000;
     font-family: 'Overpass' !important;
+}
+
+.btn-like-display-portrait {
+    font-size: 35px;
 }
 
 .tenant-products-container {
@@ -478,7 +487,7 @@ input[type="text"]:focus
 .tenant-products-container-portrait {
     position: relative;
     border: solid 2px #DFBD69;
-    height: 580px;
+    height: 575px;
     border-radius: 30px;
     width: 95%;
 }
@@ -1539,6 +1548,15 @@ input[type="text"]:focus
     border-color: transparent;
 }
 
+.btn-direction-shop-portrait {
+    width: 330px !important;
+    height: 80px;
+    background-size: 330px 80px;
+    font-size: 33px;
+    padding-left: 75px;
+    font-family: 'Overpass' !important;
+}
+
 .btn-close-modal {
     font-size: 4em;
     margin-right: 0;
@@ -1869,8 +1887,9 @@ pre {
 
 .btn-like-portrait {
     padding: 15px;
-    width: 169px !important;
-    height: 51px;
+    width: 330px !important;
+    height: 80px;
+    border-radius: 20px !important;
 }
 
 .c-submit-holder {
