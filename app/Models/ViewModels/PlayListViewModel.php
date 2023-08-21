@@ -195,7 +195,7 @@ class PlayListViewModel extends Model
     {
         $site_details = $this->getSiteScreenDetails()->first();
         if($site_details) {
-            return SiteTenantViewModel::where('site_id', $site_details->id)->where('brand_id', $this->brand_id);
+            return SiteTenantViewModel::where('site_id', $site_details->site_id)->where('brand_id', $this->brand_id)->first();
         }
         return null;
     }

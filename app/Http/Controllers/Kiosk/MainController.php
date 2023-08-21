@@ -144,8 +144,15 @@ class MainController extends AppBaseController
                 ->orderBy('brands.name', 'ASC')
                 ->get()->toArray();
             }
+
+            $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
             
-            $site_tenants = array_chunk($site_tenants, 12);
+            $per_set = 12;
+            if($site_screen->orientation == 'Portrait') {
+                $per_set = 15;
+            } 
+
+            $site_tenants = array_chunk($site_tenants, $per_set);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -666,7 +673,7 @@ class MainController extends AppBaseController
                 $latlng[$coordinate['id']] = array($coordinate['lat'],$coordinate['lng'],$coordinate['level'],$coordinate['building'],$coordinate['map_id']);
             }
 
-            $map_paths = SiteMapPaths::where('site_idt', $site->id)
+            $map_paths = SiteMapPaths::where('site_id', $site->id)
             ->where('site_screen_id', $site_screen->id)
             ->where('with_disability', $with_disability)
             ->where('point_orig', $origin)

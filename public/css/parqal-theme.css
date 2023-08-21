@@ -337,7 +337,7 @@ input[type="text"]:focus
 }
 
 .guide-button-portrait {
-    top: 84% !important;
+    top: 81% !important;
     right: 10px !important;
 }
 
@@ -458,6 +458,11 @@ input[type="text"]:focus
     font-size: 16px;
 }
 
+.btn-heart-portrait {
+    font-size: 35px;
+    color: #DFBD69;
+}
+
 .btn-like-display {
     font-size: 16px;
     font-weight: 500;
@@ -465,6 +470,10 @@ input[type="text"]:focus
     margin: 8px 0 0 15px;
     color: #000;
     font-family: 'Overpass' !important;
+}
+
+.btn-like-display-portrait {
+    font-size: 35px;
 }
 
 .tenant-products-container {
@@ -478,7 +487,7 @@ input[type="text"]:focus
 .tenant-products-container-portrait {
     position: relative;
     border: solid 2px #DFBD69;
-    height: 670px;
+    height: 575px;
     border-radius: 30px;
     width: 95%;
 }
@@ -655,6 +664,10 @@ input[type="text"]:focus
     background-color: rgb(0, 0, 0, .8);
 }
 
+.bg-white {
+    background-color: #fff;
+}
+
 .food, .fashion, .electronics, .function, .finds, .health {
     margin-top: 0;
     margin-left: 0;
@@ -811,6 +824,10 @@ input[type="text"]:focus
     opacity: .5;
 }
 
+.ml-200 {
+    margin-left: 2003px;
+}
+
 .ml-150 {
     margin-left: 155px;
 }
@@ -843,7 +860,7 @@ input[type="text"]:focus
 }
 
 .tabs-container-portrait {
-    bottom: -6rem;
+    bottom: -5.5rem;
 }
 
 .datetime-holder {
@@ -886,14 +903,14 @@ input[type="text"]:focus
 
 .map-holder {
     background-color: #fff;
-    height: 685px;
+    height: 695px;
     margin-left: 7px;
     width: 100%;
 }
 
 .map-holder-portrait {
     background-color: #fff;
-    height: 925px;
+    height: 950px;
     margin-left: 7px;
     width: 100%;
 }
@@ -975,7 +992,7 @@ input[type="text"]:focus
 .swipe-to-see-more {
     position: absolute;
     text-align: center;
-    left: 48%;
+    left: 50%;
     top: -100%;
     transform: translate(-50%, -50%);
     color: #DFBD69;
@@ -988,7 +1005,7 @@ input[type="text"]:focus
     text-align: center;
     left: 52%;
     top: 50%;
-    transform: translate( -50%, -195%);
+    transform: translate( -50%, -140%);
     color: #DFBD69;
     opacity: 0.9;
     font-size: 45px;
@@ -1021,7 +1038,7 @@ input[type="text"]:focus
 }
 
 .carousel-control-next-search-custom-portrait {
-    height: 590px;
+    height: 610px;
     right: -40px !important;
 }
 
@@ -1036,7 +1053,7 @@ input[type="text"]:focus
 }
 
 .carousel-control-next-portrait {
-    height: 890px;
+    height: 815px;
     right: -40px !important;
 }
 
@@ -1053,12 +1070,12 @@ input[type="text"]:focus
 }
 
 .carousel-control-prev-search-custom-portrait {
-    height: 590px;
+    height: 610px;
     left: -50px !important;
 }
 
 .carousel-control-prev-portrait {
-    height: 890px;
+    height: 815px;
     left: -50px !important;
 }
 
@@ -1075,7 +1092,7 @@ input[type="text"]:focus
 
 .tenant-store-portrait, .tenant-search-portrait {
     width: 295px;
-    height: 90px;
+    height: 100px;
     margin-bottom: 25px;
 }
 
@@ -1108,7 +1125,7 @@ input[type="text"]:focus
     font-family: 'Overpass' !important;
     font-weight: 500;
     font-size: 60px;
-    padding: 15px 0 15px 0;
+    padding: 0;
     color: #DFBD69;
     padding-right: 10px;
 }
@@ -1379,6 +1396,11 @@ input[type="text"]:focus
     border-radius: 25px;
 }
 
+.event-custom-img {
+    width: 300px !important;
+    height: 300px !important;
+}
+
 .lanmark-img {
     width: 350px;
     height: 660px;
@@ -1439,7 +1461,7 @@ input[type="text"]:focus
 }
 
 .map-search-modal-position-portrait {
-    top: 60%;
+    top: 55%;
     left: 50%;
     width: 90%;
     background-color: rgba(0, 0, 0, 0.7);
@@ -1471,13 +1493,13 @@ input[type="text"]:focus
 }
 
 .ui-autocomplete {
-    top: 200px !important;
+    top: 265px !important;
     height: 105px !important;
-    width: 783px !important;
+    width: 939px !important;
 }
 
 .auto_complete_portrait {
-    top: 37.2% !important;
+    top: 770px !important;
     height: 105px !important;
     width: 890px !important;
 }
@@ -1524,6 +1546,15 @@ input[type="text"]:focus
     padding-left: 40px;
     background-color: transparent !important;
     border-color: transparent;
+}
+
+.btn-direction-shop-portrait {
+    width: 330px !important;
+    height: 80px;
+    background-size: 330px 80px;
+    font-size: 33px;
+    padding-left: 75px;
+    font-family: 'Overpass' !important;
 }
 
 .btn-close-modal {
@@ -1618,7 +1649,7 @@ pre {
 
 .want-to-try {
     position: absolute;
-    bottom: 70px;
+    bottom: 85px;
     width: 100%;
 }
 
@@ -1670,6 +1701,8 @@ pre {
 .feedback-child {
     width: 400px;
     font-size: 24px;
+    font-family: 'Overpass' !important;
+    font-weight: 500;
 }
 
 #feedback-textarea {
@@ -1685,10 +1718,23 @@ pre {
     box-shadow: none;
     outline: none;
     margin-bottom: 15px;
+    position: absolute;
+    left: 40%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-family: 'Overpass' !important;
+    font-weight: 500;
+}
+
+.c-close-modal {
+    position: absolute;
+    top: 0px;
+    left: 52%;
+    font-size: 55px;
 }
 
 .softkeys-feedback {
-    height: 395px;
+    height: 430px;
     width: 950px;
     margin: auto;
     padding-top: 15px;
@@ -1705,7 +1751,7 @@ pre {
 
 .feedback-search-modal-position-portrait {
     position: absolute;
-    top: 48%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -1725,7 +1771,7 @@ pre {
 
 #myCarousel, #myTenants, #myCinemas, #myMovies, #supplementalCarousel, #alphabeticalCarousel, #searchCarousel, #promoCarousel {
     width: 100%;
-    min-height: 628px;
+    min-height: 610px;
 }
 
 .mall-details-portrait {
@@ -1768,7 +1814,7 @@ pre {
 }
 
 #supplementalCarousel {
-    height: 763px;
+    height: 790px;
 }
 
 .supplementalCarousel-ladscape {
@@ -1814,7 +1860,7 @@ pre {
 }
 
 .custom-modal {
-    z-index: 0;
+    z-index: 1;
 }
 
 .shop-logo {
@@ -1837,4 +1883,26 @@ pre {
     border-radius: 20px;
     width: 75%;
     height: auto;
+}
+
+.btn-like-portrait {
+    padding: 15px;
+    width: 330px !important;
+    height: 80px;
+    border-radius: 20px !important;
+}
+
+.c-submit-holder {
+    position: relative;
+    height: 80px;
+    margin-top: -5px;
+}
+
+.carousel-mh-626 {
+    min-height: 610px;
+}
+
+.btn-prestige-rounded {
+    border-radius: 10px;
+    border: none;
 }

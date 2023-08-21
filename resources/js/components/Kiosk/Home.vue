@@ -5,19 +5,19 @@
                 <template v-if="site_orientation == 'Portrait'">
                     <template v-if="home_category">
                         <div class="col-md-12 text-center">
-                            <div class="datetime-holder">
+                            <div class="datetime-holder mt-4 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                             </div>
                         </div>
                     </template>
                     <template v-else>
                         <div class="col-md-6">
-                            <div class="datetime-holder text-left mt-4 mb-3 ml-4">
+                            <div class="datetime-holder text-left ml-5 mt-4 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                             </div>                
                         </div>
                         <div class="col-md-6 text-right">
-                            <div class="mt-4 mb-3 mr-5">
+                            <div class="mr-5 mt-4 mb-5">
                                 <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
                             </div>
                         </div>
@@ -25,15 +25,15 @@
                 </template>
                 <template v-else>
                     <div class="col-md-5">
-                        <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-4 mb-3 ml-4">
+                        <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-5 mb-3 ml-4 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>                
                     </div>
                     <div class="col-md-7 text-right">
-                        <div v-if="home_category" class="datetime-holder mt-4 mb-3 mr-5">
+                        <div v-if="home_category" class="datetime-holder mt-5 mb-3 mr-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>
-                        <div v-else class="mt-4 mb-3 mr-5">
+                        <div v-else class="mt-5 mb-3 mr-5">
                             <button type="button" class="btn btn-custom">{{ page_title }}</button>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
             <div v-show="home_category">
                 <div v-if="site_name == 'Parqal'">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-150 mb-55 ml-120': 'mt-25 mb-55 ml-150'" class="row">
-                        <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12 mt-5': 'col-md-10 offset-md-1 mt-5'">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12 mt-5': 'col-md-10 offset-md-2 mt-5 ml-150'">
                             <div v-for="(category, index) in main_category" v-bind:class="(site_orientation == 'Portrait') ? category.class_name +' category-portrait hc-button': category.class_name+' hc-button'" @click="showChildren(category);">
                                 <div class="main-category-holder">
                                     <img :src="category.kiosk_image_primary_path" width="100%">
@@ -80,7 +80,7 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-12 mt-120 mb-41'" id="child-category-holder">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-120 mb-41'" id="child-category-holder">
                         
                     </div>
                 </div>
@@ -108,7 +108,7 @@
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
                 <div v-if="site_name == 'Parqal'">
-                    <div class="row col-md-12 mt-120 mb-41" id="child-supplementals-holder">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-120 mb-41'" id="child-supplementals-holder">
                         
                     </div>
                     <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
@@ -251,7 +251,7 @@
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
                                     <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
                                     <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
-                                    <div class="mt-4">
+                                    <div v-bind:class="(site_orientation == 'Portrait') ? '': 'mt-4'">
                                         <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
                                             <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
                                             <span v-else class="text-danger"><strong>Closed</strong></span>
@@ -268,8 +268,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 text-center mt-5 ml-4 mr-4">
-                            <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container-portrait">
+                        <div class="col-sm-12 text-center mt-4 ml-4 mr-4">
+                            <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container-portrait mb-3">
                                 <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                     <div class="col-12 p-0">
                                         <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
@@ -282,10 +282,30 @@
                                         </div>
                                     </div>
                                 </template>
+                                <template v-else>
+                                    <div class="centered-container">
+                                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
+                                    </div>
+                                </template>
                             </div>
-                            <div v-else class="tenant-products-container-portrait">
+                            <div v-else class="tenant-products-container-portrait mb-3">
                                 <div class="centered-container">
                                     <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <div class="btn btn-prestige-rounded w-100 bg-white btn-like-portrait ">
+                                        <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
+                                            <i class="far fa-heart btn-heart btn-heart-portrait" aria-hidden="true"></i>
+                                            <a class="btn-like-display btn-like-display-portrait">{{ tenant_details.like_count }}
+                                                <span class="translateme" data-en="Likes">Likes</span>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop btn-direction-shop-portrait translateme mr-5" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                             </div>
                         </div>
@@ -319,9 +339,9 @@
                                 </div>
                                 <div class="row mt-1 mb-4">
                                     <div class="text-left ml-36 social-holder" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                        <div v-if="tenant_details.tenant_details.twitter" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                        <div v-if="tenant_details.tenant_details.instagram" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -343,6 +363,11 @@
                                         <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
                                             <img :src="product.image_url_path" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'rounded-corner img-promo-4' : 'rounded-corner img-promo'" @click="showProduct(product.image_url_path,'product')">
                                         </div>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="centered-container">
+                                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
                                     </div>
                                 </template>
                             </div>
@@ -535,8 +560,8 @@
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
         <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
-        <div class="row pt-3 bg-color">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4'" class="col-md-12 text-center">
+        <div class="row pt-3">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4'" class="col-md-12 text-center bg-color ml-5">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
                 </div>

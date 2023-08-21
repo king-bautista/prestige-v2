@@ -229,7 +229,7 @@ class DirectorySiteTenantViewModel extends Model
 
         if(is_array($json_data)) {
             foreach($json_data as $data) {
-                if(strpos($data->schedules, $current_day)) {
+                if(strpos("Schedule, ".$data->schedules, $current_day)) {
                     $new_schedule = [
                         'is_open' => (strtotime($data->start_time) <= time() && strtotime($data->end_time) >= time()) ? 1 : 0,
                         'start_time' => date("h:ia",strtotime($data->start_time)),
