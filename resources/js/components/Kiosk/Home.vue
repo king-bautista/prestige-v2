@@ -25,15 +25,15 @@
                 </template>
                 <template v-else>
                     <div class="col-md-5">
-                        <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder text-left mt-5 mb-3 ml-4 pt-3">
+                        <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>                
                     </div>
                     <div class="col-md-7 text-right">
-                        <div v-if="home_category" class="datetime-holder mt-5 mb-3 mr-5 pt-3">
+                        <div v-if="home_category" class="datetime-holder mt-2 mb-5 mr-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                         </div>
-                        <div v-else class="mt-5 mb-3 mr-5">
+                        <div v-else class="mt-2 mb-5 mr-4">
                             <button type="button" class="btn btn-custom">{{ page_title }}</button>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                                 <div class="main-category-holder">
                                     <img :src="category.kiosk_image_primary_path" width="100%">
                                 </div>
-                                <div id="hc-button1" class="hc-button-align translateme resize" :data-en="category.label">{{ category.label }}</div>
+                                <div id="hc-button1" class="hc-button-align translateme resize mt-4" :data-en="category.label">{{ category.label }}</div>
                             </div>
                         </div>
                     </div>
@@ -337,7 +337,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mt-1 mb-4">
+                                <div class="row mt-1 mb-4 h-130">
                                     <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
                                         <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
                                         <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
@@ -905,7 +905,7 @@
 
                 $(".btn-like-display").addClass('disabled-response');
                 $(".btn-heart").removeClass('far').addClass('fas');
-                
+
                 $.post( "/api/v1/like-count", params ,function(response) {
                     
                 });

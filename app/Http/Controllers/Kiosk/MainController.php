@@ -82,7 +82,7 @@ class MainController extends AppBaseController
         try
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $categories = DirectoryCategoryViewModel::getMainCategory($site->id)->get();            
+            $categories = DirectoryCategoryViewModel::getMainCategory($site->id)->orderBy('sequence')->get();            
             return $this->response($categories, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

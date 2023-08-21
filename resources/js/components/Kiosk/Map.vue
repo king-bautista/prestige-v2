@@ -2,12 +2,12 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left ml-5 mt-5 pt-3">
+                <div class="datetime-holder text-left ml-5 mt-2 mb-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mr-5 mt-5 mb-5">
+                <div class="mr-5 mt-2 mb-5">
                     <button type="button" class="btn btn-custom">{{ page_title }}</button>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mt-1 mb-4">
+                                <div class="row mt-1 mb-4 h-130">
                                     <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
                                         <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
                                         <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
