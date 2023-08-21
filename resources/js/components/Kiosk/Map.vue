@@ -22,7 +22,79 @@
         </div>
         <div class="row">
             <div class="col-md-12 mb-3 pl-0">
-                <div id="tenant-details" v-bind:class="(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait': 'card mb-3 label-3'">
+                <template v-if="tenant_details">
+                    <template v-if="site_orientation == 'Portrait'">
+                        <div class="row tenant-details-portrait map-tenant-portrait">
+                            <div class="col-sm-3 text-center">
+                                <div class="my-auto pt-3">
+                                    <img class="map-tenant-details-logo" :src="tenant_details.brand_logo">
+                                    <div class="tenant-details-views-portrait"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 text-center p-3">
+                                <div class="map-tenant-details-name">{{ tenant_details.brand_name }}</div>
+                                <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
+                                <div v-else class="map-tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                <div v-bind:class="(site_orientation == 'Portrait') ? '': 'mt-4'">
+                                    <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
+                                        <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
+                                        <span v-else class="text-danger"><strong>Closed</strong></span>
+                                        | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-center">
+                                <div class="text-left ml-4 social-holder-portrait" v-if="tenant_details.tenant_details">
+                                    <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                    <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                    <div v-if="tenant_details.tenant_details.instagram && tenant_details.tenant_details.instagram != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="p-2 tenant-details map-tenant-landscape">
+                            <div class="my-auto p-1 text-center">
+                                <img class="tenant-details-logo" :src="tenant_details.brand_logo">
+                                <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
+                                <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
+                                <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                <div>
+                                    <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
+                                        <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
+                                        <span v-else class="text-danger"><strong>Closed</strong></span>
+                                        | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
+                                    </span>
+                                </div>
+                                <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-12 text-center">
+                                        <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
+                                            <i class="far fa-heart btn-heart"></i>
+                                            <a class="btn-like-display">{{ tenant_details.like_count }}
+                                                <span class="translateme" data-en="Likes">Likes</span>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mt-1 mb-4">
+                                    <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
+                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-12 mt-3 text-center">
+                                        <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
+                                    </div>
+                                </div>
+                        </div>
+                    </template>
+                </template>
+
+                <div id="tenant-details" v-bind:class="(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait-text-info': 'card mb-3 label-3'">
                     <div class="card-body text-info text-center p-0">
                         <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
                         <div class="guide-steps">
@@ -162,9 +234,15 @@
                 </div>
             </div>
         </div>
+
         <div id="guide-button" v-show="guide_button" v-bind:class="(site_orientation == 'Portrait') ? 'guide-button-portrait': ''">
             <div class="toggle-arrow mt-7"><i class="arrow up"></i></div>   
             <div id="toggle-updown-text" class="translateme" data-en="Show Text Guide">Show Text Guide</div>
+            <template v-if="tenant_details">
+                <template v-if="site_orientation == 'Portrait'">
+                    <i class="far fa-heart btn-heart map-btn-heart-portrait" aria-hidden="true"></i>
+                </template>
+            </template>
         </div>
 
         <!-- MODAL -->
@@ -212,6 +290,25 @@
             </div>
         </div>
 
+        <div class="custom-modal p-l-490" id="map-modal-schedule">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait': ''" class="custom-modal-position set-width-schedule">                    
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="label-1">Operating Hours</div>
+                        <div class="modal-body-schedule-days">
+                            <div class="m-15-0" v-for="day in days">{{day}}</div>
+                        </div>
+                        <div class="modal-body-schedule-time">
+                            <div class="m-15-0" v-for="schedule in tenantSchedule">{{schedule}}</div>
+                        </div>   
+                    </div>   
+                </div>
+                <div class="text-center parqal-color">
+                    <span class="btn-close-schedule"><i class="far fa-times-circle"></i></span>
+                </div>       
+            </div>
+        </div>
+
         <div v-bind:class="(site_orientation == 'Portrait') ? 'back-button back-button-portrait ': 'back-button'" :src="back_button" @click="goBack"></div>
         <div v-bind:class="(site_orientation == 'Portrait') ? 'back-overlay back-overlay-portrait translateme': 'back-overlay translateme'" data-en="Back" @click="goBack">Back</div>
     </div>
@@ -235,6 +332,7 @@
                 back_button: 'assets/images/English/Back.png',
                 page_title: 'Map',
                 tenant_list: [],
+                tenant_details: '',
                 site_floors: [],
                 wayfindings: '',
                 current_time: Date.now(),
@@ -253,6 +351,8 @@
                 called_from: '',
                 panzoom: '',
                 with_disability: 0,
+                days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
+                tenantSchedule :[],
             };
         },
 
@@ -361,7 +461,11 @@
 			},
 
             find_store: function(value, called_from) {
-                console.log(called_from);
+                this.tenant_details = '';
+                if(called_from == 'home' || called_from == 'search') {
+                    this.tenant_details = value;
+                    this.buildSchedule(this.tenant_details);
+                }
 
                 this.called_from = called_from;
                 this.helper.saveLogs(value, 'Map');
@@ -414,6 +518,7 @@
             },
 
             resetPage: function() {
+                this.tenant_details = '';
                 var obj = this;
                 $(function() {
                     this.wayfindings.stopall();
@@ -519,7 +624,51 @@
 
             callHomeMethod: function(){
                 this.$root.$emit('callAboutParent','map')
-            }
+            },
+
+            updateLikeCount: function(id) {
+                this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
+
+                let params = {
+                    id: this.tenant_details.id,
+                    like_count: this.tenant_details.like_count
+                }
+
+                $(".btn-like-display").addClass('disabled-response');
+
+                $.post( "/api/v1/like-count", params ,function(response) {
+                    
+                });
+                
+                this.$refs.callPromo.updatePromoList(params);
+            },
+
+            buildSchedule: function (data) {       
+                let tempSchedule = [];
+                var currentSchedule = eval(data.tenant_details['schedules']);
+                    if (currentSchedule) {
+                        Object.keys(this.days).forEach(day => {
+                            currentSchedule.forEach(obj => {
+                                Object.keys(obj).forEach(key => {
+                                    if (key == 'schedules') {
+                                        if (obj['schedules'].match(day)) {
+                                            var start_time = new Date('7/10/2013 '+obj['start_time']).toLocaleString([], { hour: 'numeric', minute: 'numeric', hour12: true });
+                                            var end_time = new Date('7/10/2013 '+obj['end_time']).toLocaleString([], { hour: 'numeric', minute: 'numeric', hour12: true });
+                                            tempSchedule.push(start_time + " - " + end_time);
+                                            
+                                            //tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
+                                        }                               
+                                    }
+                                });
+                            });
+                        });
+                    }  
+                this.tenantSchedule = tempSchedule;              
+            },
+
+            showSchedule: function() {
+                $("#map-modal-schedule").show();
+            },
 
         },
 
@@ -634,6 +783,10 @@
                     vm.softkeysFeedback = false;
                     $(".btn-nothelpful").removeClass('response-active-color');
                 });
+
+                $(".btn-close-schedule").on('click',function(){
+                    $("#map-modal-schedule").hide();
+                });                
 
                 $(".map-search-modal").on('click',function(){
                     $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));

@@ -609,7 +609,7 @@ WayFinding.prototype = {
 
         var node = document.createElement("li");
         if(this.settings.with_disability) {
-            node.innerHTML = 'Proceed to <img src="images/services/smcg_elevator.png" align="middle">';
+            node.innerHTML = 'Proceed to <img src="images/services/elevator-black.png" align="middle">';
         } 
         else {
             if((to>from)) {

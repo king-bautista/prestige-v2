@@ -308,7 +308,7 @@ input[type="text"]:focus
     font-family: 'Overpass' !important;
 }
 
-.tenant-details-portrait {
+.tenant-details-portrait-text-info {
     top: 50% !important;
     left: 65% !important;
 }
@@ -396,7 +396,9 @@ input[type="text"]:focus
     width: 210px;
     font-size: 1.3em;
     margin-left: 20px;
-    background-color: #DFBD69;
+    background-image: url(/images/tenant-info-bg-portrait.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .tenant-details-name {
@@ -411,7 +413,9 @@ input[type="text"]:focus
 .tenant-details-portrait {
     border-radius: 30px;
     font-size: 1.3em;
-    background-color: #DFBD69;
+    background-image: url(/images/tenant-info-bg-landscape.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .tenant-details-logo {
@@ -487,7 +491,7 @@ input[type="text"]:focus
 .tenant-products-container-portrait {
     position: relative;
     border: solid 2px #DFBD69;
-    height: 585px;
+    height: 595px;
     border-radius: 30px;
     width: 95%;
 }
@@ -1565,7 +1569,7 @@ input[type="text"]:focus
     font-family: 'Overpass' !important;
 }
 
-.btn-close-modal {
+.btn-close-modal, .btn-close-schedule {
     font-size: 4em;
     margin-right: 0;
 }
@@ -1925,4 +1929,54 @@ pre {
 
 .f-size-35 {
     font-size: 35px;
+}
+
+.map-tenant-landscape {
+    position: absolute;
+    z-index: 1;
+    left: 25px;
+    top: 2px;
+}
+
+.map-tenant-portrait {
+    position: absolute;
+    top: 1px !important;
+    left: 85px !important;
+    z-index: 1;
+    width: 972px;
+    height: 199px;
+}
+
+.map-tenant-details-logo{
+    width: 131px;
+    height: 131px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px 2px rgb(192 192 192 / 80%);
+    float: none;
+}
+
+.map-tenant-details-name {
+    font-family: 'Overpass' !important;
+    font-weight: 800;
+    color: #2a2a2a;
+    font-size: 30px;
+    margin-top: 15px;
+    line-height: 23px;
+}
+
+.map-tenant-details-floor {
+    color: #000000;
+    margin-top: 0;
+    float: none;
+    margin-left: 0;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'Overpass' !important;
+}
+
+.map-btn-heart-portrait {
+    position: absolute;
+    right: 125px;
+    top: 47px;
+    font-size: 40px;
 }
