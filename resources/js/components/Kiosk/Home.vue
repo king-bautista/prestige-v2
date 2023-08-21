@@ -561,7 +561,7 @@
         <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
         <div class="row pt-3">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4'" class="col-md-12 text-center bg-color ml-5">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4 ml-5'" class="col-md-12 text-center bg-color">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
                 </div>
