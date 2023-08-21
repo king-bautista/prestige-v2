@@ -47,13 +47,13 @@
             </div>
             <div class="result-section" v-show="search_results">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'mt-5': ''" class="row">
-                    <div class="col-md-12 home-title text-center home-title-custom">
+                    <div class="col-md-12 home-title text-center home-title-custom mt-150">
                         <div v-if="current_tenant_list_count < 0">
                             <span class="translateme" data-en="We couldn’t find a match for">We couldn’t find a match for</span>
-                            &nbsp;<span>‘{{this.search.key_words}}’.</span><br/>
+                            &nbsp;<span>‘{{this.search.key_words}}’.</span>
                             &nbsp; <span>Please try another search.</span>
                         </div>
-                        <div v-else><span class="translateme" data-en="You searched for">You searched for</span><br/>
+                        <div v-else><span class="translateme" data-en="We couldn’t find a match for">We couldn’t find a match for</span>
                             <p style="font-size: 60px !important;">‘{{this.search.key_words}}’</p>
                         </div>            
                     </div>
@@ -243,7 +243,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mt-1 mb-4">
+                                <div class="row mt-1 mb-4 h-130">
                                     <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
                                         <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
                                         <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
