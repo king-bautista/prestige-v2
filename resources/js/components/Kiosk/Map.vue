@@ -635,6 +635,7 @@
                 }
 
                 $(".btn-like-display").addClass('disabled-response');
+                $(".btn-heart").removeClass('far').addClass('fas');
 
                 $.post( "/api/v1/like-count", params ,function(response) {
                     

@@ -811,6 +811,8 @@
                     like_count: this.tenant_details.like_count
                 }
 
+                $(".btn-heart").removeClass('far').addClass('fas');
+
                 $.post( "/api/v1/like-count", params ,function(response) {});
             },
 
