@@ -11,14 +11,14 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="datetime-holder text-left ml-5 mt-4 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                             </div>                
                         </div>
-                        <div class="col-md-6 text-right">
+                        <div class="col-md-7 text-right">
                             <div class="mr-5 mt-4 mb-5">
-                                <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
+                                <button v-bind:class="[(site_orientation == 'Portrait' ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']" type="button">{{ page_title }}</button>
                             </div>
                         </div>
                     </template>
@@ -1190,16 +1190,21 @@
                             var ïtem_holder_class = 'ïtem-holder';
                             var rounded_container_class = 'rounded-container';
                             var category_name_holder_class = 'category-name-holder';
+                            var font_size_class = '';
                             if(obj.site_orientation == 'Portrait') {
                                 ïtem_holder_class = 'ïtem-holder-portrait';
                                 rounded_container_class = 'rounded-container-portrait';
                                 category_name_holder_class = 'category-name-holder-portrait';
                             }
 
+                            if(supplemental.label.length > 10) {
+                                font_size_class = 'f-size-25';
+                            }
+
                             var html = '<div class="'+ïtem_holder_class+'">';
                                 html += '<div class="'+rounded_container_class+'" id="supplemental_'+supplemental.id+'">';
                                 html += '<img src="'+supplemental.kiosk_image_primary_path+'" style="max-width:100%">';
-                                html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+supplemental.label+'">'+supplemental.label+'</p></div>';
+                                html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+supplemental.label+'">'+supplemental.label+'</p></div>';
                                 html += '</div';
                                 html += '</div';
                             
@@ -1253,16 +1258,22 @@
                         var ïtem_holder_class = 'ïtem-holder';
                         var rounded_container_class = 'rounded-container';
                         var category_name_holder_class = 'category-name-holder';
+                        var font_size_class = '';
+
                         if(obj.site_orientation == 'Portrait') {
                             ïtem_holder_class = 'ïtem-holder-portrait';
                             rounded_container_class = 'rounded-container-portrait';
                             category_name_holder_class = 'category-name-holder-portrait';
                         }
 
+                        if(sub_category.label.length > 20) {
+                            font_size_class = 'f-size-35';
+                        }
+
                         var html = '<div class="'+ïtem_holder_class+'">';
                             html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
                             html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
-                            html += '<div class="'+category_name_holder_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
+                            html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
                             html += '</div';
                             html += '</div';
                         

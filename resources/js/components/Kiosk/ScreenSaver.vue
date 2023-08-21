@@ -124,30 +124,30 @@
                         screensaver_handle = null;
                     }
 
-                    screensaver_handle = setTimeout(() => {
-                        screensaver_handle = setTimeout(() => {
-                            $("#screensaverwidget").height('100%').width('100%');
-                            $.get( "/api/v1/get-update", function( data ) {
-                                if(data.data.length > 0) {
-                                    location.reload(); 
-                                }
-                            });
-                        }, 5000); // 5 sec delay before showing screensaver
-                        obj.callHomeMethod();
-                    }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
+                    // screensaver_handle = setTimeout(() => {
+                    //     screensaver_handle = setTimeout(() => {
+                    //         $("#screensaverwidget").height('100%').width('100%');
+                    //         $.get( "/api/v1/get-update", function( data ) {
+                    //             if(data.data.length > 0) {
+                    //                 location.reload(); 
+                    //             }
+                    //         });
+                    //     }, 5000); // 5 sec delay before showing screensaver
+                    //     obj.callHomeMethod();
+                    // }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
                 });
 
-                screensaver_handle = setTimeout(() => {
-                    screensaver_handle = setTimeout(() => {
-                        $("#screensaverwidget").height('100%').width('100%');
-                        $.get( "/api/v1/get-update", function( data ) {
-                            if(data.data.length > 0) {
-                                location.reload(); 
-                            }
-                        });
-                    }, 5000); // 5 sec delay before showing screensaver
-                    obj.callHomeMethod();
-                }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
+                // screensaver_handle = setTimeout(() => {
+                //     screensaver_handle = setTimeout(() => {
+                //         $("#screensaverwidget").height('100%').width('100%');
+                //         $.get( "/api/v1/get-update", function( data ) {
+                //             if(data.data.length > 0) {
+                //                 location.reload(); 
+                //             }
+                //         });
+                //     }, 5000); // 5 sec delay before showing screensaver
+                //     obj.callHomeMethod();
+                // }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
             });
         },
     };
