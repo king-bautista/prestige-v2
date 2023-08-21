@@ -361,6 +361,8 @@
 			},
 
             find_store: function(value, called_from) {
+                console.log(called_from);
+
                 this.called_from = called_from;
                 this.helper.saveLogs(value, 'Map');
                 this.feedback_response = false;

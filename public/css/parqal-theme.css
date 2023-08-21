@@ -473,7 +473,7 @@ input[type="text"]:focus
 }
 
 .btn-like-display-portrait {
-    font-size: 35px;
+    font-size: 29px;
 }
 
 .tenant-products-container {
@@ -487,7 +487,7 @@ input[type="text"]:focus
 .tenant-products-container-portrait {
     position: relative;
     border: solid 2px #DFBD69;
-    height: 575px;
+    height: 585px;
     border-radius: 30px;
     width: 95%;
 }
@@ -820,6 +820,14 @@ input[type="text"]:focus
     opacity: 1;
 }
 
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-25 {
+    font-size: 34px !important;
+}
+
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-35 {
+    font-size: 48px !important;
+}
+
 .owl-carousel .owl-item img {
     opacity: .5;
 }
@@ -910,7 +918,7 @@ input[type="text"]:focus
 
 .map-holder-portrait {
     background-color: #fff;
-    height: 950px;
+    height: 943px;
     margin-left: 7px;
     width: 100%;
 }
@@ -1549,10 +1557,10 @@ input[type="text"]:focus
 }
 
 .btn-direction-shop-portrait {
-    width: 330px !important;
-    height: 80px;
-    background-size: 330px 80px;
-    font-size: 33px;
+    width: 329px !important;
+    height: 69px;
+    background-size: 329px 69px;
+    font-size: 31px;
     padding-left: 75px;
     font-family: 'Overpass' !important;
 }
@@ -1887,8 +1895,8 @@ pre {
 
 .btn-like-portrait {
     padding: 15px;
-    width: 330px !important;
-    height: 80px;
+    width: 329px !important;
+    height: 69px;
     border-radius: 20px !important;
 }
 
@@ -1905,4 +1913,16 @@ pre {
 .btn-prestige-rounded {
     border-radius: 10px;
     border: none;
+}
+
+.f-size-28 {
+    font-size: 28px !important;
+}
+
+.f-size-25 {
+    font-size: 25px !important;
+}
+
+.f-size-35 {
+    font-size: 35px;
 }
