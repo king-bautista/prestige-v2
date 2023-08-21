@@ -178,7 +178,7 @@
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-60': 'row mb-3'">
                                     <div v-for="tenant in tenants" v-bind:class="tenant_list[0].length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -260,7 +260,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 text-center">
-                                    <div class="text-left ml-36 social-holder-portrait" v-if="tenant_details.tenant_details">
+                                    <div class="text-left ml-4 social-holder-portrait" v-if="tenant_details.tenant_details">
                                         <div v-if="tenant_details.tenant_details.facebook" class="mb-4 mt-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
                                         <div v-if="tenant_details.tenant_details.twitter" class="mb-4 mt-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
                                         <div v-if="tenant_details.tenant_details.instagram" class="mb-4 mt-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
@@ -268,7 +268,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 text-center mt-4 ml-4 mr-4">
+                        <div class="col-sm-12 text-center mt-3 ml-4 mr-4">
                             <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container-portrait mb-3">
                                 <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
                                     <div class="col-12 p-0">
@@ -338,7 +338,7 @@
                                     </div>
                                 </div>
                                 <div class="row mt-1 mb-4">
-                                    <div class="text-left ml-36 social-holder" v-if="tenant_details.tenant_details">
+                                    <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
                                         <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
                                         <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
                                         <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
@@ -1077,7 +1077,7 @@
                 this.previous_page = 'Sub Category';
 
                 if(this.site_name == 'Parqal') {
-                    this.page_title = category.category_name;
+                    this.page_title = (category.label) ? category.label : category.category_name;
                 }
 
                 axios.get('/api/v1/tenants/category/'+category.id)
