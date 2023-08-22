@@ -54,21 +54,22 @@
                     </template>
                     <template v-else>
                         <div class="p-2 tenant-details map-tenant-landscape">
-                            <div class="my-auto p-1 text-center">
-                                <img class="tenant-details-logo" :src="tenant_details.brand_logo">
-                                <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
-                                <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
-                                <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
-                                <div>
-                                    <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
-                                        <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
-                                        <span v-else class="text-danger"><strong>Closed</strong></span>
-                                        | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
-                                    </span>
+                            <div class="map-tenant-landscape-info">
+                                <div class="my-auto p-1 text-center">
+                                    <img class="tenant-details-logo" :src="tenant_details.brand_logo">
+                                    <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
+                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
+                                    <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                    <div>
+                                        <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
+                                            <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
+                                            <span v-else class="text-danger"><strong>Closed</strong></span>
+                                            | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
+                                        </span>
+                                    </div>
+                                    <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                                 </div>
-                                <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
-                            </div>
-                            <div class="row">
+                                <div class="row">
                                     <div class="col-12 text-center">
                                         <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
                                             <i class="far fa-heart btn-heart"></i>
@@ -85,11 +86,9 @@
                                         <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
                                     </div>
                                 </div>
-                                <div class="row mt-3">
-                                    <div class="col-12 mt-3 text-center">
-                                        <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
-                                    </div>
-                                </div>
+                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
+
+                            </div>
                         </div>
                     </template>
                 </template>
@@ -114,7 +113,7 @@
                     </div>
 
                     <div>
-                        <div class="" style="text-align: left;padding-left: 20px;">
+                        <div class="helpful-holder">
                             <span class="helpful-label translateme" data-en="Was this helpful?">Was this helpful?</span>
                             <a href="#" class="response-btn btn-helpful" @click="updateFeedback()">
                                 <span class="far fa-thumbs-up"></span>
@@ -247,10 +246,7 @@
 
         <!-- MODAL -->
         <div class="custom-modal p-l-490 map-search-modal">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'map-search-modal-position-portrait': 'map-search-modal-position'">                    
-                <div class="text-right text-white">
-                    <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
-                </div>        
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'map-search-modal-position-portrait': 'map-search-modal-position'" class="pt-2">                           
                 <div class="softkeys-tenant mt-20" data-target="input[name=tenant-search]"></div>
             </div>
         </div>
@@ -564,13 +560,13 @@
                                 ['Q','~'],['W','!'],['E','@'],['R','#'],['T','$'],['Y','%'],['U','^'],['I','&'],['O','*'],['P','('],['-',')'],
                             ],
                             [
-                                ['A','['],['S',']'],['D','-'],['F','+'],['G','='],['H',':'],['J',';'],['K','\''],['L','&#34;'],['\'','null'],
+                                ['A','['],['S',']'],['D','-'],['F','+'],['G','='],['H',':'],['J',';'],['K','\''],['L','&#34;'],['\''],
                             ],
                             [
                                 'shift',['Z','['],['X',']'],['C','-'],['V','+'],['B','?'],['N',':'],['M',';'],'delete',
                             ],
                             [
-                                [',','null'],'space',['.','null'],['Enter','Enter'],
+                                [','],'space',['.'],['Enter','Enter'],
                             ]
                         ]
                     });
@@ -784,6 +780,16 @@
                     vm.softkeysFeedback = false;
                     $(".btn-nothelpful").removeClass('response-active-color');
                 });
+
+                // $(".map-search-modal").on('click',function(){
+                //     $(".map-search-modal").hide();
+                //     vm.feedback_modal = false;
+                //     vm.softkeysTenant = true;
+                //     vm.softkeysFeedback = false;
+                //     $(".btn-nothelpful").removeClass('response-active-color');
+                // });
+
+                
 
                 $(".btn-close-schedule").on('click',function(){
                     $("#map-modal-schedule").hide();

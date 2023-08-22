@@ -305,7 +305,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop btn-direction-shop-portrait translateme mr-5" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop-portrait translateme mr-5" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                             </div>
                         </div>
@@ -313,41 +313,39 @@
                     <template v-else>
                         <div class="col-sm-2 mt-3 mr-0 p-0 pl-3">
                             <div class="p-2 tenant-details">
-                                <div class="my-auto p-1 text-center">
-                                    <img class="tenant-details-logo" :src="tenant_details.brand_logo">
-                                    <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
-                                    <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
-                                    <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
-                                    <div>
-                                        <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
-                                            <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
-                                            <span v-else class="text-danger"><strong>Closed</strong></span>
-                                            | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
-                                        </span>
+                                <div class="map-tenant-landscape-info">
+                                    <div class="my-auto p-1 text-center">
+                                        <img class="tenant-details-logo" :src="tenant_details.brand_logo">
+                                        <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
+                                        <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
+                                        <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
+                                        <div>
+                                            <span class="btn-schedule" v-if="tenant_details.operational_hours" @click="showSchedule">
+                                                <span v-if="tenant_details.operational_hours.is_open" class="text-success"><strong>Open</strong></span>
+                                                <span v-else class="text-danger"><strong>Closed</strong></span>
+                                                | <span style="color:#2a2a2a;"><strong>{{ tenant_details.operational_hours.start_time }}&nbsp;-&nbsp;{{ tenant_details.operational_hours.end_time }}</strong></span>
+                                            </span>
+                                        </div>
+                                        <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                                     </div>
-                                    <div class="tenant-details-views"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 text-center">
-                                        <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
-                                            <i class="far fa-heart btn-heart"></i>
-                                            <a class="btn-like-display">{{ tenant_details.like_count }}
-                                                <span class="translateme" data-en="Likes">Likes</span>
-                                            </a>
-                                        </span>
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">
+                                                <i class="far fa-heart btn-heart"></i>
+                                                <a class="btn-like-display">{{ tenant_details.like_count }}
+                                                    <span class="translateme" data-en="Likes">Likes</span>
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mt-1 mb-4 h-130">
-                                    <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                    <div class="row mt-1 mb-4 h-130">
+                                        <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
+                                            <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
+                                            <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
+                                            <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-12 mt-3 text-center">
-                                        <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
-                                    </div>
+                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                             </div>
                         </div>
@@ -560,7 +558,7 @@
         <cinema-page v-show="cinemaIsShown" ref="callCinema"></cinema-page>
         <landmark-page v-show="landmarkIsShown" ref="callLandmark"></landmark-page>
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
-        <div class="row pt-3">
+        <div class="row">
             <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4 ml-5'" class="col-md-12 text-center bg-color">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
@@ -586,7 +584,7 @@
             </div>
         </div>
         <assitant-page ref="callAssist"></assitant-page>
-        <div class="row col-12 text-center">
+        <div class="row col-12 text-center ml-5">
             <span v-bind:class="(site_orientation == 'Portrait') ? 'client-website-holder-portrait': ''" class="client-website-holder" @click="aboutButton('home')">{{site_website}}</span>
         </div>
 
@@ -1191,14 +1189,18 @@
                             var ïtem_holder_class = 'ïtem-holder';
                             var rounded_container_class = 'rounded-container';
                             var category_name_holder_class = 'category-name-holder';
-                            var font_size_class = '';
+                            var font_size_class = 'f-size-35';
                             if(obj.site_orientation == 'Portrait') {
                                 ïtem_holder_class = 'ïtem-holder-portrait';
                                 rounded_container_class = 'rounded-container-portrait';
                                 category_name_holder_class = 'category-name-holder-portrait';
                             }
 
-                            if(supplemental.label.length > 10) {
+                            if(supplemental.label.length >= 10 && supplemental.label.indexOf(' ') === -1) {
+                                font_size_class = 'f-size-35';
+                            }
+
+                            if(supplemental.label.length >= 12 && supplemental.label.indexOf(' ') === -1) {
                                 font_size_class = 'f-size-25';
                             }
 
@@ -1259,7 +1261,7 @@
                         var ïtem_holder_class = 'ïtem-holder';
                         var rounded_container_class = 'rounded-container';
                         var category_name_holder_class = 'category-name-holder';
-                        var font_size_class = '';
+                        var font_size_class = 'f-size-45';
 
                         if(obj.site_orientation == 'Portrait') {
                             ïtem_holder_class = 'ïtem-holder-portrait';
@@ -1267,8 +1269,12 @@
                             category_name_holder_class = 'category-name-holder-portrait';
                         }
 
-                        if(sub_category.label.length > 20) {
+                        if(sub_category.label.length >= 10) {
                             font_size_class = 'f-size-35';
+                        }
+
+                        if(sub_category.label.length > 20) {
+                            font_size_class = 'f-size-32';
                         }
 
                         var html = '<div class="'+ïtem_holder_class+'">';
