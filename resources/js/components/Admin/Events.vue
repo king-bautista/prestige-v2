@@ -45,7 +45,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Banner <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="imgBanner" @change="bannerChange">
+									<input type="file" accept="image/*" ref="fileImgBanner" @change="bannerChange">
 									<footer class="blockquote-footer">image max size is 355 x 660 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -227,7 +227,7 @@ export default {
 			this.event.imgBanner = '';
 			this.imgBanner = '/images/no-image-available.png';
 			this.event.active = false;
-			this.$refs.imgBanner.value = null;
+			this.$refs.fileImgBanner.value = null;
 			$('#event-form').modal('show');
 		},
 
@@ -265,8 +265,9 @@ export default {
                     this.event.start_date = event.start_date;
                     this.event.end_date = event.end_date;
                     this.imgBanner = event.image_url_path;
+					this.event.image_url = '',
                     this.event.active = event.active;
-                    this.$refs.imgBanner.value = null;
+                    this.$refs.fileImgBanner.value = '';
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -275,18 +276,19 @@ export default {
 		},
 
 		updateEvent: function () {
-			let formData = new FormData();
-			formData.append("id", this.event.id);
-			formData.append("site_id", this.event.site_id);
-			formData.append("event_name", this.event.event_name);
-			formData.append("location", this.event.location);
-			formData.append("event_date", this.event.event_date);
-			formData.append("start_date", this.event.start_date);
-			formData.append("end_date", this.event.end_date);
-			formData.append("imgBanner", this.event.image_url);
-			formData.append("active", this.event.active);
+			console.log(this.event.image_url);
+			let updateFormData = new FormData();
+			updateFormData.append("id", this.event.id);
+			updateFormData.append("site_id", this.event.site_id);
+			updateFormData.append("event_name", this.event.event_name);
+			updateFormData.append("location", this.event.location);
+			updateFormData.append("event_date", this.event.event_date);
+			updateFormData.append("start_date", this.event.start_date);
+			updateFormData.append("end_date", this.event.end_date);
+			updateFormData.append("imgBanner", this.event.image_url);
+			updateFormData.append("active", this.event.active);
 
-			axios.post('/admin/event/update', formData, {
+			axios.post('/admin/event/update', updateFormData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
