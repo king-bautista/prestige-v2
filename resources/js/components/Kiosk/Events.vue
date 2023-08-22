@@ -2,12 +2,12 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left ml-5 mt-2 mb-5 pt-3">
-                    <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                <div class="datetime-holder text-left ml-5 mb-5">
+                    <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mr-5 mt-2 mb-5">
+                <div class="mr-5 mb-5">
                     <button type="button" class="btn btn-custom">{{ page_title }}</button>
                 </div>
             </div>
@@ -22,7 +22,7 @@
         </div>
         <div v-show="event_page">
             <div v-bind:class="(site_orientation == 'Portrait') ? 'col-md-12': 'col-md-10 offset-md-1'" class="row" v-if="event_list.length > 0">
-                <div id="eventsListCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 3">
+                <div id="eventsListCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait eventsListCarousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 3">
                         
                     <!-- Control dots -->
                     <ul class="carousel-indicators carousel-indicators-event z-1">
@@ -36,7 +36,7 @@
                                 <div v-for="event in events" v-bind:class="(events.length == 3) ? 'col-sm-4 mt-10 mb-6': 'col-sm-3 mt-10 mb-6'" class="">
                                     <div v-bind:class="(site_orientation == 'Portrait') ? 'text-center event-container-portrait mb-3': 'text-center event-container mb-3'" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
                                         <img :src="event.image_url_path" :alt="event.name" />
-                                        <div class="event-name-holder">
+                                        <div class="event-name-holder ml-3">
                                             {{event.event_name}} <br/>
                                             {{event.event_date}}
                                         </div>
@@ -85,9 +85,9 @@
         
         <!-- MODAL -->
         <div class="custom-modal p-l-490" id="myevent">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait set-width': 'custom-modal-position set-width'" class="">                    
-                <img class="my-product-image" :src="event_image">
-                <div class="text-center parqal-color">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait set-width': 'custom-modal-position set-width'">                    
+                <img v-bind:class="(site_orientation == 'Portrait') ? 'my-product-image-portrait': 'my-product-image'" class="" :src="event_image">
+                <div class="text-center parqal-color pt-4">
                     <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                 </div>
             </div>
@@ -194,8 +194,16 @@
                 this.event_image = event;
                 $("#myevent").show();
                 $('.set-width').removeClass('banner-size');
-                $('.set-width').removeClass('product-size');
-                $('.set-width').addClass('product-size');
+
+                if(this.site_orientation == 'Portrait') {
+                    $('.set-width').removeClass('product-size-portrait');
+                    $('.set-width').addClass('product-size-portrait');
+                }
+                else {
+                    $('.set-width').removeClass('product-size');
+                    $('.set-width').addClass('product-size');
+                }
+
            },
 
             callHomeMethod: function(){

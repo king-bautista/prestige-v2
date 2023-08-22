@@ -17,7 +17,7 @@
             </template>
         </div>
         <div class="row">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-5': ''" class="col-md-12 pl-5 pr-5">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-5 mt-5': ''" class="col-md-12 pl-5 pr-5">
                 <div class="about-banner-holder">
                     <img :src="site_details.site_banner_path" style="width: 100%;">
                 </div>
@@ -36,12 +36,12 @@
                                     <img src="assets/images/parqal-facebook.png" class="socmedicon mr-2"> {{ facebook }}
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-4 text-center">
                                 <div class="socmediconcontainer">
                                     <img src="assets/images/tiktok-parqal.png" class="socmedicon mr-2"> {{ twitter }}
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-4 text-right">
                                 <div class="socmediconcontainer">
                                     <img src="assets/images/parqal-instagram.png" class="socmedicon mr-2"> {{ instagram }}
                                 </div>
