@@ -80,8 +80,8 @@ class EventsController extends AppBaseController implements EventsControllerInte
             $data = [
                 'site_id' => $request->site_id,
                 'event_name' => $request->event_name,
-                'location' => $request->location,
-                'event_date' => $request->event_date,
+                'location' => ($request->location) ? $request->location : '',
+                'event_date' => ($request->event_date) ? $request->event_date : '',
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'image_url' => str_replace('\\', '/', $banner_path),
@@ -119,8 +119,8 @@ class EventsController extends AppBaseController implements EventsControllerInte
             $data = [
                 'site_id' => $request->site_id,
                 'event_name' => $request->event_name,
-                'location' => $request->location,
-                'event_date' => $request->event_date,
+                'location' => ($request->location) ? $request->location : '',
+                'event_date' => ($request->event_date) ? $request->event_date : '',
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'image_url' => ($banner_path) ? str_replace('\\', '/', $banner_path) : $event->image_url,
