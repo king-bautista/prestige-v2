@@ -392,7 +392,7 @@ input[type="text"]:focus
 
 .tenant-details {
     border-radius: 30px;
-    height: 670px;
+    height: 685px;
     width: 210px;
     font-size: 1.3em;
     margin-left: 20px;
@@ -483,7 +483,7 @@ input[type="text"]:focus
 .tenant-products-container {
     position: relative;
     border: solid 2px #DFBD69;
-    height: 670px;
+    height: 685px;
     border-radius: 30px;
     width: 96%;
 }
@@ -550,9 +550,8 @@ input[type="text"]:focus
 }
 
 .delete-key:hover, .delete-key:focus {
-    outline: none;
-    background-color: #98dad0 !important;
-    color: transparent !important;
+    background-image: url(../assets/images/backspace-bg.png);
+    color: transparent;
 }
 
 .back-button {
@@ -657,7 +656,7 @@ input[type="text"]:focus
 }
 
 .router-page {
-    height: 845px;
+    height: 834px;
 }
 
 .router-page-portrait {
@@ -766,6 +765,38 @@ input[type="text"]:focus
     background-color: #000;
 }
 
+.f-size-20 {
+    font-size: 20px;
+}
+
+.f-size-28 {
+    font-size: 28px;
+}
+
+.f-size-25 {
+    font-size: 25px;
+}
+
+.f-size-30 {
+    font-size: 30px !important;
+}
+
+.f-size-32 {
+    font-size: 32px;
+}
+
+.f-size-35 {
+    font-size: 35px;
+}
+
+.f-size-40 {
+    font-size: 40px;
+}
+
+.f-size-45 {
+    font-size: 45px;
+}
+
 .category-name-holder {
     position: absolute;
     top: 50%;
@@ -774,7 +805,7 @@ input[type="text"]:focus
     color: #fff;
     text-transform: uppercase;
     font-weight: bolder;
-    font-size: 45px;
+    /* font-size: 45px; */
     width: 255px;
     text-align: center;
     opacity: .5;
@@ -788,7 +819,6 @@ input[type="text"]:focus
     color: #fff;
     text-transform: uppercase;
     font-weight: bolder;
-    font-size: 34px;
     width: 270px;
     text-align: center;
     opacity: .5;
@@ -803,6 +833,31 @@ input[type="text"]:focus
     background-color: #000;
 }
 
+.center > .ïtem-holder > .rounded-container > .category-name-holder {
+    width: 345px;
+    opacity: 1;
+}
+
+.center > .ïtem-holder > .rounded-container > .f-size-25 {
+    font-size: 33px !important;
+}
+
+.center > .ïtem-holder > .rounded-container > .f-size-35 {
+    font-size: 45px !important;
+}
+
+.center > .ïtem-holder > .rounded-container > .f-size-32 {
+    font-size: 42px !important;
+}
+
+.center > .ïtem-holder > .rounded-container > .f-size-40 {
+    font-size: 50px !important;
+}
+
+.center > .ïtem-holder > .rounded-container > .f-size-45 {
+    font-size: 50px !important;
+}
+
 .center > .ïtem-holder-portrait > .rounded-container-portrait {
     width: 391px;
     height: 391px;
@@ -812,24 +867,38 @@ input[type="text"]:focus
     background-color: #000;
 }
 
+
+
 .center > .ïtem-holder > .rounded-container > .category-name-holder {
-    font-size: 54px;
+    /* font-size: 45px; */
     width: 345px;
     opacity: 1;
 }
 
 .center > .ïtem-holder-portrait > .rounded-container-portrait > .category-name-holder-portrait {
-    font-size: 54px;
+    /* font-size: 45px; */
     width: 355px;
     opacity: 1;
 }
 
-.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-25 {
-    font-size: 34px !important;
+.center > .ïtem-holder > .rounded-container-portrait > .f-size-25 {
+    font-size: 33px !important;
 }
 
-.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-35 {
-    font-size: 48px !important;
+.center > .ïtem-holder > .rounded-container-portrait > .f-size-35 {
+    font-size: 45px !important;
+}
+
+.center > .ïtem-holder > .rounded-container-portrait > .f-size-32 {
+    font-size: 42px !important;
+}
+
+.center > .ïtem-holder > .rounded-container-portrait > .f-size-40 {
+    font-size: 50px !important;
+}
+
+.center > .ïtem-holder > .rounded-container-portrait > .f-size-45 {
+    font-size: 50px !important;
 }
 
 .owl-carousel .owl-item img {
@@ -846,6 +915,10 @@ input[type="text"]:focus
 
 .ml-120 {
     margin-left: 120px;
+}
+
+.ml-125 {
+    margin-left: 125px;
 }
 
 .ml-80 {
@@ -867,8 +940,9 @@ input[type="text"]:focus
 .tabs-container {
     width: 100%;
     font-size: 1.5em;
-    bottom: 8.6rem;
+    bottom: 9.7rem;
     right: 0.32rem;
+    z-index: 2;
 }
 
 .tabs-container-portrait {
@@ -877,7 +951,7 @@ input[type="text"]:focus
 
 .datetime-holder {
     color: #DFBD69;
-    font-size: 30px;
+    font-size: 29px;
     font-family: 'Overpass' !important;
 }
 
@@ -915,7 +989,7 @@ input[type="text"]:focus
 
 .map-holder {
     background-color: #fff;
-    height: 738px;
+    height: 711px;
     margin-left: 7px;
     width: 100%;
 }
@@ -1012,6 +1086,10 @@ input[type="text"]:focus
     font-size: 30px;
 }
 
+.swipe-to-see-more img{
+    width: 55px;
+}
+
 .swipe-to-see-more-portrait {
     position: absolute;
     text-align: center;
@@ -1097,7 +1175,7 @@ input[type="text"]:focus
     border: 1px solid #000;
     padding: 5px;
     border-radius: 16px;
-    height: 110px;
+    height: 100px;
     width: 369px;
     cursor: pointer;
 }
@@ -1109,15 +1187,17 @@ input[type="text"]:focus
 }
 
 .tenant-store-custom {
-    width: 100%;
+    width: 512px;
     height: 146px;
 }
 
 .image-holder-custom {
-    width: 135px;
+    width: 120px;
+    margin-top: 5px;
     margin-bottom: 5px;
     float: left;
     margin-right: 10px;
+    margin-left: 5px;
     position: relative;
 }
 
@@ -1162,13 +1242,14 @@ input[type="text"]:focus
     height: 544px;
 }
 
-
 .social-holder {
     font-size: 14px;
     font-weight: bold;
     color: #5E252C;
     overflow: hidden;
     width: 168px;
+    position: absolute;
+    top: 390px;
 }
 
 .social-holder-portrait {
@@ -1212,7 +1293,7 @@ input[type="text"]:focus
 }
 
 .m-auto {
-    margin: auto;
+    margin: auto !important;
 }
 
 .t-auto {
@@ -1235,7 +1316,7 @@ input[type="text"]:focus
 }
 
 .landmark-container {
-    width: 100%;
+    width: 315px;
     height: 264px;
     overflow: hidden;
     border-radius: 25px;
@@ -1435,6 +1516,13 @@ input[type="text"]:focus
     text-align: justify;
 }
 
+.lanmark-detail-holder pre{
+    font-size: 22px;
+    font-family: 'Overpass' !important;
+    text-align: justify;
+    color: #E0BD69;
+}
+
 .softkeys {
     display: table;
     list-style: none;
@@ -1452,7 +1540,7 @@ input[type="text"]:focus
 
 .softkeys__btn {
     border-radius: 5px !important;
-    margin-left: 14px !important;
+    margin-left: 11px !important;
     font-size: 1.5em !important;
     width: 65px!important;
     height: 65px !important;
@@ -1505,9 +1593,9 @@ input[type="text"]:focus
 }
 
 .ui-autocomplete {
-    top: 265px !important;
+    top: 225px !important;
     height: 105px !important;
-    width: 939px !important;
+    width: 838px !important;
 }
 
 .auto_complete_portrait {
@@ -1557,7 +1645,9 @@ input[type="text"]:focus
     color: #000;
     padding-left: 40px;
     background-color: transparent !important;
-    border-color: transparent;
+    position: absolute;
+    bottom: 75px;
+    left: 13px;
 }
 
 .btn-direction-shop-portrait {
@@ -1567,6 +1657,10 @@ input[type="text"]:focus
     font-size: 31px;
     padding-left: 75px;
     font-family: 'Overpass' !important;
+    background-image: url(/images/get-direction.png) !important;
+    background-repeat: no-repeat;
+    color: #000;
+    background-color: transparent !important;
 }
 
 .btn-close-modal, .btn-close-schedule {
@@ -1611,7 +1705,7 @@ input[type="text"]:focus
     width: 100%;
     height: 290px;
     overflow: hidden;
-    /* border-radius: 25px; */
+    border-radius: 25px;
 }
 
 .socmediconcontainer
@@ -1812,6 +1906,15 @@ pre {
 
 .enter-key {
     width: 100px !important;
+    background-image: url(../assets/images/searchbutton.png);
+    color: transparent;
+    background-position: center;
+    background-size: contain;
+}
+
+.enter-key:hover, .enter-key:focus {
+    background-image: url(../assets/images/searchbutton-bg.png);
+    color: transparent;
 }
 
 .disability-active {
@@ -1830,11 +1933,11 @@ pre {
 }
 
 .supplementalCarousel-ladscape {
-    height: 635px !important;
+    height: 605px !important;
 }
 
 #eventsListCarousel {
-    height: 915px;
+    height: 715px;
 }
 
 .text-black {
@@ -1919,17 +2022,6 @@ pre {
     border: none;
 }
 
-.f-size-28 {
-    font-size: 28px !important;
-}
-
-.f-size-25 {
-    font-size: 25px !important;
-}
-
-.f-size-35 {
-    font-size: 35px;
-}
 
 .map-tenant-landscape {
     position: absolute;
@@ -1987,4 +2079,22 @@ pre {
 
 .h-130 {
     height: 130px;
+}
+
+.map-tenant-landscape-info {
+    position: relative;
+    height: inherit;
+}
+
+.multiselect__input {
+    font-size: 16px !important;
+    margin-top: 2px !important;
+    min-height: 30px !important;
+}
+
+.helpful-holder {
+    text-align: left;
+    padding-left: 20px;
+    position: absolute;
+    bottom: 40px;
 }

@@ -322,7 +322,7 @@ class MainController extends AppBaseController
                 $keyword = $request->key_words;
 
                 $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-                $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+                $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 // ->where(function ($query) use($array_words) {
                 ->where(function ($query) use($keyword) {
                     // foreach($array_words as $key) {
@@ -358,12 +358,12 @@ class MainController extends AppBaseController
 
                 $suggest_cat =(array_unique($suggest_cat));
 
-                $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
+                $suggest_subscribers = DirectorySiteTenantViewModel::where('site_tenants.is_subscriber',  1)
                 ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->whereIn('brands.category_id',  $suggest_cat)
                 ->select('site_tenants.*')
-                ->distinct()
+                // ->distinct()
                 ->get();
                 
                 $counts = $site_tenants->count();

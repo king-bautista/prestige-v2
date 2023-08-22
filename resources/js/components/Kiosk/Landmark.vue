@@ -2,12 +2,12 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left ml-5 mt-5 pt-3">
+                <div class="datetime-holder text-left ml-5 mt-2 mb-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mr-5 mt-5 mb-5">
+                <div class="mr-5 mt-2 mb-5">
                     <button type="button" class="btn btn-custom">{{ page_title }}</button>
                 </div>
             </div>
@@ -57,15 +57,15 @@
         </div>
         <div v-show="show_landmark">
             <div class="row">
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4 mt-100 pl-5 ml-5': 'col-sm-3 offset-sm-1'">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4 mt-100 pl-5 ml-5': 'col-sm-3 ml-125 pt-5'">
                     <img :src="landmark_details.image_url_path" class="lanmark-img">
                 </div>
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-7 mt-50': 'col-sm-7'" >
                     <div class="lanmark-detail-holder m-5 mt-100">
                         <h1>{{ landmark_details.landmark }}</h1>
-                        <p>{{ landmark_details.descriptions }}</p>
-                        <!-- <p>{{ landmark_details.name }}</p>
-                        <p>{{ landmark_details.title }}</p> -->
+                        <pre>{{ landmark_details.descriptions }}</pre>
+                        <!-- <p>{{ landmark_details.descriptions }}</p> -->
+                        <!-- <p>{{ landmark_details.title }}</p> -->
                     </div>
                 </div>
             </div>
