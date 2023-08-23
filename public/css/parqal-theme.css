@@ -1653,7 +1653,7 @@ input[type="text"]:focus
 
 .custom-modal-position {
     position: absolute;
-    top: 50%;
+    top: 46%;
     left: 65%;
     transform: translate(-50%, -50%);
 }
@@ -1703,7 +1703,7 @@ input[type="text"]:focus
 }
 
 .btn-close-modal, .btn-close-schedule {
-    font-size: 5em;
+    font-size: 3em;
     margin-right: 0;
 }
 
