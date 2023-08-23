@@ -1645,6 +1645,7 @@ input[type="text"]:focus
 .btn-direction-shop {
     font-size: 16px;
     background-image: url(/images/get-direction.png) !important;
+    background-size: 169px;
     background-repeat: no-repeat;
     width: 169px !important;
     height: 51px;
@@ -1657,16 +1658,18 @@ input[type="text"]:focus
 }
 
 .btn-direction-shop-portrait {
+    color: #000;
     width: 329px !important;
     height: 69px;
-    background-size: 329px 69px;
     font-size: 31px;
     padding-left: 75px;
     font-family: 'Overpass' !important;
     background-image: url(/images/get-direction.png) !important;
+    background-size: 329px;
+    background-position-y: -12px;
     background-repeat: no-repeat;
-    color: #000;
     background-color: transparent !important;
+    border-radius: 20px !important;
 }
 
 .btn-close-modal, .btn-close-schedule {
