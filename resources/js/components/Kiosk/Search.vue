@@ -83,7 +83,7 @@
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
-                                                <div v-bind:class="tenant_list[0].length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
+                                                <div v-bind:class="tenant_list[0].length <= 2 ? 'text-left brand-name' : 'text-left pt-2 brand-name'">
                                                     <div v-bind:class="tenant_list[0].length <= 2 ? 'f-size-30' : ''" class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
                                                     <div v-if="tenant.tenant_details" style="color:#2a2a2a" v-bind:class="tenant_list[0].length <= 2 ? 'f-size-20' : ''">{{ tenant.tenant_details.address }}</div>
                                                     <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>

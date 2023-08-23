@@ -380,7 +380,7 @@ class MainController extends AppBaseController
                 return $this->response([$site_tenants,$suggest_subscribers], 'Successfully Retreived!', 200, $counts);
             //FIND BY ID and display as Tenant Page
             } else {
-                $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+                $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('site_tenants.id', $request->id)
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
