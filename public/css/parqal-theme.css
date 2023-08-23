@@ -969,9 +969,23 @@ input[type="text"]:focus
     bottom: 80%;
     margin-right: 5rem;
 }
+
+.popover::before {
+    position: absolute;
+    display: block;
+    content: "";
+    border-color: transparent;
+    border-style: solid;
+    bottom: -19px;
+    border-width: 0.7rem 0.7rem;
+    border-top-color: #DFBD69;
+    right: 55px;
+}
+
 .popover.bottom .arrow::after {border-bottom-color: #DFBD69; }
 
 .popover-content {background-color: #DFBD69;}
+
 
 .btn-custom {
     min-width: 286px;
@@ -979,11 +993,12 @@ input[type="text"]:focus
     font-size: 35px;
     text-transform: uppercase;
     font-weight: 500;
-    background: url(/images/parqal-tenant-big.png);
+    color: #DFBD69;
+    /* background: url(/images/parqal-tenant-big.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
-    border-radius: 15px;
+    border-radius: 15px; */
     font-family: 'Overpass' !important;    
 }
 
