@@ -1,6 +1,6 @@
 <template>
     <div class="" style="width: 100%;">
-        <div id="popover-content" class="hide d-none" style="z-index:1">Need help? Touch here.</div>
+        <div id="popover-content" class="popover hide d-none mr-5" style="z-index:1;">Need help? Touch here.</div>
         <div @click="generateAssist()">
             <div v-bind:class="(site_orientation == 'Portrait') ? 'assistance_tooltip assistance_tooltip-portrait': 'assistance_tooltip'" tabindex="0" data-toggle="popover" data-container="body" data-placement="top" data-trigger="focus" type="button" data-html="true" data-content="Need help? Touch here.">
             </div>
