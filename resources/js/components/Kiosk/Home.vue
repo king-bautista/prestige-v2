@@ -80,7 +80,7 @@
             <!-- SUB CATEGORY -->
             <div v-show="child_category">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-120 mb-41'" id="child-category-holder">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-70 mb-41'" id="child-category-holder">
                         
                     </div>
                 </div>
@@ -108,7 +108,7 @@
             <!-- SUPPLEMENTALS -->
             <div v-show="supplementals">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-120 mb-41'" id="child-supplementals-holder">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-70 mb-41'" id="child-supplementals-holder">
                         
                     </div>
                     <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
@@ -477,7 +477,7 @@
                 <div v-if="site_name == 'Parqal'">
                     <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
                         <img src="images/swipe.png" >
-                        <p>SWIPE TO SEE MORE</p>
+                        <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
                     </div>
 
                     <div class="btn-group dropup dropdown-menu-right float-right mr-5">
