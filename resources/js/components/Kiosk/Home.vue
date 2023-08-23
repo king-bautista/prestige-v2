@@ -560,31 +560,33 @@
         <events-page v-show="eventsIsShown" ref="callEvents"></events-page>
         <div class="row">
             <div v-bind:class="(site_orientation == 'Portrait') ? 'pt-2': 'pt-2 ml-4 ml-5'" class="col-md-12 text-center bg-color">
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
-                </div>
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button search-button-portrait logs': 'h-button widget-button search-button logs'" data-link='Search' @click="searchButton">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Search">Search</div>
-                </div>
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button map-button-portrait logs': 'h-button widget-button map-button logs'" data-link='Map' @click="mapButton">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Map">Map</div>    
-                </div>
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button landmark-button-portrait logs': 'h-button widget-button landmark-button logs'" data-link='Landmarks' @click="landmarksButton">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Landmarks">Landmarks</div>    
-                </div>
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button events-button-portrait logs': 'h-button widget-button events-button logs'" data-link='Events' @click="eventsButton">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Events">Events</div>    
-                </div>
-                <div v-show="site_name != 'Parqal'" class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Promos">Promos</div>
-                </div>
-                <div v-show="site_name != 'Parqal'" class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Cinema">Cinema</div>
+                <div v-bind:style="(site_orientation == 'Portrait') ? '': 'margin-left: -75px;'">
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button home-button-portrait logs active': 'h-button widget-button home-button logs active'" data-link='Home' @click="homeButton">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Home">Home</div>
+                    </div>
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button search-button-portrait logs': 'h-button widget-button search-button logs'" data-link='Search' @click="searchButton">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Search">Search</div>
+                    </div>
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button map-button-portrait logs': 'h-button widget-button map-button logs'" data-link='Map' @click="mapButton">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Map">Map</div>    
+                    </div>
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button landmark-button-portrait logs': 'h-button widget-button landmark-button logs'" data-link='Landmarks' @click="landmarksButton">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Landmarks">Landmarks</div>    
+                    </div>
+                    <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button events-button-portrait logs': 'h-button widget-button events-button logs'" data-link='Events' @click="eventsButton">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Events">Events</div>    
+                    </div>
+                    <div v-show="site_name != 'Parqal'" class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Promos">Promos</div>
+                    </div>
+                    <div v-show="site_name != 'Parqal'" class="h-button widget-button cinema-button logs" data-link='Cinema' @click="cinemaButton">
+                        <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Cinema">Cinema</div>
+                    </div>
                 </div>
             </div>
         </div>
         <assitant-page ref="callAssist"></assitant-page>
-        <div v-bind:class="(site_orientation == 'Portrait') ? '': 'ml-5'" class="row col-12 text-center">
+        <div v-bind:style="(site_orientation == 'Portrait') ? '': 'margin-left: 8px;'" class="row col-12 text-center">
             <span v-bind:class="(site_orientation == 'Portrait') ? 'client-website-holder-portrait': ''" class="client-website-holder" @click="aboutButton('home')">{{site_website}}</span>
         </div>
 
