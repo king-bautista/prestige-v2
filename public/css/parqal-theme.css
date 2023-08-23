@@ -936,6 +936,10 @@ input[type="text"]:focus
     margin-left: 80px;
 }
 
+.mt-70 {
+    margin-top: 72px;
+}
+
 .ml-25 {
     margin-left: 25px;
 }
@@ -1105,7 +1109,7 @@ input[type="text"]:focus
     position: absolute;
     text-align: center;
     left: 51.2%;
-    top: -100%;
+    top: -186%;
     transform: translate(-50%, -50%);
     color: #DFBD69;
     opacity: 0.9;
