@@ -5,7 +5,7 @@
 
 body,html {
     font-family: 'Overpass' !important;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .theme-landscape {
@@ -1704,7 +1704,7 @@ input[type="text"]:focus
     min-height: 100%;
     margin: auto;
     max-height: none;
-    height: 355px;
+    height: 320px;
 }
 
 .about-banner-holder {
