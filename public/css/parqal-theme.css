@@ -1600,7 +1600,7 @@ input[type="text"]:focus
 }
 
 .auto_complete_portrait {
-    top: 770px !important;
+    top: 720px !important;
     height: 105px !important;
     width: 890px !important;
 }
