@@ -1104,7 +1104,7 @@ input[type="text"]:focus
 .swipe-to-see-more {
     position: absolute;
     text-align: center;
-    left: 51.5%;
+    left: 51.2%;
     top: -100%;
     transform: translate(-50%, -50%);
     color: #DFBD69;
