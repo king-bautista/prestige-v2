@@ -363,7 +363,7 @@ class MainController extends AppBaseController
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->whereIn('brands.category_id',  $suggest_cat)
                 ->select('site_tenants.*')
-                // ->distinct()
+                ->distinct()
                 ->get();
                 
                 $counts = $site_tenants->count();
