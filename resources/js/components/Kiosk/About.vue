@@ -3,15 +3,15 @@
         <div v-if="site_name == 'Parqal'" class="row">
             <template v-if="site_orientation == 'Portrait'">
                 <div class="col-md-12 text-center">
-                    <div class="datetime-holder">
-                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                    <div class="datetime-holder mt-4 pt-3">
+                        <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                     </div>
                 </div>
             </template>
             <template v-else>
                 <div class="col-md-12 text-right">
                     <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
-                        <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                        <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                     </div>
                 </div>
             </template>

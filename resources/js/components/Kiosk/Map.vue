@@ -7,8 +7,8 @@
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mt-2 mb-5 mr-4">
-                    <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
+                <div class="mr-5 mb-5 mt-3">
+                    <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                 </div>
             </div>
         </div>
