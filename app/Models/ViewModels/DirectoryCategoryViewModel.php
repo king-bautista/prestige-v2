@@ -362,9 +362,17 @@ class DirectoryCategoryViewModel extends Model
 
     public function getChildrenAttribute() 
     {
-        $child_categories = $this->getChildCategories()->where('active', 1)->orderBy('name', 'ASC')->get();
+        $child_categories = DirectoryCategoryViewModel::where('parent_id', $this->id)
+                            ->where('active', 1)
+                            ->whereNull('category_labels.deleted_at')
+                            ->leftJoin('category_labels', 'categories.id', '=', 'category_labels.category_id')
+                            ->selectRaw("(case when category_labels.name != '' then category_labels.name ELSE categories.name END) AS cat_label, categories.*")
+                            ->orderBy('cat_label')
+                            ->distinct()
+                            ->get();
+
         if($child_categories)
-            return $child_categories->sortBy('label');
+            return $child_categories;
         return null;
     }
 

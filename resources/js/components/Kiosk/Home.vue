@@ -1158,6 +1158,52 @@
                 this.$refs.callAssist.filterAssist('tenantcategory',this.current_language_set);
 
                 $(".navigation-letters li").removeClass('active'); 
+
+                var obj = this;
+
+                $(document).ready(function(){
+                    $('#child-category-holder').html('<div id="sub-category-carousel" class="owl-carousel"></div>');
+                    $.each(obj.current_category.children, function(index, sub_category) {
+                        var ïtem_holder_class = 'ïtem-holder';
+                        var rounded_container_class = 'rounded-container';
+                        var category_name_holder_class = 'category-name-holder';
+                        var font_size_class = 'f-size-45';
+
+                        if(obj.site_orientation == 'Portrait') {
+                            ïtem_holder_class = 'ïtem-holder-portrait';
+                            rounded_container_class = 'rounded-container-portrait';
+                            category_name_holder_class = 'category-name-holder-portrait';
+                        }
+
+                        if(sub_category.label.length >= 10) {
+                            font_size_class = 'f-size-35';
+                        }
+
+                        if(sub_category.label.length > 20) {
+                            font_size_class = 'f-size-32';
+                        }
+
+                        var html = '<div class="'+ïtem_holder_class+'">';
+                            html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
+                            html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
+                            html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
+                            html += '</div';
+                            html += '</div';
+                        
+                        $("#sub-category-carousel").append(html);
+                        $("#category_"+sub_category.id).click(function(){
+                            obj.getTenantsByCategory(sub_category);
+                        });
+                    });
+
+                    var owl = $("#sub-category-carousel");
+                    owl.owlCarousel({
+                        center: true,
+                        items:3,
+                        loop:true,
+                        margin:0,
+                    });
+                });
             },
 
             showSupplementals: function(name = null) {
@@ -1323,14 +1369,14 @@
                     this.alphabetical = false;
                 } 
                 else if(this.previous_page == 'Alphabetical' && this.alphabetical == true) {
-                    this.page_title = 'Store List';
+                    this.page_title = 'Categories';
                     this.child_category = true;
                     this.alphabetical = false;
                     $('#category-tab').trigger('click');
                     this.isAlphabeticalClicked = false;
                 } 
                 else if(this.previous_page == 'Sub Category' && this.alphabetical == true) {
-                    this.page_title = 'Store List';
+                    this.page_title = 'Categories';
                     this.child_category = true;
                     this.alphabetical = false;
                     $('#category-tab').trigger('click');

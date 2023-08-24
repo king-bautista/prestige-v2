@@ -457,6 +457,7 @@
 			},
 
             find_store: function(value, called_from) {
+                this.map_form.tenant = '';
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
                     this.tenant_details = value;
@@ -478,6 +479,7 @@
                     this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
                     this.wayfindings.drawline(value.id, value, obj.with_disability);
+                    
                     $('#guide-button').show();
                     $('.map-search-modal').hide();
                     $('.pinch').hide();
