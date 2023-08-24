@@ -260,6 +260,7 @@ const app = new Vue({
         
         disableInterceptor() {
             axios.interceptors.request.eject(this.axiosInterceptor)
-        },     
+        },
+
     }
 });

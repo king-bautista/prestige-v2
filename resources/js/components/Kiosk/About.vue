@@ -10,7 +10,7 @@
             </template>
             <template v-else>
                 <div class="col-md-12 text-right">
-                    <div class="datetime-holder mt-4 mb-3 ml-4">
+                    <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                         <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
                     </div>
                 </div>

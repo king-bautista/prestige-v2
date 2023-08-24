@@ -2,12 +2,12 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left ml-5 mb-5">
+                <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mr-5 mb-5">
+                <div class="mt-2 mb-5 mr-4">
                     <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                                     
                                     <div v-for="tenant in tenants" v-bind:class="[tenant_list[0].length === 1 ? 'col-sm-12 text-center mt-3' : '', tenant_list[0].length === 2 ? 'col-sm-6 text-center mt-3':'', tenant_list[0].length > 2 ? 'col-sm-4 text-left mt-3' : '']">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenant_list[0].length <= 2) ? 'tenant-store-custom m-auto': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait m-auto': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -128,7 +128,7 @@
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'want-to-try-portrait': 'want-to-try'" v-show="current_subscriber_list_count>0">
                         <div class="row">
                             <div class="col-12 pl-100">
-                                <span class="translateme" data-en="You might want to try : ">&ldquo;You might want to try : </span>
+                                <span class="translateme" data-en="You might want to try : ">You might want to try : </span>
                             </div>
                         </div>
                         <div class="row">
@@ -744,19 +744,19 @@
                                 ['G','='],
                                 ['H',':'],
                                 ['J',';'],
-                                ['K','\''],
+                                ['K','&bsol;'],
                                 ['L','&#34;'],
                                 ['\''],
                             ],
                             [
                                 'shift',
-                                ['Z','['],
-                                ['X',']'],
-                                ['C','-'],
-                                ['V','+'],
+                                ['Z','{'],
+                                ['X','}'],
+                                ['C','<'],
+                                ['V','>'],
                                 ['B','?'],
-                                ['N',':'],
-                                ['M',';'],
+                                ['N','_'],
+                                ['M','/'],
                                 'delete',
                             ],
                             [
