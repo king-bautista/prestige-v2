@@ -457,9 +457,9 @@
 			},
 
             find_store: function(value, called_from) {
-                this.map_form.tenant = '';
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
+                    this.map_form.tenant = '';
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
                 }
