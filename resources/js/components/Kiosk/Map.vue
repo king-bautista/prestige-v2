@@ -478,7 +478,7 @@
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.drawpoints_stop();
-                    this.wayfindings.drawline(value.id, value, obj.with_disability);
+                    this.wayfindings.drawline(value.id, value, obj.with_disability, obj.panzoom);
                     
                     $('#guide-button').show();
                     $('.map-search-modal').hide();
