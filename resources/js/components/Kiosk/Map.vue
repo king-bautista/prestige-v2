@@ -2,13 +2,13 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left ml-5 mb-5">
+                <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mr-5 mb-5">
-                    <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                <div class="mt-2 mb-5 mr-4">
+                    <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
                 </div>
             </div>
         </div>
@@ -255,7 +255,7 @@
         <div class="custom-modal p-l-490 feedback-search-modal" v-show="feedback_modal">
             <div v-bind:class="(site_orientation == 'Portrait') ? 'feedback-search-modal-position-portrait': 'feedback-search-modal-position'" class="">                      
                 <div class="feedback-section">
-                    <div class="mb-18"><span class="label-2">How can we improve?</span></div>
+                    <div class="mb-2"><span class="label-2">How can we improve?</span></div>
                     <div class="feedback-flex mb-18">
                         <div class="feedback-child">
                             <input type="radio" id="option1" value="Incorrect info" v-model="feedback_picked" />
@@ -458,7 +458,7 @@
 
             find_store: function(value, called_from) {
                 this.tenant_details = '';
-                if(called_from == 'home' || called_from == 'search') {
+                if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
                 }
@@ -553,40 +553,100 @@
                     $('.softkeys-tenant').softkeys({
                         target : $('.softkeys-tenant').data('target'),
                         layout : [
-                            [
+                        [
                                 '1','2','3','4','5','6','7','8','9','0',
                             ],
                             [
-                                ['Q','~'],['W','!'],['E','@'],['R','#'],['T','$'],['Y','%'],['U','^'],['I','&'],['O','*'],['P','('],['-',')'],
+                                ['Q','~'],
+                                ['W','!'],
+                                ['E','@'],
+                                ['R','#'],
+                                ['T','$'],
+                                ['Y','%'],
+                                ['U','^'],
+                                ['I','&'],
+                                ['O','*'],
+                                ['P','('],
+                                ['-',')'],
                             ],
                             [
-                                ['A','['],['S',']'],['D','-'],['F','+'],['G','='],['H',':'],['J',';'],['K','\''],['L','&#34;'],['\''],
+                                ['A','['],
+                                ['S',']'],
+                                ['D','-'],
+                                ['F','+'],
+                                ['G','='],
+                                ['H',':'],
+                                ['J',';'],
+                                ['K','&bsol;'],
+                                ['L','&#34;'],
+                                ['\''],
                             ],
                             [
-                                'shift',['Z','['],['X',']'],['C','-'],['V','+'],['B','?'],['N',':'],['M',';'],'delete',
+                                'shift',
+                                ['Z','{'],
+                                ['X','}'],
+                                ['C','<'],
+                                ['V','>'],
+                                ['B','?'],
+                                ['N','_'],
+                                ['M','/'],
+                                'delete',
                             ],
                             [
-                                [','],'space',['.'],['Enter','Enter'],
+                                [','],
+                                'space',
+                                ['.'],
+                                ['Enter','Enter'],
                             ]
                         ]
                     });
                     $('.softkeys-feedback').softkeys({
                         target : $('.softkeys-feedback').data('target'),
                         layout : [
-                            [
+                        [
                                 '1','2','3','4','5','6','7','8','9','0',
                             ],
                             [
-                                ['Q','~'],['W','!'],['E','@'],['R','#'],['T','$'],['Y','%'],['U','^'],['I','&'],['O','*'],['P','('],['-',')'],
+                                ['Q','~'],
+                                ['W','!'],
+                                ['E','@'],
+                                ['R','#'],
+                                ['T','$'],
+                                ['Y','%'],
+                                ['U','^'],
+                                ['I','&'],
+                                ['O','*'],
+                                ['P','('],
+                                ['-',')'],
                             ],
                             [
-                                ['A','['],['S',']'],['D','-'],['F','+'],['G','='],['H',':'],['J',';'],['K','\''],['L','&#34;'],['\'','null'],
+                                ['A','['],
+                                ['S',']'],
+                                ['D','-'],
+                                ['F','+'],
+                                ['G','='],
+                                ['H',':'],
+                                ['J',';'],
+                                ['K','&bsol;'],
+                                ['L','&#34;'],
+                                ['\''],
                             ],
                             [
-                                'shift',['Z','['],['X',']'],['C','-'],['V','+'],['B','?'],['N',':'],['M',';'],'delete',
+                                'shift',
+                                ['Z','{'],
+                                ['X','}'],
+                                ['C','<'],
+                                ['V','>'],
+                                ['B','?'],
+                                ['N','_'],
+                                ['M','/'],
+                                'delete',
                             ],
                             [
-                                [',','null'],'space',['.','null'],['Enter','Enter'],
+                                [','],
+                                'space',
+                                ['.'],
+                                ['Enter','Enter'],
                             ]
                         ]
                     });

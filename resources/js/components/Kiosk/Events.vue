@@ -2,13 +2,13 @@
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
             <div class="col-md-6">
-                <div class="datetime-holder text-left ml-5 mb-5">
+                <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                 </div>                
             </div>
             <div class="col-md-6 text-right">
-                <div class="mr-5 mb-5">
-                    <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                <div class="mt-2 mb-5 mr-4">
+                    <button v-bind:class="(site_orientation == 'Portrait') ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'" type="button">{{ page_title }}</button>
                 </div>
             </div>
         </div>
@@ -56,11 +56,11 @@
 
                 </div>
                 
-                <div v-if="event_list[0].length <= 3" class="row event-item-holder">
+                <div v-if="event_list[0].length <= 3" class="row event-item-holder ml-3 p-0">
                     <template v-for="(events, index) in event_list">
                         <div class="m-auto" v-for="event in events">
-                            <div class="event-container-custom" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
-                                <img v-bind:class="(event_list[0].length <= 3) ? 'event-custom-img': ''" class="" :src="event.image_url_path" :alt="event.name" />
+                            <div v-bind:class="[(site_orientation == 'Portrait') ? 'event-container-custom event-container-custom-portrait': 'event-container-custom', (event_list[0].length == 2) ? 'event-portrait-2': '', (event_list[0].length == 3) ? 'event-portrait-3': '']" class="" @click="helper.saveLogs(event, 'Events'); showEvent(event.image_url_path)">
+                                <img :src="event.image_url_path" :alt="event.name" />
                                 <div class="event-name-holder">
                                     {{event.event_name}} <br/>
                                     {{event.location}}
