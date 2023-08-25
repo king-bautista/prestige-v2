@@ -12,13 +12,13 @@
                     </template>
                     <template v-else>
                         <div class="col-md-5">
-                            <div class="datetime-holder text-left ml-5">
+                            <div class="datetime-holder text-left ml-5 mt-2 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                             </div>                
                         </div>
                         <div class="col-md-7 text-right">
-                            <div class="mr-5 mb-5">
-                                <button v-bind:class="[(site_orientation == 'Portrait' ? 'btn btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']" type="button">{{ page_title }}</button>
+                            <div class="mr-5 mb-5 mt-3">
+                                <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                             </div>
                         </div>
                     </template>
@@ -26,12 +26,12 @@
                 <template v-else>
                     <div class="col-md-5">
                         <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
-                            <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                            <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                         </div>                
                     </div>
                     <div class="col-md-7 text-right">
                         <div v-if="home_category" class="datetime-holder mt-2 mb-5 mr-5 pt-3">
-                            <span class="separator">{{ current_time }}</span><span class="ml-3">{{ current_date }}</span>
+                            <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                         </div>
                         <div v-else class="mt-2 mb-5 mr-4">
                             <button type="button" class="btn btn-custom">{{ page_title }}</button>

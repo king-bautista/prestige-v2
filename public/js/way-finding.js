@@ -807,7 +807,8 @@ WayFinding.prototype = {
     show_tenant_details: function(id) {
     },
 
-    drawline: function(id, tenant, with_disability = 0) {
+    drawline: function(id, tenant, with_disability = 0, panzoom = null) {
+        this.settings.panzoom = panzoom;
         this.settings.with_disability = with_disability;
         this.showmap(this.settings.defaultmap);
         $('#repeatButton').hide();
@@ -996,16 +997,17 @@ WayFinding.prototype = {
 
             if(!this.settings.store_id)
             {
-                const elem = document.getElementById('zoomable-container')
-                const panzoom = Panzoom(elem, {
-                    maxScale: 5,
-                    canvas: true,
-                    startScale: this.settings.defaultmap.default_scale,
-                    startX: this.settings.defaultmap.default_x,
-                    startY: this.settings.defaultmap.default_y
-                })
+                // const elem = document.getElementById('zoomable-container')
+                // const panzoom = Panzoom(elem, {
+                //     maxScale: 5,
+                //     canvas: true,
+                //     startScale: this.settings.defaultmap.default_scale,
+                //     startX: this.settings.defaultmap.default_x,
+                //     startY: this.settings.defaultmap.default_y
+                // })
 
                 var obj = this;
+                const panzoom = this.settings.panzoom;
                 this.settings.store_id = setInterval(function(){obj.animate_marker_store();},50);
 
                 var x = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].x
