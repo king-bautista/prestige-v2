@@ -768,7 +768,7 @@
             this.softkeys();
             var vm = this;
             $(function() {    
-                var obj = this;        
+                var obj = this;     
                 this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
                 this.wayfindings.animate_marker_here_stop();
                 // $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
@@ -854,7 +854,7 @@
                     $('.map-floor-option .multiselect__tags .multiselect__single').html(vm.active_map_details.building_floor_name);
                     vm.panzoom.zoom((vm.active_map_details.default_zoom));
                     setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
-                    obj.wayfindings.replay(obj.with_disability);
+                    obj.wayfindings.replay(obj.with_disability, vm.panzoom);
     			});
 
                 $('#guide-button').on('click',function(){
