@@ -237,12 +237,24 @@
         <div id="guide-button" v-show="guide_button" v-bind:class="(site_orientation == 'Portrait') ? 'guide-button-portrait': ''">
             <div class="toggle-arrow mt-7"><i class="arrow up"></i></div>   
             <div id="toggle-updown-text" class="translateme" data-en="Show Text Guide">Show Text Guide</div>
-            <template v-if="tenant_details">
-                <template v-if="site_orientation == 'Portrait'">
-                    <i class="far fa-heart btn-heart map-btn-heart-portrait" aria-hidden="true"></i>
-                </template>
-            </template>
         </div>
+
+        <template v-if="tenant_details">
+            <template v-if="site_orientation == 'Portrait'">
+                <div class="map-btn-heart-portrait">
+                    <div>
+                        <a class="btn-like-display" style="font-size: 18px;">{{ tenant_details.like_count }}
+                            <span class="translateme" data-en="Likes">Likes</span>
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-danger ml-2 btn-like" @click="updateLikeCount(tenant_details.id,tenant_details.like_count)">                    
+                            <i class="far fa-heart btn-heart" style="font-size: 40px;"></i>                    
+                        </span>
+                    </div>
+                </div>
+            </template>
+        </template>
 
         <!-- MODAL -->
         <div class="custom-modal p-l-490 map-search-modal">

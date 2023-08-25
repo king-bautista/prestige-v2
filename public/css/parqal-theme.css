@@ -2202,9 +2202,10 @@ pre {
 
 .map-btn-heart-portrait {
     position: absolute;
-    right: 125px;
-    top: 47px;
-    font-size: 40px;
+    right: 130px;
+    bottom: 82px;
+    z-index: 9;
+    color: #000;
 }
 
 .map-search-modal {
