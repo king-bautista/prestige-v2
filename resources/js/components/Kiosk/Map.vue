@@ -852,14 +852,15 @@
                     vm.softkeysTenant = true;
                     vm.softkeysFeedback = false;
                     $(".btn-nothelpful").removeClass('response-active-color');
-                });
+                });                
 
                 $(".btn-close-schedule").on('click',function(){
                     $("#map-modal-schedule").hide();
                 });                
 
-                // let popup = document.querySelector('.map-search-modal');
-
+                $(".map-search-modal").on('click',function(){
+                    $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
+                });
 
                 $(".softkeys__btn").on('mousedown',function(){
                 
