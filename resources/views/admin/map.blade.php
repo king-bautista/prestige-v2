@@ -162,7 +162,7 @@
               <select class="frm_info custom-select" id="tenant_id" name="tenant_id">
                 <option value="">Select Tenant</option>
                 @foreach ($site_tenants as $tenant)
-                <option value="{{$tenant->id}}">{{$tenant->brand_name}}</option>
+                <option value="{{$tenant->id}}">{{$tenant->brand_name}} - {{$tenant->serial_number}}</option>
                 @endforeach
               </select>
             </div>
