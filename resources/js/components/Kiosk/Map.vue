@@ -524,6 +524,7 @@
             },
 
             resetPage: function() {
+                this.map_form.tenant = null;
                 this.with_disability = 0;
                 this.tenant_details = '';
                 var obj = this;
@@ -851,17 +852,7 @@
                     vm.softkeysTenant = true;
                     vm.softkeysFeedback = false;
                     $(".btn-nothelpful").removeClass('response-active-color');
-                });
-
-                // $(".map-search-modal").on('click',function(){
-                //     $(".map-search-modal").hide();
-                //     vm.feedback_modal = false;
-                //     vm.softkeysTenant = true;
-                //     vm.softkeysFeedback = false;
-                //     $(".btn-nothelpful").removeClass('response-active-color');
-                // });
-
-                
+                });                
 
                 $(".btn-close-schedule").on('click',function(){
                     $("#map-modal-schedule").hide();
