@@ -397,8 +397,8 @@ export default {
 				site_name: "Site Name",
 				building_name: "Building Name",
 				floor_name: "Floor Name",
-				view_count: "Views",
-				like_count: "Likes",
+				store_address: "Store Address",
+				// like_count: "Likes",
 				active: {
 					name: "Status",
 					type: "Boolean",

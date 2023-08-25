@@ -1017,6 +1017,12 @@ input[type="text"]:focus
     font-family: 'Overpass' !important;    
 }
 
+.btn-custom:hover {
+    color: #DFBD69 !important;
+    text-decoration: none;
+    cursor: none;
+}
+
 .map-holder {
     background-color: #fff;
     height: 703px;
@@ -1700,7 +1706,7 @@ input[type="text"]:focus
 }
 
 .ui-autocomplete {
-    top: 225px !important;
+    top: 230px !important;
     height: 105px !important;
     width: 838px !important;
 }

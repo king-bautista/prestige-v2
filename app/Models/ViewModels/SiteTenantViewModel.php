@@ -63,6 +63,7 @@ class SiteTenantViewModel extends Model
         'operational_hours',
         'products',
         'property_owner',
+        'store_address',
     ];
 
     public function getTenantDetails()
@@ -227,6 +228,14 @@ class SiteTenantViewModel extends Model
         $site_details = SiteViewModel::find($this->site_id);
         if($site_details)
             return $site_details->property_owner;
+        return null;
+    }
+
+    public function getStoreAddressAttribute() 
+    {
+        $tenant_details = $this->getTenantDetails()->where('meta_key', 'address')->first();
+        if(isset($tenant_details->meta_value))
+            return $tenant_details->meta_value;
         return null;
     }
     
