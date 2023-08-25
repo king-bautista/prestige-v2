@@ -640,6 +640,10 @@ WayFinding.prototype = {
             });
         }
 
+        if(this.settings.tenant_details){
+            text = this.settings.tenant_details.floor_name;
+        }
+
         var obj = this;
 
         if(!this.settings.escalator_id) this.settings.escalator_id = setInterval(function(){obj.animate_escalator((to>from),text);},200);
@@ -672,6 +676,10 @@ WayFinding.prototype = {
                 node.innerHTML = 'Go to ' + store_address + '';
                 $('.assist').append(node);            
             });
+        }
+
+        if(this.settings.tenant_details){
+            text = this.settings.tenant_details.floor_name;
         }
 
         var obj = this;

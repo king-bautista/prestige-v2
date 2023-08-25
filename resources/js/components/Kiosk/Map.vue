@@ -459,7 +459,8 @@
             find_store: function(value, called_from) {
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    this.map_form.tenant = '';
+                    this.with_disability = 0;
+                    this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
                 }
@@ -485,8 +486,15 @@
                     $('.pinch').hide();
                     $('.response-btn').removeClass('disabled-response');
                     $('.response-btn').removeClass('response-active-color');
-                    $('.destination').html($('.map-tenant-option .multiselect__single').html());
-                    $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
+                    console.log(called_from);
+                    if(called_from === 'search-input') {
+                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                        $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
+                    }
+                    else {
+                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                        $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", value.brand_name));
+                    }
                 });
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
 
@@ -516,6 +524,7 @@
             },
 
             resetPage: function() {
+                this.with_disability = 0;
                 this.tenant_details = '';
                 var obj = this;
                 $(function() {
@@ -768,6 +777,7 @@
 
                     // This demo binds to shift + wheel
                     parent.addEventListener('wheel', function(event) {
+                        $(".pinch").hide();
                         if (!event.shiftKey) return
                         vm.panzoom.zoomWithWheel(event)
                     })

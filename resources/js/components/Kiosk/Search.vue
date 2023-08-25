@@ -79,7 +79,7 @@
                                     
                                     <div v-for="tenant in tenants" v-bind:class="[tenant_list[0].length === 1 ? 'col-sm-12 text-center mt-3' : '', tenant_list[0].length === 2 ? 'col-sm-6 text-center mt-3':'', tenant_list[0].length > 2 ? 'col-sm-4 text-left mt-3' : '']">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait m-auto': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait m-auto': '', (tenant_list[0].length <= 2 && site_orientation == 'Landscape') ? 'tenant-store-custom m-auto': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -923,6 +923,10 @@
                 $(".btn-close-trailer").on('click',function(){
                     $("#myProductSearch").hide();
                 });
+
+                $(".map-search-modal").on('click', function() {
+                    $(".map-search-modal").hide();
+                })
 
                 $(".ABC").on('click',function(){
                     if ($(this).html() === "ABC") {
