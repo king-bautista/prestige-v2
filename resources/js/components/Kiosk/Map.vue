@@ -475,6 +475,7 @@
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
+                    this.updateViewCount(this.tenant_details.id);
                 }
 
                 this.called_from = called_from;
@@ -722,6 +723,16 @@
                 });
                 
                 this.$refs.callPromo.updatePromoList(params);
+            },
+
+            updateViewCount: function(id) {
+                this.tenant_details.view_count = parseInt(this.tenant_details.view_count) + 1;
+
+                let params = {
+                    id: this.tenant_details.id,
+                    view_count: this.tenant_details.view_count
+                }
+                $.post( "/api/v1/view-count", params ,function(response) {});
             },
 
             buildSchedule: function (data) {       

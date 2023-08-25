@@ -796,6 +796,7 @@
                 this.show_tenant = true;
                 $('.notification').hide();
                 this.buildSchedule(this.tenant_details);
+                this.updateViewCount(this.tenant_details.id);
                 this.$root.$emit('callMutateLocation','tenant');
 
                 setTimeout(() => {
@@ -815,6 +816,17 @@
 
                 $.post( "/api/v1/like-count", params ,function(response) {});
             },
+
+            updateViewCount: function(id) {
+                this.tenant_details.view_count = parseInt(this.tenant_details.view_count) + 1;
+
+                let params = {
+                    id: this.tenant_details.id,
+                    view_count: this.tenant_details.view_count
+                }
+                $.post( "/api/v1/view-count", params ,function(response) {});
+            },
+
 
             showSchedule: function() {
                 $("#modal-schedule-search").show();

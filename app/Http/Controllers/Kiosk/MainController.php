@@ -807,6 +807,11 @@ class MainController extends AppBaseController
         DB::statement("UPDATE site_tenants SET site_tenants.like_count = $request->like_count  where site_tenants.id = $request->id");
     }
 
+    public function putViewCount(Request $request)
+    {
+        DB::statement("UPDATE site_tenants SET site_tenants.view_count = $request->view_count  where site_tenants.id = $request->id");
+    }
+
     public function putFeedback(Request $request)
     {
         $site = Site::where('is_default', 1)->where('active', 1)->first();

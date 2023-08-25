@@ -916,6 +916,16 @@
                 this.$refs.callPromo.updatePromoList(params);
             },
 
+            updateViewCount: function(id) {
+                this.tenant_details.view_count = parseInt(this.tenant_details.view_count) + 1;
+
+                let params = {
+                    id: this.tenant_details.id,
+                    view_count: this.tenant_details.view_count
+                }
+                $.post( "/api/v1/view-count", params ,function(response) {});
+            },
+
             resetCarousel: function() {
                 $(".control-prev-s").hide();
                 $(".control-prev-a").hide();
@@ -1434,6 +1444,7 @@
                 this.show_tenant = true;
                 this.tabs_container = false;
                 this.buildSchedule(this.tenant_details);
+                this.updateViewCount(this.tenant_details.id);
 
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set);
