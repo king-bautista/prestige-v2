@@ -1017,6 +1017,12 @@ input[type="text"]:focus
     font-family: 'Overpass' !important;    
 }
 
+.btn-custom:hover {
+    color: #DFBD69 !important;
+    text-decoration: none;
+    cursor: none;
+}
+
 .map-holder {
     background-color: #fff;
     height: 703px;

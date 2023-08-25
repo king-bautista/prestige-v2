@@ -33,8 +33,8 @@
                         <div v-if="home_category" class="datetime-holder mt-2 mb-5 mr-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                         </div>
-                        <div v-else class="mt-2 mb-5 mr-4">
-                            <button type="button" class="btn btn-custom">{{ page_title }}</button>
+                        <div v-else class="mr-5 mb-5 mt-3">
+                            <div v-bind:class="[page_title.length > 20 ? 'f-size-28' : '']" class="btn btn-custom">{{ page_title }}</div>
                         </div>
                     </div>
                 </template>
@@ -178,7 +178,7 @@
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-60': 'row mb-3'">
                                     <div v-for="tenant in tenants" v-bind:class="tenant_list[0].length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2) ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait': '', (tenant_list[0].length <= 2 && site_orientation == 'Landscape') ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -311,7 +311,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-sm-2 mt-3 mr-0 p-0 pl-3">
+                        <div class="col-sm-2 mr-0 p-0 pl-3">
                             <div class="p-2 tenant-details">
                                 <div class="map-tenant-landscape-info">
                                     <div class="my-auto p-1 text-center">
@@ -349,7 +349,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-10 text-center mt-3">
+                        <div class="col-sm-10 text-center">
                             <div v-if="tenant_details.is_subscriber" class="tenant-products-container">
                                 <div class="row ml-1 mt-16" v-if="tenant_details.products">
                                     <div class="col-12 p-0" v-if="tenant_details.products.banners">
@@ -1176,11 +1176,13 @@
                         }
 
                         if(sub_category.label.length >= 10) {
+                            alert('test 2');
                             font_size_class = 'f-size-35';
                         }
 
-                        if(sub_category.label.length > 20) {
-                            font_size_class = 'f-size-32';
+                        if(sub_category.label.length >= 20) {
+                            alert('test 1');
+                            font_size_class = 'f-size-28';
                         }
 
                         var html = '<div class="'+ïtem_holder_class+'">';
@@ -1322,7 +1324,7 @@
                         }
 
                         if(sub_category.label.length > 20) {
-                            font_size_class = 'f-size-32';
+                            font_size_class = 'f-size-28';
                         }
 
                         var html = '<div class="'+ïtem_holder_class+'">';
