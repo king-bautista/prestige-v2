@@ -319,15 +319,15 @@ class MainController extends AppBaseController
             //FIND BY KEYWORD and display as list E.G TAGS/KEY_WORDDS/BRAND_NAME
             if (!$request->id) {
                 $array_words = explode(' ', $request->key_words);
-                $keyword = $request->key_words;
+                $keyword = preg_replace('!\s+!', ' ', $request->key_words);                
 
                 $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 // ->where(function ($query) use($array_words) {
                 ->where(function ($query) use($keyword) {
                     // foreach($array_words as $key) {
-                        $query->orWhere('brands.name', 'like', '%'.$keyword.'%')
-                        ->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
+                        //$query->orWhere('brands.name', 'like', '%'.$keyword.'%')
+                        $query->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
                         ->orWhere('brands.name', 'like', '%'.$keyword) #FIRST WORD but start on first letter
                         ->orWhere('categories.name', 'like', '%'.$keyword)
                         ->orWhere('categories.name', 'like', $keyword.'%')

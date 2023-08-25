@@ -1706,7 +1706,7 @@ input[type="text"]:focus
 }
 
 .ui-autocomplete {
-    top: 225px !important;
+    top: 230px !important;
     height: 105px !important;
     width: 838px !important;
 }

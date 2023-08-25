@@ -1545,6 +1545,14 @@
 
         mounted() {
             this.$root.$on('showTenantMap', (tenant) => {
+                this.homeIsShown = false;
+                this.searchIsShown = false;
+                this.mapIsShown = true;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
                 this.findStore(tenant, 'home');
             });
 
