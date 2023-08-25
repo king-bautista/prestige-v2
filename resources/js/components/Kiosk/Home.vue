@@ -905,6 +905,9 @@
 
                 $(".btn-like-display").addClass('disabled-response');
                 $(".btn-heart").removeClass('far').addClass('fas');
+                setTimeout(() => {
+                    $(".btn-heart").removeClass('fas').addClass('far');
+                }, 1000 * 60);
 
                 $.post( "/api/v1/like-count", params ,function(response) {
                     
