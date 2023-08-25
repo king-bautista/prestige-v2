@@ -25,7 +25,7 @@
 
     <body>
         <!-- LOADING VIDEO --> 
-        <!-- <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.mp4') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>     -->
+        <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.ogv') }}' type='video/mp4'>Your browser does not support the video tag.</video></div>    
         <div id="app" app-env="{{ config('app.env') }}">
         
             @yield('content')
