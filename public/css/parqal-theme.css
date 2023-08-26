@@ -1913,6 +1913,7 @@ pre {
     width: 98%;
     font-family: 'Overpass' !important;
     font-weight: bold;
+    line-height: 20px;
 }
 
 .shop_address {
