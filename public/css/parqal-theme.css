@@ -777,15 +777,15 @@ input[type="text"]:focus
 }
 
 .f-size-20 {
-    font-size: 20px;
+    font-size: 20px !important;
 }
 
 .f-size-28 {
-    font-size: 28px;
+    font-size: 28px !important;
 }
 
 .f-size-25 {
-    font-size: 25px;
+    font-size: 25px !important;
 }
 
 .f-size-30 {
@@ -853,6 +853,10 @@ input[type="text"]:focus
     font-size: 33px !important;
 }
 
+.center > .ïtem-holder > .rounded-container > .f-size-28 {
+    font-size: 45px !important;
+}
+
 .center > .ïtem-holder > .rounded-container > .f-size-35 {
     font-size: 45px !important;
 }
@@ -887,28 +891,31 @@ input[type="text"]:focus
 }
 
 .center > .ïtem-holder-portrait > .rounded-container-portrait > .category-name-holder-portrait {
-    /* font-size: 45px; */
     width: 355px;
     opacity: 1;
 }
 
-.center > .ïtem-holder > .rounded-container-portrait > .f-size-25 {
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-25 {
     font-size: 33px !important;
 }
 
-.center > .ïtem-holder > .rounded-container-portrait > .f-size-35 {
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-28 {
     font-size: 45px !important;
 }
 
-.center > .ïtem-holder > .rounded-container-portrait > .f-size-32 {
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-35 {
+    font-size: 45px !important;
+}
+
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-32 {
     font-size: 42px !important;
 }
 
-.center > .ïtem-holder > .rounded-container-portrait > .f-size-40 {
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-40 {
     font-size: 50px !important;
 }
 
-.center > .ïtem-holder > .rounded-container-portrait > .f-size-45 {
+.center > .ïtem-holder-portrait > .rounded-container-portrait > .f-size-45 {
     font-size: 50px !important;
 }
 
@@ -1248,7 +1255,7 @@ input[type="text"]:focus
 }
 
 .pta-2-custom {
-    top: 30%;
+    top: 50%;
     transform: translateY(-50%);
     position: relative;
     font-size: 24px !important;
@@ -1901,9 +1908,17 @@ pre {
 }
 
 .shop_name {
-    font-size: 16px;
+    font-size: 20px;
     color: #2a2a2a;
     width: 98%;
+    font-family: 'Overpass' !important;
+    font-weight: bold;
+}
+
+.shop_address {
+    font-size: 17px;
+    font-weight: bold;
+    color:#2a2a2a;
     font-family: 'Overpass' !important;
     font-weight: bold;
 }
@@ -2115,6 +2130,8 @@ pre {
 
 .w-500 {
     width: 500px;
+    height: 45px;
+    position: relative;
 }
 
 .btn-schedule {
@@ -2249,4 +2266,19 @@ pre {
 .label-0 {
     color: #2a2a2a;
     font-size: 25px;
+}
+
+.pta-2 {
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+}
+
+.social-text-container {
+    width: 124px;
+    overflow-wrap: break-word;
+    position: absolute;
+    top: 50%;
+    left: 45px;
+    transform: translateY(-50%);
 }

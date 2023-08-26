@@ -183,9 +183,9 @@
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'text-left pta-2-custom brand-name' : 'text-left pta-2 brand-name'">
-                                                    <div class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
-                                                    <div v-if="tenant.tenant_details" style="font-size: 13px;font-weight: bold;color:#2a2a2a;">{{ tenant.tenant_details.address }}</div>
-                                                    <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
+                                                    <div v-bind:class="tenant_list[0].length <= 2 ? 'f-size-25' : ''" class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
+                                                    <div v-if="tenant.tenant_details" v-bind:class="tenant_list[0].length <= 2 ? 'f-size-20' : ''" class="shop_address">{{ tenant.tenant_details.address }}</div>
+                                                    <div v-else v-bind:class="tenant_list[0].length <= 2 ? 'f-size-20' : ''" class="shop_address">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                     <div style="font-weight: bold;font-size: 0.7em">
                                                         <!-- <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
                                                         <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span> -->
@@ -247,7 +247,7 @@
                                         <div class="tenant-details-views-portrait"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<span>{{ tenant_details.view_count }}</span>&nbsp;<span class="translateme" data-en="Views">Views</span></div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 offset-sm-1 text-center p-3">
+                                <div class="col-sm-6 text-center p-3">
                                     <div class="tenant-details-name">{{ tenant_details.brand_name }}</div>
                                     <div v-if="tenant_details.tenant_details" class="tenant-details-floor mt-2">{{ tenant_details.tenant_details.address }}</div>
                                     <div v-else class="tenant-details-floor mt-2">{{ tenant_details.floor_name }}, {{ tenant_details.building_name }}</div>
@@ -259,11 +259,26 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 text-center">
+                                <div class="col-sm-3 text-center">
                                     <div class="text-left ml-4 social-holder-portrait" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook" class="mb-4 mt-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                        <div v-if="tenant_details.tenant_details.twitter" class="mb-4 mt-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                        <div v-if="tenant_details.tenant_details.instagram" class="mb-4 mt-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                            <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.facebook }}
+                                            </div>
+                                        </div>
+                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                            <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.twitter }}
+                                            </div>
+                                        </div>
+                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                            <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.instagram }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -340,9 +355,24 @@
                                     </div>
                                     <div class="row mt-1 mb-4 h-130">
                                         <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
-                                            <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                            <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                            <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                            <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                                <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
+                                                <div class="social-text-container">
+                                                    {{ tenant_details.tenant_details.facebook }}
+                                                </div>
+                                            </div>
+                                            <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                                <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
+                                                <div class="social-text-container">
+                                                    {{ tenant_details.tenant_details.twitter }}
+                                                </div>
+                                            </div>
+                                            <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                                <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
+                                                <div class="social-text-container">
+                                                    {{ tenant_details.tenant_details.instagram }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>

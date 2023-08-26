@@ -45,9 +45,24 @@
                             </div>
                             <div class="col-sm-3 text-center">
                                 <div class="text-left ml-4 social-holder-portrait" v-if="tenant_details.tenant_details">
-                                    <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                    <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                    <div v-if="tenant_details.tenant_details.instagram && tenant_details.tenant_details.instagram != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                    <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                        <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
+                                        <div class="social-text-container">
+                                            {{ tenant_details.tenant_details.facebook }}
+                                        </div>
+                                    </div>
+                                    <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                        <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
+                                        <div class="social-text-container">
+                                            {{ tenant_details.tenant_details.twitter }}
+                                        </div>
+                                    </div>
+                                    <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                        <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
+                                        <div class="social-text-container">
+                                            {{ tenant_details.tenant_details.instagram }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -81,9 +96,24 @@
                                 </div>
                                 <div class="row mt-1 mb-4 h-130">
                                     <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                            <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.facebook }}
+                                            </div>
+                                        </div>
+                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                            <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.twitter }}
+                                            </div>
+                                        </div>
+                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                            <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.instagram }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
@@ -533,7 +563,7 @@
                     obj.feedback_response = true
                 });
 
-                $('.response-btn').addClass('disabled-response');
+                //$('.response-btn').addClass('disabled-response');
             },
 
             resetPage: function() {
@@ -903,7 +933,7 @@
 
                 $(".btn-helpful").on('click',function(){
                     vm.feedback_helpful = 'Yes';
-                    $(this).addClass('response-active-color');
+                    //$(this).addClass('response-active-color');
                     $('.response-btn').addClass('disabled-response');
                 });
 
@@ -912,7 +942,7 @@
                     vm.softkeysTenant = false;
                     vm.softkeysFeedback = true;
                     vm.feedback_helpful = 'No';
-                    $(this).addClass('response-active-color');
+                    //$(this).addClass('response-active-color');
                 });
             });
         },
