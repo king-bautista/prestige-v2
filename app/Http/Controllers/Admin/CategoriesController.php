@@ -82,8 +82,8 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             $data = [
                 'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
-                'class_name' => $request->class_name,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : '',
+                'class_name' => ($request->class_name) ? $request->class_name : '',
                 'category_type' => $request->category_type,
                 'active' => 1,
             ];
@@ -111,8 +111,8 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             $data = [
                 'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
-                'class_name' => $request->class_name,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : '',
+                'class_name' => ($request->class_name) ? $request->class_name : '',
                 'category_type' => $request->category_type,
                 'active' => $request->active,
             ];

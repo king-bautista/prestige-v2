@@ -40,8 +40,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function list(Request $request)
     {
-        // try
-        // {
+        try
+        {
             $filters = json_decode($request->filters);
             $company_id = null;
             $brand_ids = [];
@@ -63,15 +63,15 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function details($id)
@@ -105,7 +105,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $data = [
                 'category_id' => $request->category_id,
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : '',
                 'logo' => str_replace('\\', '/', $logo_path),
                 'active' => 1
             ];
@@ -143,7 +143,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $data = [
                 'category_id' => $request->category_id,
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : '',
                 'logo' => ($logo_path) ? str_replace('\\', '/', $logo_path) : $brand->logo,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
