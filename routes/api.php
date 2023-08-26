@@ -46,6 +46,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::post('/search', 'Kiosk\MainController@search')->name('kiosk.search');
     Route::get('/get-like-count/{id}', 'Kiosk\MainController@getLikeCount')->name('kiosk.get-like-count');
     Route::post('/like-count', 'Kiosk\MainController@putLikeCount')->name('kiosk.like-count');
+    Route::post('/view-count', 'Kiosk\MainController@putViewCount')->name('kiosk.view-count');
     Route::post('/feedback', 'Kiosk\MainController@putFeedback')->name('kiosk.feedback');
     Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');
     Route::get('/translation', 'Kiosk\MainController@getTranslation')->name('kiosk.translation');

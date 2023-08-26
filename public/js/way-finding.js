@@ -84,14 +84,6 @@ WayFinding.prototype = {
         canvas.style.position = 'absolute';
         document.getElementById(this.settings.mapcontainer).appendChild(canvas);
 
-        //tenant layer
-        var canvas = document.createElement('canvas');
-        canvas.id = 'tenants-layer';
-        canvas.width  = this.settings.width;
-        canvas.height = this.settings.height;
-        canvas.style.position = 'absolute';
-        document.getElementById(this.settings.mapcontainer).appendChild(canvas);
-
         //current location
         var canvas = document.createElement('canvas');
         canvas.id = 'here-layer';
@@ -108,6 +100,13 @@ WayFinding.prototype = {
         canvas.style.position = 'absolute';
         document.getElementById(this.settings.mapcontainer).appendChild(canvas);
 
+        //tenant layer
+        var canvas = document.createElement('canvas');
+        canvas.id = 'tenants-layer';
+        canvas.width  = this.settings.width;
+        canvas.height = this.settings.height;
+        canvas.style.position = 'absolute';
+        document.getElementById(this.settings.mapcontainer).appendChild(canvas);
     },
 
     addMaps: function(map_details) {
@@ -151,7 +150,7 @@ WayFinding.prototype = {
             
             // add points to map
             // $(".zoomable-container").css({'width':image.width,'height':image.height,'position':'relative'});
-            $("#zoomable-container").css({'width':'inherit','height':'inherit','position':'relative'});
+            // $("#zoomable-container").css({'width':'inherit','height':'inherit','position':'relative'});
         };
 
         image.src = map_details.map_file_path + '?' + Math.random();
@@ -286,8 +285,8 @@ WayFinding.prototype = {
 
                     ctx.font = label.font;
                     ctx.strokeStyle = 'white';
-                    ctx.lineWidth = 2;
-                    ctx.shadowBlur = 2;
+                    ctx.lineWidth = 1;
+                    ctx.shadowBlur = 1;
                     ctx.fillStyle = "Black";
                     ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
                     var text = label.text;
@@ -303,8 +302,8 @@ WayFinding.prototype = {
 
                     ctx.font = label.font;
                     ctx.strokeStyle = 'white';
-                    ctx.lineWidth = 2;
-                    ctx.shadowBlur = 2;
+                    ctx.lineWidth = 1;
+                    ctx.shadowBlur = 1;
                     ctx.fillStyle = "Black";
                     ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
                     var text = label.text;
@@ -364,7 +363,7 @@ WayFinding.prototype = {
                         var testWidth = metrics.width;
 
                         if (testWidth > maxWidth && n > 0) {
-                            context.strokeText(line.toUpperCase(), x + ((w/2)+4), y+3);
+                            context.strokeText(line.toUpperCase(), x + ((w/2)+3), y+2);
                             context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
                             line = words[n] + ' ';
                             y += (lineHeight/1.286)+1;
@@ -372,7 +371,7 @@ WayFinding.prototype = {
                             line = testLine;
                         }
                     }
-                    context.strokeText(line.toUpperCase(), x + ((w/2)+4), y+3);
+                    context.strokeText(line.toUpperCase(), x + ((w/2)+3), y+2);
                     context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
                 }
 
@@ -421,10 +420,10 @@ WayFinding.prototype = {
 
                 ctx.font = label.font;
                 ctx.strokeStyle = 'white';
-                ctx.lineWidth = 2;
-                ctx.shadowBlur = 2;
+                ctx.lineWidth = 1;
+                ctx.shadowBlur = 1;
                 ctx.fillStyle = "Black";
-                ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
+                ctx.shadowColor = "rgba(255, 255, 255, 0.8)";
                 var text = label.text;
                 var stitle_w = longest(label.text);
                 var w = ctx.measureText(stitle_w.toUpperCase()).width + 10;
@@ -549,17 +548,6 @@ WayFinding.prototype = {
             id = this.settings.currentmap_id;
         }
 
-        // set default map zoom level each map
-        // if (reference != 'start') {
-        //     const elem = document.getElementById('zoomable-container')
-        //     const panzoom = Panzoom(elem, {
-        //         maxScale: 5,
-        //         canvas: true,
-        //         startScale: map_details.default_scale,
-        //         startX: map_details.default_x,
-        //         startY: map_details.default_y
-        //     })  
-        // }
         this.settings.currentmap_id = id;
         this.settings.currentmap = map_details.site_building_level_id + '-' + map_details.site_building_id;
 
@@ -928,13 +916,14 @@ WayFinding.prototype = {
         });
     },
 
-    replay: function(with_disability = 0){
+    replay: function(with_disability = 0, panzoom = null){
+        this.settings.panzoom = panzoom;
         this.stopall();
         this.clearLine();
         this.clearAmenitiesLayer();
         this.clearTextlayer();
         this.clearEscalator();
-        this.drawline(this.settings.destination,this.settings.tenant_details, with_disability);
+        this.drawline(this.settings.destination,this.settings.tenant_details, with_disability, this.settings.panzoom);
     },
 
     drawpoints_stop: function() {
@@ -1005,15 +994,6 @@ WayFinding.prototype = {
 
             if(!this.settings.store_id)
             {
-                // const elem = document.getElementById('zoomable-container')
-                // const panzoom = Panzoom(elem, {
-                //     maxScale: 5,
-                //     canvas: true,
-                //     startScale: this.settings.defaultmap.default_scale,
-                //     startX: this.settings.defaultmap.default_x,
-                //     startY: this.settings.defaultmap.default_y
-                // })
-
                 var obj = this;
                 const panzoom = this.settings.panzoom;
                 this.settings.store_id = setInterval(function(){obj.animate_marker_store();},50);

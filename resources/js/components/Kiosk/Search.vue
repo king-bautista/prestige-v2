@@ -83,10 +83,10 @@
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
-                                                <div v-bind:class="tenant_list[0].length <= 2 ? 'text-left brand-name' : 'text-left pt-2 brand-name'">
-                                                    <div v-bind:class="tenant_list[0].length <= 2 ? 'f-size-30' : ''" class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
-                                                    <div v-if="tenant.tenant_details" style="color:#2a2a2a" v-bind:class="tenant_list[0].length <= 2 ? 'f-size-20' : ''">{{ tenant.tenant_details.address }}</div>
-                                                    <div v-else style="font-size: 0.7em;color:#2a2a2a">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
+                                                <div v-bind:class="tenant_list[0].length <= 2 ? 'text-left pta-2 brand-name' : 'text-left pta-2 brand-name'">
+                                                    <div v-bind:class="tenant_list[0].length <= 2 ? 'f-size-25' : ''"  class="shop_name" :parent-index="index">{{ tenant.brand_name }}</div>
+                                                    <div v-if="tenant.tenant_details" v-bind:class="tenant_list[0].length <= 2 ? 'f-size-20' : ''" class="shop_address">{{ tenant.tenant_details.address }}</div>
+                                                    <div v-else v-bind:class="tenant_list[0].length <= 2 ? 'f-size-20' : ''" class="shop_address">{{ tenant.floor_name }}, {{ tenant.building_name }} </div>
                                                     <div style="font-weight: bold;font-size: 0.7em">
                                                         <!-- <span class="translateme text-success" v-if="tenant.active==1" data-en="Open">Open</span>
                                                         <span class="translateme text-success" v-if="tenant.active==0" data-en="Close">Close</span> -->
@@ -169,9 +169,24 @@
                             </div>
                             <div class="col-sm-4 text-center">
                                 <div class="text-left ml-4 social-holder-portrait" v-if="tenant_details.tenant_details">
-                                    <div v-if="tenant_details.tenant_details.facebook  && tenant_details.tenant_details.facebook != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                    <div v-if="tenant_details.tenant_details.twitter  && tenant_details.tenant_details.twitter != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                    <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-4 mt-2"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                    <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                        <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
+                                        <div class="social-text-container">
+                                            {{ tenant_details.tenant_details.facebook }}
+                                        </div>
+                                    </div>
+                                    <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                        <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
+                                        <div class="social-text-container">
+                                            {{ tenant_details.tenant_details.twitter }}
+                                        </div>
+                                    </div>
+                                    <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                        <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
+                                        <div class="social-text-container">
+                                            {{ tenant_details.tenant_details.instagram }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -248,9 +263,24 @@
                                 </div>
                                 <div class="row mt-1 mb-4 h-130">
                                     <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-facebook.png" class="mr-2" width="40">{{ tenant_details.tenant_details.facebook }}</div>
-                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" ><img src="assets/images/parqal-twitter.png" class="mr-2" width="40">{{ tenant_details.tenant_details.twitter }}</div>
-                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500"><img src="assets/images/parqal-instagram.png" class="mr-2" width="40">{{ tenant_details.tenant_details.instagram }}</div>
+                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                            <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.facebook }}
+                                            </div>
+                                        </div>
+                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                            <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.twitter }}
+                                            </div>
+                                        </div>
+                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                            <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
+                                            <div class="social-text-container">
+                                                {{ tenant_details.tenant_details.instagram }}
+                                            </div>
+                                        </div>                                    
                                     </div>
                                 </div>
                                 <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
@@ -796,6 +826,7 @@
                 this.show_tenant = true;
                 $('.notification').hide();
                 this.buildSchedule(this.tenant_details);
+                this.updateViewCount(this.tenant_details.id);
                 this.$root.$emit('callMutateLocation','tenant');
 
                 setTimeout(() => {
@@ -815,6 +846,17 @@
 
                 $.post( "/api/v1/like-count", params ,function(response) {});
             },
+
+            updateViewCount: function(id) {
+                this.tenant_details.view_count = parseInt(this.tenant_details.view_count) + 1;
+
+                let params = {
+                    id: this.tenant_details.id,
+                    view_count: this.tenant_details.view_count
+                }
+                $.post( "/api/v1/view-count", params ,function(response) {});
+            },
+
 
             showSchedule: function() {
                 $("#modal-schedule-search").show();
