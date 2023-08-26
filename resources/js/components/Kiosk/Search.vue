@@ -54,7 +54,7 @@
                             &nbsp; <span>Please try another search.</span>
                         </div>
                         <div v-else>
-                            <span class="translateme" data-en="You search for">You search for</span>
+                            <span class="translateme" data-en="You searched for">You searched for</span>
                             <p style="font-size: 60px !important;">‘{{this.search.key_words}}’</p>
                         </div>            
                     </div>
