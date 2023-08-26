@@ -29,6 +29,7 @@ use App\Models\SiteScreen;
 use App\Models\SiteFeedback;
 use App\Models\Landmark;
 use App\Models\Event;
+use App\Models\Brand;
 
 class MainController extends AppBaseController
 {
@@ -290,9 +291,12 @@ class MainController extends AppBaseController
     {
         try
         {
+            $brand_names = Brand::whereRaw('category_id IN (SELECT id FROM categories WHERE parent_id = 219 AND category_id != 238)')->get()->pluck('name');
+
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
+            ->whereNotIn('brands.name', $brand_names)
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
