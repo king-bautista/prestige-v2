@@ -118,18 +118,18 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             $site_tenant = SiteTenant::create($data);
             $site_tenant->serial_number = 'TN-'.Str::padLeft($site_tenant->id, 5, '0');
             $site_tenant->save();
-
+ 
             $meta_details = [
-                "address" => $request->address, 
-                "email" => $request->email,
-                "contact_person" => $request->contact_person,
-                "contact_number" => $request->contact_number,
-                "facebook" => $request->facebook,
-                "twitter" => $request->twitter,
-                "instagram" => $request->instagram,
-                "website" => $request->website,
-                "schedules" => $request->operational_hours,
-                "subscriber_logo" => str_replace('\\', '/', $subscriber_logo_path)
+                "address" => ($request->address) ? $request->address : '', 
+                "email" => ($request->email) ? $request->email : '',
+                "contact_person" => ($request->contact_person) ? $request->contact_person : '',
+                "contact_number" => ($request->contact_number) ? $request->contact_number : '',
+                "facebook" => ($request->facebook) ? $request->facebook : '',
+                "twitter" => ($request->twitter) ? $request->twitter : '',
+                "instagram" => ($request->instagram) ? $request->instagram : '',
+                "website" => ($request->website) ? $request->website : '',
+                "schedules" => ($request->operational_hours) ? $request->operational_hours : '',
+                "subscriber_logo" => ($subscriber_logo_path) ? str_replace('\\', '/', $subscriber_logo_path) : ''
             ];
             $site_tenant->saveMeta($meta_details);
 
@@ -176,14 +176,16 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             $site_tenant->update($data);
 
             $meta_details = [
-                "address" => $request->address, 
-                "email" => $request->email,
-                "contact_person" => $request->contact_person,
-                "contact_number" => $request->contact_number,
-                "facebook" => $request->facebook,
-                "twitter" => $request->twitter,
-                "instagram" => $request->instagram,
-                "website" => $request->website,
+                "address" => ($request->address) ? $request->address : '', 
+                "email" => ($request->email) ? $request->email : '',
+                "contact_person" => ($request->contact_person) ? $request->contact_person : '',
+                "contact_number" => ($request->contact_number) ? $request->contact_number : '',
+                "facebook" => ($request->facebook) ? $request->facebook : '',
+                "twitter" => ($request->twitter) ? $request->twitter : '',
+                "instagram" => ($request->instagram) ? $request->instagram : '',
+                "website" => ($request->website) ? $request->website : '',
+                "schedules" => ($request->operational_hours) ? $request->operational_hours : '',
+                "subscriber_logo" => ($subscriber_logo_path) ? str_replace('\\', '/', $subscriber_logo_path) : ''
             ];
 
             if($request->operational_hours)
