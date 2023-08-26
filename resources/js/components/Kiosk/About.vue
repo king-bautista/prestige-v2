@@ -87,6 +87,8 @@
                 trigger_from: '',
                 site_name: '',
                 site_orientation: '',
+                current_date: '',
+                current_time: '',
             };
         },
 
