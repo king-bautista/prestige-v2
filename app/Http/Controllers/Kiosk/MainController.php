@@ -342,6 +342,11 @@ class MainController extends AppBaseController
                     // }
                 })
                 ->where('site_tenants.site_id', $site->id)
+                ->leftJoin('site_tenant_metas', function($join)
+                {
+                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                         ->where('site_tenant_metas.meta_key', 'address');
+                })
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
                 ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
@@ -349,7 +354,7 @@ class MainController extends AppBaseController
                 ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
                 ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
-                ->select('site_tenants.*')
+                ->select('site_tenants.*', 'site_tenant_metas.meta_value')
                 ->distinct()
                 ->orderBy('brands.name', 'ASC')
                 ->get();
@@ -401,9 +406,7 @@ class MainController extends AppBaseController
                 // $site_tenants = array_chunk($site_tenants->toArray(), 12);
 
                 return $this->response($site_tenants, 'Successfully Retreived!', 200, $counts);
-            }
-            
-            
+            }            
         }
         catch (\Exception $e)
         {

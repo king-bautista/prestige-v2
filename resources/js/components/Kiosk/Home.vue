@@ -1219,12 +1219,10 @@
                         }
 
                         if(sub_category.label.length >= 10) {
-                            alert('test 2');
                             font_size_class = 'f-size-35';
                         }
 
                         if(sub_category.label.length >= 20) {
-                            alert('test 1');
                             font_size_class = 'f-size-28';
                         }
 
