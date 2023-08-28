@@ -731,14 +731,21 @@
                             var bldg = item.building_name === null?"": ", " + item.building_name;
                             
                             if (item.building_name == 'Main Building'){
-                                var attrib = (item.address === null) ? floor : item.address;
+                                var attrib = floor;
                             }else{
-                                var attrib = (item.address === null) ? floor + bldg : item.address;
-                            };
+                                var attrib = floor + bldg;
+                            }
+
+                            if(item.address !== null || item.address !== 'undefined' || item.address !== 'null') {
+                                var attrib = ", " + item.address;
+                            }
+
+                            if(attrib === null || attrib === ', null')
+                                attrib = '';
 
                             return $("<li></li>")
                                 .data("item.autocomplete", item)
-                                .append("<div>" + newText + ", " + attrib + "</div>")
+                                .append("<div>" + newText + attrib + "</div>")
                                 .appendTo(ul);
                         };
                     })
