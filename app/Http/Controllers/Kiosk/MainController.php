@@ -210,8 +210,8 @@ class MainController extends AppBaseController
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
             ->select('site_tenants.id','site_tenants.brand_id','brands.name','site_tenants.site_building_id','site_tenants.site_building_level_id', 'site_tenant_metas.meta_value as address')
+            ->orderBy('address', 'DESC')
             ->orderBy('brands.name', 'ASC')
-            ->orderBy('address', 'ASC')
             ->get();
             // ->pluck('name','id','site_building_id','site_building_level_id');
 
