@@ -855,6 +855,7 @@
                 });
 
                 $(".map-tenant-option").on('focusin',function(){
+                    
                     // $('.map-tenant-option:not(:last-child)').css({'border-top-left-radius': '0px','border-top-right-radius': '0px'});
                     $('.map-search-modal').show();
                     $(".pinch").hide();

@@ -818,7 +818,7 @@ WayFinding.prototype = {
             this.settings.tenant_store_address = tenant_location;
         }
 
-        $('.tenant-name').html(tenant_name + ', ' +tenant_location);
+        $('.tenant-name').html(tenant_name + ', ' + tenant_location);
         $('.tenant-floor').html(tenant_location);
         $('.tenant-category').html(tenant_category);
         $('.assist').html('');
