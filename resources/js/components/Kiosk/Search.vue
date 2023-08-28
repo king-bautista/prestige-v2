@@ -422,9 +422,6 @@
 
         <div class="custom-modal p-l-490" id="modal-schedule-search">
             <div class="custom-modal-position set-width-schedule">                    
-                <div class="text-right text-white">
-                    <span class="btn-close-modal">X</span>
-                </div>
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="label-1">Operating Hours</div>
@@ -435,6 +432,9 @@
                             <div class="m-15-0" v-for="schedule in tenantSchedule">{{schedule}}</div>
                         </div>   
                     </div>                   
+                </div>
+                <div class="text-center parqal-color">
+                    <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                 </div>       
             </div>
         </div>
