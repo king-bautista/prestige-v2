@@ -734,7 +734,14 @@
                                 var attrib = floor;
                             }else{
                                 var attrib = floor + bldg;
-                            };
+                            }
+
+                            if(item.address !== null || item.address !== 'undefined' || item.address !== 'null') {
+                                var attrib = ", " + item.address;
+                            }
+
+                            if(attrib === null || attrib === ', null')
+                                attrib = '';
 
                             return $("<li></li>")
                                 .data("item.autocomplete", item)
@@ -774,9 +781,9 @@
                                 ['G','='],
                                 ['H',':'],
                                 ['J',';'],
-                                ['K','&bsol;'],
+                                ['K','\''],
                                 ['L','&#34;'],
-                                ['\''],
+                                ['&bsol;'],
                             ],
                             [
                                 'shift',
@@ -784,8 +791,8 @@
                                 ['X','}'],
                                 ['C','<'],
                                 ['V','>'],
-                                ['B','?'],
-                                ['N','_'],
+                                ['B','_'],
+                                ['N','?'],
                                 ['M','/'],
                                 'delete',
                             ],
@@ -835,6 +842,9 @@
             },
 
             updateLikeCount: function(id) {
+                if($(".btn-heart").hasClass("fas"))
+                    return false;
+
                 this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
 
                 let params = {

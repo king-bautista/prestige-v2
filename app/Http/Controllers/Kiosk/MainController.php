@@ -123,10 +123,11 @@ class MainController extends AppBaseController
 
     public function getTenantsByCategory($category_id)
     {
-        try
-        {
+        // try
+        // {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
             if (config('app.env') == 'local') {
-                $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('brands.category_id', $category_id)
                 ->where('site_tenants.site_id', $site->id)
@@ -135,7 +136,6 @@ class MainController extends AppBaseController
                 ->orderBy('brands.name', 'ASC')
                 ->get()->toArray();
             } else {
-                $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('brands.category_id', $category_id)
                 ->where('site_tenants.site_id', $site->id)
@@ -143,10 +143,9 @@ class MainController extends AppBaseController
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
                 ->select('site_tenants.*')
                 ->orderBy('brands.name', 'ASC')
+                ->distinct()
                 ->get()->toArray();
             }
-
-            $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
             
             $per_set = 12;
             if($site_screen->orientation == 'Portrait') {
@@ -155,14 +154,14 @@ class MainController extends AppBaseController
 
             $site_tenants = array_chunk($site_tenants, $per_set);
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        }    
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }    
     }
 
     public function getTenantsBySupplementals($category_id)
@@ -201,12 +200,18 @@ class MainController extends AppBaseController
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
             ->where('site_maps.site_screen_id', $site_screen_id)
+            ->leftJoin('site_tenant_metas', function($join)
+            {
+                $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                        ->where('site_tenant_metas.meta_key', 'address');
+            })
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-            ->select('site_tenants.id','site_tenants.brand_id','brands.name','site_tenants.site_building_id','site_tenants.site_building_level_id')
+            ->select('site_tenants.id','site_tenants.brand_id','brands.name','site_tenants.site_building_id','site_tenants.site_building_level_id', 'site_tenant_metas.meta_value as address')
             ->orderBy('brands.name', 'ASC')
+            ->orderBy('address', 'ASC')
             ->get();
             // ->pluck('name','id','site_building_id','site_building_level_id');
 
@@ -230,14 +235,16 @@ class MainController extends AppBaseController
                         'id' => $value->id,
                         'value' => $value->name, // . ", " . $value->floor_name . ", " . $value->building_name,
                         'floor_name' => $value->floor_name,
-                        'building_name' => $value->building_name
+                        'building_name' => $value->building_name,
+                        'address' => $value->address
                     ]);
                 } else {
                     $collection->push([
                         'id' => $value->id,
                         'value' => $value->name,
                         'floor_name' => null,
-                        'building_name' => null
+                        'building_name' => null,
+                        'address' => null
                     ]);
                 }  
                 

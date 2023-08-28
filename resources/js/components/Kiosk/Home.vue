@@ -290,7 +290,7 @@
                                         <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                     </div>
                                 </div>
-                                <template v-if="tenant_details.products">
+                                <template v-if="tenant_details.products.length > 0">
                                     <div class="row subscriber-products-portrait ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 3) ? 'with-out-height':'with-height-portrait', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
                                         <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 3) ? 'f-left' : 'm-auto'">
                                             <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-portrait-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-portrait-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-portrait-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
@@ -381,12 +381,12 @@
                         </div>
                         <div class="col-sm-10 text-center">
                             <div v-if="tenant_details.is_subscriber" class="tenant-products-container">
-                                <div class="row ml-1 mt-16" v-if="tenant_details.products">
+                                <div class="row ml-1 mt-16" v-if="tenant_details.products.length > 0">
                                     <div class="col-12 p-0" v-if="tenant_details.products.banners">
                                         <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
                                     </div>
                                 </div>
-                                <template v-if="tenant_details.products">
+                                <template v-if="tenant_details.products.length > 0">
                                     <div class="row subscriber-products ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
                                         <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
                                             <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
@@ -409,7 +409,7 @@
                 </div>
                 <div v-else class="row">
                     <div class="col-12 col-sm-8 text-center">
-                        <div v-if="tenant_details.is_subscriber && tenant_details.products">
+                        <div v-if="tenant_details.is_subscriber && tenant_details.products.length > 0">
                             <div class="row ml-1 mt-16" v-if="tenant_details.products">
                                 <div class="col-12 p-0">
                                     <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
@@ -716,6 +716,7 @@
                 multilanguage: '',
                 site_website: '',
                 current_supplemental_title: '',
+                current_page: ''
             };
         },
 
@@ -775,11 +776,11 @@
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
 
-                this.$refs.callAbout.setPage(event);
+                this.$refs.callAbout.setPage(this.current_page);
             },
 
             homeButton: function (event) {
-                //this.$router.go();
+                this.current_page = 'home';
                 this.home_category = true;
                 this.child_category = false;
                 this.tabs_container = false;
@@ -800,6 +801,7 @@
             },
 
             searchButton: function (event) {
+                this.current_page = 'search';
                 this.homeIsShown = false;
                 this.searchIsShown = true;
                 this.mapIsShown = false;
@@ -816,6 +818,7 @@
             },
 
             mapButton: function (event) {
+                this.current_page = 'map';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = true;
@@ -829,6 +832,7 @@
             },
 
             promosButton: function (event) {
+                this.current_page = 'promo';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
@@ -842,6 +846,7 @@
             },
 
             cinemaButton: function (event) {
+                this.current_page = 'cinema';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
@@ -854,6 +859,7 @@
             },
 
             eventsButton: function (event) {
+                this.current_page = 'event';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
@@ -866,6 +872,7 @@
             },
 
             landmarksButton: function (event) {
+                this.current_page = 'landmark';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = false;
@@ -899,6 +906,12 @@
                 if (event == 'cinema') {
                     this.cinemaIsShown = true;
                 }
+                if (event == 'event') {
+                    this.eventsIsShown = true;
+                }
+                if (event == 'landmark') {
+                    this.landmarkIsShown = true;
+                }
             },
 
             buildSchedule: function (data) {       
@@ -926,6 +939,9 @@
             },
 
             updateLikeCount: function(id) {
+                if($(".btn-heart").hasClass("fas"))
+                    return false;
+
                 this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
 
                 let params = {

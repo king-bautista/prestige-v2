@@ -130,10 +130,7 @@
                 if (this.trigger_from) {
                     this.$root.$emit('callAboutFrom',this.trigger_from);
                     $(".theme-bubble").removeClass("theme-bubble-none");
-                } else {
-                    
-                }
-                
+                }                
             },
 
         },
