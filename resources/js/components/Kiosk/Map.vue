@@ -499,6 +499,7 @@
 			},
 
             find_store: function(value, called_from) {
+                console.log(value);
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
                     this.with_disability = 0;
@@ -608,7 +609,7 @@
                     $('.softkeys-tenant').softkeys({
                         target : $('.softkeys-tenant').data('target'),
                         layout : [
-                        [
+                            [
                                 '1','2','3','4','5','6','7','8','9','0',
                             ],
                             [
@@ -632,9 +633,9 @@
                                 ['G','='],
                                 ['H',':'],
                                 ['J',';'],
-                                ['K','&bsol;'],
+                                ['K','\''],
                                 ['L','&#34;'],
-                                ['\''],
+                                ['&bsol;'],
                             ],
                             [
                                 'shift',
@@ -642,8 +643,8 @@
                                 ['X','}'],
                                 ['C','<'],
                                 ['V','>'],
-                                ['B','?'],
-                                ['N','_'],
+                                ['B','_'],
+                                ['N','?'],
                                 ['M','/'],
                                 'delete',
                             ],
@@ -682,9 +683,9 @@
                                 ['G','='],
                                 ['H',':'],
                                 ['J',';'],
-                                ['K','&bsol;'],
+                                ['K','\''],
                                 ['L','&#34;'],
-                                ['\''],
+                                ['&bsol;'],
                             ],
                             [
                                 'shift',
@@ -692,8 +693,8 @@
                                 ['X','}'],
                                 ['C','<'],
                                 ['V','>'],
-                                ['B','?'],
-                                ['N','_'],
+                                ['B','_'],
+                                ['N','?'],
                                 ['M','/'],
                                 'delete',
                             ],
@@ -738,6 +739,9 @@
             },
 
             updateLikeCount: function(id) {
+                if($(".btn-heart").hasClass("fas"))
+                    return false;
+
                 this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
 
                 let params = {

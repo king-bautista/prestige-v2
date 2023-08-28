@@ -731,14 +731,14 @@
                             var bldg = item.building_name === null?"": ", " + item.building_name;
                             
                             if (item.building_name == 'Main Building'){
-                                var attrib = floor;
+                                var attrib = (item.address === null) ? floor : item.address;
                             }else{
-                                var attrib = floor + bldg;
+                                var attrib = (item.address === null) ? floor + bldg : item.address;
                             };
 
                             return $("<li></li>")
                                 .data("item.autocomplete", item)
-                                .append("<div>" + newText + attrib + "</div>")
+                                .append("<div>" + newText + ", " + attrib + "</div>")
                                 .appendTo(ul);
                         };
                     })
@@ -774,9 +774,9 @@
                                 ['G','='],
                                 ['H',':'],
                                 ['J',';'],
-                                ['K','&bsol;'],
+                                ['K','\''],
                                 ['L','&#34;'],
-                                ['\''],
+                                ['&bsol;'],
                             ],
                             [
                                 'shift',
@@ -784,8 +784,8 @@
                                 ['X','}'],
                                 ['C','<'],
                                 ['V','>'],
-                                ['B','?'],
-                                ['N','_'],
+                                ['B','_'],
+                                ['N','?'],
                                 ['M','/'],
                                 'delete',
                             ],
@@ -835,6 +835,9 @@
             },
 
             updateLikeCount: function(id) {
+                if($(".btn-heart").hasClass("fas"))
+                    return false;
+
                 this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
 
                 let params = {
