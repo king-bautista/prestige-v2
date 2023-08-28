@@ -210,7 +210,7 @@ class MainController extends AppBaseController
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
             ->select('site_tenants.id','site_tenants.brand_id','brands.name','site_tenants.site_building_id','site_tenants.site_building_level_id', 'site_tenant_metas.meta_value as address')
-            ->orderBy('site_tenants.site_building_level_id', 'DESc')
+            ->orderBy('site_tenants.site_building_level_id', 'DESC')
             ->orderBy('address', 'ASC')
             ->orderBy('brands.name', 'ASC')
             ->get();
@@ -362,8 +362,10 @@ class MainController extends AppBaseController
                 ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
                 ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
-                ->select('site_tenants.*', 'site_tenant_metas.meta_value')
+                ->select('site_tenants.*', 'site_tenant_metas.meta_value', 'site_tenant_metas.meta_value as address')
                 ->distinct()
+                ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->orderBy('address', 'DESC')
                 ->orderBy('brands.name', 'ASC')
                 ->get();
 

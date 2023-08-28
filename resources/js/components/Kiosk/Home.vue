@@ -261,19 +261,19 @@
                                 </div>
                                 <div class="col-sm-3 text-center">
                                     <div class="text-left ml-4 social-holder-portrait" v-if="tenant_details.tenant_details">
-                                        <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                        <div v-if="tenant_details.tenant_details.facebook && (tenant_details.tenant_details.facebook != 'null' || tenant_details.tenant_details.facebook != 'undefined')" class="mb-2 w-500">
                                             <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
                                             <div class="social-text-container">
                                                 {{ tenant_details.tenant_details.facebook }}
                                             </div>
                                         </div>
-                                        <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                        <div v-if="tenant_details.tenant_details.twitter && (tenant_details.tenant_details.twitter != 'null' || tenant_details.tenant_details.twitter != 'undefined')" class="mb-2 w-500" >
                                             <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
                                             <div class="social-text-container">
                                                 {{ tenant_details.tenant_details.twitter }}
                                             </div>
                                         </div>
-                                        <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                        <div v-if="tenant_details.tenant_details.instagram  && (tenant_details.tenant_details.instagram != 'null' || tenant_details.tenant_details.instagram != 'undefined')" class="mb-2 w-500">
                                             <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
                                             <div class="social-text-container">
                                                 {{ tenant_details.tenant_details.instagram }}
@@ -355,19 +355,19 @@
                                     </div>
                                     <div class="row mt-1 mb-4 h-130">
                                         <div class="text-left ml-4 social-holder" v-if="tenant_details.tenant_details">
-                                            <div v-if="tenant_details.tenant_details.facebook && tenant_details.tenant_details.facebook != 'null'" class="mb-2 w-500">
+                                            <div v-if="tenant_details.tenant_details.facebook && (tenant_details.tenant_details.facebook != 'null' || tenant_details.tenant_details.facebook != 'undefined')" class="mb-2 w-500">
                                                 <img src="assets/images/parqal-facebook.png" class="mr-2" width="40">
                                                 <div class="social-text-container">
                                                     {{ tenant_details.tenant_details.facebook }}
                                                 </div>
                                             </div>
-                                            <div v-if="tenant_details.tenant_details.twitter && tenant_details.tenant_details.twitter != 'null'" class="mb-2 w-500" >
+                                            <div v-if="tenant_details.tenant_details.twitter && (tenant_details.tenant_details.twitter != 'null' || tenant_details.tenant_details.twitter != 'undefined')" class="mb-2 w-500" >
                                                 <img src="assets/images/parqal-twitter.png" class="mr-2" width="40">
                                                 <div class="social-text-container">
                                                     {{ tenant_details.tenant_details.twitter }}
                                                 </div>
                                             </div>
-                                            <div v-if="tenant_details.tenant_details.instagram  && tenant_details.tenant_details.instagram != 'null'" class="mb-2 w-500">
+                                            <div v-if="tenant_details.tenant_details.instagram  && (tenant_details.tenant_details.instagram != 'null' || tenant_details.tenant_details.instagram != 'undefined')" class="mb-2 w-500">
                                                 <img src="assets/images/parqal-instagram.png" class="mr-2" width="40">
                                                 <div class="social-text-container">
                                                     {{ tenant_details.tenant_details.instagram }}
@@ -939,25 +939,22 @@
             },
 
             updateLikeCount: function(id) {
-                if($(".btn-heart").hasClass("fas"))
-                    return false;
-
-                this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
+                if($(".btn-heart").hasClass("fas")) {
+                    this.tenant_details.like_count = parseInt(this.tenant_details.like_count) - 1;
+                    $(".btn-heart").removeClass('fas').addClass('far');
+                }
+                else {
+                    this.tenant_details.like_count = parseInt(this.tenant_details.like_count) + 1;
+                    $(".btn-heart").removeClass('far').addClass('fas');
+                }
 
                 let params = {
                     id: this.tenant_details.id,
                     like_count: this.tenant_details.like_count
                 }
 
-                $(".btn-like-display").addClass('disabled-response');
-                $(".btn-heart").removeClass('far').addClass('fas');
-                setTimeout(() => {
-                    $(".btn-heart").removeClass('fas').addClass('far');
-                }, 1000 * 60);
 
-                $.post( "/api/v1/like-count", params ,function(response) {
-                    
-                });
+                $.post( "/api/v1/like-count", params ,function(response) {});
                 
                 this.$refs.callPromo.updatePromoList(params);
             },
@@ -1497,6 +1494,7 @@
                 this.$refs.callAssist.filterAssist('tenant',this.current_language_set);
 
                 $(".btn-like-display").removeClass('disabled-response');
+                $(".btn-heart").removeClass('fas').addClass('far');
             },
 
             showSchedule: function() {
