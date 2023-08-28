@@ -740,7 +740,7 @@
                                 var attrib = ", " + item.address;
                             }
 
-                            if(attrib === null || attrib === ', null')
+                            if(attrib === null || attrib === ', null' || attrib === ', undefined')
                                 attrib = '';
 
                             return $("<li></li>")
