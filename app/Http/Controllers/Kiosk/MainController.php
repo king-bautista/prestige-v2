@@ -213,6 +213,7 @@ class MainController extends AppBaseController
             ->orderBy('site_tenants.site_building_level_id', 'DESC')
             ->orderBy('address', 'ASC')
             ->orderBy('brands.name', 'ASC')
+            ->distinct()
             ->get();
             // ->pluck('name','id','site_building_id','site_building_level_id');
 
@@ -299,7 +300,7 @@ class MainController extends AppBaseController
     {
         try
         {
-            $brand_names = Brand::whereRaw('category_id IN (SELECT id FROM categories WHERE parent_id = 219 AND category_id != 238)')->get()->pluck('name');
+            $brand_names = Brand::whereRaw('category_id IN (SELECT id FROM categories WHERE id IN (238,225,224,156,226))')->get()->pluck('name');
 
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)

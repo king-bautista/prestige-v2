@@ -234,7 +234,7 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div class="col-sm-2 mt-3 mr-0 p-0 pl-3">
+                    <div class="col-sm-2 mr-0 p-0 pl-3">
                         <div class="p-2 tenant-details">
                             <div class="map-tenant-landscape-info">
                                 <div class="my-auto p-1 text-center">
@@ -287,7 +287,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-10 text-center mt-3">
+                    <div class="col-sm-10 text-center">
                         <div v-if="tenant_details.is_subscriber && tenant_details.products" class="tenant-products-container">
                             <div class="row ml-1 mt-16" v-if="tenant_details.products">
                                 <div class="col-12 p-0" v-if="tenant_details.products.banners">
@@ -608,14 +608,19 @@
                     this.show_tenant = true;
                     this.fromAutoSuggest = true;
 
-                    this.$root.$emit('callMutateLocation','tenant');
-
-                    this.buildSchedule(this.tenant_details);
-                    $('.resize-share').autoSizr(21);
+                    if(!this.tenant_details.is_subscriber) {
+                        this.$root.$emit('showTenantMap', this.tenant_details);
+                    }
+                    else {
+                        this.$root.$emit('callMutateLocation','tenant');
+                        this.buildSchedule(this.tenant_details);
+                        $('.resize-share').autoSizr(21);
+                    }
 				})     
             },
 
             onClickSuggestedSubsriber: function(id) {
+                alert(id);
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {

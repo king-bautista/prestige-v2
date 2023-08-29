@@ -376,6 +376,7 @@
                 current_time: Date.now(),
                 helper: new Helpers(),
                 active_map_details: '',
+                current_map_details: '',
                 guide_button: false,
                 softkeysTenant: false,
                 softkeysFeedback: true,
@@ -484,6 +485,8 @@
             },
 
             toggleSelectedMap: function(value, id) {
+                console.log(value);
+                this.current_map_details = value;
                 $(function() {
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
@@ -494,12 +497,11 @@
                     this.wayfindings.showmap(value);
                 });
                 // set default map zoom level each map
-                this.panzoom.zoom(value.default_scale)
-                setTimeout(() => this.panzoom.pan(value.default_x, value.default_y))
+                this.panzoom.zoom(value.start_scale)
+                setTimeout(() => this.panzoom.pan(value.start_x, value.start_y))
 			},
 
             find_store: function(value, called_from) {
-                console.log(value);
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
                     this.with_disability = 0;
@@ -851,8 +853,15 @@
     			});
 
                 $('#zoomResetButton, .pinch').on('click', function() {
-                    vm.panzoom.zoom((vm.active_map_details.default_zoom));
-                    setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
+                    console.log(vm.current_map_details);
+                    if(vm.current_map_details) {
+                        vm.panzoom.zoom((vm.current_map_details.default_zoom));
+                        setTimeout(() => vm.panzoom.pan(vm.current_map_details.default_x, vm.current_map_details.default_y))
+                    }
+                    else {
+                        vm.panzoom.zoom((vm.active_map_details.default_zoom));
+                        setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
+                    }
                 });
 
                 $(".map-tenant-option").on('focusin',function(){
