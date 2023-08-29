@@ -119,6 +119,7 @@ class DirectoryCategoryViewModel extends Model
                 ->orderBy('site_tenants.is_subscriber', 'DESC')
                 ->orderBy('site_tenants.site_building_id', 'ASC')
                 ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->distinct()
                 ->get()->toArray();
         
             if($tenants) {
