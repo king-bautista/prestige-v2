@@ -781,6 +781,7 @@
                 this.eventsIsShown = false;
 
                 this.$refs.callAbout.setPage(this.current_page);
+                this.$refs.callAssist.filterAssist('about',this.current_language_set);
             },
 
             homeButton: function (event) {
@@ -873,6 +874,7 @@
                 this.landmarkIsShown = false;
                 this.eventsIsShown = true;
                 this.$refs.callPromo.resetPage();               
+                this.$refs.callAssist.filterAssist('event',this.current_language_set);
             },
 
             landmarksButton: function (event) {
@@ -886,6 +888,7 @@
                 this.landmarkIsShown = true;
                 this.eventsIsShown = false;
                 this.$refs.callLandmark.resetPage();
+                this.$refs.callAssist.filterAssist('landmark',this.current_language_set);
             },
 
             returnFromAbout: function (event) {
