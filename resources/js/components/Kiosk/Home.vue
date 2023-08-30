@@ -184,7 +184,7 @@
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
                             <div v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-item': 'carousel-item tenant-store-carousel', index == 0 ? 'first-item active':'', index == tenant_list_count? 'last-item':'']" v-for="(tenants, index) in tenant_list" :data-index="index">
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-60': 'row mb-3'">
-                                    <div v-for="tenant in tenants" v-bind:class="tenant_list[0].length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
+                                    <div v-for="tenant in tenants" v-bind:class="tenant_list[0].length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-2'">
                                         <div v-if="site_name == 'Parqal'">
                                             <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait': '', (tenant_list[0].length <= 2 && site_orientation == 'Landscape') ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
@@ -517,12 +517,10 @@
             <!-- TABS -->
             <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait ': 'tabs-container'" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
-                    <template v-show="!no_record_found">
-                        <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
-                            <img src="images/swipe.png" >
-                            <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
-                        </div>
-                    </template>
+                    <div v-show="!no_record_found" v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
+                        <img src="images/swipe.png" >
+                        <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
+                    </div>
 
                     <div class="btn-group dropup dropdown-menu-right float-right mr-5">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -1215,6 +1213,7 @@
             },
 
             showCategories: function() {
+                this.no_record_found = false;
                 this.home_category = false;
                 this.child_category = true;
                 this.alphabetical = false;
@@ -1289,6 +1288,10 @@
                 if(this.site_name == 'Parqal') {
                     this.page_title = name;
                     this.current_supplemental_title = name;
+                }
+
+                if(this.current_supplementals.children.length <= 0) {
+                    this.no_record_found = true;
                 }
 
                 // this.initializeSwipe();     
