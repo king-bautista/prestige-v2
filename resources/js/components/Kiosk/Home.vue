@@ -517,10 +517,12 @@
             <!-- TABS -->
             <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait ': 'tabs-container'" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-show="!no_record_found" v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
-                        <img src="images/swipe.png" >
-                        <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
-                    </div>
+                    <template v-if="!no_record_found">
+                        <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
+                            <img src="images/swipe.png" >
+                            <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
+                        </div>
+                    </template>
 
                     <div class="btn-group dropup dropdown-menu-right float-right mr-5">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
