@@ -1550,7 +1550,11 @@ input[type="text"]:focus
 }
 
 .carousel-indicators-search {
-    bottom: 0;
+    bottom: 75px;
+}
+
+.carousel-indicators-search-portrait {
+    bottom: 0 !important;
 }
 
 .control-next-pp {
@@ -2025,7 +2029,7 @@ pre {
 }
 
 #searchCarousel {
-    height: 725px;
+    height: 600px;
 }
 
 .mall-details-portrait {
