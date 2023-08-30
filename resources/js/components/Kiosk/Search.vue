@@ -802,10 +802,10 @@
                                 'delete',
                             ],
                             [
+                                ['Enter','Enter'],
                                 [','],
                                 'space',
                                 ['.'],
-                                ['Enter','Enter'],
                             ]
                         ]
                     });
