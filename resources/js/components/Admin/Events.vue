@@ -64,7 +64,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Event<span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="event.event_name" placeholder="Event Name" maxlength="24" required>
+									<input type="text" class="form-control" v-model="event.event_name" placeholder="Event Name" maxlength="15" required>
 								</div>
 							</div>
 							<!-- <div class="form-group row">
@@ -76,7 +76,7 @@
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Event Date <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="event.event_date" placeholder="Event Date" maxlength="24" required>
+                                    <input type="text" class="form-control" v-model="event.event_date" placeholder="Event Date" maxlength="15" required>
 								</div>
 							</div>
                             <div class="form-group row">
