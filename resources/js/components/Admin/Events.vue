@@ -235,8 +235,8 @@ export default {
 			let formData = new FormData();
 			formData.append("site_id", this.event.site_id);
 			formData.append("event_name", this.event.event_name);
-			formData.append("location", this.event.location);
-			formData.append("event_date", this.event.event_date);
+			formData.append("location", (this.event.location) ? this.event.location : '');
+			formData.append("event_date", (this.event.event_date) ? this.event.event_date : '');
 			formData.append("start_date", this.event.start_date);
 			formData.append("end_date", this.event.end_date);
 			formData.append("imgBanner", this.event.image_url);
@@ -281,8 +281,8 @@ export default {
 			updateFormData.append("id", this.event.id);
 			updateFormData.append("site_id", this.event.site_id);
 			updateFormData.append("event_name", this.event.event_name);
-			updateFormData.append("location", this.event.location);
-			updateFormData.append("event_date", this.event.event_date);
+			updateFormData.append("location", (this.event.location) ? this.event.location : '');
+			updateFormData.append("event_date", (this.event.event_date) ? this.event.event_date : '');
 			updateFormData.append("start_date", this.event.start_date);
 			updateFormData.append("end_date", this.event.end_date);
 			updateFormData.append("imgBanner", this.event.image_url);
