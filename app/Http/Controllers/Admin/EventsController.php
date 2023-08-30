@@ -79,7 +79,7 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
             $data = [
                 'site_id' => $request->site_id,
-                'event_name' => $request->event_name,
+                'event_name' => ($request->event_name) ? $request->event_name : '',
                 'location' => ($request->location) ? $request->location : '',
                 'event_date' => ($request->event_date) ? $request->event_date : '',
                 'start_date' => $request->start_date,
@@ -118,7 +118,7 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
             $data = [
                 'site_id' => $request->site_id,
-                'event_name' => $request->event_name,
+                'event_name' => ($request->event_name) ? $request->event_name : '',
                 'location' => ($request->location) ? $request->location : '',
                 'event_date' => ($request->event_date) ? $request->event_date : '',
                 'start_date' => $request->start_date,
