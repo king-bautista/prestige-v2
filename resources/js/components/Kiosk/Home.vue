@@ -147,7 +147,15 @@
                                 <span class="carousel-control-next-icon"></span>
                             </a>
                         </div>
-                        <img v-show="current_supplementals_count < 0" src="images/stick-around-for-future-deals.png" class="no-record-found">                        
+                        
+                        <div v-show="no_record_found" class="row mb-23 mt-5">
+                            <div class="col-md-12 home-title text-center">
+                                <div><span class="translateme" data-en="Stay tuned for more!">Stay tuned for more!</span>
+                                </div>            
+                            </div>
+                        </div>
+                        <img v-show="no_record_found" src="images/stick-around-for-future-deals.png" v-bind:class="(site_orientation == 'Portrait') ? 'no-record-found-portrait': ''" class="no-record-found">
+
                     </div>
                 </div>
 
@@ -509,7 +517,7 @@
             <!-- TABS -->
             <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait ': 'tabs-container'" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
-                    <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
+                    <div v-show="!no_record_found" v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
                         <img src="images/swipe.png" >
                         <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
                     </div>
