@@ -68,7 +68,7 @@
                     <div id="searchCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'carousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false">
                                     
                         <!-- Control dots -->
-                        <ul v-bind:class="[(current_subscriber_list_count > 0 ? 'carousel-indicators carousel-indicators-with-subscriber z-1': 'carousel-indicators carousel-indicators-search z-1'), (site_orientation == 'Portrait' ? 'carousel-indicators-with-subscriber-portrait' : '')]" v-show="current_tenant_list_count>0">
+                        <ul v-bind:class="[(current_subscriber_list_count > 0 ? 'carousel-indicators carousel-indicators-with-subscriber z-1': 'carousel-indicators carousel-indicators-search z-1'), (site_orientation == 'Portrait' ? 'carousel-indicators-with-subscriber-portrait carousel-indicators-search-portrait' : '')]" v-show="current_tenant_list_count>0">
                             <li data-target="#searchCarousel" v-for="(tenants, index) in tenant_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                         </ul>
 

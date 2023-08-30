@@ -392,7 +392,7 @@ class MainController extends AppBaseController
                 if ($suggest_subscribers_counts > 0) {
                     $site_tenants = array_chunk($site_tenants->toArray(), 9);
                 } else {
-                    $site_tenants = array_chunk($site_tenants->toArray(), 12);
+                    $site_tenants = array_chunk($site_tenants->toArray(), 9);
                 }
 
                 // dd($site_tenants);
