@@ -234,7 +234,7 @@ export default {
 		storeEvent: function () {
 			let formData = new FormData();
 			formData.append("site_id", this.event.site_id);
-			formData.append("event_name", this.event.event_name);
+			formData.append("event_name", (this.event.event_name) ? this.event.event_name : '');
 			formData.append("location", (this.event.location) ? this.event.location : '');
 			formData.append("event_date", (this.event.event_date) ? this.event.event_date : '');
 			formData.append("start_date", this.event.start_date);
@@ -280,7 +280,7 @@ export default {
 			let updateFormData = new FormData();
 			updateFormData.append("id", this.event.id);
 			updateFormData.append("site_id", this.event.site_id);
-			updateFormData.append("event_name", this.event.event_name);
+			updateFormData.append("event_name", (this.event.event_name) ? this.event.event_name : '');
 			updateFormData.append("location", (this.event.location) ? this.event.location : '');
 			updateFormData.append("event_date", (this.event.event_date) ? this.event.event_date : '');
 			updateFormData.append("start_date", this.event.start_date);
