@@ -71,7 +71,7 @@
                 </div>
             </div>
             
-            <div v-show="no_record_found" class="row mb-23 mt-5">
+            <div v-show="no_record_found" class="row mb-23 mt-145">
                 <div class="col-md-12 home-title text-center">
                     <div><span class="translateme" data-en="Stay tuned for more!">Stay tuned for more!</span>
                     </div>            
