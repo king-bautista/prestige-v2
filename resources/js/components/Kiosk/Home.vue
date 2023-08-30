@@ -118,7 +118,7 @@
                             </div>            
                         </div>
                     </div>
-                    <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
+                    <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3" style="top: 50%;">
                 </div>
                 <div v-else>
                     <div class="row mb-27">
