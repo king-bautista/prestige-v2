@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
+                                <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
 
                             </div>
                         </div>

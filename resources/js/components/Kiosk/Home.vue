@@ -111,6 +111,13 @@
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'row col-md-12 mt-120 mb-41 ml-0': 'row col-md-10 offset-md-1 mt-70 mb-41'" id="child-supplementals-holder">
                         
                     </div>
+
+                    <div v-show="no_record_found" class="row mb-23 mt-5">
+                        <div class="col-md-12 home-title text-center" style="font-size: 40px;">
+                            <div><span class="translateme" data-en="Stay tuned for more!">Stay tuned for more!</span>
+                            </div>            
+                        </div>
+                    </div>
                     <img v-show="current_supplementals_count < 0" src="images/empty-box.png" class="no-record-found mt-3">
                 </div>
                 <div v-else>
@@ -330,7 +337,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop-portrait translateme mr-5" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
+                                    <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop-portrait translateme mr-5" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                             </div>
                         </div>
@@ -385,7 +392,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
+                                    <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                             </div>
                         </div>
@@ -500,10 +507,10 @@
                             </div>
                             <div v-else class="row mt-3">
                                 <div class="col-12 mt-3">
-                                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
+                                    <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="findStore(tenant_details,current_page);">Get Directions</button>
                                 </div>
                                 <div class="col-12 mt-3">
-                                    <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd translateme" data-en="Get Directions (PWD-friendly)">Get Directions (PWD-friendly)</button>
+                                    <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd translateme" data-en="Get Directions (PWD-friendly)">Get Directions (PWD-friendly)</button>
                                 </div>
                                 <div class="col-12 mt-3">
                                     <button class="btn w-100 btn-prestige-rounded btn-order-now translateme" data-en="Order Now">Order Now</button>
@@ -517,12 +524,10 @@
             <!-- TABS -->
             <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait ': 'tabs-container'" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
-                    <template v-show="!no_record_found">
-                        <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
-                            <img src="images/swipe.png" >
-                            <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
-                        </div>
-                    </template>
+                    <div v-show="!no_record_found" v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
+                        <img src="images/swipe.png" >
+                        <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
+                    </div>
 
                     <div class="btn-group dropup dropdown-menu-right float-right mr-5">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -796,6 +801,7 @@
 
             homeButton: function (event) {
                 this.current_page = 'home';
+                this.no_record_found = false;
                 this.home_category = true;
                 this.child_category = false;
                 this.tabs_container = false;
@@ -1215,6 +1221,7 @@
             },
 
             showCategories: function() {
+                this.no_record_found = false;
                 this.home_category = false;
                 this.child_category = true;
                 this.alphabetical = false;
@@ -1289,6 +1296,10 @@
                 if(this.site_name == 'Parqal') {
                     this.page_title = name;
                     this.current_supplemental_title = name;
+                }
+
+                if(this.current_supplementals.children.length <= 0) {
+                    this.no_record_found = true;
                 }
 
                 // this.initializeSwipe();     
