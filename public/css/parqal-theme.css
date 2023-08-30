@@ -2053,16 +2053,16 @@ pre {
 }
 
 .enter-key {
-    width: 100px !important;
+    /* width: 100px !important;
     background-image: url(../assets/images/searchbutton.png);
     color: transparent;
     background-position: center;
-    background-size: contain;
+    background-size: contain; */
 }
 
 .enter-key:hover, .enter-key:focus {
-    background-image: url(../assets/images/searchbutton-bg.png);
-    color: transparent;
+    /* background-image: url(../assets/images/searchbutton-bg.png);
+    color: transparent; */
 }
 
 .disability-active {

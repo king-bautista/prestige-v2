@@ -366,7 +366,7 @@ class MainController extends AppBaseController
                 ->select('site_tenants.*', 'site_tenant_metas.meta_value', 'site_tenant_metas.meta_value as address')
                 ->distinct()
                 ->orderBy('site_tenants.site_building_level_id', 'ASC')
-                ->orderBy('address', 'DESC')
+                ->orderBy('address', 'ASC')
                 ->orderBy('brands.name', 'ASC')
                 ->get();
 
