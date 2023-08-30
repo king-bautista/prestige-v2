@@ -214,7 +214,7 @@
                             </span>
                         </multiselect>
                         <div class="input-group-append">
-                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button">
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant);" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -501,7 +501,7 @@
                 setTimeout(() => this.panzoom.pan(value.start_x, value.start_y))
 			},
 
-            find_store: function(value, called_from) {
+            find_store: function(value, called_from = null) {
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
                     this.with_disability = 0;
