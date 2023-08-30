@@ -1004,7 +1004,10 @@ WayFinding.prototype = {
 
                 setTimeout(() => {
                     panzoom.pan('-'+(x-500), '-'+(y-500));
-                    panzoom.zoom(scale);
+                    panzoom.zoom(scale, {
+                        relative: true,
+                        animate: true
+                    });
                 }, 500);
             }
         }
