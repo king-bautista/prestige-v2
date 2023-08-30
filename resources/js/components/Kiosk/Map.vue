@@ -497,7 +497,10 @@
                     this.wayfindings.showmap(value);
                 });
                 // set default map zoom level each map
-                this.panzoom.zoom(value.start_scale)
+                this.panzoom.zoom(value.start_scale, {
+                    relative: true,
+                    animate: true
+                })
                 setTimeout(() => this.panzoom.pan(value.start_x, value.start_y))
 			},
 
@@ -549,7 +552,10 @@
                     $('#guide-button').trigger('click');
                 }
 
-                this.panzoom.zoom(this.active_map_details.default_zoom)
+                this.panzoom.zoom(this.active_map_details.default_zoom, {
+                    relative: true,
+                    animate: true
+                })
                 setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
 
             },
@@ -603,7 +609,10 @@
                 obj.$refs.multiselectFloor.value = this.active_map_details;
 
                 // Reset Start Scale
-                obj.panzoom.zoom(obj.active_map_details.start_scale)
+                obj.panzoom.zoom(obj.active_map_details.start_scale, {
+                    relative: true,
+                    animate: true
+                })
                 setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y))
             },
 
@@ -853,13 +862,18 @@
     			});
 
                 $('#zoomResetButton, .pinch').on('click', function() {
-                    console.log(vm.current_map_details);
                     if(vm.current_map_details) {
-                        vm.panzoom.zoom((vm.current_map_details.default_zoom));
+                        vm.panzoom.zoom(vm.current_map_details.default_zoom, {
+                            relative: true,
+                            animate: true
+                        });
                         setTimeout(() => vm.panzoom.pan(vm.current_map_details.default_x, vm.current_map_details.default_y))
                     }
                     else {
-                        vm.panzoom.zoom((vm.active_map_details.default_zoom));
+                        vm.panzoom.zoom(vm.active_map_details.default_zoom, {
+                            relative: true,
+                            animate: true
+                        });
                         setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
                     }
                 });
@@ -897,7 +911,10 @@
 
                 $('#repeatButton').on('click',function(){
                     $('.map-floor-option .multiselect__tags .multiselect__single').html(vm.active_map_details.building_floor_name);
-                    vm.panzoom.zoom((vm.active_map_details.default_zoom));
+                    vm.panzoom.zoom(vm.active_map_details.default_zoom, {
+                        relative: true,
+                        animate: true
+                    });
                     setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
                     obj.wayfindings.replay(obj.with_disability, vm.panzoom);
     			});
