@@ -517,7 +517,7 @@
             <!-- TABS -->
             <div v-bind:class="(site_orientation == 'Portrait') ? 'tabs-container tabs-container-portrait ': 'tabs-container'" v-show="tabs_container">
                 <div v-if="site_name == 'Parqal'">
-                    <template v-if="!no_record_found">
+                    <template v-if="no_record_found == 0">
                         <div v-if="child_category || supplementals" v-bind:class="(site_orientation == 'Portrait') ? 'swipe-to-see-more-portrait': 'swipe-to-see-more'">
                             <img src="images/swipe.png" >
                             <p style="margin-top: 18px;">SWIPE TO SEE MORE</p>
