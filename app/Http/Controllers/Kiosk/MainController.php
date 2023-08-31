@@ -329,12 +329,14 @@ class MainController extends AppBaseController
     {
         try
         {
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();
+
             //FIND BY KEYWORD and display as list E.G TAGS/KEY_WORDDS/BRAND_NAME
             if (!$request->id) {
                 $array_words = explode(' ', $request->key_words);
                 $keyword = preg_replace('!\s+!', ' ', $request->key_words);                
 
-                $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 // ->where(function ($query) use($array_words) {
                 ->where(function ($query) use($keyword) {
@@ -389,11 +391,21 @@ class MainController extends AppBaseController
                 $counts = $site_tenants->count();
                 $suggest_subscribers_counts = $suggest_subscribers->count();
                 
-                if ($suggest_subscribers_counts > 0) {
-                    $site_tenants = array_chunk($site_tenants->toArray(), 9);
-                } else {
-                    $site_tenants = array_chunk($site_tenants->toArray(), 9);
+                if($site_screen->orientation == 'Landscape') {
+                    if ($suggest_subscribers_counts > 0) {
+                        $site_tenants = array_chunk($site_tenants->toArray(), 9);
+                    } else {
+                        $site_tenants = array_chunk($site_tenants->toArray(), 9);
+                    }
                 }
+                else {
+                    if ($suggest_subscribers_counts > 0) {
+                        $site_tenants = array_chunk($site_tenants->toArray(), 9);
+                    } else {
+                        $site_tenants = array_chunk($site_tenants->toArray(), 12);
+                    }
+                }
+
 
                 // dd($site_tenants);
 

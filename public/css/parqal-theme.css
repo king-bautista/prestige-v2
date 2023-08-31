@@ -1160,7 +1160,7 @@ input[type="text"]:focus
 
 .carousel-control-next {
     width: 2rem;
-    height: 575px;
+    height: 525px;
     border: none;
     background: url(/images/parqal-right.png) no-repeat;
     background-position: center;
@@ -1171,7 +1171,8 @@ input[type="text"]:focus
 }
 
 .carousel-control-next-search-custom-portrait {
-    height: 610px;
+    /* height: 610px; */
+    height: 558px;    
     right: -40px !important;
 }
 
@@ -1192,7 +1193,7 @@ input[type="text"]:focus
 
 .carousel-control-prev {
     width: 2rem;
-    height: 575px;
+    height: 525px;
     border: none;
     background: url(/images/parqal-left.png) no-repeat;
     background-position: center;
@@ -1203,8 +1204,13 @@ input[type="text"]:focus
 }
 
 .carousel-control-prev-search-custom-portrait {
-    height: 610px;
+    /* height: 610px; */
+    height: 558px;
     left: -50px !important;
+}
+
+.arrow-heigh {
+    height: 610px !important;
 }
 
 .carousel-control-prev-portrait {

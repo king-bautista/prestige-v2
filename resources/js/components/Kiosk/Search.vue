@@ -75,7 +75,7 @@
                         <!-- The slideshow -->
                         <div class="carousel-inner" :class="(category_top_banner) ? 'carousel-mh-596' : 'carousel-mh-626' ">
                             <div v-bind:class="[(site_orientation == 'Portrait' ? 'carousel-item': 'carousel-item tenant-store-carousel'), (index == 0 ? 'first-item active':''), (index == tenant_list_count? 'last-item':'')]" v-for="(tenants, index) in tenant_list" :data-index="index">
-                                <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-100': 'row mb-3'">
+                                <div v-bind:class="[(site_orientation == 'Portrait') ? 'row mb-3': 'row mb-3', (current_subscriber_list_count > 0 && site_orientation == 'Portrait') ? 'mt-100' : '']">
                                     
                                     <div v-for="tenant in tenants" v-bind:class="[tenant_list[0].length === 1 ? 'col-sm-12 text-center mt-3' : '', tenant_list[0].length === 2 ? 'col-sm-6 text-center mt-3':'', tenant_list[0].length > 2 ? 'col-sm-4 text-left mt-3' : '']">
                                         <div v-if="site_name == 'Parqal'">
@@ -117,10 +117,10 @@
                         </div>
 
                         <!-- Left and right controls -->
-                        <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-prev-search-custom-portrait': 'carousel-control-prev-search-custom'" class="carousel-control-prev control-prev-sp p-l-z-a" href="#searchCarousel" data-slide="prev">
+                        <a v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-control-prev-search-custom-portrait': 'carousel-control-prev-search-custom', (site_orientation == 'Portrait' && current_subscriber_list_count > 0) ? 'arrow-heigh': '']" class="carousel-control-prev control-prev-sp p-l-z-a" href="#searchCarousel" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
-                        <a v-bind:class="(site_orientation == 'Portrait') ? 'carousel-control-next-search-custom-portrait': 'carousel-control-next-search-custom'" class="carousel-control-next control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>=1">
+                        <a v-bind:class="[(site_orientation == 'Portrait') ? 'carousel-control-next-search-custom-portrait': 'carousel-control-next-search-custom', (site_orientation == 'Portrait' && current_subscriber_list_count > 0) ? 'arrow-heigh': '']" class="carousel-control-next control-next-sp n-l-z-a" href="#searchCarousel" data-slide="next" v-show="current_tenant_list_count>=1">
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
