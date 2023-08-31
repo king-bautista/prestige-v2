@@ -1498,9 +1498,7 @@
                     
                 }
 
-                if(this.home_category == true) {
-                    //this.$router.go();
-                }
+                $('#myProduct').hide();
                 setTimeout(() => {
                     this.setTranslation(this.current_language_set); 
                 }, 100);        
