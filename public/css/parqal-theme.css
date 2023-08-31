@@ -1546,6 +1546,7 @@ input[type="text"]:focus
 
 .carousel-indicators {
     bottom: -4rem;
+    z-index: 3;
 }
 
 .carousel-indicators-event {
@@ -2301,4 +2302,15 @@ pre {
     top: 50%;
     left: 45px;
     transform: translateY(-50%);
+}
+
+.carousel-indicators li {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: solid 0px;
+    border-radius: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline-block;
 }
