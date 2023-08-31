@@ -581,7 +581,11 @@
                         this.helper.saveLogs(this.search, 'Search');
                         this.resetCarousel();
 
-                        this.$root.$emit('callMutateLocation','searchresult');
+                        if(this.tenant_list.length == 0) {
+                            this.$root.$emit('callMutateLocation','searchnoresult');
+                        }else {
+                            this.$root.$emit('callMutateLocation','searchresult');
+                        }
 
                         setTimeout(() => {
                             $('.first-item').trigger('click');
