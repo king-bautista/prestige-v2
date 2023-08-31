@@ -541,6 +541,10 @@ WayFinding.prototype = {
     },
 
     showmap: function(map_details,reference) {
+
+        console.log(map_details);
+
+
         if(map_details.id) {
             id = map_details.id;
         }
@@ -1042,6 +1046,7 @@ WayFinding.prototype = {
         var flr_build = id.split('-');
 
         $.get( "/api/v1/site/maps/get-map-id/"+flr_build[0]+"/"+flr_build[1], function(response) {
+            console.log(response);
             obj.showmap(response);
             $('.map-floor-option .multiselect__tags .multiselect__single').html(response.building_floor_name);
         });
