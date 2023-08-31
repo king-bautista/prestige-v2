@@ -95,11 +95,15 @@ class DirectoryCategoryViewModel extends Model
                 ->where('site_tenants.site_id', self::$site_id)
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-                ->select('site_tenants.*')
+                ->leftJoin('site_tenant_metas', function($join)
+                {
+                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                            ->where('site_tenant_metas.meta_key', 'address');
+                })
+                ->select('site_tenants.*', 'site_tenant_metas.meta_value as address')
                 ->orderBy('brands.name', 'ASC')
-                ->orderBy('site_tenants.is_subscriber', 'DESC')
-                ->orderBy('site_tenants.site_building_id', 'ASC')
                 ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->orderBy('address', 'ASC')
                 ->get()->toArray();
         
             if($tenants) {
@@ -114,11 +118,15 @@ class DirectoryCategoryViewModel extends Model
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
-                ->select('site_tenants.*')
+                ->leftJoin('site_tenant_metas', function($join)
+                {
+                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                            ->where('site_tenant_metas.meta_key', 'address');
+                })
+                ->select('site_tenants.*', 'site_tenant_metas.meta_value as address')
                 ->orderBy('brands.name', 'ASC')
-                ->orderBy('site_tenants.is_subscriber', 'DESC')
-                ->orderBy('site_tenants.site_building_id', 'ASC')
                 ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->orderBy('address', 'ASC')
                 ->distinct()
                 ->get()->toArray();
         
