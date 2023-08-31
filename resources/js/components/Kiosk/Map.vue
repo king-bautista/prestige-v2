@@ -496,11 +496,11 @@
                     this.wayfindings.showmap(value);
                 });
                 // set default map zoom level each map
-                this.panzoom.zoom(value.start_scale, {
+                this.panzoom.zoom(value.default_zoom, {
                     relative: true,
                     animate: true
                 })
-                setTimeout(() => this.panzoom.pan(value.start_x, value.start_y))
+                setTimeout(() => this.panzoom.pan(value.default_x, value.default_y))
 			},
 
             find_store: function(value, called_from = null) {
