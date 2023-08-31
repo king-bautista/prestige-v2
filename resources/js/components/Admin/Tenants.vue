@@ -589,14 +589,14 @@ export default {
 			formData.append("active", this.tenant.active);
 			formData.append("is_subscriber", this.tenant.is_subscriber);
 			formData.append("subscriber_logo", this.tenant.subscriber_logo);
-			formData.append("address", this.tenant.address);
-			formData.append("email", this.tenant.email);
-			formData.append("contact_person", this.tenant.contact_person);
-			formData.append("contact_number", this.tenant.contact_number);
-			formData.append("facebook", this.tenant.facebook);
-			formData.append("twitter", this.tenant.twitter);
-			formData.append("instagram", this.tenant.instagram);
-			formData.append("website", this.tenant.website);
+			formData.append("address", (this.tenant.address) ? this.tenant.address : '');
+			formData.append("email", (this.tenant.email) ? this.tenant.email : '');
+			formData.append("contact_person", (this.tenant.contact_person) ? this.tenant.contact_person : '');
+			formData.append("contact_number", (this.tenant.contact_number) ? this.tenant.contact_number : '');
+			formData.append("facebook", (this.tenant.facebook) ? this.tenant.facebook : '');
+			formData.append("twitter", (this.tenant.twitter) ? this.tenant.twitter : '');
+			formData.append("instagram", (this.tenant.instagram) ? this.tenant.instagram : '');
+			formData.append("website", (this.tenant.website) ? this.tenant.website : '');
 
 			
 			axios.post('/admin/site/tenant/store', formData, {
@@ -673,24 +673,24 @@ export default {
 			formData.append("active", this.tenant.active);
 			formData.append("is_subscriber", this.tenant.is_subscriber);
 			formData.append("subscriber_logo", this.tenant.subscriber_logo);
-			formData.append("address", this.tenant.address);
-			formData.append("email", this.tenant.email);
-			formData.append("contact_person", this.tenant.contact_person);
-			formData.append("contact_number", this.tenant.contact_number);
-			formData.append("facebook", this.tenant.facebook);
-			formData.append("twitter", this.tenant.twitter);
-			formData.append("instagram", this.tenant.instagram);
-			formData.append("website", this.tenant.website);
+			formData.append("address", (this.tenant.address) ? this.tenant.address : '');
+			formData.append("email", (this.tenant.email) ? this.tenant.email : '');
+			formData.append("contact_person", (this.tenant.contact_person) ? this.tenant.contact_person : '');
+			formData.append("contact_number", (this.tenant.contact_number) ? this.tenant.contact_number : '');
+			formData.append("facebook", (this.tenant.facebook) ? this.tenant.facebook : '');
+			formData.append("twitter", (this.tenant.twitter) ? this.tenant.twitter : '');
+			formData.append("instagram", (this.tenant.instagram) ? this.tenant.instagram : '');
+			formData.append("website", (this.tenant.website) ? this.tenant.website : '');
 			axios.post('/admin/site/tenant/update', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.tenantsDataTable.fetchData();
-					$('#tenant-form').modal('hide');
-				});
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.tenantsDataTable.fetchData();
+				$('#tenant-form').modal('hide');
+			});
 		},
 
 		DeleteTenant: function (data) {
