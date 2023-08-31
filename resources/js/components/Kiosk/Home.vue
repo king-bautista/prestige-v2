@@ -1640,7 +1640,7 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                this.$refs.callMap.findStore(tenant,'home');                
+                this.findStore(tenant,'home');                
             });
 
             var obj = this;
