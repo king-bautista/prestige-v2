@@ -211,11 +211,16 @@
             },
 
             goBack: function() {
+                if($('#myevent ').is(':visible')) {
+                    $('#myevent').hide();
+                    return false;
+                }   
+
                 $('.h-button').removeClass('active');
                 $('.home-button').addClass('active');
-                $("#myevent").hide();
                 this.$router.push("/").catch(()=>{});
                 this.$root.$emit('MainCategories');
+                
             },
 
         },
