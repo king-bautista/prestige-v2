@@ -613,7 +613,7 @@
                     this.fromAutoSuggest = true;
 
                     if(!this.tenant_details.is_subscriber) {
-                        this.$root.$emit('showTenantMap', this.tenant_details);
+                        this.$root.$emit('showTenantMap', this.tenant_details, 'search');
                     }
                     else {
                         this.$root.$emit('callMutateLocation','tenant');
@@ -624,7 +624,6 @@
             },
 
             onClickSuggestedSubsriber: function(id) {
-                alert(id);
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {

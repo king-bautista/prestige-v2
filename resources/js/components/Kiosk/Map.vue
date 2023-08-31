@@ -468,6 +468,10 @@
             },
 
             goBack: function() {
+                if (this.called_from == 'search' && this.tenant_details) {
+                    this.$root.$emit('callSearch');                    
+                }
+
                 if (this.called_from == 'home') {
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (this.called_from == 'search') {

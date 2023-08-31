@@ -132,8 +132,15 @@ class MainController extends AppBaseController
                 ->where('brands.category_id', $category_id)
                 ->where('site_tenants.site_id', $site->id)
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->select('site_tenants.*')
+                ->leftJoin('site_tenant_metas', function($join)
+                {
+                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                            ->where('site_tenant_metas.meta_key', 'address');
+                })
+                ->select('site_tenants.*', 'site_tenant_metas.meta_value as address')
                 ->orderBy('brands.name', 'ASC')
+                ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->orderBy('address', 'ASC')
                 ->get()->toArray();
             } else {
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
@@ -141,8 +148,15 @@ class MainController extends AppBaseController
                 ->where('site_tenants.site_id', $site->id)
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
-                ->select('site_tenants.*')
+                ->leftJoin('site_tenant_metas', function($join)
+                {
+                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                            ->where('site_tenant_metas.meta_key', 'address');
+                })
+                ->select('site_tenants.*', 'site_tenant_metas.meta_value as address')
                 ->orderBy('brands.name', 'ASC')
+                ->orderBy('site_tenants.site_building_level_id', 'ASC')
+                ->orderBy('address', 'ASC')
                 ->distinct()
                 ->get()->toArray();
             }
@@ -298,31 +312,40 @@ class MainController extends AppBaseController
 
     public function getAllTenants()
     {
-        try
-        {
-            $brand_names = Brand::whereRaw('category_id IN (SELECT id FROM categories WHERE id IN (238,225,224,156,226))')->get()->pluck('name');
-
+        // try
+        // {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
-            ->whereNotIn('brands.name', $brand_names)
+            ->whereNotIn('brands.name', ['ELEVATOR', 'ESCALATOR', 'FIRE EXIT', 'RESTROOM', 'STAIRS'])
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+            ->leftJoin('site_tenant_metas', function($join)
+            {
+                $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                        ->where('site_tenant_metas.meta_key', 'address');
+            })
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-            ->select('brands.name', 'site_tenants.*')
-            ->orderBy('brands.name', 'ASC')
-            ->groupBy('brands.name')
+            ->selectRaw('CASE 
+                WHEN categories.name = "Amenities" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN categories.name = "Landmark" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN categories.name = "Bus Stops" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN categories.name = "Parking" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                ELSE `brands`.`name` 
+            END AS name, site_tenants.*')
+            ->orderBy('name', 'ASC')
+            ->groupBy('name')
             ->get();
             
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        }  
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // }  
     }
 
     public function search(Request $request)

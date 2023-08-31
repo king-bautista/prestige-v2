@@ -1631,7 +1631,7 @@
         },
 
         mounted() {
-            this.$root.$on('showTenantMap', (tenant) => {
+            this.$root.$on('showTenantMap', (tenant, called_from) => {
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = true;
@@ -1640,7 +1640,10 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                this.findStore(tenant,'home');                
+                if(!called_from)
+                    called_from = 'home';                    
+                
+                this.findStore(tenant,called_from);                
             });
 
             var obj = this;
@@ -1649,6 +1652,10 @@
                 // --start Call Parent Method from Child Component
                 obj.$root.$on('MainCategories', () => {
                     obj.homeButton();
+                });
+
+                obj.$root.$on('callSearch', () => {
+                    obj.searchButton();
                 });
 
                 obj.$root.$on('callAboutParent', (value) => {
