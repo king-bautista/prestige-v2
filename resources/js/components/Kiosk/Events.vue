@@ -213,6 +213,7 @@
             goBack: function() {
                 $('.h-button').removeClass('active');
                 $('.home-button').addClass('active');
+                $("#myevent,#modal-schedule,#modal-schedule-event").hide();
                 this.$router.push("/").catch(()=>{});
                 this.$root.$emit('MainCategories');
             },

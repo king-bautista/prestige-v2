@@ -834,8 +834,6 @@ WayFinding.prototype = {
         var distance = '';
 
         $.get( "/api/v1/site/maps/get-routes/"+id+"/"+with_disability, function(response) {
-            console.log('test');
-            console.log(response);
             if(response.data.length) {
                 obj.settings.points = { linePoint : []};
 
