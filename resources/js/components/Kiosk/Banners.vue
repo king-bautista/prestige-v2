@@ -59,7 +59,7 @@
                     carousel_item += '<div data-interval="'+banner_array[count].display_duration*1000+'" data-index="'+count+'" class="'+class_name+'">';
                         if(banner_array[count].file_type == 'video') {
                             carousel_item += '<span>';
-                            carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="banner-add" data-id="'+count+'">';
+                            carousel_item += '<video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="banner-add-'+count+'" data-id="'+count+'">';
                             carousel_item += '<source src="'+banner_array[count].material_path+'" type="video/ogg">';
                             carousel_item += 'Your browser does not support the video tag.';
                             carousel_item += '</video>';
@@ -67,12 +67,12 @@
                         }
                         else {
                             carousel_item += '<span>';
-                            carousel_item += '<img src="'+banner_array[count].material_path+'" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="banner-add" data-id="'+count+'">';
+                            carousel_item += '<img src="'+banner_array[count].material_path+'" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;" class="banner-add-'+count+'" data-id="'+count+'">';
                             carousel_item += '</span>';
                         }
                     carousel_item += '</div>';
                     $("#carousel-banner").append(carousel_item);
-                    $('.banner-add').on('click', function() {
+                    $('.banner-add-'+count).on('click', function() {
                         var id = $(this).data('id');
                         helper.saveLogs(banner_array[id], 'Banner Ad');
                         obj.showTenant(banner_array[id].tenant_details);

@@ -1601,13 +1601,14 @@
 			},
 
             findStore: function(tenant_details,current_page) {
+                console.log('test 4');
                 this.current_page = current_page;
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.mapIsShown = true;
-				this.$refs.callMap.find_store(tenant_details,this.current_page);
+				//this.$refs.callMap.find_store(tenant_details,this.current_page);
                 this.$refs.callAssist.filterAssist('maptenant',this.current_language_set);
 			},
 
@@ -1635,7 +1636,7 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                this.findStore(tenant, 'home');
+                this.$refs.callMap.find_store(tenant,'home');
             });
 
             var obj = this;

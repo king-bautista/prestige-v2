@@ -485,7 +485,6 @@
             },
 
             toggleSelectedMap: function(value, id) {
-                console.log(value);
                 this.current_map_details = value;
                 $(function() {
                     this.wayfindings.stopall();
@@ -811,6 +810,8 @@
         },
 
         mounted() {
+
+
             this.softkeys();
             var vm = this;
             $(function() {    
