@@ -800,6 +800,10 @@
             },
 
             homeButton: function (event) {
+                if($('#myProduct ').is(':visible')) {
+                    $('#myProduct').hide();
+                }
+
                 this.current_page = 'home';
                 this.no_record_found = false;
                 this.home_category = true;
