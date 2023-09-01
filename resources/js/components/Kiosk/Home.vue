@@ -835,7 +835,9 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                this.$refs.callSearch.resetPage(this.current_language_set);
+                if(event != 'map') {
+                    this.$refs.callSearch.resetPage(this.current_language_set);
+                }
                 this.$refs.callPromo.resetPage();
                 this.$refs.callCinema.resetPage();
 
@@ -1660,8 +1662,8 @@
                     obj.homeButton();
                 });
 
-                obj.$root.$on('callSearch', () => {
-                    obj.searchButton();
+                obj.$root.$on('callSearch', (value) => {
+                    obj.searchButton(value);
                 });
 
                 obj.$root.$on('callAboutParent', (value) => {

@@ -471,7 +471,7 @@
                 $('#myProduct, #myevent').hide();
 
                 if (this.called_from == 'search' && this.tenant_details) {
-                    this.$root.$emit('callSearch');                    
+                    this.$root.$emit('callSearch', 'map');                    
                 }
 
                 if (this.called_from == 'home') {
