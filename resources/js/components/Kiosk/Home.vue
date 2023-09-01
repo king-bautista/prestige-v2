@@ -1440,8 +1440,10 @@
             },
 
             goBack: function() {
-                $('#myProduct').hide();
-                $('#myevent').hide();
+                if($('#myProduct, #myevent').is(':visible')) {
+                    $('#myProduct, #myevent').hide();
+                    return false;
+                }                
 
                 if(this.show_tenant == true) {
                     this.page_title = 'Store List';
