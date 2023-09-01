@@ -2318,7 +2318,6 @@ pre {
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
-    height: 90%;
   }
   
   /* Track */
