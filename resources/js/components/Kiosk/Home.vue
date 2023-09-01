@@ -886,6 +886,7 @@
             },
 
             eventsButton: function (event) {
+                $('#myProduct, #myevent').hide();
                 this.current_page = 'event';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
