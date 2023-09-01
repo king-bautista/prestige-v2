@@ -518,6 +518,9 @@
                     this.buildSchedule(this.tenant_details);
                     this.updateViewCount(this.tenant_details.id);
                 }
+                if(value.brand_name == 'Elevator') {
+                    this.with_disability = 1;
+                }
 
                 this.called_from = called_from;
                 this.helper.saveLogs(value, 'Map');
