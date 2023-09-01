@@ -1324,7 +1324,6 @@ input[type="text"]:focus
 }
 
 .subscriber-products-portrait {
-    overflow-y: auto;
     width: 92%;
     margin-left: 48px !important;
 }
@@ -2319,6 +2318,7 @@ pre {
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
+    height: 90%;
   }
   
   /* Track */
