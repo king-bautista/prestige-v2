@@ -142,6 +142,7 @@
                     this.$root.$emit('callSetTranslation');
                 }, 100);
                 $('.first-item').trigger('click');
+                $('#myevent').hide();
             },
 
             getSite: function() {
