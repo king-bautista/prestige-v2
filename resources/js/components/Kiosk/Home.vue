@@ -1438,10 +1438,11 @@
             },
 
             goBack: function() {
-                if($('#myProduct ').is(':visible')) {
-                    $('#myProduct').hide();
-                    return false;
-                }                
+                $('#myProduct, #myevent').hide();
+                // if($('#myProduct ').is(':visible')) {
+                //     $('#myProduct').hide();
+                //     return false;
+                // }                
 
                 if(this.show_tenant == true) {
                     this.page_title = 'Store List';
