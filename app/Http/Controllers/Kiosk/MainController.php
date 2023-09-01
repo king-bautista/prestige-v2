@@ -332,9 +332,9 @@ class MainController extends AppBaseController
                 WHEN categories.name = "Bus Stops" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 WHEN categories.name = "Parking" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 ELSE `brands`.`name` 
-            END AS name, site_tenants.*')
+            END AS brand_name, brands.name , site_tenants.*')
             ->orderBy('name', 'ASC')
-            ->groupBy('name')
+            ->groupBy('brand_name')
             ->get();
             
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
