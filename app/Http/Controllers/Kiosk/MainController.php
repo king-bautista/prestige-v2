@@ -390,9 +390,9 @@ class MainController extends AppBaseController
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
                 ->select('site_tenants.*', 'site_tenant_metas.meta_value', 'site_tenant_metas.meta_value as address')
                 ->distinct()
+                ->orderBy('brands.name', 'ASC')
                 ->orderBy('site_tenants.site_building_level_id', 'ASC')
                 ->orderBy('address', 'ASC')
-                ->orderBy('brands.name', 'ASC')
                 ->get();
 
                 $suggest_cat = [];
