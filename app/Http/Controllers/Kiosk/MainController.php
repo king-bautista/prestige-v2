@@ -334,10 +334,10 @@ class MainController extends AppBaseController
                 ELSE `brands`.`name` 
             END AS brand_name, 
             CASE 
-                WHEN brands.name = 'ATM' THEN CONCAT(`brands`.`name`, ' ', site_tenant_metas.meta_value)
-                WHEN brands.name = 'BUS STOP' THEN CONCAT(`brands`.`name`, ' ', site_tenant_metas.meta_value)
-                WHEN brands.name = 'PARKING' THEN CONCAT(`brands`.`name`, ' ', site_tenant_metas.meta_value)
-                WHEN brands.name = 'CONCIERGE' THEN CONCAT(`brands`.`name`, ' ', site_tenant_metas.meta_value)
+                WHEN brands.name = "ATM" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN brands.name = "BUS STOP" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN brands.name = "PARKING" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN brands.name = "CONCIERGE" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 ELSE brands.name
             END AS name,             
             site_tenants.*')
