@@ -312,8 +312,8 @@ class MainController extends AppBaseController
 
     public function getAllTenants()
     {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
@@ -329,8 +329,8 @@ class MainController extends AppBaseController
             ->selectRaw('CASE 
                 WHEN categories.name = "Amenities" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 WHEN categories.name = "Landmark" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
-                WHEN categories.name = "Bus Stops" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
-                WHEN categories.name = "Parking" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN categories.name = "Bus Stops" THEN CONCAT(`brands`.`name`, " ", site_tenants.id)
+                WHEN categories.name = "Parking" THEN CONCAT(`brands`.`name`, " ", site_tenants.id)
                 ELSE `brands`.`name` 
             END AS brand_name, brands.name , site_tenants.*')
             ->orderBy('name', 'ASC')
@@ -338,14 +338,14 @@ class MainController extends AppBaseController
             ->get();
             
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // }  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        }  
     }
 
     public function search(Request $request)
