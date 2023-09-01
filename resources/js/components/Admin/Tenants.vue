@@ -70,7 +70,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Sub Category </label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" placeholder="Sub Category" :value="tenant.brand_id.category_name" readonly>
+									<input type="text" class="form-control" placeholder="Sub Category" title="this is a lorem" :value="tenant.brand_id.category_name" readonly>
 								</div>
 							</div>
 							<div class="form-group row">
