@@ -331,6 +331,7 @@ class MainController extends AppBaseController
                 WHEN categories.name = "Landmark" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 WHEN categories.name = "Bus Stops" THEN CONCAT(`brands`.`name`, " ", site_tenants.id)
                 WHEN categories.name = "Parking" THEN CONCAT(`brands`.`name`, " ", site_tenants.id)
+                WHEN categories.name = "Concierge" THEN CONCAT(`brands`.`name`, " ", site_tenants.id)
                 ELSE `brands`.`name` 
             END AS brand_name, 
             CASE 
@@ -338,11 +339,12 @@ class MainController extends AppBaseController
                 WHEN brands.name = "BUS STOP" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 WHEN brands.name = "PARKING" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 WHEN brands.name = "CONCIERGE" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
+                WHEN brands.name = "BPO LOBBY" THEN CONCAT(`brands`.`name`, " ", site_tenant_metas.meta_value)
                 ELSE brands.name
             END AS name,             
             site_tenants.*')
-            ->orderBy('name', 'ASC')
             ->groupBy('brand_name')
+            ->orderBy('name', 'ASC')
             ->get();
             
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
