@@ -1530,6 +1530,7 @@
 
                 $(".btn-like-display").removeClass('disabled-response');
                 $(".btn-heart").removeClass('fas').addClass('far');
+                $('#myProduct').hide();
             },
 
             showSchedule: function() {
