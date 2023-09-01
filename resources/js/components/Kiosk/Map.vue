@@ -599,6 +599,7 @@
                 $('#tenant-details').hide();
                 $('#zoomResetButton').addClass('last-border-radius');
                 $(".map-search-modal").hide();
+                $('#myevent').hide();
                 this.feedback_modal = false;
                 this.feedback_response = false;
                 this.called_from = '';
