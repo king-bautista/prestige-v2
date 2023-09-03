@@ -487,7 +487,6 @@
 
         created() {
             this.getSite();
-            this.getSuggestionList();
             setInterval(this.getDateNow, 1000);
         },
 
@@ -641,6 +640,8 @@
             },
 
             goBack: function() {
+                $('.ui-autocomplete').empty();
+
                 if(this.show_tenant == true && this.fromAutoSuggest == false) {
                     this.search_page = true;
                     this.search_results = true;

@@ -397,7 +397,6 @@
 
         created() {
             this.getSite();
-            this.getTenants();
             this.getFloors();
             setInterval(this.getDateNow, 1000);
         },
@@ -469,9 +468,11 @@
 
             goBack: function() {
                 $('#myProduct, #myevent').hide();
+                $('.ui-autocomplete').empty();
 
                 if (this.called_from == 'search' && this.tenant_details) {
-                    this.$root.$emit('callSearch', 'map');                    
+                    this.$root.$emit('callSearch', 'map');   
+                    return false;
                 }
 
                 if (this.called_from == 'home') {
@@ -585,7 +586,7 @@
             },
 
             resetPage: function() {
-                this.map_form.tenant = null;
+                this.map_form.tenant = '';
                 this.with_disability = 0;
                 this.tenant_details = '';
                 var obj = this;

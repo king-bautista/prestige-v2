@@ -826,21 +826,19 @@
             },
 
             searchButton: function (event) {
+                this.tenant_details = '';
                 this.current_page = 'search';
                 this.homeIsShown = false;
-                this.searchIsShown = true;
+                this.show_tenant = false;
+                this.searchIsShown = true;        
                 this.mapIsShown = false;
                 this.promosIsShown = false;
                 this.cinemaIsShown = false;
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                if(event != 'map') {
-                    this.$refs.callSearch.resetPage(this.current_language_set);
-                }
-                this.$refs.callPromo.resetPage();
-                this.$refs.callCinema.resetPage();
-
+                this.$refs.callSearch.getSuggestionList();
+                this.$refs.callSearch.resetPage(this.current_language_set);
                 this.$refs.callAssist.filterAssist('searchbox',this.current_language_set);
             },
 
@@ -854,6 +852,7 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
+                this.$refs.callMap.getTenants();
                 this.$refs.callMap.resetPage();
                 this.$refs.callAssist.filterAssist('map',this.current_language_set);
             },
