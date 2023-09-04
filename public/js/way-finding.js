@@ -555,11 +555,13 @@ WayFinding.prototype = {
         $("#" + this.settings.currentmap).show();
 
         const panzoom = this.settings.panzoom;
-        panzoom.zoom(map_details.default_zoom, {
-            relative: true,
-            animate: true
-        })
-        setTimeout(() => panzoom.pan(map_details.default_x, map_details.default_y))
+        if(panzoom) {
+            panzoom.zoom(map_details.default_zoom, {
+                relative: true,
+                animate: true
+            })
+            setTimeout(() => panzoom.pan(map_details.default_x, map_details.default_y))    
+        }
 
         this.load_points();
 
@@ -1011,6 +1013,13 @@ WayFinding.prototype = {
                 if(landscape > 1920) {
                     x = (x-500);
                     y = (y/2);
+
+                    if(Math.abs(x) > 2000) {
+                        y = (y+1300);
+                    }
+                    else {
+                        y = (y-300);
+                    }
                 }
                 else {
                     x = (x-500);
