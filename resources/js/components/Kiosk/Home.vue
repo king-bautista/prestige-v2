@@ -846,7 +846,6 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                this.$refs.callMap.getTenants();
                 this.$refs.callMap.resetPage();
                 this.$refs.callAssist.filterAssist('map',this.current_language_set);
             },

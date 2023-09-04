@@ -397,6 +397,7 @@
 
         created() {
             this.getSite();
+            this.getTenants();
             this.getFloors();
             setInterval(this.getDateNow, 1000);
         },
