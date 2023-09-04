@@ -300,31 +300,28 @@
                         </div>
                         <div class="col-sm-12 text-center mt-3 ml-4 mr-4">
                             <div v-if="tenant_details.is_subscriber" class="tenant-products-container-portrait mb-3">
-                                <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
-                                    <div class="col-12 p-0">
-                                        <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                <div class="products-container">
+                                    <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
+                                        <div class="col-12 p-0">
+                                            <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                        </div>
                                     </div>
-                                </div>
-                                <template v-if="tenant_details.products.length == 0">
-                                    <div class="centered-container">
-                                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <template v-if="tenant_details.products.product_list.length > 0">
-                                        <div class="row subscriber-products-portrait ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 3) ? 'with-out-height':'with-height-portrait', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
-                                            <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 3) ? 'f-left' : 'm-auto'">
-                                                <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-portrait-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-portrait-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-portrait-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
-                                            </div>
+                                    <template v-if="tenant_details.products.length == 0">
+                                        <div class="centered-container">
+                                            <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
                                         </div>
                                     </template>
-                                </template>
-                            </div>
-                            <!-- <div v-else class="tenant-products-container-portrait mb-3">
-                                <div class="centered-container">
-                                    <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
+                                    <template v-else>
+                                        <template v-if="tenant_details.products.product_list.length > 0">
+                                            <div class="row subscriber-products-portrait ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 3) ? 'with-out-height':'with-height-portrait', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
+                                                <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 3) ? 'f-left' : 'm-auto'">
+                                                    <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-portrait-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-portrait-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-portrait-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
                                 </div>
-                            </div> -->
+                            </div>
                             <div class="row">
                                 <div class="col-6 text-left">
                                     <div class="btn btn-prestige-rounded w-100 bg-white btn-like-portrait ">
@@ -398,31 +395,28 @@
                         </div>
                         <div class="col-sm-10 text-center">
                             <div v-if="tenant_details.is_subscriber" class="tenant-products-container">
-                                <div class="row ml-1 mt-16" v-if="tenant_details.products.length > 0">
-                                    <div class="col-12 p-0" v-if="tenant_details.products.banners">
-                                        <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                <div class="products-container">
+                                    <div class="row ml-1 mt-16" v-if="tenant_details.products.length > 0">
+                                        <div class="col-12 p-0" v-if="tenant_details.products.banners">
+                                            <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                        </div>
                                     </div>
-                                </div>
-                                <template v-if="tenant_details.products.length == 0">
-                                    <div class="centered-container">
-                                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <template v-if="tenant_details.products.product_list.length > 0">
-                                        <div class="row subscriber-products ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
-                                            <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
-                                                <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
-                                            </div>
+                                    <template v-if="tenant_details.products.length == 0">
+                                        <div class="centered-container">
+                                            <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
                                         </div>
                                     </template>
-                                </template>
-                            </div>
-                            <!-- <div v-else class="tenant-products-container">
-                                <div class="centered-container">
-                                    <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
+                                    <template v-else>
+                                        <template v-if="tenant_details.products.product_list.length > 0">
+                                            <div class="row subscriber-products ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
+                                                <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
+                                                    <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </template>                    
                 </div>

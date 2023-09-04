@@ -492,6 +492,12 @@ input[type="text"]:focus
     height: 685px;
     border-radius: 30px;
     width: 96%;
+    overflow-y: hidden;
+} 
+
+.products-container {
+    width: 100%;
+    height: inherit;
     overflow-y: auto;
 }
 
@@ -501,7 +507,7 @@ input[type="text"]:focus
     height: 595px;
     border-radius: 30px;
     width: 95%;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .centered-container {
@@ -2325,12 +2331,12 @@ pre {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #888; 
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: #DFBD69; 
 }
 
 /* Handle on hover */
