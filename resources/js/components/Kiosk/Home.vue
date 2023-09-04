@@ -729,7 +729,9 @@
                 multilanguage: '',
                 site_website: '',
                 current_supplemental_title: '',
-                current_page: ''
+                current_page: '',
+                called_from: '',
+
             };
         },
 
@@ -1438,7 +1440,11 @@
                     return false;
                 }                
 
-                if(this.show_tenant == true) {
+                if(this.called_from == 'bannerAd' && this.show_tenant == true) {
+                    this.home_category = true;
+                    this.show_tenant = false;
+                }
+                if(!this.called_from && this.show_tenant == true) {
                     this.page_title = 'Store List';
                     this.alphabetical = true;
                     this.show_tenant = false;
@@ -1646,7 +1652,7 @@
                 this.findStore(tenant,called_from);                
             });
 
-            this.$root.$on('showTenantSubscriber', (tenant) => {
+            this.$root.$on('showTenantSubscriber', (tenant, called_from) => {
                 this.current_page = 'home';
                 this.no_record_found = false;
                 this.home_category = false;
@@ -1664,6 +1670,8 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
+                if(!called_from)
+                    this.called_from = 'bannerAd';
                 this.showTenant(tenant);          
             });
 
