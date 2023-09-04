@@ -83,7 +83,12 @@
 
             showTenant: function(tenant) {
                 if(tenant) {
-                    this.$root.$emit('showTenantMap', tenant);
+                    if(tenant.is_subscriber) {
+                        this.$root.$emit('showTenantSubscriber', tenant);
+                    }
+                    else {
+                        this.$root.$emit('showTenantMap', tenant);
+                    }
                 }
             },
 

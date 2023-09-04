@@ -1647,6 +1647,27 @@
                 this.findStore(tenant,called_from);                
             });
 
+            this.$root.$on('showTenantSubscriber', (tenant) => {
+                this.current_page = 'home';
+                this.no_record_found = false;
+                this.home_category = false;
+                this.child_category = false;
+                this.tabs_container = false;
+                this.isAlphabeticalClicked = false;
+                this.show_tenant = false;
+                this.alphabetical = false;
+                this.supplementals = false;
+                this.homeIsShown = true;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
+                this.showTenant(tenant);          
+            });
+
             var obj = this;
 
             $(function() {
