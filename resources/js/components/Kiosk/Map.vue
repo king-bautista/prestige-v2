@@ -989,6 +989,10 @@
                     vm.feedback_helpful = 'No';
                     //$(this).addClass('response-active-color');
                 });
+
+                $('#map-holder').on('click', function() {
+                    $('#pinch').hide();
+                })
             });
         },
 
