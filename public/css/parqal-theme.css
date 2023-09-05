@@ -1772,7 +1772,7 @@ input[type="text"]:focus
 
 .custom-modal-position-portrait {
     position: absolute;
-    top: 55%;
+    top: 63%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -2169,7 +2169,7 @@ pre {
 
 .my-product-image {
     border-radius: 20px;
-    width: 450px;
+    width: 563px;
     height: auto;
 }
 
