@@ -1007,27 +1007,17 @@ WayFinding.prototype = {
 
                 var x = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].x
                 var y = obj.settings.points.linePoint[obj.settings.points.linePoint.length - 1].y
-                var scale = 0.60;
+                var scale = 0.45;
 
-                var landscape = $(document).width();
-                if(landscape > 1920) {
-                    x = (x-500);
-                    y = (y/2);
-
-                    if(Math.abs(x) > 2000) {
-                        y = (y+1300);
-                    }
-                    else {
-                        y = (y-300);
-                    }
+                if(Math.abs(y) > 900) {
+                    y = (y-900);
                 }
                 else {
-                    x = (x-500);
-                    y = ((y/2)+800);
+                    y = (y-300);
                 }
-
+                
                 setTimeout(() => {
-                    panzoom.pan('-'+x, '-'+y);
+                    panzoom.pan('-'+(x-500), '-'+(y));
                     panzoom.zoom(scale, {
                         relative: true,
                         animate: true
