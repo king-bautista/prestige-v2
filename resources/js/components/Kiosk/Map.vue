@@ -864,6 +864,11 @@
                         if (!event.shiftKey) return
                         vm.panzoom.zoomWithWheel(event)
                     })
+
+                    parent.addEventListener('touchstart', function(event) {
+                        $(".pinch").hide();
+                        if (!event.shiftKey) return
+                    })
                 });
 
                 $('.pinch, .map-control-fit, .zoomable-container').on('click',function(){
