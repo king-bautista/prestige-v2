@@ -201,6 +201,7 @@
                             :close-on-select="true"
                             :show-labels="false"
                             @select="find_store"
+                            :disabled="tenant_dropdown"
                             id="search-input"
                             name="tenant-search"
                             placeholder="Input Destination"
@@ -392,6 +393,7 @@
                 with_disability: 0,
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
                 tenantSchedule :[],
+                tenant_dropdown: false,
             };
         },
 
@@ -512,6 +514,7 @@
 			},
 
             find_store: function(value, called_from = null) {
+                this.tenant_dropdown = true;
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
                     this.with_disability = 0;
@@ -567,6 +570,7 @@
                     animate: true
                 })
                 setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
+                setTimeout(() => {obj.tenant_dropdown = false}, 10000);
 
             },
 
@@ -624,7 +628,7 @@
                     relative: true,
                     animate: true
                 })
-                setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y))
+                setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y))                
             },
 
             softkeys: function() {
@@ -843,11 +847,11 @@
                     const elem = document.getElementById('zoomable-container')
                     const parent = elem.parentElement
                     vm.panzoom = Panzoom(elem, {
-                        maxScale: 5,
+                        maxScale: 3,
                         canvas: true,
                         startScale: vm.active_map_details.default_scale,
                         startX: vm.active_map_details.default_x,
-                        startY: vm.active_map_details.default_y
+                        startY: vm.active_map_details.default_y,
                     })
 
                     // Zoom In / Zoom Out Controls
@@ -927,7 +931,8 @@
                     $('.map-floor-option:not(:last-child)').css({'border-top-left-radius': '18px'});
                 });
 
-                $('#repeatButton').on('click',function(){
+                $('#repeatButton').on('click',function(){                    
+                    vm.tenant_dropdown = true; 
                     $('.map-floor-option .multiselect__tags .multiselect__single').html(vm.active_map_details.building_floor_name);
                     vm.panzoom.zoom(vm.active_map_details.default_zoom, {
                         relative: true,
@@ -935,6 +940,7 @@
                     });
                     setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
                     obj.wayfindings.replay(obj.with_disability, vm.panzoom);
+                    setTimeout(() => {vm.tenant_dropdown = false}, 10000);
     			});
 
                 $('#guide-button').on('click',function(){
