@@ -1515,6 +1515,7 @@
             },
 
             showTenant: function(tenant) {
+                this.tenant_details = '';
                 this.page_title = 'Store Page';   
                 this.tenant_details = tenant;
                 this.alphabetical = false;
@@ -1531,6 +1532,7 @@
 
                 $(".btn-like-display").removeClass('disabled-response');
                 $(".btn-heart").removeClass('fas').addClass('far');
+                $(".products-container").animate({ scrollTop: 0 });
                 $('#myProduct').hide();
             },
 
