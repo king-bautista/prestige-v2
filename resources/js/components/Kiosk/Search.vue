@@ -617,6 +617,10 @@
                         this.$root.$emit('callMutateLocation','tenant');
                         this.buildSchedule(this.tenant_details);
                         $('.resize-share').autoSizr(21);
+                        $(".btn-like-display").removeClass('disabled-response');
+                        $(".btn-heart").removeClass('fas').addClass('far');
+                        $(".products-container").animate({ scrollTop: 0 });
+                        $('#myProduct').hide();
                     }
 				})     
             },
@@ -636,6 +640,11 @@
                     this.$root.$emit('callMutateLocation','tenant');
 
                     this.buildSchedule(this.tenant_details);
+
+                    $(".btn-like-display").removeClass('disabled-response');
+                    $(".btn-heart").removeClass('fas').addClass('far');
+                    $(".products-container").animate({ scrollTop: 0 });
+                    $('#myProduct').hide();
 				})     
             },
 
@@ -848,6 +857,11 @@
                 setTimeout(() => {
                     this.$root.$emit('callSetTranslation');
                 }, 100);
+
+                $(".btn-like-display").removeClass('disabled-response');
+                $(".btn-heart").removeClass('fas').addClass('far');
+                $(".products-container").animate({ scrollTop: 0 });
+                $('#myProduct').hide();
             },
 
             updateLikeCount: function(id) {

@@ -516,9 +516,9 @@
 
             find_store: function(value, called_from = null) {
                 this.tenant_dropdown = true;
-                this.tenant_details = '';
+                // this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    // this.with_disability = (this.with_disability == 0 && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
+                    this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
