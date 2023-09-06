@@ -602,6 +602,7 @@
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
+                    this.tenant_details = '';
                     this.tenant_list = response.data.data;
                     this.tenant_details = response.data.data.shift();
                     this.page_title = 'Store Page';
@@ -624,6 +625,7 @@
                 this.search.id = id;
                 axios.post('/api/v1/search', this.search)
 				.then(response => {
+                    this.tenant_details = '';
                     this.tenant_list_temp = response.data.data;   
                     this.tenant_details = this.tenant_list_temp[0];
                     this.page_title = 'Store Page';

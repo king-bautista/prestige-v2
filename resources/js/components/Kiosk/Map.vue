@@ -214,8 +214,8 @@
                                 List is empty
                             </span>
                         </multiselect>
-                        <div class="input-group-append">
-                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant);" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button">
+                        <div class="input-group-append" >
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant);" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -455,7 +455,7 @@
                 this.tenant_list = [];
                 axios.get('/api/v1/tenants/all')
                 .then(response => {
-                    this.tenant_list = response.data.data
+                    this.tenant_list = response.data.data;
                 });
             },
 
@@ -620,6 +620,7 @@
                 $(".pinch").show();
                 $('.map-tenant-option .multiselect__single').html('Input Destination');
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
+                $('.multiselect__content-wrapper').animate({ scrollTop: 0 });
 
                 obj.$refs.multiselectFloor.value = this.active_map_details;
 
@@ -826,8 +827,6 @@
         },
 
         mounted() {
-
-
             this.softkeys();
             var vm = this;
             $(function() {    

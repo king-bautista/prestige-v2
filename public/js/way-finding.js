@@ -712,7 +712,6 @@ WayFinding.prototype = {
         var context = canvas.getContext('2d');
 
         context.clearRect(0,0,canvas.width,canvas.height);
-        console.log(direction);
         if(direction) {
             context.drawImage(document.getElementById('marker-escalator-up'),(this.settings.frame_escalator*142),0,142,67,(this.settings.points.linePoint[this.settings.current_point].x),(this.settings.points.linePoint[this.settings.current_point].y-80),142,67);
             context.font = "bold 30px Overpass";
@@ -842,85 +841,87 @@ WayFinding.prototype = {
         var obj = this;
         var distance = '';
 
-        $.get( "/api/v1/site/maps/get-routes/"+id+"/"+with_disability, function(response) {
-            if(response.data.length) {
-                obj.settings.points = { linePoint : []};
+        setTimeout(() => {
+            $.get( "/api/v1/site/maps/get-routes/"+id+"/"+with_disability, function(response) {
+                if(response.data.length) {
+                    obj.settings.points = { linePoint : []};
 
-                $.each(response.data,function(index, route) {
-                    var x = parseFloat(response.data[index][0]); //point_x
-                    var y = parseFloat(response.data[index][1]); //point_y
-                    var z = parseFloat(response.data[index][2]); //floor level
-                    var z2 = parseFloat(response.data[index][3]); //building
-                    var map_id = parseFloat(response.data[index][4]); //building
-                    distance = parseFloat(response.data[index][5]); //distance
+                    $.each(response.data,function(index, route) {
+                        var x = parseFloat(response.data[index][0]); //point_x
+                        var y = parseFloat(response.data[index][1]); //point_y
+                        var z = parseFloat(response.data[index][2]); //floor level
+                        var z2 = parseFloat(response.data[index][3]); //building
+                        var map_id = parseFloat(response.data[index][4]); //building
+                        distance = parseFloat(response.data[index][5]); //distance
 
-                    if(index == 0) {
-                        obj.settings.points.linePoint.push(new Point(x,y,z,z2,map_id));
-                    }else{
-                        var tmp_x = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].x);
-                        var tmp_y = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].y);
-                        var tmp_z = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].z);
-                        var tmp_z2 = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].z2);
-                    
-                        if(tmp_z != z || tmp_z2 != z2) {
+                        if(index == 0) {
                             obj.settings.points.linePoint.push(new Point(x,y,z,z2,map_id));
-                        }
-                        else{
-                            var StepSize = 10;
-                            var delta_x =  x - tmp_x;
-                            var delta_y = y - tmp_y;
-                            var slope = delta_x == 0 ? 1 : delta_y / delta_x;
-                            var b = tmp_y - slope * tmp_x;
-                            var loop_exit = true;
-
-                            if(Math.abs(delta_x) < Math.abs(delta_y)) {
-                                
-                                iy_increment = (delta_y < 0) ? -1 * StepSize : StepSize;
-
-                                for (iy = tmp_y; loop_exit; iy += iy_increment) {
-
-                                    loop_exit = delta_y < 0 ? (iy >= y) : (iy <= y);
-                                    ix = slope == 1 ? tmp_x : (iy - b) / slope;
-                                    
-                                    if (delta_y < 0 ? (iy >= y) : (iy <= y)) {
-                                        obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2,map_id));
-                                    }                                    
-                                }
+                        }else{
+                            var tmp_x = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].x);
+                            var tmp_y = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].y);
+                            var tmp_z = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].z);
+                            var tmp_z2 = parseFloat(obj.settings.points.linePoint[obj.settings.points.linePoint.length-1].z2);
+                        
+                            if(tmp_z != z || tmp_z2 != z2) {
+                                obj.settings.points.linePoint.push(new Point(x,y,z,z2,map_id));
                             }
-                            else {
-                                ix_increment = delta_x < 0 ? -1 * StepSize : StepSize;
-                                for (ix = tmp_x; loop_exit; ix += ix_increment)
-                                {
-                                    if (loop_exit)
-                                    {
-                                        loop_exit = delta_x < 0 ? (ix >= x) : (ix <= x);
-                                        iy = slope * ix + b;
-                                        if (delta_x < 0 ? (ix >= x) : (ix <= x))
-                                        {
+                            else{
+                                var StepSize = 10;
+                                var delta_x =  x - tmp_x;
+                                var delta_y = y - tmp_y;
+                                var slope = delta_x == 0 ? 1 : delta_y / delta_x;
+                                var b = tmp_y - slope * tmp_x;
+                                var loop_exit = true;
+
+                                if(Math.abs(delta_x) < Math.abs(delta_y)) {
+                                    
+                                    iy_increment = (delta_y < 0) ? -1 * StepSize : StepSize;
+
+                                    for (iy = tmp_y; loop_exit; iy += iy_increment) {
+
+                                        loop_exit = delta_y < 0 ? (iy >= y) : (iy <= y);
+                                        ix = slope == 1 ? tmp_x : (iy - b) / slope;
+                                        
+                                        if (delta_y < 0 ? (iy >= y) : (iy <= y)) {
                                             obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2,map_id));
-                                        }
+                                        }                                    
                                     }
                                 }
-                            }                    
+                                else {
+                                    ix_increment = delta_x < 0 ? -1 * StepSize : StepSize;
+                                    for (ix = tmp_x; loop_exit; ix += ix_increment)
+                                    {
+                                        if (loop_exit)
+                                        {
+                                            loop_exit = delta_x < 0 ? (ix >= x) : (ix <= x);
+                                            iy = slope * ix + b;
+                                            if (delta_x < 0 ? (ix >= x) : (ix <= x))
+                                            {
+                                                obj.settings.points.linePoint.push(new Point(Math.floor(ix),Math.floor(iy),tmp_z,tmp_z2,map_id));
+                                            }
+                                        }
+                                    }
+                                }                    
+                            }
                         }
+                    });
+
+                    var steps = (distance / 10).toFixed(0);
+                    var mins = (steps / 90).toFixed(0);
+                    $(".map-distance").html((steps * 0.74).toFixed(0)  + 'm');
+                    $(".map-steps").html( steps + ' steps');
+                    $(".map-minutes").html( mins + ' min' + (mins > 1 ? 's' : ''));
+
+                    clearInterval(obj.settings.inter);
+                    obj.settings.inter = 0;
+                    obj.settings.current_point = 0;
+                    
+                    if(obj.settings.points.linePoint.length > 1 && !obj.settings.inter) {
+                        obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
                     }
-                });
-
-                var steps = (distance / 10).toFixed(0);
-                var mins = (steps / 90).toFixed(0);
-                $(".map-distance").html((steps * 0.74).toFixed(0)  + 'm');
-                $(".map-steps").html( steps + ' steps');
-                $(".map-minutes").html( mins + ' min' + (mins > 1 ? 's' : ''));
-
-                clearInterval(obj.settings.inter);
-                obj.settings.inter = 0;
-                obj.settings.current_point = 0;
-                
-                if(obj.settings.points.linePoint.length > 1 && !obj.settings.inter) {
-                    obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
                 }
-            }
-        });
+            });
+        }, 1000);
     },
 
     replay: function(with_disability = 0, panzoom = null){
@@ -946,8 +947,6 @@ WayFinding.prototype = {
 
             var flr_build = this.settings.currentmap.split('-');
             if(flr_build[0] != this.settings.points.linePoint[this.settings.current_point].z && flr_build[1] == this.settings.points.linePoint[this.settings.current_point].z2) {
-                console.log(this.settings);
-                console.log(this.settings.current_point);
                 var to = this.settings.points.linePoint[this.settings.current_point].z;
                 var bldg = this.settings.points.linePoint[this.settings.current_point].z2;
                 this.settings.current_point--;
@@ -1043,8 +1042,9 @@ WayFinding.prototype = {
         }
       
         this.changemap(this.settings.currentmap);
-        if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
-
+        setTimeout(() => {
+            if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
+        }, 1000);
     },
 
     changemap: function(id){
@@ -1058,7 +1058,6 @@ WayFinding.prototype = {
         var flr_build = id.split('-');
 
         $.get( "/api/v1/site/maps/get-map-id/"+flr_build[0]+"/"+flr_build[1], function(response) {
-            console.log(response);
             obj.showmap(response);
             $('.map-floor-option .multiselect__tags .multiselect__single').html(response.building_floor_name);
         });

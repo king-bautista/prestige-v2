@@ -2343,3 +2343,18 @@ pre {
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
+
+.multiselect--disabled {
+    color: #6c757d;
+    background-color: #6c757d;
+    opacity: 1 !important;
+}
+
+.btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
+    color: #6c757d;
+    background-color: #6c757d;
+}
+
+.btn.disabled, .btn:disabled {
+    opacity: 1 !important;
+}
