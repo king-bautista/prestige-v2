@@ -215,7 +215,7 @@
                             </span>
                         </multiselect>
                         <div class="input-group-append" >
-                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant);" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -518,7 +518,7 @@
                 this.tenant_dropdown = true;
                 this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    this.with_disability = 0;
+                    // this.with_disability = (this.with_disability == 0 && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
@@ -571,7 +571,7 @@
                     animate: true
                 })
                 setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
-                setTimeout(() => {obj.tenant_dropdown = false}, 10000);
+                //setTimeout(() => {obj.tenant_dropdown = false}, 10000);
 
             },
 
@@ -595,6 +595,7 @@
                 this.map_form.tenant = '';
                 this.with_disability = 0;
                 this.tenant_details = '';
+                this.tenant_dropdown = false;
                 var obj = this;
                 $(function() {
                     this.wayfindings.stopall();
@@ -832,7 +833,7 @@
             var vm = this;
             $(function() {    
                 var obj = this;     
-                this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
+                this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'}, vm);
                 this.wayfindings.animate_marker_here_stop();
                 // $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
 
@@ -939,8 +940,8 @@
                         animate: true
                     });
                     setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
-                    obj.wayfindings.replay(obj.with_disability, vm.panzoom);
-                    setTimeout(() => {vm.tenant_dropdown = false}, 10000);
+                    obj.wayfindings.replay(vm.with_disability, vm.panzoom);
+                    //setTimeout(() => {vm.tenant_dropdown = false}, 10000);
     			});
 
                 $('#guide-button').on('click',function(){

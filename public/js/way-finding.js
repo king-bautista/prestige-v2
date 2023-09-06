@@ -35,6 +35,7 @@ var defaults = {
     tenant_store_address: '',
     panzoom: '',
     with_disability: 0,
+    vue_obj: '',
 }
 
 var Point = function Point(x,y,z,z2,map_id) {
@@ -47,8 +48,9 @@ var Point = function Point(x,y,z,z2,map_id) {
 
 var self_class = '';
 
-var WayFinding = function(params) {
+var WayFinding = function(params, obj) {
     this.settings = Object.assign(defaults, params);
+    this.vue_obj = obj;
     this.init(1);
 }
 
@@ -1014,6 +1016,8 @@ WayFinding.prototype = {
                 else {
                     y = (y-300);
                 }
+
+                this.vue_obj.tenant_dropdown = false;
                 
                 setTimeout(() => {
                     panzoom.pan('-'+(x-500), '-'+(y));
