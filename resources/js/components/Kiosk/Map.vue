@@ -231,6 +231,7 @@
                             :max-height="180"
                             :options="site_floors"
                             :multiple="false"
+                            :disabled="tenant_dropdown"
                             :close-on-select="true"
                             :show-labels="false"
                             @select="toggleSelectedMap"
