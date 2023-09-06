@@ -2345,14 +2345,27 @@ pre {
 }
 
 .multiselect--disabled {
-    color: #6c757d;
-    background-color: #6c757d;
+    color: #e8e8e8 !important;
+    background-color: #e8e8e8 !important;
     opacity: 1 !important;
+}
+
+.multiselect--disabled > .multiselect__tags{
+    background-color: #e8e8e8 !important;
+}
+
+.multiselect--disabled > .multiselect__tags > .multiselect__single{
+    color: #000;
+    background-color: #e8e8e8 !important;
 }
 
 .btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
     color: #6c757d;
-    background-color: #6c757d;
+    background-color: #e8e8e8 !important;
+}
+
+.btn-outline-secondary.disabled:hover, .btn-outline-secondary:disabled:hover {
+    background-color: #e8e8e8 !important;
 }
 
 .btn.disabled, .btn:disabled {
