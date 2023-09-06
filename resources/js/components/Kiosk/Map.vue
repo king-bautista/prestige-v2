@@ -552,11 +552,11 @@
                     $('.response-btn').removeClass('response-active-color');
 
                     if(called_from === 'search-input') {
-                        $('.map-tenant-option .multiselect__single').html('Input Destination');
+                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
                         $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
                     }
                     else {
-                        $('.map-tenant-option .multiselect__single').html('Input Destination');
+                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
                         $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", value.brand_name));
                     }
                 });
