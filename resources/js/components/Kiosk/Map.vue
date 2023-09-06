@@ -969,7 +969,8 @@
                 });                
 
                 $(".map-search-modal").on('click',function(){
-                    $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
+                    vm.map_form.tenant = '';
+                    $('.map-tenant-option .multiselect__single').html('Input Destination');
                 });
 
                 $(".softkeys__btn").on('mousedown',function(){
