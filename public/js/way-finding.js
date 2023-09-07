@@ -1,6 +1,6 @@
 var defaults = {
-    width: 4000,
-    height: 4000,
+    width: 5000,
+    height: 5000,
     currentmap_id: 0,
     defaultmap_id: 0,
     currentmap: 0,
