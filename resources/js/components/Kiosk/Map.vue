@@ -471,13 +471,14 @@
             },
 
             goBack: function() {
+                this.with_disability = 0;
                 $('#myProduct, #myevent').hide();
                 $('.ui-autocomplete').empty();
 
-                if (this.called_from == 'search' && this.tenant_details) {
-                    this.$root.$emit('callSearch', 'map');   
-                    return false;
-                }
+                // if (this.called_from == 'search' && this.tenant_details) {
+                //     this.$root.$emit('callSearch', 'map');   
+                //     return false;
+                // }
 
                 if (this.called_from == 'home') {
                     this.$root.$emit('callAboutFrom',this.called_from);
