@@ -1709,6 +1709,16 @@
                 obj.$root.$on('callUpdateMainCategory', (params) => {
                     obj.updateMainCategory(params);
                 });
+
+                obj.$root.$on('callSearchBack', (value) => {
+                    obj.searchButton(value);
+                    if(value.is_subscriber) {
+                        obj.$refs.callSearch.showTenant(value);
+                    }
+                    else {
+                        obj.$refs.callSearch.goBack();
+                    }
+                });
                 //-- end
 
                 $('.store-tabs-item').on('click', function () {

@@ -478,20 +478,25 @@
                 $('#myProduct, #myevent').hide();
                 $('.ui-autocomplete').empty();
 
-                // if (this.called_from == 'search' && this.tenant_details) {
-                //     this.$root.$emit('callSearch', 'map');   
-                //     return false;
-                // }
-
-                if (this.called_from == 'home') {
+                if (!this.tenant_details && this.called_from == 'home') {
                     this.$root.$emit('callAboutFrom',this.called_from);
-                } else if (this.called_from == 'search') {
+                } else if (!this.tenant_details && this.called_from == 'search') {
                     this.$root.$emit('callAboutFrom',this.called_from);
-                } else if (this.called_from == 'promo') {
+                } else if (!this.tenant_details && this.called_from == 'promo') {
                     this.$root.$emit('callAboutFrom',this.called_from);
-                } else if (this.called_from == 'cinema') {
+                } else if (!this.tenant_details && this.called_from == 'cinema') {
                     this.$root.$emit('callAboutFrom',this.called_from);
-                } else {
+                } else if(this.tenant_details && this.called_from == 'search') {
+                    // if(this.tenant_details.is_subscriber) {
+                    //     this.$root.$emit('callSearchBack', this.tenant_details);                           
+                    // }
+                    // else {
+                    //     this.$root.$emit('callSearch', 'map');   
+                    // }
+                    this.$root.$emit('callSearchBack', this.tenant_details);                           
+                    
+                }
+                else {
                     this.$root.$emit('MainCategories');
                     $('.h-button').removeClass('active');
                     $('.home-button').addClass('active');

@@ -650,7 +650,6 @@
 
             goBack: function() {
                 // $('.ui-autocomplete').empty();
-
                 if(this.show_tenant == true && this.search_results == true) {
                     this.show_tenant = false;
                     this.search_page = true;
@@ -684,6 +683,20 @@
                     this.getSuggestionList();
                     this.page_title = 'Search';
                     $("#code").val('');
+
+                    setTimeout(() => {
+                        this.$root.$emit('callSetTranslation');
+                    }, 100);
+                }
+                else if(this.show_tenant == true && this.fromAutoSuggest == true) {
+                    this.tenant_list = [];
+                    this.search_page = true;
+                    this.show_tenant = false;
+                    this.search_results = false;
+                    this.getSuggestionList();
+                    $("#code").val('');
+                    this.fromAutoSuggest = false;
+                    this.page_title = 'Search';
 
                     setTimeout(() => {
                         this.$root.$emit('callSetTranslation');
@@ -988,6 +1001,7 @@
         },
 
         mounted() {
+
             this.softkeys();
             $(function() {
                 $(".control-prev-sp").hide();
