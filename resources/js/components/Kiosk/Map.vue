@@ -21,10 +21,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12 mb-3 pl-0">
+            <div class="col-md-12" style="background-color: #fff;">
                 <template v-if="tenant_details">
                     <template v-if="site_orientation == 'Portrait'">
-                        <div class="row tenant-details-portrait map-tenant-portrait">
+                        <div class="row tenant-details-portrait map-tenant-portrait mt-1">
                             <div class="col-sm-3 text-center">
                                 <div class="my-auto pt-3">
                                     <img class="map-tenant-details-logo" :src="tenant_details.brand_logo">
@@ -122,7 +122,10 @@
                         </div>
                     </template>
                 </template>
-
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mb-3 pl-0">
                 <div id="tenant-details" v-bind:class="(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait-text-info': 'card mb-3 label-3'">
                     <div class="card-body text-info text-center p-0">
                         <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
@@ -156,7 +159,7 @@
                     </div>
                 </div>
 
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'map-holder-portrait': 'map-holder'">
+                <div v-bind:class="[(site_orientation == 'Portrait') ? 'map-holder-portrait': 'map-holder', (site_orientation == 'Portrait' && tenant_details) ? 'map-height': '']">
                     <div class="zoomable-container" id="zoomable-container"></div>
                     <img src="images/parqal-pinch.gif" class="pinch"/>
                 </div>
@@ -552,14 +555,19 @@
                     $('.response-btn').removeClass('disabled-response');
                     $('.response-btn').removeClass('response-active-color');
 
-                    if(called_from === 'search-input') {
-                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
-                        $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
-                    }
-                    else {
-                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
-                        $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", value.brand_name));
-                    }
+                    // if(obj.called_from === 'search-input') {
+                    //     alert('1');
+                    //     $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    //     $('.map-tenant-option .multiselect__single').html($('.directions-to').html());
+                    // }
+                    // else {
+                    //     alert('2');
+                    //     $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    //     $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
+                    // }
+                    $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
+
                 });
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
 

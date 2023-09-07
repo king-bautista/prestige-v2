@@ -1052,6 +1052,10 @@ input[type="text"]:focus
     width: 100%;
 }
 
+.map-height {
+    height: 770px !important;
+}
+
 .btn-secondary {
     color: #000;
     background-color: #DFBD69;
@@ -2210,12 +2214,13 @@ pre {
 }
 
 .map-tenant-portrait {
-    position: absolute;
+    /* position: absolute; */
     top: 1px !important;
     left: 85px !important;
     z-index: 1;
     width: 972px;
     height: 199px;
+    margin: auto;
 }
 
 .map-tenant-details-logo{
