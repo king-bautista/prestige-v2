@@ -923,7 +923,7 @@ WayFinding.prototype = {
                     }
                 }
             });
-        }, 4000);
+        }, 2000);
     },
 
     replay: function(with_disability = 0, panzoom = null){
@@ -1048,7 +1048,7 @@ WayFinding.prototype = {
         this.changemap(this.settings.currentmap);
         setTimeout(() => {
             if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
-        }, 4000);
+        }, 2000);
     },
 
     changemap: function(id){
