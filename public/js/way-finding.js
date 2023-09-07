@@ -1,6 +1,6 @@
 var defaults = {
-    width: 5000,
-    height: 5000,
+    width: 4000,
+    height: 4000,
     currentmap_id: 0,
     defaultmap_id: 0,
     currentmap: 0,
@@ -923,7 +923,7 @@ WayFinding.prototype = {
                     }
                 }
             });
-        }, 1000);
+        }, 4000);
     },
 
     replay: function(with_disability = 0, panzoom = null){
@@ -1048,7 +1048,7 @@ WayFinding.prototype = {
         this.changemap(this.settings.currentmap);
         setTimeout(() => {
             if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
-        }, 1000);
+        }, 4000);
     },
 
     changemap: function(id){
