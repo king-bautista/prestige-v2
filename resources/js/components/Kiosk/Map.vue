@@ -479,6 +479,7 @@
                 $('#myProduct, #myevent').hide();
                 $('.ui-autocomplete').empty();
 
+
                 if (!this.tenant_details && this.called_from == 'home') {
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (!this.tenant_details && this.called_from == 'search') {
@@ -487,15 +488,10 @@
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (!this.tenant_details && this.called_from == 'cinema') {
                     this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (this.tenant_details && this.called_from == 'home') {
+                    this.$root.$emit('callShowTenant',this.tenant_details.category_name);
                 } else if(this.tenant_details && this.called_from == 'search') {
-                    // if(this.tenant_details.is_subscriber) {
-                    //     this.$root.$emit('callSearchBack', this.tenant_details);                           
-                    // }
-                    // else {
-                    //     this.$root.$emit('callSearch', 'map');   
-                    // }
-                    this.$root.$emit('callSearchBack', this.tenant_details);                           
-                    
+                    this.$root.$emit('callSearchBack', this.tenant_details, this.called_from);                                               
                 }
                 else {
                     this.$root.$emit('MainCategories');
@@ -571,7 +567,7 @@
                     //     $('.destination').html($('.map-tenant-option .multiselect__single').html());
                     //     $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
                     // }
-                    $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    //$('.destination').html($('.map-tenant-option .multiselect__single').html());
                     $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
 
                 });

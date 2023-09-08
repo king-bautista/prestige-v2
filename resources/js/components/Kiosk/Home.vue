@@ -731,7 +731,7 @@
                 current_supplemental_title: '',
                 current_page: '',
                 called_from: '',
-
+                current_subcategory: '',
             };
         },
 
@@ -1149,6 +1149,7 @@
             },
 
             getTenantsByCategory: function(category) {
+                this.current_subcategory = category;
                 this.no_record_found = false;
                 this.tenant_list = [];
                 this.category_label = category.label;
@@ -1710,14 +1711,42 @@
                     obj.updateMainCategory(params);
                 });
 
-                obj.$root.$on('callSearchBack', (value) => {
-                    obj.searchButton(value);
-                    if(value.is_subscriber) {
-                        obj.$refs.callSearch.showTenant(value);
-                    }
-                    else {
-                        obj.$refs.callSearch.goBack();
-                    }
+                obj.$root.$on('callShowTenant', (params) => {
+                    obj.home_category = false;
+                    obj.child_category = false;
+                    obj.tabs_container = false;
+                    obj.isAlphabeticalClicked = false;
+                    obj.show_tenant = false;
+                    obj.alphabetical = true;
+                    obj.supplementals = false;
+                    obj.homeIsShown = true;
+                    obj.mapIsShown = false;
+                    obj.searchIsShown = false;
+                    obj.promosIsShown = false;
+                    obj.cinemaIsShown = false;
+                    obj.aboutIsShown = false;
+                    obj.landmarkIsShown = false;
+                    obj.eventsIsShown = false;
+                    obj.page_title = params;
+                    obj.$refs.callAssist.filterAssist('tenantcategory',obj.current_language_set);
+                });
+                
+
+                obj.$root.$on('callSearchBack', (value, called_from) => {
+                    obj.tenant_details = '';
+                    obj.current_page = 'search';
+                    obj.homeIsShown = false;
+                    obj.show_tenant = false;
+                    obj.searchIsShown = true;        
+                    obj.mapIsShown = false;
+                    obj.promosIsShown = false;
+                    obj.cinemaIsShown = false;
+                    obj.aboutIsShown = false;
+                    obj.landmarkIsShown = false;
+                    obj.eventsIsShown = false;
+                    obj.$refs.callSearch.getSuggestionList();
+                    obj.$refs.callAssist.filterAssist('searchbox',this.current_language_set);
+                    obj.$refs.callSearch.goBack(called_from);
                 });
                 //-- end
 

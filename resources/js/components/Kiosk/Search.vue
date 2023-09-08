@@ -648,9 +648,9 @@
 				})     
             },
 
-            goBack: function() {
+            goBack: function(called_from ='') {
                 // $('.ui-autocomplete').empty();
-                if(this.show_tenant == true && this.search_results == true) {
+                if(this.show_tenant == true && this.search_results == true && !called_from) {
                     this.show_tenant = false;
                     this.search_page = true;
                     this.search_results = true;
@@ -662,7 +662,7 @@
                         this.$root.$emit('callSetTranslation');
                     }, 100);
                 }
-                else if(this.show_tenant == false && this.search_results == true) {
+                else if(this.show_tenant == false && this.search_results == true && !called_from) {
                     this.tenant_list = [];
                     this.show_tenant = false;
                     this.search_page = true;
@@ -670,6 +670,20 @@
                     this.getSuggestionList();
                     $("#code").val('');
                     this.page_title = 'Search';
+
+                    setTimeout(() => {
+                        this.$root.$emit('callSetTranslation');
+                    }, 100);
+                }
+                else if(this.show_tenant == false && this.search_results == true && called_from) {
+                    alert('3');
+                    this.show_tenant = false;
+                    this.search_page = true;
+                    this.search_results = true;
+                    this.getSuggestionList();
+                    $("#code").val('');
+                    this.page_title = 'Search';
+                    called_from = '';
 
                     setTimeout(() => {
                         this.$root.$emit('callSetTranslation');
