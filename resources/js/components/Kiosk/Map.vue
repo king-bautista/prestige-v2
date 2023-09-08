@@ -398,6 +398,7 @@
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
                 tenantSchedule :[],
                 tenant_dropdown: false,
+                site_points: [],
             };
         },
 
@@ -840,9 +841,17 @@
                 $("#map-modal-schedule").show();
             },
 
+            getPoints: function() {
+                axios.get('/api/v1/site/maps/get-points')
+                .then(response => {
+                    this.site_points = response.data.data
+                });
+            }
         },
 
         mounted() {
+            this.getPoints();
+
             this.softkeys();
             var vm = this;
             $(function() {    

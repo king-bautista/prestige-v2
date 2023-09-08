@@ -59,7 +59,8 @@ Route::group(['prefix' => 'v1'], function ()
     Route::get('/tenants/all', 'Kiosk\MainController@getAllTenants')->where('id', '[0-9]+')->name('kiosk.tenants.all');
     Route::get('/site/floors', 'Kiosk\MainController@getFloors')->where('id', '[0-9]+')->name('kiosk.site.floors');
     Route::get('/site/maps', 'Kiosk\MainController@getMaps')->where('id', '[0-9]+')->name('kiosk.site.maps');
-    Route::get('/site/maps/get-points/{id}', 'Kiosk\MainController@getPoints')->where('id', '[0-9]+')->name('kiosk.site.get-points');
+    Route::get('/site/maps/get-points', 'Kiosk\MainController@getPoints')->where('id', '[0-9]+')->name('kiosk.site.get-points');
+    //Route::get('/site/maps/get-points/{id}', 'Kiosk\MainController@getPoints')->where('id', '[0-9]+')->name('kiosk.site.get-points');
     Route::get('/site/maps/get-routes/{id}/{with_disability}', 'Kiosk\MainController@getRoutes')->where('id', '[0-9]+')->where('with_disability', '[0-9]+')->name('kiosk.site.get-routes');
     Route::get('/site/maps/get-floor-name/{id}', 'Kiosk\MainController@getFloorName')->where('id', '[0-9]+')->name('kiosk.site.get-floor-name');
     Route::get('/site/maps/get-building-name/{id}', 'Kiosk\MainController@getBuildingName')->where('id', '[0-9]+')->name('kiosk.site.get-building-name');
