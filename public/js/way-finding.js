@@ -149,10 +149,6 @@ WayFinding.prototype = {
 
             //add class to map
             $("#" + canvas.id).addClass('my-map').attr('level', map_details.site_building_level_id);
-            
-            // add points to map
-            // $(".zoomable-container").css({'width':image.width,'height':image.height,'position':'relative'});
-            // $("#zoomable-container").css({'width':'inherit','height':'inherit','position':'relative'});
         };
 
         image.src = map_details.map_file_path + '?' + Math.random();
@@ -168,22 +164,33 @@ WayFinding.prototype = {
             this.settings.currentbuilding = map_details.site_building_id;
             this.settings.currentmap_id = map_details.id;
         }
-
-        // obj.load_points();
     },
 
     load_points: function() {
         var obj = this;
-        $.get( "/api/v1/site/maps/get-points/"+this.settings.currentmap_id, function(response) {
-            if(response.data.length) {
-                $.each(response.data,function(index,tenant) {
-                    // create points and label
-                    obj.create_point(tenant);
-                    if(tenant.point_type == 6) {
-                        obj.settings.locationx = tenant.point_x;
-                        obj.settings.locationy = tenant.point_y;                    
-                    }
-                });
+
+        console.log(this.vue_obj.site_points[this.settings.currentmap_id]);
+        
+
+        // $.get( "/api/v1/site/maps/get-points/"+this.settings.currentmap_id, function(response) {
+        //     if(response.data.length) {
+        //         $.each(response.data,function(index,tenant) {
+        //             // create points and label
+        //             obj.create_point(tenant);
+        //             if(tenant.point_type == 6) {
+        //                 obj.settings.locationx = tenant.point_x;
+        //                 obj.settings.locationy = tenant.point_y;                    
+        //             }
+        //         });
+        //     }
+        // });
+
+        $.each(this.vue_obj.site_points[this.settings.currentmap_id], function(index,tenant) {
+            // create points and label
+            obj.create_point(tenant);
+            if(tenant.point_type == 6) {
+                obj.settings.locationx = tenant.point_x;
+                obj.settings.locationy = tenant.point_y;                    
             }
         });
 
@@ -923,7 +930,7 @@ WayFinding.prototype = {
                     }
                 }
             });
-        }, 2000);
+        }, 500);
     },
 
     replay: function(with_disability = 0, panzoom = null){
@@ -1048,7 +1055,7 @@ WayFinding.prototype = {
         this.changemap(this.settings.currentmap);
         setTimeout(() => {
             if(!obj.settings.inter) obj.settings.inter = setInterval(function(){obj.drawpoints()},20);
-        }, 2000);
+        }, 500);
     },
 
     changemap: function(id){
