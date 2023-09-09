@@ -491,7 +491,8 @@
                 } else if (this.tenant_details && this.called_from == 'home') {
                     this.$root.$emit('callShowTenant',this.tenant_details.category_name);
                 } else if(this.tenant_details && this.called_from == 'search') {
-                    this.$root.$emit('callSearchBack', this.tenant_details, this.called_from);                                               
+                    this.tenant_details = '';
+                    this.$root.$emit('callSearchBack', this.tenant_details);                                               
                 }
                 else {
                     this.$root.$emit('MainCategories');
@@ -521,7 +522,6 @@
 			},
 
             find_store: function(value, called_from = null) {
-                this.tenant_dropdown = true;
                 // this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
                     this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
@@ -530,8 +530,13 @@
                     this.buildSchedule(this.tenant_details);
                     this.updateViewCount(this.tenant_details.id);
                 }
+
                 if(value.brand_name == 'Elevator') {
                     this.with_disability = 1;
+                }
+
+                if(this.tenant_details) {
+                    this.tenant_dropdown = true;
                 }
 
                 this.called_from = called_from;
