@@ -57,7 +57,7 @@
         </div>
         <div v-show="show_landmark">
             <div class="row">
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4 mt-100 pl-5 ml-5': 'col-sm-3 ml-125 pt-5'">
+                <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-4 mt-100 pl-5 ml-5': 'col-sm-3 ml-125 pt-2'">
                     <img :src="landmark_details.image_url_path" class="lanmark-img">
                 </div>
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-7 mt-50': 'col-sm-7'" >

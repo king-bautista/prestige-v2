@@ -1744,9 +1744,13 @@
                     obj.aboutIsShown = false;
                     obj.landmarkIsShown = false;
                     obj.eventsIsShown = false;
+                    if(obj.$refs.callSearch.search_results == false) {
+                        obj.$refs.callSearch.tenant_details = '';
+                        obj.$refs.callSearch.search_page = true;
+                        obj.$refs.callSearch.resetPage();
+                    }
                     obj.$refs.callSearch.getSuggestionList();
                     obj.$refs.callAssist.filterAssist('searchbox',this.current_language_set);
-                    obj.$refs.callSearch.goBack(called_from);
                 });
                 //-- end
 
