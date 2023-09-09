@@ -530,7 +530,7 @@
                     this.updateViewCount(this.tenant_details.id);
                 }
 
-                if(value.brand_name == 'Elevator') {
+                if(value.brand_name.toUpperCase() == 'ELEVATOR') {
                     this.with_disability = 1;
                 }
 
