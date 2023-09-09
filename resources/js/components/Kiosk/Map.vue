@@ -535,7 +535,7 @@
                     this.with_disability = 1;
                 }
 
-                if(this.tenant_details) {
+                if(value) {
                     this.tenant_dropdown = true;
                 }
 
