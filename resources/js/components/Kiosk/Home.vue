@@ -1739,7 +1739,6 @@
                 });
                 
                 obj.$root.$on('callSearchBack', (value, called_from) => {
-                    alert('test');
                     obj.tenant_details = '';
                     obj.current_page = 'search';
                     obj.homeIsShown = false;
