@@ -478,8 +478,7 @@
                 this.with_disability = 0;
                 $('#myProduct, #myevent').hide();
                 $('.ui-autocomplete').empty();
-
-
+                console.log(this.called_from);
                 if (!this.tenant_details && this.called_from == 'home') {
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (!this.tenant_details && this.called_from == 'search') {
@@ -489,7 +488,7 @@
                 } else if (!this.tenant_details && this.called_from == 'cinema') {
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (this.tenant_details && this.called_from == 'home') {
-                    this.$root.$emit('callShowTenant',this.tenant_details.category_name);
+                    this.$root.$emit('callShowTenant',this.tenant_details);
                 } else if(this.tenant_details && this.called_from == 'search') {
                     this.tenant_details = '';
                     this.$root.$emit('callSearchBack', this.tenant_details);                                               

@@ -729,7 +729,6 @@
                 multilanguage: '',
                 site_website: '',
                 current_supplemental_title: '',
-                current_page: '',
                 called_from: '',
                 current_subcategory: '',
             };
@@ -1716,8 +1715,6 @@
                     obj.child_category = false;
                     obj.tabs_container = false;
                     obj.isAlphabeticalClicked = false;
-                    obj.show_tenant = false;
-                    obj.alphabetical = true;
                     obj.supplementals = false;
                     obj.homeIsShown = true;
                     obj.mapIsShown = false;
@@ -1727,11 +1724,20 @@
                     obj.aboutIsShown = false;
                     obj.landmarkIsShown = false;
                     obj.eventsIsShown = false;
-                    obj.page_title = params;
+                    obj.page_title = params.category_name;
+                    if(params.is_subscriber) {
+                        obj.show_tenant = true;
+                        obj.alphabetical = false;
+                    }
+                    else {
+                        obj.tenant_details = '';
+                        obj.show_tenant = false;
+                        obj.alphabetical = true;
+                    }
+
                     obj.$refs.callAssist.filterAssist('tenantcategory',obj.current_language_set);
                 });
                 
-
                 obj.$root.$on('callSearchBack', (value, called_from) => {
                     obj.tenant_details = '';
                     obj.current_page = 'search';
