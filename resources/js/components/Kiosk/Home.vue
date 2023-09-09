@@ -1739,6 +1739,7 @@
                 });
                 
                 obj.$root.$on('callSearchBack', (value, called_from) => {
+                    alert('test');
                     obj.tenant_details = '';
                     obj.current_page = 'search';
                     obj.homeIsShown = false;
@@ -1750,7 +1751,11 @@
                     obj.aboutIsShown = false;
                     obj.landmarkIsShown = false;
                     obj.eventsIsShown = false;
-                    if(obj.$refs.callSearch.search_results == false) {
+
+                    if(obj.$refs.callSearch.search_results == false && obj.$refs.callSearch.tenant_details.is_subscriber) {
+                        obj.show_tenant = true;
+                    }
+                    else if(obj.$refs.callSearch.search_results == false && !obj.$refs.callSearch.tenant_details.is_subscriber) {
                         obj.$refs.callSearch.tenant_details = '';
                         obj.$refs.callSearch.search_page = true;
                         obj.$refs.callSearch.resetPage();
