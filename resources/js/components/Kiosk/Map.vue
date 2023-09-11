@@ -879,8 +879,35 @@
                     })
 
                     // Zoom In / Zoom Out Controls
-                    $('#zoomInButton').get(0).addEventListener('click', vm.panzoom.zoomIn)
-                    $('#zoomOutButton').get(0).addEventListener('click', vm.panzoom.zoomOut)
+                    //$('#zoomInButton').get(0).addEventListener('click', vm.panzoom.zoomIn)
+                    $('#zoomInButton').get(0).addEventListener('click', function() {
+                        var canvas_with = $('.map-holder').innerWidth();
+                        var canvas_height = $('.map-holder').innerHeight();
+                        var scale = $('.zoomable-container').css('transform');
+                        var values = scale.split('(')[1];
+                        values = values.split(')')[0];
+                        values = values.split(',');
+                        var a = values[0];
+                        var b = values[1];
+                        scale = Math.sqrt(a*a + b*b);
+                        scale += (scale*0.20);
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+500, clientY: (canvas_height/2)+100 }, { animate: true });
+                    });
+                    // $('#zoomOutButton').get(0).addEventListener('click', vm.panzoom.zoomOut)
+                    $('#zoomOutButton').get(0).addEventListener('click', function() {
+                        var canvas_with = $('.map-holder').innerWidth();
+                        var canvas_height = $('.map-holder').innerHeight();
+                        var scale = $('.zoomable-container').css('transform');
+                        var values = scale.split('(')[1];
+                        values = values.split(')')[0];
+                        values = values.split(',');
+                        var a = values[0];
+                        var b = values[1];
+                        scale = Math.sqrt(a*a + b*b);
+                        scale -= (scale*0.20);
+                        console.log(scale);
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+500, clientY: (canvas_height/2)+100 }, { animate: true });
+                    })
                     // $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 
                     // No function bind needed
