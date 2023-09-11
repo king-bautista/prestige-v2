@@ -269,14 +269,14 @@
             </div>
         </div>
 
-        <div id="guide-button" v-show="guide_button" v-bind:class="(site_orientation == 'Portrait') ? 'guide-button-portrait': ''">
+        <div id="guide-button" v-show="guide_button" v-bind:class="[(site_orientation == 'Portrait') ? 'guide-button-portrait': '', (site_orientation == 'Portrait' && tenant_details) ? 'guide-button-top-90' : '']">
             <div class="toggle-arrow mt-7"><i class="arrow up"></i></div>   
             <div id="toggle-updown-text" class="translateme" data-en="Show Text Guide">Show Text Guide</div>
         </div>
 
         <template v-if="tenant_details">
             <template v-if="site_orientation == 'Portrait'">
-                <div class="map-btn-heart-portrait">
+                <div v-bind:class="(site_orientation == 'Portrait' && tenant_details) ? 'map-btn-heart-bottom' : ''" class="map-btn-heart-portrait">
                     <div>
                         <a class="btn-like-display" style="font-size: 18px;">{{ tenant_details.like_count }}
                             <span class="translateme" data-en="Likes">Likes</span>
@@ -581,6 +581,8 @@
                     $('#guide-button').trigger('click');
                 }
 
+                console.log(this.tenant_details);
+
                 this.panzoom.zoom(this.active_map_details.default_zoom, {
                     relative: true,
                     animate: true
@@ -869,7 +871,8 @@
                 }).finally(() => {
                     // Initialize Panzoom JS
                     const elem = document.getElementById('zoomable-container')
-                    const parent = elem.parentElement
+                    const parent = elem.parentElement                    
+
                     vm.panzoom = Panzoom(elem, {
                         maxScale: 3,
                         canvas: true,
@@ -881,8 +884,12 @@
                     // Zoom In / Zoom Out Controls
                     //$('#zoomInButton').get(0).addEventListener('click', vm.panzoom.zoomIn)
                     $('#zoomInButton').get(0).addEventListener('click', function() {
-                        var canvas_with = $('.map-holder').innerWidth();
-                        var canvas_height = $('.map-holder').innerHeight();
+                        var c_with = 500;
+                        if(vm.site_orientation == 'Portrait') {
+                            c_with = 900;
+                        }
+                        var canvas_with = $('.map-holder, .map-holder-portrait').innerWidth();
+                        var canvas_height = $('.map-holder, .map-holder-portrait').innerHeight();
                         var scale = $('.zoomable-container').css('transform');
                         var values = scale.split('(')[1];
                         values = values.split(')')[0];
@@ -891,12 +898,16 @@
                         var b = values[1];
                         scale = Math.sqrt(a*a + b*b);
                         scale += (scale*0.20);
-                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+500, clientY: (canvas_height/2)+100 }, { animate: true });
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+100 }, { animate: true });
                     });
                     // $('#zoomOutButton').get(0).addEventListener('click', vm.panzoom.zoomOut)
                     $('#zoomOutButton').get(0).addEventListener('click', function() {
-                        var canvas_with = $('.map-holder').innerWidth();
-                        var canvas_height = $('.map-holder').innerHeight();
+                        var c_with = 500;
+                        if(vm.site_orientation == 'Portrait') {
+                            c_with = 900;
+                        }
+                        var canvas_with = $('.map-holder, .map-holder-portrait').innerWidth();
+                        var canvas_height = $('.map-holder, .map-holder-portrait').innerHeight();
                         var scale = $('.zoomable-container').css('transform');
                         var values = scale.split('(')[1];
                         values = values.split(')')[0];
@@ -906,7 +917,7 @@
                         scale = Math.sqrt(a*a + b*b);
                         scale -= (scale*0.20);
                         console.log(scale);
-                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+500, clientY: (canvas_height/2)+100 }, { animate: true });
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+100 }, { animate: true });
                     })
                     // $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 

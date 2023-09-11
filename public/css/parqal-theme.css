@@ -347,6 +347,10 @@ input[type="text"]:focus
     right: 10px !important;
 }
 
+.guide-button-top-90 {
+    top: 90% !important;
+}
+
 #toggle-updown-text {
     width: 100px;
     text-align: center;
@@ -2256,6 +2260,10 @@ pre {
     bottom: 82px;
     z-index: 9;
     color: #000;
+}
+
+.map-btn-heart-bottom {
+    bottom: -5px !important;
 }
 
 .map-search-modal {
