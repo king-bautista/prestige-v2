@@ -698,12 +698,37 @@ class MainController extends AppBaseController
         } 
     }
 
-    public function getPoints($id)
+    // public function getPoints($id)
+    // {        
+    //     try
+    //     {
+    //         $site_points = SitePointViewModel::where('site_map_id', $id)->get();          
+    //         return $this->response($site_points, 'Successfully Retreived!', 200);
+    //     }
+    //     catch (\Exception $e)
+    //     {
+    //         return response([
+    //             'message' => 'No Tenants to display!',
+    //             'status_code' => 200,
+    //         ], 200);
+    //     } 
+    // }
+
+    public function getPoints()
     {        
         try
         {
-            $site_points = SitePointViewModel::where('site_map_id', $id)->get();          
-            return $this->response($site_points, 'Successfully Retreived!', 200);
+            $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
+            $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();  
+            $site_maps_ids = SiteMapViewModel::where('site_id', $site->id)->where('site_screen_id', $site_screen->id)->get()->pluck('id');
+
+            $site_points_data = [];
+            $site_points = SitePointViewModel::whereIn('site_map_id', $site_maps_ids)->get();          
+            foreach($site_points as $index => $point) {
+                $site_points_data[$point->site_map_id][] = $point;
+            }
+
+            return $this->response($site_points_data, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {

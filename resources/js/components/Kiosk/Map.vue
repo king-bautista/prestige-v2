@@ -21,10 +21,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12 mb-3 pl-0">
+            <div class="col-md-12" style="background-color: #fff;">
                 <template v-if="tenant_details">
                     <template v-if="site_orientation == 'Portrait'">
-                        <div class="row tenant-details-portrait map-tenant-portrait">
+                        <div class="row tenant-details-portrait map-tenant-portrait mt-1">
                             <div class="col-sm-3 text-center">
                                 <div class="my-auto pt-3">
                                     <img class="map-tenant-details-logo" :src="tenant_details.brand_logo">
@@ -122,7 +122,10 @@
                         </div>
                     </template>
                 </template>
-
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mb-3 pl-0">
                 <div id="tenant-details" v-bind:class="(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait-text-info': 'card mb-3 label-3'">
                     <div class="card-body text-info text-center p-0">
                         <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
@@ -156,7 +159,7 @@
                     </div>
                 </div>
 
-                <div v-bind:class="(site_orientation == 'Portrait') ? 'map-holder-portrait': 'map-holder'">
+                <div v-bind:class="[(site_orientation == 'Portrait') ? 'map-holder-portrait': 'map-holder', (site_orientation == 'Portrait' && tenant_details) ? 'map-height': '']">
                     <div class="zoomable-container" id="zoomable-container"></div>
                     <img src="images/parqal-pinch.gif" class="pinch"/>
                 </div>
@@ -201,6 +204,7 @@
                             :close-on-select="true"
                             :show-labels="false"
                             @select="find_store"
+                            :disabled="tenant_dropdown"
                             id="search-input"
                             name="tenant-search"
                             placeholder="Input Destination"
@@ -213,8 +217,8 @@
                                 List is empty
                             </span>
                         </multiselect>
-                        <div class="input-group-append">
-                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant);" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button">
+                        <div class="input-group-append" >
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" v-bind:class="(with_disability) ? 'disability-active': ''" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -230,6 +234,7 @@
                             :max-height="180"
                             :options="site_floors"
                             :multiple="false"
+                            :disabled="tenant_dropdown"
                             :close-on-select="true"
                             :show-labels="false"
                             @select="toggleSelectedMap"
@@ -392,11 +397,14 @@
                 with_disability: 0,
                 days: {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"},
                 tenantSchedule :[],
+                tenant_dropdown: false,
+                site_points: [],
             };
         },
 
         created() {
             this.getSite();
+            this.getTenants();
             this.getFloors();
             setInterval(this.getDateNow, 1000);
         },
@@ -452,7 +460,7 @@
                 this.tenant_list = [];
                 axios.get('/api/v1/tenants/all')
                 .then(response => {
-                    this.tenant_list = response.data.data
+                    this.tenant_list = response.data.data;
                 });
             },
 
@@ -467,23 +475,25 @@
             },
 
             goBack: function() {
+                this.with_disability = 0;
                 $('#myProduct, #myevent').hide();
                 $('.ui-autocomplete').empty();
-
-                if (this.called_from == 'search' && this.tenant_details) {
-                    this.$root.$emit('callSearch', 'map');   
-                    return false;
+                console.log(this.called_from);
+                if (!this.tenant_details && this.called_from == 'home') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (!this.tenant_details && this.called_from == 'search') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (!this.tenant_details && this.called_from == 'promo') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (!this.tenant_details && this.called_from == 'cinema') {
+                    this.$root.$emit('callAboutFrom',this.called_from);
+                } else if (this.tenant_details && this.called_from == 'home') {
+                    this.$root.$emit('callShowTenant',this.tenant_details);
+                } else if(this.tenant_details && this.called_from == 'search') {
+                    this.tenant_details = '';
+                    this.$root.$emit('callSearchBack', this.tenant_details);                                               
                 }
-
-                if (this.called_from == 'home') {
-                    this.$root.$emit('callAboutFrom',this.called_from);
-                } else if (this.called_from == 'search') {
-                    this.$root.$emit('callAboutFrom',this.called_from);
-                } else if (this.called_from == 'promo') {
-                    this.$root.$emit('callAboutFrom',this.called_from);
-                } else if (this.called_from == 'cinema') {
-                    this.$root.$emit('callAboutFrom',this.called_from);
-                } else {
+                else {
                     this.$root.$emit('MainCategories');
                     $('.h-button').removeClass('active');
                     $('.home-button').addClass('active');
@@ -511,16 +521,21 @@
 			},
 
             find_store: function(value, called_from = null) {
-                this.tenant_details = '';
+                // this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    this.with_disability = 0;
+                    this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
                     this.updateViewCount(this.tenant_details.id);
                 }
-                if(value.brand_name == 'Elevator') {
+
+                if(value.brand_name.toUpperCase() == 'ELEVATOR') {
                     this.with_disability = 1;
+                }
+
+                if(value) {
+                    this.tenant_dropdown = true;
                 }
 
                 this.called_from = called_from;
@@ -546,14 +561,19 @@
                     $('.response-btn').removeClass('disabled-response');
                     $('.response-btn').removeClass('response-active-color');
 
-                    if(called_from === 'search-input') {
-                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
-                        $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
-                    }
-                    else {
-                        $('.destination').html($('.map-tenant-option .multiselect__single').html());
-                        $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", value.brand_name));
-                    }
+                    // if(obj.called_from === 'search-input') {
+                    //     alert('1');
+                    //     $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    //     $('.map-tenant-option .multiselect__single').html($('.directions-to').html());
+                    // }
+                    // else {
+                    //     alert('2');
+                    //     $('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    //     $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
+                    // }
+                    //$('.destination').html($('.map-tenant-option .multiselect__single').html());
+                    $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
+
                 });
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
 
@@ -566,6 +586,7 @@
                     animate: true
                 })
                 setTimeout(() => this.panzoom.pan(this.active_map_details.default_x, this.active_map_details.default_y))
+                //setTimeout(() => {obj.tenant_dropdown = false}, 10000);
 
             },
 
@@ -589,6 +610,7 @@
                 this.map_form.tenant = '';
                 this.with_disability = 0;
                 this.tenant_details = '';
+                this.tenant_dropdown = false;
                 var obj = this;
                 $(function() {
                     this.wayfindings.stopall();
@@ -615,6 +637,7 @@
                 $(".pinch").show();
                 $('.map-tenant-option .multiselect__single').html('Input Destination');
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
+                $('.multiselect__content-wrapper').animate({ scrollTop: 0 });
 
                 obj.$refs.multiselectFloor.value = this.active_map_details;
 
@@ -623,7 +646,7 @@
                     relative: true,
                     animate: true
                 })
-                setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y))
+                setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y))                
             },
 
             softkeys: function() {
@@ -818,16 +841,22 @@
                 $("#map-modal-schedule").show();
             },
 
+            getPoints: function() {
+                axios.get('/api/v1/site/maps/get-points')
+                .then(response => {
+                    this.site_points = response.data.data
+                });
+            }
         },
 
         mounted() {
-
+            this.getPoints();
 
             this.softkeys();
             var vm = this;
             $(function() {    
                 var obj = this;     
-                this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'});
+                this.wayfindings = new WayFinding({mapcontainer:'zoomable-container'}, vm);
                 this.wayfindings.animate_marker_here_stop();
                 // $('.map-tenant-option:not(:last-child)').css({'border-top-right-radius': '18px','border-bottom-right-radius': '18px'});
 
@@ -842,11 +871,11 @@
                     const elem = document.getElementById('zoomable-container')
                     const parent = elem.parentElement
                     vm.panzoom = Panzoom(elem, {
-                        maxScale: 5,
+                        maxScale: 3,
                         canvas: true,
                         startScale: vm.active_map_details.default_scale,
                         startX: vm.active_map_details.default_x,
-                        startY: vm.active_map_details.default_y
+                        startY: vm.active_map_details.default_y,
                     })
 
                     // Zoom In / Zoom Out Controls
@@ -862,6 +891,11 @@
                         $(".pinch").hide();
                         if (!event.shiftKey) return
                         vm.panzoom.zoomWithWheel(event)
+                    })
+
+                    parent.addEventListener('touchstart', function(event) {
+                        $(".pinch").hide();
+                        if (!event.shiftKey) return
                     })
                 });
 
@@ -921,14 +955,16 @@
                     $('.map-floor-option:not(:last-child)').css({'border-top-left-radius': '18px'});
                 });
 
-                $('#repeatButton').on('click',function(){
+                $('#repeatButton').on('click',function(){                    
+                    vm.tenant_dropdown = true; 
                     $('.map-floor-option .multiselect__tags .multiselect__single').html(vm.active_map_details.building_floor_name);
                     vm.panzoom.zoom(vm.active_map_details.default_zoom, {
                         relative: true,
                         animate: true
                     });
                     setTimeout(() => vm.panzoom.pan(vm.active_map_details.default_x, vm.active_map_details.default_y))
-                    obj.wayfindings.replay(obj.with_disability, vm.panzoom);
+                    obj.wayfindings.replay(vm.with_disability, vm.panzoom);
+                    //setTimeout(() => {vm.tenant_dropdown = false}, 10000);
     			});
 
                 $('#guide-button').on('click',function(){
@@ -956,7 +992,8 @@
                 });                
 
                 $(".map-search-modal").on('click',function(){
-                    $('.map-tenant-option .multiselect__single').html($('.directions-to').html().concat(" ", $('.destination').html()));
+                    vm.map_form.tenant = '';
+                    $('.map-tenant-option .multiselect__single').html('Input Destination');
                 });
 
                 $(".softkeys__btn").on('mousedown',function(){
@@ -988,6 +1025,10 @@
                     vm.feedback_helpful = 'No';
                     //$(this).addClass('response-active-color');
                 });
+
+                $('#map-holder').on('click', function() {
+                    $('#pinch').hide();
+                })
             });
         },
 

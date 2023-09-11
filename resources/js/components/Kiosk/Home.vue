@@ -300,31 +300,28 @@
                         </div>
                         <div class="col-sm-12 text-center mt-3 ml-4 mr-4">
                             <div v-if="tenant_details.is_subscriber" class="tenant-products-container-portrait mb-3">
-                                <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
-                                    <div class="col-12 p-0">
-                                        <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                <div class="products-container">
+                                    <div class="row ml-1 mt-16" v-if="tenant_details.products.banners">
+                                        <div class="col-12 p-0">
+                                            <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                        </div>
                                     </div>
-                                </div>
-                                <template v-if="tenant_details.products.length == 0">
-                                    <div class="centered-container">
-                                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <template v-if="tenant_details.products.product_list.length > 0">
-                                        <div class="row subscriber-products-portrait ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 3) ? 'with-out-height':'with-height-portrait', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
-                                            <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 3) ? 'f-left' : 'm-auto'">
-                                                <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-portrait-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-portrait-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-portrait-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
-                                            </div>
+                                    <template v-if="tenant_details.products.length == 0">
+                                        <div class="centered-container">
+                                            <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
                                         </div>
                                     </template>
-                                </template>
-                            </div>
-                            <!-- <div v-else class="tenant-products-container-portrait mb-3">
-                                <div class="centered-container">
-                                    <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
+                                    <template v-else>
+                                        <template v-if="tenant_details.products.product_list.length > 0">
+                                            <div class="row subscriber-products-portrait ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 3) ? 'with-out-height':'with-height-portrait', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
+                                                <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 3) ? 'f-left' : 'm-auto'">
+                                                    <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-portrait-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-portrait-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-portrait-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
                                 </div>
-                            </div> -->
+                            </div>
                             <div class="row">
                                 <div class="col-6 text-left">
                                     <div class="btn btn-prestige-rounded w-100 bg-white btn-like-portrait ">
@@ -398,31 +395,28 @@
                         </div>
                         <div class="col-sm-10 text-center">
                             <div v-if="tenant_details.is_subscriber" class="tenant-products-container">
-                                <div class="row ml-1 mt-16" v-if="tenant_details.products.length > 0">
-                                    <div class="col-12 p-0" v-if="tenant_details.products.banners">
-                                        <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                <div class="products-container">
+                                    <div class="row ml-1 mt-16" v-if="tenant_details.products.length > 0">
+                                        <div class="col-12 p-0" v-if="tenant_details.products.banners">
+                                            <img :src="tenant_details.products.banners[0].image_url_path" class="rounded-corner img-fluid tenant_page_banner_img" @click="showProduct(tenant_details.products.banners[0].image_url_path,'banner')">
+                                        </div>
                                     </div>
-                                </div>
-                                <template v-if="tenant_details.products.length == 0">
-                                    <div class="centered-container">
-                                        <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <template v-if="tenant_details.products.product_list.length > 0">
-                                        <div class="row subscriber-products ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
-                                            <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
-                                                <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
-                                            </div>
+                                    <template v-if="tenant_details.products.length == 0">
+                                        <div class="centered-container">
+                                            <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
                                         </div>
                                     </template>
-                                </template>
-                            </div>
-                            <!-- <div v-else class="tenant-products-container">
-                                <div class="centered-container">
-                                    <img :src="tenant_details.brand_logo" :alt="tenant_details.brand_name" class="tenant-logo">
+                                    <template v-else>
+                                        <template v-if="tenant_details.products.product_list.length > 0">
+                                            <div class="row subscriber-products ml-0" v-bind:class = "[(tenant_details.products.product_list.length > 2) ? 'with-out-height':'with-height', (tenant_details.products.product_list.length > 3) ? 'mt-5':'']">
+                                                <div v-for="product in tenant_details.products.product_list" v-bind:class="(tenant_details.products.product_list.length > 2) ? 'f-left' : 'm-auto'">
+                                                    <img :src="product.image_url_path" v-bind:class="[tenant_details.products.product_list.length > 3 ? 'img-promo-4' : '',tenant_details.products.product_list.length == 3 ? 'img-promo-3' : '', tenant_details.products.product_list.length == 2 ? 'img-promo-2' : '', tenant_details.products.product_list.length == 1 ? 'img-promo' : '']" class="rounded-corner" @click="showProduct(product.image_url_path,'product')">
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </template>                    
                 </div>
@@ -735,7 +729,8 @@
                 multilanguage: '',
                 site_website: '',
                 current_supplemental_title: '',
-                current_page: ''
+                called_from: '',
+                current_subcategory: '',
             };
         },
 
@@ -852,7 +847,6 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                this.$refs.callMap.getTenants();
                 this.$refs.callMap.resetPage();
                 this.$refs.callAssist.filterAssist('map',this.current_language_set);
             },
@@ -1154,6 +1148,7 @@
             },
 
             getTenantsByCategory: function(category) {
+                this.current_subcategory = category;
                 this.no_record_found = false;
                 this.tenant_list = [];
                 this.category_label = category.label;
@@ -1445,7 +1440,11 @@
                     return false;
                 }                
 
-                if(this.show_tenant == true) {
+                if(this.called_from == 'bannerAd' && this.show_tenant == true) {
+                    this.home_category = true;
+                    this.show_tenant = false;
+                }
+                if(!this.called_from && this.show_tenant == true) {
                     this.page_title = 'Store List';
                     this.alphabetical = true;
                     this.show_tenant = false;
@@ -1516,6 +1515,7 @@
             },
 
             showTenant: function(tenant) {
+                this.tenant_details = '';
                 this.page_title = 'Store Page';   
                 this.tenant_details = tenant;
                 this.alphabetical = false;
@@ -1532,6 +1532,7 @@
 
                 $(".btn-like-display").removeClass('disabled-response');
                 $(".btn-heart").removeClass('fas').addClass('far');
+                $(".products-container").animate({ scrollTop: 0 });
                 $('#myProduct').hide();
             },
 
@@ -1653,6 +1654,29 @@
                 this.findStore(tenant,called_from);                
             });
 
+            this.$root.$on('showTenantSubscriber', (tenant, called_from) => {
+                this.current_page = 'home';
+                this.no_record_found = false;
+                this.home_category = false;
+                this.child_category = false;
+                this.tabs_container = false;
+                this.isAlphabeticalClicked = false;
+                this.show_tenant = false;
+                this.alphabetical = false;
+                this.supplementals = false;
+                this.homeIsShown = true;
+                this.searchIsShown = false;
+                this.mapIsShown = false;
+                this.promosIsShown = false;
+                this.cinemaIsShown = false;
+                this.aboutIsShown = false;
+                this.landmarkIsShown = false;
+                this.eventsIsShown = false;
+                if(!called_from)
+                    this.called_from = 'bannerAd';
+                this.showTenant(tenant);          
+            });
+
             var obj = this;
 
             $(function() {
@@ -1684,6 +1708,59 @@
 
                 obj.$root.$on('callUpdateMainCategory', (params) => {
                     obj.updateMainCategory(params);
+                });
+
+                obj.$root.$on('callShowTenant', (params) => {
+                    obj.home_category = false;
+                    obj.child_category = false;
+                    obj.tabs_container = false;
+                    obj.isAlphabeticalClicked = false;
+                    obj.supplementals = false;
+                    obj.homeIsShown = true;
+                    obj.mapIsShown = false;
+                    obj.searchIsShown = false;
+                    obj.promosIsShown = false;
+                    obj.cinemaIsShown = false;
+                    obj.aboutIsShown = false;
+                    obj.landmarkIsShown = false;
+                    obj.eventsIsShown = false;
+                    obj.page_title = params.category_name;
+                    if(params.is_subscriber) {
+                        obj.show_tenant = true;
+                        obj.alphabetical = false;
+                    }
+                    else {
+                        obj.tenant_details = '';
+                        obj.show_tenant = false;
+                        obj.alphabetical = true;
+                    }
+
+                    obj.$refs.callAssist.filterAssist('tenantcategory',obj.current_language_set);
+                });
+                
+                obj.$root.$on('callSearchBack', (value, called_from) => {
+                    obj.tenant_details = '';
+                    obj.current_page = 'search';
+                    obj.homeIsShown = false;
+                    obj.show_tenant = false;
+                    obj.searchIsShown = true;        
+                    obj.mapIsShown = false;
+                    obj.promosIsShown = false;
+                    obj.cinemaIsShown = false;
+                    obj.aboutIsShown = false;
+                    obj.landmarkIsShown = false;
+                    obj.eventsIsShown = false;
+
+                    if(obj.$refs.callSearch.search_results == false && obj.$refs.callSearch.tenant_details.is_subscriber) {
+                        obj.show_tenant = true;
+                    }
+                    else if(obj.$refs.callSearch.search_results == false && !obj.$refs.callSearch.tenant_details.is_subscriber) {
+                        obj.$refs.callSearch.tenant_details = '';
+                        obj.$refs.callSearch.search_page = true;
+                        obj.$refs.callSearch.resetPage();
+                    }
+                    obj.$refs.callSearch.getSuggestionList();
+                    obj.$refs.callAssist.filterAssist('searchbox',this.current_language_set);
                 });
                 //-- end
 

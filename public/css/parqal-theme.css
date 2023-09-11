@@ -492,6 +492,12 @@ input[type="text"]:focus
     height: 685px;
     border-radius: 30px;
     width: 96%;
+    overflow-y: hidden;
+} 
+
+.products-container {
+    width: 100%;
+    height: inherit;
     overflow-y: auto;
 }
 
@@ -501,7 +507,7 @@ input[type="text"]:focus
     height: 595px;
     border-radius: 30px;
     width: 95%;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .centered-container {
@@ -1044,6 +1050,10 @@ input[type="text"]:focus
     height: 964px;
     margin-left: 7px;
     width: 100%;
+}
+
+.map-height {
+    height: 770px !important;
 }
 
 .btn-secondary {
@@ -1766,7 +1776,7 @@ input[type="text"]:focus
 
 .custom-modal-position-portrait {
     position: absolute;
-    top: 55%;
+    top: 63%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -2163,7 +2173,7 @@ pre {
 
 .my-product-image {
     border-radius: 20px;
-    width: 450px;
+    width: 563px;
     height: auto;
 }
 
@@ -2204,12 +2214,13 @@ pre {
 }
 
 .map-tenant-portrait {
-    position: absolute;
+    /* position: absolute; */
     top: 1px !important;
     left: 85px !important;
     z-index: 1;
     width: 972px;
     height: 199px;
+    margin: auto;
 }
 
 .map-tenant-details-logo{
@@ -2325,15 +2336,43 @@ pre {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #888; 
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: #DFBD69; 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
+}
+
+.multiselect--disabled {
+    color: #e8e8e8 !important;
+    background-color: #e8e8e8 !important;
+    opacity: 1 !important;
+}
+
+.multiselect--disabled > .multiselect__tags{
+    background-color: #e8e8e8 !important;
+}
+
+.multiselect--disabled > .multiselect__tags > .multiselect__single{
+    color: #000;
+    background-color: #e8e8e8 !important;
+}
+
+.btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
+    color: #6c757d;
+    background-color: #e8e8e8 !important;
+}
+
+.btn-outline-secondary.disabled:hover, .btn-outline-secondary:disabled:hover {
+    background-color: #e8e8e8 !important;
+}
+
+.btn.disabled, .btn:disabled {
+    opacity: 1 !important;
 }
