@@ -581,9 +581,12 @@
                     $('#guide-button').trigger('click');
                 }
 
-                console.log(this.tenant_details);
+                var default_zoom = this.active_map_details.default_zoom;
+                if(obj.tenant_details && obj.site_orientation == 'Portrait') {
+                    default_zoom = ((default_zoom*100)-6)/100;
+                }
 
-                this.panzoom.zoom(this.active_map_details.default_zoom, {
+                this.panzoom.zoom(default_zoom, {
                     relative: true,
                     animate: true
                 })
