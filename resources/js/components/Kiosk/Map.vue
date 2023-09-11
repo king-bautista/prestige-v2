@@ -478,7 +478,6 @@
                 this.with_disability = 0;
                 $('#myProduct, #myevent').hide();
                 $('.ui-autocomplete').empty();
-                console.log(this.called_from);
                 if (!this.tenant_details && this.called_from == 'home') {
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (!this.tenant_details && this.called_from == 'search') {
@@ -901,7 +900,7 @@
                         var b = values[1];
                         scale = Math.sqrt(a*a + b*b);
                         scale += (scale*0.20);
-                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+100 }, { animate: true });
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+200 }, { animate: true });
                     });
                     // $('#zoomOutButton').get(0).addEventListener('click', vm.panzoom.zoomOut)
                     $('#zoomOutButton').get(0).addEventListener('click', function() {
@@ -919,8 +918,7 @@
                         var b = values[1];
                         scale = Math.sqrt(a*a + b*b);
                         scale -= (scale*0.20);
-                        console.log(scale);
-                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+100 }, { animate: true });
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+200 }, { animate: true });
                     })
                     // $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 

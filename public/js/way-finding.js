@@ -167,10 +167,7 @@ WayFinding.prototype = {
     },
 
     load_points: function() {
-        var obj = this;
-
-        console.log(this.vue_obj.site_points[this.settings.currentmap_id]);
-        
+        var obj = this;       
 
         // $.get( "/api/v1/site/maps/get-points/"+this.settings.currentmap_id, function(response) {
         //     if(response.data.length) {
