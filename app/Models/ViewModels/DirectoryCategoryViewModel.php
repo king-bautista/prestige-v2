@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Category;
 use App\Models\CategoryLabel;
+use App\Models\SiteScreen;
 
 class DirectoryCategoryViewModel extends Model
 {
@@ -89,6 +90,9 @@ class DirectoryCategoryViewModel extends Model
 
     public function getTenants()
     {
+        $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+
         if (config('app.env') == 'local') {
             $tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('categories.parent_id', $this->id)
@@ -107,7 +111,13 @@ class DirectoryCategoryViewModel extends Model
                 ->get()->toArray();
         
             if($tenants) {
-                $tenants = array_chunk($tenants, 12);
+                if($site_screen->orientation == 'Portrait') {
+                    $tenants = array_chunk($tenants, 15);
+                }
+                else {
+                    $tenants = array_chunk($tenants, 12);
+                }
+
                 return $tenants;
             }
             return null;
@@ -131,7 +141,12 @@ class DirectoryCategoryViewModel extends Model
                 ->get()->toArray();
         
             if($tenants) {
-                $tenants = array_chunk($tenants, 12);
+                if($site_screen->orientation == 'Portrait') {
+                    $tenants = array_chunk($tenants, 15);
+                }
+                else {
+                    $tenants = array_chunk($tenants, 12);
+                }
                 return $tenants;
             }
             return null;
