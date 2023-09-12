@@ -126,7 +126,7 @@
         </div>
         <div class="row">
             <div class="col-md-12 mb-3 pl-0">
-                <div id="tenant-details" v-bind:class="(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait-text-info': 'card mb-3 label-3'">
+                <div id="tenant-details" v-bind:class="[(site_orientation == 'Portrait') ? 'card mb-3 label-3 tenant-details-portrait-text-info': 'card mb-3 label-3', (site_orientation == 'Portrait' && tenant_details) ? 'portrait-text-info-48' : '']">
                     <div class="card-body text-info text-center p-0">
                         <div class="guide-title"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme" data-en="Directions to:">Directions to:</div><span id="mapguide-destination" class="tenant-name" style="display: inline-block;"></span></div>
                         <div class="guide-steps">

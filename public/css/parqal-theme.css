@@ -319,6 +319,10 @@ input[type="text"]:focus
     left: 65% !important;
 }
 
+.portrait-text-info-48 {
+    top: 48% !important;
+}
+
 #tenant-details .assist {
     color: #fff !important;
     border-bottom-color: transparent;
