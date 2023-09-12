@@ -888,7 +888,7 @@
                     $('#zoomInButton').get(0).addEventListener('click', function() {
                         var c_with = 500;
                         if(vm.site_orientation == 'Portrait') {
-                            c_with = 900;
+                            c_with = 1440;
                         }
                         var canvas_with = $('.map-holder, .map-holder-portrait').innerWidth();
                         var canvas_height = $('.map-holder, .map-holder-portrait').innerHeight();
@@ -906,7 +906,7 @@
                     $('#zoomOutButton').get(0).addEventListener('click', function() {
                         var c_with = 500;
                         if(vm.site_orientation == 'Portrait') {
-                            c_with = 900;
+                            c_with = 1440;
                         }
                         var canvas_with = $('.map-holder, .map-holder-portrait').innerWidth();
                         var canvas_height = $('.map-holder, .map-holder-portrait').innerHeight();
@@ -948,14 +948,26 @@
 
                 $('#zoomResetButton, .pinch').on('click', function() {
                     if(vm.current_map_details) {
-                        vm.panzoom.zoom(vm.current_map_details.default_zoom, {
+                        var default_zoom = vm.current_map_details.default_zoom;
+                        if(vm.tenant_details && vm.site_orientation == 'Portrait' && vm.called_from != 'search-input') {
+                            default_zoom = ((default_zoom*100)-5)/100;
+                        }
+
+                        vm.panzoom.zoom(default_zoom, {
                             relative: true,
                             animate: true
                         });
                         setTimeout(() => vm.panzoom.pan(vm.current_map_details.default_x, vm.current_map_details.default_y))
                     }
                     else {
-                        vm.panzoom.zoom(vm.active_map_details.default_zoom, {
+                        console.log(vm.active_map_details);
+
+                        var default_zoom = vm.active_map_details.default_zoom;
+                        if(vm.tenant_details && vm.site_orientation == 'Portrait'  && vm.called_from != 'search-input') {
+                            default_zoom = ((default_zoom*100)-5)/100;
+                        }
+
+                        vm.panzoom.zoom(default_zoom, {
                             relative: true,
                             animate: true
                         });
