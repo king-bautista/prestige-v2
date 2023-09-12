@@ -888,7 +888,7 @@
                     $('#zoomInButton').get(0).addEventListener('click', function() {
                         var c_with = 500;
                         if(vm.site_orientation == 'Portrait') {
-                            c_with = 1440;
+                            c_with = 70;
                         }
                         var canvas_with = $('.map-holder, .map-holder-portrait').innerWidth();
                         var canvas_height = $('.map-holder, .map-holder-portrait').innerHeight();
@@ -906,7 +906,7 @@
                     $('#zoomOutButton').get(0).addEventListener('click', function() {
                         var c_with = 500;
                         if(vm.site_orientation == 'Portrait') {
-                            c_with = 1440;
+                            c_with = 70;
                         }
                         var canvas_with = $('.map-holder, .map-holder-portrait').innerWidth();
                         var canvas_height = $('.map-holder, .map-holder-portrait').innerHeight();
@@ -918,7 +918,7 @@
                         var b = values[1];
                         scale = Math.sqrt(a*a + b*b);
                         scale -= (scale*0.20);
-                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+200 }, { animate: true });
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)-c_with, clientY: (canvas_height/2)+200 }, { animate: true });
                     })
                     // $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 
@@ -960,8 +960,6 @@
                         setTimeout(() => vm.panzoom.pan(vm.current_map_details.default_x, vm.current_map_details.default_y))
                     }
                     else {
-                        console.log(vm.active_map_details);
-
                         var default_zoom = vm.active_map_details.default_zoom;
                         if(vm.tenant_details && vm.site_orientation == 'Portrait'  && vm.called_from != 'search-input') {
                             default_zoom = ((default_zoom*100)-5)/100;
