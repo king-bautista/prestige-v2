@@ -562,9 +562,11 @@ WayFinding.prototype = {
 
         const panzoom = this.settings.panzoom;
 
+        this.vue_obj.active_map_details = map_details;
+
         var default_zoom = map_details.default_zoom;
         if(this.vue_obj.tenant_details && this.vue_obj.site_orientation == 'Portrait') {
-            default_zoom = ((default_zoom*100)-6)/100;
+            default_zoom = ((default_zoom*100)-5)/100;
         }
         
         if(panzoom) {
