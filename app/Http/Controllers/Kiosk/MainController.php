@@ -253,7 +253,7 @@ class MainController extends AppBaseController
                         'floor_name' => $value->floor_name,
                         'building_name' => $value->building_name,
                         'address' => $value->address,
-                        'orderby' => $value->name. ", " . $value->floor_name . ", " . $value->building_name,
+                        'orderby' => $value->name. ", " . $value->floor_name . ", " . $value->address,
                     ]);
                 } else {
                     $collection->push([
@@ -290,18 +290,17 @@ class MainController extends AppBaseController
                 ->get()
                 ->pluck('name');
 
-            foreach ($tags as $key => $value) {
-                $collection->push([
-                    'id' => null,
-                    'value' => $value,
-                    'floor_name' => null,
-                    'building_name' => null,
-                    'orderby' => $value,
-                ]);
-            }
+            // foreach ($tags as $key => $value) {
+            //     $collection->push([
+            //         'id' => null,
+            //         'value' => $value,
+            //         'floor_name' => null,
+            //         'building_name' => null,
+            //         'orderby' => $value,
+            //     ]);
+            // }
 
             //$collection->sortBy('value')->all();
-            $collection = $collection->sortBy('orderby');
 
             return $this->response($collection->values()->all(), 'Successfully Retreived!', 200);
         }

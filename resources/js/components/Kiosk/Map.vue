@@ -218,7 +218,7 @@
                             </span>
                         </multiselect>
                         <div class="input-group-append" >
-                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" v-bind:class="(with_disability) ? 'disability-active': 'disability-inactive'" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" class="btn btn-outline-secondary is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -943,6 +943,15 @@
                         $(".pinch").hide();
                         if (!event.shiftKey) return
                     })
+                });
+
+                $('#withDisabilityButton').on('click', function() {
+                    if($("#withDisabilityButton").hasClass("disability-active")) {
+                        $("#withDisabilityButton").removeClass('disability-active').addClass('disability-inactive');
+                    }
+                    else {
+                        $("#withDisabilityButton").removeClass('disability-inactive').addClass('disability-active');
+                    }
                 });
 
                 $('.pinch, .map-control-fit, .zoomable-container').on('click',function(){
