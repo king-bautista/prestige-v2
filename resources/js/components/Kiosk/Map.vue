@@ -520,18 +520,19 @@
 			},
 
             find_store: function(value, called_from = null) {
+                this.active_map_details = this.site_floors.find(option => option.is_default == 1);
                 // this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
+                    // this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
                     this.updateViewCount(this.tenant_details.id);
                 }
 
-                if(value.brand_name.toUpperCase() == 'ELEVATOR') {
-                    this.with_disability = 1;
-                }
+                // if(value.brand_name.toUpperCase() == 'ELEVATOR') {
+                //     this.with_disability = 1;
+                // }
 
                 if(value) {
                     this.tenant_dropdown = true;
@@ -615,8 +616,10 @@
                 this.with_disability = 0;
                 this.tenant_details = '';
                 this.tenant_dropdown = false;
+                this.active_map_details = this.site_floors.find(option => option.is_default == 1);
                 var obj = this;
                 $(function() {
+                    this.wayfindings.clearZoom();
                     this.wayfindings.stopall();
                     this.wayfindings.clearTextlayer();
                     this.wayfindings.clearEscalator();
@@ -932,10 +935,10 @@
                         vm.panzoom.zoomWithWheel(event)
                     })
 
-                    // parent.addEventListener('touchstart', function(event) {
-                    //     $(".pinch").hide();
-                    //     if (!event.shiftKey) return
-                    // })
+                    parent.addEventListener('touchstart', function(event) {
+                        $(".pinch").hide();
+                        if (!event.shiftKey) return
+                    })
                 });
 
                 $('.pinch, .map-control-fit, .zoomable-container').on('click',function(){
