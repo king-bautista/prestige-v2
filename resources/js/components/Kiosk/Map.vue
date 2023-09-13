@@ -523,16 +523,16 @@
                 this.active_map_details = this.site_floors.find(option => option.is_default == 1);
                 // this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    // this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
+                    this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
                     this.updateViewCount(this.tenant_details.id);
                 }
 
-                // if(value.brand_name.toUpperCase() == 'ELEVATOR') {
-                //     this.with_disability = 1;
-                // }
+                if(value.brand_name.toUpperCase() == 'ELEVATOR') {
+                    this.with_disability = 1;
+                }
 
                 if(value) {
                     this.tenant_dropdown = true;
