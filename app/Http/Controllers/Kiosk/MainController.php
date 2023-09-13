@@ -297,9 +297,10 @@ class MainController extends AppBaseController
                 ]);
             }
 
-            $collection->all();
+            //$collection->sortBy('value')->all();
+            $collection = $collection->sortBy('value', SORT_NATURAL);
 
-            return $this->response($collection, 'Successfully Retreived!', 200);
+            return $this->response($collection->values()->all(), 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
         {
