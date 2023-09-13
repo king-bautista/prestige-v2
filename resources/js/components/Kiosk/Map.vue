@@ -379,6 +379,7 @@
                 site_floors: [],
                 wayfindings: '',
                 current_time: Date.now(),
+                current_date: '',
                 helper: new Helpers(),
                 active_map_details: '',
                 current_map_details: '',
@@ -520,6 +521,9 @@
 			},
 
             find_store: function(value, called_from = null) {
+                if(!value)
+                    return false;
+
                 this.active_map_details = this.site_floors.find(option => option.is_default == 1);
                 // this.tenant_details = '';
                 if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {

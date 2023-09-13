@@ -252,7 +252,8 @@ class MainController extends AppBaseController
                         'value' => $value->name, // . ", " . $value->floor_name . ", " . $value->building_name,
                         'floor_name' => $value->floor_name,
                         'building_name' => $value->building_name,
-                        'address' => $value->address
+                        'address' => $value->address,
+                        'orderby' => $value->name. ", " . $value->floor_name . ", " . $value->building_name,
                     ]);
                 } else {
                     $collection->push([
@@ -260,7 +261,8 @@ class MainController extends AppBaseController
                         'value' => $value->name,
                         'floor_name' => null,
                         'building_name' => null,
-                        'address' => null
+                        'address' => null,
+                        'orderby' => $value->name,
                     ]);
                 }  
                 
@@ -293,12 +295,13 @@ class MainController extends AppBaseController
                     'id' => null,
                     'value' => $value,
                     'floor_name' => null,
-                    'building_name' => null
+                    'building_name' => null,
+                    'orderby' => $value,
                 ]);
             }
 
             //$collection->sortBy('value')->all();
-            $collection = $collection->sortBy('value', SORT_NATURAL);
+            $collection = $collection->sortBy('orderby');
 
             return $this->response($collection->values()->all(), 'Successfully Retreived!', 200);
         }
