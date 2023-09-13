@@ -11,12 +11,12 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="datetime-holder text-left ml-5 mt-2 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                             </div>                
                         </div>
-                        <div class="col-md-7 text-right">
+                        <div class="col-md-6 text-right">
                             <div class="mr-5 mb-5 mt-3">
                                 <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                             </div>
