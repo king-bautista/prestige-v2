@@ -2105,6 +2105,11 @@ pre {
     box-shadow: none !important;
 }
 
+.disability-inactive {
+    background-color: #fff !important;
+    box-shadow: none !important;
+}
+
 .notification {
     font-family: 'Overpass' !important;
     color: #DFBD69;
