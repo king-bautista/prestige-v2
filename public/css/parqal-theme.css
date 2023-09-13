@@ -2388,3 +2388,9 @@ pre {
 .btn.disabled, .btn:disabled {
     opacity: 1 !important;
 }
+
+.carousel-item {
+    transition: -webkit-transform .7s ease-in-out !important;
+    transition: transform .7s ease-in-out !important;
+    transition: transform .7s ease-in-out,-webkit-transform .7s ease-in-out !important;
+}
