@@ -2390,7 +2390,7 @@ pre {
 }
 
 .carousel-item {
-    transition: -webkit-transform .7s ease-in-out !important;
-    transition: transform .7s ease-in-out !important;
-    transition: transform .7s ease-in-out,-webkit-transform .7s ease-in-out !important;
+    transition: -webkit-transform .10s ease-in-out !important;
+    transition: transform .10s ease-in-out !important;
+    transition: transform .10s ease-in-out,-webkit-transform .10s ease-in-out !important;
 }
