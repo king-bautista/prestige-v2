@@ -290,18 +290,17 @@ class MainController extends AppBaseController
                 ->get()
                 ->pluck('name');
 
-            // foreach ($tags as $key => $value) {
-            //     $collection->push([
-            //         'id' => null,
-            //         'value' => $value,
-            //         'floor_name' => null,
-            //         'building_name' => null,
-            //         'orderby' => $value,
-            //     ]);
-            // }
+            foreach ($tags as $key => $value) {
+                $collection->push([
+                    'id' => null,
+                    'value' => $value,
+                    'floor_name' => null,
+                    'building_name' => null,
+                    'orderby' => $value,
+                ]);
+            }
 
-            //$collection->sortBy('value')->all();
-
+            $collection = $collection->sortBy('orderby', SORT_NATURAL);
             return $this->response($collection->values()->all(), 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
