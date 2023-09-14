@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Category;
 use App\Models\CategoryLabel;
 use App\Models\SiteScreen;
+use App\Models\SiteTenant;
 
 class DirectoryCategoryViewModel extends Model
 {
@@ -92,11 +93,13 @@ class DirectoryCategoryViewModel extends Model
     {
         $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
         $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+        $elevator_ids = SiteTenant::where('brand_id', 7786)->where('site_building_level_id', '!=', $site_screen->site_building_level_id)->get()->pluck('id');
 
         if (config('app.env') == 'local') {
             $tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('categories.parent_id', $this->id)
                 ->where('site_tenants.site_id', self::$site_id)
+                ->whereNotIn('site_tenants.id', $elevator_ids)
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
                 ->leftJoin('site_tenant_metas', function($join)
@@ -125,6 +128,7 @@ class DirectoryCategoryViewModel extends Model
             $tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('categories.parent_id', $this->id)
                 ->where('site_tenants.site_id', self::$site_id)
+                ->whereNotIn('site_tenants.id', $elevator_ids)
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
