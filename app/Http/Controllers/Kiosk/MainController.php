@@ -27,6 +27,7 @@ use App\Models\SiteMapPaths;
 use App\Models\SiteBuilding;
 use App\Models\SiteScreen;
 use App\Models\SiteFeedback;
+use App\Models\SiteTenant;
 use App\Models\Landmark;
 use App\Models\Event;
 use App\Models\Brand;
@@ -127,10 +128,13 @@ class MainController extends AppBaseController
         // {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();            
+            $elevator_ids = SiteTenant::where('brand_id', 7786)->where('site_building_level_id', '!=', $site_screen->site_building_level_id)->get()->pluck('id');
+
             if (config('app.env') == 'local') {
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('brands.category_id', $category_id)
                 ->where('site_tenants.site_id', $site->id)
+                ->whereNotIn('site_tenants.id', $elevator_ids)
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->leftJoin('site_tenant_metas', function($join)
                 {
@@ -146,6 +150,7 @@ class MainController extends AppBaseController
                 $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
                 ->where('brands.category_id', $category_id)
                 ->where('site_tenants.site_id', $site->id)
+                ->whereNotIn('site_tenants.id', $elevator_ids)
                 ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
                 ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
                 ->leftJoin('site_tenant_metas', function($join)
@@ -210,10 +215,15 @@ class MainController extends AppBaseController
         {
             // # GET ALL TENANT BRAND
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-            $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first()->id;
+            $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();
+            $site_screen_id = $site_screen->id;
+
+            $elevator_ids = SiteTenant::where('brand_id', 7786)->where('site_building_level_id', '!=', $site_screen->site_building_level_id)->get()->pluck('id');
+
             $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
             ->where('site_maps.site_screen_id', $site_screen_id)
+            ->whereNotIn('site_tenants.id', $elevator_ids)
             ->leftJoin('site_tenant_metas', function($join)
             {
                 $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
@@ -287,6 +297,7 @@ class MainController extends AppBaseController
             $tags = DB::table('tags')
                 ->whereIn('tags.id',  $brand_tags)
                 ->select('tags.name')
+                ->orderBy('tags.name', 'ASC')
                 ->get()
                 ->pluck('name');
 
@@ -300,7 +311,7 @@ class MainController extends AppBaseController
                 ]);
             }
 
-            $collection = $collection->sortBy('orderby', SORT_NATURAL);
+            //$collection = $collection->sortBy('orderby', SORT_NATURAL);
             return $this->response($collection->values()->all(), 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -366,6 +377,7 @@ class MainController extends AppBaseController
         {
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();
+            $elevator_ids = SiteTenant::where('brand_id', 7786)->where('site_building_level_id', '!=', $site_screen->site_building_level_id)->get()->pluck('id');
 
             //FIND BY KEYWORD and display as list E.G TAGS/KEY_WORDDS/BRAND_NAME
             if (!$request->id) {
@@ -388,6 +400,7 @@ class MainController extends AppBaseController
                     // }
                 })
                 ->where('site_tenants.site_id', $site->id)
+                ->whereNotIn('site_tenants.id', $elevator_ids)
                 ->leftJoin('site_tenant_metas', function($join)
                 {
                     $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
