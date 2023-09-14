@@ -925,7 +925,7 @@
                         var b = values[1];
                         scale = Math.sqrt(a*a + b*b);
                         scale -= (scale*0.20);
-                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)-c_with, clientY: (canvas_height/2)+200 }, { animate: true });
+                        vm.panzoom.zoomToPoint(scale, { clientX: (canvas_with/2)+c_with, clientY: (canvas_height/2)+200 }, { animate: true });
                     })
                     // $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 

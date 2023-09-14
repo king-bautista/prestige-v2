@@ -56,10 +56,10 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
         try
         {
             $last_updated_at = $this->getLastUpdate();
-            $this->updateSites($last_updated_at);
-            $this->updateSiteMetas($last_updated_at);
-            $this->updateSiteBuildings($last_updated_at);
-            $this->updateSiteBuildingLevels($last_updated_at);
+            // $this->updateSites($last_updated_at);
+            // $this->updateSiteMetas($last_updated_at);
+            // $this->updateSiteBuildings($last_updated_at);
+            // $this->updateSiteBuildingLevels($last_updated_at);
             $this->updateSiteTenants($last_updated_at);
             $this->updateSiteTenantMetas($last_updated_at);
             $this->updateSiteMaps($last_updated_at);
@@ -67,19 +67,19 @@ class GetUpdateController extends AppBaseController implements GetUpdateControll
             $this->updateSitePointLinks($last_updated_at);
             $this->updateSiteMapPaths($last_updated_at);        
             $this->updateAmenities($last_updated_at);
-            $this->updateClassifications($last_updated_at);
-            $this->updateCategories($last_updated_at);
-            $this->updateCategoryLabels($last_updated_at);
+            // $this->updateClassifications($last_updated_at);
+            // $this->updateCategories($last_updated_at);
+            // $this->updateCategoryLabels($last_updated_at);
             $this->updateTags($last_updated_at);
             $this->updateBrand($last_updated_at);
             $this->updateBrandProducts($last_updated_at);
-            $this->updateCompanies($last_updated_at);
-            $this->updateCompanyCategories($last_updated_at);
-            $this->updateCinemaGenre($last_updated_at);
-            $this->updateCinemaSites($last_updated_at);
-            $this->updateSiteScreens($last_updated_at);
-            $this->updatePiProducts($last_updated_at);
-            $this->updateSiteScreenProducts($last_updated_at);
+            // $this->updateCompanies($last_updated_at);
+            // $this->updateCompanyCategories($last_updated_at);
+            // $this->updateCinemaGenre($last_updated_at);
+            // $this->updateCinemaSites($last_updated_at);
+            // $this->updateSiteScreens($last_updated_at);
+            // $this->updatePiProducts($last_updated_at);
+            // $this->updateSiteScreenProducts($last_updated_at);
             $this->updateAdvertisement($last_updated_at);
             $this->updateAdvertisementMaterials($last_updated_at);
             $this->updateContentManagement($last_updated_at);
