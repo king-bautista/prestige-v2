@@ -86,7 +86,8 @@ class DirectoryCategoryViewModel extends Model
 
     public function getChildCategories()
     {   
-        return $this->hasMany('App\Models\ViewModels\DirectoryCategoryViewModel', 'parent_id', 'id');
+        $categories = $this->hasMany('App\Models\ViewModels\DirectoryCategoryViewModel', 'parent_id', 'id');
+        return $categories;
     }
 
     public function getTenants()
@@ -390,14 +391,27 @@ class DirectoryCategoryViewModel extends Model
 
     public function getChildrenAttribute() 
     {
-        $child_categories = DirectoryCategoryViewModel::where('parent_id', $this->id)
-                            ->where('active', 1)
-                            ->whereNull('category_labels.deleted_at')
-                            ->leftJoin('category_labels', 'categories.id', '=', 'category_labels.category_id')
-                            ->selectRaw("(case when category_labels.name != '' then category_labels.name ELSE categories.name END) AS cat_label, categories.*")
-                            ->orderBy('cat_label')
-                            ->distinct()
-                            ->get();
+        if (config('app.env') == 'local') {
+            $child_categories = DirectoryCategoryViewModel::where('parent_id', $this->id)
+                                ->where('active', 1)
+                                ->whereNull('category_labels.deleted_at')
+                                ->leftJoin('category_labels', 'categories.id', '=', 'category_labels.category_id')
+                                ->selectRaw("(case when category_labels.name != '' then category_labels.name ELSE categories.name END) AS cat_label, categories.*")
+                                ->orderBy('cat_label')
+                                ->distinct()
+                                ->get();
+        } else {
+            $child_categories = DirectoryCategoryViewModel::where('parent_id', $this->id)
+                                ->where('categories.active', 1)
+                                ->whereNull('category_labels.deleted_at')
+                                ->leftJoin('category_labels', 'categories.id', '=', 'category_labels.category_id')
+                                ->join('brands', 'categories.id', '=', 'brands.category_id')
+                                ->join('site_tenants', 'brands.id', '=', 'site_tenants.brand_id')
+                                ->selectRaw("(case when category_labels.name != '' then category_labels.name ELSE categories.name END) AS cat_label, categories.*")
+                                ->orderBy('cat_label')
+                                ->distinct()
+                                ->get();
+        }
 
         if($child_categories)
             return $child_categories;
