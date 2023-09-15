@@ -536,6 +536,7 @@
                 if ($('#code').val().length >= 2) {
                     this.search.key_words = $('#code').val();
                     this.search.id = '';
+                    this.tenant_list = [];
                     axios.post('/api/v1/search', this.search)
                     .then(response => {
                         this.tenant_list = response.data.data[0];
@@ -975,7 +976,8 @@
                 if ($('.ABC').html() === "ABC") {
                     $('.ABC').trigger('click');
                 }
-                this.resetCarousel
+                this.resetCarousel();
+                this.tenant_list = [];
                 this.search_page = true;
                 this.search_results = false;
                 this.show_tenant = false;
