@@ -956,10 +956,10 @@
 
                 $('#withDisabilityButton').on('click', function() {
                     if($("#withDisabilityButton").hasClass("disability-active")) {
-                        $("#withDisabilityButton").removeClass('disability-active').addClass('disability-inactive');
+                        $("#withDisabilityButton").removeClass('disability-active');
                     }
                     else {
-                        $("#withDisabilityButton").removeClass('disability-inactive').addClass('disability-active');
+                        $("#withDisabilityButton").addClass('disability-active');
                     }
                 });
 
