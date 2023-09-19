@@ -565,6 +565,10 @@
                     $('.response-btn').removeClass('disabled-response');
                     $('.response-btn').removeClass('response-active-color');
 
+                    if ($('.softkeys-tenant > .ABC').html() == "ABC") {
+                        $('.ABC').trigger('click');
+                    }
+
                     // if(obj.called_from === 'search-input') {
                     //     alert('1');
                     //     $('.destination').html($('.map-tenant-option .multiselect__single').html());
@@ -584,6 +588,7 @@
                 if ($("#app").attr('app-env') == 'local') {
                     $('#guide-button').trigger('click');
                 }
+                
 
                 var default_zoom = this.active_map_details.default_zoom;
                 if(obj.tenant_details && obj.site_orientation == 'Portrait') {
@@ -657,7 +662,8 @@
                     relative: true,
                     animate: true
                 })
-                setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y))                
+                setTimeout(() => obj.panzoom.pan(obj.active_map_details.start_x, obj.active_map_details.start_y)) 
+                    
             },
 
             softkeys: function() {
@@ -1102,7 +1108,27 @@
 
                 $('#map-holder').on('click', function() {
                     $('#pinch').hide();
-                })
+                });
+
+                $(".ABC").on('click',function(){
+                    if ($(this).html() === "ABC") {
+                        $(this).html("#+=");
+                        $(".hidden-on-alt").show();
+                    } else {
+                        $(this).html("ABC");
+                        $(".hidden-on-alt").hide();
+                    }
+                }).on('touchstart',function(){
+                    if ($(this).html() === "ABC") {
+                        $(this).html("#+=");
+                        $(".hidden-on-alt").show();
+                    } else {
+                        $(this).html("ABC");
+                        $(".hidden-on-alt").hide();
+                    }
+                });
+
+
             });
         },
 
