@@ -565,9 +565,9 @@
                     $('.response-btn').removeClass('disabled-response');
                     $('.response-btn').removeClass('response-active-color');
 
-                    if ($('.softkeys-tenant > .ABC').html() == "ABC") {
-                        $('.ABC').trigger('click');
-                    }
+                    // if ($('.softkeys-tenant > .ABC').html() == "ABC") {
+                    //     $('.ABC').trigger('click');
+                    // }
 
                     // if(obj.called_from === 'search-input') {
                     //     alert('1');
@@ -654,6 +654,9 @@
                 $('.map-tenant-option .multiselect__single').html('Input Destination');
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
                 $('.multiselect__content-wrapper').animate({ scrollTop: 0 });
+                if ($('.softkeys-tenant > .ABC').html() == "ABC") {
+                    $('.ABC').trigger('click');
+                }
 
                 obj.$refs.multiselectFloor.value = this.active_map_details;
 
