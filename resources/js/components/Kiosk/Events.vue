@@ -25,7 +25,7 @@
                 <div id="eventsListCarousel" v-bind:class="(site_orientation == 'Portrait') ? 'event-carousel-portrait eventsListCarousel-portrait': ''" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-if="event_list[0].length > 3">
                         
                     <!-- Control dots -->
-                    <ul class="carousel-indicators carousel-indicators-event z-1">
+                    <ul class="carousel-indicators carousel-indicators-event z-1" v-show="event_list.length>1">
                         <li data-target="#eventsListCarousel" v-for="(events, index) in event_list" :data-slide-to="index" v-bind:class = "(index == 0) ? 'active first-item':''"><span></span></li>
                     </ul>
 

@@ -1277,11 +1277,16 @@
                         });
                     });
 
+                    var loop = true;
+                    if(obj.current_category.children.length < 3) {
+                        loop = false;
+                    }
+
                     var owl = $("#sub-category-carousel");
                     owl.owlCarousel({
                         center: true,
                         items:3,
-                        loop:true,
+                        loop:loop,
                         margin:0,
                     });
                 });
@@ -1351,11 +1356,17 @@
                         })                     
                     });
 
+
+                    var loop = true;
+                    if(obj.current_supplementals.children.length < 3) {
+                        loop = false;
+                    }
+
                     var owl = $("#supplementals-carousel");
                     owl.owlCarousel({
                         center: true,
                         items:3,
-                        loop:true,
+                        loop:loop,
                         margin:0,
                     });
                 });
@@ -1411,23 +1422,28 @@
                         }
 
                         var html = '<div class="'+ïtem_holder_class+'">';
-                            html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
+                            html += '<div class="'+rounded_container_class+' category_'+sub_category.id+'">';
                             html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
                             html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
                             html += '</div';
                             html += '</div';
                         
                         $("#sub-category-carousel").append(html);
-                        $("#category_"+sub_category.id).click(function(){
+                        $(".category_"+sub_category.id).click(function(){
                             obj.getTenantsByCategory(sub_category);
                         });
                     });
+
+                    var loop = true;
+                    if(obj.current_category.children.length < 3) {
+                        loop = false;
+                    }
 
                     var owl = $("#sub-category-carousel");
                     owl.owlCarousel({
                         center: true,
                         items:3,
-                        loop:true,
+                        loop:loop,
                         margin:0,
                     });
                 });
@@ -1725,14 +1741,22 @@
                     obj.landmarkIsShown = false;
                     obj.eventsIsShown = false;
                     obj.page_title = params.category_name;
+
                     if(params.is_subscriber) {
                         obj.show_tenant = true;
                         obj.alphabetical = false;
                     }
-                    else {
+                    else if(obj.tenant_list.length > 0 && obj.called_from == 'home') {
                         obj.tenant_details = '';
                         obj.show_tenant = false;
+                        obj.home_category = false;
                         obj.alphabetical = true;
+                    }
+                    else if(obj.called_from == 'bannerAd') {
+                        obj.tenant_details = '';
+                        obj.show_tenant = false;
+                        obj.home_category = true;
+                        obj.alphabetical = false;
                     }
 
                     obj.$refs.callAssist.filterAssist('tenantcategory',obj.current_language_set);

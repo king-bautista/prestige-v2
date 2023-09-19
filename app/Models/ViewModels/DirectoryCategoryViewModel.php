@@ -403,10 +403,13 @@ class DirectoryCategoryViewModel extends Model
         } else {
             $child_categories = DirectoryCategoryViewModel::where('parent_id', $this->id)
                                 ->where('categories.active', 1)
+                                ->where('site_tenants.active', 1)
+                                ->where('site_tenants.site_id', self::$site_id)
                                 ->whereNull('category_labels.deleted_at')
                                 ->leftJoin('category_labels', 'categories.id', '=', 'category_labels.category_id')
                                 ->join('brands', 'categories.id', '=', 'brands.category_id')
                                 ->join('site_tenants', 'brands.id', '=', 'site_tenants.brand_id')
+                                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
                                 ->selectRaw("(case when category_labels.name != '' then category_labels.name ELSE categories.name END) AS cat_label, categories.*")
                                 ->orderBy('cat_label')
                                 ->distinct()
@@ -420,6 +423,8 @@ class DirectoryCategoryViewModel extends Model
 
     public function getSupplementalAttribute() 
     {
+        $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();            
+
         $supplemental = Category::where('supplemental_category_id', $this->id)->first();
         if (config('app.env') == 'local') {
             if($supplemental) {
@@ -430,9 +435,10 @@ class DirectoryCategoryViewModel extends Model
         } else {
             if($supplemental) {
                 $child_array = DirectoryCategoryViewModel::where('parent_id', $supplemental['id'])
-                ->leftJoin('brand_supplementals', 'brand_supplementals.supplemental_id', '=', 'categories.id')
-                ->leftJoin('site_tenants', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
-                ->where('site_tenants.site_id', 1)
+                ->join('brand_supplementals', 'brand_supplementals.supplemental_id', '=', 'categories.id')
+                ->join('site_tenants', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
+                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+                ->where('site_tenants.site_id', self::$site_id)
                 ->select('categories.*')
                 ->groupBy('name')
                 ->orderBy('name', 'ASC')
