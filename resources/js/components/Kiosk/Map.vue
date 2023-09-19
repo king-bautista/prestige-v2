@@ -521,6 +521,13 @@
 			},
 
             find_store: function(value, called_from = null) {
+                if($("#withDisabilityButton").hasClass("disability-active")) {
+                    $("#withDisabilityButton").removeClass('disability-active');
+                }
+                else {
+                    $("#withDisabilityButton").addClass('disability-active');
+                }
+
                 if(!value)
                     return false;
 
@@ -954,14 +961,14 @@
                     })
                 });
 
-                $('#withDisabilityButton').on('click', function() {
-                    if($("#withDisabilityButton").hasClass("disability-active")) {
-                        $("#withDisabilityButton").removeClass('disability-active');
-                    }
-                    else {
-                        $("#withDisabilityButton").addClass('disability-active');
-                    }
-                });
+                // $('#withDisabilityButton').on('click', function() {
+                //     if($("#withDisabilityButton").hasClass("disability-active")) {
+                //         $("#withDisabilityButton").removeClass('disability-active');
+                //     }
+                //     else {
+                //         $("#withDisabilityButton").addClass('disability-active');
+                //     }
+                // });
 
                 // $('#withDisabilityButton').get(0).addEventListener('touchstart', function() {
                 //     if($("#withDisabilityButton").hasClass("disability-active")) {
