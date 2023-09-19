@@ -2399,3 +2399,7 @@ pre {
     transition: transform .8s ease-in-out !important;
     transition: transform .8s ease-in-out,-webkit-transform .8s ease-in-out !important;
 }
+
+.btn-direction-shop {
+    font-family: 'Overpass' !important;
+}
