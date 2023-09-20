@@ -656,6 +656,7 @@ input[type="text"]:focus
 .h-button {
     width: 230px;
     height: 120px;
+    z-index: 2;
 }
 
 .h-button-portrait {

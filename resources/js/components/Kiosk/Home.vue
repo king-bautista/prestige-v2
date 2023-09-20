@@ -254,7 +254,7 @@
             <div v-show="show_tenant">
                 <div v-if="site_name == 'Parqal'" class="row">
                     <template v-if="site_orientation == 'Portrait'">
-                        <div class="col-sm-12 mt-2">
+                        <div class="col-sm-12 mt-2" style="z-index: 3;">
                             <div class="row tenant-details-portrait ml-4 mr-4">
                                 <div class="col-sm-3 text-center">
                                     <div class="my-auto pt-3">
