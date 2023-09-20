@@ -821,6 +821,10 @@
             },
 
             searchButton: function (event) {
+                if($('#myProduct ').is(':visible')) {
+                    $('#myProduct').hide();
+                }
+
                 this.tenant_details = '';
                 this.current_page = 'search';
                 this.homeIsShown = false;
@@ -838,6 +842,9 @@
             },
 
             mapButton: function (event) {
+                if($('#myProduct ').is(':visible')) {
+                    $('#myProduct').hide();
+                }
                 this.current_page = 'map';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -880,6 +887,7 @@
 
             eventsButton: function (event) {
                 $('#myProduct, #myevent').hide();
+                
                 this.current_page = 'event';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -894,6 +902,9 @@
             },
 
             landmarksButton: function (event) {
+                if($('#myProduct ').is(':visible')) {
+                    $('#myProduct').hide();
+                }
                 this.current_page = 'landmark';
                 this.homeIsShown = false;
                 this.searchIsShown = false;

@@ -981,7 +981,7 @@ input[type="text"]:focus
     font-size: 1.5em;
     bottom: 9.7rem;
     right: 0.32rem;
-    z-index: 2;
+    z-index: 4;
 }
 
 .tabs-container-portrait {
@@ -1566,7 +1566,7 @@ input[type="text"]:focus
 
 .carousel-indicators {
     bottom: -4rem;
-    z-index: 3;
+    z-index: 5;
 }
 
 .carousel-indicators-event {
@@ -1779,7 +1779,7 @@ input[type="text"]:focus
 .custom-modal-position {
     position: absolute;
     top: 46%;
-    left: 63%;
+    left: 61%;
     transform: translate(-50%, -50%);
 }
 
@@ -1825,6 +1825,7 @@ input[type="text"]:focus
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-radius: 20px !important;
+    margin-right: 55px !important;
 }
 
 .btn-close-modal, .btn-close-schedule {
@@ -2187,7 +2188,7 @@ pre {
 
 .my-product-image {
     border-radius: 20px;
-    width: 563px;
+    width: 450px;
     height: auto;
 }
 
