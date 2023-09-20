@@ -488,7 +488,7 @@
                 } else if (!this.tenant_details && this.called_from == 'cinema') {
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (this.tenant_details && this.called_from == 'home') {
-                    this.$root.$emit('callShowTenant',this.tenant_details);
+                    this.$root.$emit('callShowTenant',this.tenant_details, this.called_from);
                 } else if(this.tenant_details && this.called_from == 'search') {
                     this.tenant_details = '';
                     this.$root.$emit('callSearchBack', this.tenant_details);                                               
@@ -582,12 +582,21 @@
                     //$('.destination').html($('.map-tenant-option .multiselect__single').html());
                     $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
 
+                    if(obj.with_disability == 1) {
+                        $("#withDisabilityButton").addClass('disability-active');
+                    }
+                    else {
+                        $("#withDisabilityButton").removeClass('disability-active');
+                    }
+
                 });
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
 
                 if ($("#app").attr('app-env') == 'local') {
                     $('#guide-button').trigger('click');
                 }
+
+                
                 
 
                 var default_zoom = this.active_map_details.default_zoom;
@@ -955,12 +964,20 @@
                 });
 
                 $('#withDisabilityButton').on('click', function() {
-                    if($("#withDisabilityButton").hasClass("disability-active")) {
-                        $("#withDisabilityButton").removeClass('disability-active').addClass('disability-inactive');
+                    if(obj.with_disability == 1) {
+                        alert('here');
+                        $("#withDisabilityButton").addClass('disability-active');
                     }
                     else {
-                        $("#withDisabilityButton").removeClass('disability-inactive').addClass('disability-active');
+                        $("#withDisabilityButton").removeClass('disability-active');
                     }
+
+                    // if($("#withDisabilityButton").hasClass("disability-active")) {
+                    //     $("#withDisabilityButton").removeClass('disability-active').addClass('disability-inactive');
+                    // }
+                    // else {
+                    //     $("#withDisabilityButton").removeClass('disability-inactive').addClass('disability-active');
+                    // }
                 });
 
                 $('.pinch, .map-control-fit, .zoomable-container').on('click',function(){

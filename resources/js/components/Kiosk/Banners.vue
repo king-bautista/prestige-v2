@@ -84,10 +84,10 @@
             showTenant: function(tenant) {
                 if(tenant) {
                     if(tenant.is_subscriber) {
-                        this.$root.$emit('showTenantSubscriber', tenant);
+                        this.$root.$emit('showTenantSubscriber', tenant, 'bannerAd');
                     }
                     else {
-                        this.$root.$emit('showTenantMap', tenant);
+                        this.$root.$emit('showTenantMap', tenant, 'bannerAd');
                     }
                 }
             },

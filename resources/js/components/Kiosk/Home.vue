@@ -1664,8 +1664,6 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                if(!called_from)
-                    called_from = 'home';                    
                 
                 this.findStore(tenant,called_from);                
             });
@@ -1688,8 +1686,7 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                if(!called_from)
-                    this.called_from = 'bannerAd';
+                this.called_from = called_from;
                 this.showTenant(tenant);          
             });
 
@@ -1726,7 +1723,7 @@
                     obj.updateMainCategory(params);
                 });
 
-                obj.$root.$on('callShowTenant', (params) => {
+                obj.$root.$on('callShowTenant', (params, called_from) => {
                     obj.home_category = false;
                     obj.child_category = false;
                     obj.tabs_container = false;
@@ -1742,22 +1739,34 @@
                     obj.eventsIsShown = false;
                     obj.page_title = params.category_name;
 
+                    console.log(called_from);
+
                     if(params.is_subscriber) {
+                        console.log('1');
                         obj.show_tenant = true;
+                        obj.home_category = false;
                         obj.alphabetical = false;
                     }
-                    else if(obj.tenant_list.length > 0 && obj.called_from == 'home') {
+                    else if(obj.tenant_list.length > 0 && called_from == 'home') {
+                        console.log('2');
                         obj.tenant_details = '';
                         obj.show_tenant = false;
                         obj.home_category = false;
                         obj.alphabetical = true;
                     }
-                    else if(obj.called_from == 'bannerAd') {
+                    else if(called_from == 'bannerAd') {
+                        console.log('3');
                         obj.tenant_details = '';
                         obj.show_tenant = false;
                         obj.home_category = true;
                         obj.alphabetical = false;
                     }
+                    // else {
+                    //     obj.tenant_details = '';
+                    //     obj.show_tenant = false;
+                    //     obj.home_category = true;
+                    //     obj.alphabetical = false;
+                    // }
 
                     obj.$refs.callAssist.filterAssist('tenantcategory',obj.current_language_set);
                 });
