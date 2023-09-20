@@ -4,36 +4,36 @@
             <div v-if="site_name == 'Parqal'" class="row">
                 <template v-if="site_orientation == 'Portrait'">
                     <template v-if="home_category">
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center" style="z-index:3;">
                             <div class="datetime-holder mt-4 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                             </div>
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="z-index:3;">
                             <div class="datetime-holder text-left ml-5 mt-2 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                             </div>                
                         </div>
                         <div class="col-md-6 text-right">
-                            <div class="mr-5 mb-5 mt-3">
+                            <div class="mr-5 mb-5 mt-3" style="z-index:3;">
                                 <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                             </div>
                         </div>
                     </template>
                 </template>
                 <template v-else>
-                    <div class="col-md-5">
+                    <div class="col-md-5" style="z-index:3;">
                         <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                         </div>                
                     </div>
-                    <div class="col-md-7 text-right">
+                    <div class="col-md-7 text-right" style="z-index:3;">
                         <div v-if="home_category" class="datetime-holder mt-2 mb-5 mr-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                         </div>
-                        <div v-else class="mr-5 mb-5 mt-3">
+                        <div v-else class="mr-5 mb-5 mt-3" style="z-index:3;">
                             <div v-bind:class="[page_title.length > 20 ? 'f-size-28' : '']" class="btn btn-custom">{{ page_title }}</div>
                         </div>
                     </div>

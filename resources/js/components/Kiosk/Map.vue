@@ -1,22 +1,22 @@
 <template>
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="z-index:3;">
                 <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                 </div>                
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="z-index:3;">
                 <div class="mr-5 mb-5 mt-3">
                     <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                 </div>
             </div>
         </div>
         <div v-else class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="z-index:3;">
                 <div id="page-title" class="translateme" :data-en="page_title">{{page_title}}</div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="z-index:3;">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
