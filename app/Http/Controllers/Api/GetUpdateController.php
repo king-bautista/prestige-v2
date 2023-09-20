@@ -46,6 +46,8 @@ use App\Models\PlayList;
 use App\Models\SiteFeedback;
 use App\Models\PiProduct;
 use App\Models\SiteScreenProduct;
+use App\Models\Event;
+use App\Models\Landmark;
 
 class GetUpdateController extends AppBaseController implements GetUpdateControllerInterface
 {

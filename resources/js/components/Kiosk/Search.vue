@@ -41,7 +41,7 @@
                             <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
                             <label class="notification">Please type at least two (2) letters to search.</label>
                         </div>                    
-                        <div class="softkeys mt-63" data-target="input[name='code']"></div>
+                        <div class="softkeys softkeys-search-page mt-63" data-target="input[name='code']"></div>
                     </form>
                 </div>
             </div>
@@ -973,7 +973,7 @@
             resetPage: function(content_language) {
                 $('#code').val("");
                 $('.notification').hide();
-                if ($('.ABC').html() === "ABC") {
+                if ($('.ABC').html() == "ABC") {
                     $('.ABC').trigger('click');
                 }
                 this.resetCarousel();
@@ -1067,23 +1067,15 @@
                     $(".map-search-modal").hide();
                 })
 
-                $(".ABC").on('click',function(){
-                    if ($(this).html() === "ABC") {
-                        $(this).html("#+=");
+                $(".softkeys-search-page > .ABC").on('click',function(){
+                    if ($(this).html() == "ABC") {
+                        $('.softkeys-search-page > .ABC').html("#+=");
                         $(".hidden-on-alt").show();
                     } else {
-                        $(this).html("ABC");
+                        $('.softkeys-search-page > .ABC').html("ABC");
                         $(".hidden-on-alt").hide();
                     }
-                }).on('touchstart',function(){
-                    if ($(this).html() === "ABC") {
-                        $(this).html("#+=");
-                        $(".hidden-on-alt").show();
-                    } else {
-                        $(this).html("ABC");
-                        $(".hidden-on-alt").hide();
-                    }
-                });
+                })
 
                 $(".enter-key").on('click',function(event){
                     $(".search-box-button").trigger('click');

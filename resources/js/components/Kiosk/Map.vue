@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
+                                <!-- <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button> -->
 
                             </div>
                         </div>
@@ -521,13 +521,12 @@
 			},
 
             find_store: function(value, called_from = null) {
+                this.tenant_details = '';
                 if(!value)
                     return false;
 
                 this.active_map_details = this.site_floors.find(option => option.is_default == 1);
-                // this.tenant_details = '';
-                if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
+                if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAd') {
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
@@ -596,9 +595,6 @@
                     $('#guide-button').trigger('click');
                 }
 
-                
-                
-
                 var default_zoom = this.active_map_details.default_zoom;
                 if(obj.tenant_details && obj.site_orientation == 'Portrait') {
                     default_zoom = ((default_zoom*100)-6)/100;
@@ -645,6 +641,13 @@
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.showmap(obj.active_map_details,'start');
+
+                    if(obj.with_disability == 1) {
+                        $("#withDisabilityButton").addClass('disability-active');
+                    }
+                    else {
+                        $("#withDisabilityButton").removeClass('disability-active');
+                    }
                 });              
                 $('#repeatButton').hide();
                 $('#tenant-details').hide();

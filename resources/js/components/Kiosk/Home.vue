@@ -193,7 +193,7 @@
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-60': 'row mb-3'">
                                     <div v-for="tenant in tenants" v-bind:class="tenant_list[0].length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait': '', (tenant_list[0].length <= 2 && site_orientation == 'Landscape') ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait': '', (tenant_list[0].length <= 2 && site_orientation == 'Landscape') ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant, current_page) : findStore(tenant,current_page);">
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -210,7 +210,7 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
+                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant, current_page)">
                                                 <div class="image-holder h-100">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -1454,13 +1454,24 @@
                 if($('#myProduct, #myevent').is(':visible')) {
                     $('#myProduct, #myevent').hide();
                     return false;
-                }                
+                }   
+                
+                console.log('test');
+                console.log(this.called_from);
+                console.log(this.previous_page);                
+                console.log(this.alphabetical);
 
                 if(this.called_from == 'bannerAd' && this.show_tenant == true) {
                     this.home_category = true;
                     this.show_tenant = false;
                 }
                 if(!this.called_from && this.show_tenant == true) {
+                    this.page_title = 'Store List';
+                    this.alphabetical = true;
+                    this.show_tenant = false;
+                    this.tabs_container = true;
+                }
+                if(this.called_from == 'home' && this.show_tenant == true) {
                     this.page_title = 'Store List';
                     this.alphabetical = true;
                     this.show_tenant = false;
@@ -1490,7 +1501,6 @@
                     this.child_category = true;
                     this.alphabetical = false;
                     $('#category-tab').trigger('click');
-
                 } 
                 else if(this.alphabetical == true) {
                     this.page_title = 'Categories';
@@ -1523,6 +1533,11 @@
                     }
                     
                 }
+                else if(this.called_from == 'home' && this.tenant_details.is_subscriber && this.show_tenant == true) {
+                    this.home_category = false;
+                    this.show_tenant = false;
+                    this.alphabetical = true;
+                }
 
                 $('#myProduct').hide();
                 setTimeout(() => {
@@ -1530,8 +1545,9 @@
                 }, 100);        
             },
 
-            showTenant: function(tenant) {
+            showTenant: function(tenant, current_page) {
                 this.tenant_details = '';
+                this.called_from = current_page;
                 this.page_title = 'Store Page';   
                 this.tenant_details = tenant;
                 this.alphabetical = false;
@@ -1664,6 +1680,9 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
+                this.$refs.callMap.with_disability = 0;
+                console.log(tenant);
+                console.log(called_from);
                 
                 this.findStore(tenant,called_from);                
             });
@@ -1687,7 +1706,8 @@
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
                 this.called_from = called_from;
-                this.showTenant(tenant);          
+                this.$refs.callMap.with_disability = 0;
+                this.showTenant(tenant, called_from);          
             });
 
             var obj = this;
@@ -1755,7 +1775,7 @@
                         obj.alphabetical = true;
                     }
                     else if(called_from == 'bannerAd') {
-                        console.log('3');
+                        console.log('1');
                         obj.tenant_details = '';
                         obj.show_tenant = false;
                         obj.home_category = true;
