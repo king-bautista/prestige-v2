@@ -1103,6 +1103,10 @@
                 }).on('touchend',function(){
                     clearTimeout(timerInterval);
                 });
+
+                $(".enter-key").on('click', function() {
+                    alert('enter key is click');
+                });
             })
         },
     };

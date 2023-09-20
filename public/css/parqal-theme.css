@@ -1778,7 +1778,7 @@ input[type="text"]:focus
 .custom-modal-position {
     position: absolute;
     top: 46%;
-    left: 65%;
+    left: 63%;
     transform: translate(-50%, -50%);
 }
 
@@ -2391,13 +2391,14 @@ pre {
 }
 
 .btn.disabled, .btn:disabled {
+    background-color: #ededed !important;
     opacity: 1 !important;
 }
 
 .carousel-item {
-    transition: -webkit-transform .8s ease-in-out !important;
-    transition: transform .8s ease-in-out !important;
-    transition: transform .8s ease-in-out,-webkit-transform .8s ease-in-out !important;
+    transition: -webkit-transform .10s ease-in-out !important;
+    transition: transform .10s ease-in-out !important;
+    transition: transform .10s ease-in-out,-webkit-transform .10s ease-in-out !important;
 }
 
 .btn-direction-shop {

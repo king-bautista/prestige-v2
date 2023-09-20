@@ -218,7 +218,7 @@
                             </span>
                         </multiselect>
                         <div class="input-group-append" >
-                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" class="btn is-pwd-button custom-color last-border-radius" type="button">
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" class="btn is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -586,6 +586,13 @@
                     }
                     else {
                         $("#withDisabilityButton").removeClass('disability-active');
+                    }
+
+                    if(obj.tenant_dropdown) {
+                        $('#withDisabilityButton').prop('disabled', true);
+                    }
+                    else {
+                        $('#withDisabilityButton').prop('disabled', false);
                     }
 
                 });
