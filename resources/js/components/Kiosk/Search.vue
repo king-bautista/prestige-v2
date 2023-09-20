@@ -877,7 +877,7 @@
                                 [','],
                                 'space',
                                 ['.'],
-                                ['Enter','Enter'],
+                                ['Search','Search'],
                             ]
                         ]
                     });
@@ -1003,7 +1003,7 @@
         },
 
         mounted() {
-
+            var obj = this;
             this.softkeys();
             $(function() {
                 $(".control-prev-sp").hide();
@@ -1044,9 +1044,14 @@
                     if($(this).children().eq(1).html() === "null"){
                         $(this).addClass('hidden-on-alt');
                     }
-                    if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Enter"){                  
+                    // if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Enter"){                  
+                    //     $(this).addClass('enter-key');
+                    // };
+
+                    if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Search"){                  
                         $(this).addClass('enter-key');
                     };
+
                 });
 
                 $(".softkeys__btn").on('mousedown',function(){
@@ -1077,8 +1082,8 @@
                     }
                 })
 
-                $(".enter-key").on('click',function(event){
-                    $(".search-box-button").trigger('click');
+                $(".enter-key").on('touchend',function(){
+                    obj.onEnter();
                 });
 
                 var touchduration = 150; 
@@ -1102,10 +1107,6 @@
                     timer(touchduration);
                 }).on('touchend',function(){
                     clearTimeout(timerInterval);
-                });
-
-                $(".enter-key").on('click', function() {
-                    alert('enter key is click');
                 });
             })
         },

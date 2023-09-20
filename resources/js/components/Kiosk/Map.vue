@@ -736,7 +736,7 @@
                                 [','],
                                 'space',
                                 ['.'],
-                                ['Enter','Enter'],
+                                ['Search','Search'],
                             ]
                         ]
                     });
@@ -786,7 +786,7 @@
                                 [','],
                                 'space',
                                 ['.'],
-                                ['Enter','Enter'],
+                                ['Search','Search'],
                             ]
                         ]
                     });
@@ -809,7 +809,7 @@
                         if($(this).children().eq(1).html() === "null"){
                             $(this).addClass('hidden-on-alt');
                         }
-                        if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Enter"){                  
+                        if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Search"){                  
                             $(this).addClass('enter-key');
                         };
                     });
