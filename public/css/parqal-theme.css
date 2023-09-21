@@ -1777,7 +1777,7 @@ input[type="text"]:focus
 }
 
 .custom-modal-position {
-    position: absolute;
+    position: absolute  ;
     top: 46%;
     left: 61%;
     transform: translate(-50%, -50%);
@@ -1788,6 +1788,10 @@ input[type="text"]:focus
     top: 63%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.modal-event {
+    top: 55% !important;
 }
 
 .no-results-container img {
@@ -2188,13 +2192,17 @@ pre {
 
 .my-product-image {
     border-radius: 20px;
-    width: 450px;
+    width: 563px;
     height: auto;
+}
+
+.my-product-image-500 {
+    width: 500px;
 }
 
 .my-product-image-portrait {
     border-radius: 20px;
-    width: 560px;
+    width: 650px;
     height: auto;
 }
 

@@ -16,8 +16,8 @@
                                 <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                             </div>                
                         </div>
-                        <div class="col-md-6 text-right">
-                            <div class="mr-5 mb-5 mt-3" style="z-index:3;">
+                        <div class="col-md-6 text-right" style="z-index:3;">
+                            <div class="mr-5 mb-5 mt-3">
                                 <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                             </div>
                         </div>
@@ -568,7 +568,7 @@
             <!-- MODAL -->
             <div class="custom-modal p-l-490" id="myProduct">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait': ''" class="custom-modal-position set-width">                    
-                    <img class="my-product-image" :src="product_image">
+                    <img v-bind:class="(site_orientation == 'Portrait') ? '': 'my-product-image-500'" class="my-product-image" :src="product_image">
                     <div class="text-center parqal-color">
                         <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                     </div> 

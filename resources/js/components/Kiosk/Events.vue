@@ -85,7 +85,7 @@
         
         <!-- MODAL -->
         <div class="custom-modal p-l-490" id="myevent">
-            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait set-width': 'custom-modal-position set-width'">                    
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait modal-event set-width': 'custom-modal-position set-width'">                    
                 <img v-bind:class="(site_orientation == 'Portrait') ? 'my-product-image-portrait': 'my-product-image'" class="" :src="event_image">
                 <div class="text-center parqal-color pt-4">
                     <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
