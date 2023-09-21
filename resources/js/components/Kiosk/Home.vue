@@ -40,10 +40,10 @@
                 </template>
             </div>
             <div v-else class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" style="z-index:3;">
                     <div id="page-title" v-if="page_title != 'Categories'" class="translateme" :data-en="page_title">{{ page_title }}</div>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-md-6 text-right" style="z-index:3;">
                     <img :src="site_logo" class="logo-holder" @click="aboutButton('home')">
                 </div>
             </div>
@@ -795,8 +795,8 @@
             },
 
             homeButton: function (event) {
-                if($('#myProduct ').is(':visible')) {
-                    $('#myProduct').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
                 }
 
                 this.current_page = 'home';
@@ -821,8 +821,8 @@
             },
 
             searchButton: function (event) {
-                if($('#myProduct ').is(':visible')) {
-                    $('#myProduct').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
                 }
 
                 this.tenant_details = '';
@@ -842,9 +842,10 @@
             },
 
             mapButton: function (event) {
-                if($('#myProduct ').is(':visible')) {
-                    $('#myProduct').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
                 }
+
                 this.current_page = 'map';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -886,7 +887,9 @@
             },
 
             eventsButton: function (event) {
-                $('#myProduct, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
                 
                 this.current_page = 'event';
                 this.homeIsShown = false;
@@ -902,9 +905,10 @@
             },
 
             landmarksButton: function (event) {
-                if($('#myProduct ').is(':visible')) {
-                    $('#myProduct').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
                 }
+
                 this.current_page = 'landmark';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
