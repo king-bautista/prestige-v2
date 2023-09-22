@@ -369,16 +369,16 @@ WayFinding.prototype = {
                         var testWidth = metrics.width;
 
                         if (testWidth > maxWidth && n > 0) {
-                            context.strokeText(line.toUpperCase(), x + ((w/2)+3), y+2);
-                            context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
+                            context.strokeText(line.toUpperCase(), x + ((w/2)-5), y-2);
+                            context.fillText(line.toUpperCase(), x + ((w/2)-5), y-2);
                             line = words[n] + ' ';
                             y += (lineHeight/1.286)+1;
                         }else {
                             line = testLine;
                         }
                     }
-                    context.strokeText(line.toUpperCase(), x + ((w/2)+3), y+2);
-                    context.fillText(line.toUpperCase(), x + ((w/2)+4), y+3);
+                    context.strokeText(line.toUpperCase(), x + ((w/2)-5), y-2);
+                    context.fillText(line.toUpperCase(), x + ((w/2)-5), y-2);
                 }
 
                 function wrapText2(context, text, x, y, maxWidth, lineHeight, h,deg) {
