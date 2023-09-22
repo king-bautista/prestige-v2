@@ -4,19 +4,19 @@
             <div v-if="site_name == 'Parqal'" class="row">
                 <template v-if="site_orientation == 'Portrait'">
                     <template v-if="home_category">
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center" style="z-index:3;">
                             <div class="datetime-holder mt-4 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                             </div>
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="z-index:3;">
                             <div class="datetime-holder text-left ml-5 mt-2 pt-3">
                                 <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                             </div>                
                         </div>
-                        <div class="col-md-6 text-right">
+                        <div class="col-md-6 text-right" style="z-index:3;">
                             <div class="mr-5 mb-5 mt-3">
                                 <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                             </div>
@@ -24,26 +24,26 @@
                     </template>
                 </template>
                 <template v-else>
-                    <div class="col-md-5">
+                    <div class="col-md-5" style="z-index:3;">
                         <div v-if="child_category || supplementals || alphabetical || show_tenant" class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                         </div>                
                     </div>
-                    <div class="col-md-7 text-right">
+                    <div class="col-md-7 text-right" style="z-index:3;">
                         <div v-if="home_category" class="datetime-holder mt-2 mb-5 mr-5 pt-3">
                             <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                         </div>
-                        <div v-else class="mr-5 mb-5 mt-3">
+                        <div v-else class="mr-5 mb-5 mt-3" style="z-index:3;">
                             <div v-bind:class="[page_title.length > 20 ? 'f-size-28' : '']" class="btn btn-custom">{{ page_title }}</div>
                         </div>
                     </div>
                 </template>
             </div>
             <div v-else class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" style="z-index:3;">
                     <div id="page-title" v-if="page_title != 'Categories'" class="translateme" :data-en="page_title">{{ page_title }}</div>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-md-6 text-right" style="z-index:3;">
                     <img :src="site_logo" class="logo-holder" @click="aboutButton('home')">
                 </div>
             </div>
@@ -193,7 +193,7 @@
                                 <div v-bind:class="(site_orientation == 'Portrait') ? 'row mb-3 mt-60': 'row mb-3'">
                                     <div v-for="tenant in tenants" v-bind:class="tenant_list[0].length <= 2 ? 'col-sm-6 text-left mt-3' : 'col-sm-4 text-left mt-3'">
                                         <div v-if="site_name == 'Parqal'">
-                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait': '', (tenant_list[0].length <= 2 && site_orientation == 'Landscape') ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant) : findStore(tenant,current_page);">
+                                            <div v-bind:class="[(site_orientation == 'Portrait' ? 'tenant-store tenant-store-portrait text-center': 'tenant-store text-center ml-3 mb-3'), (tenant_list[0].length <= 2 && site_orientation == 'Portrait') ? 'tenant-store-custom-portrait': '', (tenant_list[0].length <= 2 && site_orientation == 'Landscape') ? 'tenant-store-custom': '']" @click="helper.saveLogs(tenant, 'Categories'); (tenant.is_subscriber==1) ? showTenant(tenant, current_page) : findStore(tenant,current_page);">
                                                 <div v-bind:class="tenant_list[0].length <= 2 ? 'image-holder-custom h-100' : 'image-holder h-100'">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -210,7 +210,7 @@
                                             </div>
                                         </div>
                                         <div v-else>
-                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant)">
+                                            <div class="tenant-store bg-white text-center box-shadowed ml-3" @click="helper.saveLogs(tenant, 'Categories'); showTenant(tenant, current_page)">
                                                 <div class="image-holder h-100">
                                                     <img :src="tenant.brand_logo" :alt="tenant.brand_name">
                                                 </div>
@@ -254,7 +254,7 @@
             <div v-show="show_tenant">
                 <div v-if="site_name == 'Parqal'" class="row">
                     <template v-if="site_orientation == 'Portrait'">
-                        <div class="col-sm-12 mt-2">
+                        <div class="col-sm-12 mt-2" style="z-index: 3;">
                             <div class="row tenant-details-portrait ml-4 mr-4">
                                 <div class="col-sm-3 text-center">
                                     <div class="my-auto pt-3">
@@ -568,7 +568,7 @@
             <!-- MODAL -->
             <div class="custom-modal p-l-490" id="myProduct">
                 <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait': ''" class="custom-modal-position set-width">                    
-                    <img class="my-product-image" :src="product_image">
+                    <img v-bind:class="(site_orientation == 'Portrait') ? '': 'my-product-image-500'" class="my-product-image" :src="product_image">
                     <div class="text-center parqal-color">
                         <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                     </div> 
@@ -795,8 +795,8 @@
             },
 
             homeButton: function (event) {
-                if($('#myProduct ').is(':visible')) {
-                    $('#myProduct').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
                 }
 
                 this.current_page = 'home';
@@ -821,6 +821,10 @@
             },
 
             searchButton: function (event) {
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
+
                 this.tenant_details = '';
                 this.current_page = 'search';
                 this.homeIsShown = false;
@@ -838,6 +842,10 @@
             },
 
             mapButton: function (event) {
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
+
                 this.current_page = 'map';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -879,7 +887,10 @@
             },
 
             eventsButton: function (event) {
-                $('#myProduct, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
+                
                 this.current_page = 'event';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -894,6 +905,10 @@
             },
 
             landmarksButton: function (event) {
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
+
                 this.current_page = 'landmark';
                 this.homeIsShown = false;
                 this.searchIsShown = false;
@@ -1357,16 +1372,16 @@
                     });
 
 
-                    var loop = true;
-                    if(obj.current_supplementals.children.length < 3) {
-                        loop = false;
+                    var sloop = true;
+                    if(obj.current_supplementals.children[0].length < 3) {
+                        sloop = false;
                     }
 
                     var owl = $("#supplementals-carousel");
                     owl.owlCarousel({
                         center: true,
                         items:3,
-                        loop:loop,
+                        loop:sloop,
                         margin:0,
                     });
                 });
@@ -1451,16 +1466,22 @@
             },
 
             goBack: function() {
-                if($('#myProduct, #myevent').is(':visible')) {
-                    $('#myProduct, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
                     return false;
-                }                
+                }
 
                 if(this.called_from == 'bannerAd' && this.show_tenant == true) {
                     this.home_category = true;
                     this.show_tenant = false;
                 }
                 if(!this.called_from && this.show_tenant == true) {
+                    this.page_title = 'Store List';
+                    this.alphabetical = true;
+                    this.show_tenant = false;
+                    this.tabs_container = true;
+                }
+                if(this.called_from == 'home' && this.show_tenant == true) {
                     this.page_title = 'Store List';
                     this.alphabetical = true;
                     this.show_tenant = false;
@@ -1490,7 +1511,6 @@
                     this.child_category = true;
                     this.alphabetical = false;
                     $('#category-tab').trigger('click');
-
                 } 
                 else if(this.alphabetical == true) {
                     this.page_title = 'Categories';
@@ -1523,6 +1543,11 @@
                     }
                     
                 }
+                else if(this.called_from == 'home' && this.tenant_details.is_subscriber && this.show_tenant == true) {
+                    this.home_category = false;
+                    this.show_tenant = false;
+                    this.alphabetical = true;
+                }
 
                 $('#myProduct').hide();
                 setTimeout(() => {
@@ -1530,8 +1555,9 @@
                 }, 100);        
             },
 
-            showTenant: function(tenant) {
+            showTenant: function(tenant, current_page) {
                 this.tenant_details = '';
+                this.called_from = current_page;
                 this.page_title = 'Store Page';   
                 this.tenant_details = tenant;
                 this.alphabetical = false;
@@ -1656,6 +1682,9 @@
 
         mounted() {
             this.$root.$on('showTenantMap', (tenant, called_from) => {
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = true;
@@ -1664,13 +1693,18 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                if(!called_from)
-                    called_from = 'home';                    
+                this.$refs.callMap.with_disability = 0;
+                console.log(tenant);
+                console.log(called_from);
                 
                 this.findStore(tenant,called_from);                
             });
 
             this.$root.$on('showTenantSubscriber', (tenant, called_from) => {
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
+
                 this.current_page = 'home';
                 this.no_record_found = false;
                 this.home_category = false;
@@ -1688,9 +1722,9 @@
                 this.aboutIsShown = false;
                 this.landmarkIsShown = false;
                 this.eventsIsShown = false;
-                if(!called_from)
-                    this.called_from = 'bannerAd';
-                this.showTenant(tenant);          
+                this.called_from = called_from;
+                this.$refs.callMap.with_disability = 0;
+                this.showTenant(tenant, called_from);          
             });
 
             var obj = this;
@@ -1726,7 +1760,7 @@
                     obj.updateMainCategory(params);
                 });
 
-                obj.$root.$on('callShowTenant', (params) => {
+                obj.$root.$on('callShowTenant', (params, called_from) => {
                     obj.home_category = false;
                     obj.child_category = false;
                     obj.tabs_container = false;
@@ -1742,22 +1776,34 @@
                     obj.eventsIsShown = false;
                     obj.page_title = params.category_name;
 
+                    console.log(called_from);
+
                     if(params.is_subscriber) {
+                        console.log('1');
                         obj.show_tenant = true;
+                        obj.home_category = false;
                         obj.alphabetical = false;
                     }
-                    else if(obj.tenant_list.length > 0 && obj.called_from == 'home') {
+                    else if(obj.tenant_list.length > 0 && called_from == 'home') {
+                        console.log('2');
                         obj.tenant_details = '';
                         obj.show_tenant = false;
                         obj.home_category = false;
                         obj.alphabetical = true;
                     }
-                    else if(obj.called_from == 'bannerAd') {
+                    else if(called_from == 'bannerAd') {
+                        console.log('1');
                         obj.tenant_details = '';
                         obj.show_tenant = false;
                         obj.home_category = true;
                         obj.alphabetical = false;
                     }
+                    // else {
+                    //     obj.tenant_details = '';
+                    //     obj.show_tenant = false;
+                    //     obj.home_category = true;
+                    //     obj.alphabetical = false;
+                    // }
 
                     obj.$refs.callAssist.filterAssist('tenantcategory',obj.current_language_set);
                 });

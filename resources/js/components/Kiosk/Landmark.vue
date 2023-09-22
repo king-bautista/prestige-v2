@@ -13,10 +13,10 @@
             </div>
         </div>
         <div v-else class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="z-index:3;">
                 <div id="page-title" class="translateme" :data-en="page_title">{{page_title}}</div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="z-index:3;">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>

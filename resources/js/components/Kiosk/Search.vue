@@ -1,22 +1,22 @@
 <template>
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="z-index:3;">
                 <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                 </div>                
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="z-index:3;">
                 <div class="mr-5 mb-5 mt-3">
                     <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                 </div>
             </div>
         </div>
         <div v-else class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="z-index:3;">
                 <div id="page-title" class="translateme" :data-en="page_title">{{page_title}}</div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="z-index:3;">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
@@ -41,7 +41,7 @@
                             <button class="btn search-box-button translateme" type="button" @click="onEnter" data-en="Search">Search</button>
                             <label class="notification">Please type at least two (2) letters to search.</label>
                         </div>                    
-                        <div class="softkeys mt-63" data-target="input[name='code']"></div>
+                        <div class="softkeys softkeys-search-page mt-63" data-target="input[name='code']"></div>
                     </form>
                 </div>
             </div>
@@ -411,10 +411,10 @@
         <!-- MODAL -->
         <div class="custom-modal p-l-490" id="myProductSearch">
             <div class="custom-modal-position set-width">                    
-                <div class="text-right text-white">
-                    <span class="btn-close-modal">X</span>
-                </div>
                 <img class="my-product-image" :src="product_image">
+                <div class="text-center parqal-color">
+                    <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
+                </div> 
             </div>
         </div>
 
@@ -877,7 +877,7 @@
                                 [','],
                                 'space',
                                 ['.'],
-                                ['Enter','Enter'],
+                                ['Search','Search'],
                             ]
                         ]
                     });
@@ -973,7 +973,7 @@
             resetPage: function(content_language) {
                 $('#code').val("");
                 $('.notification').hide();
-                if ($('.ABC').html() === "ABC") {
+                if ($('.ABC').html() == "ABC") {
                     $('.ABC').trigger('click');
                 }
                 this.resetCarousel();
@@ -1003,7 +1003,7 @@
         },
 
         mounted() {
-
+            var obj = this;
             this.softkeys();
             $(function() {
                 $(".control-prev-sp").hide();
@@ -1044,9 +1044,14 @@
                     if($(this).children().eq(1).html() === "null"){
                         $(this).addClass('hidden-on-alt');
                     }
-                    if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Enter"){                  
+                    // if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Enter"){                  
+                    //     $(this).addClass('enter-key');
+                    // };
+
+                    if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Search"){                  
                         $(this).addClass('enter-key');
                     };
+
                 });
 
                 $(".softkeys__btn").on('mousedown',function(){
@@ -1067,26 +1072,18 @@
                     $(".map-search-modal").hide();
                 })
 
-                $(".ABC").on('click',function(){
-                    if ($(this).html() === "ABC") {
-                        $(this).html("#+=");
+                $(".softkeys-search-page > .ABC").on('click',function(){
+                    if ($(this).html() == "ABC") {
+                        $('.softkeys-search-page > .ABC').html("#+=");
                         $(".hidden-on-alt").show();
                     } else {
-                        $(this).html("ABC");
+                        $('.softkeys-search-page > .ABC').html("ABC");
                         $(".hidden-on-alt").hide();
                     }
-                }).on('touchstart',function(){
-                    if ($(this).html() === "ABC") {
-                        $(this).html("#+=");
-                        $(".hidden-on-alt").show();
-                    } else {
-                        $(this).html("ABC");
-                        $(".hidden-on-alt").hide();
-                    }
-                });
+                })
 
-                $(".enter-key").on('click',function(event){
-                    $(".search-box-button").trigger('click');
+                $(".enter-key").on('touchend',function(){
+                    obj.onEnter();
                 });
 
                 var touchduration = 150; 
