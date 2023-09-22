@@ -1372,16 +1372,16 @@
                     });
 
 
-                    var loop = true;
-                    if(obj.current_supplementals.children.length < 3) {
-                        loop = false;
+                    var sloop = true;
+                    if(obj.current_supplementals.children[0].length < 3) {
+                        sloop = false;
                     }
 
                     var owl = $("#supplementals-carousel");
                     owl.owlCarousel({
                         center: true,
                         items:3,
-                        loop:loop,
+                        loop:sloop,
                         margin:0,
                     });
                 });
@@ -1466,15 +1466,10 @@
             },
 
             goBack: function() {
-                if($('#myProduct, #myevent').is(':visible')) {
-                    $('#myProduct, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
                     return false;
-                }   
-                
-                console.log('test');
-                console.log(this.called_from);
-                console.log(this.previous_page);                
-                console.log(this.alphabetical);
+                }
 
                 if(this.called_from == 'bannerAd' && this.show_tenant == true) {
                     this.home_category = true;
@@ -1687,6 +1682,9 @@
 
         mounted() {
             this.$root.$on('showTenantMap', (tenant, called_from) => {
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
                 this.homeIsShown = false;
                 this.searchIsShown = false;
                 this.mapIsShown = true;
@@ -1703,6 +1701,10 @@
             });
 
             this.$root.$on('showTenantSubscriber', (tenant, called_from) => {
+                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent').hide();
+                }
+
                 this.current_page = 'home';
                 this.no_record_found = false;
                 this.home_category = false;
