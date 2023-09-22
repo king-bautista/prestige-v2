@@ -1,22 +1,22 @@
 <template>
     <div v-bind:class="(site_orientation == 'Portrait') ? 'router-page-portrait': 'router-page'" style="width: 100%;">
         <div v-if="site_name == 'Parqal'" class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="z-index:3;">
                 <div class="datetime-holder mt-2 mb-5 mr-5 ml-5 pt-3">
                     <span class="separator">{{ current_time }}</span><span class="ml-2">{{ current_date }}</span>
                 </div>                
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="z-index:3;">
                 <div class="mr-5 mb-5 mt-3">
                     <div v-bind:class="[(site_orientation == 'Portrait' ? 'btn-custom btn-custom-portrait ': 'btn btn-custom'), page_title.length > 20 ? 'f-size-28' : '']">{{ page_title }}</div>
                 </div>
             </div>
         </div>
         <div v-else class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="z-index:3;">
                 <div id="page-title" class="translateme" :data-en="page_title">{{page_title}}</div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="z-index:3;">
                 <img :src="site_logo" class="logo-holder" @click="callHomeMethod">
             </div>
         </div>
@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button>
+                                <!-- <button v-if="tenant_details.is_subscriber" class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions" @click="find_store(tenant_details,current_page);">Get Directions</button> -->
 
                             </div>
                         </div>
@@ -218,7 +218,7 @@
                             </span>
                         </multiselect>
                         <div class="input-group-append" >
-                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" class="btn is-pwd-button custom-color last-border-radius" type="button">
+                            <button id="withDisabilityButton" @click="(with_disability) ? with_disability = 0 : with_disability = 1; find_store(map_form.tenant, called_from);" class="btn is-pwd-button custom-color last-border-radius" type="button" :disabled="tenant_dropdown">
                                 <i class="fa fa-wheelchair fa-2x" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -488,7 +488,7 @@
                 } else if (!this.tenant_details && this.called_from == 'cinema') {
                     this.$root.$emit('callAboutFrom',this.called_from);
                 } else if (this.tenant_details && this.called_from == 'home') {
-                    this.$root.$emit('callShowTenant',this.tenant_details);
+                    this.$root.$emit('callShowTenant',this.tenant_details, this.called_from);
                 } else if(this.tenant_details && this.called_from == 'search') {
                     this.tenant_details = '';
                     this.$root.$emit('callSearchBack', this.tenant_details);                                               
@@ -521,13 +521,12 @@
 			},
 
             find_store: function(value, called_from = null) {
+                this.tenant_details = '';
                 if(!value)
                     return false;
 
                 this.active_map_details = this.site_floors.find(option => option.is_default == 1);
-                // this.tenant_details = '';
-                if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAds') {
-                    this.with_disability = (this.with_disability && (called_from == 'home' || called_from == 'bannerAds')) ? 0 : this.with_disability;
+                if(called_from == 'home' || called_from == 'search' || called_from == 'bannerAd') {
                     this.map_form.tenant = value;
                     this.tenant_details = value;
                     this.buildSchedule(this.tenant_details);
@@ -582,13 +581,26 @@
                     //$('.destination').html($('.map-tenant-option .multiselect__single').html());
                     $('.map-tenant-option .multiselect__single').html("Directions to: " + value.brand_name);
 
+                    if(obj.with_disability == 1) {
+                        $("#withDisabilityButton").addClass('disability-active');
+                    }
+                    else {
+                        $("#withDisabilityButton").removeClass('disability-active');
+                    }
+
+                    if(obj.tenant_dropdown) {
+                        $('#withDisabilityButton').prop('disabled', true);
+                    }
+                    else {
+                        $('#withDisabilityButton').prop('disabled', false);
+                    }
+
                 });
                 $('.map-floor-option .multiselect__tags .multiselect__single').html(this.active_map_details.building_floor_name);
 
                 if ($("#app").attr('app-env') == 'local') {
                     $('#guide-button').trigger('click');
                 }
-                
 
                 var default_zoom = this.active_map_details.default_zoom;
                 if(obj.tenant_details && obj.site_orientation == 'Portrait') {
@@ -636,6 +648,13 @@
                     this.wayfindings.clearLine();
                     this.wayfindings.clearMarker();
                     this.wayfindings.showmap(obj.active_map_details,'start');
+
+                    if(obj.with_disability == 1) {
+                        $("#withDisabilityButton").addClass('disability-active');
+                    }
+                    else {
+                        $("#withDisabilityButton").removeClass('disability-active');
+                    }
                 });              
                 $('#repeatButton').hide();
                 $('#tenant-details').hide();
@@ -717,7 +736,7 @@
                                 [','],
                                 'space',
                                 ['.'],
-                                ['Enter','Enter'],
+                                ['Search','Search'],
                             ]
                         ]
                     });
@@ -767,7 +786,7 @@
                                 [','],
                                 'space',
                                 ['.'],
-                                ['Enter','Enter'],
+                                ['Search','Search'],
                             ]
                         ]
                     });
@@ -790,7 +809,7 @@
                         if($(this).children().eq(1).html() === "null"){
                             $(this).addClass('hidden-on-alt');
                         }
-                        if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Enter"){                  
+                        if($(this).attr('data-type') === "symbol" && $(this).children().eq(0).html() === "Search"){                  
                             $(this).addClass('enter-key');
                         };
                     });
@@ -955,12 +974,20 @@
                 });
 
                 $('#withDisabilityButton').on('click', function() {
-                    if($("#withDisabilityButton").hasClass("disability-active")) {
-                        $("#withDisabilityButton").removeClass('disability-active').addClass('disability-inactive');
+                    if(obj.with_disability == 1) {
+                        alert('here');
+                        $("#withDisabilityButton").addClass('disability-active');
                     }
                     else {
-                        $("#withDisabilityButton").removeClass('disability-inactive').addClass('disability-active');
+                        $("#withDisabilityButton").removeClass('disability-active');
                     }
+
+                    // if($("#withDisabilityButton").hasClass("disability-active")) {
+                    //     $("#withDisabilityButton").removeClass('disability-active').addClass('disability-inactive');
+                    // }
+                    // else {
+                    //     $("#withDisabilityButton").removeClass('disability-inactive').addClass('disability-active');
+                    // }
                 });
 
                 $('.pinch, .map-control-fit, .zoomable-container').on('click',function(){
