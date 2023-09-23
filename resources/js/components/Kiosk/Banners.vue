@@ -111,7 +111,7 @@
 
                 const carousel_item = document.querySelectorAll('.carousel-item');
                 carousel_item.forEach(function(item) {
-                    item.addEventListener('touchmove', (e) => {
+                    item.addEventListener('touchend', (e) => {
                             if(e.touches.length > 1) {
                                 console.log('1');
                                 return false;
