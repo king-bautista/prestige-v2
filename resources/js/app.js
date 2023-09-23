@@ -209,9 +209,9 @@ const app = new Vue({
     },
 
     mounted() {
-        document.addEventListener('touchstart', this.getTouchPoints);
-        document.addEventListener('touchend', this.getTouchPoints);
-        document.addEventListener('touchmove', this.getTouchPoints);
+        // document.addEventListener('touchstart', this.getTouchPoints);
+        // document.addEventListener('touchend', this.getTouchPoints);
+        // document.addEventListener('touchmove', this.getTouchPoints);
         this.enableInterceptor();
     },
 
@@ -265,10 +265,10 @@ const app = new Vue({
             axios.interceptors.request.eject(this.axiosInterceptor)
         },
 
-        getTouchPoints(e) {
-            if(e.touches.length > 2)
-                return false;
-        },
+        // getTouchPoints(e) {
+        //     if(e.touches.length > 2)
+        //         return false;
+        // },
 
     }
 });

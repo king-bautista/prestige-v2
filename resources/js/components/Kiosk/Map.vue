@@ -968,6 +968,9 @@
                     })
 
                     parent.addEventListener('touchstart', function(event) {
+                        if(event.touches.length > 2)
+                            return false;
+                        
                         $(".pinch").hide();
                         if (!event.shiftKey) return
                     })
