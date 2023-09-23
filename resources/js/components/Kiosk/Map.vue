@@ -974,6 +974,23 @@
                         $(".pinch").hide();
                         if (!event.shiftKey) return
                     })
+
+                    parent.addEventListener('touchend', function(event) {
+                        if(event.touches.length > 2)
+                            return false;
+                        
+                        $(".pinch").hide();
+                        if (!event.shiftKey) return
+                    })
+
+                    parent.addEventListener('touchmove', function(event) {
+                        if(event.touches.length > 2)
+                            return false;
+                        
+                        $(".pinch").hide();
+                        if (!event.shiftKey) return
+                    })
+                    
                 });
 
                 $('#withDisabilityButton').on('click', function() {
