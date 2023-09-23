@@ -974,22 +974,6 @@
                         $(".pinch").hide();
                         if (!event.shiftKey) return
                     })
-
-                    parent.addEventListener('touchend', function(event) {
-                        if(event.touches.length > 2)
-                            return false;
-                        
-                        $(".pinch").hide();
-                        if (!event.shiftKey) return
-                    })
-
-                    parent.addEventListener('touchmove', function(event) {
-                        if(event.touches.length > 2)
-                            return false;
-                        
-                        $(".pinch").hide();
-                        if (!event.shiftKey) return
-                    })
                     
                 });
 
@@ -1150,6 +1134,30 @@
                 $('#map-holder').on('click', function() {
                     $('#pinch').hide();
                 });
+
+                $('#map-holder').addEventListener(
+                    "touchstart",
+                    (e) => {
+                        if(e.touches.length > 3) 
+                            false;   
+                    }
+                );
+
+                $('#map-holder').addEventListener(
+                    "touchend",
+                    (e) => {
+                        if(e.touches.length > 3) 
+                            false;   
+                    }
+                );
+
+                $('#map-holder').addEventListener(
+                    "touchmove",
+                    (e) => {
+                        if(e.touches.length > 3) 
+                            false;   
+                    }
+                );
 
                 $(".ABC").on('click',function(){
                     if ($(this).html() === "ABC") {
