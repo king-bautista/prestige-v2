@@ -266,7 +266,7 @@ const app = new Vue({
         },
 
         getTouchPoints(e) {
-            alert(e.touches.length);
+            console.log(e.touches.length);
         },
 
     }
