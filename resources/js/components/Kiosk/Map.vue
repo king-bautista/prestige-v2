@@ -958,14 +958,14 @@
                     // $('#zoomResetButton').get(0).addEventListener('click', vm.panzoom.reset)
 
                     // No function bind needed
-                    parent.addEventListener('wheel', vm.panzoom.zoomWithWheel)
+                    // parent.addEventListener('wheel', vm.panzoom.zoomWithWheel)
 
-                    // This demo binds to shift + wheel
-                    parent.addEventListener('wheel', function(event) {
-                        $(".pinch").hide();
-                        if (!event.shiftKey) return
-                        vm.panzoom.zoomWithWheel(event)
-                    })
+                    // // This demo binds to shift + wheel
+                    // parent.addEventListener('wheel', function(event) {
+                    //     $(".pinch").hide();
+                    //     if (!event.shiftKey) return
+                    //     vm.panzoom.zoomWithWheel(event)
+                    // })
 
                     parent.addEventListener('touchstart', function(event) {
                         if(event.touches.length > 2)
