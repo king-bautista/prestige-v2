@@ -985,13 +985,6 @@
                     else {
                         $("#withDisabilityButton").removeClass('disability-active');
                     }
-
-                    // if($("#withDisabilityButton").hasClass("disability-active")) {
-                    //     $("#withDisabilityButton").removeClass('disability-active').addClass('disability-inactive');
-                    // }
-                    // else {
-                    //     $("#withDisabilityButton").removeClass('disability-inactive').addClass('disability-active');
-                    // }
                 });
 
                 $('.pinch, .map-control-fit, .zoomable-container').on('click',function(){
@@ -1131,33 +1124,67 @@
                     //$(this).addClass('response-active-color');
                 });
 
+                const map_holder = document.getElementById('zoomable-container');
+                map_holder.addEventListener(
+                    "touchstart",
+                    (e) => {
+                        if(e.touches.length > 3) {
+                            return false;
+                        }else {
+                            return true;
+                        }
+                    }
+                );
+
+                map_holder.addEventListener(
+                    "touchend",
+                    (e) => {
+                        if(e.touches.length > 3) {
+                            return false;
+                        }else {
+                            return true;
+                        }
+                    }
+                );
+
+                map_holder.addEventListener(
+                    "touchmove",
+                    (e) => {
+                        if(e.touches.length > 3) {
+                            return false;
+                        }else {
+                            return true;
+                        }
+                    }
+                );
+
                 $('#map-holder').on('click', function() {
                     $('#pinch').hide();
                 });
 
-                $('#map-holder').addEventListener(
-                    "touchstart",
-                    (e) => {
-                        if(e.touches.length > 3) 
-                            false;   
-                    }
-                );
+                // $('#map-holder').addEventListener(
+                //     "touchstart",
+                //     (e) => {
+                //         if(e.touches.length > 3) 
+                //             false;   
+                //     }
+                // );
 
-                $('#map-holder').addEventListener(
-                    "touchend",
-                    (e) => {
-                        if(e.touches.length > 3) 
-                            false;   
-                    }
-                );
+                // $('#map-holder').addEventListener(
+                //     "touchend",
+                //     (e) => {
+                //         if(e.touches.length > 3) 
+                //             false;   
+                //     }
+                // );
 
-                $('#map-holder').addEventListener(
-                    "touchmove",
-                    (e) => {
-                        if(e.touches.length > 3) 
-                            false;   
-                    }
-                );
+                // $('#map-holder').addEventListener(
+                //     "touchmove",
+                //     (e) => {
+                //         if(e.touches.length > 3) 
+                //             false;   
+                //     }
+                // );
 
                 $(".ABC").on('click',function(){
                     if ($(this).html() === "ABC") {

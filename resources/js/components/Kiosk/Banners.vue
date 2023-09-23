@@ -109,20 +109,21 @@
                     }
                 });
 
-                $('.carousel-item').addEventListener(
-                    "touchmove",
-                    (e) => {
-                        if(e.touches.length > 1) {
-                            console.log('1');
-                            return false;
+                const carousel_item = document.querySelectorAll('.carousel-item');
+                carousel_item.forEach(function(item) {
+                    item.addEventListener('touchmove', (e) => {
+                            if(e.touches.length > 1) {
+                                console.log('1');
+                                return false;
+                            }
+                            else {
+                                console.log('2');
+                                return true;
+                            }
                         }
-                        else {
-                            console.log('2');
-                            return true;
-                        }
+                    );
+                });
 
-                    }
-                );
             });
         },
     };
