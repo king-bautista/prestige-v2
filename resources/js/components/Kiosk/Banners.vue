@@ -108,6 +108,21 @@
                         count = 0;                        
                     }
                 });
+
+                $('.carousel-item').addEventListener(
+                    "touchmove",
+                    (e) => {
+                        if(e.touches.length > 1) {
+                            console.log('1');
+                            return false;
+                        }
+                        else {
+                            console.log('2');
+                            return true;
+                        }
+
+                    }
+                );
             });
         },
     };
