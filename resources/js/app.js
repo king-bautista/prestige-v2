@@ -266,7 +266,8 @@ const app = new Vue({
         },
 
         getTouchPoints(e) {
-            console.log(e.touches.length);
+            if(e.touches.length > 2)
+                return false;
         },
 
     }
