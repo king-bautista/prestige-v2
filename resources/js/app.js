@@ -209,7 +209,10 @@ const app = new Vue({
     },
 
     mounted() {
-        this.enableInterceptor()
+        document.addEventListener('touchstart', this.getTouchPoints());
+        document.addEventListener('touchend', this.getTouchPoints());
+        document.addEventListener('touchmove', this.getTouchPoints());
+        this.enableInterceptor();
     },
 
     methods: {
@@ -260,6 +263,10 @@ const app = new Vue({
         
         disableInterceptor() {
             axios.interceptors.request.eject(this.axiosInterceptor)
+        },
+
+        getTouchPoints(e) {
+            alert(e.touches.length);
         },
 
     }
