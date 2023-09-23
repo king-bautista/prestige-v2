@@ -209,9 +209,9 @@ const app = new Vue({
     },
 
     mounted() {
-        document.addEventListener('touchstart', this.getTouchPoints());
-        document.addEventListener('touchend', this.getTouchPoints());
-        document.addEventListener('touchmove', this.getTouchPoints());
+        document.addEventListener('touchstart', this.getTouchPoints);
+        document.addEventListener('touchend', this.getTouchPoints);
+        document.addEventListener('touchmove', this.getTouchPoints);
         this.enableInterceptor();
     },
 
