@@ -23,7 +23,7 @@
         <link rel="stylesheet" href="{{ URL::to('css') }}/{{ $site_name }}-theme.css">
     </head>
 
-    <body>
+    <body id="kiosk_master">
         <!-- LOADING VIDEO --> 
         <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.ogv') }}'>Your browser does not support the video tag.</video></div>    
         <div id="app" app-env="{{ config('app.env') }}">

@@ -795,8 +795,8 @@
             },
 
             homeButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.current_page = 'home';
@@ -821,8 +821,8 @@
             },
 
             searchButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.tenant_details = '';
@@ -842,8 +842,8 @@
             },
 
             mapButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.current_page = 'map';
@@ -887,8 +887,8 @@
             },
 
             eventsButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
                 
                 this.current_page = 'event';
@@ -905,8 +905,8 @@
             },
 
             landmarksButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.current_page = 'landmark';
@@ -1279,8 +1279,8 @@
                             font_size_class = 'f-size-28';
                         }
 
-                        var html = '<div class="'+ïtem_holder_class+'">';
-                            html += '<div class="'+rounded_container_class+'" id="category_'+sub_category.id+'">';
+                        var html = '<div class="'+ïtem_holder_class+'" id="category_'+sub_category.id+'">';
+                            html += '<div class="'+rounded_container_class+'">';
                             html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
                             html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
                             html += '</div';
@@ -1466,8 +1466,8 @@
             },
 
             goBack: function() {
-                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                     return false;
                 }
 

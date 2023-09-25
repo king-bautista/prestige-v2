@@ -114,12 +114,18 @@
                             break;
 
                         case 'symbol' :
+
                             if(obj.hasClass('softkeys--alt')) {
-                                character = $(this).children('span').eq(1).html().replace("&amp;", "&");
+                                if($(this).children('span').eq(1).html() === 'Search') {
+
+                                }
+                                else {
+                                    character = $(this).children('span').eq(1).html().replace("&amp;", "&");
+                                }
                             } else if($(this).children('span').eq(0).html() === 'Enter') {
-                                
+
                             } else if($(this).children('span').eq(0).html() === 'Search') {
-                                character = '';
+
                             }else {
                                 character = $(this).children('span').eq(0).html();
                             }

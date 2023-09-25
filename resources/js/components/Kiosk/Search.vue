@@ -419,7 +419,7 @@
         </div>
 
         <div class="custom-modal p-l-490" id="modal-schedule-search">
-            <div class="custom-modal-position set-width-schedule">                    
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait': ''" class="custom-modal-position set-width-schedule">                    
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="label-1">Operating Hours</div>

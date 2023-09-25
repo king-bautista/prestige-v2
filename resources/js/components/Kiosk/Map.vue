@@ -521,6 +521,10 @@
 			},
 
             find_store: function(value, called_from = null) {
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').hide();
+                }
+                
                 this.tenant_details = '';
                 if(!value)
                     return false;
@@ -1124,12 +1128,13 @@
                     //$(this).addClass('response-active-color');
                 });
 
-                const map_holder = document.getElementById('zoomable-container');
+                const map_holder = document.getElementById('kiosk_master');
                 map_holder.addEventListener(
                     "touchstart",
                     (e) => {
-                        if(e.touches.length > 3) {
-                            return false;
+                        if(e.touches.length > 2) {
+                            e.preventDefault()
+                            e.stopPropagation()
                         }else {
                             return true;
                         }
@@ -1139,8 +1144,9 @@
                 map_holder.addEventListener(
                     "touchend",
                     (e) => {
-                        if(e.touches.length > 3) {
-                            return false;
+                        if(e.touches.length > 2) {
+                            e.preventDefault()
+                            e.stopPropagation()
                         }else {
                             return true;
                         }
@@ -1150,8 +1156,10 @@
                 map_holder.addEventListener(
                     "touchmove",
                     (e) => {
-                        if(e.touches.length > 3) {
-                            return false;
+                        console.log(e.touches.length);
+                        if(e.touches.length > 2) {
+                            e.preventDefault()
+                            e.stopPropagation()
                         }else {
                             return true;
                         }

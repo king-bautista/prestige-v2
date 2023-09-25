@@ -95,6 +95,7 @@ class Advertisement extends Model
         if(count($materials) > 0) {
             foreach($materials as $index => $material) {
                 $material_data = AdvertisementMaterial::find($material->id);
+                $material_data->touch();
 
                 $file_path = 'uploads/media/advertisements/materials/';
                 $thumbnails_path = 'uploads/media/advertisements/materials/thumbnails/';
