@@ -795,8 +795,8 @@
             },
 
             homeButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.current_page = 'home';
@@ -821,8 +821,8 @@
             },
 
             searchButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.tenant_details = '';
@@ -842,8 +842,8 @@
             },
 
             mapButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.current_page = 'map';
@@ -887,8 +887,8 @@
             },
 
             eventsButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
                 
                 this.current_page = 'event';
@@ -905,8 +905,8 @@
             },
 
             landmarksButton: function (event) {
-                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                 }
 
                 this.current_page = 'landmark';
@@ -1466,8 +1466,8 @@
             },
 
             goBack: function() {
-                if($('#myProduct, #myProductSearch, #myevent').is(':visible')) {
-                    $('#myProduct, #myProductSearch, #myevent').hide();
+                if($('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').is(':visible')) {
+                    $('#myProduct, #myProductSearch, #myevent, #modal-schedule, #map-modal-schedule, #modal-schedule-search').hide();
                     return false;
                 }
 
