@@ -238,7 +238,12 @@ class DirectorySiteTenantViewModel extends Model
                     return $new_schedule;
                 }
             }
-            return null;
+
+            return [
+                'is_open' => 0,
+                'start_time' => '',
+                'end_time' => '',
+            ];
         }
 
         if(strpos($json_data->schedules, $current_day)) {
@@ -250,7 +255,11 @@ class DirectorySiteTenantViewModel extends Model
             return $new_schedule;
         }
 
-        return null;        
+        return [
+            'is_open' => 0,
+            'start_time' => '',
+            'end_time' => '',
+        ];     
     }
 
     public function getOperationalHoursAttribute() 
@@ -264,8 +273,9 @@ class DirectorySiteTenantViewModel extends Model
             if(count($json_data) > 1) {
                 foreach($json_data as $data) {
                     $today_schedule = $this->getTodaySchedule($data);
+                    if($today_schedule['is_open'] == 1)
+                        return $today_schedule;
                 }
-                return $today_schedule;
             }
             else {
                 return $this->getTodaySchedule($json_data);

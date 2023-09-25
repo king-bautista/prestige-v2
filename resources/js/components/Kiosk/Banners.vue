@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="banner-ads-carousel" class="carousel slide carousel-fade" data-ride="carousel" data-pause="false" data-touch="false" data-interval="false">
+        <div id="banner-ads-carousel" class="carousel slide carousel-fade">
             <div class="carousel-inner" id="carousel-banner">
                 <div v-for="(banner, index) in banners.slice(0,2)" :data-index="index" :data-id="banner.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(banner.display_duration*1000)">
                     <span v-if="banner.file_type == 'video'" @click="helper.saveLogs(banner, 'Banner Ad'); showTenant(banner.tenant_details);">
@@ -108,6 +108,12 @@
                         count = 0;                        
                     }
                 });
+
+                $('#banner-ads-carousel').carousel({
+                    touch: false,
+                    ride: 'carousel',
+                    pause: false
+                })
 
                 // const carousel_item = document.querySelectorAll('.carousel-item');
                 // carousel_item.forEach(function(item) {
