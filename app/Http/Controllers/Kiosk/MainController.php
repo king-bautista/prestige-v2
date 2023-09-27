@@ -330,7 +330,7 @@ class MainController extends AppBaseController
             $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
             $site_tenants = DirectorySiteTenantViewModel::where('site_tenants.active', 1)
             ->where('site_tenants.site_id', $site->id)
-            ->whereNotIn('brands.name', ['ELEVATOR', 'ESCALATOR', 'FIRE EXIT', 'RESTROOM', 'STAIRS'])
+            ->whereNotIn('brands.name', ['ELEVATOR', 'ESCALATOR', 'FIRE EXIT', 'RESTROOM', 'STAIRS', 'BIKE RACK'])
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
             ->leftJoin('site_tenant_metas', function($join)
             {
