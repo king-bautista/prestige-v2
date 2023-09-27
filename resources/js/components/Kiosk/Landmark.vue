@@ -25,7 +25,7 @@
                 <div id="landmarkCarousel" class="carousel slide" data-ride="false" data-interval="false" data-touch="true" data-wrap="false" v-show="landmark_list.length > 0">
                         
                     <!-- The slideshow -->
-                    <div class="carousel-inner carousel-mh-830 custom-p-0-39">
+                    <div class="carousel-inner carousel-mh-830 custom-p-0-39 ml-3">
                         <div class="carousel-item" v-for="(landmarks, index) in landmark_list" v-bind:class = "[index == 0 ? 'first-item active':'', index == current_landmark_list_count? 'last-item':'']">
                             <div class="row mb-3">
                                 <div v-for="landmark in landmarks" v-bind:class="(site_orientation == 'Portrait') ? 'col-sm-6 mt-3 mb-3': 'col-sm-4 mt-45 mb-3'">

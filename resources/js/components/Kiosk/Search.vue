@@ -410,8 +410,8 @@
 
         <!-- MODAL -->
         <div class="custom-modal p-l-490" id="myProductSearch">
-            <div class="custom-modal-position set-width">                    
-                <img class="my-product-image" :src="product_image">
+            <div v-bind:class="(site_orientation == 'Portrait') ? 'custom-modal-position-portrait': ''" class="custom-modal-position set-width">                    
+                    <img v-bind:class="(site_orientation == 'Portrait') ? '': 'my-product-image-500'" class="my-product-image" :src="product_image">
                 <div class="text-center parqal-color">
                     <span class="btn-close-modal"><i class="far fa-times-circle"></i></span>
                 </div> 

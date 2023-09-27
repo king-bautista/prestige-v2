@@ -1200,6 +1200,7 @@
             },
 
             getTenantsBySupplementals: function(category) {
+                console.log(category);
                 this.no_record_found = false;
                 this.tenant_list = [];
                 this.category_label = category.label;
@@ -1279,7 +1280,7 @@
                             font_size_class = 'f-size-28';
                         }
 
-                        var html = '<div class="'+ïtem_holder_class+'" id="category_'+sub_category.id+'">';
+                        var html = '<div class="'+ïtem_holder_class+' sub-category-holder" data-id="'+sub_category.id+'">';
                             html += '<div class="'+rounded_container_class+'">';
                             html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
                             html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
@@ -1287,9 +1288,6 @@
                             html += '</div';
                         
                         $("#sub-category-carousel").append(html);
-                        $("#category_"+sub_category.id).click(function(){
-                            obj.getTenantsByCategory(sub_category);
-                        });
                     });
 
                     var loop = true;
@@ -1303,6 +1301,12 @@
                         items:3,
                         loop:loop,
                         margin:0,
+                    });
+
+                    $('#sub-category-carousel').on('click touchend', '.center > .sub-category-holder', function() {
+                        var id = $(this).data('id');
+                        let sub_cat = obj.current_category.children.find(cat => cat.id == id);
+                        obj.getTenantsByCategory(sub_cat);
                     });
                 });
             },
@@ -1357,17 +1361,14 @@
                                 font_size_class = 'f-size-25';
                             }
 
-                            var html = '<div class="'+ïtem_holder_class+'">';
-                                html += '<div class="'+rounded_container_class+'" id="supplemental_'+supplemental.id+'">';
+                            var html = '<div class="'+ïtem_holder_class+' sub-supplemental-holder" data-id="'+supplemental.id+'">';
+                                html += '<div class="'+rounded_container_class+'">';
                                 html += '<img src="'+supplemental.kiosk_image_primary_path+'" style="max-width:100%">';
                                 html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+supplemental.label+'">'+supplemental.label+'</p></div>';
                                 html += '</div';
                                 html += '</div';
                             
                             $("#supplementals-carousel").append(html);
-                            $("#supplemental_"+supplemental.id).click(function(){
-                                obj.getTenantsBySupplementals(supplemental);
-                            });
                         })                     
                     });
 
@@ -1383,6 +1384,17 @@
                         items:3,
                         loop:sloop,
                         margin:0,
+                    });
+
+                    $('#supplementals-carousel').on('click touchend', '.center > .sub-supplemental-holder', function() {
+                        var id = $(this).data('id');
+                        let sub_cat = '';
+                        $.each(obj.current_supplementals.children, function(index, supplementals) {
+                            sub_cat = supplementals.find(cat => cat.id == id);
+                            if(sub_cat)
+                                return false;
+                        });
+                        obj.getTenantsBySupplementals(sub_cat);
                     });
                 });
             },     
@@ -1436,7 +1448,7 @@
                             font_size_class = 'f-size-28';
                         }
 
-                        var html = '<div class="'+ïtem_holder_class+'">';
+                        var html = '<div class="'+ïtem_holder_class+' sub-category-holder" data-id="'+sub_category.id+'">';
                             html += '<div class="'+rounded_container_class+' category_'+sub_category.id+'">';
                             html += '<img src="'+sub_category.kiosk_image_primary_path+'" style="max-width:100%">';
                             html += '<div class="'+category_name_holder_class+' '+font_size_class+'"><p class="translateme" data-en="'+sub_category.label+'">'+sub_category.label+'</p></div>';
@@ -1444,9 +1456,6 @@
                             html += '</div';
                         
                         $("#sub-category-carousel").append(html);
-                        $(".category_"+sub_category.id).click(function(){
-                            obj.getTenantsByCategory(sub_category);
-                        });
                     });
 
                     var loop = true;
@@ -1460,6 +1469,12 @@
                         items:3,
                         loop:loop,
                         margin:0,
+                    });
+
+                    $('#sub-category-carousel').on('click touchend', '.center > .sub-category-holder', function() {
+                        var id = $(this).data('id');
+                        let sub_cat = obj.current_category.children.find(cat => cat.id == id);
+                        obj.getTenantsByCategory(sub_cat);
                     });
                 });
                 
