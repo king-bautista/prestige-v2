@@ -735,6 +735,7 @@ input[type="text"]:focus
     font-size: 35px;
     padding-top: 45px;
     font-family: 'Overpass' !important;
+    z-index: 5;
 }
 
 .client-website-holder-portrait {
@@ -838,6 +839,8 @@ input[type="text"]:focus
     width: 255px;
     text-align: center;
     opacity: .5;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .category-name-holder-portrait  {
@@ -851,6 +854,8 @@ input[type="text"]:focus
     width: 270px;
     text-align: center;
     opacity: .5;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .center > .ïtem-holder > .rounded-container {
@@ -1779,8 +1784,8 @@ input[type="text"]:focus
 
 .custom-modal-position {
     position: absolute  ;
-    top: 46%;
-    left: 61%;
+    top: 44%;
+    left: 63%;
     transform: translate(-50%, -50%);
 }
 

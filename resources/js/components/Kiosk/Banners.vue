@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="banner-ads-carousel" class="carousel slide carousel-fade">
+        <div id="banner-ads-carousel" class="carousel slide carousel-fade carousel-ads">
             <div class="carousel-inner" id="carousel-banner">
                 <div v-for="(banner, index) in banners.slice(0,2)" :data-index="index" :data-id="banner.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(banner.display_duration*1000)">
                     <span v-if="banner.file_type == 'video'" @click="helper.saveLogs(banner, 'Banner Ad'); showTenant(banner.tenant_details);">
@@ -109,27 +109,12 @@
                     }
                 });
 
-                $('#banner-ads-carousel').carousel({
+                $('.carousel-ads').carousel({
                     touch: false,
                     ride: 'carousel',
-                    pause: false
+                    pause: false,
+                    interval: (10*1000)
                 })
-
-                // const carousel_item = document.querySelectorAll('.carousel-item');
-                // carousel_item.forEach(function(item) {
-                //     item.addEventListener('touchend', (e) => {
-                //             if(e.touches.length > 1) {
-                //                 console.log('1');
-                //                 return false;
-                //             }
-                //             else {
-                //                 console.log('2');
-                //                 return true;
-                //             }
-                //         }
-                //     );
-                // });
-
             });
         },
     };

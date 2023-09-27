@@ -24,8 +24,10 @@
     </head>
 
     <body id="kiosk_master">
-        <!-- LOADING VIDEO --> 
-        <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.ogv') }}'>Your browser does not support the video tag.</video></div>    
+        <!--LANDSCAPE LOADING VIDEO --> 
+        <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page.ogv') }}'>Your browser does not support the video tag.</video></div>
+        <!--PORTRAIT LOADING VIDEO --> 
+        <!-- <div id='loadingDiv'><video muted='muted' autoplay loop><source src='{{ URL::to('assets/images/loading_page_portrait.ogv') }}'>Your browser does not support the video tag.</video></div> -->
         <div id="app" app-env="{{ config('app.env') }}">
         
             @yield('content')
@@ -41,7 +43,7 @@
         <script src="{{ URL::to('js/panzoom.js') }}"></script>
         <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/popper.min.js') }}"></script>
-        <script src="{{ URL::to('assets/js/bootstrap.min.js') }}"></script>	
+        <script src="{{ URL::to('assets/js/bootstrap.min.4.6.js') }}"></script>	
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
         <script src="{{ URL::to('js/way-finding.js') }}"></script>
         <script src="{{ URL::to('js/helper.js') }}"></script>
