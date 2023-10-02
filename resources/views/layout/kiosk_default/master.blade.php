@@ -43,7 +43,7 @@
         <script src="{{ URL::to('js/panzoom.js') }}"></script>
         <script src="{{ URL::to('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script src="{{ URL::to('assets/js/popper.min.js') }}"></script>
-        <script src="{{ URL::to('assets/js/bootstrap.min.4.6.js') }}"></script>	
+        <script src="{{ URL::to('assets/js/bootstrap.js') }}"></script>	
         <script src="{{ URL::to('js/softkeys-0.0.1.js') }}"></script>
         <script src="{{ URL::to('js/way-finding.js') }}"></script>
         <script src="{{ URL::to('js/helper.js') }}"></script>

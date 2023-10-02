@@ -2,7 +2,7 @@
     <div>
         <div id="banner-ads-carousel" class="carousel slide carousel-fade carousel-ads">
             <div class="carousel-inner" id="carousel-banner">
-                <div v-for="(banner, index) in banners.slice(0,2)" :data-index="index" :data-id="banner.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(banner.display_duration*1000)">
+                <div v-for="(banner, index) in banners.slice(0,2)" :data-index="index" :data-id="banner.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" data-touch="false" :data-interval="(banner.display_duration*1000)">
                     <span v-if="banner.file_type == 'video'" @click="helper.saveLogs(banner, 'Banner Ad'); showTenant(banner.tenant_details);">
                         <video muted="muted" autoplay="true" style="border-radius: 20px; margin: 0px; height: 100%; width: 100%;">
                             <source :src="banner.material_path" type="video/ogg">
@@ -109,12 +109,16 @@
                     }
                 });
 
-                $('.carousel-ads').carousel({
-                    touch: false,
-                    ride: 'carousel',
-                    pause: false,
-                    interval: (10*1000)
-                })
+                // $('.carousel-item').on("touchstart touchend touchmove",function(e){
+                //     e.stopImmediatePropagation();
+                //     e.preventDefault();
+                //     $('.carousel-item').off("touchstart touchend touchmove");
+                // });
+
+                // $('.carousel-ads').carousel({
+                //     touch: false,
+                //     ride: 'carousel',
+                // })
             });
         },
     };

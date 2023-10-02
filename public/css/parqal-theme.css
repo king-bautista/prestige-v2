@@ -2424,3 +2424,7 @@ pre {
 .zoomable-container {
     position: relative;
 }
+
+#carousel-banner > .carousel-item {
+    touch-action:none !important;
+}

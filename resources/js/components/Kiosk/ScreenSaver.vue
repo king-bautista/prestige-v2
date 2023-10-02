@@ -1,7 +1,7 @@
 <template>
     <div>
         <div style="width:0;height:0;position:absolute; top: 0; z-index: 9999; overflow: hidden;" id="screensaverwidget" @click="reload_page">
-            <div id="fullscreen-ads-carousel" class="carousel slide carousel-fade carousel-ads">
+            <div id="fullscreen-ads-carousel" class="carousel slide carousel-fade carousel-ads" data-ride="carousel">
                 <div class="carousel-inner" id="carousel-fullscreen">
                     <div v-for="(screen, index) in fullscreens.slice(0,2)" :data-index="index" :data-id="screen.id" :class="(index == 0) ? 'carousel-item active' : 'carousel-item'" :data-interval="(screen.display_duration*1000)">
                         <span v-if="screen.file_type == 'video'">
