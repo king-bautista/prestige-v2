@@ -929,6 +929,7 @@
                         if(vm.site_orientation == 'Portrait') {
                             c_with = 70;
                         }
+                        
                         var canvas_with = $('.map-holder, .map-holder-portrait').innerWidth();
                         var canvas_height = $('.map-holder, .map-holder-portrait').innerHeight();
                         var scale = $('.zoomable-container').css('transform');
