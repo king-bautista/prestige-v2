@@ -185,10 +185,8 @@ export default {
 					type: "logo",
 				},
 				name: "Name",
-				descriptions: "Descriptions",
 				category_name: "Category Name",
 				supplemental_names: "Supplementals",
-				tag_names: "Tags",
 				active: {
 					name: "Status",
 					type: "Boolean",

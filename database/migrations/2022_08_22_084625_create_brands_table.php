@@ -51,6 +51,7 @@ class CreateBrandsTable extends Migration
             
             $table->bigIncrements('id');
             $table->bigInteger('brand_id')->unsigned()->nullable();
+            $table->bigInteger('tenant_id')->nullable()->index();
             $table->string('name');
             $table->mediumText('descriptions')->nullable();      
             $table->enum('type', ['product', 'promo']);
