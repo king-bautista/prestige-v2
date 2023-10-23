@@ -470,10 +470,10 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         ->where('point_type', 6)
         ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
         ->select('site_points.*')
-        ->first()->id;
+        ->first();
 
         if($origin)
-            return $origin;
+            return $origin->id;
         return 0;
     }
 
@@ -484,20 +484,20 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function generateRoutes($site_id, $screen_id)
     {
-        try {
+        // try {
             $this->createRoutes($site_id, $screen_id);
             $this->createRoutes($site_id, $screen_id, 1);
 
             return $this->response(true, 'Successfully Modified!', 200);
-        } 
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // } 
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function createRoutes($site_id, $screen_id, $with_disability = 0)
