@@ -613,10 +613,10 @@
                     <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button map-button-portrait logs': 'h-button widget-button map-button logs'" data-link='Map' @click="mapButton">
                         <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Map">Map</div>    
                     </div>
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button landmark-button-portrait logs': 'h-button widget-button landmark-button logs'" data-link='Landmarks' @click="landmarksButton">
+                    <div v-show="site_name == 'Parqal'" v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button landmark-button-portrait logs': 'h-button widget-button landmark-button logs'" data-link='Landmarks' @click="landmarksButton">
                         <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Landmarks">Landmarks</div>    
                     </div>
-                    <div v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button events-button-portrait logs': 'h-button widget-button events-button logs'" data-link='Events' @click="eventsButton">
+                    <div v-show="site_name == 'Parqal'" v-bind:class="(site_orientation == 'Portrait') ? 'h-button h-button-portrait widget-button events-button-portrait logs': 'h-button widget-button events-button logs'" data-link='Events' @click="eventsButton">
                         <div v-bind:class="(site_orientation == 'Portrait') ? 'button-text-align button-text-align-portrait translateme': 'button-text-align translateme'" data-en="Events">Events</div>    
                     </div>
                     <div v-show="site_name != 'Parqal'" class="h-button widget-button promos-button logs" data-link='Promos' @click="promosButton">
