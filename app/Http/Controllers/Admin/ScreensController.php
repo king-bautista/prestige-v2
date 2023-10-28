@@ -7,15 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ScreensControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
-
 use Illuminate\Http\Request;
 use App\Http\Requests\ScreenRequest;
-
-use App\Models\SiteScreen;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteScreenViewModel;
 use App\Exports\Export;
 use Storage;
+
+use App\Models\SiteScreen;
+use App\Models\AdminViewModels\SiteScreenViewModel;
 
 class ScreensController extends AppBaseController implements ScreensControllerInterface
 {
@@ -35,7 +33,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function list(Request $request)
     {
-        try {
+        try 
+        {
             $filters = json_decode($request->filters);
             $site_ids = [];
             if ($filters)
@@ -73,7 +72,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function details($id)
     {
-        try {
+        try 
+        {
             $site_screen = SiteScreenViewModel::find($id);
             return $this->response($site_screen, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -87,7 +87,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function store(ScreenRequest $request)
     {
-        try {
+        try 
+        {
             if ($request->is_default == 'true') {
                 SiteScreen::where('is_default', 1)->where('site_id', $request->site_id)->update(['is_default' => 0]);
             }
@@ -102,13 +103,13 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'screen_type' => $request->screen_type,
                 'orientation' => $request->orientation,
                 'product_application' => $request->product_application,
-                'physical_size_diagonal' => $request->physical_size_diagonal,
-                'physical_size_width' => $request->physical_size_width,
-                'physical_size_height' => $request->physical_size_height,
-                'physical_serial_number' => $request->physical_serial_number,
+                'physical_size_diagonal' => ($request->physical_size_diagonal) ? $request->physical_size_diagonal : null,
+                'physical_size_width' => ($request->physical_size_width) ? $request->physical_size_width : null,
+                'physical_size_height' => ($request->physical_size_height) ? $request->physical_size_height : null,
+                'physical_serial_number' => ($request->physical_serial_number) ? $request->physical_serial_number : null,
                 'kiosk_id' => $kiosk_id,
-                'active' => 1,
-                'is_default' => ($request->is_default == 0) ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
             ];
 
             $site_screen = SiteScreen::create($data);
@@ -127,7 +128,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function update(ScreenRequest $request)
     {
-        try {
+        try 
+        {
             $site_screen = SiteScreen::find($request->id);
 
             if ($request->is_default == 'true') {
@@ -147,8 +149,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_width' => $request->physical_size_width,
                 'physical_size_height' => $request->physical_size_height,
                 'physical_serial_number' => $request->physical_serial_number,
-                'active' => ($request->active == 0) ? 0 : 1,
-                'is_default' => ($request->is_default == 0) ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
             ];
 
             $site_screen->update($data);
@@ -165,9 +167,17 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function delete($id)
     {
-        try {
+        try 
+        {
             $site_screen = SiteScreen::find($id);
-            $site_screen->delete();
+            if($site_screen->active) {
+                $site_screen->active = 0;
+            }
+            else {
+                $site_screen->active = 1;
+            }
+            $site_screen->save();
+            
             return $this->response($site_screen, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
             return response([
@@ -180,7 +190,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function getScreens($ids, $type = '')
     {
-        try {
+        try 
+        {
             $ids = explode(",", rtrim($ids, ","));;
             $site_screens = SiteScreenViewModel::whereIn('site_id', $ids)
                 ->when($type, function ($query) use ($type) {
@@ -234,7 +245,8 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function setDefault($id)
     {
-        try {
+        try 
+        {
             $site = SiteScreen::find($id);
 
             if ($site->product_application != 'Directory')
@@ -259,7 +271,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     public function downloadCsv()
     {
         try {
-
             $screen_management = SiteScreenViewModel::get();
             $reports = [];
             foreach ($screen_management as $screen) {
@@ -302,4 +313,5 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ], 422);
         }
     }
+    
 }

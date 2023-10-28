@@ -10,9 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 
 use App\Models\Role;
-use App\Models\ViewModels\ModuleViewModel;
-use App\Models\ViewModels\RoleViewModel;
-use App\Models\ViewModels\AdminViewModel;
+use App\Models\AdminViewModels\ModuleViewModel;
+use App\Models\AdminViewModels\RoleViewModel;
 
 use App\Exports\Export;
 use Storage;
@@ -37,8 +36,6 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $roles = Role::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('description', 'LIKE', '%' . request('search') . '%');
@@ -198,8 +195,8 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $role_management = RoleViewModel::get();
             $reports = [];
             foreach ($role_management as $role) {

@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BuildingRequest;
 
 use App\Models\SiteBuilding;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteViewModel;
+use App\Models\AdminViewModels\AdminViewModel;
+use App\Models\AdminViewModels\SiteViewModel;
 
 class BuildingsController extends AppBaseController implements BuildingsControllerInterface
 {
@@ -36,7 +36,6 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         try
         {
             $site_id = session()->get('site_id');
-
             $buildings = SiteBuilding::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
@@ -108,7 +107,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             $data = [
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $building->update($data);

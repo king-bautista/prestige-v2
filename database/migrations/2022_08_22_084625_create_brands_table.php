@@ -21,6 +21,7 @@ class CreateBrandsTable extends Migration
             $table->string('name');
             $table->mediumText('descriptions')->nullable();      
             $table->mediumText('logo')->nullable();      
+            $table->mediumText('thumbnail')->nullable();      
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();

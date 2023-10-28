@@ -173,18 +173,18 @@
 												</td>
 												<td class="align-middle">
 													<span v-if="data.active" class="badge badge-info">Active</span>
-													<span v-else class="badge badge-info">Deactivated</span>
+													<span v-else class="badge badge-danger">Deactivated</span>
 												</td>
 												<td class="align-middle text-nowrap">
 													<button type="button" class="btn btn-outline-danger"
-														@click="deleteModal('removeContract', index)" title="Delete"><i
-															class="fas fa-trash-alt"></i></button>
+														@click="editContract(data.id)" title="Edit"><i
+															class="fas fa-edit"></i></button>
 													<button type="button" class="btn btn-outline-danger"
 														@click="copyModal(index)" title="Duplicate"><i
 															class="fas fa-copy"></i></button>
 													<button type="button" class="btn btn-outline-danger"
-														@click="editContract(data.id)" title="Edit"><i
-															class="fas fa-edit"></i></button>
+														@click="deleteModal('removeContract', index)" title="Delete"><i
+															class="fas fa-trash-alt"></i></button>
 												</td>
 											</tr>
 										</tbody>
@@ -390,11 +390,15 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Reference Code <span
-									class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Reference Code</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" v-model="contract.reference_code" placeholder="Reference Code"
-									required>
+								<input type="text" class="form-control" v-model="contract.reference_code" placeholder="Reference Code">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-4 col-form-label">Business ID</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" v-model="contract.business_id" placeholder="Business ID">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -541,6 +545,7 @@ export default {
 				is_indefinite: false,
 				is_exclusive: false,
 				active: false,
+				business_id: '',
 			},
 			data_list: true,
 			data_form: false,
@@ -559,12 +564,9 @@ export default {
 			delete_index: '',
 			dataFields: {
 				name: "Name",
-				parent_company: "Parent Company",
 				classification_name: "Classification Name",
 				email: "Email",
 				contact_number: "Contact Number",
-				address: "Address",
-				tin: "TIN Number",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -593,14 +595,6 @@ export default {
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
-				},
-				link: {
-					title: 'Workflow',
-					name: 'Link',
-					apiUrl: '/admin/company/workflows',
-					routeName: '',
-					button: '<i class="fa fa-link"></i>Workflow',
-					method: 'link'
 				},
 			},
 			otherButtons: {
@@ -768,6 +762,7 @@ export default {
 			this.contract.company_id = this.company.id;
 			this.contract.name = '';
 			this.contract.reference_code = '';
+			this.contract.business_id = '';
 			this.contract.remarks = '';
 			this.contract.brands = '';
 			this.contract.screens = '';
@@ -856,6 +851,7 @@ export default {
 					this.contract.brands = contract.brands;
 					this.contract.name = contract.name;
 					this.contract.reference_code = contract.reference_code;
+					this.contract.business_id = contract.business_id;
 					this.contract.remarks = contract.remarks;
 					this.contract.screens = contract.screens;
 					this.contract.display_duration = contract.display_duration;

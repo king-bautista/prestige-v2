@@ -21,7 +21,7 @@
 		<!-- /.content -->
 
 		<div class="modal fade" id="site-form" tabindex="-1" aria-labelledby="site-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-dialog modal-dialog-centered modal-xl">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -35,29 +35,29 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site Name <span
+								<label for="firstName" class="col-sm-3 col-form-label">Site Name <span
 										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.name" placeholder="Site Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site Short Code/Name <span
+								<label for="firstName" class="col-sm-3 col-form-label">Site Short Code/Name <span
 										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.site_code" placeholder="Site Short Code/Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span
+								<label for="lastName" class="col-sm-3 col-form-label">Descriptions <span
 										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
+								<div class="col-sm-9">
 									<textarea class="form-control" v-model="site.descriptions" placeholder="Descriptions"
 										rows="5"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Logo</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Logo</label>
 								<div class="col-sm-5">
 									<input type="file" accept="image/*" ref="site_logo" @change="siteLogoChange">
 									<footer class="blockquote-footer">image max size is 155 x 155 pixels</footer>
@@ -67,7 +67,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Image</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Banner Image</label>
 								<div class="col-sm-5">
 									<input type="file" accept="image/*" ref="site_banner" @change="siteBannerChange">
 									<footer class="blockquote-footer">image max size is 1451 x 440 pixels</footer>
@@ -77,7 +77,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Background Image</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Background Image</label>
 								<div class="col-sm-5">
 									<input type="file" accept="image/*" ref="site_background"
 										@change="siteBackgroundChange">
@@ -88,7 +88,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Background Portrait Image </label>
+								<label for="firstName" class="col-sm-3 col-form-label">Background Portrait Image </label>
 								<div class="col-sm-5">
 									<input type="file" accept="image/*" ref="site_background_portrait"
 										@change="siteBackgroundPortraitChange">
@@ -99,15 +99,15 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Client Company</label>
-								<div class="col-sm-8">
+								<label for="lastName" class="col-sm-3 col-form-label">Client Company</label>
+								<div class="col-sm-9">
 									<treeselect v-model="site.company_id" :options="companies"
 										placeholder="Select Company" />
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
-								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
-								<div class="col-sm-8">
+								<label for="isActive" class="col-sm-3 col-form-label">Active</label>
+								<div class="col-sm-9">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="isActive"
 											v-model="site.active">
@@ -116,8 +116,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
-								<div class="col-sm-8">
+								<label for="isActive" class="col-sm-3 col-form-label">Is Default</label>
+								<div class="col-sm-9">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="is_default"
 											v-model="site.is_default">
@@ -126,8 +126,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="isActive" class="col-sm-4 col-form-label">Is Premiere</label>
-								<div class="col-sm-8">
+								<label for="isActive" class="col-sm-3 col-form-label">Is Premiere</label>
+								<div class="col-sm-9">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="is_premiere"
 											v-model="site.is_premiere">
@@ -136,8 +136,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="isActive" class="col-sm-4 col-form-label">Multilanguage</label>
-								<div class="col-sm-8">
+								<label for="isActive" class="col-sm-3 col-form-label">Multilanguage</label>
+								<div class="col-sm-9">
 									<div class="custom-control custom-switch">
 										<input type="checkbox" class="custom-control-input" id="multilanguage"
 											v-model="site.multilanguage">
@@ -151,50 +151,74 @@
 										Media:</strong></label>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Facebook</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Facebook</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.facebook"
 										placeholder="Facebook link">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Instagram</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Instagram</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.instagram"
 										placeholder="Instagram link">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Twitter</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Twitter</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.twitter"
 										placeholder="Twitter link">
 								</div>
 							</div>
-							<hr />
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-12 col-form-label"><strong>Mall
-										Information:</strong></label>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Mall Hours</label>
-								<label class="col-sm-1 col-form-label text-center">From:</label>
-								<div class="col-sm-3">
-									<date-picker v-model="site.time_from" placeholder="HH:MM" :config="options"
-										autocomplete="off"></date-picker>
-								</div>
-								<label class="col-sm-1 col-form-label text-center">To:</label>
-								<div class="col-sm-3">
-									<date-picker v-model="site.time_to" placeholder="HH:MM" :config="options"
-										autocomplete="off"></date-picker>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Website</label>
-								<div class="col-sm-8">
+								<label for="firstName" class="col-sm-3 col-form-label">Website</label>
+								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.website" placeholder="Website">
 								</div>
 							</div>
+							<hr />
+							<div class="form-group row">
+								<label for="is_subscriber" class="col-sm-3 col-form-label">Operational Hours</label>
+								<div class="col-sm-9">
+									<div class="row mb-3 mx-0" v-for="(operational, index)  in site.operational_hours">
+										<div class="col-9 d-flex">
+											<div class="btn-group-toggle" data-toggle="buttons">
+												<label v-bind:class="conditionActive(operational.schedules, 'Sun', index)"
+													@click="getChecked('Sun', index)">SU</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Mon', index)"
+													@click="getChecked('Mon', index)">M</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Tue', index)"
+													@click="getChecked('Tue', index)">T</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Wed', index)"
+													@click="getChecked('Wed', index)">W</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Thu', index)"
+													@click="getChecked('Thu', index)">TH</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Fri', index)"
+													@click="getChecked('Fri', index)">F</label>
+												<label v-bind:class="conditionActive(operational.schedules, 'Sat', index)"
+													@click="getChecked('Sat', index)">S</label>
+											</div>
+											<input type="time" v-model="operational.start_time"
+												class="form-control ml-1 time mr-2" style="width: 120px">
+											<p class="m-0 pt-2">to</p>
+											<input type="time" v-model="operational.end_time" class="form-control time ml-2"
+												style="width: 120px">
+										</div>
+										<div class="col-3">
+											<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{
+												operational.start_time }} <span v-if="operational.end_time">to</span> {{ operational.end_time }}</i>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-12">
+											<button class="btn btn-link" style="padding-left:0px"
+												@click="addOperationalHours">Add Hours +</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							
 						</div>
 						<!-- /.card-body -->
 					</div>
@@ -238,6 +262,7 @@ import datePicker from 'vue-bootstrap-datetimepicker';
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 // import the component
 import Treeselect from '@riophae/vue-treeselect'
+var schedules = [];
 
 export default {
 	name: "Sites",
@@ -255,8 +280,7 @@ export default {
 				facebook: '',
 				instagram: '',
 				twitter: '',
-				time_from: '',
-				time_to: '',
+				operational_hours: [],
 				website: '',
 				active: false,
 				is_default: false,
@@ -280,8 +304,6 @@ export default {
 				serial_number: "ID",
 				name: "Name",
 				short_code: "Short Code",
-				property_owner: "Property Owner",
-				descriptions_ellipsis: "Descriptions",
 				site_logo_path: {
 					name: "Logo",
 					type: "image",
@@ -411,6 +433,7 @@ export default {
 		},
 
 		AddNewSite: function () {
+			schedules = [];
 			this.add_record = true;
 			this.edit_record = false;
 			this.site.name = '';
@@ -424,8 +447,7 @@ export default {
 			this.site.facebook = '';
 			this.site.instagram = '';
 			this.site.twitter = '';
-			this.site.time_from = '';
-			this.site.time_to = '';
+			this.site.operational_hours = [];
 			this.site.website = '';
 			this.$refs.site_logo.value = null;
 			this.$refs.site_banner.value = null;
@@ -437,6 +459,7 @@ export default {
 			this.site_banner = '/images/no-image-available.png';
 			this.site_background = '/images/no-image-available.png';
 			this.site_background_portrait = '/images/no-image-available.png';
+			this.addOperationalHours();
 
 			$('#site-form').modal('show');
 		},
@@ -444,130 +467,136 @@ export default {
 		storeSite: function () {
 			let formData = new FormData();
 			formData.append("name", this.site.name);
-			formData.append("descriptions", this.site.descriptions);
-			formData.append("site_logo", this.site.site_logo);
-			formData.append("site_banner", this.site.site_banner);
-			formData.append("site_background", this.site.site_background);
-			formData.append("site_background_portrait", this.site.site_background_portrait);
-			formData.append("company_id", this.site.company_id);			
-			formData.append("facebook", this.site.facebook);
-			formData.append("instagram", this.site.instagram);
-			formData.append("twitter", this.site.twitter);
-			formData.append("time_from", this.site.time_from);
-			formData.append("time_to", this.site.time_to);
-			formData.append("website", this.site.website);
+			formData.append("descriptions", (this.site.descriptions) ? this.site.descriptions : '');
+			formData.append("site_logo", (this.site.site_logo) ? this.site.site_logo : '');
+			formData.append("site_banner", (this.site.site_banner) ? this.site.site_banner : '');
+			formData.append("site_background", (this.site.site_background) ? this.site.site_background : '');
+			formData.append("site_background_portrait", (this.site.site_background_portrait) ? this.site.site_background_portrait : '');
+			formData.append("company_id", (this.site.company_id) ? this.site.company_id: '');			
+			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
+			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
+			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
+			formData.append("website", (this.site.website) ? this.site.website : '');
+			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
+			formData.append("active", this.site.active);
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);
 			formData.append("multilanguage", this.site.multilanguage);
-			formData.append("site_code", this.site.site_code);
+			formData.append("operational_hours", JSON.stringify(this.site.operational_hours));
+
 			axios.post('/admin/site/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#site-form').modal('hide');
-				})
-
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.dataTable.fetchData();
+				$('#site-form').modal('hide');
+			})
 		},
 
 		editSite: function (id) {
 			axios.get('/admin/site/' + id)
-				.then(response => {
-					var site = response.data.data;
-					this.site.id = id;
-					this.site.name = site.name;
-					this.site.descriptions = site.descriptions;
-					this.site.site_logo = site.site_logo;
-					this.site.site_banner = site.site_banner;
-					this.site.site_background = site.site_background;
-					this.site.site_background_portrait = site.site_background_portrait;
-					this.site.company_id = (site.details.company_id == 'null') ? '' : site.details.company_id;
-					this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
-					this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
-					this.site.twitter = (site.details.twitter == 'null') ? '' : site.details.twitter;
-					this.site.time_from = (site.details.time_from == 'null') ? '' : site.details.time_from;
-					this.site.time_to = (site.details.time_to == 'null') ? '' : site.details.time_to;
-					this.site.website = (site.details.website == 'null') ? '' : site.details.website;
-					this.site.active = site.active;
-					this.site.is_default = (site.is_default ==  1) ? true : false;
-					this.site.is_premiere = parseInt(site.details.premiere);
-					this.site.multilanguage = parseInt(site.details.multilanguage);
-					this.site.site_code = site.details.site_code;
-					this.add_record = false;
-					this.edit_record = true;
+			.then(response => {
+				var site = response.data.data;
+				this.site.id = id;
+				this.site.name = site.name;
+				this.site.descriptions = site.descriptions;
+				this.site.site_logo = site.site_logo;
+				this.site.site_banner = site.site_banner;
+				this.site.site_background = site.site_background;
+				this.site.site_background_portrait = site.site_background_portrait;
+				this.site.company_id = (site.details.company_id == 'null') ? '' : site.details.company_id;
+				this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
+				this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
+				this.site.twitter = (site.details.twitter == 'null') ? '' : site.details.twitter;
+				this.site.operational_hours = [];
+				this.site.website = (site.details.website == 'null') ? '' : site.details.website;
+				this.site.active = site.active;
+				this.site.is_default = (site.is_default ==  1) ? true : false;
+				this.site.is_premiere = parseInt(site.details.premiere);
+				this.site.multilanguage = parseInt(site.details.multilanguage);
+				this.site.site_code = site.details.site_code;
+				this.add_record = false;
+				this.edit_record = true;
 
-					if (site.site_logo) {
-						this.site_logo = site.site_logo_path;
-					}
-					else {
-						this.site_logo = this.site.site_logo;
-					}
+				if (site.site_logo) {
+					this.site_logo = site.site_logo_path;
+				}
+				else {
+					this.site_logo = this.site.site_logo;
+				}
 
-					if (site.site_banner) {
-						this.site_banner = site.site_banner_path;
-					}
-					else {
-						this.site_banner = this.site.site_banner;
-					}
+				if (site.site_banner) {
+					this.site_banner = site.site_banner_path;
+				}
+				else {
+					this.site_banner = this.site.site_banner;
+				}
 
-					if (site.site_background) {
-						this.site_background = site.site_background_path;
-					}
-					else {
-						this.site_background = this.site.site_background;
-					}
+				if (site.site_background) {
+					this.site_background = site.site_background_path;
+				}
+				else {
+					this.site_background = this.site.site_background;
+				}
 
-					if (site.site_background_portrait) {
-						this.site_background_portrait = site.site_background_portrait_path;
-					}
-					else {
-						this.site_background_portrait = this.site.site_background_portrait;
-					}
+				if (site.site_background_portrait) {
+					this.site_background_portrait = site.site_background_portrait_path;
+				}
+				else {
+					this.site_background_portrait = this.site.site_background_portrait;
+				}
 
-					this.$refs.site_logo.value = null;
-					this.$refs.site_banner.value = null;
-					this.$refs.site_background.value = null;
-					this.$refs.site_background_portrait.value = null;
+				if (site.details.length == 0 || site.details.schedules === 'null' || site.details.schedules == undefined) {
+					this.site.operational_hours = [];
+					this.addOperationalHours();
+				}
+				else {
+					this.site.operational_hours = JSON.parse(site.details.schedules);
+				}
 
-					$('#site-form').modal('show');
-				});
+				this.$refs.site_logo.value = null;
+				this.$refs.site_banner.value = null;
+				this.$refs.site_background.value = null;
+				this.$refs.site_background_portrait.value = null;
+
+				$('#site-form').modal('show');
+			});
 		},
 
 		updateSite: function () {
 			let formData = new FormData();
 			formData.append("id", this.site.id);
 			formData.append("name", this.site.name);
-			formData.append("descriptions", this.site.descriptions);
-			formData.append("site_logo", this.site.site_logo);
-			formData.append("site_banner", this.site.site_banner);
-			formData.append("site_background", this.site.site_background);
-			formData.append("site_background_portrait", this.site.site_background_portrait);
-			formData.append("company_id", this.site.company_id);			
-			formData.append("facebook", this.site.facebook);
-			formData.append("instagram", this.site.instagram);
-			formData.append("twitter", this.site.twitter);
-			formData.append("time_from", this.site.time_from);
-			formData.append("time_to", this.site.time_to);
-			formData.append("website", this.site.website);
+			formData.append("descriptions", (this.site.descriptions) ? this.site.descriptions : '');
+			formData.append("site_logo", (this.site.site_logo) ? this.site.site_logo : '');
+			formData.append("site_banner", (this.site.site_banner) ? this.site.site_banner : '');
+			formData.append("site_background", (this.site.site_background) ? this.site.site_background : '');
+			formData.append("site_background_portrait", (this.site.site_background_portrait) ? this.site.site_background_portrait : '');
+			formData.append("company_id", (this.site.company_id) ? this.site.company_id: '');			
+			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
+			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
+			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
+			formData.append("website", (this.site.website) ? this.site.website : '');
+			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
 			formData.append("active", this.site.active);
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);
 			formData.append("multilanguage", this.site.multilanguage);
-			formData.append("site_code", this.site.site_code);
+			formData.append("operational_hours", JSON.stringify(this.site.operational_hours));
 
 			axios.post('/admin/site/update', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#site-form').modal('hide');
-				})
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.dataTable.fetchData();
+				$('#site-form').modal('hide');
+			})
 		},
 
 		DefaultScreen: function (data) {
@@ -595,6 +624,39 @@ export default {
               })
 		},
 
+		conditionActive: function (shedules, item, index) {
+			if (shedules.indexOf(item) >= 0) {
+				return 'btn custom-btn active';
+			}
+			else {
+				return 'btn custom-btn';
+			}
+		},
+
+		getChecked: function (item, index) {
+			var position = (schedules[index]) ? schedules[index].indexOf(item) : -1;
+			if (position >= 0) {
+				schedules[index] = schedules[index].replace(", " + item, "").replace(item + ",", "").replace(item, "");
+			}
+			else {
+				if (schedules[index]) {
+					schedules[index] += ', ' + item;
+				}
+				else {
+					schedules[index] = item;
+				}
+			}
+
+			this.site.operational_hours[index].schedules = schedules[index];
+		},
+
+		addOperationalHours: function () {
+			this.site.operational_hours.push({
+				schedules: '',
+				start_time: '',
+				end_time: '',
+			});
+		},
 
 	},
 

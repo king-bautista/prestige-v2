@@ -56,8 +56,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span
-										class="font-italic text-danger"> *</span></label>
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions</label>
 								<div class="col-sm-8">
 									<textarea class="form-control" v-model="brand.descriptions"
 										placeholder="Descriptions"></textarea>
@@ -180,7 +179,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				logo_image_path: {
+				thumbnail_path: {
 					name: "Logo",
 					type: "logo",
 				},
@@ -324,6 +323,7 @@ export default {
 			formData.append("logo", this.brand.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
+			formData.append("active", this.brand.active);
 
 			axios.post('/admin/brand/store', formData, {
 				headers: {
@@ -382,6 +382,7 @@ export default {
 			formData.append("logo", this.brand.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
+			formData.append("active", this.brand.active);
 
 			axios.post('/admin/brand/update', formData, {
 				headers: {

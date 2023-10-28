@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 use App\Models\CompanyCategory;
 use App\Models\ViewModels\CompanyCategoryViewModel;
-use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -34,9 +33,8 @@ class IllustrationsController extends AppBaseController implements Illustrations
 
     public function list(Request $request)
     {
-        try {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
+        try 
+        {
             $company_categories = CompanyCategoryViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('address', 'LIKE', '%' . request('search') . '%')

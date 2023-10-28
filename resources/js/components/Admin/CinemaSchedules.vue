@@ -64,7 +64,6 @@ export default {
 			sites: [],
 			dataFields: {
 				title: "Title",
-				synopsis: "Synopsis",
 				site_name: "Site Name",
 				rating: "Rating",
 				screen_name: "Screen Name",

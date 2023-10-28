@@ -211,8 +211,8 @@
                 this.pi_product.ad_type = '';
                 this.pi_product.descriptions = '';
                 this.pi_product.remarks = '';
-                this.pi_product.sec_slot = '';
-                this.pi_product.slots = '';
+                this.pi_product.sec_slot = '10';
+                this.pi_product.slots = '40';
                 this.pi_product.active = false;
                 this.pi_product.is_exclusive = false;
 

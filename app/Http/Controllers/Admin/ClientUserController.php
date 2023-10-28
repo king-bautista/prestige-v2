@@ -9,15 +9,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClientUserRequest;
 use App\Http\Requests\EditClientUserRequest;
-
 use App\Helpers\PasswordHelper;
-use App\Models\ViewModels\UserViewModel;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\User;
 use App\Exports\Export;
 use Storage;
-
 use Hash;
+
+use App\Models\User;
+use App\Models\AdminViewModels\UserViewModel;
 
 class ClientUserController extends AppBaseController implements ClientUserControllerInterface
 {
@@ -39,8 +37,6 @@ class ClientUserController extends AppBaseController implements ClientUserContro
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $user = UserViewModel::when(request('search'), function($query){
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('email', 'LIKE', '%' . request('search') . '%');

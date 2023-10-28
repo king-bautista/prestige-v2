@@ -8,11 +8,10 @@ use App\Http\Controllers\Admin\Interfaces\ClassificationControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClassificationRequest;
-
-use App\Models\Classification;
-use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
+
+use App\Models\Classification;
 
 class ClassificationController extends AppBaseController implements ClassificationControllerInterface
 {
@@ -34,8 +33,6 @@ class ClassificationController extends AppBaseController implements Classificati
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $classifications = Classification::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -155,8 +152,8 @@ class ClassificationController extends AppBaseController implements Classificati
 
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $classification_management = Classification::get();
             $reports = [];
             foreach ($classification_management as $classification) {

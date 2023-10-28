@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\SupplementalControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-
-use App\Models\Category;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\CategoryViewModel;
+use App\Http\Requests\CategoryRequest;
 use App\Exports\Export;
 use Storage;
+
+use App\Models\Category;
+use App\Models\AdminViewModels\CategoryViewModel;
 
 class SupplementalController extends AppBaseController implements SupplementalControllerInterface
 {
@@ -31,8 +31,6 @@ class SupplementalController extends AppBaseController implements SupplementalCo
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $categories = CategoryViewModel::where('category_type', 2)
             ->when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
@@ -69,7 +67,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
         }
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         try
     	{
@@ -97,7 +95,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
         }
     }
 
-    public function update(Request $request)
+    public function update(CategoryRequest $request)
     {
         try
     	{
@@ -180,8 +178,8 @@ class SupplementalController extends AppBaseController implements SupplementalCo
     }
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $supplemental_management = CategoryViewModel::where('category_type', 2)->get();//CategoryViewModel::where('category_type', 2);
             $reports = [];
             foreach ($supplemental_management as $supplemental) {

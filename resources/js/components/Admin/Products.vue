@@ -74,16 +74,6 @@
                                 </div>
                             </div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Thumbnail</label>
-								<div class="col-sm-5">
-                                    <input type="file" accept="image/*" ref="thumbnail" @change="thumbnailChange">
-									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
-								</div>
-								<div class="col-sm-3 text-center">
-                                    <img v-if="thumbnail" :src="thumbnail" class="img-thumbnail" />
-								</div>
-							</div>
-							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Banner Image</label>
 								<div class="col-sm-5">
                                     <input type="file" accept="image/*" ref="image_url" @change="image_urlChange">
@@ -132,7 +122,6 @@
                     name: '',
 					descriptions: '',
 					type: '',
-                    thumbnail: '',
                     image_url: '',
 					date_from: '',
 					date_to: '',				
@@ -141,24 +130,17 @@
                     format: 'YYYY-MM-DD',
                     useCurrent: false,
                 },
-                thumbnail: '/images/no-image-available.png',
                 image_url: '/images/no-image-available.png',
 				add_record: true,
                 edit_record: false,
             	dataFields: {
-            		name: "Name", 
-            		descriptions: "Descriptions", 
-            		type: "Type", 
                     thumbnail_path: {
             			name: "Thumbnail", 
             			type:"logo", 
             		},
-                    image_url_path: {
-            			name: "Product Image", 
-            			type:"logo", 
-            		},
-                    date_from: "Date From", 
-            		date_to: "Date To", 
+            		name: "Name", 
+            		descriptions: "Descriptions", 
+            		type: "Type", 
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -206,12 +188,6 @@
         },
 
         methods: {
-			thumbnailChange: function(e) {
-				const file = e.target.files[0];
-      			this.thumbnail = URL.createObjectURL(file);
-				this.product.thumbnail = file;
-			},
-
             image_urlChange: function(e) {
 				const file = e.target.files[0];
       			this.image_url = URL.createObjectURL(file);
@@ -229,7 +205,6 @@
                 this.product.thumbnail = '/images/no-image-available.png';
                 this.product.image_url = '/images/no-image-available.png';
                 this.product.active = false;				
-				this.$refs.thumbnail.value = null;
 				this.$refs.image_url.value = null;
                 this.thumbnail = '/images/no-image-available.png';
                 this.image_url = '/images/no-image-available.png';
@@ -242,7 +217,6 @@
 				formData.append("name", this.product.name);
 				formData.append("descriptions", this.product.descriptions);
 				formData.append("type", this.product.type);
-				formData.append("thumbnail", this.product.thumbnail);
 				formData.append("image_url", this.product.image_url);
 				formData.append("date_from", this.product.date_from);
 				formData.append("date_to", this.product.date_to);
@@ -270,17 +244,10 @@
                     this.product.type = product.type;
                     this.product.date_from = product.date_from;
                     this.product.date_to = product.date_to;
-                    this.product.thumbnail = product.thumbnail;
                     this.product.image_url = product.image_url;
                     this.product.active = product.active;
 					this.add_record = false;
 					this.edit_record = true;
-					if(product.thumbnail) {
-						this.thumbnail = product.thumbnail_path;
-					}
-					else {
-						this.thumbnail = this.product.thumbnail;
-					}
 
                     if(product.image_url) {
 						this.image_url = product.image_url_path;
@@ -288,8 +255,6 @@
 					else {
 						this.image_url = this.product.image_url;
 					}
-
-                    this.$refs.thumbnail.value = null;
                     this.$refs.image_url.value = null;
 					
                     $('#product-form').modal('show');
@@ -302,7 +267,6 @@
 				formData.append("name", this.product.name);
 				formData.append("descriptions", this.product.descriptions);
 				formData.append("type", this.product.type);
-				formData.append("thumbnail", this.product.thumbnail);
 				formData.append("image_url", this.product.image_url);
 				formData.append("date_from", this.product.date_from);
 				formData.append("date_to", this.product.date_to);

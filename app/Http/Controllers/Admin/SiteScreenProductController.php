@@ -7,16 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\SiteScreenProductControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
-
 use Illuminate\Http\Request;
 use App\Http\Requests\SiteScreenProductRequest;
+use Storage;
 
+use App\Models\AdminViewModels\SiteScreenProductViewModel;
+use App\Models\AdminViewModels\SiteScreenViewModel;
 use App\Models\SiteScreenProduct;
 use App\Models\ContractScreen;
-use App\Models\ViewModels\SiteScreenProductViewModel;
-use App\Models\ViewModels\SiteScreenViewModel;
 use App\Exports\Export;
-use Storage;
 
 class SiteScreenProductController extends AppBaseController implements SiteScreenProductControllerInterface
 {
@@ -93,14 +92,14 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
             $data = [
                 'site_screen_id' => $request->site_screen_id['id'],
                 'ad_type' => $request->ad_type['ad_type'],
-                'description' => $request->description,
+                'description' => ($request->description) ? $request->description : null,
                 'dimension' => $request->width.'x'.$request->height,
                 'width' => $request->width,
                 'height' => $request->height,
                 'sec_slot' => $request->sec_slot,
                 'slots' => $request->slots,
-                'active' => $request->active,
-                'is_exclusive' => $request->is_exclusive,
+                'active' => $this->checkBolean($request->active),
+                'is_exclusive' => $this->checkBolean($request->is_exclusive),
             ];
 
             $site_screen_product = SiteScreenProduct::create($data);
@@ -126,14 +125,14 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 'serial_number' => ($site_screen_product->serial_number) ? $site_screen_product->serial_number : 'SSP-'.Str::padLeft($site_screen_product->id, 5, '0'),
                 'site_screen_id' => $request->site_screen_id['id'],
                 'ad_type' => $request->ad_type['ad_type'],
-                'description' => $request->description,
+                'description' => ($request->description) ? $request->description : null,
                 'dimension' => $request->width.'x'.$request->height,
                 'width' => $request->width,
                 'height' => $request->height,
                 'sec_slot' => $request->sec_slot,
                 'slots' => $request->slots,
-                'active' => $request->active,
-                'is_exclusive' => $request->is_exclusive,
+                'active' => $this->checkBolean($request->active),
+                'is_exclusive' => $this->checkBolean($request->is_exclusive),
             ];
 
             $site_screen_product->update($data);

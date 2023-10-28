@@ -8,18 +8,15 @@ use App\Http\Controllers\Admin\Interfaces\ConcernsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ConcernRequest;
-
-use App\Models\Concern;
-use App\Models\ViewModels\ConcernViewModel;
-use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
 use Route;
 
+use App\Models\Concern;
+use App\Models\AdminViewModels\ConcernViewModel;
+
 class ConcernsController extends AppBaseController implements ConcernsControllerInterface
 {
-   // public $listFAQ;
-
     /************************************************
      * 			FAQ's MANAGEMENT	 	*
      ************************************************/
@@ -36,15 +33,15 @@ class ConcernsController extends AppBaseController implements ConcernsController
 
     public function list(Request $request)
     {
-        try {
-                $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-                $concerns = ConcernViewModel::when(request('search'), function ($query) {
-
+        try 
+        {
+            $concerns = ConcernViewModel::when(request('search'), function ($query) {
                 return $query->where('concerns.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('concerns.description', 'LIKE', '%' . request('search') . '%');
             })
-                ->latest()
-                ->paginate(request('perPage')); 
+            ->latest()
+            ->paginate(request('perPage')); 
+
             return $this->responsePaginate($concerns, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -57,7 +54,8 @@ class ConcernsController extends AppBaseController implements ConcernsController
 
     public function details($id)
     {
-        try {
+        try 
+        {
             $concern = ConcernViewModel::find($id);
             return $this->response($concern, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -71,7 +69,8 @@ class ConcernsController extends AppBaseController implements ConcernsController
 
     public function store(ConcernRequest $request)
     {
-        try {
+        try 
+        {
             $data = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -91,7 +90,8 @@ class ConcernsController extends AppBaseController implements ConcernsController
 
     public function update(ConcernRequest $request)
     {
-        try {
+        try 
+        {
             $concern = Concern::find($request->id);
             //$concern->touch();
 
@@ -114,7 +114,8 @@ class ConcernsController extends AppBaseController implements ConcernsController
 
     public function delete($id)
     {
-        try {
+        try 
+        {
             $concern = Concern::find($id);
             $concern->delete();
             return $this->response($concern, 'Successfully Deleted!', 200);
@@ -146,8 +147,8 @@ class ConcernsController extends AppBaseController implements ConcernsController
 
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $concerns = ConcernViewModel::get();
             $reports = [];
             foreach ($concerns as $concern) {

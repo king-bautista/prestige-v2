@@ -105,26 +105,25 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
             $data = [
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
-                'site_logo' => str_replace('\\', '/', $site_logo_path),
-                'site_banner' => str_replace('\\', '/', $site_banner_path),
-                'site_background' => str_replace('\\', '/', $site_background_path),
-                'site_background_portrait' => str_replace('\\', '/', $site_background_portrait_path),
-                'active' => 1,
-                'is_default' => ($request->is_default === 'false') ? 0 : 1,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : null,
+                'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : null,
+                'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : null,
+                'site_background' => ($site_background_path) ? str_replace('\\', '/', $site_background_path) : null,
+                'site_background_portrait' => ($site_background_portrait_path) ? str_replace('\\', '/', $site_background_portrait_path) : null,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
             ];
 
             $meta_value = [
-                'company_id' => $request->company_id,
-                'facebook' => $request->facebook,
-                'instagram' => $request->instagram,
-                'twitter' => $request->twitter,
-                'time_from' => $request->time_from,
-                'time_to' => $request->time_to,
-                'website' => $request->website,
-                'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
-                'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'facebook' => ($request->facebook) ? $request->facebook : null,
+                'instagram' => ($request->instagram) ? $request->instagram : null,
+                'twitter' => ($request->twitter) ? $request->twitter : null,
+                'website' => ($request->website) ? $request->website : null,
+                'premiere' => $this->checkBolean($request->is_premiere),
+                'multilanguage' => $this->checkBolean($request->multilanguage),
                 'site_code' => $request->site_code,
+                'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
             ];
 
             $site = Site::create($data);
@@ -182,26 +181,25 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             $data = [
                 'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-'.Str::padLeft($site->id, 5, '0'),
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : null,
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
                 'site_background' => ($site_background_path) ? str_replace('\\', '/', $site_background_path) : $site->site_background,
                 'site_background_portrait' => ($site_background_portrait_path) ? str_replace('\\', '/', $site_background_portrait_path) : $site->site_background_portrait,
-                'active' => ($request->active == 'false') ? 0 : 1,
-                'is_default' => ($request->is_default == 'true') ? 1 : 0,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
             ];
 
             $meta_value = [
-                'company_id' => $request->company_id,
-                'facebook' => $request->facebook,
-                'instagram' => $request->instagram,
-                'twitter' => $request->twitter,
-                'time_from' => $request->time_from,
-                'time_to' => $request->time_to,
-                'website' => $request->website,
-                'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
-                'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
                 'site_code' => $request->site_code,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'facebook' => ($request->facebook) ? $request->facebook : null,
+                'instagram' => ($request->instagram) ? $request->instagram : null,
+                'twitter' => ($request->twitter) ? $request->twitter : null,
+                'website' => ($request->website) ? $request->website : null,
+                'premiere' => $this->checkBolean($request->is_premiere),
+                'multilanguage' => $this->checkBolean($request->multilanguage),
+                'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
             ];
 
             $site->update($data);

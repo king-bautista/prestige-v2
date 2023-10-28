@@ -139,16 +139,6 @@
 										placeholder="Serial Number" required>
 								</div>
 							</div>
-							<div class="form-group row" v-if="screen.product_application == 'Directory'">
-								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_default"
-											v-model="screen.is_default">
-										<label class="custom-control-label" for="is_default"></label>
-									</div>
-								</div>
-							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -182,7 +172,8 @@
 						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
 					</div>
 					<div class="modal-body">
-						<h6>Do you really want to delete?</h6>
+						<!-- <h6>Do you really want to delete?</h6> -->
+						<h6>Do you really want to set this screen as Inactive?</h6>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -281,7 +272,7 @@ import Table from '../Helpers/Table';
             			name: 'Delete',
             			apiUrl: '/admin/site/screen/delete',
             			routeName: '',
-            			button: '<i class="fas fa-trash-alt"></i> Delete',
+            			button: '<i class="fas fa-toggle-off"></i> Inactive',
             			method: 'custom_delete',
 						v_on: 'DeleteScreen',
             		},

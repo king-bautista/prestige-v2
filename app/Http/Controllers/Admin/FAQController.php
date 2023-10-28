@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\FAQsRequest;
 
 use App\Models\FAQ;
-use App\Models\ViewModels\FAQViewModel;
-use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
 use Route;
@@ -37,14 +35,13 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     public function list(Request $request)
     {
         try {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-            $faqs = FAQViewModel::when(request('search'), function ($query) {
-
+            $faqs = FAQ::when(request('search'), function ($query) {
                 return $query->where('faqs.question', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('faqs.answer', 'LIKE', '%' . request('search') . '%');
             })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->latest()
+            ->paginate(request('perPage'));
+
             return $this->responsePaginate($faqs, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -58,7 +55,7 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     public function details($id)
     {
         try {
-            $faq = FAQViewModel::find($id);
+            $faq = FAQ::find($id);
             return $this->response($faq, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -131,7 +128,7 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     {
         try {
 
-            $faqs = FAQViewModel::get();
+            $faqs = FAQ::get();
             $reports = [];
             foreach ($faqs as $faq) {
                 $reports[] = [

@@ -6,10 +6,12 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ProductsControllerInterface;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
+use Image;
+use VideoThumbnail;
 
 use App\Models\BrandProductPromos;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\BrandViewModel;
+use App\Models\Brand;
 use App\Models\ViewModels\BrandProductViewModel;
 
 class ProductsController extends AppBaseController implements ProductsControllerInterface
@@ -28,7 +30,7 @@ class ProductsController extends AppBaseController implements ProductsController
     {
         session()->forget('brand_id');
         session()->put('brand_id', $id);
-        $brand = BrandViewModel::find($id);
+        $brand = Brand::find($id);
         return view('admin.products', compact("brand"));
     }
 
@@ -37,8 +39,6 @@ class ProductsController extends AppBaseController implements ProductsController
         try
         {
             $brand_id = session()->get('brand_id');
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $products = BrandProductViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
@@ -98,18 +98,41 @@ class ProductsController extends AppBaseController implements ProductsController
     	{
             $brand_id = session()->get('brand_id');
 
-            $thumbnail = $request->file('thumbnail');
-            $thumbnail_path = '';
-            if($thumbnail) {
-                $originalname = $thumbnail->getClientOriginalName();
-                $thumbnail_path = $thumbnail->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
-            }
-
             $image_url = $request->file('image_url');
             $image_url_path = '';
+            $thumbnails_path = '';
             if($image_url) {
                 $originalname = $image_url->getClientOriginalName();
+                $mime_type = explode("/", $image_url->getClientMimeType());
+                $file_type = $mime_type[0];
                 $image_url_path = $image_url->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
+
+                $image_size = getimagesize($image_url_path);
+                $required_size = 150;
+                $new_width = 0;
+                $new_height = 0;
+
+                if($file_type == 'image') {
+                    $width = $image_size[0];
+                    $height = $image_size[1];
+
+                    $aspect_ratio = $width/$height;
+                    if ($aspect_ratio >= 1.0) {
+                        $new_width = $required_size;
+                        $new_height = $required_size / $aspect_ratio;
+                    } else {
+                        $new_width = $required_size * $aspect_ratio;
+                        $new_height = $required_size;
+                    }
+
+                    $thumbnails_path = public_path('uploads/media/brand/products/thumbnails/');
+                    $img = Image::make($image_url_path);
+                    $img->resize($new_width, $new_height, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($thumbnails_path.str_replace(' ','-', $originalname));
+
+                    $thumbnails_path = 'uploads/media/brand/products/thumbnails/'.str_replace(' ','-', $originalname);
+                }       
             }
 
             $data = [
@@ -119,7 +142,7 @@ class ProductsController extends AppBaseController implements ProductsController
                 'type' => $request->type,
                 'date_from' => $request->date_from,
                 'date_to' => $request->date_to,
-                'thumbnail' => str_replace('\\', '/', $thumbnail_path),
+                'thumbnail' => str_replace('\\', '/', $thumbnails_path),
                 'image_url' => str_replace('\\', '/', $image_url_path),
                 'active' => 1
             ];
@@ -145,19 +168,42 @@ class ProductsController extends AppBaseController implements ProductsController
             $brand_id = session()->get('brand_id');
             $product = BrandProductPromos::find($request->id);
 
-            $thumbnail = $request->file('thumbnail');
-            $thumbnail_path = '';
-            if($thumbnail) {
-                $originalname = $thumbnail->getClientOriginalName();
-                $thumbnail_path = $thumbnail->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
-            }
-
             $image_url = $request->file('image_url');
             $image_url_path = '';
+            $thumbnails_path = '';
             if($image_url) {
                 $originalname = $image_url->getClientOriginalName();
+                $mime_type = explode("/", $image_url->getClientMimeType());
+                $file_type = $mime_type[0];
                 $image_url_path = $image_url->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
-            }         
+
+                $image_size = getimagesize($image_url_path);
+                $required_size = 150;
+                $new_width = 0;
+                $new_height = 0;
+
+                if($file_type == 'image') {
+                    $width = $image_size[0];
+                    $height = $image_size[1];
+
+                    $aspect_ratio = $width/$height;
+                    if ($aspect_ratio >= 1.0) {
+                        $new_width = $required_size;
+                        $new_height = $required_size / $aspect_ratio;
+                    } else {
+                        $new_width = $required_size * $aspect_ratio;
+                        $new_height = $required_size;
+                    }
+
+                    $thumbnails_path = public_path('uploads/media/brand/products/thumbnails/');
+                    $img = Image::make($image_url_path);
+                    $img->resize($new_width, $new_height, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($thumbnails_path.str_replace(' ','-', $originalname));
+
+                    $thumbnails_path = 'uploads/media/brand/products/thumbnails/'.str_replace(' ','-', $originalname);
+                }         
+            }
 
             $data = [
                 'brand_id' => $brand_id,
@@ -166,9 +212,9 @@ class ProductsController extends AppBaseController implements ProductsController
                 'type' => $request->type,
                 'date_from' => ($request->date_from) ? $request->date_from : null,
                 'date_to' => ($request->date_to) ? $request->date_to : null,
-                'thumbnail' => ($thumbnail_path) ? str_replace('\\', '/', $thumbnail_path) : $product->thumbnail,
+                'thumbnail' => ($thumbnails_path) ? str_replace('\\', '/', $thumbnails_path) : $product->thumbnail,
                 'image_url' => ($image_url_path) ? str_replace('\\', '/', $image_url_path) : $product->image_url,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active)
             ];
 
             $product->update($data);

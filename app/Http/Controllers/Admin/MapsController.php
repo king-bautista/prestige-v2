@@ -470,10 +470,10 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         ->where('point_type', 6)
         ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
         ->select('site_points.*')
-        ->first()->id;
+        ->first();
 
         if($origin)
-            return $origin;
+            return $origin->id;
         return 0;
     }
 

@@ -8,15 +8,13 @@ use App\Http\Controllers\Admin\Interfaces\CinemasControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Helpers\CinemaHelper;
+use App\Exports\Export;
+use Storage;
 
 use App\Models\CinemaSite;
 use App\Models\CinemaGenre;
 use App\Models\CinemaSchedule;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\CinemaScheduleViewModel;
-use App\Exports\Export;
-use Storage;
-
+use App\Models\AdminViewModels\CinemaScheduleViewModel;
 
 class CinemasScheduleController extends AppBaseController implements CinemasControllerInterface
 {
@@ -38,8 +36,6 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $movies = CinemaScheduleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
