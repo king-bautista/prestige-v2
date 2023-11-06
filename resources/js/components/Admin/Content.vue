@@ -215,11 +215,10 @@
                 edit_record: false,
             	dataFields: {
 					serial_number: "ID",
-					material_path: {
+					material_thumbnails_path: {
             			name: "Preview", 
             			type: "logo", 
             		},
-					dimension: "Dimension",
             		ad_name: "Ad Name", 
 					company_name: "Company Name",
 					brand_name: "Brand Name",

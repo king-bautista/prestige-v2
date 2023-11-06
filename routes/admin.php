@@ -180,16 +180,16 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Illustration Routes
+    | site-category Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/Illustrations', 'Admin\IllustrationsController@index')->name('admin.Illustrations');
-    Route::get('/admin/Illustration/list', 'Admin\IllustrationsController@list')->name('admin.Illustration.list');
-    Route::post('/admin/Illustration/store', 'Admin\IllustrationsController@store')->name('admin.Illustration.store');
-    Route::get('/admin/Illustration/{id}', 'Admin\IllustrationsController@details')->where('id', '[0-9]+')->name('admin.Illustration.details');
-    Route::post('/admin/Illustration/update', 'Admin\IllustrationsController@update')->name('admin.Illustration.update');
-    Route::get('/admin/Illustration/delete/{id}', 'Admin\IllustrationsController@delete')->where('id', '[0-9]+')->name('admin.Illustration.delete');
-    Route::get('/admin/Illustration/download-csv', 'Admin\IllustrationsController@downloadCsv')->name('admin.illustration.download-csv');
+    Route::get('/admin/site-categories', 'Admin\IllustrationsController@index')->name('admin.site-categories');
+    Route::get('/admin/site-category/list', 'Admin\IllustrationsController@list')->name('admin.site-category.list');
+    Route::post('/admin/site-category/store', 'Admin\IllustrationsController@store')->name('admin.site-category.store');
+    Route::get('/admin/site-category/{id}', 'Admin\IllustrationsController@details')->where('id', '[0-9]+')->name('admin.site-category.details');
+    Route::post('/admin/site-category/update', 'Admin\IllustrationsController@update')->name('admin.site-category.update');
+    Route::get('/admin/site-category/delete/{id}', 'Admin\IllustrationsController@delete')->where('id', '[0-9]+')->name('admin.site-category.delete');
+    Route::get('/admin/site-category/download-csv', 'Admin\IllustrationsController@downloadCsv')->name('admin.site-category.download-csv');
 
     /*
     |--------------------------------------------------------------------------

@@ -27,9 +27,9 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New
-							Illustration</h5>
+							Site Category</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o"
-								aria-hidden="true"></i> Edit Illustration</h5>
+								aria-hidden="true"></i> Edit Site Category</h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -43,8 +43,11 @@
 									<select class="custom-select" v-model="illustration.category_id"
 										@change="getSubCategories($event.target.value)">
 										<option value="">Select Category / Supplemental</option>
-										<option v-for="category in categories" :value="category.id"> {{
-											category.type_category_name }}</option>
+										<option v-for="category in categories" :value="category.id">
+											<span v-if="category.supplemental_category_id">Supplemental - </span>
+											<span v-else="category.supplemental_category_id">Category - </span>
+											<span>{{ category.label }}</span> 
+										</option>
 									</select>
 								</div>
 							</div>
@@ -54,7 +57,7 @@
 									<select class="custom-select" v-model="illustration.sub_category_id">
 										<option value="">Select Sub Category / Supplemental</option>
 										<option v-for="sub_category in sub_categories" :value="sub_category.id"> {{
-											sub_category.name }}</option>
+											sub_category.label }}</option>
 									</select>
 								</div>
 							</div>
@@ -75,6 +78,12 @@
 										<option value="">Select Site</option>
 										<option v-for="site in site_list" :value="site.id"> {{ site.name }}</option>
 									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Label</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="illustration.label" placeholder="Label">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -155,6 +164,7 @@ export default {
 				category_id: '',
 				sub_category_id: '',
 				site_id: '',
+				label: '',
 				active: false,
 				kiosk_image_primary: '',
 				kiosk_image_top: '',
@@ -176,6 +186,9 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
+				category_name: "Name",
+				site_name: "Site",
+				company_name: "Company",
 				kiosk_image_primary_path: {
 					name: "Kiosk Primary Image",
 					type: "logo",
@@ -183,27 +196,7 @@ export default {
 				kiosk_image_top_path: {
 					name: "Kiosk Top Image",
 					type: "image",
-				},
-				company_name: "Company",
-				category_name: "Category",
-				sub_category_name: "Sub-Category",
-				site_name: "Site",
-				// online_image_primary_path: {
-				// 	name: "Online Primary Image", 
-				// 	type:"image", 
-				// },
-				// online_image_top_path: {
-				// 	name: "Online Top Image", 
-				// 	type:"image", 
-				// },
-				// mobile_image_primary_path: {
-				// 	name: "Online Primary Image", 
-				// 	type:"image", 
-				// },
-				// mobile_image_top_path: {
-				// 	name: "Online Top Image", 
-				// 	type:"image", 
-				// },
+				},				
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -215,7 +208,7 @@ export default {
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
-			dataUrl: "/admin/Illustration/list",
+			dataUrl: "/admin/site-category/list",
 			actionButtons: {
 				edit: {
 					title: 'Edit this illustration',
@@ -228,7 +221,7 @@ export default {
 				delete: {
 					title: 'Delete this illustration',
 					name: 'Delete',
-					apiUrl: '/min/Illustration/delete',
+					apiUrl: '/min/site-category/delete',
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
@@ -300,6 +293,7 @@ export default {
 			this.illustration.category_id = '';
 			this.illustration.sub_category_id = '';
 			this.illustration.site_id = '';
+			this.illustration.label = '';
 			this.illustration.kiosk_image_primary = '';
 			this.illustration.kiosk_image_top = '';
 			this.illustration.online_image_primary = '';
@@ -323,23 +317,24 @@ export default {
 			formData.append("category_id", this.illustration.category_id);
 			formData.append("sub_category_id", this.illustration.sub_category_id);
 			formData.append("site_id", this.illustration.site_id);
+			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
 			formData.append("kiosk_image_top", this.illustration.kiosk_image_top);
 			formData.append("active", this.illustration.active);
-			axios.post('/admin/Illustration/store', formData, {
+			axios.post('/admin/site-category/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#Illustration-form').modal('hide');
-				})
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.dataTable.fetchData();
+				$('#Illustration-form').modal('hide');
+			})
 		},
 
 		editIllustration: function (id) {
-			axios.get('/admin/Illustration/' + id)
+			axios.get('/admin/site-category/' + id)
 				.then(response => {
 					var illustration = response.data.data;
 					this.illustration.id = illustration.id;
@@ -347,9 +342,8 @@ export default {
 					this.illustration.category_id = (illustration.category_id) ? illustration.category_id : '';
 					this.illustration.sub_category_id = (illustration.sub_category_id) ? illustration.sub_category_id : '';
 					this.illustration.site_id = (illustration.site_id) ? illustration.site_id : '';
+					this.illustration.label = (illustration.label) ? illustration.label : '';
 					this.illustration.active = illustration.active;
-					// this.illustration.kiosk_image_primary = '';
-					// this.illustration.kiosk_image_top = '';
 					this.$refs.kiosk_image_primary.value = null;
 					this.kiosk_image_primary = illustration.kiosk_image_primary_path;
 
@@ -370,30 +364,31 @@ export default {
 			formData.append("category_id", this.illustration.category_id);
 			formData.append("sub_category_id", this.illustration.sub_category_id);
 			formData.append("site_id", this.illustration.site_id);
+			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
 			formData.append("kiosk_image_top", this.illustration.kiosk_image_top);
 			formData.append("active", this.illustration.active);
-			axios.post('/admin/Illustration/update', formData, {
+			axios.post('/admin/site-category/update', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#Illustration-form').modal('hide');
-				})
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.dataTable.fetchData();
+				$('#Illustration-form').modal('hide');
+			})
 		},
 
 		downloadCsv: function () {
-			axios.get('/admin/illustration/download-csv')
-				.then(response => {
-					const link = document.createElement('a');
-					link.href = response.data.data.filepath;
-					link.setAttribute('download', response.data.data.filename); //or any other extension
-					document.body.appendChild(link);
-					link.click();
-				})
+			axios.get('/admin/site-category/download-csv')
+			.then(response => {
+				const link = document.createElement('a');
+				link.href = response.data.data.filepath;
+				link.setAttribute('download', response.data.data.filename); //or any other extension
+				document.body.appendChild(link);
+				link.click();
+			})
 		},
 	},
 

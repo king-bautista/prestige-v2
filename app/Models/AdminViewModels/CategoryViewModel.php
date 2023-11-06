@@ -50,7 +50,7 @@ class CategoryViewModel extends Model
 
     public function getChildCategories()
     {   
-        return $this->hasMany('App\Models\ViewModels\CategoryViewModel', 'parent_id', 'id');
+        return $this->hasMany('App\Models\AdminViewModels\CategoryViewModel', 'parent_id', 'id');
     }
 
     /****************************************

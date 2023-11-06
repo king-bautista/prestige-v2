@@ -136,7 +136,7 @@
 					serial_number: "ID",
                     site_screen_location: "Screen Location",
 					site_name: "Site",
-					ad_type: "Ad Type",
+					product_application: "Product Application",
 					active: {
             			name: "Status", 
             			type:"Boolean", 

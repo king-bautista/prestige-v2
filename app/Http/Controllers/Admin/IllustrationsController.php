@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\CompanyCategory;
-use App\Models\ViewModels\CompanyCategoryViewModel;
+use App\Models\AdminViewModels\CompanyCategoryViewModel;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -36,12 +36,18 @@ class IllustrationsController extends AppBaseController implements Illustrations
         try 
         {
             $company_categories = CompanyCategoryViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('address', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('tin', 'LIKE', '%' . request('search') . '%');
+                return $query->where('label', 'LIKE', request('search'). '%')
+                    ->orWhere('c1.name', 'LIKE', request('search'). '%')
+                    ->orWhere('c2.name', 'LIKE', request('search'). '%')
+                    ->orWhere('label', 'LIKE', '%' .request('search'))
+                    ->orWhere('c1.name', 'LIKE', '%' .request('search'))
+                    ->orWhere('c2.name', 'LIKE', '%' .request('search'));
             })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->join('categories as c1', 'company_categories.category_id', '=', 'c1.id')
+            ->join('categories as c2', 'company_categories.sub_category_id', '=', 'c2.id')
+            ->select('company_categories.*')
+            ->orderBy('company_categories.updated_at', 'DESC')
+            ->paginate(request('perPage'));
             return $this->responsePaginate($company_categories, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -90,6 +96,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 'category_id' => ($request->category_id == 'null') ? 0 : $request->category_id,
                 'sub_category_id' => ($request->sub_category_id == 'null') ? 0 : $request->sub_category_id,
                 'site_id' => ($request->site_id == 'null') ? 0 : $request->site_id,
+                'label' => ($request->label) ? $request->label : null,
                 'kiosk_image_primary' => str_replace('\\', '/', $kiosk_image_primary_path),
                 'kiosk_image_top' => str_replace('\\', '/', $kiosk_image_top_path),
                 'active' => 1,
@@ -133,9 +140,10 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 'category_id' => ($request->category_id == 'null') ? 0 : $request->category_id,
                 'sub_category_id' => ($request->sub_category_id == 'null') ? 0 : $request->sub_category_id,
                 'site_id' => ($request->site_id == 'null') ? 0 : $request->site_id,
+                'label' => ($request->label) ? $request->label : null,
                 'kiosk_image_primary' => ($kiosk_image_primary_path) ? str_replace('\\', '/', $kiosk_image_primary_path) : $company_category->kiosk_image_primary,
                 'kiosk_image_top' => ($kiosk_image_top_path) ? str_replace('\\', '/', $kiosk_image_top_path) : $company_category->kiosk_image_top,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $company_category->update($data);

@@ -165,25 +165,26 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function getAll($id = 0)
     {
-        try
-        {
+        // try
+        // {
             $categories = CategoryViewModel::when($id, function($query) use ($id){
                 return $query->where('parent_id', $id);
             })
             ->when(!$id, function($query){
                 return $query->whereNull('parent_id');
             })
+            ->orderBy('supplemental_category_id')
             ->get();
             return $this->response($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function getLabels($id)

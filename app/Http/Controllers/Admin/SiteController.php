@@ -9,14 +9,12 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\SiteRequest;
 use Illuminate\Support\Str;
-
-use App\Models\Site;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteViewModel;
 use App\Exports\Export;
 use Storage;
 use URL;
 
+use App\Models\Site;
+use App\Models\AdminViewModels\SiteViewModel;
 
 class SiteController extends AppBaseController implements SiteControllerInterface
 {
