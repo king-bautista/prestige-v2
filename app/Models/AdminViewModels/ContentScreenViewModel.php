@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\ViewModels;
+namespace App\Models\AdminViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +19,4 @@ class ContentScreenViewModel extends Model
      * @var string
     */
     protected $table = 'content_screens';
-
-    
 }

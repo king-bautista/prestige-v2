@@ -108,7 +108,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 'physical_size_height' => ($request->physical_size_height) ? $request->physical_size_height : null,
                 'physical_serial_number' => ($request->physical_serial_number) ? $request->physical_serial_number : null,
                 'kiosk_id' => $kiosk_id,
-                'active' => $this->checkBolean($request->active),
+                'active' => 1,
                 'is_default' => $this->checkBolean($request->is_default),
             ];
 

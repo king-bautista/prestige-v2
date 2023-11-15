@@ -276,6 +276,7 @@
 
         	fetchData() {
                 //var id = this.$route.params.id;
+                this.dataTable = [];
                 this.pre_loader = true;
                 var data_url = this.dataUrl;
                 if(this.dataParams)

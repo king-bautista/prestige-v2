@@ -10,9 +10,12 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\ContentManagement;
+use App\Models\ContentScreen;
 use App\Models\TransactionStatus;
 use App\Models\PlayList;
 use App\Models\AdvertisementMaterial;
+use App\Models\SiteScreen;
+use App\Models\SiteScreenProduct;
 use App\Models\AdminViewModels\ContentManagementViewModel;
 use App\Models\AdminViewModels\SiteScreenViewModel;
 use App\Models\ViewModels\SiteScreenProductPlaylistViewModel;
@@ -119,8 +122,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function update(ContentRequest $request)
     {
-        try
-    	{
+        // try
+    	// {
             $content = ContentManagement::find($request->id);
 
             $data = [
@@ -134,18 +137,18 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content->update($data);
             $content->saveScreens($request->site_screen_ids);
-            $this->generatePlayList();
+            return $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function delete($id)
@@ -183,12 +186,53 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function generatePlayList()
+    public function generatePlayList($screen_ids)
     {
-        PlayList::truncate();
+        if(count($screen_ids) === 0)
+            return false;
 
+        $site_screen_ids = [];
+        $site_id = 0;
+        $site_screen_products = [];
+
+        // GET AND FILTER SCREEN IDS
+        foreach($screen_ids as $screen) {
+            // STOP THE LOOP IF ID IS 0 AND SITE ID NOT EMPTY
+            if($screen['id'] === 0 && $screen['site_id']) {
+                $site_id = $screen['site_id'];
+                $site_screen_ids = [];
+                break;
+            }
+
+            $site_screen_ids[] = $screen['id'];
+        }    
+        if($site_id) {
+            $site_screen_ids = SiteScreen::where('site_id', $site_id)->get()->pluck('id');
+        }
+        // END GET AND FILTER SCREEN IDS
+
+        // GET CONTENT IDS
+        $content_ids[] = ContentScreen::whereIn('site_screen_id', $site_screen_ids)->get()->pluck('content_id');
+        if($site_id) {
+            $content_ids = ContentScreen::where('site_id', $site_id)->where('site_screen_id', 0)->get()->pluck('content_id');
+        }
+        // END GET CONTENT IDS
+        foreach($site_screen_ids as $index => $screen_id) {
+            PlayList::where('site_screen_id',$screen_id)->delete();
+
+            $playlist = $this->getAdvertisementMaterial($content_ids, $screen_id);
+            if(PlayList::insert($playlist)) {
+                return $this->setSequence($screen_id);
+            }
+        }
+
+    }
+
+    public function getAdvertisementMaterial($content_ids, $screen_id) 
+    {
         $playlist = AdvertisementMaterial::WhereNull('site_screen_products.deleted_at')
-        ->whereRaw('site_screens.site_id IN (SELECT DISTINCT site_id FROM content_screens)')
+        ->whereIn('content_management.id', $content_ids)
+        ->where('site_screens.id', $screen_id)            
         ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
         ->join('content_management', 'advertisement_materials.advertisement_id', '=', 'content_management.advertisement_id')
         ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
@@ -198,10 +242,21 @@ class ContentManagementController extends AppBaseController implements ContentMa
         ->join('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
         ->select('content_management.id AS content_id', 'site_screen_products.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'categories.parent_id AS parent_category_id', 'categories.parent_id AS main_category_id', 'advertisement_materials.advertisement_id', 'advertisement_materials.dimension')
         ->orderBy('site_screen_products.site_screen_id', 'ASC')
+        ->distinct()
         ->get()
         ->toArray();
 
-        PlayList::insert($playlist);
+        if($playlist)
+            return $playlist;
+        return null;
+    }
+
+    public function setSequence($screen_id)
+    {  
+        $playlist = PlayList::where('site_screen_id', $screen_id)->get();
+
+        return $playlist;
+        
     }
 
     public function getPLayList(Request $request)
