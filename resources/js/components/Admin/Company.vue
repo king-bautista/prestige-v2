@@ -692,6 +692,26 @@ export default {
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
+
+					var company = response.data.data;
+					this.company.id = company.id;
+					this.company.name = company.name;
+					this.company.parent_id = company.parent_id;
+					this.company.classification_id = company.classification_id;
+					this.company.classification_name = company.classification_name;
+					this.company.email = company.email;
+					this.company.contact_number = company.contact_number;
+					this.company.address = company.address;
+					this.company.tin = company.tin;
+					this.company.parent_company = company.parent_company;
+					this.company.active = company.active;
+					this.company.brands = company.brands;
+					this.company.contracts = company.contracts;
+					this.add_record = false;
+					this.edit_record = true;
+					this.data_list = false;
+					this.data_form = true;
+
 					$('#company-details').modal('hide');
 				})
 		},

@@ -179,7 +179,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				thumbnail_path: {
+				logo_image_path: {
 					name: "Logo",
 					type: "logo",
 				},
@@ -346,7 +346,7 @@ export default {
 					this.brand.category_id = brand.category_id;
 					this.brand.name = brand.name;
 					this.brand.descriptions = brand.descriptions;
-					this.brand.supplementals = brand.supplementals;
+					this.brand.supplementals = brand.brand_details.supplementals;
 					this.brand.tags = brand.tags;
 					this.brand.active = brand.active;
 					this.add_record = false;
@@ -361,11 +361,11 @@ export default {
 					this.$refs.logo.value = null;
 					this.product_view = true;
 
-					brand.supplementals.forEach((value) => {
+					brand.brand_details.supplementals.forEach((value) => {
 						this.supplemental_ids.push(value.id);
 					});
 
-					brand.tags.forEach((value) => {
+					brand.brand_details.tags.forEach((value) => {
 						this.tags_ids.push(value.id);
 					});
 

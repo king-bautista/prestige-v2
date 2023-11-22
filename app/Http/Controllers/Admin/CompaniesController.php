@@ -93,6 +93,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
 
             $company = Company::create($data);
             $company->saveBrands($request->brands);
+            $company = CompanyViewModel::find($company->id);
 
             return $this->response($company, 'Successfully Created!', 200);
         }
