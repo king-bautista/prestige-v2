@@ -233,6 +233,7 @@
 			},
 
 			downloadCsv: function () {
+				$('.fa-download').removeClass('fa-download').addClass( "fa-spinner fa-spin");
 				axios.get('/admin/play-list/download-csv')
 				.then(response => {
 					const link = document.createElement('a');
@@ -240,6 +241,7 @@
 					link.setAttribute('download', response.data.data.filename); //or any other extension
 					document.body.appendChild(link);
 					link.click();
+					$('.fa-spinner').removeClass('fa-spinner fa-spin').addClass("fa-download");
 				})
 			},
 
