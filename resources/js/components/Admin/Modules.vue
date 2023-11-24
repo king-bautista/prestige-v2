@@ -277,21 +277,20 @@ export default {
 
 		DeleteModule: function (data) {
 			axios.get('/admin/modules/get-parent/' + data.id)
-				.then(response => {
-					var parent_id_count = response.data.data;  alert(parent_id_count);
-					if (parent_id_count == 0) {
-						this.id_to_deleted = data.id;
-						this.modal_label = "Confirm";
-						this.delete_record = true;
-					}else{
-						this.modal_label = "Error";
-						this.modal_message = "You cannot delete the record.";
-						this.delete_record = false;
-					}
+			.then(response => {
+				var parent_id_count = response.data.data;
+				if (parent_id_count == 0) {
+					this.id_to_deleted = data.id;
+					this.modal_label = "Confirm";
+					this.delete_record = true;
+				}else{
+					this.modal_label = "Error";
+					this.modal_message = "You cannot delete the record.";
+					this.delete_record = false;
+				}
 
-					$('#moduleDeleteModal').modal('show');
-				})
-
+				$('#moduleDeleteModal').modal('show');
+			});
 		},
 
 		removeModule: function () {
