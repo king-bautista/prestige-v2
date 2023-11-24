@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Amenity;
-use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -35,8 +34,6 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $amenitiess = Amenity::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -155,8 +152,8 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
 
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $amenity_management =  Amenity::get();         
             $reports = [];
             foreach ($amenity_management as $amenity) {

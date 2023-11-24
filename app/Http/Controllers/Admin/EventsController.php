@@ -79,9 +79,9 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
             $data = [
                 'site_id' => $request->site_id,
-                'event_name' => ($request->event_name) ? $request->event_name : '',
-                'location' => ($request->location) ? $request->location : '',
-                'event_date' => ($request->event_date) ? $request->event_date : '',
+                'event_name' => ($request->event_name) ? $request->event_name : null,
+                'location' => ($request->location) ? $request->location : null,
+                'event_date' => ($request->event_date) ? $request->event_date : null,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'image_url' => str_replace('\\', '/', $banner_path),
@@ -118,15 +118,15 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
             $data = [
                 'site_id' => $request->site_id,
-                'event_name' => ($request->event_name) ? $request->event_name : '',
-                'location' => ($request->location) ? $request->location : '',
-                'event_date' => ($request->event_date) ? $request->event_date : '',
+                'event_name' => ($request->event_name) ? $request->event_name : null,
+                'location' => ($request->location) ? $request->location : null,
+                'event_date' => ($request->event_date) ? $request->event_date : null,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'image_url' => ($banner_path) ? str_replace('\\', '/', $banner_path) : $event->image_url,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
-
+ 
             $event->update($data);
             return $this->response($event, 'Successfully Modified!', 200);
         }

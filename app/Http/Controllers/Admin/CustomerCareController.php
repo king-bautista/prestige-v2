@@ -8,15 +8,21 @@ use App\Http\Controllers\Admin\Interfaces\CustomerCareControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;    
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomerCareRequest;
+<<<<<<< HEAD
 
 use App\Models\CustomerCare;
 use App\Models\User;
 use App\Models\Concern;
 use App\Models\ViewModels\CustomerCareViewModel;
 use App\Models\ViewModels\AdminViewModel;
+=======
+>>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 use App\Exports\Export;
 use Storage;
 
+use App\Models\CustomerCare;
+use App\Models\User;
+use App\Models\AdminViewModels\CustomerCareViewModel;
 
 class CustomerCareController extends AppBaseController implements CustomerCareControllerInterface
 {

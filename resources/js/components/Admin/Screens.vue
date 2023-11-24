@@ -139,16 +139,6 @@
 										placeholder="Serial Number" required>
 								</div>
 							</div>
-							<div class="form-group row" v-if="screen.product_application == 'Directory'">
-								<label for="isActive" class="col-sm-4 col-form-label">Is Default</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_default"
-											v-model="screen.is_default">
-										<label class="custom-control-label" for="is_default"></label>
-									</div>
-								</div>
-							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -182,7 +172,8 @@
 						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
 					</div>
 					<div class="modal-body">
-						<h6>Do you really want to delete?</h6>
+						<!-- <h6>Do you really want to delete?</h6> -->
+						<h6>Do you really want to set this screen as Inactive?</h6>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -217,6 +208,7 @@
 <script>
 import Table from '../Helpers/Table';
 
+<<<<<<< HEAD
 export default {
 	name: "Screen",
 	data() {
@@ -301,6 +293,95 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+=======
+	export default {
+        name: "Screen",
+        data() {
+            return {
+                screen: {
+                    id: '',
+					site_id: '',
+                    site_building_id: '',
+                    site_building_level_id: '',
+                    name: '',
+                    screen_type: '',
+                    orientation: '',
+					product_application: '',
+                    physical_size_diagonal: '',
+                    physical_size_width: '',
+                    physical_size_height: '',
+					physical_serial_number: '',
+					active: false,
+					is_default: false,
+                },
+				id_to_deleted: 0,
+				is_default: '',
+                add_record: true,
+                edit_record: false,
+                sites: [],
+                buildings: [],
+                floors: [],
+				company_index: '',
+                screen_types: ['LED','LFD','LCD'],
+                orientations: ['Landscape','Portrait'],
+                product_applications: ['Directory','Digital Signage'],
+            	dataFields: {
+					serial_number: "ID",
+            		screen_location: "Location",
+                    site_name: "Site Name",
+            		screen_type: "Screen Type", 
+            		orientation: "Orientation", 
+            		product_application: "Product Application", 
+            		active: {
+            			name: "Status", 
+            			type:"Boolean", 
+            			status: { 
+            				0: '<span class="badge badge-danger">Deactivated</span>', 
+            				1: '<span class="badge badge-info">Active</span>'
+            			}
+            		},
+                    updated_at: "Last Updated"
+            	},
+            	primaryKey: "id",
+            	dataUrl: "/admin/site/screen/list",
+            	actionButtons: {
+            		edit: {
+            			title: 'Edit this Screen',
+            			name: 'Edit',
+            			apiUrl: '',
+            			routeName: 'building.edit',
+            			button: '<i class="fas fa-edit"></i> Edit',
+            			method: 'edit'
+            		},
+            		delete: {
+            			title: 'Delete this Screen',
+            			name: 'Delete',
+            			apiUrl: '/admin/site/screen/delete',
+            			routeName: '',
+            			button: '<i class="fas fa-toggle-off"></i> Inactive',
+            			method: 'custom_delete',
+						v_on: 'DeleteScreen',
+            		},
+            	},
+				otherButtons: {
+					addNew: {
+						title: 'New Screen',
+						v_on: 'AddNewScreen',
+						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+					download: {
+						title: 'Download',
+						v_on: 'downloadCsv',
+						icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+				}
+            };
+        },
+>>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 
 				downloadCsv: {
 					title: 'Download',

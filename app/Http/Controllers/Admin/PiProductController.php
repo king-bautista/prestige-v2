@@ -33,7 +33,8 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function list(Request $request)
     {
-        try {
+        try 
+        {
             $pi_products = PiProduct::when(request('search'), function ($query) {
                 return $query->where('physical_configuration', 'LIKE', '%' . request('search') . '%')
                 ->orWhere('product_application', 'LIKE', '%' . request('search') . '%')
@@ -54,7 +55,8 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function details($id)
     {
-        try {
+        try 
+        {
             $pi_product = PiProduct::find($id);
             return $this->response($pi_product, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -68,7 +70,20 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function store(PiProductRequest $request)
     {
-        try {
+        try 
+        {
+            $pi_product_data = PiProduct::where('ad_type', $request->ad_type)
+            ->where('product_application', $request->product_application)
+            ->get()
+            ->count();
+            if($pi_product_data > 0) {
+                return response([
+                    'message' => 'The advertisement type is already been taken.',
+                    'status' => false,
+                    'status_code' => 422,
+                ], 422);    
+            }
+
             $data = [
                 'physical_configuration' => $request->physical_configuration,
                 'product_application' => $request->product_application,
@@ -77,8 +92,8 @@ class PiProductController extends AppBaseController implements PiProductControll
                 'remarks' => $request->remarks,
                 'sec_slot' => $request->sec_slot,
                 'slots' => $request->slots,
-                'active' => $request->active,
-                'is_exclusive' => $request->is_exclusive,
+                'active' => $this->checkBolean($request->active),
+                'is_exclusive' => $this->checkBolean($request->is_exclusive),
             ];
 
             $pi_product = PiProduct::create($data);
@@ -97,8 +112,21 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function update(PiProductRequest $request)
     {
-        try {
+        try 
+        {
             $pi_product = PiProduct::find($request->id);
+
+            $pi_product_data = PiProduct::where('ad_type', $request->ad_type)
+            ->where('product_application', $request->product_application)
+            ->where('id', '!=', $request->id)
+            ->get()->count();
+            if($pi_product_data > 0) {
+                return response([
+                    'message' => 'The advertisement type is already been taken.',
+                    'status' => false,
+                    'status_code' => 422,
+                ], 422);    
+            }
 
             $data = [
                 'serial_number' => ($pi_product->serial_number) ? $pi_product->serial_number : 'PI-'.Str::padLeft($pi_product->id, 5, '0'),
@@ -109,8 +137,8 @@ class PiProductController extends AppBaseController implements PiProductControll
                 'remarks' => $request->remarks,
                 'sec_slot' => $request->sec_slot,
                 'slots' => $request->slots,
-                'active' => $request->active,
-                'is_exclusive' => $request->is_exclusive,
+                'active' => $this->checkBolean($request->active),
+                'is_exclusive' => $this->checkBolean($request->is_exclusive),
             ];
 
             $pi_product->update($data);
@@ -127,7 +155,8 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function delete($id)
     {
-        try {
+        try 
+        {
             $pi_product = PiProduct::find($id);
             $pi_product->delete();
             return $this->response($pi_product, 'Successfully Deleted!', 200);
@@ -142,7 +171,8 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function getProducts()
     {
-        try {
+        try 
+        {
             $pi_product = PiProduct::get();
             return $this->response($pi_product, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {

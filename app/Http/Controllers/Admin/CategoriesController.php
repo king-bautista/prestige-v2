@@ -9,13 +9,12 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategoryLabelRequest;
+use App\Exports\Export;
+use Storage;
 
 use App\Models\Category;
 use App\Models\CategoryLabel;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\CategoryViewModel;
-use App\Exports\Export;
-use Storage;
+use App\Models\AdminViewModels\CategoryViewModel;
 
 class CategoriesController extends AppBaseController implements CategoriesControllerInterface
 {
@@ -37,8 +36,6 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $categories = CategoryViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->where('descriptions', 'LIKE', '%' . request('search') . '%');
@@ -114,7 +111,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 'descriptions' => ($request->descriptions) ? $request->descriptions : '',
                 'class_name' => ($request->class_name) ? $request->class_name : '',
                 'category_type' => $request->category_type,
-                'active' => $request->active,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $category->update($data);
@@ -168,25 +165,26 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function getAll($id = 0)
     {
-        try
-        {
+        // try
+        // {
             $categories = CategoryViewModel::when($id, function($query) use ($id){
                 return $query->where('parent_id', $id);
             })
             ->when(!$id, function($query){
                 return $query->whereNull('parent_id');
             })
+            ->orderBy('supplemental_category_id')
             ->get();
             return $this->response($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function getLabels($id)

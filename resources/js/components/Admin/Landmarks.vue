@@ -75,19 +75,7 @@
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<textarea class="form-control" v-model="landmark.descriptions" placeholder="Descriptions"></textarea>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Created By<span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="landmark.name" placeholder="Created By" required>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Title<span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="landmark.title" placeholder="Title" required>
+									<textarea class="form-control" rows="5" v-model="landmark.descriptions" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -153,8 +141,6 @@ export default {
 				site_name: "Site Name",
 				landmark: "Landmark",
 				descriptions: "Descriptions",
-				name: "Name",
-				title: "Title",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -225,10 +211,8 @@ export default {
 			this.landmark.site_id = '';
 			this.landmark.landmark = '';
 			this.landmark.descriptions = '';
-			this.landmark.name = '';
-			this.landmark.title = '';
-			this.landmark.imgBanner = '/images/no-image-available.png';
-			this.landmark.imgBannerThumbnail = '/images/no-image-available.png';
+			this.landmark.image_url = '';
+			this.landmark.image_thumbnail_url = '';
 			this.imgBanner = '/images/no-image-available.png';
 			this.imgBannerThumbnail = '/images/no-image-available.png';
 			this.landmark.active = false;
@@ -243,8 +227,6 @@ export default {
 			formData.append("site_id", this.landmark.site_id);
 			formData.append("landmark", this.landmark.landmark);
 			formData.append("descriptions", this.landmark.descriptions);
-			formData.append("name", this.landmark.name);
-			formData.append("title", this.landmark.title);
 			formData.append("imgBanner", this.landmark.image_url);
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
 
@@ -268,8 +250,6 @@ export default {
 					this.landmark.site_id = landmark.site_id;
                     this.landmark.landmark = landmark.landmark;
                     this.landmark.descriptions = landmark.descriptions;
-                    this.landmark.name = landmark.name;
-                    this.landmark.title = landmark.title;
                     this.imgBanner = landmark.image_url_path;
                     this.imgBannerThumbnail = landmark.image_thumbnail_url_path;
                     this.landmark.active = landmark.active;
@@ -288,8 +268,6 @@ export default {
 			formData.append("site_id", this.landmark.site_id);
 			formData.append("landmark", this.landmark.landmark);
 			formData.append("descriptions", this.landmark.descriptions);
-			formData.append("name", this.landmark.name);
-			formData.append("title", this.landmark.title);
 			formData.append("imgBanner", this.landmark.image_url);
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
 			formData.append("active", this.landmark.active);

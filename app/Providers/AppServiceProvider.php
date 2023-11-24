@@ -5,18 +5,18 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
-//use App\Models\Admin;
-use App\Models\AdminMeta;
-use App\Models\UserMeta;
-use App\Models\UserActivityLog;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\UserViewModel;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\App;
 use Request;
 use Route;
+
+use App\Models\AdminMeta;
+use App\Models\UserMeta;
+use App\Models\UserActivityLog;
+use App\Models\AdminViewModels\AdminViewModel;
+use App\Models\AdminViewModels\UserViewModel;
 
 class AppServiceProvider extends ServiceProvider
 {

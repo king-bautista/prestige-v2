@@ -67,12 +67,6 @@
 									<input type="text" class="form-control" v-model="event.event_name" placeholder="Event Name" maxlength="15" required>
 								</div>
 							</div>
-							<!-- <div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Location <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="event.location" placeholder="Location" required>
-								</div>
-							</div> -->
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Event Date <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -137,7 +131,7 @@ export default {
 				image_url: '/images/no-image-available.png',
 				start_date: '',
 				end_date: '',
-				active: false,
+				active: 0,
 			},
 			imgBanner: '',
             site_list: [],
@@ -154,7 +148,6 @@ export default {
 				},
 				site_name: "Site Name",
 				event_name: "Event Name",
-				location: "Location",
 				start_date: "Start Date",
 				end_date: "End Date",
 				active: {
@@ -226,7 +219,7 @@ export default {
 			this.event.end_date = '';
 			this.event.imgBanner = '';
 			this.imgBanner = '/images/no-image-available.png';
-			this.event.active = false;
+			this.event.active = 0;
 			this.$refs.fileImgBanner.value = null;
 			$('#event-form').modal('show');
 		},

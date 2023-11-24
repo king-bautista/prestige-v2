@@ -4,21 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class FAQ extends Model
 {
     use SoftDeletes;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'question',
-        'answer',
-        'active',
-    ];
 
     /**
      * The attributes that should be cast.
@@ -44,4 +34,29 @@ class FAQ extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+     /**
+     * Append additiona info to the return data
+     *
+     * @var string
+     */
+	public $appends = [
+        'shorten_question',
+        'shorten_answer',
+    ]; 
+
+    /****************************************
+    *           ATTRIBUTES PARTS            *
+    ****************************************/
+       
+    public function getShortenQuestionAttribute()
+    {
+        return Str::limit($this->question, 50, '...'); 
+    }
+
+    public function getShortenAnswerAttribute()
+    {   
+        return Str::limit($this->answer, 150, '...');
+    }
+
 }

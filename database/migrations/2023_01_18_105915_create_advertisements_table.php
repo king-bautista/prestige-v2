@@ -49,21 +49,6 @@ class CreateAdvertisementsTable extends Migration
 
             $table->foreign('advertisement_id')->references('id')->on('advertisements');
         });
-
-        // Schema::create('advertisement_screens', function (Blueprint $table) {
-        //     $table->engine = "InnoDB";
-            
-        //     $table->bigInteger('advertisement_id')->unsigned()->nullable()->index();
-        //     $table->bigInteger('material_id')->unsigned()->nullable()->index();
-        //     $table->bigInteger('site_screen_id')->unsigned()->nullable()->index();
-        //     $table->bigInteger('site_id')->unsigned()->nullable()->index();
-        //     $table->string('ad_type')->nullable();
-        //     $table->timestamps();
-
-        //     $table->foreign('advertisement_id')->references('id')->on('advertisements');
-        //     $table->foreign('material_id')->references('id')->on('advertisement_materials');
-        // });
-        
     }
 
     /**
@@ -73,9 +58,7 @@ class CreateAdvertisementsTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('advertisement_screens');
         Schema::dropIfExists('advertisement_materials');
-        Schema::dropIfExists('advertisements');
-        
+        Schema::dropIfExists('advertisements');        
     }
 }

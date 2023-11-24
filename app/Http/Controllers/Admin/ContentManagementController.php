@@ -10,20 +10,22 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\ContentManagement;
-use App\Models\Category;
+use App\Models\ContentScreen;
 use App\Models\TransactionStatus;
 use App\Models\PlayList;
-use App\Models\Company;
 use App\Models\AdvertisementMaterial;
-use App\Models\ViewModels\ContentManagementViewModel;
-use App\Models\ViewModels\ContentScreenViewModel;
-use App\Models\ViewModels\PlayListViewModel;
-use App\Models\ViewModels\SiteScreenViewModel;
-use App\Models\ViewModels\SiteScreenProductPlaylistViewModel;
+use App\Models\SiteScreen;
+use App\Models\SiteScreenProduct;
+use App\Models\AdminViewModels\SiteViewModel;
+use App\Models\AdminViewModels\ContentManagementViewModel;
+use App\Models\AdminViewModels\SiteScreenViewModel;
+use App\Models\AdminViewModels\SiteScreenPlaylistViewModel;
+use App\Models\AdminViewModels\PlayListViewModel;
 use App\Imports\PlaylistImport;
+use App\Exports\PlaylistExport;
 
 use App\Http\Requests\ContentRequest;
-
+use Storage;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -139,7 +141,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content->update($data);
             $content->saveScreens($request->site_screen_ids);
-            $this->generatePlayList();
+            $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Modified!', 200);
         }
@@ -188,12 +190,54 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function generatePlayList()
+    public function generatePlayList($screen_ids)
     {
-        PlayList::truncate();
+        if(count($screen_ids) === 0)
+            return false;
 
+        $site_screen_ids = [];
+        $site_id = 0;
+        $site_screen_products = [];
+
+        // GET AND FILTER SCREEN IDS
+        foreach($screen_ids as $screen) {
+            // STOP THE LOOP IF ID IS 0 AND SITE ID NOT EMPTY
+            if($screen['id'] === 0 && $screen['site_id']) {
+                $site_id = $screen['site_id'];
+                $site_screen_ids = [];
+                break;
+            }
+
+            $site_screen_ids[] = $screen['id'];
+        }    
+        if($site_id) {
+            $site_screen_ids = SiteScreen::where('site_id', $site_id)->get()->pluck('id');
+        }
+        // END GET AND FILTER SCREEN IDS
+
+        // GET CONTENT IDS
+        $content_ids[] = ContentScreen::whereIn('site_screen_id', $site_screen_ids)->get()->pluck('content_id');
+        if($site_id) {
+            $content_ids = ContentScreen::where('site_id', $site_id)->where('site_screen_id', 0)->get()->pluck('content_id');
+        }
+        // END GET CONTENT IDS
+        foreach($site_screen_ids as $index => $screen_id) {
+            PlayList::where('site_screen_id',$screen_id)->delete(); 
+
+            $playlist = $this->getAdvertisementMaterial($content_ids, $screen_id);
+            if(PlayList::insert($playlist)) {
+                $this->setSequence($screen_id, $site_id, count($playlist));
+            }
+        }
+
+        return true;
+    }
+
+    public function getAdvertisementMaterial($content_ids, $screen_id) 
+    {
         $playlist = AdvertisementMaterial::WhereNull('site_screen_products.deleted_at')
-        ->whereRaw('site_screens.site_id IN (SELECT DISTINCT site_id FROM content_screens)')
+        ->whereIn('content_management.id', $content_ids)
+        ->where('site_screens.id', $screen_id)            
         ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
         ->join('content_management', 'advertisement_materials.advertisement_id', '=', 'content_management.advertisement_id')
         ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
@@ -203,107 +247,78 @@ class ContentManagementController extends AppBaseController implements ContentMa
         ->join('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
         ->select('content_management.id AS content_id', 'site_screen_products.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'categories.parent_id AS parent_category_id', 'categories.parent_id AS main_category_id', 'advertisement_materials.advertisement_id', 'advertisement_materials.dimension')
         ->orderBy('site_screen_products.site_screen_id', 'ASC')
+        ->distinct()
         ->get()
         ->toArray();
 
-        PlayList::insert($playlist);
-        // arrange sequence base on playlist conditions
+        if($playlist)
+            return $playlist;
+        return null;
     }
 
-    // public function generatePlayList($screens)
-    // {
-    //     dd($screens);
+    public function setSequence($screen_id, $site_id, $total_rows)
+    {  
+        $site = SiteViewModel::find($site_id);
+        $site_partner_id = $site->details['company_id'];
 
-    //     $categories = Category::whereNull('parent_id')->where('category_type', 1)->get();
-    //     $categories_ids = $categories->pluck('id');
+        $sequence = 1;
+        for($row = 1; $row <= $total_rows; $row++) {
+            $playlist = $this->getPlaylistPerCategory($screen_id, $site_partner_id, false);
+            if(!$playlist)
+                return false;
 
-    //     foreach($screens as $screen) {
-    //         $loop_count = 0;
-    //         $loop_count = ($screen['slots']*$categories->count());
-    //         $params = [
-    //             'loop_count' => $loop_count,
-    //             'site_screen_id' => $screen['site_screen_id'],
-    //             'categories_ids' => $categories_ids,
-    //             'dimension' => $screen['dimension'],
-    //         ];
+            foreach($playlist as $index => $content) {
+                PlayList::where('content_id', $content->content_id)
+                ->where('site_screen_id', $content->site_screen_id)
+                ->update(['sequence' => $sequence]);
+                $sequence++;
+            }
 
-    //         PlayList::where('site_screen_id', $screen['site_screen_id'])->delete();
-    //         $this->createPlayList($params);
+            $playlist = $this->getPlaylistPerCategory($screen_id, $site_partner_id, true);
+            if(!$playlist)
+                return false;
 
-    //     }
-    // }
+            foreach($playlist as $index => $content) {
+                PlayList::where('content_id', $content->content_id)
+                ->where('site_screen_id', $content->site_screen_id)
+                ->update(['sequence' => $sequence]);
+                $sequence++;
+            }
+        }
+                
+    }
 
-    // public function createPlayList($params)
-    // {
-    //     for($count = 1; $count <= $params['loop_count']; $count++) {
-    //         // GET PLAYLIST IDS FROM PLAYLIST TABLE
-    //         $play_list_ids = PlayList::where('site_screen_id', $params['site_screen_id'])->get()->pluck('content_id');
-    //         // GET SITE PARTNER IDS FROM COMPANY TABLE
-    //         $site_partner_ids = Company::whereIn('classification_id', [1,2])->get();
+    public function getPlaylistPerCategory($screen_id, $site_partner_id, $is_site_partner = false) {
+        $playlist = PlayList::where('site_screen_id', $screen_id)
+        ->where('sequence', 0)
+        ->when($is_site_partner, function($query) use ($site_partner_id){
+            return $query->where('company_id', $site_partner_id);
+        })
+        ->when(!$is_site_partner, function($query) use ($site_partner_id){
+            return $query->where('company_id', '<>', $site_partner_id);
+        })        
+        ->groupBy('main_category_id')
+        ->orderBy('main_category_id')
+        ->when($is_site_partner, function($query){
+            return $query->take(1);
+        })
+        ->when(!$is_site_partner, function($query){
+            return $query->take(5);
+        })
+        ->get();
 
-    //         // GET SITE PARTNER CONTENT
-    //         // $site_partner_content = $this->getContent($params, $play_list_ids, $site_partner_ids, true);
-    //         // $play_list = PlayList::insert($site_partner_content);            
-    //         // GET ADVERTISER CONTENT
-    //         $advertiser_contents = $this->getContent($params, $play_list_ids, $site_partner_ids);            
-    //         $play_list = PlayList::insert($advertiser_contents);
-    //     }
-
-    //     $date_now = date('Y-m-d H:i:s');
-    //     PlayList::where('site_screen_id', $params['site_screen_id'])->update(['created_at' => $date_now, 'updated_at' => $date_now]);
-
-    // }
-
-    // public function getContent($params, $play_list_ids, $site_partner_ids, $is_site_partner = false)
-    // {
-    //     /* GET SCREEN MATERIALS 
-    //      * FILTER BY PARENT CATEGORY ID
-    //      * FILTER CONTENT ID FROM PLAYLIST
-    //      * FILTER REMOVED SITE PARTNER CONTENT
-    //     */
-    //     $contents = ContentScreenViewModel::where('content_screens.site_screen_id', $params['site_screen_id'])
-    //     ->whereIn('categories.parent_id', $params['categories_ids'])
-    //     ->whereIn('advertisement_screens.ad_type', array('Full Screen Ad', 'Banner Ad'))
-    //     ->whereNotIn('content_screens.content_id', $play_list_ids)
-    //     ->when($is_site_partner, function($query) use ($site_partner_ids){
-    //         return $query->whereIn('advertisements.company_id',  $site_partner_ids);
-    //     })
-    //     ->when(!$is_site_partner, function($query) use ($site_partner_ids){
-    //         return $query->whereNotIn('advertisements.company_id', $site_partner_ids);
-    //     })        
-    //     ->select('content_screens.content_id', 'content_screens.site_screen_id', 'advertisements.company_id', 'advertisements.brand_id', 'brands.category_id', 'brands.category_id', 'categories.parent_id as parent_category_id', 'categories.parent_id as main_category_id', 'advertisement_materials.advertisement_id')
-    //     ->join('advertisement_screens', 'content_screens.site_screen_id', '=', 'advertisement_screens.site_screen_id')
-    //     ->join('content_management', 'content_screens.content_id', '=', 'content_management.id')
-    //     ->join('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.id')
-    //     ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
-    //     ->join('brands', 'advertisements.brand_id', '=', 'brands.id')
-    //     ->join('categories', 'brands.category_id', '=', 'categories.id')
-    //     ->groupBy('categories.parent_id')
-    //     ->orderBy('categories.parent_id', 'ASC')
-    //     ->when($is_site_partner, function($query){
-    //         return $query->take(1);
-    //     })
-    //     ->when(!$is_site_partner, function($query){
-    //         return $query->take(5);
-    //     })        
-    //     ->get()
-    //     ->toArray();
-
-    //     return $contents;
-    // }
+        return $playlist;
+    }
 
     public function getPLayList(Request $request)
     {
         try
         {
-            $play_list = SiteScreenProductPlaylistViewModel::when(request('search'), function($query){
+            $play_list = SiteScreenPlaylistViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->join('content_screens', 'site_screen_products.id', '=', 'content_screens.site_screen_product_id')
-            ->select('site_screen_products.*')
-            ->groupBy('site_screen_products.id')
-            ->orderBy('site_screen_products.id', 'ASC')
             ->paginate(request('perPage'));
+            
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)
@@ -340,50 +355,54 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    // public function getPLayListDetails(Request $request)
-    // {
-    //     try
-    //     {
-    //         $play_list = PlayListViewModel::when(request('search'), function($query){
-    //             return $query->where('name', 'LIKE', '%' . request('search') . '%');
-    //         })
-    //         ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
-    //         ->join('advertisement_screens', function($join)
-    //         {
-    //             $join->on('content_management.advertisement_id', '=', 'advertisement_screens.advertisement_id')
-    //                  ->on('advertisement_screens.site_screen_id','=', 'play_lists.site_screen_id');
-    //         })
-    //          ->where('advertisement_screens.ad_type', 'Banner Ad')
-    //         ->select('play_lists.*', 'advertisement_screens.ad_type', 'content_management.updated_at')
-    //         ->orderBy('play_lists.id', 'ASC')
-    //         ->paginate(request('perPage'));
-    //         return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
-    //     }
-    //     catch (\Exception $e)
-    //     {
-    //         return response([
-    //             'message' => $e->getMessage(),
-    //             'status' => false,
-    //             'status_code' => 422,
-    //         ], 422);
-    //     }
-    // }
-
     public function batchUpload(Request $request)
     {
-        // try
-        // {
+        try
+        {
             Excel::import(new PlaylistImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+            return $this->response(true, 'Successfully Uploaded!', 200);   
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $playlist = PlayListViewModel::get();
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "playlist.csv";
+            // Store on default disk
+            Excel::store(new PlaylistExport($playlist), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
 }

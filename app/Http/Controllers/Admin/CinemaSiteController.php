@@ -7,13 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CinemaSiteControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-
-use App\Models\CinemaSite;
-use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
 
-
+use App\Models\CinemaSite;
 
 class CinemaSiteController extends AppBaseController implements CinemaSiteControllerInterface
 {
@@ -35,8 +32,6 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $cinema_sites = CinemaSite::when(request('search'), function($query){
                 return $query->where('sites.name', 'LIKE', '%' . request('search') . '%');
             })

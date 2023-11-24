@@ -9,14 +9,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Requests\EditRegistrationeRequest;
-
 use App\Helpers\PasswordHelper;
-use App\Models\Admin;
-use App\Models\ViewModels\AdminViewModel;
-use Hash;
-
 use App\Exports\Export;
 use Storage;
+use Hash;
+
+use App\Models\Admin;
+use App\Models\AdminViewModels\AdminViewModel;
 
 class UsersController extends AppBaseController implements UsersControllerInterface
 {
@@ -38,8 +37,6 @@ class UsersController extends AppBaseController implements UsersControllerInterf
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $user = AdminViewModel::when(request('search'), function($query){
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('email', 'LIKE', '%' . request('search') . '%');
@@ -161,8 +158,8 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $admin_management = AdminViewModel::get();
             $reports = [];
             foreach ($admin_management as $admin) {

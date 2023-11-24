@@ -8,14 +8,12 @@ use App\Http\Controllers\Admin\Interfaces\ModulesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ModuleRequest;
-
-use App\Models\Module;
-use App\Models\ViewModels\ModuleViewModel;
-use App\Models\ViewModels\AdminViewModel;
-
 use App\Exports\Export;
 use Storage;
 use URL;
+
+use App\Models\Module;
+use App\Models\AdminViewModels\ModuleViewModel;
 
 class ModulesController extends AppBaseController implements ModulesControllerInterface
 {
@@ -37,8 +35,6 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $modules = ModuleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('link', 'LIKE', '%' . request('search') . '%')

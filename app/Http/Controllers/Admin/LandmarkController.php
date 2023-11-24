@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\LandmarkControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\LandmarkRequest;
 
 use App\Models\Landmark;
 
@@ -64,7 +65,7 @@ class LandmarkController extends AppBaseController implements LandmarkController
         }
     }
 
-    public function store(Request $request)
+    public function store(LandmarkRequest $request)
     {
         try
     	{
@@ -87,8 +88,6 @@ class LandmarkController extends AppBaseController implements LandmarkController
                 'site_id' => $request->site_id,
                 'landmark' => $request->landmark,
                 'descriptions' => $request->descriptions,
-                'name' => $request->name,
-                'title' => $request->title,
                 'image_url' => str_replace('\\', '/', $banner_path),
                 'image_thumbnail_url' => str_replace('\\', '/', $banner_thumbnail_path),
                 'active' => 1
@@ -107,7 +106,7 @@ class LandmarkController extends AppBaseController implements LandmarkController
         }
     }
 
-    public function update(Request $request)
+    public function update(LandmarkRequest $request)
     {
         try
     	{
@@ -133,11 +132,9 @@ class LandmarkController extends AppBaseController implements LandmarkController
                 'site_id' => $request->site_id,
                 'landmark' => $request->landmark,
                 'descriptions' => $request->descriptions,
-                'name' => $request->name,
-                'title' => $request->title,
                 'image_url' => ($banner_path) ? str_replace('\\', '/', $banner_path) : $landmark->image_url,
                 'image_thumbnail_url' => ($banner_thumbnail_path) ? str_replace('\\', '/', $banner_thumbnail_path) : $landmark->image_thumbnail_url,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $landmark->update($data);

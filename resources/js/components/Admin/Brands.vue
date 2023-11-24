@@ -57,8 +57,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span
-										class="font-italic text-danger"> *</span></label>
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions</label>
 								<div class="col-sm-8">
 									<textarea class="form-control" v-model="brand.descriptions"
 										placeholder="Descriptions"></textarea>
@@ -186,10 +185,8 @@ export default {
 					type: "logo",
 				},
 				name: "Name",
-				descriptions: "Descriptions",
 				category_name: "Category Name",
 				supplemental_names: "Supplementals",
-				tag_names: "Tags",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -334,6 +331,7 @@ export default {
 			formData.append("logo", this.brand.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
+			formData.append("active", this.brand.active);
 
 			axios.post('/admin/brand/store', formData, {
 				headers: {
@@ -356,7 +354,7 @@ export default {
 					this.brand.category_id = brand.category_id;
 					this.brand.name = brand.name;
 					this.brand.descriptions = brand.descriptions;
-					this.brand.supplementals = brand.supplementals;
+					this.brand.supplementals = brand.brand_details.supplementals;
 					this.brand.tags = brand.tags;
 					this.brand.active = brand.active;
 					this.add_record = false;
@@ -371,11 +369,11 @@ export default {
 					this.$refs.logo.value = null;
 					this.product_view = true;
 
-					brand.supplementals.forEach((value) => {
+					brand.brand_details.supplementals.forEach((value) => {
 						this.supplemental_ids.push(value.id);
 					});
 
-					brand.tags.forEach((value) => {
+					brand.brand_details.tags.forEach((value) => {
 						this.tags_ids.push(value.id);
 					});
 
@@ -392,6 +390,7 @@ export default {
 			formData.append("logo", this.brand.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
+			formData.append("active", this.brand.active);
 
 			axios.post('/admin/brand/update', formData, {
 				headers: {

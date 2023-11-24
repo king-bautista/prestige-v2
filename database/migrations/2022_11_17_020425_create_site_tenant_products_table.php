@@ -13,10 +13,6 @@ class CreateSiteTenantProductsTable extends Migration
      */
     public function up()
     {
-        Schema::table('brand_products_promos', function (Blueprint $table) {
-            $table->bigInteger('tenant_id')->after('brand_id')->nullable()->index();
-        });
-
         Schema::create('site_tenant_products', function (Blueprint $table) {
             $table->engine = "InnoDB";
             

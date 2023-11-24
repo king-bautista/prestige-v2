@@ -10,8 +10,12 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:addNewCategory="addNewCategory" v-on:editButton="editCategory"
+<<<<<<< HEAD
 									v-on:modalLabels="modalLabels" v-on:downloadCsv="downloadCsv"
 									v-on:downloadTemplate="downloadTemplate" ef="dataTable">
+=======
+									v-on:downloadCsv="downloadCsv" ref="dataTable">
+>>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 								</Table>
 							</div>
 						</div>
@@ -38,7 +42,7 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Category Name <span
+								<label for="firstName" class="col-sm-4 col-form-label">Name<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="category.name"
@@ -90,88 +94,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- End Modal Add New User -->
-		<div class="modal fade" id="label-form" tabindex="-1" aria-labelledby="label-form" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Site Labels</h5>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="card-body">
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Category</label>
-								<div class="col-sm-8">
-									<label for="firstName" class="col-sm-4 col-form-label">{{ category_label_for }} </label>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Company</label>
-								<div class="col-sm-8">
-									<select class="custom-select" v-model="category_label.company_id">
-										<option value="">Select Company</option>
-										<option v-for="company in companies" :value="company.id"> {{ company.name }}
-										</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site <span
-										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<select class="custom-select" v-model="category_label.site_id">
-										<option value="">Select Site</option>
-										<option v-for="site in site_list" :value="site.id"> {{ site.name }}</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Label <span
-										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="category_label.label"
-										placeholder="Label">
-								</div>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-12 text-right">
-									<button type="button" class="btn btn-primary btn-sm" @click="saveLabels">+ Add
-										Label</button>
-								</div>
-							</div>
-							<hr />
-							<table class="table table-hover" style="width:100%">
-								<thead class="table-dark">
-									<tr>
-										<th>Site Name</th>
-										<th>Category Name</th>
-										<th>Label</th>
-										<th style="text-align: center;">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="label in category_labels">
-										<td>{{ label.site_name }}</td>
-										<td>{{ label.category_name }}</td>
-										<td>{{ label.name }}</td>
-										<td style="text-align: right;"><button type="button" class="btn btn-danger"
-												title="Delete" @click="deleteLabel(label.id, label.category_id)"><i
-													class="fas fa-trash-alt"></i></button></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<!-- /.card-body -->
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
 
 	</div>
 </template>
@@ -198,15 +120,6 @@ export default {
 			parent_category: [],
 			companies: [],
 			site_list: [],
-			category_label: {
-				id: '',
-				category_id: '',
-				company_id: '',
-				site_id: '',
-				label: ''
-			},
-			category_labels: [],
-			category_label_for: '',
 			add_record: true,
 			edit_record: false,
 			dataFields: {
@@ -242,15 +155,6 @@ export default {
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
 				},
-				modal: {
-					title: 'Site Labels',
-					name: 'Site Labels',
-					apiUrl: '',
-					routeName: '',
-					button: '<i class="fa fa-tags" aria-hidden="true"></i> Site Label',
-					method: 'view',
-					v_on: 'modalLabels',
-				},
 			},
 			otherButtons: {
 				addNew: {
@@ -267,6 +171,7 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+<<<<<<< HEAD
 				downloadCsv: {
 					title: 'Download',
 					v_on: 'downloadTemplate',
@@ -275,6 +180,8 @@ export default {
 					method: 'add'
 				},
 
+=======
+>>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 			}
 		};
 	},
@@ -309,28 +216,28 @@ export default {
 
 		storeCategory: function () {
 			axios.post('/admin/category/store', this.category)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					this.getParentCategory();
-					$('#category-form').modal('hide');
-				})
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.dataTable.fetchData();
+				this.getParentCategory();
+				$('#category-form').modal('hide');
+			});
 		},
 
 		editCategory: function (id) {
 			axios.get('/admin/category/' + id)
-				.then(response => {
-					var category = response.data.data;
-					this.category.id = category.id;
-					this.category.parent_id = (category.parent_id) ? category.parent_id : null;
-					this.category.name = category.name;
-					this.category.descriptions = category.descriptions;
-					this.category.class_name = category.class_name;
-					this.category.active = category.active;
-					this.add_record = false;
-					this.edit_record = true;
-					$('#category-form').modal('show');
-				});
+			.then(response => {
+				var category = response.data.data;
+				this.category.id = category.id;
+				this.category.parent_id = (category.parent_id) ? category.parent_id : null;
+				this.category.name = category.name;
+				this.category.descriptions = category.descriptions;
+				this.category.class_name = category.class_name;
+				this.category.active = category.active;
+				this.add_record = false;
+				this.edit_record = true;
+				$('#category-form').modal('show');
+			});
 		},
 
 		updateCategory: function () {
@@ -349,53 +256,17 @@ export default {
 				.then(response => this.site_list = response.data.data);
 		},
 
-		deleteLabel: function (id, category_id) {
-			if (id) {
-				if (confirm("Do you really want to delete?")) {
-					axios.get('/admin/category/label/delete/' + id)
-						.then(response => {
-							this.getLabels(category_id);
-						});
-				}
-			}
-		},
-
-		getLabels: function (id) {
-			axios.get('/admin/category/labels/' + id)
-				.then(response => {
-					this.category_labels = response.data.data;
-				});
-		},
-
-		modalLabels: function (data) {
-			this.category_label.category_id = data.id;
-			this.category_label.site_id = '';
-			this.category_label.label = '';
-			this.category_label_for = data.name;
-			this.getLabels(data.id);
-			$('#label-form').modal('show');
-		},
-
-		saveLabels: function () {
-			axios.post('/admin/category/label/store', this.category_label)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.category_label.company_id = '';
-					this.category_label.site_id = '';
-					this.category_label.label = '';
-					this.getLabels(response.data.data.category_id);
-				})
-		},
 		downloadCsv: function () {
 			axios.get('/admin/category/download-csv')
-				.then(response => {
-					const link = document.createElement('a');
-					link.href = response.data.data.filepath;
-					link.setAttribute('download', response.data.data.filename); //or any other extension
-					document.body.appendChild(link);
-					link.click();
-				})
+			.then(response => {
+				const link = document.createElement('a');
+				link.href = response.data.data.filepath;
+				link.setAttribute('download', response.data.data.filename); //or any other extension
+				document.body.appendChild(link);
+				link.click();
+			})
 		},
+<<<<<<< HEAD
 		downloadTemplate: function () {
 			const link = document.createElement('a');
 			link.href = '/uploads/csv/category-batch-upload.csv';
@@ -403,6 +274,9 @@ export default {
 			document.body.appendChild(link);
 			link.click();
 		},
+=======
+
+>>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 	},
 
 	components: {

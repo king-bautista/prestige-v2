@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 
 use App\Models\SiteBuildingLevel;
 use App\Models\SiteMap;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteBuildingLevelViewModel;
+use App\Models\AdminViewModels\AdminViewModel;
+use App\Models\AdminViewModels\SiteBuildingLevelViewModel;
 
 class FloorsController extends AppBaseController implements FloorsControllerInterface
 {
@@ -28,9 +28,6 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
         try
         {
             $site_id = session()->get('site_id');
-
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $buildings = SiteBuildingLevelViewModel::when(request('search'), function($query){
                 return $query->where('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
@@ -104,7 +101,7 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
             $data = [
                 'site_building_id' => $request->site_building_id,
                 'name' => $request->name,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $building_level->update($data);

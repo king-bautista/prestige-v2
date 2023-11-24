@@ -221,7 +221,6 @@ export default {
 			axios.get('/admin/supplemental/' + id)
 				.then(response => {
 					var supplemental = response.data.data;
-					console.log(supplemental);
 					this.supplemental.id = supplemental.id;
 					this.supplemental.category_id = (supplemental.supplemental_category_id) ? supplemental.supplemental_category_id : null;
 					this.supplemental.parent_id = (supplemental.parent_id) ? supplemental.parent_id : null;

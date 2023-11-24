@@ -7,19 +7,21 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\BrandControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
 
 use App\Models\Brand;
 use App\Models\Tag;
 use App\Models\Supplemental;
 use App\Models\BrandProductPromos;
 use App\Models\CompanyBrands;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\BrandViewModel;
-use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\AdminViewModels\BrandViewModel;
+use App\Models\AdminViewModels\BrandProductViewModel;
 
 use App\Imports\BrandsImport;
 use App\Exports\Export;
+use VideoThumbnail;
 use Storage;
+use Image;
 use URL;
 
 class BrandController extends AppBaseController implements BrandControllerInterface
@@ -97,16 +99,47 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     	{
             $logo = $request->file('logo');
             $logo_path = '';
+            $thumbnails_path = '';
             if($logo) {
                 $originalname = $logo->getClientOriginalName();
+                $mime_type = explode("/", $logo->getClientMimeType());
+                $file_type = $mime_type[0];
                 $logo_path = $logo->move('uploads/media/brand/', str_replace(' ','-', $originalname)); 
-            }
+
+                $image_size = getimagesize($logo_path);
+                $required_size = 150;
+                $new_width = 0;
+                $new_height = 0;
+
+                if($file_type == 'image') {
+                    $width = $image_size[0];
+                    $height = $image_size[1];
+
+                    $aspect_ratio = $width/$height;
+                    if ($aspect_ratio >= 1.0) {
+                        $new_width = $required_size;
+                        $new_height = $required_size / $aspect_ratio;
+                    } else {
+                        $new_width = $required_size * $aspect_ratio;
+                        $new_height = $required_size;
+                    }
+
+                    $thumbnails_path = public_path('uploads/media/brand/thumbnails/');
+                    $img = Image::make($logo_path);
+                    $img->resize($new_width, $new_height, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($thumbnails_path.str_replace(' ','-', $originalname));
+
+                    $thumbnails_path = 'uploads/media/brand/thumbnails/'.str_replace(' ','-', $originalname);
+                }
+            } 
 
             $data = [
                 'category_id' => $request->category_id,
                 'name' => $request->name,
-                'descriptions' => ($request->descriptions) ? $request->descriptions : '',
+                'descriptions' => ($request->descriptions) ? $request->descriptions : null,
                 'logo' => str_replace('\\', '/', $logo_path),
+                'thumbnail' => str_replace('\\', '/', $thumbnails_path),
                 'active' => 1
             ];
 
@@ -135,17 +168,48 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
             $logo = $request->file('logo');
             $logo_path = '';
+            $thumbnails_path = '';
             if($logo) {
                 $originalname = $logo->getClientOriginalName();
+                $mime_type = explode("/", $logo->getClientMimeType());
+                $file_type = $mime_type[0];
                 $logo_path = $logo->move('uploads/media/brand/', str_replace(' ','-', $originalname)); 
+
+                $image_size = getimagesize($logo_path);
+                $required_size = 150;
+                $new_width = 0;
+                $new_height = 0;
+
+                if($file_type == 'image') {
+                    $width = $image_size[0];
+                    $height = $image_size[1];
+
+                    $aspect_ratio = $width/$height;
+                    if ($aspect_ratio >= 1.0) {
+                        $new_width = $required_size;
+                        $new_height = $required_size / $aspect_ratio;
+                    } else {
+                        $new_width = $required_size * $aspect_ratio;
+                        $new_height = $required_size;
+                    }
+
+                    $thumbnails_path = public_path('uploads/media/brand/thumbnails/');
+                    $img = Image::make($logo_path);
+                    $img->resize($new_width, $new_height, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($thumbnails_path.str_replace(' ','-', $originalname));
+
+                    $thumbnails_path = 'uploads/media/brand/thumbnails/'.str_replace(' ','-', $originalname);
+                }
             }            
 
             $data = [
                 'category_id' => $request->category_id,
                 'name' => $request->name,
-                'descriptions' => ($request->descriptions) ? $request->descriptions : '',
+                'descriptions' => ($request->descriptions) ? $request->descriptions : null,
                 'logo' => ($logo_path) ? str_replace('\\', '/', $logo_path) : $brand->logo,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'thumbnail' => ($thumbnails_path) ? str_replace('\\', '/', $thumbnails_path) : $brand->thumbnail,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $brand->update($data);
@@ -243,6 +307,23 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         try
     	{
             $brands = BrandViewModel::get();
+            return $this->response($brands, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function searchBrands(Request $request)
+    {
+        try
+    	{
+            $brands = BrandViewModel::where('name', 'LIKE', request('search') . '%')->get();
             return $this->response($brands, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 

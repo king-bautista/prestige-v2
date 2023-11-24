@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Tag;
-use App\Models\ViewModels\AdminViewModel;
 use App\Imports\TagsImport;
 use App\Exports\Export;
 use Storage;
@@ -31,8 +30,6 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $tags = Tag::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -98,7 +95,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 
             $data = [
                 'name' => $request->name,
-                'active' => (!$request->active) ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $tag->update($data);

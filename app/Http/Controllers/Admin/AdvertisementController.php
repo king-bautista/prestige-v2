@@ -12,9 +12,9 @@ use App\Http\Requests\AdvertisementRequest;
 use App\Models\Advertisement;
 use App\Models\AdvertisementMaterial;
 use App\Models\AdvertisementScreen;
-use App\Models\ViewModels\AdvertisementViewModel;
-use App\Models\ViewModels\AdvertisementMaterialViewModel;
-use App\Models\ViewModels\ContentMaterialViewModel;
+use App\Models\AdminViewModels\AdvertisementViewModel;
+use App\Models\AdminViewModels\AdvertisementMaterialViewModel;
+//use App\Models\AdminViewModels\ContentMaterialViewModel;
 
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {

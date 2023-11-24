@@ -15,6 +15,7 @@
                         :primaryKey="primaryKey"
 						v-on:modalPlaylist="modalPlaylist"
 						v-on:modalBatchUpload="modalBatchUpload"
+						v-on:downloadCsv="downloadCsv"
                         ref="dataTable">
 			          	</Table>
 		          	</div>
@@ -64,44 +65,44 @@
 			<div class="modal-dialog modal-dialog-centered modal-xl">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Ad Playlist :<strong> {{ screen_location }} </strong><br>Ad Type :<strong> {{ ad_type }}</strong></h5>
+						<h5 class="modal-title"><strong> {{ screen_location }} </strong></h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item" role="presentation" v-for="(dimension, index) in dimensions">
+								<button v-bind:class="(index == 0) ? 'active': ''" class="nav-link" @click="dimension_value = dimension.dimension" :id="dimension" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">{{dimension.ad_type_name}}</button>
+							</li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							<div v-for="(dimension, index) in dimensions" v-bind:class="(index == 0) ? 'show active': ''" class="tab-pane fade" :id="dimension" role="tabpanel">&nbsp;</div>
+						</div>
+
 						<table class="table table-hover table-striped">
 							<thead class="thead-dark">
 								<tr>
 									<th scope="col">ID</th>
-									<!-- <th scope="col">Preview</th> -->
+									<th scope="col">Preview</th>
 									<th scope="col">Parent Category</th>
 									<th scope="col">Category Name</th>
 									<th scope="col">Brand Name</th>
 									<th scope="col">Company Name</th>
-									<th scope="col">Duration(s)</th>
-									<th scope="col">Start Date</th>
-									<th scope="col">End Date</th>
-									<th scope="col">Status</th>
+									<th scope="col">Start/End Date</th>
 									<th scope="col">Duration</th>
 									<th scope="col">Date Appoved</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(data, index) in playlist" v-bind:key="index" :id="data.id">
-									<td data-container="body" data-toggle="tooltip" data-placement="top" title="Drag rows up and down">{{ data.material_serial_number }}</td>
-									<!-- <td>{{ data.material_path }}</td> -->
+								<tr v-for="(data, index) in playlist.filter( col => col.dimension == dimension_value)" v-bind:key="index" :id="data.id">
+									<td data-container="body" data-toggle="tooltip" data-placement="top" title="Drag rows up and down">{{ data.content_serial_number }}</td>
+									<td> <img :src="data.thumbnail_path"> </td>
 									<td>{{ data.parent_category_name }}</td>
 									<td>{{ data.category_name }}</td>
 									<td>{{ data.brand_name }}</td>
 									<td>{{ data.company_name }}</td>
-									<td>{{ data.display_duration }}</td>
-									<td>{{ data.start_date }}</td>
-									<td>{{ data.end_date }}</td>
-									<td>
-										<span v-if="data.active" class="badge badge-info">Active</span>
-										<span v-else class="badge badge-info">Deactivated</span>
-									</td>
+									<td>{{ data.start_date }} <br/>to<br/> {{ data.end_date }}</td>
 									<td>{{ data.duration }}</td>
 									<td>{{ data.updated_at }}</td>
 								</tr>
@@ -129,14 +130,14 @@
             return {
 				file: '',
 				screen_location: '',
-				ad_type: '',
+				dimensions: [],
+				dimension_value: '',
 				playlist: [],
 				sorted_data: [],
             	dataFields: {
-					serial_number: "ID",
                     site_screen_location: "Screen Location",
 					site_name: "Site",
-					ad_type: "Ad Type",
+					product_application: "Product Application",
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -162,6 +163,13 @@
 						title: 'Batch Upload',
 						v_on: 'modalBatchUpload',
 						icon: '<i class="fas fa-upload"></i> Batch Upload',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+					download: {
+						title: 'Download',
+						v_on: 'downloadCsv',
+						icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
@@ -198,10 +206,10 @@
 			},
 
 			modalPlaylist: function(data) {
-				console.log(data);
 				this.playlist = [];
 				this.screen_location = data.site_screen_location;
-				this.ad_type = data.ad_type;
+				this.dimensions = data.dimensions;
+				this.dimension_value = data.dimensions[0].dimension;
 				this.playlist = data.playlist;
 
 				$("#sortableContent").modal('show');
@@ -222,7 +230,20 @@
 						$("#sortableContent").modal('hide');
 					}
 				});
-			}
+			},
+
+			downloadCsv: function () {
+				$('.fa-download').removeClass('fa-download').addClass( "fa-spinner fa-spin");
+				axios.get('/admin/play-list/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+					$('.fa-spinner').removeClass('fa-spinner fa-spin').addClass("fa-download");
+				})
+			},
 
 		},
 
