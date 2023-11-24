@@ -31,8 +31,8 @@ class CustomerCareRequest extends FormRequest
             "ticket_subject" => "required|string",
             "last_name" => "required|string",
             "first_name" => "required|string",
-            "user_id" => "required|string",
-            "concern_id" => "required|string",
+            "user_id" => "required",
+            "concern_id" => "required",
         ];
     }
 }

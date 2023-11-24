@@ -633,7 +633,6 @@ export default {
               })
 		},
 
-<<<<<<< HEAD
 		downloadTemplate: function () {
 			const link = document.createElement('a');
 			link.href = '/uploads/csv/site-batch-upload.csv';
@@ -642,41 +641,6 @@ export default {
 			link.click();
 		},
 
-=======
-		conditionActive: function (shedules, item, index) {
-			if (shedules.indexOf(item) >= 0) {
-				return 'btn custom-btn active';
-			}
-			else {
-				return 'btn custom-btn';
-			}
-		},
-
-		getChecked: function (item, index) {
-			var position = (schedules[index]) ? schedules[index].indexOf(item) : -1;
-			if (position >= 0) {
-				schedules[index] = schedules[index].replace(", " + item, "").replace(item + ",", "").replace(item, "");
-			}
-			else {
-				if (schedules[index]) {
-					schedules[index] += ', ' + item;
-				}
-				else {
-					schedules[index] = item;
-				}
-			}
-
-			this.site.operational_hours[index].schedules = schedules[index];
-		},
-
-		addOperationalHours: function () {
-			this.site.operational_hours.push({
-				schedules: '',
-				start_time: '',
-				end_time: '',
-			});
-		},
->>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 
 	},
 

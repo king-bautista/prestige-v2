@@ -221,16 +221,6 @@ export default {
 			this.add_record = true;
 			this.edit_record = false;
 
-<<<<<<< HEAD
-			this.pi_product.product_application = '';
-			this.pi_product.ad_type = '';
-			this.pi_product.descriptions = '';
-			this.pi_product.remarks = '';
-			this.pi_product.sec_slot = '';
-			this.pi_product.slots = '';
-			this.pi_product.active = false;
-			this.pi_product.is_exclusive = false;
-=======
                 this.pi_product.product_application = '';
                 this.pi_product.ad_type = '';
                 this.pi_product.descriptions = '';
@@ -239,7 +229,6 @@ export default {
                 this.pi_product.slots = '40';
                 this.pi_product.active = false;
                 this.pi_product.is_exclusive = false;
->>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 
 			$('#product-form').modal('show');
 		},

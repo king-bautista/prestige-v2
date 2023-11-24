@@ -166,7 +166,7 @@
 						</div>
 					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary float-right btn-sm" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary btn-sm" v-show="add_record" @click="storeUser">Add New User</button>
 						<button type="button" class="btn btn-primary btn-sm" v-show="edit_record" @click="updateUser">Save Changes</button>
 					</div>
@@ -318,6 +318,8 @@
                     this.user.isActive = user.active;
 					this.add_record = false;
 					this.edit_record = true;
+					$('#user-form').modal('show');
+
                 });
             },
 
