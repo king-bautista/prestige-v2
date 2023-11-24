@@ -10,12 +10,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:addNewCategory="addNewCategory" v-on:editButton="editCategory"
-<<<<<<< HEAD
 									v-on:modalLabels="modalLabels" v-on:downloadCsv="downloadCsv"
 									v-on:downloadTemplate="downloadTemplate" ef="dataTable">
-=======
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
->>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 								</Table>
 							</div>
 						</div>
@@ -171,7 +167,6 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
-<<<<<<< HEAD
 				downloadCsv: {
 					title: 'Download',
 					v_on: 'downloadTemplate',
@@ -180,8 +175,6 @@ export default {
 					method: 'add'
 				},
 
-=======
->>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 			}
 		};
 	},
@@ -266,7 +259,6 @@ export default {
 				link.click();
 			})
 		},
-<<<<<<< HEAD
 		downloadTemplate: function () {
 			const link = document.createElement('a');
 			link.href = '/uploads/csv/category-batch-upload.csv';
@@ -274,9 +266,6 @@ export default {
 			document.body.appendChild(link);
 			link.click();
 		},
-=======
-
->>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 	},
 
 	components: {

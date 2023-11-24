@@ -105,7 +105,6 @@ class CustomerCareViewModel extends Model
     {
         return Concern::find($this->concern_id)->name;
     }
-<<<<<<< HEAD:app/Models/ViewModels/CustomerCareViewModel.php
 
     public function getUserDetailsAttribute()
     {
@@ -116,7 +115,4 @@ class CustomerCareViewModel extends Model
     {
         return $this->getConcern(); 
     }
-=======
-    
->>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6:app/Models/AdminViewModels/CustomerCareViewModel.php
 }
