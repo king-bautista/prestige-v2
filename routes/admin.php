@@ -153,7 +153,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Amenities Routesadmin/tags
+    | Amenities Routes
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/amenities', 'Admin\AmenitiesController@index')->name('admin.amenities');
@@ -180,16 +180,16 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Illustration Routes
+    | site-category Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/Illustrations', 'Admin\IllustrationsController@index')->name('admin.Illustrations');
-    Route::get('/admin/Illustration/list', 'Admin\IllustrationsController@list')->name('admin.Illustration.list');
-    Route::post('/admin/Illustration/store', 'Admin\IllustrationsController@store')->name('admin.Illustration.store');
-    Route::get('/admin/Illustration/{id}', 'Admin\IllustrationsController@details')->where('id', '[0-9]+')->name('admin.Illustration.details');
-    Route::post('/admin/Illustration/update', 'Admin\IllustrationsController@update')->name('admin.Illustration.update');
-    Route::get('/admin/Illustration/delete/{id}', 'Admin\IllustrationsController@delete')->where('id', '[0-9]+')->name('admin.Illustration.delete');
-    Route::get('/admin/Illustration/download-csv', 'Admin\IllustrationsController@downloadCsv')->name('admin.illustration.download-csv');
+    Route::get('/admin/site-categories', 'Admin\IllustrationsController@index')->name('admin.site-categories');
+    Route::get('/admin/site-category/list', 'Admin\IllustrationsController@list')->name('admin.site-category.list');
+    Route::post('/admin/site-category/store', 'Admin\IllustrationsController@store')->name('admin.site-category.store');
+    Route::get('/admin/site-category/{id}', 'Admin\IllustrationsController@details')->where('id', '[0-9]+')->name('admin.site-category.details');
+    Route::post('/admin/site-category/update', 'Admin\IllustrationsController@update')->name('admin.site-category.update');
+    Route::get('/admin/site-category/delete/{id}', 'Admin\IllustrationsController@delete')->where('id', '[0-9]+')->name('admin.site-category.delete');
+    Route::get('/admin/site-category/download-csv', 'Admin\IllustrationsController@downloadCsv')->name('admin.site-category.download-csv');
 
     /*
     |--------------------------------------------------------------------------
@@ -206,6 +206,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/brand/get-supplementals', 'Admin\BrandController@getSupplementals')->where('id', '[0-9]+')->name('admin.brand.get-supplementals');
     Route::get('/admin/brand/get-tags', 'Admin\BrandController@getTags')->where('id', '[0-9]+')->name('admin.brand.get-tags');
     Route::get('/admin/brand/get-all', 'Admin\BrandController@allBrands')->where('id', '[0-9]+')->name('admin.brand.get-all');
+    Route::get('/admin/brand/search', 'Admin\BrandController@searchBrands')->name('admin.brand.search');
     Route::get('/admin/brand/download-csv', 'Admin\BrandController@downloadCsv')->name('admin.brand.download-csv');
 
     /*
@@ -466,18 +467,19 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/gallery/upload', 'Admin\GalleryController@upload')->name('admin.gallery.upload');
     Route::get('/admin/gallery/get-all', 'Admin\GalleryController@getAll')->name('admin.gallery.get-all');
     
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Customer Care Inquiry Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/customer-cares', 'Admin\CustomerCareController@index')->name('admin.customer-care');
+    Route::get('/admin/customer-care', 'Admin\CustomerCareController@index')->name('admin.customer-care');
     Route::get('/admin/customer-care/list', 'Admin\CustomerCareController@list')->name('admin.customer-care.list');
     Route::post('/admin/customer-care/store', 'Admin\CustomerCareController@store')->name('admin.customer-care.store');
     Route::get('/admin/customer-care/{id}', 'Admin\CustomerCareController@details')->where('id', '[0-9]+')->name('admin.customer-care.details');
     Route::post('/admin/customer-care/update', 'Admin\CustomerCareController@update')->name('admin.customer-care.update');
     Route::get('/admin/customer-care/delete/{id}', 'Admin\CustomerCareController@delete')->where('id', '[0-9]+')->name('admin.customer-care.delete');
     Route::get('/admin/customer-care/users', 'Admin\CustomerCareController@getUsers')->where('id', '[0-9]+')->name('admin.customer-care.users');
+    Route::get('/admin/customer-care/get-concerns', 'Admin\CustomerCareController@getConcerns')->where('id', '[0-9]+')->name('admin.customer-care.get-concerns');
     Route::get('/admin/customer-care/download-csv', 'Admin\CustomerCareController@downloadCsv')->name('admin.customer-care.download-csv');
     /*
     |--------------------------------------------------------------------------

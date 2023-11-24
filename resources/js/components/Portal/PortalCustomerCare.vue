@@ -19,14 +19,17 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group row mb-4">
-								<label for="concern" class="col-sm-3 col-form-label">Concern <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-9">
-                                    <select class="form-control custom-select" v-model="customer_care.concern_id">
-									    <option value="">Select Concern</option>
-									    <option v-for="concern in concerns" :value="concern.id"> {{ concern.name }}</option>
-								    </select>
+									<label for="concern" class="col-sm-3 col-form-label">Concern <span
+											class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-9">
+										<select class="form-control custom-select" id="hello"
+											v-model="customer_care.concern_id">
+											<option value="">Select Concern</option>
+											<option v-for="concern in concerns" :value="concern.id"> {{ concern.name }}
+											</option>
+										</select>
+									</div>
 								</div>
-							</div>
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-3 col-form-label">First Name <span
 											class="font-italic text-danger"> *</span></label>
@@ -88,7 +91,7 @@ export default {
 			helper: new Helpers(),
 			customer_care: {
 				id: '',
-				concern_id:'',
+				concern_id: '',
 				first_name: '',
 				last_name: '',
 				ticket_subject: '',
@@ -115,11 +118,28 @@ export default {
 			this.customer_care.last_name = '';
 			this.customer_care.ticket_subject = '';
 			this.customer_care.ticket_description = '';
+			// $("#hello").val('').trigger('chosen:updated');
+			// //$("#hello").empty();
+			// $("#hello").removeAttr('selected');
+			// $("#hello").attr("selected", false); 
+			// $("#hello").removeAttr('selected');
+			// // $("div.id_100 select").val("val2");
+			// $('.custom-select').prop('selectedIndex',0);
+			// $("#hello").val("");
+			//	$('#hello').empty();    
+			//s
+			//$('#hello').val("");
+			//$('#hello').filter('[value=val3]').attr('selected', true);
+			//	$('#hello').append($('<option>',{text: 'Select Concern', value: '', selected: true}))	
+			//this.customer_care.conncern_id = '3';
+			//$('#hello').find('option:selected').remove();	
+			$("#hello option[value='']").prop('selected', true);
+
+
 		},
 
 		storeCustomerCare: function () {
 			let formData = new FormData();
-			//formData.append("concern_id", JSON.stringify(this.customer_care.concern_id));
 			formData.append("concern_id", this.customer_care.concern_id);
 			formData.append("first_name", this.customer_care.first_name);
 			formData.append("last_name", this.customer_care.last_name);
@@ -131,6 +151,7 @@ export default {
 				},
 			})
 				.then(response => {
+					this.AddNewCustomerCare();
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 				});
@@ -139,7 +160,7 @@ export default {
 			axios.get('/portal/customer-care/get-company')
 				.then(response => this.company = response.data.data);
 		},
-		getConcerns: function () { 
+		getConcerns: function () {
 			axios.get('/portal/customer-care/get-concerns')
 				.then(response => this.concerns = response.data.data);
 		},

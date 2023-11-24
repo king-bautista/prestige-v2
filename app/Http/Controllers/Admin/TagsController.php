@@ -46,7 +46,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
                 'message' => $e->getMessage(),
                 'status' => false,
                 'status_code' => 422,
-            ], 422);
+            ], 422);    
         }
     }
 

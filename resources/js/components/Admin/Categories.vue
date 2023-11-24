@@ -10,7 +10,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:addNewCategory="addNewCategory" v-on:editButton="editCategory"
-									v-on:modalLabels="modalLabels" v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:modalLabels="modalLabels" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ef="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -266,6 +267,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 
 			}
 		};
@@ -388,8 +396,13 @@ export default {
 					link.click();
 				})
 		},
-
-
+		downloadTemplate: function () {
+			const link = document.createElement('a');
+			link.href = '/uploads/csv/category-batch-upload.csv';
+			link.setAttribute('downloadFile', '/uploads/csv/category-batch-upload.csv'); //or any other extension
+			document.body.appendChild(link);
+			link.click();
+		},
 	},
 
 	components: {
@@ -398,7 +411,9 @@ export default {
 	}
 };
 </script>
-<style lang="scss" scoped>#preview img {
+<style lang="scss" scoped>
+#preview img {
 	max-width: 100%;
 	max-height: 500px;
-}</style>
+}
+</style>

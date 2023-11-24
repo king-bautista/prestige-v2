@@ -21,8 +21,8 @@
 </div>
 <!-- /.content-header -->
 
-<admin-buildings></admin-buildings>
-<admin-building-floors></admin-building-floors>
+<admin-buildings :site-name="{{json_encode(strtolower(str_replace(' ','-',$site_details->name)))}}"></admin-buildings>
+<admin-building-floors :site-name="{{json_encode(strtolower(str_replace(' ','-',$site_details->name)))}}"></admin-building-floors>
 
 @stop
 

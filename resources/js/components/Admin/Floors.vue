@@ -19,6 +19,7 @@
 						v-on:AddNewFloor="AddNewFloor"
 						v-on:editButton="editFloor"
 						v-on:DeleteFloor="DeleteFloor"
+						v-on:downloadTemplate="downloadTemplate"
                         ref="floorsDataTable">
 			          	</Table>
 		          	</div>
@@ -103,6 +104,7 @@
 	import Table from '../Helpers/Table';
 
 	export default {
+		props: ['siteName'],
         name: "Floor",
         data() {
             return {
@@ -160,6 +162,13 @@
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
+					downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				}
             };
         },
@@ -228,7 +237,16 @@
                     this.id_to_deleted = 0;
                     $('#levelDeleteModal').modal('hide');
                 });
-			}
+			},
+
+			downloadTemplate: function () {
+			const link = document.createElement('a');
+			var site_name = this.siteName;
+			link.href = '/uploads/csv/' + site_name + '-site-floor-batch-upload.csv';
+			link.setAttribute('downloadFile', '/uploads/csv/' + site_name + '-site-floor-batch-upload.csv'); //or any other extension
+			document.body.appendChild(link);
+			link.click();
+		},
 
         },
 

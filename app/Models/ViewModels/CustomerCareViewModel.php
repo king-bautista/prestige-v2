@@ -41,8 +41,27 @@ class CustomerCareViewModel extends Model
         'advertisement_details',
         'status_details',
         'transaction_status',
-        'concern_name'
+        'concern_name',
+        'user_details',
+        'concern_details',
+
     ];
+
+    public function getUser()
+    {   
+        $user = UserViewModel::find($this->user_id);
+        if($user)
+            return $user;
+        return null;
+    }
+    
+    public function getConcern()
+    {   
+        $concern = ConcernViewModel::find($this->concern_id);
+        if($concern)
+            return $concern;
+        return null;
+    }
 
     public function getAdvertisementDetails()
     {
@@ -85,5 +104,15 @@ class CustomerCareViewModel extends Model
     public function getConcernNameAttribute()
     {
         return Concern::find($this->concern_id)->name;
+    }
+
+    public function getUserDetailsAttribute()
+    {
+        return $this->getUser(); 
+    }
+
+    public function getConcernDetailsAttribute()
+    {
+        return $this->getConcern(); 
     }
 }
