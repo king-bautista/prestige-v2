@@ -10,7 +10,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewBrand="AddNewBrand"
 									v-on:editButton="editBrand" v-on:modalBatchUpload="modalBatchUpload"
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" 
+									ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -246,6 +247,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 		};
 	},
@@ -420,7 +428,7 @@ export default {
 					toastr.success(response.data.message);
 					$('#batchModal').modal('hide');
 					$('#batchInputLabel').html('Choose File');
-					window.location.reload();
+					//window.location.reload();
 				})
 		},
 
@@ -433,6 +441,14 @@ export default {
 					document.body.appendChild(link);
 					link.click();
 				})
+		},
+		
+		downloadTemplate: function () {
+			const link = document.createElement('a');
+			link.href = '/uploads/csv/brand-batch-upload.csv';
+			link.setAttribute('downloadFile', '/uploads/csv/brand-batch-upload.csv'); //or any other extension
+			document.body.appendChild(link);
+			link.click();
 		},
 
 	},

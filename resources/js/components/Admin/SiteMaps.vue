@@ -7,13 +7,9 @@
 					<div class="col-md-12">
 						<div class="card">
 							<div class="card-body">
-								<Table :dataFields="dataFields" 
-									:dataUrl="dataUrl" 
-									:actionButtons="actionButtons"
-									:otherButtons="otherButtons" 
-									:primaryKey="primaryKey" 
-									v-on:downloadCsv="downloadCsv"
-									v-on:DefaultScreen="DefaultScreen"
+								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
+									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:downloadCsv="downloadCsv"
+									v-on:DefaultScreen="DefaultScreen" v-on:downloadTemplate="downloadTemplate"
 									ref="screensDataTable">
 								</Table>
 							</div>
@@ -55,12 +51,12 @@ export default {
 			dataFields: {
 				screen_location: "Location",
 				site_name: "Site Name",
-				orientation: "Orientation", 
+				orientation: "Orientation",
 				active: {
-					name: "Status", 
-					type:"Boolean", 
-					status: { 
-						0: '<span class="badge badge-danger">Deactivated</span>', 
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
@@ -102,7 +98,14 @@ export default {
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
+				}, downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
 				},
+
 			}
 		};
 	},
@@ -131,6 +134,14 @@ export default {
 					document.body.appendChild(link);
 					link.click();
 				})
+		},
+
+		downloadTemplate: function () {
+			const link = document.createElement('a');
+			link.href = '/uploads/csv/site-map-batch-upload.csv';
+			link.setAttribute('downloadFile', '/uploads/csv/site-map-batch-upload.csv'); //or any other extension
+			document.body.appendChild(link);
+			link.click();
 		},
 
 	},

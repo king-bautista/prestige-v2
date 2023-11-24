@@ -24,10 +24,21 @@ class PortalCustomerCareRequest extends FormRequest
     public function rules()
     {
         return [
+            "concern_id" => "required|string",
             "ticket_subject" => "required|string",
             "ticket_description" => "required|string",
             "last_name" => "required|string",
             "first_name" => "required|string",
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'concern_id.required' => 'The concern menu is required',
         ];
     }
 }

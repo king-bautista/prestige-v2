@@ -24,13 +24,16 @@ class BrandsImport implements ToCollection, WithHeadingRow
     */
     public function collection(Collection $rows)
     {
+      
         foreach ($rows as $row) {
-            if($row['brand_name']) {
+    
+            if($row['brand_name']) { 
                 $brand = Brand::updateOrCreate(
                     [
                         'name' => $row['brand_name']
                     ],
                     [
+                        'descriptions' => $row['brand_description'],
                         'category_id' => ($row['sub_category']) ? $this->getCategoryId($row['sub_category']) : 0,
                         'logo' => ($row['logo']) ? $this->uploadLogo($row['logo']) : null
                     ]
@@ -40,13 +43,14 @@ class BrandsImport implements ToCollection, WithHeadingRow
                 $tag_ids = $this->saveTags($row['tags']);
                 if($tag_ids)
                     $brand->saveTags($tag_ids);
-                // SAVE SUPPLIMENTALS
+                // // SAVE SUPPLIMENTALS
                 $supplemental_ids = $this->getSupplementalIds($row['supplementals']);
                 if($supplemental_ids)
                     $brand->saveSupplementals($supplemental_ids);
 
             }
 	    }
+
     }
 
     public function getCategoryId($category = '')
@@ -62,9 +66,10 @@ class BrandsImport implements ToCollection, WithHeadingRow
     }
 
     public function uploadLogo($logo = '')
-    {
-        if($logo) {
-            $contents = file_get_contents($logo);
+    {   
+        if($logo){
+             return $logo;
+            $contents = file_get_contents($logo);  return $contents; 
             $name = str_replace(' ','-',substr($logo, strrpos($logo, '/') + 1));
             if(Storage::disk('brand')->put($name, $contents))
                 return 'uploads/media/brand/'.$name;
@@ -75,10 +80,11 @@ class BrandsImport implements ToCollection, WithHeadingRow
     }
 
     public function saveTags($tags = '')
-    {
+    {   
         $tag_ids = '';
-        if($tags) {
+        if($tags) { 
             $tags = explode(',', $tags);
+           
             foreach($tags as $tag) {
                 $tag_id = Tag::updateOrCreate(
                     [
@@ -86,7 +92,7 @@ class BrandsImport implements ToCollection, WithHeadingRow
                     ]
                 );
 
-                $tag_ids .= $tag_id->id.',';
+                $tag_ids .= $tag_id->id.',';   
             }
 
             return rtrim($tag_ids, ",");

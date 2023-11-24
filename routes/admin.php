@@ -154,7 +154,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Amenities Routesadmin/tags
+    | Amenities Routes
     |--------------------------------------------------------------------------
     */
     Route::get('/admin/amenities', 'Admin\AmenitiesController@index')->name('admin.amenities');
@@ -469,18 +469,19 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/gallery/upload', 'Admin\GalleryController@upload')->name('admin.gallery.upload');
     Route::get('/admin/gallery/get-all', 'Admin\GalleryController@getAll')->name('admin.gallery.get-all');
     
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Customer Care Inquiry Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/customer-cares', 'Admin\CustomerCareController@index')->name('admin.customer-care');
+    Route::get('/admin/customer-care', 'Admin\CustomerCareController@index')->name('admin.customer-care');
     Route::get('/admin/customer-care/list', 'Admin\CustomerCareController@list')->name('admin.customer-care.list');
     Route::post('/admin/customer-care/store', 'Admin\CustomerCareController@store')->name('admin.customer-care.store');
     Route::get('/admin/customer-care/{id}', 'Admin\CustomerCareController@details')->where('id', '[0-9]+')->name('admin.customer-care.details');
     Route::post('/admin/customer-care/update', 'Admin\CustomerCareController@update')->name('admin.customer-care.update');
     Route::get('/admin/customer-care/delete/{id}', 'Admin\CustomerCareController@delete')->where('id', '[0-9]+')->name('admin.customer-care.delete');
     Route::get('/admin/customer-care/users', 'Admin\CustomerCareController@getUsers')->where('id', '[0-9]+')->name('admin.customer-care.users');
+    Route::get('/admin/customer-care/get-concerns', 'Admin\CustomerCareController@getConcerns')->where('id', '[0-9]+')->name('admin.customer-care.get-concerns');
     Route::get('/admin/customer-care/download-csv', 'Admin\CustomerCareController@downloadCsv')->name('admin.customer-care.download-csv');
     /*
     |--------------------------------------------------------------------------

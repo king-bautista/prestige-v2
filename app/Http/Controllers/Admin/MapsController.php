@@ -484,20 +484,20 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function generateRoutes($site_id, $screen_id)
     {
-        try {
+        // try {
             $this->createRoutes($site_id, $screen_id);
             $this->createRoutes($site_id, $screen_id, 1);
 
             return $this->response(true, 'Successfully Modified!', 200);
-        } 
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // } 
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function createRoutes($site_id, $screen_id, $with_disability = 0)

@@ -8,6 +8,15 @@ use App\Http\Controllers\Admin\Interfaces\CustomerCareControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;    
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomerCareRequest;
+<<<<<<< HEAD
+
+use App\Models\CustomerCare;
+use App\Models\User;
+use App\Models\Concern;
+use App\Models\ViewModels\CustomerCareViewModel;
+use App\Models\ViewModels\AdminViewModel;
+=======
+>>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 use App\Exports\Export;
 use Storage;
 
@@ -67,7 +76,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     {
         try {
             $data = [
-
+                'status_id' => $request->status_id,
+                'concern_id' => $request->concern_id,
                 'user_id' => $request->user_id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -75,7 +85,6 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'ticket_description' => $request->ticket_description,
                 'assigned_to_id' => $request->assigned_to_id,
                 'assigned_to_alias' => $request->assigned_to_alias,
-                'status_id' => $request->status_id,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
@@ -84,7 +93,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $insert_ticket_id->touch();
             $customer_care_id = sprintf('%08d',$customer_care->id);
 
-            $ticket_id = ['ticket_id' => 'tid-' . $customer_care_id];
+            $ticket_id = ['ticket_id' => 'TID-' . $customer_care_id];
             $insert_ticket_id->update($ticket_id);
 
             return $this->response($customer_care, 'Successfully Created!', 200);
@@ -104,6 +113,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $customer_care->touch();
 
             $data = [
+                'status_id' => $request->status_id,
+                'concern_id' => $request->concern_id,
                 'user_id' => $request->user_id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -111,7 +122,6 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'ticket_description' => $request->ticket_description,
                 'assigned_to_id' => $request->assigned_to_id,
                 'assigned_to_alias' => $request->assigned_to_alias,
-                'status_id' => $request->status_id['id'],
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
@@ -146,6 +156,20 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
         try {
             $users = User::get();
             return $this->response($users, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getConcerns()
+    {
+        try {
+            $concerns = Concern::get();
+            return $this->response($concerns, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),

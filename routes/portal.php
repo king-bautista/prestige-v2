@@ -255,7 +255,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Customer Care Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/customer-cares', 'Portal\CustomerCareController@index')->name('portal.customer-care');
+    Route::get('/portal/customer-care', 'Portal\CustomerCareController@index')->name('portal.customer-care');
     Route::get('/portal/customer-care/list', 'Portal\CustomerCareController@list')->name('portal.customer-care.list');
     Route::post('/portal/customer-care/store', 'Portal\CustomerCareController@store')->name('portal.customer-care.store');
     Route::get('/portal/customer-care/details', 'Portal\CustomerCareController@details')->where('id', '[0-9]+')->name('portal.customer-care.details');

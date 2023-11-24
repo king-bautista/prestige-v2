@@ -11,7 +11,7 @@
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewScreen="AddNewScreen"
 									v-on:editButton="editScreen" v-on:DeleteScreen="DeleteScreen"
 									v-on:DefaultScreen="DefaultScreen" v-on:downloadCsv="downloadCsv"
-									ref="screensDataTable">
+									v-on:downloadTemplate="downloadTemplate" ref="screensDataTable">
 								</Table>
 							</div>
 						</div>
@@ -208,6 +208,92 @@
 <script>
 import Table from '../Helpers/Table';
 
+<<<<<<< HEAD
+export default {
+	name: "Screen",
+	data() {
+		return {
+			screen: {
+				id: '',
+				site_id: '',
+				site_building_id: '',
+				site_building_level_id: '',
+				name: '',
+				screen_type: '',
+				orientation: '',
+				product_application: '',
+				physical_size_diagonal: '',
+				physical_size_width: '',
+				physical_size_height: '',
+				physical_serial_number: '',
+				active: false,
+				is_default: false,
+			},
+			id_to_deleted: 0,
+			is_default: '',
+			add_record: true,
+			edit_record: false,
+			sites: [],
+			buildings: [],
+			floors: [],
+			company_index: '',
+			screen_types: ['LED', 'LFD', 'LCD'],
+			orientations: ['Landscape', 'Portrait'],
+			product_applications: ['Directory', 'Digital Signage'],
+			dataFields: {
+				serial_number: "ID",
+				screen_location: "Location",
+				site_name: "Site Name",
+				screen_type: "Screen Type",
+				orientation: "Orientation",
+				product_application: "Product Application",
+				active: {
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
+						1: '<span class="badge badge-info">Active</span>'
+					}
+				},
+				updated_at: "Last Updated"
+			},
+			primaryKey: "id",
+			dataUrl: "/admin/site/screen/list",
+			actionButtons: {
+				edit: {
+					title: 'Edit this Screen',
+					name: 'Edit',
+					apiUrl: '',
+					routeName: 'building.edit',
+					button: '<i class="fas fa-edit"></i> Edit',
+					method: 'edit'
+				},
+				delete: {
+					title: 'Delete this Screen',
+					name: 'Delete',
+					apiUrl: '/admin/site/screen/delete',
+					routeName: '',
+					button: '<i class="fas fa-trash-alt"></i> Delete',
+					method: 'custom_delete',
+					v_on: 'DeleteScreen',
+				},
+			},
+			otherButtons: {
+				addNew: {
+					title: 'New Screen',
+					v_on: 'AddNewScreen',
+					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+=======
 	export default {
         name: "Screen",
         data() {
@@ -295,11 +381,23 @@ import Table from '../Helpers/Table';
 				}
             };
         },
+>>>>>>> c6a91db03e6af0b94395304cb75133133f11dff6
 
-        created(){
-			this.getSites();
-			this.getCompany();
-        },
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+			}
+		};
+	},
+
+	created() {
+		this.getSites();
+		this.getCompany();
+	},
 
 	methods: {
 		getSites: function () {
@@ -382,9 +480,9 @@ import Table from '../Helpers/Table';
 					this.screen.physical_serial_number = screen.physical_serial_number;
 					this.screen.active = screen.active;
 					this.screen.is_default = screen.is_default;
-                    $('#screen-form').modal('show');
-                });
-            },
+					$('#screen-form').modal('show');
+				});
+		},
 
 		updateScreen: function () {
 			axios.put('/admin/site/screen/update', this.screen)
@@ -433,6 +531,13 @@ import Table from '../Helpers/Table';
 				})
 		},
 
+		downloadTemplate: function () {
+			const link = document.createElement('a');
+			link.href = '/uploads/csv/screen-batch-upload.csv';
+			link.setAttribute('downloadFile', '/uploads/csv/screen-batch-upload.csv'); //or any other extension
+			document.body.appendChild(link);
+			link.click();
+		},
 	},
 
 	components: {
