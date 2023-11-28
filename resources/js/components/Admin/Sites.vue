@@ -118,26 +118,6 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="isActive" class="col-sm-3 col-form-label">Is Default</label>
-								<div class="col-sm-9">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_default"
-											v-model="site.is_default">
-										<label class="custom-control-label" for="is_default"></label>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="isActive" class="col-sm-3 col-form-label">Is Premiere</label>
-								<div class="col-sm-9">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_premiere"
-											v-model="site.is_premiere">
-										<label class="custom-control-label" for="is_premiere"></label>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row">
 								<label for="isActive" class="col-sm-3 col-form-label">Multilanguage</label>
 								<div class="col-sm-9">
 									<div class="custom-control custom-switch">
@@ -316,22 +296,6 @@ export default {
 					status: {
 						0: '<span class="badge badge-danger">Deactivated</span>',
 						1: '<span class="badge badge-info">Active</span>'
-					}
-				},
-				is_default: {
-					name: "Is Default",
-					type: "Boolean",
-					status: {
-						0: '<span class="badge badge-danger">No</span>',
-						1: '<span class="badge badge-info">Yes</span>'
-					}
-				},
-				is_premiere: {
-					name: "Is Premiere",
-					type: "Boolean",
-					status: {
-						0: '<span class="badge badge-danger">No</span>',
-						1: '<span class="badge badge-info">Yes</span>'
 					}
 				},
 				multilanguage: {
@@ -639,6 +603,23 @@ export default {
 			link.setAttribute('downloadFile', '/uploads/csv/site-batch-upload.csv'); //or any other extension
 			document.body.appendChild(link);
 			link.click();
+		},
+
+		addOperationalHours: function () {
+			this.site.operational_hours.push({
+				schedules: '',
+				start_time: '',
+				end_time: '',
+			});
+		},
+
+		conditionActive: function (shedules, item, index) {
+			if (shedules.indexOf(item) >= 0) {
+				return 'btn custom-btn active';
+			}
+			else {
+				return 'btn custom-btn';
+			}
 		},
 
 
