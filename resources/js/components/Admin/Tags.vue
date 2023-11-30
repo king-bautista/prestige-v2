@@ -1,4 +1,4 @@
-<template>
+	<template>
 	<div>
 		<!-- Main content -->
 		<section class="content">

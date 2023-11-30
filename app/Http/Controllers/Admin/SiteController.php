@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\SiteRequest;
 use Illuminate\Support\Str;
+use App\Imports\SitesImport;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -297,6 +298,23 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
             return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new SitesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

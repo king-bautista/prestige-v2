@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\ClassificationControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClassificationRequest;
+use App\Imports\ClassificationsImport;
 use App\Exports\Export;
 use Storage;
 
@@ -141,6 +142,23 @@ class ClassificationController extends AppBaseController implements Classificati
             return $this->response($classifications, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new ClassificationsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),

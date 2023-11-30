@@ -245,6 +245,23 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
         }
     }
 
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new ScreensImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     // public function getScreen(Request $request)
     // {
     //     try {

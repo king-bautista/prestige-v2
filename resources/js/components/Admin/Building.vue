@@ -13,7 +13,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewBuilding="AddNewBuilding" v-on:editButton="editBuilding"
-									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
+									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadTemplate="downloadTemplate"
+									ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -79,6 +80,38 @@
 			</div>
 		</div>
 		<!-- End Modal Add New User -->
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -139,6 +172,42 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+
+				modalBatchUpload: function () {
+					$('#batchModal').modal('show');
+				},
+
+				handleFileUpload: function () {
+					this.file = this.$refs.file.files[0];
+					$('#batchInputLabel').html(this.file.name)
+				},
+
+				storeBatch: function () {
+					let formData = new FormData();
+					formData.append('file', this.file);
+
+					axios.post('/admin/amenity/batch-upload', formData,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data'
+							}
+						}).then(response => {
+							this.$refs.file.value = null;
+							this.$refs.dataTable.fetchData();
+							toastr.success(response.data.message);
+							$('#batchModal').modal('hide');
+							$('#batchInputLabel').html('Choose File');
+							//window.location.reload();
+						})
+				},
+
 				downloadCsv: {
 					title: 'Download',
 					v_on: 'downloadTemplate',
@@ -195,7 +264,7 @@ export default {
 				})
 		},
 
-		downloadTemplate: function () { 
+		downloadTemplate: function () {
 			const link = document.createElement('a');
 			var site_name = this.siteName;
 			link.href = '/uploads/csv/' + site_name + '-site-building-batch-upload.csv';
