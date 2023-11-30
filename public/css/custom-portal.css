@@ -246,3 +246,7 @@ margin-left: 10px;
 .offline {
     color: #FE5E80;
 }
+
+.img-thumbnail {
+    max-width: 4rem;
+}

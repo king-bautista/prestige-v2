@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Helpers\PasswordHelper;
 use App\Http\Requests\PortalUserRequest;
 use App\Models\User;
-use App\Models\ViewModels\UserViewModel;
+use App\Models\AdminViewModels\UserViewModel;
 use Hash;
 
 class UsersController extends AppBaseController implements UsersControllerInterface

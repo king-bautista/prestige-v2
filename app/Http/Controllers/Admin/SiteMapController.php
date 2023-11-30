@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ScreenRequest;
 
 use App\Models\SiteScreen;
-use App\Models\ViewModels\SiteScreenViewModel;
+use App\Models\AdminViewModels\SiteScreenViewModel;
 use App\Exports\Export;
 use Storage;
 

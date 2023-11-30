@@ -75,9 +75,6 @@ class ClientUserController extends AppBaseController implements ClientUserContro
             $meta_details = ["first_name" => $request->first_name, "last_name" => $request->last_name];
             $user->saveMeta($meta_details);
             $user->saveRoles($request->roles);
-            $user->saveBrands($request->brands);
-            $user->saveSites($request->sites);
-            $user->saveScreens($request->screens);
 
             return $this->response($user, 'Successfully Created!', 200);
         }
@@ -129,9 +126,6 @@ class ClientUserController extends AppBaseController implements ClientUserContro
             $meta_details = ["first_name" => $request->first_name, "last_name" => $request->last_name];
             $user->saveMeta($meta_details);
             $user->saveRoles($request->roles);
-            $user->saveBrands($request->brands);
-            $user->saveSites($request->sites);
-            $user->saveScreens($request->screens);
 
             return $this->response($user, 'Successfully Modified!', 200);
         }

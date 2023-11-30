@@ -11,9 +11,9 @@ use App\Http\Requests\TenantRequest;
 
 use App\Models\SiteTenant;
 use App\Models\SiteTenantProduct;
-use App\Models\ViewModels\UserViewModel;
-use App\Models\ViewModels\SiteTenantViewModel;
-use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\AdminViewModels\UserViewModel;
+use App\Models\AdminViewModels\SiteTenantViewModel;
+use App\Models\AdminViewModels\BrandProductViewModel;
 use App\Models\ViewModels\TenantsDropdownViewModel;
 
 use App\Imports\SiteTenantsImport;
