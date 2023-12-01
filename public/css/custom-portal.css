@@ -258,3 +258,9 @@ margin-left: 10px;
 .modal-title {
     color: #353535;
 }
+
+.custom-btn:not(:disabled):not(.disabled).active {
+    color: #fff;
+    background-color: #568ae5;
+    border-color: #88a7df;
+}

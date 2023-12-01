@@ -189,9 +189,7 @@
 												style="width: 120px">
 										</div>
 										<div class="col-3">
-											<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{
-												operational.start_time }} <span v-if="operational.end_time">to</span> {{
-		operational.end_time }}</i>
+											<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{operational.start_time }} <span v-if="operational.end_time">to</span> {{ operational.end_time }}</i>
 										</div>
 									</div>
 									<div class="form-group">
@@ -699,6 +697,23 @@ export default {
 			else {
 				return 'btn custom-btn';
 			}
+		},
+
+		getChecked: function (item, index) {
+			var position = (schedules[index]) ? schedules[index].indexOf(item) : -1;
+			if (position >= 0) {
+				schedules[index] = schedules[index].replace(", " + item, "").replace(item + ",", "").replace(item, "");
+			}
+			else {
+				if (schedules[index]) {
+					schedules[index] += ', ' + item;
+				}
+				else {
+					schedules[index] = item;
+				}
+			}
+
+			this.site.operational_hours[index].schedules = schedules[index];
 		},
 
 

@@ -43,14 +43,12 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Sites Routes
     |--------------------------------------------------------------------------
     */
-    // Route::get('/portal/property-details', 'Portal\SiteController@index')->name('portal.property-details');
-    // Route::get('/portal/property-details/list', 'Portal\SiteController@list')->name('portal.property-details.list');
-    // Route::post('/portal/property-details/store', 'Portal\SiteController@store')->name('portal.property-details.store');
-    // Route::get('/portal/property-details/{id}', 'Portal\SiteController@details')->where('id', '[0-9]+')->name('portal.property-details.details');
-    // Route::post('/portal/property-details/update', 'Portal\SiteController@update')->name('portal.property-details.update');
-    // Route::get('/portal/property-details/delete/{id}', 'Portal\SiteController@delete')->where('id', '[0-9]+')->name('portal.property-details.delete');
-    // Route::get('/portal/property-details/get-all', 'Portal\SiteController@getAll')->where('id', '[0-9]+')->name('portal.property-details.get-all');
-    // Route::get('/portal/property-details/set-default/{id}', 'Portal\SiteController@setDefault')->where('id', '[0-9]+')->name('portal.property-details.set-default');
+    Route::get('/portal/property-details', 'Portal\SiteController@index')->name('portal.property-details');
+    Route::get('/portal/property-details/list', 'Portal\SiteController@list')->name('portal.property-details.list');
+    Route::get('/portal/property-details/{id}', 'Portal\SiteController@details')->where('id', '[0-9]+')->name('portal.property-details.details');
+    Route::post('/portal/property-details/update', 'Portal\SiteController@update')->name('portal.property-details.update');
+    Route::get('/portal/property-details/get-all', 'Portal\SiteController@getAll')->where('id', '[0-9]+')->name('portal.property-details.get-all');
+    Route::get('/portal/property-details/set-default/{id}', 'Portal\SiteController@setDefault')->where('id', '[0-9]+')->name('portal.property-details.set-default');
 
     /*
     |--------------------------------------------------------------------------
@@ -156,8 +154,11 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     */
     Route::get('/portal/brands', 'Portal\BrandController@index')->name('portal.brands');
     Route::get('/portal/brand/list', 'Portal\BrandController@list')->name('portal.brand.list');
+    Route::get('/portal/brand/{id}', 'Portal\BrandController@details')->where('id', '[0-9]+')->name('portal.brand.details');
     Route::get('/portal/brand/get-all', 'Portal\BrandController@allBrands')->name('portal.brand.get-all');
     Route::post('/portal/brand/store', 'Portal\BrandController@storeBrand')->name('portal.company.brand.store');
+    Route::post('/portal/brand/save', 'Portal\BrandController@store')->name('portal.company.brand.save');
+    Route::post('/portal/brand/update', 'Portal\BrandController@update')->name('portal.brand.update');
     Route::get('/portal/brand/delete/{id}', 'Portal\BrandController@delete')->where('id', '[0-9]+')->name('portal.brand.delete');
 
     /*

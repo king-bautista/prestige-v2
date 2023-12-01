@@ -1,5 +1,5 @@
 <footer class="footer">
-    <div class="row justify-content-md-center footer-background">
+    <div class="row justify-content-md-center footer-background m-0">
         @foreach($user->permissions as $permission)
         <div class="col-sm-1 footer-color">
             <a href="{{ $permission->link }}"><strong>{{ $permission->name }}</strong></a>
@@ -14,7 +14,7 @@
             @endif
         </div>
         @endforeach
-        <div class="col-md-1 offset-md-2">
+        <div class="col-sm-1 offset-sm-2">
             <div class="row">
                 <div class="col-md-4">
                     <a href="https://www.linkedin.com/company/13257958/">

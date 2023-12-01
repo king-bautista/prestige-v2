@@ -1,6 +1,6 @@
 @extends('layout.portal.master')
 @section('Page-Title')
-<h4>Property Details</h4>
+<h4>Brands</h4>
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
   <li class="breadcrumb-item"><a href="#">Manage Property</a></li>
@@ -11,15 +11,21 @@
 @section('content')
 <!-- Main content -->
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-12">
     @include('layout.portal.company-profile')
   </div>
-  <div class="col-md-10">
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card-body">
+      <div class="form-group row">
+        <img src="{{ $site_details->site_banner_path}}" />
+      </div>
+    </div>
     <portal-buildings></portal-buildings>
     <portal-building-floors></portal-building-floors>
   </div>
 </div>
-
 <!-- /.content -->
 @stop
 

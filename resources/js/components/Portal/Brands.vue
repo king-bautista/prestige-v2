@@ -316,7 +316,7 @@
                 formData.append("tags", this.tags_ids);
                 formData.append("active", this.brand.active);
 
-                axios.post('/admin/brand/store', formData, {
+                axios.post('/portal/brand/save', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
@@ -330,7 +330,7 @@
             },
 
             editBrand: function (id) {
-                axios.get('/admin/brand/' + id)
+                axios.get('/portal/brand/' + id)
                 .then(response => {
                     var brand = response.data.data;
                     this.brand.id = id;
@@ -361,6 +361,7 @@
                     });
 
                     $('#brand-form').modal('show');
+                    $('#new-brand-tab').click();
                 });
             },
 
@@ -375,7 +376,7 @@
                 formData.append("tags", this.tags_ids);
                 formData.append("active", this.brand.active);
 
-                axios.post('/admin/brand/update', formData, {
+                axios.post('/portal/brand/update', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },

@@ -14,9 +14,7 @@
 					:actionButtons="flooractionButtons"
 					:otherButtons="otherButtons"
 					:primaryKey="primaryKey"
-					v-on:AddNewFloor="AddNewFloor"
 					v-on:editButton="editFloor"
-					v-on:DeleteFloor="DeleteFloor"
 					ref="floorsDataTable">
 					</Table>
 				</div>
@@ -30,8 +28,7 @@
 			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New Floor</h5>
-						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Floor</h5>
+						<h5 class="modal-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Floor</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -65,8 +62,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-show="add_record" @click="storeFloor">Add New Floor</button>
-						<button type="button" class="btn btn-primary" v-show="edit_record" @click="updateFloor">Save Changes</button>
+						<button type="button" class="btn btn-primary" @click="updateFloor">Save Changes</button>
 					</div>
 				</div>
 			</div>
@@ -135,25 +131,7 @@
             			button: '<i class="fas fa-edit"></i> Edit',
             			method: 'edit'
             		},
-            		delete: {
-            			title: 'Delete this Floor',
-            			name: 'Delete',
-            			apiUrl: '/portal/property-details/floor/delete',
-            			routeName: '',
-            			button: '<i class="fas fa-trash-alt"></i> Delete',
-            			method: 'custom_delete',
-						v_on: 'DeleteFloor',
-            		},
             	},
-				otherButtons: {
-					addNew: {
-						title: 'New Floor',
-						v_on: 'AddNewFloor',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Floor',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-				}
             };
         },
 
@@ -165,25 +143,6 @@
 				axios.get('/portal/property-details/buildings')
                 .then(response => this.buildings = response.data.data);
 			},
-
-			AddNewFloor: function() {
-                this.GetBuildings();
-				this.add_record = true;
-				this.edit_record = false;
-                this.floor.site_building_id = '';
-                this.floor.name = '';
-                this.floor.active = true;
-              	$('#floor-form').modal('show');
-            },
-
-            storeFloor: function() {
-                axios.post('/portal/property-details/floor/store', this.floor)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.floorsDataTable.fetchData();
-	              	$('#floor-form').modal('hide');
-				})
-            },
 
 			editFloor: function(id) {
 				this.GetBuildings();
