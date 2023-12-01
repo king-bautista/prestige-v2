@@ -172,22 +172,22 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
-				batchUpload: {
-					title: 'Batch Upload',
-					v_on: 'modalBatchUpload',
-					icon: '<i class="fas fa-upload"></i> Batch Upload',
-					class: 'btn btn-primary btn-sm',
-					method: 'add'
-				},
+				// batchUpload: {
+				// 	title: 'Batch Upload',
+				// 	v_on: 'modalBatchUpload',
+				// 	icon: '<i class="fas fa-upload"></i> Batch Upload',
+				// 	class: 'btn btn-primary btn-sm',
+				// 	method: 'add'
+				// },
 
-				modalBatchUpload: function () {
-					$('#batchModal').modal('show');
-				},
+				// modalBatchUpload: function () {
+				// 	$('#batchModal').modal('show');
+				// },
 
-				handleFileUpload: function () {
-					this.file = this.$refs.file.files[0];
-					$('#batchInputLabel').html(this.file.name)
-				},
+				// handleFileUpload: function () {
+				// 	this.file = this.$refs.file.files[0];
+				// 	$('#batchInputLabel').html(this.file.name)
+				// },
 
 				// storeBatch: function () {
 				// 	let formData = new FormData();
