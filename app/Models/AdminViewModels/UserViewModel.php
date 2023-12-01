@@ -66,9 +66,6 @@ class UserViewModel extends Model
         'roles',
         'permissions',
         'company',
-        'brands',
-        'sites',
-        'screens',
         'profile_image',
     ];
 
@@ -89,6 +86,32 @@ class UserViewModel extends Model
                         ->selectRaw('modules.id, modules.parent_id, modules.name, modules.link, modules.class_name, max(permissions.can_view) AS can_view, max(permissions.can_add) AS can_add, max(permissions.can_edit) AS can_edit, max(permissions.can_delete) AS can_delete')
                         ->leftJoin('modules', 'permissions.module_id', '=', 'modules.id')
                         ->groupBy('permissions.module_id');
+    }
+
+    public function getSiteIds() 
+    {
+        $siteIds[] = 0;
+        foreach($this->company->contracts as $contract) {
+            foreach($contract->screens as $screen) {
+                $siteIds[$screen['site_id']] = $screen['site_id'];       
+            }
+        }
+
+        foreach($siteIds as $id) {
+            $site_ids[] = $id;
+        }
+
+        return $site_ids;
+    }
+
+    public function getBrandIds() 
+    {
+        $brandIds = [];
+        foreach($this->company->brands as $brand) {
+            $brandIds[] = $brand->id;       
+        }
+
+        return $brandIds;
     }
 
     /****************************************

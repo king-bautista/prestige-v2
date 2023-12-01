@@ -8,6 +8,8 @@ use App\Http\Controllers\Portal\Interfaces\AmenitiesControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Amenity;
+use App\Models\AdminViewModels\UserViewModel;
+
 
 class AmenitiesController extends AppBaseController implements AmenitiesControllerInterface
 {
@@ -29,9 +31,14 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
         {
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+            $site_ids = $user->getSiteIds();
+
             $amenitiess = Amenity::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
+            ->whereIn('site_id', $site_ids)
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($amenitiess, 'Successfully Retreived!', 200);
@@ -128,4 +135,5 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             ], 422);
         }
     }
+
 }
