@@ -158,7 +158,7 @@ export default {
 				delete: {
 					title: 'Delete this Building',
 					name: 'Delete',
-					apiUrl: '/admin/site/buildings/delete',
+					apiUrl: '/admin/site/building/delete',
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
