@@ -26,7 +26,7 @@ class BrandRequest extends FormRequest
         return [
             "name" => "required|string",
             "descriptions" => "required|string",
-            "category_id" => "required",
+            "category_id" => "required|string",
         ];
     }
 
@@ -35,9 +35,9 @@ class BrandRequest extends FormRequest
      */
     public function messages()
     {
-        // return [
-        //     'category_id.required' => 'The category name field is required.',
-        // ];
+        return [
+            'category_id.required' => 'The category name field is required.',
+        ];
     }
 
 }
