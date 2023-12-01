@@ -221,32 +221,28 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Address <span
-									class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Address</label>
 							<div class="col-sm-8">
 								<textarea class="form-control" v-model="company.address" placeholder="Company Address"
 									required></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Email <span
-									class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Email</label>
 							<div class="col-sm-8">
 								<input type="email" class="form-control" v-model="company.email" placeholder="Email"
 									required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Contact Number <span
-									class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Contact Number</label>
 							<div class="col-sm-8">
 								<input type="email" class="form-control" v-model="company.contact_number"
 									placeholder="Contact Number" required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">TIN Number <span
-									class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">TIN</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" v-model="company.tin" placeholder="TIN Number"
 									required>
