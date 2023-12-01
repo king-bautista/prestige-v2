@@ -17,9 +17,14 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    <div class="card-body">
-      <div class="form-group row">
-        <img src="{{ $site_details->site_banner_path}}" />
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">{{ $site_details->name}}</h4>					
+      </div>
+      <div class="card-body">
+        <div class="form-group row">
+          <img src="{{ $site_details->site_banner_path}}" />
+        </div>
       </div>
     </div>
     <portal-buildings></portal-buildings>
