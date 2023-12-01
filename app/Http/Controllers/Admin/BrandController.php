@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
 
+use App\Http\Requests\BrandRequest;
+
 use App\Models\Brand;
 use App\Models\Tag;
 use App\Models\Supplemental;
@@ -93,7 +95,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         }
     }
 
-    public function store(Request $request)
+    public function store(BrandRequest $request)
     {
         try
     	{
@@ -159,7 +161,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         }
     }
 
-    public function update(Request $request)
+    public function update(BrandRequest $request)
     {
         try
     	{

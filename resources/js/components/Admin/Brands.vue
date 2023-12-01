@@ -57,7 +57,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions</label>
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<textarea class="form-control" v-model="brand.descriptions"
 										placeholder="Descriptions"></textarea>
@@ -312,7 +313,7 @@ export default {
 			this.add_record = true;
 			this.edit_record = false;
 			this.brand.name = '';
-			this.brand.description = '';
+			this.brand.descriptions = '';
 			this.brand.category_id = null;
 			this.brand.logo = '/images/no-image-available.png';
 			this.brand.supplementals = [];
