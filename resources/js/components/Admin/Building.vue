@@ -13,7 +13,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewBuilding="AddNewBuilding" v-on:editButton="editBuilding"
-									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadTemplate="downloadTemplate"
+									v-on:downloadTemplate="downloadTemplate"   
 									ref="dataTable">
 								</Table>
 							</div>
@@ -81,7 +81,7 @@
 		</div>
 		<!-- End Modal Add New User -->
 		<!-- Batch Upload -->
-		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+		<!-- <div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -111,7 +111,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 <script>
@@ -189,24 +189,24 @@ export default {
 					$('#batchInputLabel').html(this.file.name)
 				},
 
-				storeBatch: function () {
-					let formData = new FormData();
-					formData.append('file', this.file);
+				// storeBatch: function () {
+				// 	let formData = new FormData();
+				// 	formData.append('file', this.file);
 
-					axios.post('/admin/amenity/batch-upload', formData,
-						{
-							headers: {
-								'Content-Type': 'multipart/form-data'
-							}
-						}).then(response => {
-							this.$refs.file.value = null;
-							this.$refs.dataTable.fetchData();
-							toastr.success(response.data.message);
-							$('#batchModal').modal('hide');
-							$('#batchInputLabel').html('Choose File');
-							//window.location.reload();
-						})
-				},
+				// 	axios.post('/admin/amenity/batch-upload', formData,
+				// 		{
+				// 			headers: {
+				// 				'Content-Type': 'multipart/form-data'
+				// 			}
+				// 		}).then(response => {
+				// 			this.$refs.file.value = null;
+				// 			this.$refs.dataTable.fetchData();
+				// 			toastr.success(response.data.message);
+				// 			$('#batchModal').modal('hide');
+				// 			$('#batchInputLabel').html('Choose File');
+				// 			//window.location.reload();
+				// 		})
+				// },
 
 				downloadCsv: {
 					title: 'Download',
@@ -258,7 +258,7 @@ export default {
 		updateBuilding: function () {
 			axios.put('/admin/site/building/update', this.building)
 				.then(response => {
-					toastr.success(response.data.message);
+					toastr.success(response.data.message); 
 					this.$refs.dataTable.fetchData();
 					$('#building-form').modal('hide');
 				})
