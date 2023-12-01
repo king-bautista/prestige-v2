@@ -250,3 +250,11 @@ margin-left: 10px;
 .img-thumbnail {
     max-width: 4rem;
 }
+
+.img-thumbnail-brands {
+    max-width: 4rem;
+}
+
+.modal-title {
+    color: #353535;
+}

@@ -338,11 +338,11 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#brand-form').modal('hide');
-				})
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.dataTable.fetchData();
+				$('#brand-form').modal('hide');
+			})
 
 		},
 

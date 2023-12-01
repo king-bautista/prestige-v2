@@ -35,8 +35,6 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/manage-account/delete/{id}', 'Portal\UsersController@delete')->where('id', '[0-9]+')->name('portal.manage-account.delete');
     Route::get('/portal/manage-account/profile', 'Portal\UsersController@profile')->name('portal.manage-account.profile');
     Route::post('/portal/manage-account/update-profile', 'Portal\UsersController@updateProfile')->name('portal.manage-account.update-profile');
-    Route::get('/portal/manage-account/brands', 'Portal\UsersController@brands')->name('portal.manage-account.brands');
-    Route::get('/portal/manage-account/brand/list', 'Portal\UsersController@userBrands')->name('portal.manage-account.brand.list');
     Route::get('/portal/manage-account/user-details', 'Portal\UsersController@details')->name('portal.manage-account.user-details');
 
 
@@ -156,7 +154,11 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     | Brands Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/portal/brand/get-all', 'Portal\BrandController@allBrands')->where('id', '[0-9]+')->name('portal.brand.get-all');
+    Route::get('/portal/brands', 'Portal\BrandController@index')->name('portal.brands');
+    Route::get('/portal/brand/list', 'Portal\BrandController@list')->name('portal.brand.list');
+    Route::get('/portal/brand/get-all', 'Portal\BrandController@allBrands')->name('portal.brand.get-all');
+    Route::post('/portal/brand/store', 'Portal\BrandController@storeBrand')->name('portal.company.brand.store');
+    Route::get('/portal/brand/delete/{id}', 'Portal\BrandController@delete')->where('id', '[0-9]+')->name('portal.brand.delete');
 
     /*
     |--------------------------------------------------------------------------
@@ -203,6 +205,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::post('/portal/brand/product/update', 'Portal\ProductsController@update')->name('portal.brand.product.update');
     Route::get('/portal/brand/product/delete/{id}', 'Portal\ProductsController@delete')->where('id', '[0-9]+')->name('portal.brand.product.delete');
     Route::get('/portal/brand/product-by-id/{id}', 'Portal\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('portal.brand.product.by-brand');
+    Route::get('/portal/brand/get-tags', 'Admin\BrandController@getTags')->where('id', '[0-9]+')->name('portal.brand.get-tags');
 
     /*
     |--------------------------------------------------------------------------

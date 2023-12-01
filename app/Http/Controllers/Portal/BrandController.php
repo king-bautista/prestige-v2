@@ -12,9 +12,10 @@ use App\Models\Brand;
 use App\Models\Tag;
 use App\Models\Supplemental;
 use App\Models\BrandProductPromos;
-use App\Models\ViewModels\UserViewModel;
-use App\Models\ViewModels\BrandViewModel;
-use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\CompanyBrands;
+use App\Models\AdminViewModels\UserViewModel;
+use App\Models\AdminViewModels\BrandViewModel;
+use App\Models\AdminViewModels\BrandProductViewModel;
 
 use App\Imports\BrandsImport;
 
@@ -34,12 +35,163 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         return view('portal.brands');
     }
 
-    public function allBrands()
+    public function list(Request $request)
+    {
+        // try
+        // {
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+            $brand_ids = $user->getBrandIds();
+
+            $brands = BrandViewModel::when(request('search'), function($query){
+                return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->whereIn('brands.id', $brand_ids)
+            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->select('brands.*')
+            ->latest()
+            ->paginate(request('perPage'));
+
+            return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
+    }
+
+    public function details($id)
+    {
+        try
+        {
+            $amenities = Amenity::find($id);
+            return $this->response($amenities, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function store(Request $request)
     {
         try
     	{
-            $brands = Brand::get();
-            return $this->response($brands, 'Successfully Retreived!', 200);
+            $data = [
+                'name' => $request->name,
+                'active' => 1
+            ];
+
+            $amenities = Amenity::create($data);
+
+            return $this->response($amenities, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        try
+    	{
+            $amenities = Amenity::find($request->id);
+
+            $data = [
+                'name' => $request->name,
+                'active' => $request->active
+            ];
+
+            $amenities->update($data);
+
+            return $this->response($amenities, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function delete($id)
+    {
+        try
+    	{
+            $user_id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($user_id);
+
+            $company_brand = CompanyBrands::where('brand_id', $id)->where('company_id', $user->company_id)->delete();
+
+            return $this->response($company_brand, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function allBrands(Request $request)
+    {
+        try
+    	{
+            $brands = BrandViewModel::when(request('search'), function($query){
+                return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->select('brands.*')
+            ->latest()
+            ->paginate(request('perPage'));
+
+            return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function storeBrand(Request $request)
+    {
+        try
+    	{
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+
+            $company_brand = CompanyBrands::updateOrCreate(
+                [
+                    'company_id' => $user->company_id,
+                    'brand_id' => $request->id
+                ],
+            );
+            return $this->response($company_brand, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
         {
