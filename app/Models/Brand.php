@@ -50,18 +50,18 @@ class Brand extends Model
 
     public function saveSupplementals($supplementals)
     {
-        BrandSupplemental::where('brand_id', $this->id)->delete();
-        if($supplementals) {
-            $supplenmetals_ids =  explode(',',$supplementals);
-            foreach ($supplenmetals_ids as $index => $data) {
-                BrandSupplemental::updateOrCreate(
-                    [
-                       'brand_id' => $this->id,
-                       'supplemental_id' => $data,
-                    ],
-                );
-            }
-        }
+        // BrandSupplemental::where('brand_id', $this->id)->delete();
+        // if($supplementals) {
+        //     $supplenmetals_ids =  explode(',',$supplementals);
+        //     foreach ($supplenmetals_ids as $index => $data) {
+        //         BrandSupplemental::updateOrCreate(
+        //             [
+        //                'brand_id' => $this->id,
+        //                'supplemental_id' => $data,
+        //             ],
+        //         );
+        //     }
+        // }
     }
 
     public function saveTags($tags)

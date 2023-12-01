@@ -44,7 +44,7 @@ class BrandsImport implements ToCollection, WithHeadingRow
                 if($tag_ids)
                     $brand->saveTags($tag_ids);
                 // // SAVE SUPPLIMENTALS
-                $supplemental_ids = $this->getSupplementalIds($row['supplementals']);
+                 $supplemental_ids = $this->getSupplementalIds($row['supplementals']); 
                 if($supplemental_ids)
                     $brand->saveSupplementals($supplemental_ids);
 
@@ -67,15 +67,15 @@ class BrandsImport implements ToCollection, WithHeadingRow
 
     public function uploadLogo($logo = '')
     {   
-        if($logo){
-             return $logo;
-            $contents = file_get_contents($logo);  return $contents; 
-            $name = str_replace(' ','-',substr($logo, strrpos($logo, '/') + 1));
-            if(Storage::disk('brand')->put($name, $contents))
-                return 'uploads/media/brand/'.$name;
+        if($logo){ 
+                if(file_get_contents(public_path().'/'.$logo))
+                    return $logo;
+            // $contents = file_get_contents($logo);   
+            // $name = str_replace(' ','-',substr($logo, strrpos($logo, '/') + 1));
+            // if(Storage::disk('brand')->put($name, $contents))
+            //     return 'uploads/media/brand/'.$name;
             return null;
         }
-
         return null;
     }
 
@@ -89,7 +89,7 @@ class BrandsImport implements ToCollection, WithHeadingRow
                 $tag_id = Tag::updateOrCreate(
                     [
                         'name' => ucfirst(rtrim(ltrim($tag)))
-                    ]
+                    ]   
                 );
 
                 $tag_ids .= $tag_id->id.',';   
@@ -104,13 +104,16 @@ class BrandsImport implements ToCollection, WithHeadingRow
     {
         $supplemental_ids = '';
         if($supplementals) {
-            $supplementals = explode(',', $supplementals);
+             $supplementals = explode(',', $supplementals);
             foreach($supplementals as $supplemental) {
                 $category = Category::where('name', 'like', '%'.rtrim(ltrim($supplemental)).'%')->first();
-
+                
+                if ($category == NULL) {
+                    continue;
+                }
                 $supplemental_ids .= $category['id'].',';
             }
-
+            
             return rtrim($supplemental_ids, ",");
         }
         return null;

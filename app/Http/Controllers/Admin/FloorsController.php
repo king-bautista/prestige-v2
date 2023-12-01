@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\FloorsControllerInterface;
 use Illuminate\Http\Request;
 
+use App\Imports\FloorsImport;
+
 use App\Models\SiteBuildingLevel;
 use App\Models\SiteMap;
 use App\Models\AdminViewModels\AdminViewModel;
@@ -144,6 +146,23 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
             return $this->response($building_levels, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new FloorsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),

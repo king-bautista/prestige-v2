@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PiProductRequest;
 
 use App\Models\PiProduct;
+use App\Imports\PIProductsImport;
 use App\Exports\Export;
 use Storage;
 
@@ -176,6 +177,23 @@ class PiProductController extends AppBaseController implements PiProductControll
             $pi_product = PiProduct::get();
             return $this->response($pi_product, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new PIProductsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

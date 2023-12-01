@@ -10,8 +10,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:addNewCategory="addNewCategory" v-on:editButton="editCategory"
-									v-on:modalLabels="modalLabels" v-on:downloadCsv="downloadCsv"
-									v-on:downloadTemplate="downloadTemplate" ef="dataTable">
+									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"  
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -90,7 +90,38 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -160,6 +191,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
@@ -209,28 +247,28 @@ export default {
 
 		storeCategory: function () {
 			axios.post('/admin/category/store', this.category)
-			.then(response => {
-				toastr.success(response.data.message);
-				this.$refs.dataTable.fetchData();
-				this.getParentCategory();
-				$('#category-form').modal('hide');
-			});
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					this.getParentCategory();
+					$('#category-form').modal('hide');
+				});
 		},
 
 		editCategory: function (id) {
 			axios.get('/admin/category/' + id)
-			.then(response => {
-				var category = response.data.data;
-				this.category.id = category.id;
-				this.category.parent_id = (category.parent_id) ? category.parent_id : null;
-				this.category.name = category.name;
-				this.category.descriptions = category.descriptions;
-				this.category.class_name = category.class_name;
-				this.category.active = category.active;
-				this.add_record = false;
-				this.edit_record = true;
-				$('#category-form').modal('show');
-			});
+				.then(response => {
+					var category = response.data.data;
+					this.category.id = category.id;
+					this.category.parent_id = (category.parent_id) ? category.parent_id : null;
+					this.category.name = category.name;
+					this.category.descriptions = category.descriptions;
+					this.category.class_name = category.class_name;
+					this.category.active = category.active;
+					this.add_record = false;
+					this.edit_record = true;
+					$('#category-form').modal('show');
+				});
 		},
 
 		updateCategory: function () {
@@ -249,15 +287,42 @@ export default {
 				.then(response => this.site_list = response.data.data);
 		},
 
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/category/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide'); 
+					$('#batchInputLabel').html('Choose File');
+			    })
+		},
+
 		downloadCsv: function () {
 			axios.get('/admin/category/download-csv')
-			.then(response => {
-				const link = document.createElement('a');
-				link.href = response.data.data.filepath;
-				link.setAttribute('download', response.data.data.filename); //or any other extension
-				document.body.appendChild(link);
-				link.click();
-			})
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 		downloadTemplate: function () {
 			const link = document.createElement('a');

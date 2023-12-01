@@ -1,2 +1,2 @@
-﻿serial_number,product_application,ad_type,descriptions,remarks,sec_slot,slots,is_exclusive,,active
-PI-00001,Digital Signage,Full Screen Ad,Full Screen Ad,Null,10,40,0,,1
+﻿product_application,ad_type,descriptions,remarks,sec_slot,slots,is_exclusive,,active
+Digital Signage,Full Screen Ad,Full Screen Ad,,10,40,0,,1

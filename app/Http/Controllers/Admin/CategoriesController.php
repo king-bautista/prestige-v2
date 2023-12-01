@@ -11,6 +11,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategoryLabelRequest;
 use App\Exports\Export;
 use Storage;
+use App\Imports\CategoriesImport;
 
 use App\Models\Category;
 use App\Models\CategoryLabel;
@@ -137,6 +138,23 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             return $this->response($category, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new CategoriesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),

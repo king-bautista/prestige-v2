@@ -64,7 +64,10 @@ class SiteTenantViewModel extends Model
 
     public function getBrandDetails()
     {   
-        return BrandViewModel::find($this->brand_id);
+        $brand = BrandViewModel::find($this->brand_id);
+        if($brand)
+            return $brand;
+        return null;
     }
 
     public function getSiteDetails()
@@ -100,12 +103,20 @@ class SiteTenantViewModel extends Model
 
     public function getBrandLogoAttribute() 
     {
-        return $this->brand_details->logo_image_path;
+        $brand = BrandViewModel::find($this->brand_id);
+        if($brand)
+            return $brand->logo_image_path;
+        return '';
+        // $this->brand_details->logo_image_path;
     }
 
     public function getBrandNameAttribute() 
-    {
-        return $this->brand_details->name;
+    {     
+        $brand = BrandViewModel::find($this->brand_id);
+        if($brand)
+            return $brand->name;
+        return '';
+       // return $this->brand_details->name;
     }
 
     public function getSiteNameAttribute() 

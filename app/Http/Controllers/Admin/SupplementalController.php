@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\SupplementalControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
+use App\Imports\SupplementalsImport;
 use App\Exports\Export;
 use Storage;
 
@@ -122,7 +123,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
                 'status' => false,
                 'status_code' => 422,
             ], 422);
-        }
+        }   
     }
 
     public function delete($id)
@@ -176,6 +177,24 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             ], 422);
         }
     }
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new SupplementalsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try 

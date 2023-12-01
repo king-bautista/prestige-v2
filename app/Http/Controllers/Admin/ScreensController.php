@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\ScreenRequest;
+use App\Imports\ScreensImport;
 use App\Exports\Export;
 use Storage;
 
@@ -306,6 +307,23 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
             return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new ScreensImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

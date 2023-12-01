@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Amenity;
+
+use App\Imports\AmenitiesImport;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -141,6 +143,23 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             return $this->response($amenities, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,  
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new AmenitiesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
         {
             return response([
                 'message' => $e->getMessage(),

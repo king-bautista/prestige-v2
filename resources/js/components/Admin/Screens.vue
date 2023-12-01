@@ -10,8 +10,9 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewScreen="AddNewScreen"
 									v-on:editButton="editScreen" v-on:DeleteScreen="DeleteScreen"
-									v-on:DefaultScreen="DefaultScreen" v-on:downloadCsv="downloadCsv"
-									v-on:downloadTemplate="downloadTemplate" ref="screensDataTable">
+									v-on:DefaultScreen="DefaultScreen" v-on:modalBatchUpload="modalBatchUpload"
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate"
+									ref="screensDataTable">
 								</Table>
 							</div>
 						</div>
@@ -202,106 +203,144 @@
 			</div>
 		</div>
 		<!-- Confirm modal -->
-
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
 import Table from '../Helpers/Table';
 
-	export default {
-        name: "Screen",
-        data() {
-            return {
-                screen: {
-                    id: '',
-					site_id: '',
-                    site_building_id: '',
-                    site_building_level_id: '',
-                    name: '',
-                    screen_type: '',
-                    orientation: '',
-					product_application: '',
-                    physical_size_diagonal: '',
-                    physical_size_width: '',
-                    physical_size_height: '',
-					physical_serial_number: '',
-					active: false,
-					is_default: false,
-                },
-				id_to_deleted: 0,
-				is_default: '',
-                add_record: true,
-                edit_record: false,
-                sites: [],
-                buildings: [],
-                floors: [],
-				company_index: '',
-                screen_types: ['LED','LFD','LCD'],
-                orientations: ['Landscape','Portrait'],
-                product_applications: ['Directory','Digital Signage'],
-            	dataFields: {
-					serial_number: "ID",
-            		screen_location: "Location",
-                    site_name: "Site Name",
-            		screen_type: "Screen Type", 
-            		orientation: "Orientation", 
-            		product_application: "Product Application", 
-            		active: {
-            			name: "Status", 
-            			type:"Boolean", 
-            			status: { 
-            				0: '<span class="badge badge-danger">Deactivated</span>', 
-            				1: '<span class="badge badge-info">Active</span>'
-            			}
-            		},
-                    updated_at: "Last Updated"
-            	},
-            	primaryKey: "id",
-            	dataUrl: "/admin/site/screen/list",
-            	actionButtons: {
-            		edit: {
-            			title: 'Edit this Screen',
-            			name: 'Edit',
-            			apiUrl: '',
-            			routeName: 'building.edit',
-            			button: '<i class="fas fa-edit"></i> Edit',
-            			method: 'edit'
-            		},
-            		delete: {
-            			title: 'Delete this Screen',
-            			name: 'Delete',
-            			apiUrl: '/admin/site/screen/delete',
-            			routeName: '',
-            			button: '<i class="fas fa-toggle-off"></i> Inactive',
-            			method: 'custom_delete',
-						v_on: 'DeleteScreen',
-            		},
-            	},
-				otherButtons: {
-					addNew: {
-						title: 'New Screen',
-						v_on: 'AddNewScreen',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-					download: {
-						title: 'Download',
-						v_on: 'downloadCsv',
-						icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-					downloadCsv: {
+export default {
+	name: "Screen",
+	data() {
+		return {
+			screen: {
+				id: '',
+				site_id: '',
+				site_building_id: '',
+				site_building_level_id: '',
+				name: '',
+				screen_type: '',
+				orientation: '',
+				product_application: '',
+				physical_size_diagonal: '',
+				physical_size_width: '',
+				physical_size_height: '',
+				physical_serial_number: '',
+				active: false,
+				is_default: false,
+			},
+			id_to_deleted: 0,
+			is_default: '',
+			add_record: true,
+			edit_record: false,
+			sites: [],
+			buildings: [],
+			floors: [],
+			company_index: '',
+			screen_types: ['LED', 'LFD', 'LCD'],
+			orientations: ['Landscape', 'Portrait'],
+			product_applications: ['Directory', 'Digital Signage'],
+			dataFields: {
+				serial_number: "ID",
+				screen_location: "Location",
+				site_name: "Site Name",
+				screen_type: "Screen Type",
+				orientation: "Orientation",
+				product_application: "Product Application",
+				active: {
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
+						1: '<span class="badge badge-info">Active</span>'
+					}
+				},
+				updated_at: "Last Updated"
+			},
+			primaryKey: "id",
+			dataUrl: "/admin/site/screen/list",
+			actionButtons: {
+				edit: {
+					title: 'Edit this Screen',
+					name: 'Edit',
+					apiUrl: '',
+					routeName: 'building.edit',
+					button: '<i class="fas fa-edit"></i> Edit',
+					method: 'edit'
+				},
+				delete: {
+					title: 'Delete this Screen',
+					name: 'Delete',
+					apiUrl: '/admin/site/screen/delete',
+					routeName: '',
+					button: '<i class="fas fa-toggle-off"></i> Inactive',
+					method: 'custom_delete',
+					v_on: 'DeleteScreen',
+				},
+			},
+			otherButtons: {
+				addNew: {
+					title: 'New Screen',
+					v_on: 'AddNewScreen',
+					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Screen',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
 					title: 'Download',
 					v_on: 'downloadTemplate',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
-				}
-            };
-        },
+			}
+		};
+	},
 
 	created() {
 		this.getSites();
@@ -429,6 +468,35 @@ import Table from '../Helpers/Table';
 					$('#confirmModal').modal('hide');
 				})
 		},
+
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/site/screen/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
+		},
+
 		downloadCsv: function () {
 			axios.get('/admin/site/screen/download-csv')
 				.then(response => {

@@ -1,2 +1,2 @@
-﻿parent_id,supplemental_category_id,name,descriptions,class_name,category_type,active
-1,NULL,Amenities,Amenities,Null,1,1
+﻿parent_category,supplemental_category_name,name,descriptions,class_name,category_type,category_type,active
+Food,,Food Court,Amenities,,1,1,1

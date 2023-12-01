@@ -1,2 +1,2 @@
-﻿serial_number,site_screen_id,ad_type,description,dimension,width,height,sec_slot,slots,active,is_exclusive
-SSP-00024,10,SM Full Screen Ad,Null,1920x1080,1920,1080,10,4,1,0
+site_screen,site_name,screen_type,physical_size_wxh,physical_size_diagonal,orientation,ad_type,product_type,description,width,height,default_sec_slot,default_max_slots,active,is_exclusive
+"AYTR - TriNoma, Main Building, GF (Digital Signage / Landscape)",TriNoma,LED,null x null inches,52 inches,Landscape,Digital Signage,Full Screen Ad,,0,0,10,40,1,1

@@ -58,7 +58,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             ->leftJoin('site_building_levels', 'site_tenants.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_tenants.*')
             ->latest()
-            ->paginate(request('perPage'));
+            ->paginate(request('perPage')); 
             return $this->responsePaginate($site_tenants, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

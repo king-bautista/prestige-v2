@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/category/labels/{id}', 'Admin\CategoriesController@getLabels')->where('id', '[0-9]+')->name('admin.category.labels');
     Route::post('/admin/category/label/store', 'Admin\CategoriesController@saveLabels')->name('admin.category.label.store');
     Route::get('/admin/category/label/delete/{id}', 'Admin\CategoriesController@deleteLabel')->where('id', '[0-9]+')->name('admin.category.label.delete');
+    Route::post('/admin/category/batch-upload', 'Admin\CategoriesController@batchUpload')->name('admin.category.batch-upload');
 
     /*
     |--------------------------------------------------------------------------
@@ -98,6 +99,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/supplemental/delete/{id}', 'Admin\SupplementalController@delete')->where('id', '[0-9]+')->name('admin.supplemental.delete');
     Route::get('/admin/supplemental/get-parent', 'Admin\SupplementalController@getParent')->where('id', '[0-9]+')->name('admin.supplemental.get-parent');
     Route::get('/admin/supplemental/get-child', 'Admin\SupplementalController@getChild')->where('id', '[0-9]+')->name('admin.supplemental.get-child');
+    Route::post('/admin/supplemental/batch-upload', 'Admin\SupplementalController@batchUpload')->name('admin.supplemental.batch-upload');
     Route::get('/admin/supplemental/download-csv', 'Admin\SupplementalController@downloadCsv')->name('admin.supplemental.download-csv');
 
     /*
@@ -111,6 +113,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/classification/{id}', 'Admin\ClassificationController@details')->where('id', '[0-9]+')->name('admin.classification.details');
     Route::put('/admin/classification/update', 'Admin\ClassificationController@update')->name('admin.classification.update');
     Route::get('/admin/classification/delete/{id}', 'Admin\ClassificationController@delete')->where('id', '[0-9]+')->name('admin.classification.delete');
+    Route::post('/admin/classification/batch-upload', 'Admin\ClassificationController@batchUpload')->name('admin.classification.batch-upload');
     Route::get('/admin/classification/get-all', 'Admin\ClassificationController@getAll')->where('id', '[0-9]+')->name('admin.classification.get-all');
     Route::get('/admin/classification/download-csv', 'Admin\ClassificationController@downloadCsv')->name('admin.classification.download-csv');
 
@@ -163,6 +166,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/amenity/{id}', 'Admin\AmenitiesController@details')->where('id', '[0-9]+')->name('admin.amenity.details');
     Route::post('/admin/amenity/update', 'Admin\AmenitiesController@update')->name('admin.amenity.update');
     Route::get('/admin/amenity/delete/{id}', 'Admin\AmenitiesController@delete')->where('id', '[0-9]+')->name('admin.amenity.delete');
+    Route::post('/admin/amenity/batch-upload', 'Admin\AmenitiesController@batchUpload')->name('admin.amenity.batch-upload');
     Route::get('/admin/amenity/download-csv', 'Admin\AmenitiesController@downloadCsv')->name('admin.amenity.download-csv');
 
     /*
@@ -237,6 +241,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/get-all', 'Admin\SiteController@getAll')->where('id', '[0-9]+')->name('admin.site.get-all');
     Route::get('/admin/site/set-default/{id}', 'Admin\SiteController@setDefault')->where('id', '[0-9]+')->name('admin.site.set-default');
     Route::get('/admin/site/download-csv', 'Admin\SiteController@downloadCsv')->name('admin.site.download-csv');
+    Route::post('/admin/site/batch-upload', 'Admin\SiteController@batchUpload')->name('admin.site.batch-upload');
 
     /*
     |--------------------------------------------------------------------------
@@ -251,6 +256,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/building/delete/{id}', 'Admin\BuildingsController@delete')->where('id', '[0-9]+')->name('admin.site.building.delete');
     Route::get('/admin/site/buildings', 'Admin\BuildingsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
     Route::get('/admin/site/get-buildings/{id}', 'Admin\BuildingsController@getBuildings')->where('id', '[0-9]+')->name('admin.site.buildings.get-buildings');
+    Route::post('/admin/site/buildings/batch-upload', 'Admin\BuildingsController@batchUpload')->name('admin.site.buildings.batch-upload');
 
     /*
     |--------------------------------------------------------------------------
@@ -263,6 +269,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/floor/update', 'Admin\FloorsController@update')->name('admin.site.floor.update');
     Route::get('/admin/site/floor/delete/{id}', 'Admin\FloorsController@delete')->where('id', '[0-9]+')->name('admin.site.floor.delete');
     Route::get('/admin/site/floors/{id}', 'Admin\FloorsController@getFloors')->where('id', '[0-9]+')->name('admin.site.floors');
+    Route::post('/admin/site/floors', 'Admin\FloorsController@batchUpload')->name('admin.site.floor.batch-upload');
 
     /*
     |--------------------------------------------------------------------------
@@ -280,6 +287,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/screen/get-all', 'Admin\ScreensController@getAllScreens')->name('admin.site.screen.get-all');
     Route::get('/admin/site/screen/set-default/{id}', 'Admin\ScreensController@setDefault')->where('id', '[0-9]+')->name('admin.site.screen.set-default');
     Route::get('/admin/site/screen/download-csv', 'Admin\ScreensController@downloadCsv')->name('admin.site-screen.download-csv');
+    Route::post('/admin/site/screen/batch-upload', 'Admin\ScreensController@batchUpload')->name('admin.site-screen.batch-upload');
 
     Route::get('/admin/site/maps', 'Admin\SiteMapController@index')->name('admin.site.maps');
     Route::get('/admin/site/maps/list', 'Admin\SiteMapController@list')->name('admin.site.maps.list');
@@ -302,6 +310,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/tenant/product/list/{id}', 'Admin\SiteTenantsController@tenantProducts')->where('id', '[0-9]+')->name('admin.site.tenant.product-list');
     Route::get('/admin/site/tenant/product/delete/{tid}/{id}', 'Admin\SiteTenantsController@deleteProduct')->where('tid', '[0-9]+')->where('id', '[0-9]+')->name('admin.site.tenant.delete-product');
     Route::get('/admin/site/tenant/download-csv', 'Admin\SiteTenantsController@downloadCsv')->name('admin.site-tenant.download-csv');
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -558,6 +567,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/site/pi-product/update', 'Admin\PiProductController@update')->name('admin.site.pi-product-product.update');
     Route::get('/admin/site/pi-product/delete/{id}', 'Admin\PiProductController@delete')->where('id', '[0-9]+')->name('admin.site.pi-product-product.delete');
     Route::get('/admin/site/pi-product/get-products', 'Admin\PiProductController@getProducts')->where('id', '[0-9]+')->name('admin.site.pi-product-product.get-products');
+    Route::post('/admin/site/pi-product/batch-upload', 'Admin\PiProductController@batchUpload')->name('admin.site.pi-product-product.batch-upload');
 
     /*
     |--------------------------------------------------------------------------
@@ -572,7 +582,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/site-screen-product/delete/{id}', 'Admin\SiteScreenProductController@delete')->where('id', '[0-9]+')->name('admin.site.site-screen-product.delete');
     Route::post('/admin/site/site-screen-product/get-screens', 'Admin\SiteScreenProductController@getScreen')->name('admin.site.site-screen-product.get-screens');
     Route::post('/admin/site/site-screen-product/get-screen-size', 'Admin\SiteScreenProductController@getScreenSize')->where('id', '[0-9]+')->name('admin.site.site-screen-product.get-screen-size');
-
+    Route::post('/admin/site/site-screen-product/screen/batch-upload', 'Admin\SiteScreenProductController@batchUpload')->name('admin.site.site-screen-product.batch-upload');
     /*
     |--------------------------------------------------------------------------
     | Landmarks Routes

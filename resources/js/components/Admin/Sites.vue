@@ -9,9 +9,9 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewSite="AddNewSite"
-									v-on:editButton="editSite" v-on:DefaultScreen="DefaultScreen" v-on:downloadCsv="downloadCsv" 
-									v-on:downloadTemplate="downloadTemplate"
-									ref="dataTable">
+									v-on:editButton="editSite" v-on:DefaultScreen="DefaultScreen"
+									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -47,7 +47,8 @@
 								<label for="firstName" class="col-sm-3 col-form-label">Site Short Code/Name <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" v-model="site.site_code" placeholder="Site Short Code/Name">
+									<input type="text" class="form-control" v-model="site.site_code"
+										placeholder="Site Short Code/Name">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -189,7 +190,8 @@
 										</div>
 										<div class="col-3">
 											<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{
-												operational.start_time }} <span v-if="operational.end_time">to</span> {{ operational.end_time }}</i>
+												operational.start_time }} <span v-if="operational.end_time">to</span> {{
+		operational.end_time }}</i>
 										</div>
 									</div>
 									<div class="form-group">
@@ -200,7 +202,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 						</div>
 						<!-- /.card-body -->
 					</div>
@@ -233,7 +235,38 @@
 			</div>
 		</div>
 		<!-- Confirm modal -->
-
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -353,6 +386,15 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+
 				download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
@@ -376,6 +418,15 @@ export default {
 	},
 
 	methods: {
+
+		addOperationalHours: function () {
+			this.site.operational_hours.push({
+				schedules: '',
+				start_time: '',
+				end_time: '',
+			});
+		},
+
 		siteLogoChange: function (e) {
 			const file = e.target.files[0];
 			this.site_logo = URL.createObjectURL(file);
@@ -445,7 +496,7 @@ export default {
 			formData.append("site_banner", (this.site.site_banner) ? this.site.site_banner : '');
 			formData.append("site_background", (this.site.site_background) ? this.site.site_background : '');
 			formData.append("site_background_portrait", (this.site.site_background_portrait) ? this.site.site_background_portrait : '');
-			formData.append("company_id", (this.site.company_id) ? this.site.company_id: '');			
+			formData.append("company_id", (this.site.company_id) ? this.site.company_id : '');
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
@@ -462,81 +513,81 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-			.then(response => {
-				toastr.success(response.data.message);
-				this.$refs.dataTable.fetchData();
-				$('#site-form').modal('hide');
-			})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#site-form').modal('hide');
+				})
 		},
 
 		editSite: function (id) {
 			axios.get('/admin/site/' + id)
-			.then(response => {
-				var site = response.data.data;
-				this.site.id = id;
-				this.site.name = site.name;
-				this.site.descriptions = site.descriptions;
-				this.site.site_logo = site.site_logo;
-				this.site.site_banner = site.site_banner;
-				this.site.site_background = site.site_background;
-				this.site.site_background_portrait = site.site_background_portrait;
-				this.site.company_id = (site.details.company_id == 'null') ? '' : site.details.company_id;
-				this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
-				this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
-				this.site.twitter = (site.details.twitter == 'null') ? '' : site.details.twitter;
-				this.site.operational_hours = [];
-				this.site.website = (site.details.website == 'null') ? '' : site.details.website;
-				this.site.active = site.active;
-				this.site.is_default = (site.is_default ==  1) ? true : false;
-				this.site.is_premiere = parseInt(site.details.premiere);
-				this.site.multilanguage = parseInt(site.details.multilanguage);
-				this.site.site_code = site.details.site_code;
-				this.add_record = false;
-				this.edit_record = true;
-
-				if (site.site_logo) {
-					this.site_logo = site.site_logo_path;
-				}
-				else {
-					this.site_logo = this.site.site_logo;
-				}
-
-				if (site.site_banner) {
-					this.site_banner = site.site_banner_path;
-				}
-				else {
-					this.site_banner = this.site.site_banner;
-				}
-
-				if (site.site_background) {
-					this.site_background = site.site_background_path;
-				}
-				else {
-					this.site_background = this.site.site_background;
-				}
-
-				if (site.site_background_portrait) {
-					this.site_background_portrait = site.site_background_portrait_path;
-				}
-				else {
-					this.site_background_portrait = this.site.site_background_portrait;
-				}
-
-				if (site.details.length == 0 || site.details.schedules === 'null' || site.details.schedules == undefined) {
+				.then(response => {
+					var site = response.data.data;
+					this.site.id = id;
+					this.site.name = site.name;
+					this.site.descriptions = site.descriptions;
+					this.site.site_logo = site.site_logo;
+					this.site.site_banner = site.site_banner;
+					this.site.site_background = site.site_background;
+					this.site.site_background_portrait = site.site_background_portrait;
+					this.site.company_id = (site.details.company_id == 'null') ? '' : site.details.company_id;
+					this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
+					this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
+					this.site.twitter = (site.details.twitter == 'null') ? '' : site.details.twitter;
 					this.site.operational_hours = [];
-					this.addOperationalHours();
-				}
-				else {
-					this.site.operational_hours = JSON.parse(site.details.schedules);
-				}
+					this.site.website = (site.details.website == 'null') ? '' : site.details.website;
+					this.site.active = site.active;
+					this.site.is_default = (site.is_default == 1) ? true : false;
+					this.site.is_premiere = parseInt(site.details.premiere);
+					this.site.multilanguage = parseInt(site.details.multilanguage);
+					this.site.site_code = site.details.site_code;
+					this.add_record = false;
+					this.edit_record = true;
 
-				this.$refs.site_logo.value = null;
-				this.$refs.site_banner.value = null;
-				this.$refs.site_background.value = null;
-				this.$refs.site_background_portrait.value = null;
+					if (site.site_logo) {
+						this.site_logo = site.site_logo_path;
+					}
+					else {
+						this.site_logo = this.site.site_logo;
+					}
 
-				$('#site-form').modal('show');
-			});
+					if (site.site_banner) {
+						this.site_banner = site.site_banner_path;
+					}
+					else {
+						this.site_banner = this.site.site_banner;
+					}
+
+					if (site.site_background) {
+						this.site_background = site.site_background_path;
+					}
+					else {
+						this.site_background = this.site.site_background;
+					}
+
+					if (site.site_background_portrait) {
+						this.site_background_portrait = site.site_background_portrait_path;
+					}
+					else {
+						this.site_background_portrait = this.site.site_background_portrait;
+					}
+
+					if (site.details.length == 0 || site.details.schedules === 'null' || site.details.schedules == undefined) {
+						this.site.operational_hours = [];
+						this.addOperationalHours();
+					}
+					else {
+						this.site.operational_hours = JSON.parse(site.details.schedules);
+					}
+
+					this.$refs.site_logo.value = null;
+					this.$refs.site_banner.value = null;
+					this.$refs.site_background.value = null;
+					this.$refs.site_background_portrait.value = null;
+
+					$('#site-form').modal('show');
+				});
 		},
 
 		updateSite: function () {
@@ -548,7 +599,7 @@ export default {
 			formData.append("site_banner", (this.site.site_banner) ? this.site.site_banner : '');
 			formData.append("site_background", (this.site.site_background) ? this.site.site_background : '');
 			formData.append("site_background_portrait", (this.site.site_background_portrait) ? this.site.site_background_portrait : '');
-			formData.append("company_id", (this.site.company_id) ? this.site.company_id: '');			
+			formData.append("company_id", (this.site.company_id) ? this.site.company_id : '');
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
@@ -565,11 +616,11 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-			.then(response => {
-				toastr.success(response.data.message);
-				this.$refs.dataTable.fetchData();
-				$('#site-form').modal('hide');
-			})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#site-form').modal('hide');
+				})
 		},
 
 		DefaultScreen: function (data) {
@@ -585,16 +636,44 @@ export default {
 					$('#confirmModal').modal('hide');
 				})
 		},
-		
-		downloadCsv: function () { 
+
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/amenity/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
+		},
+
+		downloadCsv: function () {
 			axios.get('/admin/site/download-csv')
 				.then(response => {
-                const link = document.createElement('a');
-                link.href = response.data.data.filepath;
-                link.setAttribute('download', response.data.data.filename); //or any other extension
-                document.body.appendChild(link);
-                link.click();
-              })
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 
 		downloadTemplate: function () {

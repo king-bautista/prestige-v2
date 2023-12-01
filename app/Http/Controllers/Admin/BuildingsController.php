@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\Interfaces\BuildingsControllerInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuildingRequest;
 
+use App\Imports\BuildingsImport;
+
 use App\Models\SiteBuilding;
 use App\Models\AdminViewModels\AdminViewModel;
 use App\Models\AdminViewModels\SiteViewModel;
@@ -176,5 +178,21 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             ], 422);
         }
     }
-    
+
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new BuildingsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }
