@@ -233,7 +233,7 @@ export default {
 				delete: {
 					title: 'Delete this Customer Care',
 					name: 'Delete',
-					apiUrl: '/admin/customer_care/delete',
+					apiUrl: '/admin/customer-care/delete',
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
