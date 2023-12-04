@@ -207,6 +207,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/brand/product/delete/{id}', 'Portal\ProductsController@delete')->where('id', '[0-9]+')->name('portal.brand.product.delete');
     Route::get('/portal/brand/product-by-id/{id}', 'Portal\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('portal.brand.product.by-brand');
     Route::get('/portal/brand/get-tags', 'Admin\BrandController@getTags')->where('id', '[0-9]+')->name('portal.brand.get-tags');
+    Route::get('/portal/brand/search', 'Admin\BrandController@searchBrands')->name('portal.brand.search');
 
     /*
     |--------------------------------------------------------------------------
@@ -321,7 +322,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     */
     Route::get('/portal/site/get-all', 'Admin\SiteController@getAll')->where('id', '[0-9]+')->name('portal.site.get-all');
 
-        /*
+    /*
     |--------------------------------------------------------------------------
     | Transaction Status Routes
     |--------------------------------------------------------------------------

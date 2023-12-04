@@ -136,7 +136,7 @@ class SiteTenantViewModel extends Model
 
     public function getStoreAddressAttribute() 
     {
-        if($this->tenant_details['address']) {
+        if(count($this->tenant_details) > 0) {
             return $this->tenant_details['address'];
         }
         return $this->site_details['site_building']. ', '.$this->site_details['site_building_level'];

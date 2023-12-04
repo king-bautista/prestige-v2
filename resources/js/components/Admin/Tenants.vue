@@ -623,6 +623,7 @@ export default {
 					schedules = [];
 
 					var tenant = response.data.data;
+					console.log(tenant);
 					this.tenant.id = tenant.id;
 					this.tenant.brand_id = tenant.brand_details;
 					this.tenant.site_id = tenant.site_id;

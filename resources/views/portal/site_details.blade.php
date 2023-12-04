@@ -19,12 +19,13 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">{{ $site_details->name}}</h4>					
+        <h4 class="card-title"><i class="fas fa-city"></i>&nbsp;<strong>{{ $site_details->name}}</strong>
+        <a type="button" class="btn btn-secondary btn-sm float-end" href="/portal/property-details"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;Back to list</a>
+      </h4>					
+        
       </div>
-      <div class="card-body">
-        <div class="form-group row">
-          <img src="{{ $site_details->site_banner_path}}" />
-        </div>
+      <div class="form-group row mb-0">
+        <img src="{{ $site_details->site_banner_path}}" />
       </div>
     </div>
     <portal-buildings></portal-buildings>
