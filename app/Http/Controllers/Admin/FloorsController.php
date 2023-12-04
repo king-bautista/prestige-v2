@@ -31,9 +31,11 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
         {
             $site_id = session()->get('site_id');
             $buildings = SiteBuildingLevelViewModel::when(request('search'), function($query){
-                return $query->where('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('site_buildings.descriptions', 'LIKE', '%' . request('search') . '%');
+                $query->where(function($query) {
+                    $query->where('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
+                          ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                          ->orWhere('site_buildings.descriptions', 'LIKE', '%' . request('search') . '%');
+                });
             })
             ->leftJoin('site_buildings', 'site_building_levels.site_building_id', '=', 'site_buildings.id')
             ->where('site_building_levels.site_id', $site_id)
