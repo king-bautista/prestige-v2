@@ -39,8 +39,10 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         {
             $site_id = session()->get('site_id');
             $buildings = SiteBuilding::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                $query->where(function($query) {
+                    $query->where('name', 'LIKE', '%' . request('search') . '%')
+                                  ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                });
             })
             ->where('site_id', $site_id)
             ->latest()
