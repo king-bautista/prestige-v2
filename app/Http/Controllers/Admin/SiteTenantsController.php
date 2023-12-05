@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use App\Models\SiteTenant;
 use App\Models\SiteTenantProduct;
 use App\Models\AdminViewModels\SiteTenantViewModel;
-use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\AdminViewModels\BrandProductViewModel;
 use App\Models\ViewModels\TenantsDropdownViewModel;
 
 use App\Imports\SiteTenantsImport;
