@@ -800,7 +800,8 @@ export default {
 			this.contract.is_exclusive = false;
 			this.contract.active = false;
 			this.add_contract = true;
-			this.edit_contract = false;		
+			this.edit_contract = false;
+			this.edit_record = false;		
 			$('#contract-form').modal('show');
 		},
 
@@ -889,6 +890,7 @@ export default {
 					this.contract.active = contract.active;
 					this.add_contract = false;
 					this.edit_contract = true;
+					this.edit_record = true;
 					$('#contract-form').modal('show');
 				});
 		},
