@@ -44,6 +44,7 @@ class CustomerCareViewModel extends Model
         'concern_name',
         'user_details',
         'concern_details',
+        'admin_details',
 
     ];
 
@@ -52,6 +53,14 @@ class CustomerCareViewModel extends Model
         $user = UserViewModel::find($this->user_id);
         if($user)
             return $user;
+        return null;
+    }
+
+    public function getAdminUser()
+    {   
+        $assigned_to_id = AdminViewModel::find($this->assigned_to_id);
+        if($assigned_to_id)
+            return $assigned_to_id;
         return null;
     }
     
@@ -114,5 +123,10 @@ class CustomerCareViewModel extends Model
     public function getConcernDetailsAttribute()
     {
         return $this->getConcern(); 
+    }
+
+    public function getAdminDetailsAttribute()
+    {
+        return $this->getAdminUser(); 
     }
 }

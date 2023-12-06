@@ -13,6 +13,7 @@ use Storage;
 use App\Models\Concern;
 use App\Models\CustomerCare;
 use App\Models\User;
+use App\Models\Admin;
 use App\Models\AdminViewModels\CustomerCareViewModel;
 
 class CustomerCareController extends AppBaseController implements CustomerCareControllerInterface
@@ -133,6 +134,20 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $customer_care = CustomerCare::find($id);
             $customer_care->delete();
             return $this->response($customer_care, 'Successfully Deleted!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getAdminUsers()
+    {
+        try {
+            $users = Admin::get();
+            return $this->response($users, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
