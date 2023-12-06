@@ -96,6 +96,10 @@ class Advertisement extends Model
             foreach($materials as $index => $material) {
                 $material_data = AdvertisementMaterial::find($material->id);
 
+                $required_size = 150;
+                $new_width = 0;
+                $new_height = 0;
+
                 $file_path = 'uploads/media/advertisements/materials/';
                 $thumbnails_path = 'uploads/media/advertisements/materials/thumbnails/';
 

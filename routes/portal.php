@@ -283,6 +283,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     |--------------------------------------------------------------------------
     */
     Route::post('/portal/site/site-screen-product/get-screens', 'Admin\SiteScreenProductController@getScreen')->name('portal.site.site-screen-product.get-screens');
+    Route::post('/portal/site/site-screen-product/get-screen-size', 'Admin\SiteScreenProductController@getScreenSize')->where('id', '[0-9]+')->name('portal.site.site-screen-product.get-screen-size');
     
 
     // Start here
@@ -310,7 +311,7 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     Route::get('/portal/content-management/{id}', 'Admin\ContentManagementController@details')->where('id', '[0-9]+')->name('portal.content-management.details');
     Route::put('/portal/content-management/update', 'Admin\ContentManagementController@update')->name('portal.content-management.update');
     Route::get('/portal/content-management/delete/{id}', 'Admin\ContentManagementController@delete')->where('id', '[0-9]+')->name('portal.content-management.delete');
-    Route::get('/portal/manage-ads/all', 'Portal\ContentManagementController@getAllType')->name('portal.manage-ads.all');
+    Route::get('/portal/manage-ads/all', 'Portal\ContentManagementController@getUploads')->name('portal.manage-ads.all');
     Route::get('/portal/play-list', 'Portal\ContentManagementController@playlist')->name('portal.play-list');
     Route::get('/portal/play-list/list', 'Portal\ContentManagementController@getPLayList')->name('portal.play-list.list');
     Route::post('/portal/play-list/update-sequence', 'Admin\ContentManagementController@updateSequence')->name('portal.play-list.update-sequence');
