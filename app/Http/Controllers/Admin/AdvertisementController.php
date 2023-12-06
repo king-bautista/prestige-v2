@@ -191,8 +191,8 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
     public function getAllType(Request $request)
     {
-        // try
-        // {
+        try
+        {
             $advertisements = ContentMaterialViewModel::when(request('search'), function($query){
                 return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
                              ->where('companies.name', 'LIKE', '%' . request('search') . '%')
@@ -205,15 +205,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function getMaterialDetails($id)

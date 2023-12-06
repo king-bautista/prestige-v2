@@ -239,12 +239,12 @@
 				},
 
 				adsDataFields: {
-					material_path: {
+					serial_number: "ID",
+					material_thumbnails_path: {
             			name: "Preview", 
             			type: "logo", 
             		},
-					screen_assigned: "Screen Assigned",
-            		advertisement_name: "Name", 
+            		name: "Name",
 					company_name: "Company Name",
 					brand_name: "Brand Name",
             	},
