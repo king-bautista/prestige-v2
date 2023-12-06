@@ -57,7 +57,7 @@
 									</multiselect>
 								</div>
 							</div>
-							<div class="form-group row" v-show="select_full_name">
+							<div class="form-group row" v-show="select_user_full_name">
 								<label for="User" class="col-sm-3 col-form-label">User Name<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -66,12 +66,12 @@
 									</multiselect>
 								</div>
 							</div>
-							<div class="form-group row" v-show="input_full_name">
+							<div class="form-group row" v-show="input_user_full_name">
 								<label for="User" class="col-sm-3 col-form-label">User Name<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control readonly"
-										v-model="customer_care.user_id['full_name']" placeholder="First Name" required>
+										v-model="customer_care.user_id['full_name']" placeholder="User Name" required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -108,12 +108,22 @@
 
 								</div>
 							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Assigned to ID <span
+							
+							<div class="form-group row" v-show="select_admin_full_name">
+								<label for="User" class="col-sm-3 col-form-label">Assigned to ID<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" v-model="customer_care.assigned_to_id"
-										placeholder="Assigned to ID" required>
+									<multiselect v-model="customer_care.assigned_to_id" track-by="full_name" label="full_name"
+										placeholder="User Name" :options="admin_users" :searchable="true" :allow-empty="false">
+									</multiselect>
+								</div>
+							</div>
+							<div class="form-group row" v-show="input_admin_full_name">
+								<label for="User" class="col-sm-3 col-form-label">Assigned to ID<span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control readonly"
+										v-model="customer_care.assigned_to_id['full_name']" placeholder="Admin Name" required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -182,11 +192,14 @@ export default {
 			},
 			transaction_statuses: [],
 			users: [],
+			admin_users: [],
 			concerns:[],
 			add_record: true,
 			edit_record: false,
-			input_full_name: false,
-			select_full_name: false,
+			input_user_full_name: false,
+			select_user_full_name: false,
+			input_admin_full_name: false,
+			select_admin_full_name: false,
 			dataFields: {
 				concern_name: "Concern Name",
 				ticket_id: "Ticket ID",
@@ -263,6 +276,7 @@ export default {
 		this.getStatuses();
 		this.getUsers();
 		this.getConcerns();
+		this.getAdminUsers();
 	},
 
 	methods: {
@@ -278,7 +292,10 @@ export default {
 			axios.get('/admin/customer-care/get-concerns')
 				.then(response => this.concerns = response.data.data);
 		},
-
+		getAdminUsers: function () {
+			axios.get('/admin/customer-care/admin-users')
+				.then(response => this.admin_users = response.data.data);
+		},
 		AddNewCustomerCare: function () {
 			this.customer_care.status_id = '';
 			this.customer_care.user_id = '';
@@ -291,8 +308,10 @@ export default {
 			this.customer_care.assigned_to_id = '';
 			this.customer_care.assigned_to_alias = '';
 			this.customer_care.active = true;
-			this.select_full_name = true,
-			this.input_full_name = false,
+			this.select_user_full_name = true;
+			this.input_user_full_name = false;
+			this.select_admin_full_name = true,
+			this.input_admin_full_name = false;
 			this.add_record = true,
 			this.edit_record = false,
 			$(".readonly").attr('readonly', false);
@@ -311,7 +330,7 @@ export default {
 			formData.append("last_name", this.customer_care.last_name);
 			formData.append("ticket_subject", this.customer_care.ticket_subject);
 			formData.append("ticket_description", this.customer_care.ticket_description);
-			formData.append("assigned_to_id", this.customer_care.assigned_to_id);
+			formData.append("assigned_to_id", this.customer_care.assigned_to_id.id);
 			formData.append("assigned_to_alias", this.customer_care.assigned_to_alias);
 			formData.append("active", this.customer_care.active);
 			axios.post('/admin/customer-care/store', formData, {
@@ -339,13 +358,15 @@ export default {
 					this.customer_care.last_name = customer_care.last_name;
 					this.customer_care.ticket_subject = customer_care.ticket_subject;
 					this.customer_care.ticket_description = customer_care.ticket_description;
-					this.customer_care.assigned_to_id = customer_care.assigned_to_id;
+					this.customer_care.assigned_to_id = customer_care.admin_details;
 					this.customer_care.assigned_to_alias = customer_care.assigned_to_alias;
 					this.customer_care.active = customer_care.active;
 					this.add_record = false,
 					this.edit_record = true,
-					this.select_full_name = false,
-					this.input_full_name = true,
+					this.select_user_full_name = false,
+					this.input_user_full_name = true,
+					this.select_admin_full_name = false,
+					this.input_admin_full_name = true,
 					$(".readonly").attr('readonly', true);
 					$('#customer-care-form').modal('show');
 				});
@@ -361,7 +382,7 @@ export default {
 			formData.append("last_name", this.customer_care.last_name);
 			formData.append("ticket_subject", this.customer_care.ticket_subject);
 			formData.append("ticket_description", this.customer_care.ticket_description);
-			formData.append("assigned_to_id", this.customer_care.assigned_to_id);
+			formData.append("assigned_to_id", this.customer_care.assigned_to_id.id);
 			formData.append("assigned_to_alias", this.customer_care.assigned_to_alias);
 			formData.append("active", this.customer_care.active);
 			axios.post('/admin/customer-care/update', formData, {

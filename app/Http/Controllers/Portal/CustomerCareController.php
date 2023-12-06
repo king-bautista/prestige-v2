@@ -11,9 +11,10 @@ use App\Http\Requests\PortalCustomerCareRequest;
 
 use App\Models\CustomerCare;
 use App\Models\Concern;
-use App\Models\ViewModels\CompanyViewModel;
+use App\Models\AdminViewModels\CompanyViewModel;
 use App\Models\ViewModels\CustomerCareViewModel;
-use App\Models\ViewModels\UserViewModel;
+//use App\Models\ViewModels\UserViewModel;
+use App\Models\AdminViewModels\UserViewModel;
 use Carbon\Carbon;
 
 class CustomerCareController extends AppBaseController implements CustomerCareControllerInterface
@@ -45,8 +46,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
-                'assigned_to_id' => '',
-                'assigned_to_alias' => '',
+                // 'assigned_to_id' => '',
+                // 'assigned_to_alias' => '',
                 'status_id' => 2,
                 'active' => 1,
             ];
