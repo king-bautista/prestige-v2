@@ -96,8 +96,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function store(ContentRequest $request)
     {
-        try
-    	{
+        // try
+    	// {
             $data = [
                 'advertisement_id' => $request->advertisement_id,
                 'status_id' => $request->status_id,
@@ -110,24 +110,25 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $content->serial_number = 'CAD-'.Str::padLeft($content->id, 5, '0');
             $content->save();
             $content->saveScreens($request->site_screen_ids);
-            $this->generatePlayList($request->site_screen_ids);
+            if($content->status_id == 5)
+                $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function update(ContentRequest $request)
     {
-        try
-    	{
+        // try
+    	// {
             $content = ContentManagement::find($request->id);
 
             $data = [
@@ -141,18 +142,19 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content->update($data);
             $content->saveScreens($request->site_screen_ids);
-            $this->generatePlayList($request->site_screen_ids);
+            if($content->status_id == 5)
+                $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function delete($id)
@@ -192,41 +194,47 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function generatePlayList($screen_ids)
     {
-        if(count($screen_ids) === 0)
-            return false;
+        // dd($screen_ids);
+        // if(count($screen_ids) === 0)
+        //     return false;
 
-        $site_screen_ids = [];
-        $site_id = 0;
-        $site_screen_products = [];
+        // $site_screen_ids = [];
+        // $site_id = 0;
+        // $site_screen_products = [];
+        // dd($screen_ids);
+        // // GET AND FILTER SCREEN IDS
+        // foreach($screen_ids as $screen) {
+        //     // STOP THE LOOP IF ID IS 0 AND SITE ID NOT EMPTY
+        //     if($screen['id'] === 0 && $screen['site_id']) {
+        //         $site_id = $screen['site_id'];
+        //         $site_screen_ids = [];
+        //         break;
+        //     }
 
-        // GET AND FILTER SCREEN IDS
-        foreach($screen_ids as $screen) {
-            // STOP THE LOOP IF ID IS 0 AND SITE ID NOT EMPTY
-            if($screen['id'] === 0 && $screen['site_id']) {
-                $site_id = $screen['site_id'];
-                $site_screen_ids = [];
-                break;
-            }
+        //     $site_screen_ids[] = $screen['id'];
+        // }    
+        // if($site_id) {
+        //     $site_screen_ids = SiteScreen::where('site_id', $site_id)->get()->pluck('id');
+        // }
+        // // END GET AND FILTER SCREEN IDS
 
-            $site_screen_ids[] = $screen['id'];
-        }    
-        if($site_id) {
-            $site_screen_ids = SiteScreen::where('site_id', $site_id)->get()->pluck('id');
-        }
-        // END GET AND FILTER SCREEN IDS
+        // // GET CONTENT IDS
+        // $content_ids = ContentScreen::whereIn('site_screen_id', $site_screen_ids)->get()->pluck('content_id');
+        // if($site_id) {
+        //     dd('here');
+        //     $content_ids = ContentScreen::where('site_id', $site_id)->where('site_screen_id', 0)->get()->pluck('content_id');
+        // }
 
-        // GET CONTENT IDS
-        $content_ids[] = ContentScreen::whereIn('site_screen_id', $site_screen_ids)->get()->pluck('content_id');
-        if($site_id) {
-            $content_ids = ContentScreen::where('site_id', $site_id)->where('site_screen_id', 0)->get()->pluck('content_id');
-        }
+        // dd($content_ids);
         // END GET CONTENT IDS
-        foreach($site_screen_ids as $index => $screen_id) {
-            PlayList::where('site_screen_id',$screen_id)->delete(); 
+        foreach($screen_ids as $index => $screen_id) {
+            $content_ids = ContentScreen::where('site_id', $screen_id['site_id'])->get()->pluck('content_id');
+            PlayList::where('site_screen_id', $screen_id['id'])->delete(); 
 
             $playlist = $this->getAdvertisementMaterial($content_ids, $screen_id);
+            
             if(PlayList::insert($playlist)) {
-                $this->setSequence($screen_id, $site_id, count($playlist));
+                $this->setSequence($screen_id['id'], $screen_id['site_id'], count($playlist));
             }
         }
 
@@ -258,6 +266,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function setSequence($screen_id, $site_id, $total_rows)
     {  
+        if(!$site_id) {
+            $site_id = SiteScreen::find($screen_id)->site_id;
+        }
+
         $site = SiteViewModel::find($site_id);
         $site_partner_id = $site->details['company_id'];
 
