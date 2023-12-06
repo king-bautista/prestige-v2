@@ -282,7 +282,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                 'end_date' => ($request->end_date) ? $request->end_date : null,
                 'is_exclusive' => $this->checkBolean($request->is_exclusive),
                 'is_indefinite' => $this->checkBolean($request->is_indefinite),
-                'active' => $this->checkBolean($request->active),
+                'active' => 1
             ];
 
             $contract = Contract::create($data);
