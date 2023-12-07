@@ -9,7 +9,7 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewModule="AddNewModule"
-									v-on:editButton="editModule" v-on:downloadCsv="downloadCsv"
+									v-on:editButton="editModule" v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" 
 									v-on:DeleteModule="DeleteModule" ref="dataTable">
 								</Table>
 							</div>
@@ -201,6 +201,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			}
 		};
 	},
@@ -275,9 +282,20 @@ export default {
 				})
 		},
 
+		downloadTemplate: function () {
+			axios.get('/admin/modules/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
 		DeleteModule: function (data) {
 			axios.get('/admin/modules/get-parent/' + data.id)
-			.then(response => {
+			.then(response => {	
 				var parent_id_count = response.data.data;
 				if (parent_id_count == 0) {
 					this.id_to_deleted = data.id;

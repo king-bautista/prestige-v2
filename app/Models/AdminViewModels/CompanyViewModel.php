@@ -49,6 +49,7 @@ class CompanyViewModel extends Model
         'label',
         'brands',
         'contracts',
+        'classification_details',
     ]; 
 
     public function getBrands()
@@ -90,6 +91,14 @@ class CompanyViewModel extends Model
     public function getContractsAttribute() 
     {
         return ContractViewModel::where('company_id', $this->id)->get();
+    }
+
+    public function getClassificationDetailsAttribute()
+    {   
+        $classification = Classification::find($this->classification_id);
+        if($classification)
+            return $classification;
+        return null;
     }
     
 }

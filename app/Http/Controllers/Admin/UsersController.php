@@ -20,11 +20,11 @@ use App\Models\AdminViewModels\AdminViewModel;
 class UsersController extends AppBaseController implements UsersControllerInterface
 {
     /************************************
-    * 			USERS MANAGEMENT		*
-    ************************************/
+     * 			USERS MANAGEMENT		*
+     ************************************/
     public function __construct()
     {
-        $this->module_id = 11; 
+        $this->module_id = 11;
         $this->module_name = 'User';
     }
 
@@ -35,19 +35,16 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function list(Request $request)
     {
-        try
-        {
-            $user = AdminViewModel::when(request('search'), function($query){
+        try {
+            $user = AdminViewModel::when(request('search'), function ($query) {
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('email', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('email', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('full_name', '<>', 'Administrator')
-            ->latest()
-            ->paginate(request('perPage'));
+                ->where('full_name', '<>', 'Administrator')
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($user, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -58,13 +55,10 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function details($id)
     {
-        try
-        {
+        try {
             $user = AdminViewModel::find($id);
             return $this->response($user, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -75,12 +69,11 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function store(RegistrationRequest $request)
     {
-        try
-    	{
+        try {
             $salt = PasswordHelper::generateSalt();
             $password = PasswordHelper::generatePassword($salt, $request->password);
             $data = [
-                'full_name' => $request->last_name.', '.$request->first_name,
+                'full_name' => $request->last_name . ', ' . $request->first_name,
                 'email' => $request->email,
                 'salt' => $salt,
                 'password' => $password,
@@ -94,9 +87,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             $admin_user->saveRoles($request->roles);
 
             return $this->response($admin_user, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -107,17 +98,16 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function update(EditRegistrationeRequest $request)
     {
-        try
-    	{
+        try {
             $user = Admin::find($request->id);
             $password = PasswordHelper::generatePassword($user->salt, $request->password);
             $data = [
-                'full_name' => $request->last_name.', '.$request->first_name,
+                'full_name' => $request->last_name . ', ' . $request->first_name,
                 'email' => $request->email,
                 'active' => $request->isActive
             ];
 
-            if($request->password)
+            if ($request->password)
                 $data['password'] = $password;
 
             $user->update($data);
@@ -127,9 +117,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             $user->saveRoles($request->roles);
 
             return $this->response($user, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -140,14 +128,11 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $user = Admin::find($id);
             $user->delete();
             return $this->response($user, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -158,15 +143,15 @@ class UsersController extends AppBaseController implements UsersControllerInterf
 
     public function downloadCsv()
     {
-        try 
-        {
+        try {
             $admin_management = AdminViewModel::get();
             $reports = [];
             foreach ($admin_management as $admin) {
                 $reports[] = [
+                    'id' => $admin->id,
                     'full_name' => $admin->full_name,
                     'email' => $admin->email,
-                    'status' => ($admin->active == 1) ? 'Active' : 'Inactive',
+                    'active' => $admin->active,
                     'updated_at' => $admin->updated_at,
                 ];
             }
@@ -199,4 +184,42 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         }
     }
 
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'full_name' => '',
+                'email' => '',
+                'active' => '',
+                'updated_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "admin-user-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

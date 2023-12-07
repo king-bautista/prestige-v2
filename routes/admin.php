@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
     Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
     Route::get('/admin/users/download-csv', 'Admin\UsersController@downloadCsv')->name('admin.user.download-csv');
+    Route::get('/admin/users/download-csv-template', 'Admin\UsersController@downloadCsvTemplate')->name('admin.user.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -49,6 +50,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/roles/get-admin', 'Admin\RolesController@getAdmin')->name('admin.roles.get-admin');
     Route::get('/admin/roles/get-portal', 'Admin\RolesController@getPortal')->name('admin.roles.get-portal');
     Route::get('/admin/roles/download-csv', 'Admin\RolesController@downloadCsv')->name('admin.roles.download-csv');
+    Route::get('/admin/roles/download-csv-template', 'Admin\RolesController@downloadCsvTemplate')->name('admin.roles.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -64,6 +66,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/modules/delete/{id}', 'Admin\ModulesController@delete')->where('id', '[0-9]+')->name('admin.modules.delete');
     Route::get('/admin/modules/get-all-links', 'Admin\ModulesController@getAllLinks')->where('id', '[0-9]+')->name('admin.modules.get-all-links');
     Route::get('/admin/modules/download-csv', 'Admin\ModulesController@downloadCsv')->name('admin.modules.download-csv');
+    Route::get('/admin/modules/download-csv-template', 'Admin\ModulesController@downloadCsvTemplate')->name('admin.modules.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -132,6 +135,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/company/get-parent', 'Admin\CompaniesController@getParent')->where('id', '[0-9]+')->name('admin.company.get-parent');
     Route::get('/admin/company/get-brands/{company_id}', 'Admin\CompaniesController@getBrands')->where('id', '[0-9]+')->name('admin.company.get-brands');
     Route::get('/admin/company/download-csv', 'Admin\CompaniesController@downloadCsv')->name('admin.company.download-csv');
+    Route::get('/admin/company/download-csv-template', 'Admin\CompaniesController@downloadCsvTemplate')->name('admin.company.download-csv-template');
     Route::post('/admin/company/brand/store', 'Admin\CompaniesController@storeBrand')->name('admin.company.brand.store');
     Route::get('/admin/company/brand/delete/{id}/{company_id}', 'Admin\CompaniesController@deleteBrand')->where('id', '[0-9]+')->where('company_id', '[0-9]+')->name('admin.company.brand.delete');
     Route::post('/admin/company/contract/store', 'Admin\CompaniesController@storeContract')->name('admin.company.contract.store');
@@ -455,6 +459,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/client/users/update', 'Admin\ClientUserController@update')->name('admin.client.user.update');
     Route::get('/admin/client/users/delete/{id}', 'Admin\ClientUserController@delete')->where('id', '[0-9]+')->name('admin.client.user.delete');
     Route::get('/admin/client/users/download-csv', 'Admin\ClientUserController@downloadCsv')->name('admin.client.user.download-csv');
+    Route::get('/admin/client/users/download-csv-template', 'Admin\ClientUserController@downloadCsvTemplate')->name('admin.client.user.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------

@@ -400,14 +400,18 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $reports = [];
             foreach ($company_management as $company) {
                 $reports[] = [
+                    'id' => $company->id,
+                    'parent_id' => $company->parent_id,
                     'name' => $company->name,
-                    'parent_company' => $company->parent_company,
-                    'classification_name' => $company->classification_name,
+                    'classification_id' => $company->classification_details['id'],
+                    'classification_name' => $company->classification_details['name'],
+                    'classification_active' => $company->classification_details['active'],
+                    'classification_updated_at' => $company->classification_details['updated_at'],
                     'email' => $company->email,
                     'contact_number' => $company->contact_number,
                     'address' => $company->address,
-                    'tin_number' => $company->tin,
-                    'status' => ($company->active == 1) ? 'Active' : 'Inactive',
+                    'tin' => $company->tin,
+                    'active' => $company->active,
                     'updated_at' => $company->updated_at,
                 ];
             }
@@ -419,6 +423,52 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             }
 
             $filename = "company.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+                $reports[] = [
+                    'id' => '',
+                    'parent_id' => '',
+                    'name' => '',
+                    'classification_id' => '',
+                    'classification_name' => '',
+                    'classification_active' => '',
+                    'classification_updated_at' => '',
+                    'email' => '',
+                    'contact_number' => '',
+                    'address' => '',
+                    'tin_number' => '',
+                    'status' => '',
+                    'updated_at' => '',
+                ];
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "company-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
