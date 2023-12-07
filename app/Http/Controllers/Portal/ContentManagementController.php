@@ -13,7 +13,7 @@ use App\Models\TransactionStatus;
 use App\Models\AdminViewModels\UserViewModel;
 use App\Models\AdminViewModels\AdvertisementViewModel;
 use App\Models\AdminViewModels\ContentManagementViewModel;
-use App\Models\AdminViewModels\SiteScreenProductPlaylistViewModel;
+use App\Models\AdminViewModels\SiteScreenPlaylistViewModel;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -104,14 +104,16 @@ class ContentManagementController extends AppBaseController implements ContentMa
     {
         try
         {
-            $play_list = SiteScreenProductPlaylistViewModel::when(request('search'), function($query){
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+            $site_ids = $user->getSiteIds();
+
+            $play_list = SiteScreenPlaylistViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->join('content_screens', 'site_screen_products.id', '=', 'content_screens.site_screen_product_id')
-            ->select('site_screen_products.*')
-            ->groupBy('site_screen_products.id')
-            ->orderBy('site_screen_products.id', 'ASC')
+            ->whereIn('site_id', $site_ids)
             ->paginate(request('perPage'));
+
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

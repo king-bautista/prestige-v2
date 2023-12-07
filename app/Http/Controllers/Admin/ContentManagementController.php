@@ -110,8 +110,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $content->serial_number = 'CAD-'.Str::padLeft($content->id, 5, '0');
             $content->save();
             $content->saveScreens($request->site_screen_ids);
-            if($content->status_id == 5)
-                $this->generatePlayList($request->site_screen_ids);
+            $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Created!', 200);
         // }
@@ -142,8 +141,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $content->update($data);
             $content->saveScreens($request->site_screen_ids);
-            if($content->status_id == 5)
-                $this->generatePlayList($request->site_screen_ids);
+            $this->generatePlayList($request->site_screen_ids);
 
             return $this->response($content, 'Successfully Modified!', 200);
         // }
@@ -226,15 +224,38 @@ class ContentManagementController extends AppBaseController implements ContentMa
         // }
 
         // dd($content_ids);
+
+        $site_id = 0;
+        // GET AND FILTER SCREEN IDS
+        foreach($screen_ids as $screen) {
+            // STOP THE LOOP IF ID IS 0 AND SITE ID NOT EMPTY
+            if($screen['id'] === 0 && $screen['site_id']) {
+                $site_id = $screen['site_id'];
+                break;
+            }
+            $site_screen_ids[] = $screen['id'];
+        }
+
+        if($site_id) {
+            $screen_ids = [];
+            $site_screen_ids = SiteScreen::where('site_id', $site_id)->get();
+            $screen_ids = $site_screen_ids;
+        }
+        else {
+            $screen_ids = [];
+            $site_screen_ids = SiteScreen::whereIn('id', $site_screen_ids)->get();
+            $screen_ids = $site_screen_ids;
+        }
+
         // END GET CONTENT IDS
         foreach($screen_ids as $index => $screen_id) {
-            $content_ids = ContentScreen::where('site_id', $screen_id['site_id'])->get()->pluck('content_id');
-            PlayList::where('site_screen_id', $screen_id['id'])->delete(); 
+            $content_ids = ContentScreen::where('site_id', $screen_id->site_id)->get()->pluck('content_id');
+            PlayList::where('site_screen_id', $screen_id->id)->delete(); 
 
-            $playlist = $this->getAdvertisementMaterial($content_ids, $screen_id);
+            $playlist = $this->getAdvertisementMaterial($content_ids, $screen_id->id);
             
             if(PlayList::insert($playlist)) {
-                $this->setSequence($screen_id['id'], $screen_id['site_id'], count($playlist));
+                $this->setSequence($screen_id->id, $screen_id->site_id, count($playlist));
             }
         }
 
@@ -245,7 +266,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
     {
         $playlist = AdvertisementMaterial::WhereNull('site_screen_products.deleted_at')
         ->whereIn('content_management.id', $content_ids)
-        ->where('site_screens.id', $screen_id)            
+        ->where('site_screens.id', $screen_id)       
+        ->where('content_management.status_id', 5)     
         ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
         ->join('content_management', 'advertisement_materials.advertisement_id', '=', 'content_management.advertisement_id')
         ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')

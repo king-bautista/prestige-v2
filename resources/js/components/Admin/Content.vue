@@ -231,9 +231,9 @@
             				3: '<span class="badge badge-info">Pending approval</span>',
             				4: '<span class="badge badge-danger">Disapprove</span>',
             				5: '<span class="badge badge-success">Approved</span>',
-            				6: '<span class="badge badge-secondary">For review</span>',
-            				7: '<span class="badge badge-info">Archive</span>',
-            				8: '<span class="badge badge-success">Saved</span>',
+            				6: '<span class="badge badge-secondary">Saved</span>',
+            				7: '<span class="badge badge-info">For review</span>',
+            				8: '<span class="badge badge-success">Archive</span>',
             			}
             		},
 					active: {
