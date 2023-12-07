@@ -118,8 +118,7 @@
 											{{ content.advertisement_details.display_duration }}
 										</span>
 									</div>
-								</div>
-								
+								</div>								
 								<div class="form-group row">
 									<label for="Screen" class="col-sm-4 col-form-label">Screen/s <span class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-8">
@@ -340,7 +339,6 @@
             },
 
 			selectedAd: function(data) {
-				console.log(data);
 				this.screens = [];
 				this.content.site_screen_ids = [];
 				this.content.advertisement_id = data.id

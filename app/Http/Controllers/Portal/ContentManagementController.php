@@ -49,12 +49,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
                              ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
 
             })
-            ->where('advertisements.company_id', $user->company_id)
-            ->leftJoin('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.id')
+            ->where('advertisements.company_id', $user->company->id)
+            ->leftJoin('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.advertisement_id')
             ->leftJoin('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
             ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
             ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
             ->select('content_management.*')
+            ->groupBy('content_management.serial_number')
             ->orderBy('content_management.created_at', 'DESC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($contents, 'Successfully Retreived!', 200);
