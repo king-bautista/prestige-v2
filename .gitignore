@@ -1,8 +1,8 @@
 /node_modules
 #/public/js/app.js
 /public/hot
-/public/uploads/map
-/public/uploads/media
+#/public/uploads/map
+#/public/uploads/media
 #/public/uploads
 /public/storage
 /storage/*.key
