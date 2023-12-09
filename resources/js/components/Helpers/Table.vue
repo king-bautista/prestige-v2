@@ -38,7 +38,7 @@
                         <th v-if="checkBox == true">
                             <!-- <input class="form-check-select" type="checkbox" value="" id="selectAll" name="selectAll" @click="checkedAll"> -->
                         </th>
-                        <th v-for="(tHeader, index) in dataFields" v-bind:key="index" class="text-nowrap">
+                        <th v-for="(tHeader, index) in dataFields" v-bind:key="index" class="text-nowrap tbl-header">
 	                        <span v-if="tHeader.type == 'Boolean'">
 	                        {{ tHeader.name }}
 	                        </span>
@@ -54,6 +54,9 @@
 	                        <span v-else>
 	                        {{ tHeader }}
 	                        </span>
+                            <span>
+                                <i class="fas fa-sort data-sort"></i>
+                            </span>
                     	</th>
                     </tr>
                 </thead>
@@ -499,6 +502,17 @@
     @keyframes spinRight {
         from {transform:rotate(360deg);}
         to {transform:rotate(0deg);}
+    }
+
+    .tbl-header {
+        position: relative;
+        padding-right: 25px;
+    }
+    
+    .data-sort {
+        position: absolute;
+        right: 5px;
+        padding: 5px;
     }
 
 </style>

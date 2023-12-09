@@ -1,0 +1,1298 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: Henry Sans Medium !important;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+/*Debug*/
+/* * {
+  background: #000 !important;
+  color: #0f0 !important;
+  outline: solid #f00 1px !important;
+} */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+  
+::-webkit-scrollbar-thumb {
+    background: rgb(220, 220, 220);
+    border-radius: 10px;
+}
+  
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.dca-1 {
+    margin-right: -15px;
+}
+
+.directory-container-content {
+    position: relative; 
+    height: 1080px;
+    right: 0 !important;
+}
+
+.tenant-main-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    height: 100%
+}
+
+.logo-landscape {
+    width: 335px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.logo-adjustment {
+    position: absolute; 
+    top: 38px; 
+    left: 1315px !important; 
+    width: 100px; 
+    height: 100px; 
+    padding: 0px; 
+    display: block; 
+    z-index: 9999;
+}
+
+.nav-titles { 
+    font-size: 30px;
+    margin-top: 0px;
+    margin-left: -10px;
+}
+
+.title-page {
+    font-family: Henry Sans Medium;
+    font-size: 40px;
+    margin-top: 128px;
+    margin-left: 20px;
+    color: #2a2a2a;
+}
+
+.title-page-content {
+    margin-left: -17px !important;
+    font-size: 2em;
+    font-family: 'Henry Sans Regular' !important;
+}
+
+.bg-kiosk {
+    height: 1080px !important; 
+  	width: 100% !important;
+  	background-position: center;
+  	background-repeat: no-repeat;
+  	background-size: cover;
+}
+
+/*---- css for multirotator when landscape ----*/
+
+.multirotator_landscape {
+    width: 470px;
+    height: 1060px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: -15px;
+    z-index: 9999;
+}
+.multirotator_portrait{
+    width: 1060px;
+    height: 470px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+
+/*---- css for categories when landscape ----*/
+
+.categories-card-container {
+    margin: 86px 0px 0 0px;
+}
+
+.category-food-card {
+    position: relative;
+    margin-left: 72px;
+    width: 349px;
+    height: 528px;
+    object-fit: cover;
+}
+
+.category-fashion-card {
+    position: relative;
+    margin-left: 45px;
+    width: 349px;
+    height: 528px;
+    object-fit: cover;
+}
+
+.category-electronics-card {
+    position: relative;
+    margin-left: 46.5px;
+    width: 228px;
+    height: 343px;
+    object-fit: cover;
+}
+
+.category-function-card {
+    position: relative;
+    margin-left: 48px;
+    width: 228px;
+    height: 343px;
+    object-fit: cover;
+}
+
+.category-finds-card {
+    position: relative;
+    margin-left: 45px;
+    margin-top: 24px;
+    width: 508px;
+    height: 159px;
+    object-fit: cover;
+}
+
+.ct-food-button-allign {
+    top: 46px;
+    left: 35px;
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Henry Sans Medium';
+}
+
+.ct-fashion-button-allign {
+    top: 46px;
+    left: 38px;
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Henry Sans Medium';
+}
+
+.ct-electronics-button-allign {
+    top: 46px;
+    left: 24.5px;
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Henry Sans Medium';
+}
+
+.ct-services-button-allign {
+    top: 46px;
+    left: 23.5px;
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Henry Sans Medium';
+}
+
+.ct-finds-button-allign {
+    top: 55px;
+    left: 24px;
+    position: absolute;
+    font-size: 24px;
+    font-family: 'Henry Sans Medium';
+}
+
+.cat-cards {
+    margin-left: 18.5px;
+    margin-top: -100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cat-row-card {
+    margin-left: -29px !important;
+    width: 704px;
+    height: 318px;
+}
+
+.cat-btn-img {
+    width: 320px !important;
+    height: 90px !important;
+    object-fit: cover !important;
+}
+
+.cat-btn {
+    width: 320px !important;
+    position: relative;
+    height: 90px;
+}
+
+.cat-btn-align {
+    color: #246c63;
+    width: 199px;
+    height: 90px;
+    text-align: left;
+    position: absolute;
+    display: table;
+    font-size: 17px;
+    font-family: 'Henry Sans Medium';
+    top: 0px;
+    left: 20px;
+}
+
+.cat-text {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.cat-nav-tabs {
+    margin-left: 20px;
+    margin-top: 795px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+}
+
+/*---- css for help when landscape ----*/
+
+.help-img-btn {
+    position:absolute;
+    top:880px;
+    right:-15px;
+}
+
+.popover {
+    max-width: 200px !important;
+    height: auto;
+}
+
+/* css for back when landscape */
+.back-img-btn {
+    position:absolute;
+    top:800px;
+    right: 0px;
+    z-index: 9999;
+}
+
+/*---- css for language when landscape ----*/
+
+.language-btn-container {
+    position: absolute;
+    right: 6.0px;
+    top: 1000px;
+}
+
+.language-btn-font {
+    font-size: 23px !important;
+}
+
+.language-title{
+    font-size:0.58em;
+}
+
+.dropdown-container-adjustment {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+}
+
+
+/* css for map canvas */
+.map-canvas {
+    margin-top: 20px;
+    margin-left: -10px;
+    width: 1450px;
+    height: 780px;
+    position: absolute; 
+    background-color: white;
+}
+
+.canvas-canvas {
+    width: 1450px;
+    height: 800px;
+}
+
+/* css for cinema container */
+
+.ImgCinemaDefault {
+    object-fit: cover;
+    width: 500px;
+    height: 500px;
+    margin-left: 20px;
+    margin-top: 185px;
+}
+
+.cinema-page-title {
+    position: absolute;
+    top: 182px;
+    left: 617.3px;
+    font-size: 2em;
+    font-family: 'Henry Sans Regular' !important;
+}
+
+.cinema-page-title-2 {
+    position: absolute;
+    top: 182px;
+    left: 628.7px;
+    font-size: 2em;
+    font-family: 'Henry Sans Regular' !important;
+}
+
+.cinema-card-container {
+    width: 632.5px !important;
+    position: absolute;
+    top: 267px;
+    left: 429px;
+}
+
+.cinema-card-container-expand {
+    width: 1150px !important;
+    position: absolute;
+    top: 267px;
+    left: 160px;
+}
+
+.cinema-cards {
+    border-radius: 10px !important;
+    padding: 10px 6.5px 10px 6.5px;
+    height: 78.8px !important;
+    margin-bottom: 1px !important;
+    -webkit-box-shadow: 0px 8px 16px 2px rgba(192,192,192,.8) !important;
+    -moz-box-shadow: 0px 8px 16px 2px rgba(192,192,192,.8) !important;
+    box-shadow: 0px 8px 16px 2px rgba(192,192,192,.8) !important;
+}
+
+.cinema-img {
+    margin-left: -1px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.cinema-txt-1 {
+    font-size: 0.875em; 
+    margin-left:34px; 
+    margin-top: 1px;
+    font-family: 'Henry Sans Medium' !important;
+}
+
+.cinema-txt-2 {
+    font-size: 0.7em; 
+    margin-left:34px;
+    font-family: 'Henry Sans Medium' !important;
+}
+
+.cinema-nav-tabs {
+    position: absolute;
+    top: 875px;
+    left: 494px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+}
+
+.cinema-schedule-page-content {
+    position: absolute;
+    width: 240PX !important;
+    top: 258px;
+    left: -128.5px;
+    font-size: 2em;
+    font-family: 'Henry Sans Regular' !important;
+}
+
+/* css for promo */
+.promo-content-container {
+    margin-left: 155px !important;
+    margin-top: 32px;
+}
+
+.tenant-store-page-logo {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.tenant-store-page-name {
+    font-family: 'Henry Sans Medium' !important; 
+    font-weight: 800px; 
+    font-size: 1.1em;
+    margin-left: 95.3px; 
+    margin-top: 3px;
+}
+
+.tenant-store-page-floor {
+    font-family: 'Henry Sans Regular'; 
+    margin-left: 95.3px; 
+    margin-top: -8px;
+}
+
+.tenant-store-page-views {
+    font-family: 'Henry Sans Regular'; 
+    margin-left: 95.3px; 
+    margin-top: -7px;
+    margin-bottom: 6px;
+}
+
+.tenant-store-schedule {
+    margin-left: 4px;
+}
+
+.mall-hours-info {
+    float: left; 
+    margin: -1px 10px 0 0; 
+    width: 1em; 
+    color: rgb(136, 136, 136);
+}
+
+.mall-hours-title {
+    font-size: 20.8px !important; 
+    font-family: 'Henry Sans Regular' !important;
+}
+.mall-hours-divider {
+    font-weight: normal !important;
+    color: rgb(136, 136, 136);
+}
+
+.social-media-container {
+    margin: 34px 0 150px 20px;
+}
+
+.social-media-icons {
+    width: 40px; 
+    margin-right: 5px; 
+}
+
+.social-media-text {
+    color: #888888 !important;
+    font-family: 'Henry Sans Regular' !important;
+}
+
+.svg-inline--fa.fa-w-14 {
+    width: 0.875em;
+}
+
+.svg-inline--fa {
+    height: 1.8em !important;
+}
+
+.svg-inline--fa.fa-w-16 {
+    width: 1em;
+}
+
+.ImgPromoDefault {
+    object-fit: cover;
+    margin-left: 20px;
+    margin-top: 21px;
+}
+
+.promo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px !important;
+}
+
+.promo-store {
+    font-size: 1.5rem; 
+    margin: 10px 0 0 0;
+    font-family: 'Henry Sans Regular' !important;
+}
+
+.promo-floor {
+    font-size: 1.2rem; 
+    margin-top: -4px;
+    margin-bottom: 2rem;
+    font-family: 'Henry Sans Regular' !important;
+}
+
+.promo-card {
+    width: 290px;
+    height: 290px;
+    border-radius: 15px !important;
+}
+
+.promo-banner-card {
+    width: 946px;
+    height: 253.40px;
+    margin-left: 18px;
+    margin-top: 38px; 
+    border-radius: 20px;
+}
+
+.promo-row-container {
+    overflow-y: scroll !important;  
+    max-height: 580px !important; 
+    max-width: 973px !important; 
+    margin-left: 16px !important;
+}
+
+.promo-col-container {
+    text-align: center !important; 
+    padding-top: 30px !important;
+}
+
+.store-page-client-content {
+    width: 973px !important;
+    height: 580px !important;
+    overflow: hidden !important;
+}
+
+.img-promo-card {
+    width: 279.45px;
+    height: 279.45px;
+    border-radius: 15px !important;
+    margin-bottom: 119px !important;
+    margin-left: 35.5px;
+
+}
+
+.tenant-card-info-tab {
+    border: 1px solid #efefef;
+    padding: 5px; 
+    border-radius: 10px; 
+    width: 421px; 
+    height: 633px; 
+    float: right; 
+    font-size: 1.3em;
+    margin-top: 37.5px;
+    margin-left: 6px;
+}
+
+.promo-featured-container {
+    width: 1010px !important;
+}
+
+.promo-modal-content {
+    width: 1450px !important; 
+    left: 0px !important; 
+    margin-left: 5px !important; 
+    position: absolute !important; 
+    top: 0px !important; 
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.promo-modal-container {
+    background-color: transparent !important; 
+    margin-bottom: 6.5px !important; 
+    margin-left: -100px !important;
+}
+
+.promo-modal-container-2 {
+    background-color: transparent !important; 
+    margin-bottom: 5.5px !important; 
+    margin-left: -262px !important;
+}
+
+.promo-modal-img {
+    width: 700px !important; 
+    height: 700px !important; 
+    border-radius: 40px !important;
+}
+
+.promo-banner-modal-img {
+    width: 1024px !important; 
+    height: 274.28px !important; 
+    border-radius: 20px !important;
+}
+
+.modal-backdrop {
+    top: 0 !important;
+    left: auto !important;
+    right: 0 !important;
+    width: 1450px !important;
+}
+
+.btn-directions {
+    background-color: #0030ff !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    border: 1px solid #6051e3 !important;
+    font-family: 'Henry Sans Medium' !important; 
+    font-size: inherit !important; 
+    height: 45px !important;
+}
+
+.ShareBtn {
+    opacity: 30% !important; 
+    background-color: #e2e2e2 !important; 
+    color: #6e6c6c !important; 
+    border-color: #e2e2e2 !important; 
+    font-size: 1em !important; 
+    width: 180px !important; 
+    margin-right: 30px !important; 
+    font-family: Henry Sans Regular !important;
+}
+
+.ShareTextMargin {
+    float: left;
+    margin: 0px 0px 0px 15px;
+}
+
+.ShareText {
+    float: left; 
+    margin: 5px 0px 0px 15px; 
+    font-size: 1em; 
+    line-height: normal;
+}
+
+.BtnOrderNow {
+    opacity: 30% !important; 
+    color: #b6c3ff !important; 
+    border: 1px solid #b6c3ff !important; 
+    font-size: 1em !important; 
+    font-family: Henry Sans Regular !important;
+    height: 45px !important;
+}
+
+.heart-icon-btn {
+    float: left; 
+    margin: 6px 0 0 35.5px;
+}
+
+.display-likes-btn {
+    float: left;
+    margin: 8px 0 0 14.5px; 
+    font-family: 'Henry Sans Regular' !important; 
+    color: #000000;
+}
+
+.close {
+    margin-right: -230px;
+    margin-top: -50px;
+    font-size: 3rem !important;
+}
+
+.closeBanner {
+    margin-right: -540px !important;
+}
+
+.mySlidesContent {
+    display: none;
+    transition: transform .6s ease-in-out;
+}
+
+.carousel-content-container {
+    vertical-align: middle;
+    padding: 32px 133px 0px 153px !important;
+    margin-left: 16px;
+}
+
+.slideshow-content-container {
+    max-width: 100%;
+    position: relative;
+    height: 1080px;
+    margin: auto;
+}
+
+.promo-prev,
+.promo-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.promo-next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.dot-container {
+    position: absolute;
+    text-align: center !important;
+    width: 100%;
+    top: 900px;
+    left: 10px;
+    right: 0px;
+}
+
+.carousel-dot {
+    cursor: pointer;
+    height: 17px;
+    width: 17px;
+    margin: 0 13.8px;
+    background-color: #d5ddff;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.carousel-active,
+.carousel-dot:hover {
+    background-color: #2f3b87;
+}
+
+.left-btn-carousel {
+    position: absolute !important;
+    left: 30px;
+    top: -145px;
+}
+
+.right-btn-carousel {
+    position: absolute !important;
+    right: 52px;
+    top: -145px;
+}
+
+/*---- css for map selection ----*/
+.MapBtn {
+    width: 100%; 
+    position: absolute; 
+    bottom: 100px; 
+    left: 54px; 
+    padding: 10px; 
+    z-index: 999;
+}
+/*---- css for navigation when landscape ----*/
+
+.nav-content-container {
+    position: absolute;
+    top: 0px;
+    left: 0%;
+}
+
+.nav-content-container-1 {
+    position: absolute;
+    top: 0px;
+    left: 10%;
+}
+
+.nav-content-container-2 {
+    position: absolute;
+    top: 0px;
+    left: 18%;
+}
+
+.nav-content-container-3 {
+    position: absolute;
+    top: 0px;
+    left: 25%;
+}
+
+.nav-content-container-4 {
+    position: absolute;
+    top: 0px;
+    left: 32%;
+}
+
+.nav-btn-container {
+    position: relative;
+    z-index: 9999;
+}
+
+.nav-btn-home {
+    position: absolute;
+    left: 135px;
+    top: 982px;
+}
+
+.nav-btn-search {
+    position: absolute;
+    left: 349px;
+    top: 982px;
+}
+
+.nav-btn-map {
+    position: absolute;
+    left: 559px;
+    top: 982px;
+}
+
+.nav-btn-promo {
+    position: absolute;
+    left: 767px;
+    top: 982px;
+}
+
+.nav-btn-cinema {
+    position: absolute;
+    left: 980px;
+    top: 982px;
+}
+
+.nav-btn-active {
+    text-transform: uppercase;
+    font-family: 'Henry Sans Medium' !important;
+}
+
+.nav-home-button-align {
+    color: #c15669;
+    width: 94px;
+    position: absolute;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
+    font-family: 'Henry Sans Regular';
+    text-align: center;
+}
+
+.nav-search-button-align {
+    color: #6051e3;
+    width: 94px;
+    position: absolute;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
+    font-family: 'Henry Sans Regular';
+    text-align: center;
+}
+
+.nav-map-button-align {
+    color: #6051e3;
+    width: 94px;
+    position: absolute;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
+    font-family: 'Henry Sans Regular';
+    text-align: center;
+}
+
+.nav-promo-button-align {
+    color: #e89b12;
+    width: 94px;
+    position: absolute;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
+    font-family: 'Henry Sans Regular';
+    text-align: center;
+}
+
+.nav-cinema-button-align {
+    color: #246c63;
+    width: 94px;
+    position: absolute;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
+    font-family: 'Henry Sans Regular';
+    text-align: center;
+}
+
+#home-cat-contents {
+    display: none;
+}
+
+#home-container {
+    display: block;
+}
+
+#search-container {
+    display: none;
+}
+
+#map-container {
+    display: none;
+}
+
+#promos-container {
+    display: none;
+}
+
+#promos-default {
+    display: none;
+}
+
+#tenant-store-content {
+    display: none;
+}
+
+#cinema-container {
+    display: none;
+}
+
+#home_v4s {
+    display: block;
+}
+
+#home_v4 {
+    display: none;
+}
+
+#search_v4s {
+    display: none;
+}
+
+#search_v4 {
+    display: block;
+}
+
+#map_v4s {
+    display: none;
+}
+
+#map_v4 {
+    display: block;
+}
+
+#promos_v4s {
+    display: none;
+}
+
+#promos_v4 {
+    display: block;
+}   
+
+#cinema_v4s {
+    display: none;
+}
+
+#cinema_v4 {
+    display: block;
+}
+
+.nav-tab-title {
+    font-size: 24px !important;
+    font-family: 'Henry Sans Regular';
+}
+
+.nav-tab-pills-container {
+    border-radius: 15px !important;
+    font-size: 24px !important;
+}
+
+.nav-tab-pills-btn {
+    border-radius: 15px !important;
+    border: 0px;
+    font-size: 24px !important;
+    padding: 5px 30px 5px 30px !important;
+    font-family: 'Henry Sans Regular';
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: #0030FF !important;
+}
+
+
+
+/** ------- Resolutions  -------**/
+
+/** XX-LARGE RESOLUTION **/
+@media (max-width: 1080px) {
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .dca-1 {
+        margin-left: -15px !important;
+    }
+
+    .logo-adjustment {
+        top: 38px; 
+        left: 965px !important; 
+    }
+
+    .nav-titles {
+        margin-left: -15px;
+    }
+
+/*---- css of banner when portrait ----*/
+
+    .multirotator_landscape {
+        display: none !important;
+    }
+    .multirotator_portrait {
+        display: flex !important;
+        margin-left: 10px;
+    }
+
+    .title-page-portrait{
+        margin-top: 150px;
+    }
+
+/*---- css for promo when portrait----*/
+    .left-btn-carousel {
+        left: 30px;
+        top: -5px;
+    }
+
+    .right-btn-carousel {
+        right: 30px;
+        top: -5px;
+    }
+
+    .carousel-content-container {
+        padding: 205px 140px 0px 40px !important;
+    }
+    
+    .promo-modal-content {
+        width: 100% !important; 
+        height: 1200px !important;
+        left: 0px !important; 
+        margin-left: 0px !important; 
+        top: -10px !important; 
+    }
+    
+    .promo-modal-container {
+        margin-bottom: 6.5px !important; 
+        margin-left: -100px !important;
+    }
+
+    .dot-container {
+        top: 1075px;
+        left: 10px;
+        right: 0px;
+    }
+
+    .promo-featured-container {
+        width: 650px !important;
+    }
+
+    .promo-banner-card {
+        width: 615px;
+        height: 150px;
+        margin-left: 0px !important;
+        margin-top: 38px; 
+        border-radius: 20px;
+    }
+
+    .promo-row-container {
+        overflow-y: scroll !important;  
+        max-height: 925px !important; 
+        max-width: 650px !important; 
+        margin-left: -10px !important;
+    }
+    
+    .promo-col-container {
+        text-align: center !important; 
+        padding-top: 30px !important;
+    }
+    
+    .store-page-client-content {
+        width: 973px !important;
+        height: 925px !important;
+        overflow: hidden !important;
+    }
+
+    .tenant-card-info-tab {
+        width: 400px !important; 
+        height: 633px; 
+        margin-top: 37.5px;
+        margin-left: 15px;
+    }
+
+    .ImgPromoDefault {
+        margin-left: 20px;
+        margin-top: 175px;
+    }
+
+/*---- css of categories when portrait ----*/
+
+    .categories-card-container {
+        margin: 200px 0px 0px -15px;
+    }
+
+    .category-food-card {
+        margin-left: 30px;
+        width: 270px;
+        height: 440px;
+    }
+
+    .category-fashion-card {
+        margin-left: 15px;
+        width: 270px;
+        height: 440px;
+    }
+
+    .category-electronics-card {
+        margin-left: 15px;
+        width: 200px;
+        height: 240px;
+    }
+
+    .category-function-card {
+        margin-left: 40px;
+        width: 200px;
+        height: 240px;
+    }
+
+    .category-finds-card {
+        margin-left: 15px;
+        margin-top: 50px;
+        width: 450px;
+        height: 150px;
+    }
+
+    .category-food-img {
+        width: 260px;
+        height: 440px;
+    }
+
+    .category-fashion-img{
+        width: 260px;
+        height: 440px;
+    }
+
+    .category-electronics-img{
+        width: 210px;
+        height: 260px;
+    }
+
+    .category-function-img{
+        width: 210px;
+        height: 260px;
+    }
+
+    .category-finds-img{
+        width: 450px;
+        height: 150px;
+    }
+
+    .cat-cards {
+        margin-left: 18.5px;
+        margin-top: 30px;
+    }
+
+    .cat-nav-tabs {
+        margin-left: 20px;
+        margin-top: 1030px;
+    }
+
+/*---- css for cinema when portrait ----*/
+    .ImgCinemaDefault {
+        margin-left: 40px;
+        margin-top: 250px;
+    }
+    .cinema-card-container {
+        width: 632.5px !important;
+        top: 267px;
+        left: 429px;
+    }
+
+    .cinema-card-container-expand {
+        width: 1105px !important;
+        top: 267px;
+        left: 0px;
+    }
+
+    .cinema-nav-tabs {
+        top: 1075px;
+        left: 320px;
+    }
+
+    .cinema-page-title {
+        top: 182px;
+        left: 450.3px;
+    }
+    
+    .cinema-page-title-2 {
+        top: 182px;
+        left: 450.7px;
+    }
+    
+/*---- css for back button when portrait ---- */
+    
+    .back-img-btn {
+        position:absolute;
+        top: 1340px;
+        left: 20px;
+        width: 70px !important;
+    }
+
+/*---- css for help when portrait ----*/
+
+    .help-img-btn {
+        position:absolute;
+        top:1338px !important;
+        right: 0px !important;
+        cursor: pointer;
+        z-index: 9999;
+    }
+
+/*---- css for language when portrait ----*/
+
+    .language-btn-container {
+        position: absolute;
+        left: 840.0px;
+        top: 1345px;
+        z-index: 1001;
+    }
+
+    .dropdown-container-adjustment {
+        right: 0 !important;
+        left: auto !important;
+    }
+
+
+/*---- css for navigation when portrait ----*/
+    .nav-btn-container {
+        z-index: 1000;
+    }
+
+    .nav-btn-home {
+        position: absolute;
+        left: 10px;
+        top: 1225px;
+    }
+
+    .nav-btn-search {
+        position: absolute;
+        left: 220px;
+        top: 1225px;
+    }
+
+    .nav-btn-map {
+        position: absolute;
+        left: 430px;
+        top: 1225px;
+    }
+
+    .nav-btn-promo {
+        position: absolute;
+        left: 640px;
+        top: 1225px;
+    }
+
+    .nav-btn-cinema {
+        position: absolute;
+        left: 845px;
+        top: 1225px;
+    }
+
+}
+
+
+/** X-LARGE RESOLUTION **/
+@media (max-width: 1200px) {
+  
+}
+
+
+
+/** LARGE RESOLUTION **/
+@media (max-width: 992px) {
+  
+}
+
+
+
+/** MEDIUM RESOLUTION **/
+@media (max-width: 768px) {
+
+
+}
+
+
+
+/** SMALL RESOLUTION **/
+@media (max-width: 576px) {
+
+
+}
