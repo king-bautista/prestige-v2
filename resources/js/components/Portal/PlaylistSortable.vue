@@ -6,7 +6,7 @@
 	          	<div class="card">
 					<div class="card-header">
 						<h4 v-show="data_list"><i class="fas fa-play-circle"></i>&nbsp;&nbsp;Ad Playlist</h4>
-						<h4 v-show="add_record && data_form">Ad Playlist :<strong> {{ screen_location }} </strong><br>Ad Type :<strong> {{ ad_type }}</strong></h4>
+						<h4 v-show="add_record && data_form"><i class="fas fa-play-circle"></i>&nbsp;&nbsp;Ad Playlist :&nbsp;<strong> {{ screen_location }} </strong></h4>
 					</div>
 	    			<div class="card-body" v-show="data_list">
 			          	<Table 
@@ -20,42 +20,40 @@
 			          	</Table>
 		          	</div>
 					<div class="card-body" v-show="data_form">
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item" role="presentation" v-for="(dimension, index) in dimensions">
+								<button v-bind:class="(index == 0) ? 'active': ''" class="nav-link" @click="dimension_value = dimension.dimension" :id="dimension" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">{{dimension.ad_type_name}}</button>
+							</li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							<div v-for="(dimension, index) in dimensions" v-bind:class="(index == 0) ? 'show active': ''" class="tab-pane fade" :id="dimension" role="tabpanel">&nbsp;</div>
+						</div>
 						<table class="table table-hover table-striped">
 							<thead class="thead-dark">
 								<tr>
 									<th scope="col">ID</th>
-									<!-- <th scope="col">Preview</th> -->
+									<th scope="col">Preview</th>
 									<th scope="col">Parent Category</th>
 									<th scope="col">Category Name</th>
 									<th scope="col">Brand Name</th>
 									<th scope="col">Company Name</th>
-									<th scope="col">Duration(s)</th>
-									<th scope="col">Start Date</th>
-									<th scope="col">End Date</th>
-									<th scope="col">Status</th>
+									<th scope="col">Start/End Date</th>
 									<th scope="col">Duration</th>
 									<th scope="col">Date Appoved</th>
 								</tr>
 							</thead>
 							<tbody id="playlist_rows">
-								<tr v-for="(data, index) in playlist" v-bind:key="index" :id="data.id">
-									<td data-container="body" data-toggle="tooltip" data-placement="top" title="Drag rows up and down">{{ data.material_serial_number }}</td>
-									<!-- <td>{{ data.material_path }}</td> -->
+								<tr v-for="(data, index) in playlist.filter( col => col.dimension == dimension_value)" v-bind:key="index" :id="data.id">
+									<td data-container="body" data-toggle="tooltip" data-placement="top" title="Drag rows up and down">{{ data.content_serial_number }}</td>
+									<td> <img :src="data.thumbnail_path"> </td>
 									<td>{{ data.parent_category_name }}</td>
 									<td>{{ data.category_name }}</td>
 									<td>{{ data.brand_name }}</td>
 									<td>{{ data.company_name }}</td>
-									<td>{{ data.display_duration }}</td>
-									<td>{{ data.start_date }}</td>
-									<td>{{ data.end_date }}</td>
-									<td>
-										<span v-if="data.active" class="badge badge-info">Active</span>
-										<span v-else class="badge badge-info">Deactivated</span>
-									</td>
+									<td>{{ data.start_date }} <br/>to<br/> {{ data.end_date }}</td>
 									<td>{{ data.duration }}</td>
 									<td>{{ data.updated_at }}</td>
 								</tr>
-								
 							</tbody>
 						</table>
 						<div class="form-group row">
@@ -82,7 +80,8 @@
             return {
 				file: '',
 				screen_location: '',
-				ad_type: '',
+				dimensions: [],
+				dimension_value: '',
 				playlist: [],
 				sorted_data: [],
 				data_list: true,
@@ -90,10 +89,9 @@
                 add_record: true,
                 edit_record: false,
             	dataFields: {
-					serial_number: "ID",
                     site_screen_location: "Screen Location",
 					site_name: "Site",
-					ad_type: "Ad Type",
+					product_application: "Product Application",
 					active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -128,33 +126,21 @@
 			},
 
 			modalPlaylist: function(data) {
-				console.log(data);
-				this.playlist = [];
-				this.screen_location = data.site_screen_location;
-				this.ad_type = data.ad_type;
-				this.playlist = data.playlist;
+				if(data.playlist.length > 0) {
+					this.playlist = [];
+					this.screen_location = data.site_screen_location;
+					this.dimensions = data.dimensions;
+					this.dimension_value = data.dimensions[0].dimension;
+					this.playlist = data.playlist;
 
-				this.data_list = false;
-				this.data_form = true;
-				this.add_record = true;
-				this.edit_record = false;
-			},
-
-			savePlaylist: function() {
-				var sorted_data = [];
-				$('tbody tr').each(function(){
-					var id = $(this).attr('id');
-					if(id) {
-						sorted_data.push(id);
-					}
-				});
-
-				axios.post('/portal/play-list/update-sequence', {sorted_data : sorted_data})
-                .then(response => {
-					if(response.data) {
-						$("#sortableContent").modal('hide');
-					}
-				});
+					this.data_list = false;
+					this.data_form = true;
+					this.add_record = true;
+					this.edit_record = false;
+				}
+				else {
+					toastr.error('Playlist not available.');
+				}
 			},
 
 			backToList: function () {
@@ -162,12 +148,6 @@
 				this.data_form = false;
 			},
 
-		},
-
-		mounted() {
-			$( function() {
-				$( "#playlist_rows" ).sortable();
-			} );
 		},
 
         components: {

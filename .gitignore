@@ -1,12 +1,9 @@
 /node_modules
 #/public/js/app.js
 /public/hot
-<<<<<<< HEAD
-/public/uploads/map
-/public/uploads/media
-=======
+#/public/uploads/map
+#/public/uploads/media
 #/public/uploads
->>>>>>> 3ce73e6fea4239e0c6da85d8bb7917d512162fa3
 /public/storage
 /storage/*.key
 /vendor
