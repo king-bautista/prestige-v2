@@ -9,7 +9,8 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewConcern="AddNewConcern"
-									v-on:editButton="editConcern" v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:editButton="editConcern" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -37,15 +38,18 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="name" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<label for="name" class="col-sm-4 col-form-label">Name <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="concerns.name" placeholder="Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="description" class="col-sm-4 col-form-label">Description <span class="font-italic text-danger"> *</span></label>
+								<label for="description" class="col-sm-4 col-form-label">Description <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" rows="5" v-model="concerns.description" placeholder="Description"></textarea>
+									<textarea class="form-control" rows="5" v-model="concerns.description"
+										placeholder="Description"></textarea>
 								</div>
 							</div>
 
@@ -97,7 +101,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				shorten_name:"Name",
+				shorten_name: "Name",
 				shorten_description: "Description",
 				active: {
 					name: "Status",
@@ -144,6 +148,14 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				
 			},
 		};
 	},
@@ -208,15 +220,26 @@ export default {
 					$('#concerns-form').modal('hide');
 				})
 		},
-		downloadCsv: function () { 
+		downloadCsv: function () {
 			axios.get('/admin/customer-care/concern/download-csv')
-				 .then(response => {
-                const link = document.createElement('a');
-                link.href = response.data.data.filepath;
-                link.setAttribute('download', response.data.data.filename); //or any other extension
-                document.body.appendChild(link);
-                link.click();
-              })
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		downloadTemplate: function () {
+			axios.get('/admin/customer-care/concern/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 
 	},

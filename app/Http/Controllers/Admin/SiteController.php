@@ -15,6 +15,7 @@ use Storage;
 use URL;
 
 use App\Models\Site;
+use App\Models\Company;
 use App\Models\AdminViewModels\SiteViewModel;
 
 class SiteController extends AppBaseController implements SiteControllerInterface
@@ -40,9 +41,9 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
-            
+                ->latest()
+                ->paginate(request('perPage'));
+
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -126,7 +127,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ];
 
             $site = Site::create($data);
-            $site->serial_number = 'ST-'.Str::padLeft($site->id, 5, '0');
+            $site->serial_number = 'ST-' . Str::padLeft($site->id, 5, '0');
             $site->save();
             $site->saveMeta($meta_value);
 
@@ -178,7 +179,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             }
 
             $data = [
-                'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-'.Str::padLeft($site->id, 5, '0'),
+                'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-' . Str::padLeft($site->id, 5, '0'),
                 'name' => $request->name,
                 'descriptions' => ($request->descriptions) ? $request->descriptions : null,
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
@@ -267,11 +268,28 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             $reports = [];
             foreach ($sites_management as $site) {
                 $reports[] = [
+                    'id' => $site->id,
+                    'serial_number' => $site->serial_number,
                     'name' => $site->name,
                     'description' => $site->descriptions,
-                    'logo' => ($site->site_logo != "") ? URL::to("/" . $site->site_logo) : " ",
-                    'banner' => ($site->site_banner != "") ? URL::to("/" . $site->site_banner) : " ",
-                    'background' => ($site->site_background != "") ? URL::to("/" . $site->site_background) : " ",
+                    'site_logo' => ($site->site_logo != "") ? URL::to("/" . $site->site_logo) : " ",
+                    'site_banner' => ($site->site_banner != "") ? URL::to("/" . $site->site_banner) : " ",
+                    'site_background' => ($site->site_background != "") ? URL::to("/" . $site->site_background) : " ",
+                    'site_background_portrait' => ($site->site_background_portrait != "") ? URL::to("/" . $site->site_background_portrait) : " ",
+                    'company_id' => $site->details['company_id'],
+                    'company_name' => ($site->details['company_id']) ? Company::find($site->details['company_id'])->name : '',
+                    'multilanguage' => $site->details['multilanguage'],
+                    'facebook' => $site->details['facebook'],
+                    'instagram' => $site->details['instagram'],
+                    'twitter' => $site->details['twitter'],
+                    'website' => $site->details['website'],
+                    'schedules' => $site->details['schedules'],
+                    //'time_from' => ($site->details['time_from']) ? $site->details['time_from'] : '',
+                    //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                    'premiere' => $site->details['premiere'],
+                    'site_code' => $site->details['site_code'],
+
+
                     'status' => ($site->active == 1) ? 'Active' : 'Inactive',
                     'is_default' => ($site->is_default == 1) ? 'Yes' : 'No',
                     'updated_at' => $site->updated_at,
@@ -284,7 +302,65 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 Storage::delete($file);
             }
 
-            $filename = "site_management.csv";
+            $filename = "site.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports = [];
+                $reports[] = [
+                    'id' => '',
+                    'serial_number' => '',
+                    'name' => '',
+                    'description' => '',
+                    'site_logo' => '',
+                    'site_banner' => '',
+                    'site_background' => '',
+                    'site_background_portrait' => '',
+                    'company_id' => '',
+                    'company_name' => '',
+                    'multilanguage' => '',
+                    'facebook' => '',
+                    'instagram' => '',
+                    'twitter' => '',
+                    'website' => '',
+                    'schedules' => '',
+                    //'time_from' => ($site->details['time_from']) ? $site->details['time_from'] : '',
+                    //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                    'premiere' => '',
+                    'site_code' => '',
+                    'active' => '',
+                    'is_default' => '',
+                    'updated_at' => '',
+                ];
+            
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "site-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -308,13 +384,10 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
     public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new SitesImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

@@ -9,7 +9,8 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewFAQs="AddNewFAQs"
-									v-on:editButton="editFAQs" v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:editButton="editFAQs" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -37,15 +38,18 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="question" class="col-sm-4 col-form-label">Question <span class="font-italic text-danger"> *</span></label>
+								<label for="question" class="col-sm-4 col-form-label">Question <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="faqs.question" placeholder="Question">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="answer" class="col-sm-4 col-form-label">Answer <span class="font-italic text-danger"> *</span></label>
+								<label for="answer" class="col-sm-4 col-form-label">Answer <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" rows="5" v-model="faqs.answer" placeholder="Answer"></textarea>
+									<textarea class="form-control" rows="5" v-model="faqs.answer"
+										placeholder="Answer"></textarea>
 								</div>
 							</div>
 
@@ -97,7 +101,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				shorten_question:"Question",
+				shorten_question: "Question",
 				shorten_answer: "Answer",
 				active: {
 					name: "Status",
@@ -141,6 +145,13 @@ export default {
 					title: 'Download',
 					v_on: 'downloadCsv',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -208,15 +219,25 @@ export default {
 					$('#faqs-form').modal('hide');
 				})
 		},
-		downloadCsv: function () { 
+		downloadCsv: function () {
 			axios.get('/admin/faq/download-csv')
-				 .then(response => {
-                const link = document.createElement('a');
-                link.href = response.data.data.filepath;
-                link.setAttribute('download', response.data.data.filename); //or any other extension
-                document.body.appendChild(link);
-                link.click();
-              })
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+		downloadTemplate: function () {
+			axios.get('/admin/faq/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 
 	},

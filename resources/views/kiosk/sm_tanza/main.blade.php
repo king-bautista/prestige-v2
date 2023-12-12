@@ -19,7 +19,7 @@
             <!--End of the directory about page-->
 
             <!--Start of the directory home content categories-->
-            
+                @include('kiosk.sm_tanza.pages.categories')
             <!--End of the directory home content categories-->
 
             <!--Start of the directory search content categories-->
@@ -210,13 +210,6 @@
             $("#NavContentContainer").removeClass("nav-content-container-4");
             $("#NavContentContainer").addClass("nav-content-container");
         }
-
-    /* for navigation home to hide and show contents */
-    /* for home button to categories content */
-    $("#home-card").on('click', function(){
-        $('#home-cat-contents').show();
-        $('#home-container').hide();
-    });
 
     /* for logo button to view about page */
     $("#ImgMallLogo").on('click', function(){

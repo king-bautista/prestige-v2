@@ -9,7 +9,7 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:downloadCsv="downloadCsv"
-									v-on:DefaultScreen="DefaultScreen" v-on:downloadTemplate="downloadTemplate"
+									v-on:DefaultScreen="DefaultScreen"
 									ref="screensDataTable">
 								</Table>
 							</div>
@@ -98,14 +98,7 @@ export default {
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
-				}, downloadCsv: {
-					title: 'Download',
-					v_on: 'downloadTemplate',
-					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
-					class: 'btn btn-primary btn-sm',
-					method: 'add'
-				},
-
+				}
 			}
 		};
 	},
@@ -125,8 +118,8 @@ export default {
 				})
 		},
 
-		downloadCsv: function () {
-			axios.get('/admin/site/screen/download-csv')
+		downloadCsv: function () { 
+			axios.get('/admin/site/maps/download-csv')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;
@@ -135,15 +128,6 @@ export default {
 					link.click();
 				})
 		},
-
-		downloadTemplate: function () {
-			const link = document.createElement('a');
-			link.href = '/uploads/csv/site-map-batch-upload.csv';
-			link.setAttribute('downloadFile', '/uploads/csv/site-map-batch-upload.csv'); //or any other extension
-			document.body.appendChild(link);
-			link.click();
-		},
-
 	},
 
 	components: {

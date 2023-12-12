@@ -9,13 +9,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\ViewModels\SiteCategoryViewModel;
 
-
-
 class KioskController extends AppBaseController
 {
     public function index($site_name = null)
     {
-        return $site = SiteViewModel::when(!$site_name, function($query) {
+        $site = SiteViewModel::when(!$site_name, function($query) {
             $query->where('is_default', 1);
         })
         ->when($site_name, function($query) use($site_name) {
@@ -58,7 +56,7 @@ class KioskController extends AppBaseController
             }
         }
 
-        return $new_categories;
+        return json_encode($new_categories);
     }
 
 }

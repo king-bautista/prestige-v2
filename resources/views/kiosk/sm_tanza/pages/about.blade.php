@@ -9,36 +9,38 @@
         <div class="img-about-logo-container text-center">
             <img src="{{ $site->site_logo_path }}">
         </div>
+        @if($site->details['facebook'])
         <div class="socmediconcontainer">
-            <img src="resources/uploads/about/about-facebook.svg" class="socmedicon mr-2" /> 
-            @smdasmarinas
+            <img src="{{ URL::to('themes/sm_default/images/about-facebook.svg') }}" class="socmedicon mr-2" /> 
+            {{ $site->details['facebook'] }}
         </div>
+        @endif
+
+        @if($site->details['twitter'])
         <div class="socmediconcontainer">
-            <img src="resources/uploads/about/about-twitter.svg" class="socmedicon mr-2" /> 
-            @SMDasmarinas
+            <img src="{{ URL::to('themes/sm_default/images/about-twitter.svg') }}" class="socmedicon mr-2" /> 
+            {{ $site->details['twitter'] }}
         </div>
+        @endif
+
+        @if($site->details['instagram'])
         <div class="socmediconcontainer">
-            <img src="resources/uploads/about/about-instagram.svg" class="socmedicon mr-2" /> 
-            @smdasmarinas
+            <img src="{{ URL::to('themes/sm_default/images/about-instagram.svg') }}" class="socmedicon mr-2" /> 
+            {{ $site->details['instagram'] }}
         </div>
+        @endif
+
+        @if($site->details['website'])
         <div class="socmediconcontainer">
-            <img src="resources/uploads/about/about-website.svg" class="socmedicon mr-2" /> 
-            https://www.smsupermalls.com
+            <img src="{{ URL::to('themes/sm_default/images/about-website.svg') }}" class="socmedicon mr-2" /> 
+            {{ $site->details['website'] }}
         </div>
+        @endif
     </div>
 
     <div class="col-xl-8 col-lg-6 col-sm-8 mall-details-container">
         <div class="mall-details">
-            SM City Dasmariñas is one of the largest malls in Cavite located at Governor’s Drive, Barangay Sampaloc I, Dasmariñas City, Cavite. The mall has been a PWD friendly since 2004.<br />
-            <br />
-            Standard facilities and devices such as ramps equipped with handrails and signs, priority signages as courtesy lane to elderly, PWDs and pregnant women situated in elevators, escalators and ATM booths, PWD designated toilets,
-            lifts, parking slots and emergency buttons have been greatly considered even during expansions sometime 2011 and 2013.<br />
-            <br />
-            To support awareness on how to take care of the customers special needs, SM supermalls has been continuously putting effort in educating malls’ front liners including security and maintenance personnel and tenants which is
-            conducted annually.<br />
-            <br />
-            SM Supermalls promotes barrier-free and disability inclusive environments for persons with disabilities in the mall and commits to deliver the best shopping experience to everyone and here in SM City Dasmarinas, you're always
-            welcome! Keep updated with our latest events and promotions.
+            <textarea class="text-mall-details" readonly="readonly"> {{ $site->descriptions }} </textarea>
         </div>
     </div>
 </div>

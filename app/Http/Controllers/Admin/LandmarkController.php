@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LandmarkRequest;
 
 use App\Models\Landmark;
+use App\Exports\Export;
+use Storage;
+use Route;
 
 class LandmarkController extends AppBaseController implements LandmarkControllerInterface
 {
@@ -160,6 +163,95 @@ class LandmarkController extends AppBaseController implements LandmarkController
         }
         catch (\Exception $e) 
         {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+            $landmarks = Landmark::get();
+            $reports = [];
+            foreach ($landmarks as $landmark) {
+                $reports[] = [
+                    'id' => $landmark->id,
+                    'site_id' => $landmark->site_id,
+                    'site_name' => $landmark->site_name,
+                    'landmark' => $landmark->landmark,
+                    'descriptions' => $landmark->descriptions,
+                    'image_url' => $landmark->image_url,
+                    'image_thumbnail_ur' => $landmark->image_thumbnail_url,
+                    'active' => $landmark->active,
+                    'updated_at' => $landmark->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "landmark.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'site_id' => '',
+                'site_name' => '',
+                'landmark' => '',
+                'descriptions' => '',
+                'image_url' => '',
+                'image_thumbnail_ur' => '',
+                'active' => '',
+                'updated_at' => '',
+            ];
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "landmark-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

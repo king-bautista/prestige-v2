@@ -132,9 +132,11 @@ class FAQController extends AppBaseController implements FAQControllerInterface
             $reports = [];
             foreach ($faqs as $faq) {
                 $reports[] = [
+                    'id' => $faq->id,
                     'question' => $faq->question,
                     'answer' => $faq->answer,
-                    'status' => ($faq->active == 1)?'Active': 'Inactive'
+                    'active' => $faq->active,
+                    'updated_at' => $faq->updated_at,
                 ];
             }
 
@@ -145,6 +147,50 @@ class FAQController extends AppBaseController implements FAQControllerInterface
             }
 
             $filename = "faq.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+
+            $faqs = FAQ::get();
+            $reports = [];
+            foreach ($faqs as $faq) {
+                $reports[] = [
+                    'id' => '',
+                    'question' => '',
+                    'answer' => '',
+                    'active' => '',
+                    'updated_at' => '',
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "faq-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

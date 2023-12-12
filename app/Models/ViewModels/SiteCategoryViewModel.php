@@ -43,6 +43,7 @@ class SiteCategoryViewModel extends Model
 	public $appends = [
         'main_category_id',
         'parent_category_id',
+        'category_class',
         'category_name',
         'kiosk_image_primary_path',
         'kiosk_image_top_path',    
@@ -71,6 +72,16 @@ class SiteCategoryViewModel extends Model
         return $this->label;
     }
 
+    public function getCategoryClassAttribute() {
+        if($this->sub_category_id) {
+            return Category::find($this->sub_category_id)->class_name;
+        }
+        else {
+            return Category::find($this->category_id)->class_name;
+        }
+        return null;
+    }
+
     public function getKioskImagePrimaryPathAttribute() {
         if($this->kiosk_image_primary)
             return asset($this->kiosk_image_primary);
@@ -82,22 +93,5 @@ class SiteCategoryViewModel extends Model
             return asset($this->kiosk_image_top);
         return asset('/images/no-image-available.png');
     }
-
-    // public function getChildrenAttribute() {
-    //     if (config('app.env') == 'local') {
-    //         $child_categories = SiteCategoryViewModel::where('category_id', $this->category_id)
-    //         ->whereNotNull('sub_category_id')
-    //         ->where('company_categories.active', 1)
-    //         ->where('company_categories.site_id', $this->site_id)
-    //         ->leftJoin('categories', 'company_categories.sub_category_id', 'categories.id')
-    //         ->select('company_categories.*')
-    //         ->orderBy('categories.name')
-    //         ->get();
-    //     }
-
-    //     if($child_categories)
-    //         return $child_categories;
-    //     return null;
-    // }
 
 }

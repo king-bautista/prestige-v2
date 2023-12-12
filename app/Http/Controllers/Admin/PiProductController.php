@@ -34,15 +34,14 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function list(Request $request)
     {
-        try 
-        {
+        try {
             $pi_products = PiProduct::when(request('search'), function ($query) {
                 return $query->where('physical_configuration', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('product_application', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('ad_type', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('product_application', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('ad_type', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->latest()
+                ->paginate(request('perPage'));
 
             return $this->responsePaginate($pi_products, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -56,8 +55,7 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function details($id)
     {
-        try 
-        {
+        try {
             $pi_product = PiProduct::find($id);
             return $this->response($pi_product, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -71,18 +69,17 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function store(PiProductRequest $request)
     {
-        try 
-        {
+        try {
             $pi_product_data = PiProduct::where('ad_type', $request->ad_type)
-            ->where('product_application', $request->product_application)
-            ->get()
-            ->count();
-            if($pi_product_data > 0) {
+                ->where('product_application', $request->product_application)
+                ->get()
+                ->count();
+            if ($pi_product_data > 0) {
                 return response([
                     'message' => 'The advertisement type is already been taken.',
                     'status' => false,
                     'status_code' => 422,
-                ], 422);    
+                ], 422);
             }
 
             $data = [
@@ -98,7 +95,7 @@ class PiProductController extends AppBaseController implements PiProductControll
             ];
 
             $pi_product = PiProduct::create($data);
-            $pi_product->serial_number = 'PI-'.Str::padLeft($pi_product->id, 5, '0');
+            $pi_product->serial_number = 'PI-' . Str::padLeft($pi_product->id, 5, '0');
             $pi_product->save();
 
             return $this->response($pi_product, 'Successfully Created!', 200);
@@ -113,24 +110,23 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function update(PiProductRequest $request)
     {
-        try 
-        {
+        try {
             $pi_product = PiProduct::find($request->id);
 
             $pi_product_data = PiProduct::where('ad_type', $request->ad_type)
-            ->where('product_application', $request->product_application)
-            ->where('id', '!=', $request->id)
-            ->get()->count();
-            if($pi_product_data > 0) {
+                ->where('product_application', $request->product_application)
+                ->where('id', '!=', $request->id)
+                ->get()->count();
+            if ($pi_product_data > 0) {
                 return response([
                     'message' => 'The advertisement type is already been taken.',
                     'status' => false,
                     'status_code' => 422,
-                ], 422);    
+                ], 422);
             }
 
             $data = [
-                'serial_number' => ($pi_product->serial_number) ? $pi_product->serial_number : 'PI-'.Str::padLeft($pi_product->id, 5, '0'),
+                'serial_number' => ($pi_product->serial_number) ? $pi_product->serial_number : 'PI-' . Str::padLeft($pi_product->id, 5, '0'),
                 'physical_configuration' => $request->physical_configuration,
                 'product_application' => $request->product_application,
                 'ad_type' => $request->ad_type,
@@ -156,8 +152,7 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function delete($id)
     {
-        try 
-        {
+        try {
             $pi_product = PiProduct::find($id);
             $pi_product->delete();
             return $this->response($pi_product, 'Successfully Deleted!', 200);
@@ -172,8 +167,7 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function getProducts()
     {
-        try 
-        {
+        try {
             $pi_product = PiProduct::get();
             return $this->response($pi_product, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -187,13 +181,104 @@ class PiProductController extends AppBaseController implements PiProductControll
 
     public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new PIProductsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
         }
-        catch (\Exception $e)
-        {
+    }
+
+    public function downloadCsv()
+    {
+        try {
+            $pi_products =  PIProduct::get();
+            $reports = [];
+            foreach ($pi_products as $pi_product) {
+                $reports[] = [
+                    'id' => $pi_product->id,
+                    'serial_number' => $pi_product->serial_number,
+                    'product_application' => $pi_product->product_application,
+                    'ad_type' => $pi_product->ad_type,
+                    'descriptions' => $pi_product->descriptions,
+                    'remarks' => $pi_product->remarks,
+                    'sec_slot' => $pi_product->sec_slot,
+                    'slots' => $pi_product->slots,
+                    'active' => $pi_product->active,
+                    'is_exclusive' => $pi_product->is_exclusive,
+                    'updated_at' => $pi_product->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "pi-products.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'serial_number' => '',
+                'product_application' => '',
+                'ad_type' => '',
+                'descriptions' => '',
+                'remarks' => '',
+                'sec_slot' => '',
+                'slots' => '',
+                'active' => '',
+                'is_exclusive' => '',
+                'updated_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "pi-products-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

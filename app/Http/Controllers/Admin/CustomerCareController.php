@@ -100,7 +100,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
 
     public function update(CustomerCareRequest $request)
     {
-        try {
+        try { 
             $customer_care = CustomerCare::find($request->id);
             $customer_care->touch();
 
@@ -191,6 +191,68 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
 
             $customer_care = CustomerCareViewModel::get();
             $reports = [];
+            foreach ($customer_care as $customer) {// echo '<pre>'; print_r($customer->admin_details['full_name']); echo '</pre>';
+                $reports[] = [
+                    'id' => $customer->id,
+                    'concern_id' => $customer->concern_id,
+                    'concern_name' => $customer->concern_details['name'],
+                    'concern_description' => $customer->concern_details['description'],
+                    'concern_active' => $customer->concern_details['active'],
+                    'concern_updated_at' => $customer->concern_details['updated_at'],
+                    'ticket_id' => $customer->ticket_id,
+                    'user_id' => $customer->user_id,
+                    'user_full_name' => $customer->user_details['full_name'],
+                    'user_email' => $customer->user_details['email'],
+                    'first_name' => $customer->first_name,
+                    'last_name' => $customer->last_name,
+                    'ticket_subject' => $customer->ticket_subject,
+                    'ticket_description' => $customer->ticket_description,
+                    'status_id' => $customer->status_id,
+                    'status_name' => $customer->status_details['name'],
+                    'status_description' => $customer->status_details['description'],
+                    'status_updated_at' => $customer->status_details['updated_at'],
+                    'assigned_to_id' => $customer->assigned_to_id,
+                    'assigned_to_full_name' => ($customer->admin_details)? $customer->admin_details['full_name']: '',
+                    'assigned_to_email' => ($customer->admin_details)? $customer->admin_details['email']: '',
+                    'assigned_to_alias' => $customer->assigned_to_alias,
+                    'active' => $customer->active
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "customer-care.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+
+            $customer_care = CustomerCareViewModel::get();
+            $reports = [];
             foreach ($customer_care as $customer) {
                 $reports[] = [
                     'ticket_id' => $customer->ticket_id,
@@ -211,7 +273,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 Storage::delete($file);
             }
 
-            $filename = "customer_care.csv";
+            $filename = "customer-care-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

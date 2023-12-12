@@ -10,6 +10,22 @@
         <!-- Set Custom Theme UI -->
         <link rel="stylesheet" href="{{ URL::to('resources/css/style.css') }}">
         <link rel="stylesheet" href="{{ URL::to('resources/css/bootstrap.min.css') }}"> 
+        <style>
+            .text-mall-details {
+                width: 100%;
+                height: 100%;
+                padding: 12px 20px;
+                background-color: transparent;
+                border: none;
+                resize: none;
+            }
+
+            .home-category-holder {
+                position: relative;
+                float:left;
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
         

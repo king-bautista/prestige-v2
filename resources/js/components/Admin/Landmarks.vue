@@ -9,8 +9,8 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewLandmark="AddNewLandmark"
-									v-on:editButton="editLandmark" v-on:modalBatchUpload="modalBatchUpload"
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:editButton="editLandmark" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -179,6 +179,20 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 		};
 	},
@@ -283,6 +297,26 @@ export default {
                 $('#landmark-form').modal('hide');
             })
         },
+		downloadCsv: function () {
+			axios.get('/admin/landmark/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+		downloadTemplate: function () {
+			axios.get('/admin/landmark/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
 	},
 
 	components: {

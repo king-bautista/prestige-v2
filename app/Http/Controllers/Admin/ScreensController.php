@@ -276,13 +276,30 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $reports = [];
             foreach ($screen_management as $screen) {
                 $reports[] = [
-                    'location' => $screen->screen_location,
+                    'id' => $screen->id,
+                    'serial_number' => $screen->serial_number, 
+                    'site_id' => $screen->site_id,
                     'site_name' => $screen->site_name,
-                    'physical_configuration' => $screen->screen_type,
+                    'site_building_id' => $screen->site_building_id,
+                    'site_building_name' => $screen->building_name,
+                    'site_building_level_id' => $screen->site_building_level_id,
+                    'site_building_level_name' => $screen->floor_name,
+                    'site_point_id' => 0,
+                    'screen_type' => $screen->screen_type,
                     'orientation' => $screen->orientation,
                     'product_application' => $screen->product_application,
-                    'status' => ($screen->active == 1) ? 'Active' : 'Inactive',
-                    'is_default' => ($screen->is_default == 1) ? 'Yes' : 'No',
+                    'physical_size_width' => $screen->physical_size_width,
+                    'physical_size_height' => $screen->physical_size_height,
+                    'physical_size_diagonal' => $screen->physical_size_diagonal,
+                    'physical_serial_number' => $screen->physical_serial_number,
+                    'dimension' => $screen->dimension,
+                    'width' => $screen->width,
+                    'height' => $screen->height,
+                    'kiosk_id' => $screen->kiosk_id,
+                    'name' => $screen->name,
+                    'slots' => $screen->slots,
+                    'active' => $screen->active,
+                    'is_default' => $screen->is_default,
                     'updated_at' => $screen->updated_at,
                 ];
             }
@@ -294,6 +311,69 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $filename = "screen_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $screen_management = SiteScreenViewModel::get();
+            $reports = [];
+            foreach ($screen_management as $screen) {
+                $reports[] = [
+                    'id' => '',
+                    'serial_number' => '', 
+                    'site_id' => '',
+                    'site_name' => '',
+                    'site_building_id' => '',
+                    'site_building_name' => '',
+                    'site_building_level_id' => '',
+                    'site_building_level_name' => '',
+                    'site_point_id' => '',
+                    'screen_type' => '',
+                    'orientation' => '',
+                    'product_application' => '',
+                    'physical_size_width' => '',
+                    'physical_size_height' => '',
+                    'physical_size_diagonal' => '',
+                    'physical_serial_number' => '',
+                    'dimension' => '',
+                    'width' => '',
+                    'height' => '',
+                    'kiosk_id' => '',
+                    'name' => '',
+                    'slots' => '',
+                    'active' => '',
+                    'is_default' => '',
+                    'updated_at' => '',
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "screen_management-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

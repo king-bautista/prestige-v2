@@ -15,6 +15,8 @@
                                     :primaryKey="primaryKey" 
                                     v-on:AddNewEvent="AddNewEvent"
 									v-on:editButton="editEvent"
+									v-on:downloadCsv="downloadCsv" 
+									v-on:downloadTemplate="downloadTemplate"
                                     ref="dataTable">
 								</Table>
 							</div>
@@ -188,6 +190,20 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 		};
 	},
@@ -292,6 +308,28 @@ export default {
                 $('#event-form').modal('hide');
             })
         },
+
+		downloadCsv: function () {
+			axios.get('/admin/event/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		downloadTemplate: function () {
+			axios.get('/admin/event/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
 	},
 
 	components: {
