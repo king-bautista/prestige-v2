@@ -132,23 +132,3 @@
         <span class="carousel-dot" onclick="currentSlide(1)"></span>
         <span class="carousel-dot" onclick="currentSlide(2)"></span>
     </div>
-    
-
-
-<!-- Button trigger modal -->
-
-<!-- Modal -->
-<!-- The Modal -->
-<div id="imgPromoModal" class="modal promo-modal-content">
-
-  <!-- Modal content -->
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 promo-modal-container">
-            <div class="modal-body m-0 p-0">
-                <span class="close text-white">&times;</span>
-                <img class="promo-img promo-modal-img" src ="resources/uploads/promos/popup700px700px.png">
-            </div>
-        </div>
-    </div>
-    
-</div>
