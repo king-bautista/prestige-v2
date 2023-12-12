@@ -42,26 +42,72 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
 
             $site_screens = SiteScreenViewModel::when(request('search'), function ($query) {
                 return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
-                return $query->whereIn('site_screens.site_id', $site_ids);
-            })
-            ->where('site_screens.product_application', 'Directory')
-            ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
-            ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-            ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-            ->select('site_screens.*')
-            ->latest()
-            ->paginate(request('perPage'));
+                ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
+                    return $query->whereIn('site_screens.site_id', $site_ids);
+                })
+                ->where('site_screens.product_application', 'Directory')
+                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->select('site_screens.*')
+                ->latest()
+                ->paginate(request('perPage'));
 
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+
+            $sitemaps =  SiteScreenViewModel::get();
+            $reports = [];
+            foreach ($sitemaps as $sitemap) {
+                $reports[] = [
+                    'screen_location' => $sitemap->screen_location,
+                    'site_screen_location' => $sitemap->site_screen_location,
+                    'site_name' => $sitemap->site_name,
+                    'orientation' => $sitemap->orientation,
+                    'status' => $sitemap->active,
+                    'is_default' => $sitemap->is_default,
+                    'updated_at' => $sitemap->updated_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "site-map.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),

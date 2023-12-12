@@ -325,11 +325,14 @@ export default {
 				})
 		},
 		downloadTemplate: function () {
-			const link = document.createElement('a');
-			link.href = '/uploads/csv/category-batch-upload.csv';
-			link.setAttribute('downloadFile', '/uploads/csv/category-batch-upload.csv'); //or any other extension
-			document.body.appendChild(link);
-			link.click();
+			axios.get('/admin/category/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 	},
 

@@ -10,7 +10,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:addNewIllustration="addNewIllustration" v-on:editButton="editIllustration"
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -46,7 +46,7 @@
 										<option v-for="category in categories" :value="category.id">
 											<span v-if="category.supplemental_category_id">Supplemental - </span>
 											<span v-else="category.supplemental_category_id">Category - </span>
-											<span>{{ category.label }}</span> 
+											<span>{{ category.label }}</span>
 										</option>
 									</select>
 								</div>
@@ -83,7 +83,8 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Label</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="illustration.label" placeholder="Label">
+									<input type="text" class="form-control" v-model="illustration.label"
+										placeholder="Label">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -196,7 +197,7 @@ export default {
 				kiosk_image_top_path: {
 					name: "Kiosk Top Image",
 					type: "image",
-				},				
+				},
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -239,6 +240,13 @@ export default {
 					title: 'Download',
 					v_on: 'downloadCsv',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -326,11 +334,11 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-			.then(response => {
-				toastr.success(response.data.message);
-				this.$refs.dataTable.fetchData();
-				$('#Illustration-form').modal('hide');
-			})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#Illustration-form').modal('hide');
+				})
 		},
 
 		editIllustration: function (id) {
@@ -373,22 +381,32 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-			.then(response => {
-				toastr.success(response.data.message);
-				this.$refs.dataTable.fetchData();
-				$('#Illustration-form').modal('hide');
-			})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#Illustration-form').modal('hide');
+				})
 		},
 
 		downloadCsv: function () {
 			axios.get('/admin/site-category/download-csv')
-			.then(response => {
-				const link = document.createElement('a');
-				link.href = response.data.data.filepath;
-				link.setAttribute('download', response.data.data.filename); //or any other extension
-				document.body.appendChild(link);
-				link.click();
-			})
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+		downloadTemplate: function () {
+			axios.get('/admin/site-category/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 	},
 

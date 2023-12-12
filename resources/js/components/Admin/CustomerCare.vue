@@ -10,7 +10,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewCustomerCare="AddNewCustomerCare" v-on:editButton="editCustomerCare"
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:DeleteModule="DeleteModule" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -52,8 +52,8 @@
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
 									<multiselect v-model="customer_care.concern_id" track-by="name" label="name"
-										placeholder="Concern" :multiple="false" :options="concerns"
-										:searchable="true" :allow-empty="false">
+										placeholder="Concern" :multiple="false" :options="concerns" :searchable="true"
+										:allow-empty="false">
 									</multiselect>
 								</div>
 							</div>
@@ -108,13 +108,14 @@
 
 								</div>
 							</div>
-							
+
 							<div class="form-group row" v-show="select_admin_full_name">
 								<label for="User" class="col-sm-3 col-form-label">Assigned to ID<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-									<multiselect v-model="customer_care.assigned_to_id" track-by="full_name" label="full_name"
-										placeholder="User Name" :options="admin_users" :searchable="true" :allow-empty="false">
+									<multiselect v-model="customer_care.assigned_to_id" track-by="full_name"
+										label="full_name" placeholder="User Name" :options="admin_users" :searchable="true"
+										:allow-empty="false">
 									</multiselect>
 								</div>
 							</div>
@@ -123,7 +124,8 @@
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control readonly"
-										v-model="customer_care.assigned_to_id['full_name']" placeholder="Admin Name" required>
+										v-model="customer_care.assigned_to_id['full_name']" placeholder="Admin Name"
+										required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -193,7 +195,7 @@ export default {
 			transaction_statuses: [],
 			users: [],
 			admin_users: [],
-			concerns:[],
+			concerns: [],
 			add_record: true,
 			edit_record: false,
 			input_user_full_name: false,
@@ -230,7 +232,7 @@ export default {
 					}
 				},
 				updated_at: "Last Updated",
-				
+
 			},
 			primaryKey: "id",
 			dataUrl: "/admin/customer-care/list/",
@@ -264,6 +266,13 @@ export default {
 					title: 'Download',
 					v_on: 'downloadCsv',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -311,17 +320,17 @@ export default {
 			this.select_user_full_name = true;
 			this.input_user_full_name = false;
 			this.select_admin_full_name = true,
-			this.input_admin_full_name = false;
+				this.input_admin_full_name = false;
 			this.add_record = true,
-			this.edit_record = false,
-			$(".readonly").attr('readonly', false);
+				this.edit_record = false,
+				$(".readonly").attr('readonly', false);
 			$('#customer-care-form').modal('show');
 		},
 
 		storeCustomerCare: function () {
 			var status_id = this.customer_care.status_id.id;
 			var user_id = this.customer_care.user_id;
-			var concern_id = this.customer_care.concern_id; 
+			var concern_id = this.customer_care.concern_id;
 			let formData = new FormData();
 			formData.append("user_id", JSON.stringify(this.customer_care.user_id.id));
 			formData.append("status_id", JSON.stringify(this.customer_care.status_id.id));
@@ -346,9 +355,9 @@ export default {
 		},
 
 		editCustomerCare: function (id) {
-			axios.get('/admin/customer-care/' + id)
-				.then(response => {
-					var customer_care = response.data.data;
+			axios.get('/admin/customer-care/' + id) 
+				.then(response => { 
+					var customer_care = response.data.data; console.log(customer_care);
 					this.customer_care.id = customer_care.id;
 					this.getStatuses(customer_care.id);
 					this.customer_care.status_id = customer_care.status_details;
@@ -362,12 +371,12 @@ export default {
 					this.customer_care.assigned_to_alias = customer_care.assigned_to_alias;
 					this.customer_care.active = customer_care.active;
 					this.add_record = false,
-					this.edit_record = true,
-					this.select_user_full_name = false,
-					this.input_user_full_name = true,
-					this.select_admin_full_name = false,
-					this.input_admin_full_name = true,
-					$(".readonly").attr('readonly', true);
+						this.edit_record = true,
+						this.select_user_full_name = false,
+						this.input_user_full_name = true,
+						this.select_admin_full_name = false,
+						this.input_admin_full_name = true,
+						$(".readonly").attr('readonly', true);
 					$('#customer-care-form').modal('show');
 				});
 		},
@@ -398,6 +407,16 @@ export default {
 		},
 		downloadCsv: function () {
 			axios.get('/admin/customer-care/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+		downloadTemplate: function () {
+			axios.get('/admin/customer-care/download-csv-template')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;

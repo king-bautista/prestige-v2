@@ -64,6 +64,7 @@ class SiteTenantViewModel extends Model
         'products',
         'property_owner',
         'store_address',
+        'company_name',
     ];
 
     public function getTenantDetails()
@@ -236,6 +237,14 @@ class SiteTenantViewModel extends Model
         $tenant_details = $this->getTenantDetails()->where('meta_key', 'address')->first();
         if(isset($tenant_details->meta_value))
             return $tenant_details->meta_value;
+        return null;
+    }
+
+    public function getCompanyNameAttribute() 
+    {
+        $company = Brand::find($this->company_id);
+        if($company)
+            return $company->name;
         return null;
     }
     

@@ -177,9 +177,10 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             $reports = [];
             foreach ($amenity_management as $amenity) {
                 $reports[] = [
+                    'id' => $amenity->id,
                     'name' => $amenity->name,  
                     'icon' => ($amenity->icon != "") ? URL::to("/" . $amenity->icon) : " ",
-                    'status' => ($amenity->active == 1) ? 'Active' : 'Inactive',
+                    'active' => $amenity->active,
                     'updated_at' => $amenity->updated_at,
                 ];
             }
@@ -190,7 +191,49 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 Storage::delete($file);
             }
 
-            $filename = "amenity_management.csv";
+            $filename = "amenity-management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try 
+        {
+            $amenity_management =  Amenity::get();         
+            
+                $reports[] = [
+                    'id' => '',
+                    'name' => '',  
+                    'icon' => '',
+                    'active' => '',
+                    'updated_at' => '',
+                ];
+            
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "amenity-management-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
