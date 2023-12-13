@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\BuildingsControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuildingRequest;
 
@@ -14,14 +15,19 @@ use App\Models\SiteBuilding;
 use App\Models\AdminViewModels\AdminViewModel;
 use App\Models\AdminViewModels\SiteViewModel;
 
+use App\Exports\Export;
+use App\Models\Site;
+use Storage;
+use URL;
+
 class BuildingsController extends AppBaseController implements BuildingsControllerInterface
 {
     /********************************************
-    * 			SITES BUILDING MANAGEMENT	 	*
-    ********************************************/
+     * 			SITES BUILDING MANAGEMENT	 	*
+     ********************************************/
     public function __construct()
     {
-        $this->module_id = 13; 
+        $this->module_id = 13;
         $this->module_name = 'Sites Management';
     }
 
@@ -35,22 +41,19 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function list(Request $request)
     {
-        try
-        {
+        try {
             $site_id = session()->get('site_id');
-            $buildings = SiteBuilding::when(request('search'), function($query){
-                $query->where(function($query) {
+            $buildings = SiteBuilding::when(request('search'), function ($query) {
+                $query->where(function ($query) {
                     $query->where('name', 'LIKE', '%' . request('search') . '%')
-                                  ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                        ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
                 });
             })
-            ->where('site_id', $site_id)
-            ->latest()
-            ->paginate(request('perPage'));
+                ->where('site_id', $site_id)
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($buildings, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -61,13 +64,10 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function details($id)
     {
-        try
-        {
+        try {
             $building = SiteBuilding::find($id);
             return $this->response($building, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -78,8 +78,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function store(BuildingRequest $request)
     {
-        try
-    	{
+        try {
             $site_id = session()->get('site_id');
             $data = [
                 'site_id' => $site_id,
@@ -91,9 +90,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             $building = SiteBuilding::create($data);
 
             return $this->response($building, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -104,8 +101,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function update(BuildingRequest $request)
     {
-        try
-    	{
+        try {
             $building = SiteBuilding::find($request->id);
 
             $data = [
@@ -117,9 +113,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             $building->update($data);
 
             return $this->response($building, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -130,14 +124,11 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $building = SiteBuilding::find($id);
             $building->delete();
             return $this->response($building, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -148,14 +139,11 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function getAll()
     {
-        try
-    	{
+        try {
             $site_id = session()->get('site_id');
             $buildings = SiteBuilding::where('site_id', $site_id)->get();
             return $this->response($buildings, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -166,13 +154,10 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function getBuildings($id)
     {
-        try
-    	{
+        try {
             $buildings = SiteBuilding::where('site_id', $id)->get();
             return $this->response($buildings, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -183,13 +168,10 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new BuildingsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -200,38 +182,39 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function downloadCsv()
     {
-        try { echo 'zzzzzzzzzzzzzzzzzzz';
-            // $site_id = session()->get('site_id');
-            // $buildings = SiteBuilding::where('site_id', $site_id)->get();
-            // $reports = [];
-            // foreach ($buildings as $building) {
-            //     $reports[] = [
-            //         'id' => $building->id,
-            //         'site_id' => $building->site_id,
-            //         'name' => $building->name,
-            //         'description' => $building->descriptions,
-            //         'active' => $building->active,
-            //         'updated_at' => $building->deleted_at,
-            //     ];
-            // }
+        try {
+            $site_id = session()->get('site_id');
+            $buildings = SiteBuilding::where('site_id', $site_id)->get();
+            $reports = [];
+            foreach ($buildings as $building) {
+                $reports[] = [
+                    'id' => $building->id,
+                    'site_id' => $building->site_id,
+                    'site_name' => Site::find($building->site_id)['name'],
+                    'name' => $building->name,
+                    'description' => $building->descriptions,
+                    'active' => $building->active,
+                    'updated_at' => $building->updated_at,
+                ];
+            }
 
-            // $directory = 'public/export/reports/';
-            // $files = Storage::files($directory);
-            // foreach ($files as $file) {
-            //     Storage::delete($file);
-            // }
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
 
-            // $filename = "site_building.csv";
-            // // Store on default disk
-            // Excel::store(new Export($reports), $directory . $filename);
+            $filename = "site_building.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
 
-            // $data = [
-            //     'filepath' => '/storage/export/reports/' . $filename,
-            //     'filename' => $filename
-            // ];
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
 
-            // if (Storage::exists($directory . $filename))
-            //     return $this->response($data, 'Successfully Retreived!', 200);
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
 
             return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -248,19 +231,13 @@ class BuildingsController extends AppBaseController implements BuildingsControll
         try {
             $reports[] = [
                 'id' => '',
-                'material_thumbnails_path' => '',
+                'site_id' => '',
+                'site_name' => '',
                 'name' => '',
-                'serial_number' => '',
-                'company_id' => '',
-                'company_name' => '',
-                'contract_id' => '',
-                'brand_id' => '',
-                'brand_name' => '',
-                'display_duration' => '',
+                'description' => '',
                 'active' => '',
                 'updated_at' => '',
             ];
-
 
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
@@ -268,7 +245,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
                 Storage::delete($file);
             }
 
-            $filename = "create-content-manage-ads.csv";
+            $filename = "site-building-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

@@ -202,18 +202,18 @@ export default {
 				})
 		},
 
-		downloadCsv: function () { 
-			axios.get('/admin/site/buildings/download-csv')
+		downloadCsv: function () {
+			axios.get('/admin/site/building/download-csv')
 				.then(response => {
-					// const link = document.createElement('a');
-					// link.href = response.data.data.filepath;
-					// link.setAttribute('download', response.data.data.filename); //or any other extension
-					// document.body.appendChild(link);
-					// link.click();
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
 				})
 		},
 		downloadTemplate: function () {
-			axios.get('/admin/manage-ads/download-csv-template')
+			axios.get('/admin/site/building/download-csv-template')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;

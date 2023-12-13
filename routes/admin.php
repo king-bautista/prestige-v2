@@ -268,8 +268,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/buildings', 'Admin\BuildingsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
     Route::get('/admin/site/get-buildings/{id}', 'Admin\BuildingsController@getBuildings')->where('id', '[0-9]+')->name('admin.site.buildings.get-buildings');
     Route::post('/admin/site/buildings/batch-upload', 'Admin\BuildingsController@batchUpload')->name('admin.site.buildings.batch-upload');
-    Route::get('/admin/site/buildings/download-csv', 'Admin\BuildingsController@downloadCsv')->name('admin.site.buildings.download-csv');
-    Route::get('/admin/site/buildings/download-csv-template', 'Admin\BuildingsController@downloadCsvTemplate')->name('admin.site.buildings.download-csv-template');
+    Route::get('/admin/site/building/download-csv', 'Admin\BuildingsController@downloadCsv')->name('admin.site.building.download-csv');
+    Route::get('/admin/site/building/download-csv-template', 'Admin\BuildingsController@downloadCsvTemplate')->name('admin.site.building.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -283,6 +283,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/floor/delete/{id}', 'Admin\FloorsController@delete')->where('id', '[0-9]+')->name('admin.site.floor.delete');
     Route::get('/admin/site/floors/{id}', 'Admin\FloorsController@getFloors')->where('id', '[0-9]+')->name('admin.site.floors');
     Route::post('/admin/site/floors', 'Admin\FloorsController@batchUpload')->name('admin.site.floor.batch-upload');
+    Route::get('/admin/site/floor/download-csv', 'Admin\FloorsController@downloadCsv')->name('admin.site.floor.download-csv');
+    Route::get('/admin/site/floor/download-csv-template', 'Admin\FloorsController@downloadCsvTemplate')->name('admin.site.floor.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
