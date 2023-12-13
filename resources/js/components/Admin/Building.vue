@@ -13,8 +13,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewBuilding="AddNewBuilding" v-on:editButton="editBuilding"
-									v-on:downloadTemplate="downloadTemplate"   
-									ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -86,7 +85,7 @@
 import Table from '../Helpers/Table';
 
 export default {
-	props: ['siteName'],
+	props: ['siteId, siteName'],
 	name: "Building",
 	data() {
 		return {
@@ -140,6 +139,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				downloadCsv: {
 					title: 'Download',
 					v_on: 'downloadTemplate',
@@ -190,21 +196,32 @@ export default {
 		updateBuilding: function () {
 			axios.put('/admin/site/building/update', this.building)
 				.then(response => {
-					toastr.success(response.data.message); 
+					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 					$('#building-form').modal('hide');
 				})
 		},
 
-		downloadTemplate: function () {
-			const link = document.createElement('a');
-			var site_name = this.siteName;
-			link.href = '/uploads/csv/' + site_name + '-site-building-batch-upload.csv';
-			link.setAttribute('downloadFile', '/uploads/csv/' + site_name + '-site-building-batch-upload.csv'); //or any other extension
-			document.body.appendChild(link);
-			link.click();
+		downloadCsv: function () {
+			axios.get('/admin/site/buildings/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
-
+		downloadTemplate: function () {
+			axios.get('/admin/manage-ads/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
 	},
 
 	components: {

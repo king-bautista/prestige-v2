@@ -197,16 +197,19 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function downloadCsv()
     {
-        try 
-        {
-            $supplemental_management = CategoryViewModel::where('category_type', 2)->get();//CategoryViewModel::where('category_type', 2);
+        try {
+
+            $supplemental_management = CategoryViewModel::where('category_type', 2)->get();
             $reports = [];
             foreach ($supplemental_management as $supplemental) {
-                $reports[] = [  
+                $reports[] = [
+                    'id' => $supplemental->id,
+                    'parent_id' => $supplemental->parent_id,
+                    'supplemental_category_id' => $supplemental->supplemental_category_id,
                     'name' => $supplemental->name,
                     'description' => $supplemental->descriptions,
-                    'parent_category' => $supplemental->parent_category,
-                    'status' => ($supplemental->active == 1) ? 'Active' : 'Inactive',
+                    'category_type' => $supplemental->category_type,
+                    'active' => $supplemental->active,
                     'updated_at' => $supplemental->updated_at,
                 ];
             }
@@ -217,7 +220,49 @@ class SupplementalController extends AppBaseController implements SupplementalCo
                 Storage::delete($file);
             }
 
-            $filename = "supplemental_management.csv";
+            $filename = "supplemental-management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvtemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'parent_id' => '',
+                'supplemental_category_id' => '',
+                'name' => '',
+                'description' => '',
+                'category_type' => '',
+                'active' => '',
+                'updated_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "supplemental-management-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

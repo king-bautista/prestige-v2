@@ -20,11 +20,11 @@ use App\Models\AdminViewModels\CategoryViewModel;
 class CategoriesController extends AppBaseController implements CategoriesControllerInterface
 {
     /****************************************
-    * 			CATEGORIES MANAGEMENT		*
-    ****************************************/
+     * 			CATEGORIES MANAGEMENT		*
+     ****************************************/
     public function __construct()
     {
-        $this->module_id = 7; 
+        $this->module_id = 7;
         $this->module_name = 'Categories';
     }
 
@@ -35,19 +35,16 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function list(Request $request)
     {
-        try
-        {
-            $categories = CategoryViewModel::when(request('search'), function($query){
+        try {
+            $categories = CategoryViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->where('descriptions', 'LIKE', '%' . request('search') . '%');
+                    ->where('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('category_type', 1)
-            ->latest()
-            ->paginate(request('perPage'));
+                ->where('category_type', 1)
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -58,13 +55,10 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function details($id)
     {
-        try
-        {
+        try {
             $category = CategoryViewModel::find($id);
             return $this->response($category, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -75,8 +69,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function store(CategoryRequest $request)
     {
-        try
-    	{
+        try {
             $data = [
                 'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'name' => $request->name,
@@ -89,9 +82,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             $category = Category::create($data);
 
             return $this->response($category, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -102,8 +93,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function update(CategoryRequest $request)
     {
-        try
-    	{
+        try {
             $category = Category::find($request->id);
 
             $data = [
@@ -118,9 +108,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             $category->update($data);
 
             return $this->response($category, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -131,14 +119,11 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $category = Category::find($id);
             $category->delete();
             return $this->response($category, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -147,15 +132,12 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         }
     }
 
-    Public function batchUpload(Request $request)
+    public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new CategoriesImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -166,13 +148,10 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function getParent()
     {
-        try
-        {
+        try {
             $categories = CategoryViewModel::whereNull('parent_id')->where('category_type', 1)->get();
             return $this->response($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -185,15 +164,15 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         // try
         // {
-            $categories = CategoryViewModel::when($id, function($query) use ($id){
-                return $query->where('parent_id', $id);
-            })
-            ->when(!$id, function($query){
+        $categories = CategoryViewModel::when($id, function ($query) use ($id) {
+            return $query->where('parent_id', $id);
+        })
+            ->when(!$id, function ($query) {
                 return $query->whereNull('parent_id');
             })
             ->orderBy('supplemental_category_id')
             ->get();
-            return $this->response($categories, 'Successfully Retreived!', 200);
+        return $this->response($categories, 'Successfully Retreived!', 200);
         // }
         // catch (\Exception $e)
         // {
@@ -207,13 +186,10 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function getLabels($id)
     {
-        try
-        {
+        try {
             $labels = CategoryLabel::where('category_id', $id)->get();
             return $this->response($labels, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -224,8 +200,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function saveLabels(CategoryLabelRequest $request)
     {
-        try
-        {
+        try {
             $category_label = CategoryLabel::updateOrCreate(
                 [
                     'company_id' => $request->company_id,
@@ -233,14 +208,12 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                     'site_id' => $request->site_id
                 ],
                 [
-                   'name' => $request->label
+                    'name' => $request->label
                 ],
             );
 
             return $this->response($category_label, 'Successfully saved!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -251,14 +224,11 @@ class CategoriesController extends AppBaseController implements CategoriesContro
 
     public function deleteLabel($id)
     {
-        try
-    	{
+        try {
             $label = CategoryLabel::find($id);
             $label->delete();
             return $this->response($label, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -271,14 +241,17 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try {
 
-            $category_management = CategoryViewModel::get();
+            $category_management = CategoryViewModel::where('category_type', 1)->get();
             $reports = [];
             foreach ($category_management as $category) {
-                $reports[] = [  
+                $reports[] = [
+                    'id' => $category->id,
+                    'parent_id' => $category->parent_id,
+                    'supplemental_category_id' => $category->supplemental_category_id,
                     'name' => $category->name,
                     'description' => $category->descriptions,
-                    'parent_category' => $category->parent_category,
-                    'status' => ($category->active == 1) ? 'Active' : 'Inactive',
+                    'category_type' => $category->category_type,
+                    'active' => $category->active,
                     'updated_at' => $category->updated_at,
                 ];
             }
@@ -289,7 +262,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 Storage::delete($file);
             }
 
-            $filename = "category_management.csv";
+            $filename = "category-management.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -311,4 +284,45 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         }
     }
 
+    public function downloadCsvtemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'parent_id' => '',
+                'supplemental_category_id' => '',
+                'name' => '',
+                'description' => '',
+                'category_type' => '',
+                'active' => '',
+                'updated_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "category-management-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

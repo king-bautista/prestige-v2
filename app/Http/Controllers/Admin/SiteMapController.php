@@ -79,8 +79,17 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
             $reports = [];
             foreach ($sitemaps as $sitemap) {
                 $reports[] = [
+                    'id' => $sitemap->id,
+                    
+                    'site_code_name',
+                    'site_building_id' => $sitemap->site_building_id,
+                    'building_name' => $sitemap->building_name,
+                    'site_building_level_id' => $sitemap->site_building_level_id,
+                    'floor_name' => $sitemap->floor_name,
+                    'screen_type_name' => $sitemap->screen_type_name,
                     'screen_location' => $sitemap->screen_location,
                     'site_screen_location' => $sitemap->site_screen_location,
+                    'site_id' => $sitemap->site_id,
                     'site_name' => $sitemap->site_name,
                     'orientation' => $sitemap->orientation,
                     'status' => $sitemap->active,

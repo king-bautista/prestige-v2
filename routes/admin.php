@@ -105,6 +105,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/supplemental/get-child', 'Admin\SupplementalController@getChild')->where('id', '[0-9]+')->name('admin.supplemental.get-child');
     Route::post('/admin/supplemental/batch-upload', 'Admin\SupplementalController@batchUpload')->name('admin.supplemental.batch-upload');
     Route::get('/admin/supplemental/download-csv', 'Admin\SupplementalController@downloadCsv')->name('admin.supplemental.download-csv');
+    Route::get('/admin/supplemental/download-csv-template', 'Admin\SupplementalController@downloadCsvTemplate')->name('admin.supplemental.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -267,6 +268,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/buildings', 'Admin\BuildingsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
     Route::get('/admin/site/get-buildings/{id}', 'Admin\BuildingsController@getBuildings')->where('id', '[0-9]+')->name('admin.site.buildings.get-buildings');
     Route::post('/admin/site/buildings/batch-upload', 'Admin\BuildingsController@batchUpload')->name('admin.site.buildings.batch-upload');
+    Route::get('/admin/site/buildings/download-csv', 'Admin\BuildingsController@downloadCsv')->name('admin.site.buildings.download-csv');
+    Route::get('/admin/site/buildings/download-csv-template', 'Admin\BuildingsController@downloadCsvTemplate')->name('admin.site.buildings.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -364,7 +367,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/manage-ads/all', 'Admin\AdvertisementController@getAllType')->name('admin.manage-ads.all');
     Route::get('/admin/manage-ads/material/{id}', 'Admin\AdvertisementController@getMaterialDetails')->where('id', '[0-9]+')->name('admin.manage-ads.material.details');
     Route::get('/admin/manage-ads/material/delete/{id}', 'Admin\AdvertisementController@deleteMaterial')->where('id', '[0-9]+')->name('admin.manage-ads.material.delete');
-
+    Route::get('/admin/manage-ads/download-csv', 'Admin\AdvertisementController@downloadCsv')->name('admin.manage-ads.download-csv');
+    Route::get('/admin/manage-ads/download-csv-template', 'Admin\AdvertisementController@downloadCsvTemplate')->name('admin.manage-ads.download-csv-template');
     /*
     |--------------------------------------------------------------------------
     | Content Management
@@ -377,12 +381,17 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/content-management/update', 'Admin\ContentManagementController@update')->name('admin.content-management.update');
     Route::get('/admin/content-management/delete/{id}', 'Admin\ContentManagementController@delete')->where('id', '[0-9]+')->name('admin.content-management.delete');
     Route::get('/admin/content-management/transaction-statuses', 'Admin\ContentManagementController@getTransactionStatuses')->where('id', '[0-9]+')->name('admin.content-management.transaction-statuses');
+    //Route::get('/admin/content-management/download-csv', 'Admin\ContentManagementController@downloadCsv')->name('admin.content-management.download-csv');
+    //Route::get('/admin/content-management/download-csv-template', 'Admin\ContentManagementController@downloadCsvTemplate')->name('admin.content-management.download-csv-template');
+    
     Route::get('/admin/play-list', 'Admin\ContentManagementController@playlist')->name('admin.play-list');
     Route::get('/admin/play-list/list', 'Admin\ContentManagementController@getPLayList')->name('admin.play-list.list');
     Route::post('/admin/play-list/update-sequence', 'Admin\ContentManagementController@updateSequence')->name('admin.play-list.update-sequence');
     Route::post('/admin/play-list/batch-upload', 'Admin\ContentManagementController@batchUpload')->name('admin.play-list.batch-upload');
-    Route::get('/admin/play-list/download-csv', 'Admin\ContentManagementController@downloadCsv')->name('admin.play-list.download-csv');
-
+    Route::get('/admin/play-list/download-csv', 'Admin\ContentManagementController@downloadCsvPlaylist')->name('admin.play-list.download-csv');
+    Route::get('/admin/play-list/download-csv-template', 'Admin\ContentManagementController@downloadCsvPlaylistTemplate')->name('admin.play-list.download-csv-template');
+    Route::get('/admin/upload-ad/download-csv', 'Admin\ContentManagementController@downloadCsvUploadAd')->name('admin.upload-ad.download-csv');
+    Route::get('/admin/upload-ad/download-csv-template', 'Admin\ContentManagementController@downloadCsvUploadAdTemplate')->name('admin.upload-ad.download-csv-template');
     /*
     |--------------------------------------------------------------------------
     | Genre Routes
@@ -407,6 +416,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::put('/admin/cinema/site-code/update', 'Admin\CinemaSiteController@update')->name('admin.site-code.update');
     Route::get('/admin/cinema/site-code/delete/{id}', 'Admin\CinemaSiteController@delete')->where('id', '[0-9]+')->name('admin.site-code.delete');
     Route::get('/admin/cinema/site-code/download-csv', 'Admin\CinemaSiteController@downloadCsv')->name('admin.site-code.download-csv');
+    Route::get('/admin/cinema/site-code/download-csv-template', 'Admin\CinemaSiteController@downloadCsvTemplate')->name('admin.site-code.download-csv-template');
     /*
     |--------------------------------------------------------------------------
     | Cinema Schedules Routes

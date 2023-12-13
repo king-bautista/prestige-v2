@@ -149,8 +149,10 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             foreach ($admin_management as $admin) {
                 $reports[] = [
                     'id' => $admin->id,
-                    'full_name' => $admin->full_name,
                     'email' => $admin->email,
+                    'admin_role' => $admin->roles,
+                    'admin_meta_first_name' => $admin->details['first_name'],
+                    'admin_meta_last_name' => $admin->details['last_name'],
                     'active' => $admin->active,
                     'updated_at' => $admin->updated_at,
                 ];
@@ -162,7 +164,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
                 Storage::delete($file);
             }
 
-            $filename = "admin_user.csv";
+            $filename = "admin-user.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -189,10 +191,13 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         try {
             $reports[] = [
                 'id' => '',
-                'full_name' => '',
-                'email' => '',
-                'active' => '',
-                'updated_at' => '',
+                    'email' => '',
+                    'admin_role' => '',
+                    'admin_meta_first_name' => '',
+                    'admin_meta_last_name' => '',
+                    'admin_meta_last_login' => '',
+                    'active' => '',
+                    'updated_at' => '',
             ];
 
             $directory = 'public/export/reports/';

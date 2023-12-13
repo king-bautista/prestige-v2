@@ -149,12 +149,27 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
             $reports = [];
             foreach ($cinema_schedule_management as $schedule) {
                 $reports[] = [  
-                    'title' => $schedule->title,
-                    'synopsis' => $schedule->synopsis,
+                    'id' => $schedule->id,
+                    'site_id' => $schedule->site_id,
                     'site_name' => $schedule->site_name,
+                    'title' => $schedule->tile,
+                    'synopsis' => $schedule->synopsis,
+                    'opening_date' => $schedule->opening_date,
                     'rating' => $schedule->rating,
+                    'rating_description' => $schedule->rating_description,
+                    'runtime' => $schedule->runtime,
+                    'casting' => $schedule->casting,
+                    'trailer_url' => $schedule->trailer_url,
+                    //'cinema_id' => $schedule->,
+                    //'cinema_id_code' => $schedule->,
+                    'screen_code' => $schedule->screen_code,
                     'screen_name' => $schedule->screen_name,
+                    //'film_id' => $schedule->,
+                    'genre' => $schedule->genre,
+                    'genre2' => $schedule->genre2,
                     'genre_name' => $schedule->genre_name,
+                    'time_slot' => $schedule->show_time,
+                    'show_time' => $schedule->show_time,
                     'time_slot' => $schedule->show_time,
                     'updated_at' => $schedule->updated_at,
                 ];
@@ -166,7 +181,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
                 Storage::delete($file);
             }
 
-            $filename = "cinema_schedule_management.csv";
+            $filename = "cinema-schedule-management.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

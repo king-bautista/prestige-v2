@@ -197,4 +197,96 @@ class BuildingsController extends AppBaseController implements BuildingsControll
             ], 422);
         }
     }
+
+    public function downloadCsv()
+    {
+        try {
+            $site_id = session()->get('site_id');
+            $buildings = SiteBuilding::where('site_id', $site_id)->get();
+            $reports = [];
+            foreach ($buildings as $building) {
+                $reports[] = [
+                    'id' => $building->id,
+                    'site_id' => $building->site_id,
+                    'name' => $building->name,
+                    'description' => $building->descriptions,
+                    'active' => $building->active,
+                    'updated_at' => $building->deleted_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "site_building.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'material_thumbnails_path' => '',
+                'name' => '',
+                'serial_number' => '',
+                'company_id' => '',
+                'company_name' => '',
+                'contract_id' => '',
+                'brand_id' => '',
+                'brand_name' => '',
+                'display_duration' => '',
+                'active' => '',
+                'updated_at' => '',
+            ];
+
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "create-content-manage-ads.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

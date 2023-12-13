@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CustomerCareControllerInterface;
-use Maatwebsite\Excel\Facades\Excel;    
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomerCareRequest;
 use App\Exports\Export;
@@ -39,7 +39,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 return $query->where('ticket_id', 'LIKE', '%' . request('search') . '%');
             })
                 ->latest()
-                ->paginate(request('perPage')); 
+                ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -83,7 +83,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $customer_care = CustomerCare::create($data);
             $insert_ticket_id = CustomerCare::find($customer_care->id);
             $insert_ticket_id->touch();
-            $customer_care_id = sprintf('%08d',$customer_care->id);
+            $customer_care_id = sprintf('%08d', $customer_care->id);
 
             $ticket_id = ['ticket_id' => 'TID-' . $customer_care_id];
             $insert_ticket_id->update($ticket_id);
@@ -100,7 +100,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
 
     public function update(CustomerCareRequest $request)
     {
-        try { 
+        try {
             $customer_care = CustomerCare::find($request->id);
             $customer_care->touch();
 
@@ -191,7 +191,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
 
             $customer_care = CustomerCareViewModel::get();
             $reports = [];
-            foreach ($customer_care as $customer) {// echo '<pre>'; print_r($customer->admin_details['full_name']); echo '</pre>';
+            foreach ($customer_care as $customer) {
                 $reports[] = [
                     'id' => $customer->id,
                     'concern_id' => $customer->concern_id,
@@ -212,8 +212,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                     'status_description' => $customer->status_details['description'],
                     'status_updated_at' => $customer->status_details['updated_at'],
                     'assigned_to_id' => $customer->assigned_to_id,
-                    'assigned_to_full_name' => ($customer->admin_details)? $customer->admin_details['full_name']: '',
-                    'assigned_to_email' => ($customer->admin_details)? $customer->admin_details['email']: '',
+                    'assigned_to_full_name' => ($customer->admin_details) ? $customer->admin_details['full_name'] : '',
+                    'assigned_to_email' => ($customer->admin_details) ? $customer->admin_details['email'] : '',
                     'assigned_to_alias' => $customer->assigned_to_alias,
                     'active' => $customer->active
                 ];
@@ -250,22 +250,32 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     public function downloadCsvTemplate()
     {
         try {
+            $reports[] = [
+                'id' => '',
+                'concern_id' => '',
+                'concern_name' => '',
+                'concern_description' => '',
+                'concern_active' => '',
+                'concern_updated_at' => '',
+                'ticket_id' => '',
+                'user_id' => '',
+                'user_full_name' => '',
+                'user_email' => '',
+                'first_name' => '',
+                'last_name' => '',
+                'ticket_subject' => '',
+                'ticket_description' => '',
+                'status_id' => '',
+                'status_name' => '',
+                'status_description' => '',
+                'status_updated_at' => '',
+                'assigned_to_id' => '',
+                'assigned_to_full_name' => '',
+                'assigned_to_email' => '',
+                'assigned_to_alias' => '',
+                'active' =>  '',
+            ];
 
-            $customer_care = CustomerCareViewModel::get();
-            $reports = [];
-            foreach ($customer_care as $customer) {
-                $reports[] = [
-                    'ticket_id' => $customer->ticket_id,
-                    'first_name' => $customer->first_name,
-                    'last_name' => $customer->last_name,
-                    'ticket_subject' => $customer->ticket_subject,
-                    'ticket_description' => $customer->ticket_description,
-                    'status' => $customer->transaction_status,
-                    'assigned_to_id' => $customer->assigned_to_id,
-                    'assigned_to_alias' => $customer->assigned_to_alias,
-                    'status' => ($customer->active == 1) ? 'Active' : 'Inactive'
-                ];
-            }
 
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);

@@ -10,7 +10,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewCustomerCare="AddNewCustomerCare" v-on:editButton="editCustomerCare"
-									v-on:downloadCsv="downloadCsv" v-on:DeleteModule="DeleteModule" ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate"
+									v-on:DeleteModule="DeleteModule" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -355,8 +356,8 @@ export default {
 		},
 
 		editCustomerCare: function (id) {
-			axios.get('/admin/customer-care/' + id) 
-				.then(response => { 
+			axios.get('/admin/customer-care/' + id)
+				.then(response => {
 					var customer_care = response.data.data; console.log(customer_care);
 					this.customer_care.id = customer_care.id;
 					this.getStatuses(customer_care.id);
