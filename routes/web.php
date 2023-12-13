@@ -18,5 +18,5 @@ Route::get('/login', function () {
 })->name('login');
 
 // Route::get('/{any}', 'Kiosk\MainController@index')->where('any', '.*')->name('kiosk.main');
-Route::get('/{any}', 'Kiosk\KiskController@index')->where('any', '.*')->name('kiosk.main');
+Route::get('/{any}', 'Kiosk\KioskController@index')->where('any', '.*')->name('kiosk.main');
 

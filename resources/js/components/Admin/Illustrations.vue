@@ -222,7 +222,7 @@ export default {
 				delete: {
 					title: 'Delete this illustration',
 					name: 'Delete',
-					apiUrl: '/min/site-category/delete',
+					apiUrl: '/admin/site-category/delete',
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'

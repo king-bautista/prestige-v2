@@ -157,7 +157,18 @@
                     $('#home-container').hide();
                 });
 
-                // FOR TENANT STORE PAGE
+                /* for logo button to view about page */
+                $("#ImgMallLogo").on('click', function(){
+                    $('#DirectoryAboutPage, #search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4').show();
+                    $('#ImgMallLogo, #home-container, #home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage').hide();
+                    $('#home_txt').removeClass("nav-btn-active");
+                    $('#search_txt').removeClass("nav-btn-active");
+                    $('#map_txt').removeClass("nav-btn-active");
+                    $('#promos_txt').removeClass("nav-btn-active");
+                    $('#cinema_txt').removeClass("nav-btn-active");
+                });
+
+                // FOR PROMO TENANT STORE PAGE
                 $("#tenants-tenant-store").on('click', function(){
                     $('#tenant-store-content').show();
                     $('#promos-container').hide();
@@ -169,10 +180,16 @@
                     }
                 });
 
+                // FOR TENANT PAGE
+                $("#CatBtnCasualDining").on('click', function(){
+                    $('#TenantPage').show();
+                    $('#CatTabCategories').hide();
+                });
+
                 /* for home button */
                 $("#home_btn").on('click', function(){
-                    $('#home-container, #search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4').show();
-                    $('#home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content').hide();
+                    $('#home-container, #search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo').show();
+                    $('#home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
                     $('#home_txt').addClass("nav-btn-active");
                     $('#search_txt').removeClass("nav-btn-active");
                     $('#map_txt').removeClass("nav-btn-active");
@@ -183,8 +200,8 @@
 
                 /* for search button */
                 $("#search_btn").on('click', function(){
-                    $('#search-container, #search_v4s, #home_v4, #map_v4, #promos_v4, #cinema_v4').show();
-                    $('#home-container, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content').hide();
+                    $('#search-container, #search_v4s, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo').show();
+                    $('#home-container, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
                     $('#search_txt').addClass("nav-btn-active");
                     $('#home_txt').removeClass("nav-btn-active");
                     $('#map_txt').removeClass("nav-btn-active");
@@ -194,8 +211,8 @@
 
                 /* for map button */
                 $("#map_btn").on('click', function(){
-                    $('#map-container, #map_v4s, #home_v4, #search_v4, #promos_v4, #cinema_v4').show();
-                    $('#home-container, #home-cat-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content').hide();
+                    $('#map-container, #map_v4s, #home_v4, #search_v4, #promos_v4, #cinema_v4, #ImgMallLogo').show();
+                    $('#home-container, #home-cat-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
                     $('#map_txt').addClass("nav-btn-active");
                     $('#search_txt').removeClass("nav-btn-active");
                     $('#home_txt').removeClass("nav-btn-active");
@@ -205,8 +222,8 @@
 
                 /* for promos button */
                 $("#promos_btn").on('click', function(){
-                    $('#promos-container, #promos_v4s, #home_v4, #search_v4, #map_v4, #cinema_v4').show();
-                    $('#home-container, #home-cat-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-store-content').hide();
+                    $('#promos-container, #promos_v4s, #home_v4, #search_v4, #map_v4, #cinema_v4, #ImgMallLogo').show();
+                    $('#home-container, #home-cat-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
                     $('#promos_txt').addClass("nav-btn-active");
                     $('#home_txt').removeClass("nav-btn-active");
                     $('#map_txt').removeClass("nav-btn-active");
@@ -216,8 +233,8 @@
 
                 /* for cinema button */
                 $("#cinema_btn").on('click', function(){
-                    $('#cinema-container, #cinema_v4s, #home_v4, #search_v4, #promos_v4, #map_v4').show();
-                    $('#home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content').hide();
+                    $('#cinema-container, #cinema_v4s, #home_v4, #search_v4, #promos_v4, #map_v4, #ImgMallLogo').show();
+                    $('#home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
                     $('#cinema_txt').addClass("nav-btn-active");
                     $('#home_txt').removeClass("nav-btn-active");
                     $('#map_txt').removeClass("nav-btn-active");
@@ -241,7 +258,7 @@
 
                 /* for redirecting to home button using back button*/
                 $("#Back_btn").on('click', function(){
-                    $('#cinema-container, #home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content').hide();
+                    $('#cinema-container, #home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content, #DirectoryAboutPage').hide();
                     $('#home-container').show();
                 });
             </script>

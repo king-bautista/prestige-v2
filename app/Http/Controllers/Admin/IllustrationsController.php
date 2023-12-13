@@ -42,11 +42,12 @@ class IllustrationsController extends AppBaseController implements Illustrations
                     ->orWhere('c1.name', 'LIKE', '%' . request('search'))
                     ->orWhere('c2.name', 'LIKE', '%' . request('search'));
             })
-                ->join('categories as c1', 'company_categories.category_id', '=', 'c1.id')
-                ->join('categories as c2', 'company_categories.sub_category_id', '=', 'c2.id')
-                ->select('company_categories.*')
-                ->orderBy('company_categories.updated_at', 'DESC')
-                ->paginate(request('perPage'));
+            ->leftJoin('categories as c1', 'company_categories.category_id', '=', 'c1.id')
+            ->leftJoin('categories as c2', 'company_categories.sub_category_id', '=', 'c2.id')
+            ->select('company_categories.*')
+            ->orderBy('company_categories.updated_at', 'DESC')
+            ->paginate(request('perPage'));
+
             return $this->responsePaginate($company_categories, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([

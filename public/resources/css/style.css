@@ -50,7 +50,7 @@ html, body {
     height: 100%
 }
 
-.logo-landscape {
+.mall-logo {
     width: 335px;
     height: 60px;
     object-fit: cover;
@@ -97,7 +97,7 @@ html, body {
 
 /*---- css for multirotator when landscape ----*/
 
-.multirotator_landscape {
+.multirotator_landscape_container {
     width: 470px;
     height: 1060px;
     object-fit: cover;
@@ -107,13 +107,26 @@ html, body {
     margin-left: -15px;
     z-index: 9999;
 }
-.multirotator_portrait{
+
+.multirotator_landscape {
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.multirotator_portrait_container {
     width: 1060px;
     height: 470px;
     object-fit: cover;
     border-radius: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
+    margin-left: 0px !important;
+    display: none;
+}
+
+.multirotator_portrait{
+    object-fit: cover;
+    border-radius: 20px;
     display: none;
 }
 
@@ -718,6 +731,15 @@ html, body {
     right: 0px;
 }
 
+.dot-container-2 {
+    position: absolute;
+    text-align: center !important;
+    width: 100%;
+    top: 600px;
+    left: 10px;
+    right: 0px;
+}
+
 .carousel-dot {
     cursor: pointer;
     height: 17px;
@@ -882,12 +904,94 @@ html, body {
     text-align: center;
 }
 
+.nav-tab-title {
+    font-size: 24px !important;
+    font-family: 'Henry Sans Regular';
+}
+
+.nav-tab-pills-container {
+    border-radius: 15px !important;
+    font-size: 24px !important;
+}
+
+.nav-tab-pills-btn {
+    border-radius: 15px !important;
+    border: 0px;
+    font-size: 24px !important;
+    padding: 5px 30px 5px 30px !important;
+    font-family: 'Henry Sans Regular';
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: #0030FF !important;
+}
+
+/*---- about page ----*/
+.socmediconcontainer {
+    margin-top: 15px;
+    margin-left: 38px;
+    color: #0030ff;
+    font-family: 'Henry Sans Regular';
+    font-size: 1.3em !important;
+}
+
+.socmedicon {
+    max-width: 20px;
+    vertical-align: middle;
+    margin-bottom: 0.2em;
+}
+
+.mall-details {
+    margin-left: 3px;
+    color: #3b3b3b;
+    max-height: 470px;
+    max-width: 930px;
+    overflow-y: auto;
+    font-size: 18px;
+    padding-right: 25.3px !important;
+    height: 408px;
+}
+
+.mall-details-container {
+    font-size: 1.3em !important; 
+    padding: 80px 110px 0 0 !important; 
+    font-family: 'Henry Sans Regular' !important;
+}
+
+.img-about-background-container {
+    width: 1450px; 
+    height: 439.69px; 
+    object-fit: cover; 
+    margin-left: -10px;
+}
+
+.img-about-logo-container {
+    margin: 80px 8px 80px 0;
+}
+
+/*---- display content none  ----*/
+#DirectoryAboutPage {
+    display: none;
+}
+
 #home-cat-contents {
     display: none;
 }
 
 #home-container {
     display: block;
+}
+
+#TenantPage {
+    display: none;
+}
+
+#TenantPageView {
+    display: none;
+}
+
+#TenantPerCategory {
+    display: none;
 }
 
 #search-container {
@@ -954,28 +1058,6 @@ html, body {
     display: block;
 }
 
-.nav-tab-title {
-    font-size: 24px !important;
-    font-family: 'Henry Sans Regular';
-}
-
-.nav-tab-pills-container {
-    border-radius: 15px !important;
-    font-size: 24px !important;
-}
-
-.nav-tab-pills-btn {
-    border-radius: 15px !important;
-    border: 0px;
-    font-size: 24px !important;
-    padding: 5px 30px 5px 30px !important;
-    font-family: 'Henry Sans Regular';
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    background-color: #0030FF !important;
-}
-
 
 
 /** ------- Resolutions  -------**/
@@ -1004,10 +1086,12 @@ html, body {
     }
 
 /*---- css of banner when portrait ----*/
-
+    .multirotator_landscape_container,
     .multirotator_landscape {
         display: none !important;
     }
+
+    .multirotator_portrait_container,
     .multirotator_portrait {
         display: flex !important;
         margin-left: 10px;
@@ -1230,6 +1314,37 @@ html, body {
         left: auto !important;
     }
 
+/*---- css for about page when portrait ----*/
+
+    .socmediconcontainer {
+        margin-top: 15px;
+        margin-left: 38px;
+    }
+    
+    .socmedicon {
+        max-width: 20px;
+        margin-bottom: 0.2em;
+    }
+    
+    .mall-details {
+        margin-left: 3px;
+        max-height: 650px !important;
+        max-width: 930px;
+        padding-right: 25.3px !important;
+        height: 738px;
+    }
+    
+    .mall-details-container {
+        padding: 80px 80px 0 0 !important; 
+    }
+    
+    .img-about-background-container {
+        margin-left: -15px;
+    }
+    
+    .img-about-logo-container {
+        margin: 80px 8px 80px 0;
+    }
 
 /*---- css for navigation when portrait ----*/
     .nav-btn-container {

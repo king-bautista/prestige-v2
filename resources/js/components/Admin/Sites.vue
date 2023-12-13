@@ -118,7 +118,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row" v-show="edit_record">
+							<!-- <div class="form-group row" v-show="edit_record">
 								<label for="isDefault" class="col-sm-3 col-form-label">Is Default</label>
 								<div class="col-sm-9">
 									<div class="custom-control custom-switch">
@@ -127,7 +127,7 @@
 										<label class="custom-control-label" for="isDefault"></label>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div class="form-group row">
 								<label for="isActive" class="col-sm-3 col-form-label">Multilanguage</label>
 								<div class="col-sm-9">
@@ -337,14 +337,6 @@ export default {
 					status: {
 						0: '<span class="badge badge-danger">Deactivated</span>',
 						1: '<span class="badge badge-info">Active</span>'
-					}
-				},
-				is_default: {
-					name: "Is Default",
-					type: "Boolean",
-					status: {
-						0: '<span class="badge badge-danger">No</span>',
-						1: '<span class="badge badge-info">Yes</span>'
 					}
 				},
 				multilanguage: {

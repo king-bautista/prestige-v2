@@ -9,8 +9,14 @@
 <!--Start of directory categories category content-->
 <div class="tab-content" id="Categories-nav-tab-content">
 
-    <div class="tab-pane show active cat-cards" id="Tab-Category" role="tabpanel">
-        <?php include('resources/include/common/contents/categories/tabs/category_tab_categories.php'); ?>
+    <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
+        <div id="CatTabCategories" class="cat-cards">
+            <?php include('resources/include/common/contents/categories/tabs/category_tab_categories.php'); ?>
+        </div>
+
+        <div id="TenantPage">
+            <?php include('resources/include/common/contents/tenant/tenant_page/tenant_page.php'); ?>
+        </div>
     </div>
     
     <div class="tab-pane" id="Tab-Alphabetical" role="tabpanel">

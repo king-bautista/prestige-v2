@@ -2,7 +2,7 @@
 
 <div class="row mt-5 cat-row-card">
     <div class="col-sm-6 mt-3">
-        <div class="cat-btn">
+        <div class="cat-btn" id="CatBtnCasualDining">
             <img class="cat-btn-img" src="resources/uploads/categories/food/Casual Dining.png" />
             <div class="cat-btn-align">
                 <p class="cat-text">Casual Dining</p>
