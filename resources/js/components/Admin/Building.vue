@@ -202,14 +202,14 @@ export default {
 				})
 		},
 
-		downloadCsv: function () {
+		downloadCsv: function () { 
 			axios.get('/admin/site/buildings/download-csv')
 				.then(response => {
-					const link = document.createElement('a');
-					link.href = response.data.data.filepath;
-					link.setAttribute('download', response.data.data.filename); //or any other extension
-					document.body.appendChild(link);
-					link.click();
+					// const link = document.createElement('a');
+					// link.href = response.data.data.filepath;
+					// link.setAttribute('download', response.data.data.filename); //or any other extension
+					// document.body.appendChild(link);
+					// link.click();
 				})
 		},
 		downloadTemplate: function () {

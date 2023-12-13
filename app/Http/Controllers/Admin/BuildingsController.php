@@ -200,38 +200,38 @@ class BuildingsController extends AppBaseController implements BuildingsControll
 
     public function downloadCsv()
     {
-        try {
-            $site_id = session()->get('site_id');
-            $buildings = SiteBuilding::where('site_id', $site_id)->get();
-            $reports = [];
-            foreach ($buildings as $building) {
-                $reports[] = [
-                    'id' => $building->id,
-                    'site_id' => $building->site_id,
-                    'name' => $building->name,
-                    'description' => $building->descriptions,
-                    'active' => $building->active,
-                    'updated_at' => $building->deleted_at,
-                ];
-            }
+        try { echo 'zzzzzzzzzzzzzzzzzzz';
+            // $site_id = session()->get('site_id');
+            // $buildings = SiteBuilding::where('site_id', $site_id)->get();
+            // $reports = [];
+            // foreach ($buildings as $building) {
+            //     $reports[] = [
+            //         'id' => $building->id,
+            //         'site_id' => $building->site_id,
+            //         'name' => $building->name,
+            //         'description' => $building->descriptions,
+            //         'active' => $building->active,
+            //         'updated_at' => $building->deleted_at,
+            //     ];
+            // }
 
-            $directory = 'public/export/reports/';
-            $files = Storage::files($directory);
-            foreach ($files as $file) {
-                Storage::delete($file);
-            }
+            // $directory = 'public/export/reports/';
+            // $files = Storage::files($directory);
+            // foreach ($files as $file) {
+            //     Storage::delete($file);
+            // }
 
-            $filename = "site_building.csv";
-            // Store on default disk
-            Excel::store(new Export($reports), $directory . $filename);
+            // $filename = "site_building.csv";
+            // // Store on default disk
+            // Excel::store(new Export($reports), $directory . $filename);
 
-            $data = [
-                'filepath' => '/storage/export/reports/' . $filename,
-                'filename' => $filename
-            ];
+            // $data = [
+            //     'filepath' => '/storage/export/reports/' . $filename,
+            //     'filename' => $filename
+            // ];
 
-            if (Storage::exists($directory . $filename))
-                return $this->response($data, 'Successfully Retreived!', 200);
+            // if (Storage::exists($directory . $filename))
+            //     return $this->response($data, 'Successfully Retreived!', 200);
 
             return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
