@@ -25,6 +25,7 @@ class CustomerCare extends Model
         'status_id',
         'assigned_to_id',
         'assigned_to_alias',
+        'internal_remark',
         'active',
     ];
 

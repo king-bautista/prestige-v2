@@ -159,7 +159,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 Storage::delete($file);
             }
 
-            $filename = "concern.csv";
+            $filename = "ticket-type.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -199,7 +199,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 Storage::delete($file);
             }
 
-            $filename = "concern-template.csv";
+            $filename = "ticket-type-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

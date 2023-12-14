@@ -19,12 +19,12 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group row mb-4">
-									<label for="concern" class="col-sm-3 col-form-label">Concern <span
+									<label for="concern" class="col-sm-3 col-form-label">Ticket Type <span
 											class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-9">
 										<select class="form-control custom-select" id="hello"
 											v-model="customer_care.concern_id">
-											<option value="">Select Concern</option>
+											<option value="">Select Ticket</option>
 											<option v-for="concern in concerns" :value="concern.id"> {{ concern.name }}
 											</option>
 										</select>
