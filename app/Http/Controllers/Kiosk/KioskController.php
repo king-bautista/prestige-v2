@@ -115,7 +115,7 @@ class KioskController extends AppBaseController
         return $tenants;
     }
 
-    public function getPromos() {
+    public function getPromos($site_id) {
         
     }
 
