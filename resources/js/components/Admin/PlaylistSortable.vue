@@ -90,6 +90,7 @@
 									<th scope="col">Company Name</th>
 									<th scope="col">Start/End Date</th>
 									<th scope="col">Duration</th>
+									<th scope="col">Sequence</th>
 									<th scope="col">Date Appoved</th>
 								</tr>
 							</thead>
@@ -105,6 +106,8 @@
 									<td>{{ data.company_name }}</td>
 									<td>{{ data.start_date }} <br />to<br /> {{ data.end_date }}</td>
 									<td>{{ data.duration }}</td>
+									<td>{{ data.sequence }}</td>
+									
 									<td>{{ data.updated_at }}</td>
 								</tr>
 

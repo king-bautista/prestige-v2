@@ -230,7 +230,7 @@ html, body {
 .cat-row-card {
     margin-left: -29px !important;
     width: 704px;
-    height: 318px;
+    /* height: 318px; */
 }
 
 .cat-btn-img {
