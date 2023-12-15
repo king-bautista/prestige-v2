@@ -27,7 +27,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
     }
 
     public function index()
-    {
+    { echo 'dddd';
         return view('admin.concerns');
     }
 
