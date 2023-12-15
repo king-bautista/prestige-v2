@@ -526,7 +526,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     | Customer Care Concern Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/customer-care/concerns', 'Admin\ConcernsController@index')->name('admin.concerns');
+    Route::get('/admin/customer-care/ticket-types', 'Admin\ConcernsController@index')->name('admin.ticke-types');
     Route::get('/admin/customer-care/ticket-type/list', 'Admin\ConcernsController@list')->name('admin.concern.list');
     Route::post('/admin/customer-care/ticket-type/store', 'Admin\ConcernsController@store')->name('admin.concern.store');
     Route::get('/admin/customer-care/ticket-type/{id}', 'Admin\ConcernsController@details')->where('id', '[0-9]+')->name('admin.concern.details');
