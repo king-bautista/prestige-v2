@@ -18,7 +18,7 @@ use App\Models\AdminViewModels\ConcernViewModel;
 class ConcernsController extends AppBaseController implements ConcernsControllerInterface
 {
     /************************************************
-     * 			FAQ's MANAGEMENT	 	*
+     * 			Concern's MANAGEMENT	 	*
      ************************************************/
     public function __construct()
     {
