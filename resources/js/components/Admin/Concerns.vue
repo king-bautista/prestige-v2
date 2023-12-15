@@ -114,7 +114,7 @@ export default {
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
-			dataUrl: "/admin/customer-care/concerns/list",
+			dataUrl: "/admin/customer-care/concern/list",
 			actionButtons: {
 				edit: {
 					title: 'Edit this Ticket Type',
