@@ -27,8 +27,6 @@ class PortalCustomerCareRequest extends FormRequest
             "concern_id" => "required|string",
             "ticket_subject" => "required|string",
             "ticket_description" => "required|string",
-            "last_name" => "required|string",
-            "first_name" => "required|string",
         ];
     }
 
