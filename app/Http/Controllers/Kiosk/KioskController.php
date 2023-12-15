@@ -26,12 +26,7 @@ class KioskController extends AppBaseController
         if(!$site)
             return view('kiosk.page-not-found');
 
-        // GET ALPHABETICAL TENANTS
-        // GET TENANTS PER SUB-CATEGORIES
-        // GET SUPLEMENTALS
-        // GET TENANTS BY SUPPLEMENTALS
         $categories = $this->getCategories($site->id);
-        //return $this->getTenants($site->id, 1);
 
         $template_name = str_replace("-", "_", strtolower($site_name));
         return view('kiosk.'.$template_name.'.main', compact('site', 'categories'));
@@ -118,6 +113,10 @@ class KioskController extends AppBaseController
 
         $tenants = array_chunk($tenants, 15);
         return $tenants;
+    }
+
+    public function getPromos() {
+        
     }
 
 }

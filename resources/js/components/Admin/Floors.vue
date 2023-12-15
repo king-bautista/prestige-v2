@@ -13,8 +13,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="flooractionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewFloor="AddNewFloor"
 									v-on:editButton="editFloor" v-on:DeleteFloor="DeleteFloor"
-									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadTemplate="downloadTemplate"
-									ref="floorsDataTable">
+									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="floorsDataTable">
 								</Table>
 							</div>
 						</div>
@@ -172,6 +172,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				downloadCsv: {
 					title: 'Download',
 					v_on: 'downloadTemplate',
@@ -277,13 +284,25 @@ export default {
 				})
 		},
 
+		downloadCsv: function () {
+			axios.get('/admin/site/floor/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
 		downloadTemplate: function () {
-			const link = document.createElement('a');
-			var site_name = this.siteName;
-			link.href = '/uploads/csv/' + site_name + '-site-floor-batch-upload.csv';
-			link.setAttribute('downloadFile', '/uploads/csv/' + site_name + '-site-floor-batch-upload.csv'); //or any other extension
-			document.body.appendChild(link);
-			link.click();
+			axios.get('/admin/site/floor/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 
 	},

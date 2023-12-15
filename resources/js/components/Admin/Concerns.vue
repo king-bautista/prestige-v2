@@ -28,9 +28,9 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New
-							Concern</h5>
+							Ticket Type</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o"
-								aria-hidden="true"></i> Edit Concern</h5>
+								aria-hidden="true"></i> Edit Ticket Type</h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -67,7 +67,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 							<button type="button" class="btn btn-primary pull-right" v-show="add_record"
-								@click="storeConcern">Add New Concern</button>
+								@click="storeConcern">Add New Ticket Type</button>
 							<button type="button" class="btn btn-primary pull-right" v-show="edit_record"
 								@click="updateConcern">Save Changes</button>
 						</div>
@@ -114,10 +114,10 @@ export default {
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
-			dataUrl: "/admin/customer-care/concern/list",
+			dataUrl: "/admin/customer-care/ticket-type/list",
 			actionButtons: {
 				edit: {
-					title: 'Edit this Concern',
+					title: 'Edit this Ticket Type',
 					name: 'Edit',
 					apiUrl: '',
 					routeName: 'concerns.edit',
@@ -125,9 +125,9 @@ export default {
 					method: 'edit'
 				},
 				delete: {
-					title: 'Delete this Concern',
+					title: 'Delete this Ticket Type',
 					name: 'Delete',
-					apiUrl: '/admin/customer-care/concern/delete',
+					apiUrl: '/admin/customer-care/ticket-type/delete',
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
@@ -135,9 +135,9 @@ export default {
 			},
 			otherButtons: {
 				addNew: {
-					title: 'New Concern',
+					title: 'New Ticket Type',
 					v_on: 'AddNewConcern',
-					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Concern',
+					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Ticket Type',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -176,7 +176,7 @@ export default {
 			formData.append("name", this.concerns.name);
 			formData.append("description", this.concerns.description);
 			formData.append("active", this.concerns.active);
-			axios.post('/admin/customer-care/concern/store', formData, {
+			axios.post('/admin/customer-care/ticket-type/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
@@ -189,7 +189,7 @@ export default {
 		},
 
 		editConcern: function (id) {
-			axios.get('/admin/customer-care/concern/' + id)
+			axios.get('/admin/customer-care/ticket-type/' + id)
 				.then(response => {
 					var concerns = response.data.data;
 					this.concerns.id = concerns.id;
@@ -209,7 +209,7 @@ export default {
 			formData.append("name", this.concerns.name);
 			formData.append("description", this.concerns.description);
 			formData.append("active", this.concerns.active);
-			axios.post('/admin/customer-care/concern/update', formData, {
+			axios.post('/admin/customer-care/ticket-type/update', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
@@ -221,7 +221,7 @@ export default {
 				})
 		},
 		downloadCsv: function () {
-			axios.get('/admin/customer-care/concern/download-csv')
+			axios.get('/admin/customer-care/ticket-type/download-csv')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;
@@ -232,7 +232,7 @@ export default {
 		},
 
 		downloadTemplate: function () {
-			axios.get('/admin/customer-care/concern/download-csv-template')
+			axios.get('/admin/customer-care/ticket-type/download-csv-template')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;

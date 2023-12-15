@@ -41,18 +41,23 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $data = [
                 'user_id' => $user->id,
                 'concern_id' => $request->concern_id,
-                'ticket_id' => 'TID-' . str_replace(["-", ":", " "], "", Carbon::now()),
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
-                // 'assigned_to_id' => '',
+                'assigned_to_id' => '',
                 // 'assigned_to_alias' => '',
                 'status_id' => 2,
                 'active' => 1,
             ];
 
             $customer_care = CustomerCare::create($data);
+            $insert_ticket_id = CustomerCare::find($customer_care->id);
+            $insert_ticket_id->touch();
+            $customer_care_id = 'TID-' . date("y") . sprintf('%05d', $customer_care->id);
+
+            $ticket_id = ['ticket_id' => $customer_care_id];
+            $insert_ticket_id->update($ticket_id);      
 
             return $this->response($customer_care, 'Successfully Created!', 200);
         } catch (\Exception $e) {

@@ -18,7 +18,7 @@ use App\Models\AdminViewModels\ConcernViewModel;
 class ConcernsController extends AppBaseController implements ConcernsControllerInterface
 {
     /************************************************
-     * 			FAQ's MANAGEMENT	 	*
+     * 			Concern's MANAGEMENT	 	*
      ************************************************/
     public function __construct()
     {
@@ -27,7 +27,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
     }
 
     public function index()
-    {
+    { 
         return view('admin.concerns');
     }
 
@@ -159,7 +159,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 Storage::delete($file);
             }
 
-            $filename = "concern.csv";
+            $filename = "ticket-type.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -199,7 +199,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 Storage::delete($file);
             }
 
-            $filename = "concern-template.csv";
+            $filename = "ticket-type-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

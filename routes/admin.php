@@ -268,8 +268,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/buildings', 'Admin\BuildingsController@getAll')->where('id', '[0-9]+')->name('admin.site.buildings.all');
     Route::get('/admin/site/get-buildings/{id}', 'Admin\BuildingsController@getBuildings')->where('id', '[0-9]+')->name('admin.site.buildings.get-buildings');
     Route::post('/admin/site/buildings/batch-upload', 'Admin\BuildingsController@batchUpload')->name('admin.site.buildings.batch-upload');
-    Route::get('/admin/site/buildings/download-csv', 'Admin\BuildingsController@downloadCsv')->name('admin.site.buildings.download-csv');
-    Route::get('/admin/site/buildings/download-csv-template', 'Admin\BuildingsController@downloadCsvTemplate')->name('admin.site.buildings.download-csv-template');
+    Route::get('/admin/site/building/download-csv', 'Admin\BuildingsController@downloadCsv')->name('admin.site.building.download-csv');
+    Route::get('/admin/site/building/download-csv-template', 'Admin\BuildingsController@downloadCsvTemplate')->name('admin.site.building.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -283,6 +283,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/floor/delete/{id}', 'Admin\FloorsController@delete')->where('id', '[0-9]+')->name('admin.site.floor.delete');
     Route::get('/admin/site/floors/{id}', 'Admin\FloorsController@getFloors')->where('id', '[0-9]+')->name('admin.site.floors');
     Route::post('/admin/site/floors', 'Admin\FloorsController@batchUpload')->name('admin.site.floor.batch-upload');
+    Route::get('/admin/site/floor/download-csv', 'Admin\FloorsController@downloadCsv')->name('admin.site.floor.download-csv');
+    Route::get('/admin/site/floor/download-csv-template', 'Admin\FloorsController@downloadCsvTemplate')->name('admin.site.floor.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
@@ -524,14 +526,14 @@ Route::group(['middleware' => 'auth:admin'], function () {
     | Customer Care Concern Routes
     |--------------------------------------------------------------------------
     */
-    Route::get('/admin/customer-care/concerns', 'Admin\ConcernsController@index')->name('admin.concerns');
-    Route::get('/admin/customer-care/concern/list', 'Admin\ConcernsController@list')->name('admin.concern.list');
-    Route::post('/admin/customer-care/concern/store', 'Admin\ConcernsController@store')->name('admin.concern.store');
-    Route::get('/admin/customer-care/concern/{id}', 'Admin\ConcernsController@details')->where('id', '[0-9]+')->name('admin.concern.details');
-    Route::post('/admin/customer-care/concern/update', 'Admin\ConcernsController@update')->name('admin.concern.update');
-    Route::get('/admin/customer-care/concern/delete/{id}', 'Admin\ConcernsController@delete')->where('id', '[0-9]+')->name('admin.concern.delete');
-    Route::get('/admin/customer-care/concern/download-csv', 'Admin\ConcernsController@downloadCsv')->name('admin.concern.download-csv');
-    Route::get('/admin/customer-care/concern/download-csv-template', 'Admin\ConcernsController@downloadCsvTemplate')->name('admin.concern.download-csv-template');
+    Route::get('/admin/customer-care/ticket-types', 'Admin\ConcernsController@index')->name('admin.concerns');
+    Route::get('/admin/customer-care/ticket-type/list', 'Admin\ConcernsController@list')->name('admin.concern.list');
+    Route::post('/admin/customer-care/ticket-type/store', 'Admin\ConcernsController@store')->name('admin.concern.store');
+    Route::get('/admin/customer-care/ticket-type/{id}', 'Admin\ConcernsController@details')->where('id', '[0-9]+')->name('admin.concern.details');
+    Route::post('/admin/customer-care/ticket-type/update', 'Admin\ConcernsController@update')->name('admin.concern.update');
+    Route::get('/admin/customer-care/ticket-type/delete/{id}', 'Admin\ConcernsController@delete')->where('id', '[0-9]+')->name('admin.concern.delete');
+    Route::get('/admin/customer-care/ticket-type/download-csv', 'Admin\ConcernsController@downloadCsv')->name('admin.concern.download-csv');
+    Route::get('/admin/customer-care/ticket-type/download-csv-template', 'Admin\ConcernsController@downloadCsvTemplate')->name('admin.concern.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------
