@@ -180,39 +180,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function generatePlayList($screen_ids)
     {
-        // dd($screen_ids);
-        // if(count($screen_ids) === 0)
-        //     return false;
-
-        // $site_screen_ids = [];
-        // $site_id = 0;
-        // $site_screen_products = [];
-        // dd($screen_ids);
-        // // GET AND FILTER SCREEN IDS
-        // foreach($screen_ids as $screen) {
-        //     // STOP THE LOOP IF ID IS 0 AND SITE ID NOT EMPTY
-        //     if($screen['id'] === 0 && $screen['site_id']) {
-        //         $site_id = $screen['site_id'];
-        //         $site_screen_ids = [];
-        //         break;
-        //     }
-
-        //     $site_screen_ids[] = $screen['id'];
-        // }    
-        // if($site_id) {
-        //     $site_screen_ids = SiteScreen::where('site_id', $site_id)->get()->pluck('id');
-        // }
-        // // END GET AND FILTER SCREEN IDS
-
-        // // GET CONTENT IDS
-        // $content_ids = ContentScreen::whereIn('site_screen_id', $site_screen_ids)->get()->pluck('content_id');
-        // if($site_id) {
-        //     dd('here');
-        //     $content_ids = ContentScreen::where('site_id', $site_id)->where('site_screen_id', 0)->get()->pluck('content_id');
-        // }
-
-        // dd($content_ids);
-
         $site_id = 0;
         // GET AND FILTER SCREEN IDS
         foreach ($screen_ids as $screen) {
@@ -337,7 +304,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-                ->paginate(request('perPage'));
+            ->paginate(request('perPage'));
 
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {

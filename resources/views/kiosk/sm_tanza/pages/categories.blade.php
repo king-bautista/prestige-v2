@@ -32,7 +32,7 @@
         <div class="tab-pane" id="Tab-Alphabetical" role="tabpanel">
             <?php include('resources/include/common/contents/categories/tabs/category_tab_alphabetical.php'); ?>
         </div>        
-        <div class="tab-pane" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+        <div class="tab-pane" id="Tab-Supplemental" role="tabpanel" aria-labelledby="Tab-Supplemental-tab">
             <?php include('resources/include/common/contents/categories/tabs/category_tab_cravings.php'); ?>
         </div>
     </div>
@@ -47,7 +47,7 @@
                 <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link nav-tab-pills-btn" id="pills-contact-tab" data-toggle="pill" data-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Cravings</button>
+                <button class="nav-link nav-tab-pills-btn" id="Tab-Supplemental-tab" data-toggle="pill" data-target="#Tab-Supplemental" type="button" role="tab" aria-controls="Tab-Supplemental" aria-selected="false">Cravings</button>
             </li>
         </ul>
     </div>
@@ -58,6 +58,7 @@
     var categories = "{{ $categories }}";
     var sub_categories = '';
     var main_category = '';
+    var supplementals = '';
 
     function decodeEntities(encodedString) {
         var textArea = document.createElement('textarea');
@@ -76,7 +77,9 @@
             $( "#categories-container" ).append(category_element);
             $('.main-'+category.id).on('click', function() {
                 main_category = category.category_name;
-                sub_categories = category.children;
+                sub_categories = category.sub_categories;
+                supplementals = category.supplemental.sub_categories;
+                $('#Tab-Supplemental-tab').html(category.supplemental.name);
                 showSubCategories();
             });
         }); 

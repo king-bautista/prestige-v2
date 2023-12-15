@@ -12,7 +12,7 @@ use VideoThumbnail;
 
 use App\Models\BrandProductPromos;
 use App\Models\Brand;
-use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\AdminViewModels\BrandProductViewModel;
 
 class ProductsController extends AppBaseController implements ProductsControllerInterface
 {

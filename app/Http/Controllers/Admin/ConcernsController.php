@@ -18,16 +18,16 @@ use App\Models\AdminViewModels\ConcernViewModel;
 class ConcernsController extends AppBaseController implements ConcernsControllerInterface
 {
     /************************************************
-     * 			FAQ's MANAGEMENT	 	*
+     * 			Concern's MANAGEMENT	 	*
      ************************************************/
     public function __construct()
     {
         $this->module_id = 73;
-        $this->module_name = 'Concerns';
+        $this->module_name = 'Ticket Type';
     }
 
     public function index()
-    {
+    { 
         return view('admin.concerns');
     }
 
