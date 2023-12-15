@@ -127,7 +127,7 @@ export default {
 				delete: {
 					title: 'Delete this Ticket Type',
 					name: 'Delete',
-					apiUrl: '/admin/customer-care/ticket-ype/delete',
+					apiUrl: '/admin/customer-care/ticket-type/delete',
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
@@ -176,7 +176,7 @@ export default {
 			formData.append("name", this.concerns.name);
 			formData.append("description", this.concerns.description);
 			formData.append("active", this.concerns.active);
-			axios.post('/admin/customer-care/ticket-ype/store', formData, {
+			axios.post('/admin/customer-care/ticket-type/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
@@ -189,7 +189,7 @@ export default {
 		},
 
 		editConcern: function (id) {
-			axios.get('/admin/customer-care/ticket-ype/' + id)
+			axios.get('/admin/customer-care/ticket-type/' + id)
 				.then(response => {
 					var concerns = response.data.data;
 					this.concerns.id = concerns.id;
@@ -221,7 +221,7 @@ export default {
 				})
 		},
 		downloadCsv: function () {
-			axios.get('/admin/customer-care/ticket-ype/download-csv')
+			axios.get('/admin/customer-care/ticket-type/download-csv')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;
@@ -232,7 +232,7 @@ export default {
 		},
 
 		downloadTemplate: function () {
-			axios.get('/admin/customer-care/ticket-ype/download-csv-template')
+			axios.get('/admin/customer-care/ticket-type/download-csv-template')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;
