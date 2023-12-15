@@ -23,7 +23,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
     public function __construct()
     {
         $this->module_id = 73;
-        $this->module_name = 'Concerns';
+        $this->module_name = 'Ticket Type';
     }
 
     public function index()
