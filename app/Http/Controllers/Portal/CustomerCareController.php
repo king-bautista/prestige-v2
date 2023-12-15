@@ -33,6 +33,11 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
         return view('portal.customer_care');
     }
 
+    public function viewTicket()
+    {
+        return view('portal.customer_care_view_ticket');
+    }
+
     public function store(PortalCustomerCareRequest $request)
     {
         try {

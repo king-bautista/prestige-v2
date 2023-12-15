@@ -271,6 +271,15 @@ Route::group(['middleware' => 'isClient:portal'], function () {
     
     /*
     |--------------------------------------------------------------------------
+    | Customer Care View Tickets Routes
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/portal/customer-care/view-ticket', 'Portal\ReportsController@viewTicket')->name('portal.customer-care.view-ticket');
+    Route::get('/portal/customer-care/view-ticket/list', 'Portal\ReportsController@getViewTicket')->name('portal.customer-care.view-ticket-list');
+    //Route::get('/portal/reports/kiosk-usage/download-csv', 'Admin\ReportsController@downloadCsvKioskUsage')->name('portal.reports.kiosk-usage.download-csv');
+    /*
+    |--------------------------------------------------------------------------
     | FAQs Routes
     |--------------------------------------------------------------------------
     */    

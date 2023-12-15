@@ -176,7 +176,7 @@ export default {
 			formData.append("name", this.concerns.name);
 			formData.append("description", this.concerns.description);
 			formData.append("active", this.concerns.active);
-			axios.post('/admin/customer-care/ticket-ype/store', formData, {
+			axios.post('/admin/customer-care/ticket-type/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
