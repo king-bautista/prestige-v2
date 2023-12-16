@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h4><i class="nav-icon fa fa-phone-square"></i>&nbsp;&nbsp;Customer Care</h4>
+						<h4><i class="nav-icon fa fa-phone-square"></i>&nbsp;&nbsp;Contact Us</h4>
 					</div>
 					<div class="card-body">
 						<div class="row">
@@ -12,9 +12,12 @@
 								<img :src="company_image" class="img-fluid" />
 							</div>
 							<div class="col-md-4">
-								<p><b style="font-weight: 600;">Office Address:</b> {{ company.address }}<br>
-									<b style="font-weight: 600;">Mobile Number:</b>{{ company.contact_number }}<br>
-									<b style="font-weight: 600;">Email:</b> {{ company.email }}
+								
+								<p><b style="font-weight: 600;">Company Name:</b> {{ company.name }}<br>
+									<b style="font-weight: 600;">First Namer:</b>{{ company.first_name }}<br>
+									<b style="font-weight: 600;">Last Name:</b>{{ company.last_name }}<br>
+									<b style="font-weight: 600;">Email:</b> {{ company.user_email }}<br>
+									<b style="font-weight: 600;">Contact Number:</b>{{ company.contact_number }}<br>
 								</p>
 							</div>
 							<div class="col-md-6">
@@ -28,22 +31,6 @@
 											<option v-for="concern in concerns" :value="concern.id"> {{ concern.name }}
 											</option>
 										</select>
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="firstName" class="col-sm-3 col-form-label">First Name <span
-											class="font-italic text-danger"> *</span></label>
-									<div class="col-sm-9">
-										<input type="text" class="form-control" v-model="customer_care.first_name"
-											placeholder="First Name" required>
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="lastName" class="col-sm-3 col-form-label">Last Name <span
-											class="font-italic text-danger"> *</span></label>
-									<div class="col-sm-9">
-										<input type="text" class="form-control" v-model="customer_care.last_name"
-											placeholder="Last Name" required>
 									</div>
 								</div>
 								<div class="form-group row">
