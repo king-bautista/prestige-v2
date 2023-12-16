@@ -14,7 +14,13 @@
     </div>
     
     <div class="tab-pane" id="Tab-Schedule" role="tabpanel">
-        <?php include('resources/include/common/contents/cinema/tabs/cinema_tab_schedule.php'); ?>
+        <div id="CinemaTabSchedule">
+            <?php include('resources/include/common/contents/cinema/tabs/cinema_tab_schedule.php'); ?>
+        </div>
+        
+        <div id="CinemaTabDefault">
+            <?php include('resources/include/common/contents/default/cinema_default.php'); ?>
+        </div>
     </div>
 
 

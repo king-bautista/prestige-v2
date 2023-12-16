@@ -27,9 +27,10 @@ class KioskController extends AppBaseController
             return view('kiosk.page-not-found');
 
         $categories = $this->getCategories($site->id);
+        $promos = $this->getPromos($site->id);
 
         $template_name = str_replace("-", "_", strtolower($site_name));
-        return view('kiosk.'.$template_name.'.main', compact('site', 'categories'));
+        return view('kiosk.'.$template_name.'.main', compact('site', 'categories', 'promos'));
 
         // GET PLAYLIST
         // MAP
@@ -116,7 +117,18 @@ class KioskController extends AppBaseController
     }
 
     public function getPromos($site_id) {
-        
+        $current_date = date('Y-m-d');
+
+        $promos = SiteTenantViewModel::where('site_tenants.site_id', $site_id)
+        ->where('brand_products_promos.type', 'promo')
+        ->whereDate('brand_products_promos.date_from', '<=', $current_date)
+        ->whereDate('brand_products_promos.date_to', '>=', $current_date)
+        ->join('site_tenant_products', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
+        ->join('brand_products_promos', 'site_tenant_products.brand_product_promo_id', '=', 'brand_products_promos.id')
+        ->select('site_tenants.*', 'brand_products_promos.image_url')
+        ->get();
+
+        return $promos;
     }
 
 }

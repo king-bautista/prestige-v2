@@ -4,7 +4,7 @@
 </div>
 
 <!-- carousel promo -->
-    <div class="slideshow-content-container">
+    <!-- <div class="slideshow-content-container">
 
         <div class="mySlidesContent">
 
@@ -35,11 +35,11 @@
             </div>
         </a>
     
-    </div>
+    </div> -->
 
 <!-- carousel dot tab identifier -->
-    <div class="dot-container-2 justify-content-center">
+    <!-- <div class="dot-container-2 justify-content-center">
         <span class="carousel-dot" onclick="currentSlide(1)"></span>
         <span class="carousel-dot" onclick="currentSlide(2)"></span>
-    </div>
+    </div> -->
 

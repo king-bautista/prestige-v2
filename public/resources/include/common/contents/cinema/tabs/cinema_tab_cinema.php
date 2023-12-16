@@ -2,12 +2,12 @@
 
 <div class="row px-5 cinema-card-container" id="CinemaCardContent">
     
-    <div class="col-sm-12 mt-3 mx-auto cinemaCards">
+    <div class="col-md-12 mt-3 mx-auto cinemaCards">
         <div class="card cinema-cards border-0">
 
             <div class="d-flex flex-row pb-1 my-auto">
                 <div class="my-auto">
-                    <img class="cinema-img" src="resources/uploads/cinema/sm-cinema-logo.png" alt="...">
+                    <img class="cinema-img" src="resources/uploads/cinema/assets/images/sm-cinema-logo.png" alt="...">
                 </div>
                 <div class="mt-2">
 					<div class="cinema-txt-1">SM Cinema 1</div>
@@ -18,12 +18,12 @@
         </div>
     </div>
 
-    <div class="col-sm-12 mt-3 mx-auto cinemaCards">
+    <div class="col-md-12 mt-3 mx-auto cinemaCards">
         <div class="card cinema-cards border-0">
 
             <div class="d-flex flex-row pb-1 my-auto">
                 <div class="my-auto">
-                    <img class="cinema-img" src="resources/uploads/cinema/sm-cinema-logo.png" alt="...">
+                    <img class="cinema-img" src="resources/uploads/cinema/assets/images/sm-cinema-logo.png" alt="...">
                 </div>
                 <div class="mt-2">
 					<div class="cinema-txt-1">SM Cinema 2</div>
@@ -34,12 +34,12 @@
         </div>
     </div>
 
-    <div class="col-sm-12 mt-3 mx-auto cinemaCards">
+    <div class="col-md-12 mt-3 mx-auto cinemaCards">
         <div class="card cinema-cards border-0">
 
             <div class="d-flex flex-row pb-1 my-auto">
                 <div class="my-auto">
-                    <img class="cinema-img" src="resources/uploads/cinema/sm-cinema-logo.png" alt="...">
+                    <img class="cinema-img" src="resources/uploads/cinema/assets/images/sm-cinema-logo.png" alt="...">
                 </div>
                 <div class="mt-2">
 					<div class="cinema-txt-1">SM Cinema 3</div>
@@ -50,12 +50,12 @@
         </div>
     </div>
 
-    <div class="col-sm-12 mt-3 mx-auto cinemaCards">
+    <div class="col-md-12 mt-3 mx-auto cinemaCards">
         <div class="card cinema-cards border-0">
 
             <div class="d-flex flex-row pb-1 my-auto">
                 <div class="my-auto">
-                    <img class="cinema-img" src="resources/uploads/cinema/sm-cinema-logo.png" alt="...">
+                    <img class="cinema-img" src="resources/uploads/cinema/assets/images/sm-cinema-logo.png" alt="...">
                 </div>
                 <div class="mt-2">
 					<div class="cinema-txt-1">SM Cinema 4</div>
@@ -66,12 +66,12 @@
         </div>
     </div>
     
-    <div class="col-sm-12 mt-3 mx-auto cinemaCards">
+    <div class="col-md-12 mt-3 mx-auto cinemaCards">
         <div class="card cinema-cards border-0">
 
             <div class="d-flex flex-row pb-1 my-auto">
                 <div class="my-auto">
-                    <img class="cinema-img" src="resources/uploads/cinema/sm-cinema-logo.png" alt="...">
+                    <img class="cinema-img" src="resources/uploads/cinema/assets/images/sm-cinema-logo.png" alt="...">
                 </div>
                 <div class="mt-2">
 					<div class="cinema-txt-1">SM Cinema 5</div>
@@ -82,12 +82,12 @@
         </div>
     </div>
 
-    <div class="col-sm-12 mt-3 mx-auto cinemaCards">
+    <div class="col-md-12 mt-3 mx-auto cinemaCards">
         <div class="card cinema-cards border-0">
 
             <div class="d-flex flex-row pb-1 my-auto">
                 <div class="my-auto">
-                    <img class="cinema-img" src="resources/uploads/cinema/sm-cinema-logo.png" alt="...">
+                    <img class="cinema-img" src="resources/uploads/cinema/assets/images/sm-cinema-logo.png" alt="...">
                 </div>
                 <div class="mt-2">
 					<div class="cinema-txt-1">SM Cinema 6</div>

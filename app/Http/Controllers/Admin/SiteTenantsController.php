@@ -50,14 +50,15 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                     ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
+                    
             })
-                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->leftJoin('sites', 'site_tenants.site_id', '=', 'sites.id')
-                ->leftJoin('site_buildings', 'site_tenants.site_building_id', '=', 'site_buildings.id')
-                ->leftJoin('site_building_levels', 'site_tenants.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_tenants.*')
-                ->latest()
-                ->paginate(request('perPage'));
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->leftJoin('sites', 'site_tenants.site_id', '=', 'sites.id')
+            ->leftJoin('site_buildings', 'site_tenants.site_building_id', '=', 'site_buildings.id')
+            ->leftJoin('site_building_levels', 'site_tenants.site_building_level_id', '=', 'site_building_levels.id')
+            ->select('site_tenants.*')
+            ->latest()
+            ->paginate(request('perPage'));
             return $this->responsePaginate($site_tenants, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([

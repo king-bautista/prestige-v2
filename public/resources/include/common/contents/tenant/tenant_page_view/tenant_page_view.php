@@ -23,49 +23,50 @@
 
                 <div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">
                     <div class="card border-0 bg-transparent promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
+                        <img type="button" id="" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
                     </div>
                 </div>
 
                 <div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">
                     <div class="card border-0 bg-transparent promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
+                        <img type="button" id="" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
                     </div>
                 </div>
 
                 <div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">
                     <div class="card border-0 bg-transparent promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
+                        <img type="button" id="" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
                     </div>
                 </div>
 
                 <div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">
                     <div class="card border-0 bg-transparent promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
+                        <img type="button" id="" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
                     </div>
                 </div>
 
                 <div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">
                     <div class="card border-0 bg-transparent promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
+                        <img type="button" id="" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
                     </div>
                 </div>
 
                 <div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">
                     <div class="card border-0 bg-transparent promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
+                        <img type="button" id="" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
                     </div>
                 </div>
 
                 <div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">
                     <div class="card border-0 bg-transparent promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
+                        <img type="button" id="" class="promo-img" src="resources/uploads/promos/popup700px700px.png" />
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+    
     <div class="bg-white p-3 shadow tenant-card-info-tab">
 
         <div class="my-auto p-1">

@@ -35,12 +35,8 @@
             <!--End of the directory map content categories-->
 
             <!--Start of the directory promos content categories-->
-            <div id="promos-default">
-                <?php include('resources/include/common/contents/directory_promos.php'); ?>
-            </div>
-                
             <div id="promos-container">
-                <?php include('resources/include/common/contents/default/promos_default.php'); ?>
+                @include('kiosk.sm_tanza.pages.promos')
             </div>
 
             <div id="tenant-store-content">
@@ -283,6 +279,7 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
+        swiper.update();
     });
 
     /* for cinema button */
@@ -317,8 +314,10 @@
     });
 </script>
 
+
+
 <!-- for carousel -->
-<script>
+<!-- <script>
     let slideIndex = 1;
     showSlides(slideIndex);
 
@@ -349,5 +348,5 @@
         slides[slideIndex - 1].style.display = "block";
         dots[slideIndex - 1].className += " carousel-active";
     }
-</script>
+</script> -->
 @endpush
