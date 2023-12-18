@@ -11,8 +11,8 @@
 							<div class="col-sm-2">
 								<img :src="company_image" class="img-fluid" />
 							</div>
-							<div class="col-md-4">
-								
+							<div class="col-md-3">
+
 								<p><b style="font-weight: 600;">Company Name:</b> {{ company.name }}<br>
 									<b style="font-weight: 600;">First Namer:</b>{{ company.first_name }}<br>
 									<b style="font-weight: 600;">Last Name:</b>{{ company.last_name }}<br>
@@ -50,6 +50,17 @@
 									</div>
 								</div>
 								<div class="form-group row">
+									<label for="firstName" class="col-sm-4 col-form-label">Image <span
+											class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-5">
+										<input type="file" id="fileinput" accept="image/*" ref="image" @change="ImageChange">
+										<footer class="blockquote-footer">Image max size is 5MB</footer>
+									</div>
+									<div class="col-sm-3 text-center">
+										<img v-if="image" :src="image" class="img-thumbnail" />
+									</div>
+								</div>
+								<div class="form-group row">
 									<div class="col-sm-12 text-right">
 										<button type="button" class="btn btn-primary btn-sm" v-show="add_record"
 											@click="storeCustomerCare">Submit</button>
@@ -83,7 +94,9 @@ export default {
 				last_name: '',
 				ticket_subject: '',
 				ticket_description: '',
+				image: '/images/no-image-available.png',
 			},
+			image: '',
 			company: [],
 			concerns: [],
 			add_record: true,
@@ -98,6 +111,11 @@ export default {
 	},
 
 	methods: {
+		ImageChange: function (e) {
+			const file = e.target.files[0];
+			this.image = URL.createObjectURL(file);
+			this.customer_care.image = file;
+		},
 
 		AddNewCustomerCare: function () {
 			this.customer_care.conncern_id = '';
@@ -105,24 +123,7 @@ export default {
 			this.customer_care.last_name = '';
 			this.customer_care.ticket_subject = '';
 			this.customer_care.ticket_description = '';
-			// $("#hello").val('').trigger('chosen:updated');
-			// //$("#hello").empty();
-			// $("#hello").removeAttr('selected');
-			// $("#hello").attr("selected", false); 
-			// $("#hello").removeAttr('selected');
-			// // $("div.id_100 select").val("val2");
-			// $('.custom-select').prop('selectedIndex',0);
-			// $("#hello").val("");
-			//	$('#hello').empty();    
-			//s
-			//$('#hello').val("");
-			//$('#hello').filter('[value=val3]').attr('selected', true);
-			//	$('#hello').append($('<option>',{text: 'Select Concern', value: '', selected: true}))	
-			//this.customer_care.conncern_id = '3';
-			//$('#hello').find('option:selected').remove();	
-			$("#hello option[value='']").prop('selected', true);
-
-
+			this.customer_care.image = '/images/no-image-available.png';
 		},
 
 		storeCustomerCare: function () {
@@ -132,6 +133,7 @@ export default {
 			formData.append("last_name", this.customer_care.last_name);
 			formData.append("ticket_subject", this.customer_care.ticket_subject);
 			formData.append("ticket_description", this.customer_care.ticket_description);
+			formData.append("image", this.customer_care.image);
 			axios.post('/portal/customer-care/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
@@ -139,6 +141,10 @@ export default {
 			})
 				.then(response => {
 					this.AddNewCustomerCare();
+					this.image = '';
+					$("#fileinput").val('');
+					$("#hello option[value='']").prop('selected', true);
+					this.customer_care.concern_id = '';
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 				});

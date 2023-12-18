@@ -45,6 +45,7 @@ class CustomerCareViewModel extends Model
         'user_details',
         'concern_details',
         'admin_details',
+        'image_path',
 
     ];
 
@@ -128,5 +129,18 @@ class CustomerCareViewModel extends Model
     public function getAdminDetailsAttribute()
     {
         return $this->getAdminUser(); 
+    }
+
+    /**
+     * Append additiona info to the return data
+     *
+     * @var string
+     */
+  
+    public function getimagePathAttribute()
+    {
+        if($this->image)
+            return asset($this->image);
+        return asset('/images/no-image-available.png');
     }
 }

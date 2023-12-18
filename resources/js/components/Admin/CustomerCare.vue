@@ -142,10 +142,14 @@
 								<div class="col-sm-9">
 									<textarea class="form-control" rows="5" v-model="customer_care.internal_remark"
 										placeholder="Internal Remarks"></textarea>
-
 								</div>
 							</div>
-
+							<div class="form-group row" v-show="input_user_full_name">
+								<label for="firstName" class="col-sm-4 col-form-label">Image</label>
+								<div class="col-sm-3 text-center">
+									<img v-if="image" :src="image" class="img-thumbnail" />
+								</div>
+							</div>
 							<div class="form-group row">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -200,8 +204,10 @@ export default {
 				internal_remark: '',
 				assigned_to_id: '',
 				assigned_to_alias: '',
+				image: '/images/no-image-available.png',
 				active: true,
 			},
+			image: '',			
 			transaction_statuses: [],
 			users: [],
 			admin_users: [],
@@ -219,6 +225,10 @@ export default {
 				last_name: "Last Name",
 				ticket_subject: "Ticket Subject",
 				ticket_description: "Ticket Description",
+				image_path: {
+					name: "Image",
+					type: "logo",
+				},
 				// active: {
 				// 	name: "Status",
 				// 	type: "Boolean",
@@ -387,8 +397,15 @@ export default {
 					this.edit_record = true;
 					this.select_user_full_name = false;
 					this.input_user_full_name = true;
-					this.select_admin_full_name = (customer_care.admin_details) ?  false: true;
-					this.input_admin_full_name = (customer_care.admin_details) ?  true: false;
+					this.select_admin_full_name = (customer_care.admin_details) ? false : true;
+					this.input_admin_full_name = (customer_care.admin_details) ? true : false;
+					if (customer_care.image) {
+						this.image = customer_care.image_path;
+					}
+					else {
+						this.image = this.customer_care.image;
+					}
+					// this.$refs.image.value = null;
 					// this.select_admin_full_name = false;
 					// this.input_admin_full_name = true;
 					$(".readonly").attr('readonly', true);
