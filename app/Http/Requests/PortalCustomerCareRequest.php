@@ -27,6 +27,7 @@ class PortalCustomerCareRequest extends FormRequest
             "concern_id" => "required|string",
             "ticket_subject" => "required|string",
             "ticket_description" => "required|string",
+            'image' => 'required|mimes:jpeg,bmp,png|max:5128', //required|max:5128
         ];
     }
 

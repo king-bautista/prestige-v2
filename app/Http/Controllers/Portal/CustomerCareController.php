@@ -67,6 +67,14 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     public function store(PortalCustomerCareRequest $request)
     {
         try {
+
+            $image = $request->file('image');
+            $image_path = '';
+            if($image) {
+                $originalname = $image->getClientOriginalName();
+                $image_path = $image->move('uploads/media/customer_care/', str_replace(' ','-', $originalname)); 
+            }
+
             $user = UserViewModel::find(Auth::guard('portal')->user()->id);
             $data = [
                 'user_id' => $user->id,
@@ -75,6 +83,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'last_name' => explode(",", $user->full_name)[1],
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
+                'image' => str_replace('\\', '/', $image_path),
                 'assigned_to_id' => '',
                 'status_id' => 2,
                 'active' => 1,
