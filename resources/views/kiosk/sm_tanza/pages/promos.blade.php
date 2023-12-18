@@ -2,128 +2,7 @@
 
 <div class="slideshow-content-container" id="SlideShowContainer">
     <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <div class="carousel-content-container">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="imgPromoBtn" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store" id="tenants-tenant-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-slide">
-            <div class="carousel-content-container">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="imgPromoBtn" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store" id="tenants-tenant-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card border-0 bg-transparent img-promo-card">
-                                <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                                <div class="d-block">
-                                    <p class="promo-store">Jollibee</p>
-                                    <p class="promo-floor">GF </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>    
-
-            </div>
+        <div class="swiper-wrapper">            
         </div>
 
         <!-- If we need pagination -->
@@ -135,204 +14,74 @@
     </div>
 </div>
 
+<div id="imgPromoModal" class="modal promo-modal-content">
+  <!-- Modal content -->
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 promo-modal-container">
+            <div class="modal-body m-0 p-0">
+                <span class="close text-white">&times;</span>
+                <img class="promo-img promo-modal-img" src ="">
+            </div>
+        </div>
+    </div>    
+</div>
+
 @push('scripts')
 <script>
+    var promos = "{{ $promos }}";
+
+    function showPromos() {
+        var my_promos = JSON.parse(decodeEntities(promos));
+        $( ".swiper-wrapper" ).html('');
+        $.each(my_promos, function(key,promos) {
+            var promo_element = '';
+            promo_element += '<div class="swiper-slide">';
+            promo_element += '<div class="carousel-content-container">';
+            promo_element += '<div class="row row-'+key+'">';
+            promo_element += '</div>';
+            promo_element += '</div>';
+            promo_element += '</div>';
+            $( ".swiper-wrapper" ).append(promo_element);
+
+            $.each(promos, function(index,promo) {
+                var promo_item = '';
+                promo_item += '<div class="col-sm-4">';
+                promo_item += '<div class="card border-0 bg-transparent img-promo-card">';
+                promo_item += '<img type="button" class="promo-img promo_img_'+ promo.promo_id +'" src="'+ promo.image_url +'">';
+                promo_item += '<div class="d-block">';
+                promo_item += '<p class="promo-store tenants_tenant_store_'+ promo.promo_id +'">'+ promo.brand_name +'</p>';
+                promo_item += '<p class="promo-floor">'+ promo.location +'</p>';
+                promo_item += '</div>';
+                promo_item += '</div>';
+                promo_item += '</div>';
+
+                $( ".row-"+key ).append(promo_item);
+                $('.promo_img_'+promo.promo_id).on('click', function() {
+                    $('.promo-modal-img').attr("src", promo.image_url);
+                    $("#imgPromoModal").css("display", "block");
+                });
+
+                $('.tenants_tenant_store_'+promo.promo_id).on('click', function() {
+                    showTenantDetails(promo);
+                });
+
+            });
+
+        });
+    }
+
+    showPromos();
+
     var swiper = new Swiper('.swiper-container', {
         pagination: {
             el: '.swiper-pagination1',
             clickable: true,
         },
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
     });
 </script>
 @endpush
-
-
-<!-- 
-
-
-
-<div class="slideshow-content-container" id="SlideShowContainer">
-    <div class="mySlidesContent carousel-item-promo">
-
-        <div class="carousel-content-container">
-    
-            <div class="row">
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="imgPromoBtn" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store" id="tenants-tenant-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="mySlidesContent carousel-item-promo">
-
-        <div class="carousel-content-container">
-    
-            <div class="row">
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store" id="tenants-tenant-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="mySlidesContent carousel-item-promo">
-
-        <div class="carousel-content-container">
-    
-            <div class="row">
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store" id="tenants-tenant-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card border-0 bg-transparent img-promo-card">
-                        <img type="button" id="" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
-                        <div class="d-block">
-                            <p class="promo-store">Jollibee</p>
-                            <p class="promo-floor">GF </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <a class="promo-prev" onclick="plusSlides(-1)">
-        <div class="left-btn-carousel">
-            <img src="resources/uploads/imagebutton/Left.png">
-        </div>
-    </a>
-    <a class="promo-next" onclick="plusSlides(1)">
-        <div class="right-btn-carousel">
-            <img src="resources/uploads/imagebutton/Right.png">
-        </div>
-    </a>
-
-</div>
-
-<div class="dot-container justify-content-center">
-    <span class="carousel-dot carousel-dot-promo" onclick="currentSlide(1)"></span>
-    <span class="carousel-dot carousel-dot-promo" onclick="currentSlide(2)"></span>
-    <span class="carousel-dot carousel-dot-promo" onclick="currentSlide(3)"></span>
-</div> -->

@@ -61,6 +61,10 @@
             .swiper-button-next {
                 right: 52px !important;
             }
+
+            .swiper-button-disabled {
+                opacity: 0 !important;
+            }
         </style>
     </head>
     <body>

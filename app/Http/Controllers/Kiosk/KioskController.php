@@ -26,11 +26,12 @@ class KioskController extends AppBaseController
         if(!$site)
             return view('kiosk.page-not-found');
 
+        $site_schedule = json_encode($site->operational_hours);
         $categories = $this->getCategories($site->id);
         $promos = $this->getPromos($site->id);
 
         $template_name = str_replace("-", "_", strtolower($site_name));
-        return view('kiosk.'.$template_name.'.main', compact('site', 'categories', 'promos'));
+        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos'));
 
         // GET PLAYLIST
         // MAP
@@ -125,10 +126,11 @@ class KioskController extends AppBaseController
         ->whereDate('brand_products_promos.date_to', '>=', $current_date)
         ->join('site_tenant_products', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
         ->join('brand_products_promos', 'site_tenant_products.brand_product_promo_id', '=', 'brand_products_promos.id')
-        ->select('site_tenants.*', 'brand_products_promos.image_url')
-        ->get();
+        ->select('site_tenants.*', 'brand_products_promos.image_url', 'brand_products_promos.id as promo_id')
+        ->get()->toArray();
 
-        return $promos;
+        $promos = array_chunk($promos, 6);
+        return json_encode($promos);
     }
 
 }

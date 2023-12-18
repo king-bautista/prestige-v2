@@ -40,7 +40,7 @@
             </div>
 
             <div id="tenant-store-content">
-                <?php include('resources/include/common/contents/tenant/tenant_page/tenant_store_page.php'); ?>
+                @include('kiosk.sm_tanza.pages.tenant')
             </div>
             <!--End of the directory promo content categories-->
 
@@ -110,13 +110,7 @@
     // for modal for tenants
     var modalTenant = document.getElementById("imgPromoModalTenant");
 
-    var btnTenant = document.getElementById("imgPromoBtnTenant");
-
     var spanTenant = document.getElementsByClassName("closeTenant")[0];
-
-    btnTenant.onclick = function() {
-    modalTenant.style.display = "block";
-    }
 
     spanTenant.onclick = function() {
     modalTenant.style.display = "none";
@@ -125,27 +119,6 @@
     window.onclick = function(event) {
     if (event.target == modalTenant) {
         modalTenant.style.backdrop = "static";
-    }
-    };
-
-    // for modal for tenants banner promo
-    var modalBanner = document.getElementById("imgPromoBannerModal");
-
-    var btnBanner = document.getElementById("imgPromoBannerBtn");
-
-    var spanBanner = document.getElementsByClassName("closeBanner")[0];
-
-    btnBanner.onclick = function() {
-    modalBanner.style.display = "block";
-    }
-
-    spanBanner.onclick = function() {
-    modalBanner.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-    if (event.target == modalBanner) {
-        modalBanner.style.backdrop = "static";
     }
     };
 
