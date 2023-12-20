@@ -62,7 +62,7 @@
 
     function decodeEntities(encodedString) {
         var textArea = document.createElement('textarea');
-        textArea.innerHTML = categories;
+        textArea.innerHTML = encodedString;
         return textArea.value;
     }
 

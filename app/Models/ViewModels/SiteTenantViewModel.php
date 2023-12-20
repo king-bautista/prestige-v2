@@ -67,6 +67,7 @@ class SiteTenantViewModel extends Model
         'subscriber_logo',
         'operational_hours',
         'products',
+        'location',
     ];
 
     public function getBrandDetails()
@@ -267,6 +268,13 @@ class SiteTenantViewModel extends Model
             return $new_products;
         }
         return null;
+    }
+
+    public function getLocationAttribute() 
+    {
+        if(isset($this->tenant_details->address))
+            return $this->tenant_details->address;
+        return $this->floor_name;
     }
     
 }
