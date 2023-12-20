@@ -19,7 +19,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 {
     public function __construct()
     {
-        $this->module_id = 8; 
+        $this->module_id = 8;
         $this->module_name = 'Supplementals';
     }
 
@@ -30,19 +30,16 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function list(Request $request)
     {
-        try
-        {
+        try {
             $categories = CategoryViewModel::where('category_type', 2)
-            ->when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->where('descriptions', 'LIKE', '%' . request('search') . '%');
-            })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->when(request('search'), function ($query) {
+                    return $query->where('name', 'LIKE', '%' . request('search') . '%')
+                        ->where('descriptions', 'LIKE', '%' . request('search') . '%');
+                })
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -53,13 +50,10 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function details($id)
     {
-        try
-        {
+        try {
             $category = CategoryViewModel::find($id);
             return $this->response($category, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -70,8 +64,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function store(CategoryRequest $request)
     {
-        try
-    	{
+        try {
             $data = [
                 'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
                 'supplemental_category_id' => ($request->category_id == 'null') ? 0 : $request->category_id,
@@ -85,9 +78,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             $category = Category::create($data);
 
             return $this->response($category, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -98,8 +89,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function update(CategoryRequest $request)
     {
-        try
-    	{
+        try {
             $category = Category::find($request->id);
 
             $data = [
@@ -115,27 +105,22 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             $category->update($data);
 
             return $this->response($category, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
                 'status_code' => 422,
             ], 422);
-        }   
+        }
     }
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $category = Category::find($id);
             $category->delete();
             return $this->response($category, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -146,13 +131,10 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function getParent()
     {
-        try
-        {
+        try {
             $supplementals = CategoryViewModel::whereNull('parent_id')->where('category_type', 2)->get();
             return $this->response($supplementals, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -163,13 +145,10 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function getChild()
     {
-        try
-        {
+        try {
             $supplementals = CategoryViewModel::whereNotNull('parent_id')->where('category_type', 2)->get();
             return $this->response($supplementals, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -180,13 +159,10 @@ class SupplementalController extends AppBaseController implements SupplementalCo
 
     public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new SupplementalsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -210,7 +186,9 @@ class SupplementalController extends AppBaseController implements SupplementalCo
                     'description' => $supplemental->descriptions,
                     'category_type' => $supplemental->category_type,
                     'active' => $supplemental->active,
+                    'created_at' => $supplemental->created_at,
                     'updated_at' => $supplemental->updated_at,
+                    'deleted_at' => $supplemental->deleted_at,
                 ];
             }
 
@@ -253,7 +231,9 @@ class SupplementalController extends AppBaseController implements SupplementalCo
                 'description' => '',
                 'category_type' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

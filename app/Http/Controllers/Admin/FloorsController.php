@@ -174,7 +174,9 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
                     'site_building_name' => $level->building_name,
                     'name' => $level->name,
                     'active' => $level->active,
+                    'created_at' => $level->created_at,
                     'updated_at' => $level->updated_at,
+                    'deleted_at' => $level->deleted_at,
                 ];
             }
 
@@ -213,13 +215,14 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
                 'id' => '',
                 'site_id' => '',
                 'site_name' => '',
-                'site_building_id' => '',   
+                'site_building_id' => '',
                 'site_building_name' => '',
-                'name' => '',
                 'name' => '',
                 'description' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

@@ -405,14 +405,16 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                     'name' => $company->name,
                     'classification_id' => $company->classification_details['id'],
                     'classification_name' => $company->classification_details['name'],
-                    'classification_active' => $company->classification_details['active'],
-                    'classification_updated_at' => $company->classification_details['updated_at'],
+                    //'classification_active' => $company->classification_details['active'],
+                    //'classification_updated_at' => $company->classification_details['updated_at'],
                     'email' => $company->email,
                     'contact_number' => $company->contact_number,
                     'address' => $company->address,
                     'tin' => $company->tin,
                     'active' => $company->active,
+                    'created_at' => $company->created_at,
                     'updated_at' => $company->updated_at,
+                    'deleted_at' => $company->deleted_at,
                 ];
             }
 
@@ -453,14 +455,16 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                     'name' => '',
                     'classification_id' => '',
                     'classification_name' => '',
-                    'classification_active' => '',
-                    'classification_updated_at' => '',
+                    //'classification_active' => '',
+                    //'classification_updated_at' => '',
                     'email' => '',
                     'contact_number' => '',
                     'address' => '',
                     'tin_number' => '',
                     'status' => '',
+                    'created_at' => '',
                     'updated_at' => '',
+                    'deleted_at' => '',
                 ];
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);

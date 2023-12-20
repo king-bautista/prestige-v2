@@ -223,6 +223,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/brand/get-all', 'Admin\BrandController@allBrands')->where('id', '[0-9]+')->name('admin.brand.get-all');
     Route::get('/admin/brand/search', 'Admin\BrandController@searchBrands')->name('admin.brand.search');
     Route::get('/admin/brand/download-csv', 'Admin\BrandController@downloadCsv')->name('admin.brand.download-csv');
+    Route::get('/admin/brand/download-csv-template', 'Admin\BrandController@downloadCsvTemplate')->name('admin.brand.download-csv-template');
 
     /*
     |--------------------------------------------------------------------------

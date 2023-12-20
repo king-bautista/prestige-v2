@@ -180,8 +180,12 @@ class RolesController extends AppBaseController implements RolesControllerInterf
                     'name' => $role->name,
                     'descirption' => $role->description,
                     'type' => $role->type,
+                    'company_id' => $role->company_id,
+                    'company_name' => ($role->company_id) ? $role->company['name'] : '',
                     'active' => $role->active,
+                    'created_at' => $role->created_at,
                     'updated_at' => $role->updated_at,
+                    'deleted_at' => $role->deleted_at,
                 ];
             }
 
@@ -217,12 +221,16 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     {
         try {
             $reports[] = [
-                'id' => '',
+                'id' =>  '',
                 'name' => '',
                 'descirption' => '',
                 'type' => '',
+                'company_id' => '',
+                'company_name' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

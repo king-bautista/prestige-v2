@@ -323,7 +323,10 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                     'like_count' => $tenant->like_count,
                     'active' => $tenant->active,
                     'is_subscriber' => $tenant->is_subscriber,
+                    'created_at' => $tenant->created_at,
                     'updated_at' => $tenant->updated_at,
+                    'deleted_at' => $tenant->deleted_at,
+
                 ];
             }
 
@@ -381,7 +384,9 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                     'like_count'=> '',
                     'active'=> '',
                     'is_subscriber'=> '',
-                    'updated_at'=> '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
                 ];
             }
 

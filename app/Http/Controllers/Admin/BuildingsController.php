@@ -194,7 +194,10 @@ class BuildingsController extends AppBaseController implements BuildingsControll
                     'name' => $building->name,
                     'description' => $building->descriptions,
                     'active' => $building->active,
+                    'created_at' => $building->created_at,
                     'updated_at' => $building->updated_at,
+                    'deleted_at' => $building->deleted_at,
+
                 ];
             }
 
@@ -236,7 +239,9 @@ class BuildingsController extends AppBaseController implements BuildingsControll
                 'name' => '',
                 'description' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

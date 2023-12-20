@@ -283,16 +283,17 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                     'instagram' => $site->details['instagram'],
                     'twitter' => $site->details['twitter'],
                     'website' => $site->details['website'],
-                    'schedules' => $site->details['schedules'],
-                    //'time_from' => ($site->details['time_from']) ? $site->details['time_from'] : '',
-                    //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                    'schedules' => $site->details,
+                    //'operational_hours' => $this->getOperationalHour($site->details),
+                        //'time_from' => ($site->details['time_from']),
+                         //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
                     'premiere' => $site->details['premiere'],
                     'site_code' => $site->details['site_code'],
-
-
-                    'status' => ($site->active == 1) ? 'Active' : 'Inactive',
-                    'is_default' => ($site->is_default == 1) ? 'Yes' : 'No',
+                    'active' => $site->active,
+                    'is_default' => $site->is_default,
+                    'created_at' => $site->created_at,
                     'updated_at' => $site->updated_at,
+                    'deleted_at' => $site->deleted_at,
                 ];
             }
 
@@ -328,32 +329,34 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     {
         try {
             $reports = [];
-                $reports[] = [
-                    'id' => '',
-                    'serial_number' => '',
-                    'name' => '',
-                    'description' => '',
-                    'site_logo' => '',
-                    'site_banner' => '',
-                    'site_background' => '',
-                    'site_background_portrait' => '',
-                    'company_id' => '',
-                    'company_name' => '',
-                    'multilanguage' => '',
-                    'facebook' => '',
-                    'instagram' => '',
-                    'twitter' => '',
-                    'website' => '',
-                    'schedules' => '',
-                    //'time_from' => ($site->details['time_from']) ? $site->details['time_from'] : '',
-                    //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
-                    'premiere' => '',
-                    'site_code' => '',
-                    'active' => '',
-                    'is_default' => '',
-                    'updated_at' => '',
-                ];
-            
+            $reports[] = [
+                'id' => '',
+                'serial_number' => '',
+                'name' => '',
+                'description' => '',
+                'site_logo' => '',
+                'site_banner' => '',
+                'site_background' => '',
+                'site_background_portrait' => '',
+                'company_id' => '',
+                'company_name' => '',
+                'multilanguage' => '',
+                'facebook' => '',
+                'instagram' => '',
+                'twitter' => '',
+                'website' => '',
+                'schedules' => '',
+                //'time_from' => ($site->details['time_from']) ? $site->details['time_from'] : '',
+                //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                'premiere' => '',
+                'site_code' => '',
+                'active' => '',
+                'is_default' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+            ];
+
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
             foreach ($files as $file) {
@@ -395,4 +398,14 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ], 422);
         }
     }
+    // public function getOperationalHour($operational_hours){
+    //     $time =[];
+    //     if(count($operational_hours) > 0){
+    //         // foreach($operational_hours as $operational_hour){
+    //         //     $time[] = $operational_hour['company_id'];
+    //         // }
+    //         return ($operational_hours['schedules'])?$operational_hours['schedules']:'';
+    //     }
+    //     return null;
+    // }
 }

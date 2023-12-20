@@ -168,14 +168,14 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
                 $reports[] = [
                     'id' => $module->id,
                     'parent_id' => $module->parent_id,
-                    //'parent_link' => $module->parent_link,
                     'name' => $module->name,
                     'link' => URL::to("" . $module->link),
-                    //'link' => ($module->link != "#") ? URL::to("/" . $module->link) : " ",
                     'role' => $module->role,
                     'class_name' => $module->class_name,
                     'active' => $module->active,
+                    'created_at' => $module->created_ad,
                     'updated_at' => $module->updated_at,
+                    'deleted_at' => $module->deleted_at,
                 ];
             }
 
@@ -218,7 +218,9 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
                 'role' => '',
                 'class_name' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

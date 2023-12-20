@@ -140,7 +140,9 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
                     'id' => $tag->id,
                     'name' => $tag->name,
                     'active' => $tag->active,
+                    'created_at' => $tag->created_at,
                     'updated_at' => $tag->updated_at,
+                    'deleted_at' => $tag->deleted_at,
                 ];
             }
 
@@ -179,7 +181,9 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
                 'id' => '',
                 'name' => '',
                 'active' => '',
+                'created_at' => '', 
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

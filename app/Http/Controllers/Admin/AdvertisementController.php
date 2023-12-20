@@ -19,6 +19,9 @@ use App\Models\AdminViewModels\AdvertisementViewModel;
 use App\Models\AdminViewModels\AdvertisementMaterialViewModel;
 //use App\Models\AdminViewModels\ContentMaterialViewModel;
 
+use App\Models\AdminViewModels\SiteScreenViewModel;
+use App\Models\ContractScreen;
+
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {
     /************************************************
@@ -255,11 +258,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
                     'company_id' => $create_content->company_id,
                     'company_name' => $create_content->company_name,
                     'contract_id' => $create_content->contract_id,
+                    'contract_name' => $create_content->contract_details['name'],
                     'brand_id' => $create_content->brand_id,
                     'brand_name' => $create_content->brand_name,
                     'display_duration' => $create_content->display_duration,
+                    'ssp' =>  $this->getSSP($create_content->contract_id),
                     'active' => $create_content->active,
-                    'updated_at' => $create_content->deleted_at,
+                    'created_at' => $create_content->created_at,
+                    'updated_at' => $create_content->updated_at,
+                    'deleted_at' => $create_content->deleted_at,
                 ];
             }
 
@@ -302,11 +309,15 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 'company_id' => '',
                 'company_name' => '',
                 'contract_id' => '',
+                'contract_name' => '',
                 'brand_id' => '',
                 'brand_name' => '',
                 'display_duration' => '',
+                'ssp' =>  '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
 
@@ -336,5 +347,54 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function getSSP($id)
+    {
+
+        $contract_screen = ContractScreen::where('contract_id', $id)->first();
+        $site_screens_data = SiteScreenViewModel::when($contract_screen->site_screen_id > 0, function ($query) use ($contract_screen) {
+            return $query->where('site_screens.id', $contract_screen->site_screen_id);
+        })
+            ->when($contract_screen->site_id > 0, function ($query) use ($contract_screen) {
+                return $query->where('site_screens.site_id', $contract_screen->site_id);
+            })
+            ->when($contract_screen->product_application != 'All', function ($query) use ($contract_screen) {
+                return $query->where('site_screens.product_application', $contract_screen->product_application);
+            })
+            ->select('site_screens.*');
+
+        $site_screens = $site_screens_data->get();
+
+        $site_all_directory = $site_screens_data->groupBy('site_screens.site_id', 'site_screens.product_application')->get();
+        if ($site_all_directory) {
+            foreach ($site_all_directory as $directory) {
+                $site_screens[] = [
+                    'id' => 0,
+                    'site_id' => $directory->site_id,
+                    'site_screen_location' => $directory->site_code_name . ' - All (' . $directory->product_application . ')',
+                    'product_application' => $directory->product_application
+                ];
+            }
+        }
+
+        if ($contract_screen->product_application == 'All') {
+            $site_screens[] = [
+                'id' => 0,
+                'site_id' => 0,
+                'site_screen_location' => 'All (Sites screens)',
+                'product_application' => 'All'
+            ];
+        }
+
+        if (count($site_screens) > 0) {
+            $ssp = [];
+            foreach ($site_screens as $site_screen) {
+                $ssp[] = $site_screen['site_screen_location'];
+            }
+
+            return implode("#", $ssp);
+        }
+        return null;
     }
 }

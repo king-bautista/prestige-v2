@@ -280,7 +280,9 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                     'slots' => $ssp->slots,
                     'is_exclusive' => $ssp->is_exclusive,
                     'active' => $ssp->active,
+                    'created_at' => $ssp->created_at,
                     'updated_at' => $ssp->updated_at,
+                    'deleted_at' => $ssp->deleted_at,
                 ];
             }
 
@@ -329,7 +331,9 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 'slots' => '',
                 'is_exclusive' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

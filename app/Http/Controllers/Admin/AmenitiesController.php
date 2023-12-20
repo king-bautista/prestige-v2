@@ -181,7 +181,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                     'name' => $amenity->name,  
                     'icon' => ($amenity->icon != "") ? URL::to("/" . $amenity->icon) : " ",
                     'active' => $amenity->active,
+                    'created_at' => $amenity->created_at,
                     'updated_at' => $amenity->updated_at,
+                    'deleted_at' => $amenity->deleted_at,
                 ];
             }
 
@@ -224,7 +226,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                     'name' => '',  
                     'icon' => '',
                     'active' => '',
+                    'created_at' => '',
                     'updated_at' => '',
+                    'deleted_at' => '',
                 ];
             
             $directory = 'public/export/reports/';

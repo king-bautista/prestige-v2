@@ -182,13 +182,13 @@ class IllustrationsController extends AppBaseController implements Illustrations
             foreach ($illustration_management as $illustration) {
                 $reports[] = [
                     'id' => $illustration->id,
+                    'company_id' => $illustration->company_id,
+                    'company_name' => $illustration->company_name,
                     'category_id' => $illustration->category_id,
                     'category_name' => $illustration->category_name,
                     'sub_category_id' => $illustration->sub_category_id,
                     'site_id' => $illustration->site_id,
                     'site_name' => $illustration->site_name,
-                    'company_id' => $illustration->company_id,
-                    'company_name' => $illustration->company_name,
                     'label' => $illustration->label,
                     'kiosk_image_primary_path' => $illustration->kiosk_image_primary_path,
                     'kiosk_image_top_path' => $illustration->kiosk_image_top_path,
@@ -197,7 +197,9 @@ class IllustrationsController extends AppBaseController implements Illustrations
                     'mobile_image_primary' => $illustration->mobile_image_primary,
                     'mobile_image_top' => $illustration->mobile_image_top,
                     'active' => $illustration->active,
+                    'created_at' => $illustration->created_at,
                     'updated_at' => $illustration->updated_at,
+                    'deleted_at' => $illustration->deleted_at,
                 ];
             }
 
@@ -234,13 +236,13 @@ class IllustrationsController extends AppBaseController implements Illustrations
         try {
             $reports[] = [
                 'id' => '',
+                'company_id' => '',
+                'company_name' => '',
                 'category_id' => '',
                 'category_name' => '',
                 'sub_category_id' => '',
                 'site_id' => '',
                 'site_name' => '',
-                'company_id' => '',
-                'company_name' => '',
                 'label' => '',
                 'kiosk_image_primary_path' => '',
                 'kiosk_image_top_path' => '',
@@ -249,7 +251,9 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 'mobile_image_primary' => '',
                 'mobile_image_top' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

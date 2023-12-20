@@ -246,10 +246,10 @@ export default {
 	},
 
 	methods: {
-		getScreens: function (id) {
+		getScreens: function (id) { 
 			axios.post('/admin/site/site-screen-product/get-screens', { contract_id: id })
 				.then(response => {
-					this.screens = response.data.data
+					this.screens = response.data.data;
 					this.getMaterialSize();
 				});
 		},

@@ -210,7 +210,9 @@ class PiProductController extends AppBaseController implements PiProductControll
                     'slots' => $pi_product->slots,
                     'active' => $pi_product->active,
                     'is_exclusive' => $pi_product->is_exclusive,
+                    'created_at' => $pi_product->created_at,
                     'updated_at' => $pi_product->updated_at,
+                    'deleted_at' => $pi_product->deleted_at,
                 ];
             }
 
@@ -256,7 +258,9 @@ class PiProductController extends AppBaseController implements PiProductControll
                 'slots' => '',
                 'active' => '',
                 'is_exclusive' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

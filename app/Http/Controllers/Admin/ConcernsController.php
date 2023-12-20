@@ -27,7 +27,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
     }
 
     public function index()
-    { 
+    {
         return view('admin.concerns');
     }
 
@@ -148,7 +148,9 @@ class ConcernsController extends AppBaseController implements ConcernsController
                     'name' => $concern->name,
                     'dscription' => $concern->description,
                     'active' => $concern->active,
+                    'created_at' => $concern->created_at,
                     'updated_at' => $concern->updated_at,
+                    'deleted_at' => $concern->deleted_at,
 
                 ];
             }
@@ -189,7 +191,9 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 'name' => '',
                 'dscription' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
 
             ];
 

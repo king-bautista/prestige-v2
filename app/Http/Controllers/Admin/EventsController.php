@@ -16,11 +16,11 @@ use App\Models\Event;
 class EventsController extends AppBaseController implements EventsControllerInterface
 {
     /************************************
-    * 			EVENTS MANAGEMENT	 	*
-    ************************************/
+     * 			EVENTS MANAGEMENT	 	*
+     ************************************/
     public function __construct()
     {
-        $this->module_id = 80; 
+        $this->module_id = 80;
         $this->module_name = 'Events Management';
     }
 
@@ -31,18 +31,15 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
     public function list(Request $request)
     {
-        try
-        {
-            $event = Event::when(request('search'), function($query){
+        try {
+            $event = Event::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->select('events.*')
-            ->latest()
-            ->paginate(request('perPage'));
+                ->select('events.*')
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($event, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -53,13 +50,10 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
     public function details($id)
     {
-        try
-        {
+        try {
             $event = Event::find($id);
             return $this->response($event, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -70,14 +64,13 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
     public function store(Request $request)
     {
-        try
-    	{
+        try {
             $banner = $request->file('imgBanner');
             $banner_path = '';
 
-            if($banner) {
+            if ($banner) {
                 $originalname = $banner->getClientOriginalName();
-                $banner_path = $banner->move('uploads/media/event/', str_replace(' ','-', $originalname)); 
+                $banner_path = $banner->move('uploads/media/event/', str_replace(' ', '-', $originalname));
             }
 
             $data = [
@@ -93,9 +86,7 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
             $event = Event::create($data);
             return $this->response($event, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -106,17 +97,16 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
     public function update(Request $request)
     {
-        try
-    	{
+        try {
             $event = Event::find($request->id);
             $event->touch();
 
             $banner = $request->file('imgBanner');
             $banner_path = '';
 
-            if($banner) {
+            if ($banner) {
                 $originalname = $banner->getClientOriginalName();
-                $banner_path = $banner->move('uploads/media/event/', str_replace(' ','-', $originalname)); 
+                $banner_path = $banner->move('uploads/media/event/', str_replace(' ', '-', $originalname));
             }
 
             $data = [
@@ -129,12 +119,10 @@ class EventsController extends AppBaseController implements EventsControllerInte
                 'image_url' => ($banner_path) ? str_replace('\\', '/', $banner_path) : $event->image_url,
                 'active' => $this->checkBolean($request->active),
             ];
- 
+
             $event->update($data);
             return $this->response($event, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -145,14 +133,11 @@ class EventsController extends AppBaseController implements EventsControllerInte
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $event = Event::find($id);
             $event->delete();
             return $this->response($event, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -177,7 +162,9 @@ class EventsController extends AppBaseController implements EventsControllerInte
                     'start_date' => $event->start_date,
                     'end_data' => $event->end_data,
                     'active' => $event->active,
+                    'created_at' => $event->created_at,
                     'updated_at' => $event->updated_at,
+                    'deleted_at' => $event->deleted_at,
                 ];
             }
 
@@ -222,7 +209,10 @@ class EventsController extends AppBaseController implements EventsControllerInte
                 'start_date' => '',
                 'end_data' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
+
             ];
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);

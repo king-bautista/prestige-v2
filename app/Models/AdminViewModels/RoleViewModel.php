@@ -43,6 +43,7 @@ class RoleViewModel extends Model
      */
 	public $appends = [
         'permissions',
+        'company',
     ];
 
     public function getModules()
@@ -85,6 +86,13 @@ class RoleViewModel extends Model
         if($n_modules)
             return $n_modules;
         return null;
+    }
+    
+    public function getCompanyAttribute() 
+    {
+        $company = CompanyViewModel::find($this->company_id);
+        if($company)
+            return $company;
     }
     
 }
