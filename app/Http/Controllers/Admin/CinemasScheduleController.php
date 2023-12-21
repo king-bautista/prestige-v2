@@ -57,7 +57,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     {
         try
     	{
-            $cinema_site = CinemaSite::find($request->site_id);
+            $cinema_site = CinemaSite::find(1);
             $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
 
             $cinema_helper = new CinemaHelper($cinema_id);
@@ -99,10 +99,12 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     public function saveSchedule($movie, $sessions, $casting, $site_id)
     {
         foreach ($sessions as $time_slot) {
+            $synopsis = filter_var(htmlentities(preg_replace("/\r\n|\r|\n/", '<br/>', $movie->Synopsis)), FILTER_SANITIZE_STRING);
+
             $data = [
                 'site_id' => $site_id,
-                'title'=> $movie->Title,
-                'synopsis' => addslashes($movie->Synopsis),
+                'title'=> addslashes(filter_var($movie->Title, FILTER_SANITIZE_STRING)),
+                'synopsis' => addslashes($synopsis),
                 'opening_date' => $movie->OpeningDate,
                 'rating' => $movie->Rating,
                 'rating_description'=> $movie->RatingDescription,
@@ -111,7 +113,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
                 'trailer_url' => addslashes($movie->TrailerUrl),
                 'cinema_id_code' => $movie->CinemaId,
                 'screen_code'=> $time_slot->ScreenNameAlt,
-                'screen_name'=> addslashes($time_slot->ScreenName),
+                'screen_name'=> addslashes(filter_var($time_slot->ScreenName, FILTER_SANITIZE_STRING)),
                 'film_id' => $movie->ScheduledFilmId,
                 'genre'=> $movie->GenreId,
                 'genre2'=> $movie->GenreId2,

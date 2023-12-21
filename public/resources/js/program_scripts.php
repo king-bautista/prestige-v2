@@ -4,12 +4,12 @@
 <script src="resources/js/bootstrap.min.js"></script>
 
 <script>
-    /* script for popover */
+    /*-------- script for popover --------*/
     $(document).ready(function () {
         $('[data-toggle="popover"]').popover();
     });
 
-    /* script for random content of popover */
+    /*-------- script for random content of popover --------*/
     $('[data-toggle="popover"]').on("click", function () {
         const assistant_messages = [
             "Touch a featured store or your desired store to get directions. You may check the latest product and promo offers. Scroll to view more.",
@@ -24,12 +24,12 @@
         $(this).attr("data-content", newMessage);
     });
 
-    /* for data interval carousel */
+    /*-------- for data interval carousel --------*/
     $(".carousel").carousel({
         interval: false,
     });
 
-    // for modal for promo
+    //-------- for modal for promo --------
     $(document).ready(function () {
         var modal = $("#imgPromoModal");
         var btn = $("#imgPromoBtn");
@@ -50,7 +50,7 @@
         });
     });
 
-    // for modal for tenants
+    //-------- for modal for tenants --------
     $(document).ready(function () {
         var modalTenant = $("#imgPromoModalTenant");
         var btnTenant = $("#imgPromoBtnTenant");
@@ -71,7 +71,7 @@
         });
     });
 
-    // for modal for tenants banner promo
+    //-------- for modal for tenants banner promo --------
     $(document).ready(function () {
         var modalBanner = $("#imgPromoBannerModal");
         var btnBanner = $("#imgPromoBannerBtn");
@@ -92,7 +92,7 @@
         });
     });
 
-    // for modal for cinema sched
+    //-------- for modal for cinema sched --------
     $(document).ready(function () {
         var modalCinema = $("#CinemaDetailsModal");
         var btnCinema = $("#CinemaDetailsViewBtn");
@@ -113,7 +113,7 @@
         });
     });
 
-    /* for multirotator */
+    /*-------- for multirotator --------*/
     // Get the video element
     var video = document.getElementById("vido");
     var image = document.getElementById("imge");
@@ -132,7 +132,7 @@
 </script>
 
 <script>
-    // for navigation positioning if remove another nav
+    //-------- for navigation positioning if remove another nav --------
     var NavContentPositioning = $("#NavContentContainer > div").length;
     if (NavContentPositioning == 1) {
         $("#NavContentContainer").removeClass("nav-content-container");
@@ -163,17 +163,96 @@
         $("#NavContentContainer").addClass("nav-content-container");
     }
 
-    /* for navigation home to hide and show contents */
-    /* for home button to categories content */
-    $("#home-card").on("click", function () {
-        $("#home-cat-contents").show();
+/*-------- for navigation home to hide and show contents --------*/
+    /*-------- for food card to categories content --------*/
+    $("#food-card").on("click", function () {
+        $("#home-food-contents, #CatTabCategories").show();
         $("#home-container").hide();
     });
 
-    /* for logo button to view about page */
+    //-------- FOR Tab categories --------
+        /*-------- for food button to its contents --------*/
+        $("#Categories-nav-tab").on("click", function () {
+            $("#TenantPage").hide();
+            $("#CatTabCategories").show();
+        });
+
+        //-------- FOR TENANT PAGE --------
+        $("#CatBtnCasualDining").on("click", function () {
+            slideFoodCategories = 1;
+            $("#TenantPage").show();
+            $("#CatTabCategories").hide();
+            showFoodCategoriesSlides(slideFoodCategories);
+        });
+
+        //-------- FOR STORE TENANT PAGE --------
+        $("#TenantStoreContentCard").on("click", function () {
+            slideFoodCategories = 1;
+            $("#tenant-store-content").show();
+            $("#home-food-contents").hide();
+            showFoodCategoriesSlides(slideFoodCategories);
+
+            var TenantStoreContentSocialMedia = $("#socialMediaContents > div").length;
+            if (TenantStoreContentSocialMedia >= 3) {
+                $(".socialMediaContentsContent").removeClass("socialMediaContentHide");
+                $(".storeNavigationContent").removeClass("mt-3");
+                $(".storeNavigationContent").addClass("storeNavigationBtn");
+                $("#socialMediaContents").show();
+            }
+        });
+
+    /*-------- for fashion card to categories content --------*/
+    $("#fashion-card").on("click", function () {
+        $("#home-fashion-contents, #FashionTabCategories").show();
+        $("#home-container").hide();
+    });
+        /*-------- for food button to its contents --------*/
+        $("#Fashion-nav-tab").on("click", function () {
+            $("#TenantPage").hide();
+            $("#FashionTabCategories").show();
+        });
+
+    /*-------- for electronics card to categories content --------*/
+    $("#electronics-card").on("click", function () {
+        $("#home-electronics-contents, #ElectronicsTabCategories").show();
+        $("#home-container").hide();
+    });
+
+    /*-------- for services card to categories content --------*/
+    $("#services-card").on("click", function () {
+        $("#home-services-contents, #ServicesTabCategories").show();
+        $("#home-container").hide();
+    });
+
+    /*-------- for finds card to categories content --------*/
+    $("#essentials-card").on("click", function () {
+        $("#home-essentials-contents, #EssentialsTabCategories").show();
+        $("#home-container").hide();
+    });
+
+    //-------- FOR PROMO TENANT SUBSCRIBER PAGE --------
+    $("#tenants-tenant-store").on("click", function () {
+        $("#tenant-subscriber-content").show();
+        $("#promos-container").hide();
+
+        var contentPosition = $("#bigcontainer > div").length;
+        if (contentPosition == 1) {
+            $("#bigcontainer").addClass("my-auto");
+            $("#PromoRowContainer").addClass("dflex justify-content-center");
+        }
+
+        else {
+            $("#bigcontainer").removeClass("my-auto");
+            $("#PromoRowContainer").removeClass("dflex justify-content-center");
+        }
+    });
+
+//-------- for nav buttons functions show and hide contents --------
+
+    /*-------- for logo button to view about page --------*/
     $("#ImgMallLogo").on("click", function () {
         $("#DirectoryAboutPage, #search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4").show();
-        $("#ImgMallLogo, #home-container, #home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage").hide();
+        $("#ImgMallLogo, #home-container, #home-food-contents, #search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
         $("#home_txt").removeClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
@@ -181,28 +260,10 @@
         $("#cinema_txt").removeClass("nav-btn-active");
     });
 
-    // FOR PROMO TENANT STORE PAGE
-    $("#tenants-tenant-store").on("click", function () {
-        $("#tenant-store-content").show();
-        $("#promos-container").hide();
-
-        var contentPosition = $("#bigcontainer > div").length;
-        if (contentPosition == 1) {
-            $("#bigcontainer").addClass("my-auto");
-            $("#testId1").addClass("dflex justify-content-center");
-        }
-    });
-
-    // FOR TENANT PAGE
-    $("#CatBtnCasualDining").on("click", function () {
-        $("#TenantPage").show();
-        $("#CatTabCategories").hide();
-    });
-
-    /* for home button */
+    /*-------- for home button --------*/
     $("#home_btn").on("click", function () {
         $("#home-container, #search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, #promos-default").hide();
+        $("#home-food-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
         $("#home_txt").addClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
@@ -210,10 +271,10 @@
         $("#cinema_txt").removeClass("nav-btn-active");
     });
 
-    /* for search button */
+    /*-------- for search button --------*/
     $("#search_btn").on("click", function () {
         $("#search-container, #search_v4s, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-container, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, #promos-default").hide();
+        $("#home-container, #home-food-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
         $("#search_txt").addClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
@@ -221,10 +282,10 @@
         $("#cinema_txt").removeClass("nav-btn-active");
     });
 
-    /* for map button */
+    /*-------- for map button --------*/
     $("#map_btn").on("click", function () {
         $("#map-container, #map_v4s, #home_v4, #search_v4, #promos_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-container, #home-cat-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, #promos-default").hide();
+        $("#home-container, #home-food-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
         $("#map_txt").addClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
@@ -232,32 +293,39 @@
         $("#cinema_txt").removeClass("nav-btn-active");
     });
 
-    /* for promos button */
+    /*-------- for promos button --------*/
     $("#promos_btn").on("click", function () {
         $("#promos-container, #promos_v4s, #home_v4, #search_v4, #map_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-container, #home-cat-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, #promos-default").hide();
+        $("#home-container, #home-food-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
         $("#promos_txt").addClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
         $("#cinema_txt").removeClass("nav-btn-active");
 
-        var promo_div = $("#SlideShowContainer > div").length;
+        var promo_div = $(".SlideShowContainer > div").length;
         if (promo_div == 0) {
             $("#promos-default").show();
             $("#promos-container").hide();
         }
     });
 
-    /* for cinema button */
+    /*-------- for cinema button --------*/
     $("#cinema_btn").on("click", function () {
         $("#cinema-container, #cinema_v4s, #home_v4, #search_v4, #promos_v4, #map_v4, #ImgMallLogo").show();
-        $("#home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, #promos-default").hide();
+        $("#home-container, #home-food-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
         $("#cinema_txt").addClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
         $("#promos_txt").removeClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
+        
+        // for cinema sched if there is no movie available
+        var cinemaContentDefault = $(".cinemaCardPosition > div").length;
+        if (cinemaContentDefault == 0) {
+            $("#CinemaTabDefault").show();
+            $("#CinemaTabSchedule").hide();
+        }
 
         // for adjusting the column if the content is more than 6 cards
         var cinemaContentPosition = $("#CinemaCardContent > div").length;
@@ -272,9 +340,11 @@
         var cinemaSchedContentPosition = $("#SmCinemaSchedcontent > div").length;
         if (cinemaSchedContentPosition <= 4) {
             $("#SmCinemaSchedcontent").addClass("justify-content-center");
-        } else if (cinemaSchedContentPosition == 5) {
+        } 
+        else if (cinemaSchedContentPosition == 5) {
             $("#SmCinemaSchedcontent").addClass("cinema-details-sched-content-adjustment");
-        } else {
+        } 
+        else {
             $("#SmCinemaSchedcontent").removeClass("justify-content-center");
             $("#SmCinemaSchedcontent").removeClass("cinema-details-sched-content-adjustment");
             $(".SmCinemaSched").removeClass("mx-4");
@@ -368,40 +438,13 @@
     /* for hiding the div and showing the home div */
     /* for redirecting to home button using home nav button*/
     $("#home_btn").on("click", function () {
-        $("#home-cat-contents,#search-container,#map-container,#promos-container,#cinema-container").hide();
+        $("#home-food-contents,#search-container,#map-container,#promos-container,#cinema-container").hide();
         $("#home-container").show();
     });
 
     /* for redirecting to home button using back button*/
     $("#Back_btn").on("click", function () {
-        $("#cinema-container, #home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content, #DirectoryAboutPage, #promos-default").hide();
+        $("#cinema-container, #home-container, #home-food-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-subscriber-content, #DirectoryAboutPage, #promos-default").hide();
         $("#home-container").show();
     });
-</script>
-
-<script>
-    // for promos carousel
-    let slideIndex = 1;
-    showSlides(slideIndex);
-
-    function plusSlides(n) {
-        showSlides((slideIndex += n));
-    }
-
-    function currentSlide(n) {
-        showSlides((slideIndex = n));
-    }
-
-    function showSlides(n) {
-        let slides = $(".carousel-item-promo");
-        let dots = $(".carousel-dot-promo");
-
-        slideIndex = n > slides.length ? 1 : n < 1 ? slides.length : slideIndex;
-
-        $(".right-btn-carousel").toggle(slideIndex !== slides.length);
-        $(".left-btn-carousel").toggle(slideIndex !== 1);
-
-        slides.hide().eq(slideIndex - 1).show();
-        dots.removeClass("carousel-active").eq(slideIndex - 1).addClass("carousel-active");
-    }
 </script>

@@ -9,17 +9,17 @@
     <div class="p-3 font-weight-bold nav-titles">Promos</div>
 
 <!-- carousel promo -->
-    <div class="slideshow-content-container" id="SlideShowContainer">
+    <div class="slideshow-content-container">
         
         <div class="mySlidesContent carousel-item-promo">
 
             <div class="carousel-content-container">
         
-                <div class="row">
+                <div class="row SlideShowContainer">
 
                     <div class="col-sm-4">
                         <div class="card border-0 bg-transparent img-promo-card">
-                            <img type="button" id="imgPromoBtn" class="promo-img" src ="resources/uploads/promos/popup700px700px.png">
+                            <img type="button" id="imgPromoBtn" class="promo-img" src ="resources/uploads/promos/oversized-sample.jpg">
                             <div class="d-block">
                                 <p class="promo-store" id="tenants-tenant-store">Jollibee</p>
                                 <p class="promo-floor">GF </p>
@@ -87,7 +87,7 @@
 
             <div class="carousel-content-container">
         
-                <div class="row">
+                <div class="row SlideShowContainer">
 
                     <div class="col-sm-4">
                         <div class="card border-0 bg-transparent img-promo-card">
@@ -129,7 +129,7 @@
 
             <div class="carousel-content-container">
         
-                <div class="row">
+                <div class="row SlideShowContainer">
 
                     <div class="col-sm-4">
                         <div class="card border-0 bg-transparent img-promo-card">
@@ -207,7 +207,7 @@
         <div class="modal-content border-0 promo-modal-container">
             <div class="modal-body m-0 p-0">
                 <span class="close text-white">&times;</span>
-                <img class="promo-img promo-modal-img" src ="resources/uploads/promos/popup700px700px.png">
+                <img class="promo-img promo-modal-img" src ="resources/uploads/promos/oversized-sample.jpg">
             </div>
         </div>
     </div>

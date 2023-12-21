@@ -19,21 +19,75 @@
         <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
             <div id="CatTabCategories" class="cat-cards">
                 <!-- MAIN CATEGORY TITLE -->
-                <div class="p-2 text-center title-page-content font-weight-bold" id="category-title">Food</div>
+                <div class="p-2 text-center title-page-content font-weight-bold category-title">Food</div>
                 <!-- SUB-CATEGORY LIST -->
                 <div class="row mt-5 cat-row-card">
-                    
                 </div>
             </div>
             <div id="TenantPage">
-                <?php include('resources/include/common/contents/tenant/tenant_page/tenant_page.php'); ?>
+                <!-- MAIN CATEGORY TITLE -->
+                <div class="Category-Container-Banner">
+                    <img class="category-img-banner" src="resources/uploads/categories/food/strips/kiosk/Casual Dining.png">
+                    <div class="hts-strip-align hts-strip-color">Casual Dining</div>
+                </div>
+                <!-- TENANT LIST PER SUB-CATEGORY -->
+                <div class="slideshow-content-container sub-category-tenants">
+                </div>
             </div>
         </div>        
         <div class="tab-pane" id="Tab-Alphabetical" role="tabpanel">
-            <?php include('resources/include/common/contents/categories/tabs/category_tab_alphabetical.php'); ?>
+            <!-- MAIN CATEGORY TITLE -->
+            <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
+                <div class="title-page-content-2 category-title">Food</div>
+            </div>
+
+            <!-- TENANT LIST PER ALPHABETICAL -->
+            <div class="slideshow-content-container alpha-tenants"></div>
+
+            <div class="row container-alphabet">
+                <div class="col">
+                    <div class="alphabet-content">
+                        <div class="alphabet-box">
+                            <a class="link-alpha selected">#</a>
+                            <a class="link-alpha"> A </a>
+                            <a class="link-alpha"> B </a>
+                            <a class="link-alpha"> C </a>
+                            <a class="link-alpha"> D </a>
+                            <span class="link-alpha-disabled">E</span>
+                            <a class="link-alpha"> F </a>
+                            <a class="link-alpha"> G </a>
+                            <span class="link-alpha-disabled">H</span>
+                            <a class="link-alpha"> I </a>
+                            <a class="link-alpha"> J </a>
+                            <a class="link-alpha"> K </a>
+                            <a class="link-alpha"> L </a>
+                            <a class="link-alpha"> M </a>
+                            <a class="link-alpha"> N </a>
+                            <span class="link-alpha-disabled">O</span>
+                            <a class="link-alpha"> P </a>
+                            <span class="link-alpha-disabled">Q</span>
+                            <a class="link-alpha"> R </a>
+                            <a class="link-alpha"> S </a>
+                            <span class="link-alpha-disabled">T</span>
+                            <span class="link-alpha-disabled">U</span>
+                            <span class="link-alpha-disabled">V</span>
+                            <span class="link-alpha-disabled">W</span>
+                            <span class="link-alpha-disabled">X</span>
+                            <a class="link-alpha"> Y </a>
+                            <a class="link-alpha"> Z </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>        
         <div class="tab-pane" id="Tab-Supplemental" role="tabpanel" aria-labelledby="Tab-Supplemental-tab">
-            <?php include('resources/include/common/contents/categories/tabs/category_tab_cravings.php'); ?>
+            <!-- MAIN CATEGORY TITLE -->
+            <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
+                <div class="title-page-content-2 category-title">Food</div>
+            </div>
+
+            <!-- TENANT LIST PER ALPHABETICAL -->
+            <div class="slideshow-content-container supplemental-list"></div>
         </div>
     </div>
     <!-- categories navigation -->
@@ -59,6 +113,17 @@
     var sub_categories = '';
     var main_category = '';
     var supplementals = '';
+    var alphabetical = '';
+
+    $(document).ready(function() {
+        $('#Tab-Alphabetical-tab').on('click', function() {
+            showAlphabetical();
+        });
+
+        $('#Tab-Supplemental-tab').on('click', function() {
+            showSupplementals();
+        });
+    });
 
     function decodeEntities(encodedString) {
         var textArea = document.createElement('textarea');
@@ -78,6 +143,7 @@
             $('.main-'+category.id).on('click', function() {
                 main_category = category.category_name;
                 sub_categories = category.sub_categories;
+                alphabetical = category.alphabetical;
                 supplementals = category.supplemental.sub_categories;
                 $('#Tab-Supplemental-tab').html(category.supplemental.name);
                 showSubCategories();
@@ -87,10 +153,10 @@
 
     function showSubCategories() {
         $('.cat-row-card').html('');
-        $( "#category-title" ).html(main_category);
+        $( ".category-title" ).html(main_category);
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
-            subcategory_element = '<div class="col-sm-6 mt-3">';
+            subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
             subcategory_element += '<div class="cat-btn">';
             subcategory_element += '<img class="cat-btn-img" src="'+ category.kiosk_image_primary_path +'" />';
             subcategory_element += '<div class="cat-btn-align">';
@@ -99,9 +165,159 @@
             subcategory_element += '</div>';
             subcategory_element += '</div>';
             $( ".cat-row-card" ).append(subcategory_element);
-        });         
+
+            $('.show-tenants-'+category.id).on('click', function() {
+                $('.category-img-banner').attr('src', category.kiosk_image_top_path);
+                $('.category-banner-title').html(category.category_name);
+                tenant_list = category.tenants;
+                showTenantList();
+            });
+        }); 
         $('#home-cat-contents').show();
+        $('#CatTabCategories').show();
         $('#home-container').hide();
+    }
+
+    function showTenantList() {
+        $('.sub-category-tenants').html('');
+        $('.sub-category-tenants').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-list"></div>');
+        $.each(tenant_list, function(key,tenants) {
+            var tenant_list_element = '';
+            tenant_list_element = '<div class="item">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category">';
+            tenant_list_element += '<div class="row tenants-'+key+'">';
+            tenant_list_element += '</div>';
+            tenant_list_element += '</div>';
+            tenant_list_element += '</div>';
+            $( ".owl-wrapper-tenant-list" ).append(tenant_list_element);
+
+            $.each(tenants, function(index,tenant) {
+                var tenant_item = '';
+                tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
+                tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
+                tenant_item += '<div class="tenant-store-contents">';
+                tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
+                tenant_item += '</div>';
+                tenant_item += '<div class="text-left tenant-store-details">';
+                tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
+                tenant_item += '<div class="tenant-store-status">';
+                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                if(tenant.is_subscriber)
+                    tenant_item += '<span class="featured_shop">Featured</span>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                $( ".tenants-"+key ).append(tenant_item);                
+                $('.tenant-item-'+tenant.id).on('click', function() {
+                    showTenantDetails(tenant);
+                });
+            });
+        }); 
+        owl_tenant = $('.owl-wrapper-tenant-list');
+        owl_tenant.owlCarousel({
+            margin: 15,
+            nav: false,
+            loop: false,
+            items: 1,
+        });
+
+        $('#TenantPage').show();
+        $('#CatTabCategories').hide();
+    }
+
+    function showAlphabetical() {
+        $('.alpha-tenants').html('');
+        $('.alpha-tenants').html('<div class="owl-carousel owl-theme owl-wrapper-alpha-tenant-list"></div>');
+        $.each(alphabetical, function(key,tenants) {
+            var tenant_list_element = '';
+            tenant_list_element = '<div class="item">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category">';
+            tenant_list_element += '<div class="row tenants-'+key+'">';
+            tenant_list_element += '</div>';
+            tenant_list_element += '</div>';
+            tenant_list_element += '</div>';
+            $( ".owl-wrapper-alpha-tenant-list" ).append(tenant_list_element);
+
+            $.each(tenants, function(index,tenant) {
+                var tenant_item = '';
+                tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
+                tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed alpha-tenant-item-'+tenant.id+'">';
+                tenant_item += '<div class="tenant-store-contents">';
+                tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
+                tenant_item += '</div>';
+                tenant_item += '<div class="text-left tenant-store-details">';
+                tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
+                tenant_item += '<div class="tenant-store-status">';
+                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                if(tenant.is_subscriber)
+                    tenant_item += '<span class="featured_shop">Featured</span>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                $( ".tenants-"+key ).append(tenant_item);                
+                $('.alpha-tenant-item'+tenant.id).on('click', function() {
+                    showTenantDetails(tenant);
+                });
+            });
+        }); 
+        owl_tenant = $('.owl-wrapper-alpha-tenant-list');
+        owl_tenant.owlCarousel({
+            margin: 15,
+            nav: false,
+            loop: false,
+            items: 1,
+        });
+    }
+
+    function showSupplementals() {
+        console.log(supplementals);
+        // $('.supplemental-list').html('');
+        // $( ".supplemental-list" ).html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
+        // $.each(supplementals, function(key,supplemental) {
+        //     var supplemental_element = '';
+        //     supplemental_element = '<div class="item">';
+        //     supplemental_element += '<div class="carousel-content-container-per-food-cravings">';
+        //     supplemental_element += '<div class="row supplemental-'+key+'">';
+        //     supplemental_element += '</div>';
+        //     supplemental_element += '</div>';
+        //     supplemental_element += '</div>';
+        //     $( ".owl-wrapper-supplemental" ).append(supplemental_element);
+
+        //     $.each(tenants, function(index,tenant) {
+        //         var supplemental_item = '';
+        //         tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
+        //         tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed alpha-tenant-item-'+tenant.id+'">';
+        //         tenant_item += '<div class="tenant-store-contents">';
+        //         tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
+        //         tenant_item += '</div>';
+        //         tenant_item += '<div class="text-left tenant-store-details">';
+        //         tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+        //         tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
+        //         tenant_item += '<div class="tenant-store-status">';
+        //         tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+        //         if(tenant.is_subscriber)
+        //             tenant_item += '<span class="featured_shop">Featured</span>';
+        //         tenant_item += '</div>';
+        //         tenant_item += '</div>';
+        //         tenant_item += '</div>';
+        //         tenant_item += '</div>';
+        //         $( ".supplemental-"+key ).append(tenant_item);                
+        //         $('.alpha-tenant-item'+tenant.id).on('click', function() {
+        //             showTenantDetails(tenant);
+        //         });
+        //     });
+        // }); 
+        // owl_tenant = $('.owl-wrapper-supplemental');
+        // owl_tenant.owlCarousel({
+        //     margin: 15,
+        //     nav: false,
+        //     loop: false,
+        //     items: 1,
+        // });
     }
 
     showHomeCategories();

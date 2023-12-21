@@ -86,9 +86,24 @@ body {
 }
 
 .title-page-content {
-    margin-left: -17px !important;
     font-size: 2em;
     font-family: "Henry Sans Regular" !important;
+}
+
+.title-page-content-2 {
+    margin-left: -18px !important;
+    width: 1450px;
+    font-size: 2em;
+    font-family: "Henry Sans Regular" !important;
+}
+
+.title-page-title-adjustment {
+    margin-left: -17.5px !important;
+}
+
+.title-page-container {
+    top: 105px;
+    position: absolute;
 }
 
 .bg-kiosk {
@@ -239,12 +254,21 @@ body {
     width: 320px !important;
     height: 90px !important;
     object-fit: cover !important;
+    border-radius: 15px !important;
 }
 
 .cat-btn {
     width: 320px !important;
     position: relative;
     height: 90px;
+}
+
+.cat-btn-adjustment {
+    width: 320px !important;
+    position: relative;
+    height: 90px;
+    border-radius: 15px !important;
+    padding-top: 1.5px !important;
 }
 
 .cat-btn-align {
@@ -260,18 +284,238 @@ body {
     left: 20px;
 }
 
+.cat-btn-align-2 {
+    color: #246c63;
+    width: 199px;
+    height: 91.5px;
+    text-align: left;
+    position: absolute;
+    display: table;
+    font-size: 17px;
+    font-family: "Henry Sans Medium";
+    top: 0px;
+    left: 19px;
+}
+
 .cat-text {
     display: table-cell;
     vertical-align: middle;
 }
 
+.cat-text-2 {
+    color: #823d3b !important;
+}
+
+.cat-text-3 {
+    color: #c18c2f !important;
+}
+
+.cat-text-4 {
+    color: #6051e3 !important;
+}
+
 .cat-nav-tabs {
-    margin-left: 20px;
-    margin-top: 795px;
+    position: absolute;
+    left: 401.5px;
+    bottom: 152px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px 10px;
+}
+
+.btn-prestige-rounded {
+    border-radius: 10px !important;
+    border: 1px solid #6051e3 !important;
+}
+
+.socialMediaContentHide {
+    padding-top: 18px;
+    padding-bottom:  163.5px !important;
+}
+
+.storeNavigationBtn {
+    margin-top: 5.5px !important;
+}
+
+.btn-direction-shop {
+    font-family: 'Henry Sans Medium' !important;
+    font-size: inherit !important; 
+    padding-top: 6.0px !important; 
+    padding-bottom: 5.5px !important;
+}
+
+.btn-direction-shop-pwd {
+    font-family: 'Henry Sans Medium' !important; 
+    font-size: 1em !important; 
+    background-color: #96aaff !important; 
+    color: #6051e3 !important;
+}
+
+.btn-prestige-order-now {
+    opacity: 30% !important; 
+    color: #b6c3ff !important; 
+    border: 1px solid #b6c3ff !important; 
+    font-size: 1em !important;
+}
+
+.tenantCardImgContent {
+    top: 42px; 
+    position: relative; 
+    left: 28px; 
+    width: 550px !important; 
+    height: 550px !important; 
+    object-fit: cover !important;
+    border-radius: 15px !important;
+}
+
+.tenantCardImgContainer {
+    width: 550px !important; 
+    height: 550px !important; 
+    object-fit: cover !important;
+}
+
+.hts-strip-color {
+    color: #246c63;
+}
+.hts-strip-align {
+    width: 600px;
+    text-align: center;
+    position: absolute;
+    font-size: 25px;
+    font-family: 'Henry Sans Medium';
+    top: 19px;
+    left: 423px;
+}
+
+.box-shadowed {
+    -webkit-box-shadow: 0px 8px 16px 2px rgba(192,192,192,.8) !important;
+    -moz-box-shadow: 0px 8px 16px 2px rgba(192,192,192,.8) !important;
+    box-shadow: 0px 8px 16px 2px rgba(192,192,192,.8) !important;
+}
+
+.carousel-content-container-per-food-category {
+    padding: 169.5px 133px 0px 153px;
+    margin-left: 0px;
+    margin-bottom: 25px;
+}
+
+.carousel-content-container-per-food-alphabetical {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-food-cravings {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-fashion-alphabetical {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-trends {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-electronics-alphabetical {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-latest {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-services-alphabetical {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-services {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-essentials-alphabetical {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-per-goodies {
+    padding: 124.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
+.tenant-store-card-container {
+    border: 1px solid #efefef !important; 
+    padding: 5px !important; 
+    border-radius: 10px !important; 
+    height: 90px !important;
+}
+
+.tenant-store-contents {
+    width: 100px; 
+    height: 100% !important;
+    margin-bottom: 5px; 
+    float: left; 
+    margin-right: 10px; 
+    position: relative;
+}
+
+.img-shop-logo {
+    max-width: 100%; 
+    max-height: 100%; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    border-radius: 10px;
+}
+
+.tenant-store-details {
+    top: 50%; 
+    transform: translateY(-50%); 
+    position: relative; 
+    font-family: 'Henry Sans';
+}
+
+.tenant-store-name {
+    font-family: 'Henry Sans Medium'; 
+    font-size: 0.875em; 
+    color: #2a2a2a; width: 90%;
+}
+
+.tenant-store-floor {
+    font-size: 0.7em; 
+    color: #2a2a2a;
+}
+
+.tenant-store-status {
+    font-weight: bold; 
+    font-size: 0.7em;
+}
+
+.featured_shop {
+    color: #fff;
+    background-color: #ff9800;
+    padding: 2px;
+}
+
+.Category-Container-Banner {
+    position: absolute; 
+    top: 127px; 
+    left: 5px;
+    width: 1450px; 
+    height: 72.34px;
+}
+
+.category-img-banner {
+    width: 1450px; 
+    height: 72.34px; 
 }
 
 /*---- css for help when landscape ----*/
@@ -830,6 +1074,28 @@ body {
     font-family: Henry Sans Regular !important;
 }
 
+.ShareBtn-2 {
+    opacity: 30% !important;
+    background-color: #e2e2e2 !important;
+    color: #6e6c6c !important;
+    border-color: #e2e2e2 !important;
+    font-size: 1em !important;
+    width: 180px !important;
+    text-align: center !important;
+    font-family: Henry Sans Regular !important;
+}
+
+.svg-inline--fa.fa-w-14 {
+    width: 0.875em;
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+    height: 1.8em !important;
+    overflow: visible;
+}
+
 .ShareTextMargin {
     float: left;
     margin: 0px 0px 0px 15px;
@@ -927,6 +1193,15 @@ body {
     right: 0px;
 }
 
+.dot-container-3 {
+    position: absolute;
+    text-align: center !important;
+    width: 100%;
+    bottom: 244px;
+    left: 10px;
+    right: 0px;
+}
+
 .carousel-dot {
     cursor: pointer;
     height: 17px;
@@ -936,6 +1211,36 @@ body {
     border-radius: 50%;
     display: inline-block;
     transition: background-color 0.6s ease;
+}
+
+.carousel-dot-per-food-category {
+    height: 18px;
+    width: 18px;
+    margin: 0 16.8px;
+}
+
+.carousel-dot-per-food-alphabetical {
+    height: 18px;
+    width: 18px;
+    margin: 0 16.8px;
+}
+
+.carousel-dot-per-food-cravings {
+    height: 18px;
+    width: 18px;
+    margin: 0 16.8px;
+}
+
+.carousel-dot-per-fashion-alphabetical {
+    height: 18px;
+    width: 18px;
+    margin: 0 16.8px;
+}
+
+.carousel-dot-per-trends {
+    height: 18px;
+    width: 18px;
+    margin: 0 16.8px;
 }
 
 .carousel-active,
@@ -967,6 +1272,196 @@ body {
     top: -133px;
 }
 
+.left-btn-carousel-per-food-category {
+    position: absolute !important;
+    left: 65px;
+    top: -91px;
+}
+
+.right-btn-carousel-per-food-category {
+    position: absolute !important;
+    right: 45px;
+    top: -91px;
+}
+
+.left-btn-carousel-per-food-alphabetical {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-food-alphabetical {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-food-cravings {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-food-cravings {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-fashion-category {
+    position: absolute !important;
+    left: 65px;
+    top: -91px;
+}
+
+.right-btn-carousel-per-fashion-category {
+    position: absolute !important;
+    right: 45px;
+    top: -91px;
+}
+
+.left-btn-carousel-per-fashion-alphabetical {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-fashion-alphabetical {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-trends {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-trends {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-electronics-alphabetical {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-electronics-alphabetical {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-latest {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-latest {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-services-alphabetical {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-services-alphabetical {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-services {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-services {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-essentials-alphabetical {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-essentials-alphabetical {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.left-btn-carousel-per-goodies {
+    position: absolute !important;
+    left: 50px;
+    top: -136px;
+}
+
+.right-btn-carousel-per-goodies {
+    position: absolute !important;
+    right: 30px;
+    top: -136px;
+}
+
+.container-alphabet {
+    position: absolute; 
+    bottom: 103px; 
+    left: 160px; 
+    width: 100%; 
+    z-index: 998;
+} 
+
+.alphabet-content {
+    width: 1120px;
+    white-space: nowrap !important;
+    background-color: #FFFFFF;
+    padding: 0px 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    -webkit-box-shadow: 0px 4px 5px 0px rgba(192,192,192,1);
+    -moz-box-shadow: 0px 4px 5px 0px rgba(192,192,192,1);
+    box-shadow: 0px 4px 5px 0px rgba(192,192,192,1);
+}
+
+.alphabet-box {
+    padding: 5px !important;
+    font-size: 1.5em !important;
+}
+
+.link-alpha {
+    color: #000000 !important;
+    font-family: "Henry Sans Regular" !important;
+    padding: 0 10.185px 0 10px !important;
+}
+
+.link-alpha-disabled {
+    color: #efefef !important;
+    font-family: "Henry Sans Regular" !important;
+    padding: 0 10.185px 0 10px !important;
+}
+
+a.link-alpha.selected {
+    color: #000000;
+    font-weight: 700 !important;
+}
+a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
+    color: #000000 !important;
+    font-family: "Henry Sans Regular" !important;
+}
+
 /*---- css for map selection ----*/
 .MapBtn {
     width: 100%;
@@ -976,6 +1471,7 @@ body {
     padding: 10px;
     z-index: 999;
 }
+
 /*---- css for navigation when landscape ----*/
 
 .nav-content-container {
@@ -1178,6 +1674,26 @@ body {
     display: none;
 }
 
+#home-food-contents {
+    display: none;
+}
+
+#home-fashion-contents {
+    display: none;
+}
+
+#home-electronics-contents {
+    display: none;
+}
+
+#home-services-contents {
+    display: none;
+}
+
+#home-essentials-contents {
+    display: none;
+}
+
 #home-container {
     display: block;
 }
@@ -1191,6 +1707,14 @@ body {
 }
 
 #TenantPerCategory {
+    display: none;
+}
+
+#tenant-store-content {
+    display: none;
+}
+
+#socialMediaContents {
     display: none;
 }
 
@@ -1210,7 +1734,7 @@ body {
     display: none;
 }
 
-#tenant-store-content {
+#tenant-subscriber-content {
     display: none;
 }
 
@@ -1453,8 +1977,92 @@ body {
     }
 
     .cat-nav-tabs {
+        left: 200px;
+        bottom: -85px;
+    }
+
+    .dot-container-3 {
+        bottom: 10px;
+        left: 10px;
+        right: 0px;
+    }
+
+    .hts-strip-align {
+        width: 250px;
+    }
+
+    .Category-Container-Banner {
+        left: 0px;
+        width: 1080px; 
+    }
+    
+    .category-img-banner {
+        width: 1080px;
+    }
+
+    .tenantCardImgContent {
+        left: 7px !important;
+    }
+
+    .title-page-container {
+        top: 147px;
+    }
+
+    .carousel-content-container-per-food-alphabetical {
+        padding: 169.5px 133.5px 0px 153.5px;
+    }
+
+    .carousel-content-container-per-food-cravings {
+        padding: 169.5px 133.5px 0px 153.5px;
+    }
+
+    .right-btn-carousel-per-food-category {
+        top: 2.5px;
+    }
+
+    .left-btn-carousel-per-food-category {
+        top: 2.5px;
+    }
+
+    .left-btn-carousel-per-food-alphabetical {
+        top: 2.5px;
+    }
+    
+    .right-btn-carousel-per-food-alphabetical {
+        top: 2.5px;
+    }
+
+    .left-btn-carousel-per-food-cravings {
+        top: 2.5px;
+    }
+    
+    .right-btn-carousel-per-food-cravings {
+        top: 2.5px;
+    }
+
+    .title-page-content-2 {
+        margin-left: -14px !important;
+        width: 1080px;
+    }
+
+    .container-alphabet {
+        bottom: -142px !important; 
+        left: 40px; 
+    } 
+
+    .alphabet-content {
+        width: 960px;
+        padding: 0px 20px;
         margin-left: 20px;
-        margin-top: 1030px;
+        margin-right: 20px;
+    }
+
+    .link-alpha {
+        padding: 0 7.185px 0 7px !important;
+    }
+    
+    .link-alpha-disabled {
+        padding: 0 7.185px 0 7px !important;
     }
 
     /*---- css for cinema when portrait ----*/
@@ -1525,6 +2133,22 @@ body {
     .cinema-details-sched-content-adjustment {
         padding-left: 0px !important;
     }
+
+    /*---- css for map when portrait ---- */
+    .map-canvas {
+        margin-top: 20px;
+        margin-left: -15px !important;
+        width: 1450px;
+        height: 1005px;
+    }
+
+    .MapBtn {
+        bottom: -133px;
+        left: 54px;
+        padding: 10px;
+        z-index: 999;
+    }
+
     /*---- css for back button when portrait ---- */
 
     .back-img-btn {
@@ -1589,6 +2213,7 @@ body {
     .img-about-logo-container {
         margin: 80px 8px 80px 0;
     }
+    
 
     /*---- css for navigation when portrait ----*/
     .nav-btn-container {

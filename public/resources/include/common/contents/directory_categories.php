@@ -6,7 +6,7 @@
 <!--Start of directory categories content-->
 <div class="categories-card-container">
     <div class="d-flex flex-row">
-        <div class="category-food-card" id="home-card">
+        <div class="category-food-card" id="food-card">
             <img class="category-food-img" src="resources/uploads/categories/main/food.png" />
             <div class="ct-food-button-allign">Food</div>
         </div>
@@ -26,7 +26,7 @@
                     <div class="ct-services-button-allign">Services</div>
                 </div>
             </div>
-            <div class="category-finds-card" id="finds-card">
+            <div class="category-finds-card" id="essentials-card">
                 <img class="category-finds-img" src="resources/uploads/categories/main/Finds.png" />
                 <div class="ct-finds-button-allign">Essentials & Novelties</div>
             </div>

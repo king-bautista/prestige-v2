@@ -10,7 +10,8 @@
         <!-- Set Custom Theme UI -->
         <link rel="stylesheet" href="{{ URL::to('resources/css/style.css') }}">
         <link rel="stylesheet" href="{{ URL::to('resources/css/bootstrap.min.css') }}"> 
-        <link rel="stylesheet" href="{{ URL::to('themes/swiper/css/swiper.min.css') }}"> 
+        <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.theme.default.min.css') }}">
         <style>
             .text-mall-details {
                 width: 100%;
@@ -27,7 +28,7 @@
                 cursor: pointer;
             }
 
-            .swiper-pagination1 {
+            .swiper-pagination1, .swiper-pagination-cinema {
                 text-align: center;
             }
 
@@ -65,17 +66,18 @@
             .swiper-button-disabled {
                 opacity: 0 !important;
             }
+            
         </style>
     </head>
     <body>
         
     @yield('content')
 
-    <script src="{{ URL::to('resources/js/jquery.slim.min.js') }}"></script>
+    <script src="{{ URL::to('themes/owlcarousel/vendors/jquery.min.js') }}"></script>
     <script src="{{ URL::to('resources/js/popper.min.js') }}"></script>
     <script src="{{ URL::to('resources/js/bootstrap.min.js') }}"></script>
-    <script src="{{ URL::to('themes/swiper/js/swiper.min.js') }}"></script>
-    
+    <script src="{{ URL::to('themes/owlcarousel/owl.carousel.js') }}"></script>
+
     @stack('scripts') <!-- To include script links -->
         
     </body>

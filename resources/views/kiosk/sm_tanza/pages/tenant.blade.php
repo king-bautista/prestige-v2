@@ -158,7 +158,6 @@
 
         if(products.product_list.length > 0) {
             $.each(products.product_list, function(index,product) {
-                console.log(product);
                 var product_item = '';
                 product_item += '<div class="col-xl-4 col-lg-6 col-md-4 col-sm-4 promo-col-container">';
                 product_item += '<div class="card border-0 bg-transparent promo-card">';
@@ -176,6 +175,7 @@
     }
 
     function showTenantDetails(tenant) {
+        console.log(tenant);
         var site_info = JSON.parse(decodeEntities(site_schedule));
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
@@ -204,11 +204,14 @@
         }
         
         // STORE SOCIAL MEDIA
-        if(!tenant.tenant_details.facebook)
+        $('.social-media-fb-container').show();    
+        $('.social-media-ig-container').show();    
+        $('.social-media-twitter-container').show();    
+        if(!tenant.tenant_details.facebook) 
             $('.social-media-fb-container').hide();    
         if(!tenant.tenant_details.facebook)
             $('.social-media-ig-container').hide();    
-        if(!tenant.tenant_details.facebook)
+        if(!tenant.tenant_details.twitter)
             $('.social-media-twitter-container').hide();    
 
         $('.social-media-fb').html(tenant.tenant_details.facebook);

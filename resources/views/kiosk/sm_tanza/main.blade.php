@@ -46,7 +46,7 @@
 
             <!--Start of the directory cinema content categories-->
             <div id="cinema-container">
-                <?php include('resources/include/common/contents/directory_cinema.php'); ?>
+                @include('kiosk.sm_tanza.pages.cinema')
             </div>
             <!--End of the directory cinema content categories-->
 
@@ -92,20 +92,6 @@
     var btn = document.getElementById("imgPromoBtn");
 
     var span = document.getElementsByClassName("close")[0];
-
-    btn.onclick = function() {
-    modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-    modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.backdrop = "static";
-    }
-    };
 
     // for modal for tenants
     var modalTenant = document.getElementById("imgPromoModalTenant");
@@ -252,7 +238,6 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
-        swiper.update();
     });
 
     /* for cinema button */
@@ -264,13 +249,6 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
-
-        var cinemaContentPosition = $("#CinemaCardContent > div").length;
-        if(cinemaContentPosition >= 6){
-            $("#CinemaCardContent").removeClass("cinema-card-container");
-            $("#CinemaCardContent").addClass("cinema-card-container-expand");
-            $(".cinemaCards").addClass("col-xl-6");
-        }
     });
 
     /* for hiding the div and showing the home div */

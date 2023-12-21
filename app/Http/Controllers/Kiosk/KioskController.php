@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Category;
 use App\Models\AdminViewModels\SiteViewModel;
+use App\Models\AdminViewModels\CinemaScheduleViewModel;
 use App\Models\ViewModels\SiteCategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 
@@ -29,9 +30,11 @@ class KioskController extends AppBaseController
         $site_schedule = json_encode($site->operational_hours);
         $categories = $this->getCategories($site->id);
         $promos = $this->getPromos($site->id);
+        $cinemas = $this->getCinemas($site->id);
+        $now_showing = $this->getShowing($site->id);
 
         $template_name = str_replace("-", "_", strtolower($site_name));
-        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos'));
+        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing'));
 
         // GET PLAYLIST
         // MAP
@@ -131,6 +134,52 @@ class KioskController extends AppBaseController
 
         $promos = array_chunk($promos, 6);
         return json_encode($promos);
+    }
+
+    public function getCinemas($site_id) {
+        $cinemas = SiteTenantViewModel::where('site_tenants.active', 1)
+        ->where('brands.name', 'like', '%CINEMA%')
+        ->where('brands.name', 'not like', '%LOBBY%')
+        ->where('categories.name', 'like', '%Amusement & Exhibitions%')
+        ->where('site_tenants.site_id', $site_id)
+        ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
+        ->join('categories', 'brands.category_id', '=', 'categories.id')
+        ->select('site_tenants.*')
+        ->distinct()
+        ->orderBy('brands.name', 'ASC')
+        ->get()->toArray();
+        
+        $cinemas = array_chunk($cinemas, 2);
+        return json_encode($cinemas);
+    }
+
+    public function getShowing($site_id) {
+        $start_date =  date('Y-m-d 00:00:00');
+        $end_date =  date('Y-m-d 23:59:59');
+        
+        // $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
+        // ->where('show_time', '<=', $end_date)
+        // ->where('site_id', $site_id)
+        // ->select('site_id', 'film_id', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre')
+        // ->groupBy('film_id')
+        // ->orderBy('title')
+        // ->get()->toArray();
+
+        // $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
+        // ->where('show_time', '<=', $end_date)
+        // ->where('site_id', $site_id)
+        // ->groupBy('film_id')
+        // ->orderBy('title')
+        // ->get()->toArray();
+
+        $now_showing = CinemaScheduleViewModel::where('site_id', $site_id)
+        ->select('site_id', 'film_id', 'title', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre', 'synopsis')
+        ->groupBy('film_id')
+        ->orderBy('title')
+        ->get()->toArray();
+        
+        $now_showing = array_chunk($now_showing, 3);
+        return json_encode($now_showing);
     }
 
 }

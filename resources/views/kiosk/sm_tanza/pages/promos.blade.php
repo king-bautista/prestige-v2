@@ -1,16 +1,7 @@
 <div class="p-3 font-weight-bold nav-titles">Promos</div>
 
-<div class="slideshow-content-container" id="SlideShowContainer">
-    <div class="swiper-container">
-        <div class="swiper-wrapper">            
-        </div>
-
-        <!-- If we need pagination -->
-        <div class="swiper-pagination1"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+<div class="slideshow-content-container">
+    <div class="owl-carousel owl-theme owl-wrapper-promo">
     </div>
 </div>
 
@@ -30,18 +21,28 @@
 <script>
     var promos = "{{ $promos }}";
 
+    $(document).ready(function() {
+        var promo = $('.owl-wrapper-promo');
+        promo.owlCarousel({
+            margin: 10,
+            nav: false,
+            loop: false,
+            items: 1,
+        });
+    });
+
     function showPromos() {
         var my_promos = JSON.parse(decodeEntities(promos));
-        $( ".swiper-wrapper" ).html('');
+        $( ".owl-wrapper-promo" ).html('');
         $.each(my_promos, function(key,promos) {
             var promo_element = '';
-            promo_element += '<div class="swiper-slide">';
+            promo_element += '<div class="item">';
             promo_element += '<div class="carousel-content-container">';
-            promo_element += '<div class="row row-'+key+'">';
+            promo_element += '<div class="row item-row-'+key+'">';
             promo_element += '</div>';
             promo_element += '</div>';
             promo_element += '</div>';
-            $( ".swiper-wrapper" ).append(promo_element);
+            $( ".owl-wrapper-promo" ).append(promo_element);
 
             $.each(promos, function(index,promo) {
                 var promo_item = '';
@@ -55,7 +56,7 @@
                 promo_item += '</div>';
                 promo_item += '</div>';
 
-                $( ".row-"+key ).append(promo_item);
+                $( ".item-row-"+key ).append(promo_item);
                 $('.promo_img_'+promo.promo_id).on('click', function() {
                     $('.promo-modal-img').attr("src", promo.image_url);
                     $("#imgPromoModal").css("display", "block");
@@ -71,17 +72,5 @@
     }
 
     showPromos();
-
-    var swiper = new Swiper('.swiper-container', {
-        pagination: {
-            el: '.swiper-pagination1',
-            clickable: true,
-        },
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
 </script>
 @endpush
