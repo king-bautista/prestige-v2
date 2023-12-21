@@ -149,12 +149,27 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             foreach ($admin_management as $admin) {
                 $reports[] = [
                     'id' => $admin->id,
+                    'full_nama' => $admin->full_name,
                     'email' => $admin->email,
-                    'admin_role' => $admin->roles,
+                    'email_verified_at' => $admin->email_verified_at,
+                    'password' => $admin->password,
+                    'api_token' => $admin->api_token,
+                    'salt' => $admin->salt,
+                    'login_attempt' => $admin->login_attempt,
+                    'is_blocked' => $admin->is_blocked,
+                    'activation_token' => $admin->activation_token,
+                    'admin_role_id' => $this->roles($admin->roles, 'id'),
+                    'admin_role_name' => $this->roles($admin->roles, 'name'),
                     'admin_meta_first_name' => $admin->details['first_name'],
                     'admin_meta_last_name' => $admin->details['last_name'],
                     'active' => $admin->active,
+                    'activation_token' => $admin->activation_token,
+                    'created_by' => $admin->created_by,
+                    'updated_by' => $admin->updated_by,
+                    'remember_token' => $admin->remember_token,
+                    'created_at' => $admin->created_at,
                     'updated_at' => $admin->updated_at,
+                    'deleted_at' => $admin->deleted_at,
                 ];
             }
 
@@ -191,13 +206,27 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         try {
             $reports[] = [
                 'id' => '',
+                    'full_nama' => '',
                     'email' => '',
-                    'admin_role' => '',
+                    'email_verified_at' => '',
+                    'password' => '',
+                    'api_token' => '',
+                    'salt' => '',
+                    'login_attempt' => '',
+                    'is_blocked' => '',
+                    'activation_token' => '',
+                    'admin_role_id' => '',
+                    'admin_role_name' => '',
                     'admin_meta_first_name' => '',
                     'admin_meta_last_name' => '',
-                    'admin_meta_last_login' => '',
                     'active' => '',
+                    'activation_token' => '',
+                    'created_by' => '',
+                    'updated_by' => '',
+                    'remember_token' => '',
+                    'created_at' => '',
                     'updated_at' => '',
+                    'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
@@ -226,5 +255,14 @@ class UsersController extends AppBaseController implements UsersControllerInterf
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function roles($roles, $field)
+    {
+        $admin_role = [];
+        foreach ($roles as $role) {
+            $admin_role[] = ($field == 'id') ? $role->id : $role->name;
+        }
+        return implode(",",$admin_role);
     }
 }

@@ -34,8 +34,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function list(Request $request)
     {
-        try 
-        {
+        try {
             $filters = json_decode($request->filters);
             $site_ids = [];
             if ($filters)
@@ -43,23 +42,23 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
             $site_screens = SiteScreenViewModel::when(request('search'), function ($query) {
                 return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
-                return $query->whereIn('site_screens.site_id', $site_ids);
-            })
-            ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
-            ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-            ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-            ->select('site_screens.*')
-            ->latest()
-            ->paginate(request('perPagei'));
+                ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
+                    return $query->whereIn('site_screens.site_id', $site_ids);
+                })
+                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->select('site_screens.*')
+                ->latest()
+                ->paginate(request('perPagei'));
 
             return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -73,8 +72,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function details($id)
     {
-        try 
-        {
+        try {
             $site_screen = SiteScreenViewModel::find($id);
             return $this->response($site_screen, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -88,8 +86,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function store(ScreenRequest $request)
     {
-        try 
-        {
+        try {
             if ($request->is_default == 'true') {
                 SiteScreen::where('is_default', 1)->where('site_id', $request->site_id)->update(['is_default' => 0]);
             }
@@ -114,7 +111,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen = SiteScreen::create($data);
-            $site_screen->serial_number = 'SS-'.Str::padLeft($site_screen->id, 5, '0');
+            $site_screen->serial_number = 'SS-' . Str::padLeft($site_screen->id, 5, '0');
             $site_screen->save();
 
             return $this->response($site_screen, 'Successfully Created!', 200);
@@ -129,8 +126,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function update(ScreenRequest $request)
     {
-        try 
-        {
+        try {
             $site_screen = SiteScreen::find($request->id);
 
             if ($request->is_default == 'true') {
@@ -138,7 +134,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             }
 
             $data = [
-                'serial_number' => ($site_screen->serial_number) ? $site_screen->serial_number : 'SS-'.Str::padLeft($site_screen->id, 5, '0'),
+                'serial_number' => ($site_screen->serial_number) ? $site_screen->serial_number : 'SS-' . Str::padLeft($site_screen->id, 5, '0'),
                 'name' => $request->name,
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
@@ -155,7 +151,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             $site_screen->update($data);
-            
+
             return $this->response($site_screen, 'Successfully Modified!', 200);
         } catch (\Exception $e) {
             return response([
@@ -168,17 +164,15 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function delete($id)
     {
-        try 
-        {
+        try {
             $site_screen = SiteScreen::find($id);
-            if($site_screen->active) {
+            if ($site_screen->active) {
                 $site_screen->active = 0;
-            }
-            else {
+            } else {
                 $site_screen->active = 1;
             }
             $site_screen->save();
-            
+
             return $this->response($site_screen, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
             return response([
@@ -191,8 +185,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function getScreens($ids, $type = '')
     {
-        try 
-        {
+        try {
             $ids = explode(",", rtrim($ids, ","));;
             $site_screens = SiteScreenViewModel::whereIn('site_id', $ids)
                 ->when($type, function ($query) use ($type) {
@@ -210,16 +203,15 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function getAllScreens()
     {
-        try
-    	{
+        try {
             $site_screens = SiteScreenViewModel::get();
             $site_all_directory = SiteScreenViewModel::groupBy('site_id', 'product_application')->get();
-            if($site_all_directory) {
-                foreach($site_all_directory as $directory) {
+            if ($site_all_directory) {
+                foreach ($site_all_directory as $directory) {
                     $site_screens[] = [
                         'id' => 0,
                         'site_id' => $directory->site_id,
-                        'site_screen_location' => $directory->site_code_name.' - All ('.$directory->product_application.')',
+                        'site_screen_location' => $directory->site_code_name . ' - All (' . $directory->product_application . ')',
                         'product_application' => $directory->product_application
                     ];
                 }
@@ -233,9 +225,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ];
 
             return $this->response($site_screens, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -246,8 +236,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function setDefault($id)
     {
-        try 
-        {
+        try {
             $site = SiteScreen::find($id);
 
             if ($site->product_application != 'Directory')
@@ -277,7 +266,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             foreach ($screen_management as $screen) {
                 $reports[] = [
                     'id' => $screen->id,
-                    'serial_number' => $screen->serial_number, 
+                    'serial_number' => $screen->serial_number,
                     'site_id' => $screen->site_id,
                     'site_name' => $screen->site_name,
                     'site_building_id' => $screen->site_building_id,
@@ -300,7 +289,10 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                     'slots' => $screen->slots,
                     'active' => $screen->active,
                     'is_default' => $screen->is_default,
+                    'created_at' => $screen->created_at,
                     'updated_at' => $screen->updated_at,
+                    'deleted_at' => $screen->deleted_at,
+
                 ];
             }
 
@@ -340,7 +332,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             foreach ($screen_management as $screen) {
                 $reports[] = [
                     'id' => '',
-                    'serial_number' => '', 
+                    'serial_number' => '',
                     'site_id' => '',
                     'site_name' => '',
                     'site_building_id' => '',
@@ -363,7 +355,9 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                     'slots' => '',
                     'active' => '',
                     'is_default' => '',
+                    'created_at' => '',
                     'updated_at' => '',
+                    'deleted_at' => '',
                 ];
             }
 
@@ -397,13 +391,10 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
 
     public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new ScreensImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -411,5 +402,4 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             ], 422);
         }
     }
-    
 }

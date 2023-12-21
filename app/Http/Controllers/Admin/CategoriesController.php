@@ -252,7 +252,9 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                     'description' => $category->descriptions,
                     'category_type' => $category->category_type,
                     'active' => $category->active,
+                    'created_at' => $category->created_at,
                     'updated_at' => $category->updated_at,
+                    'deleted_at' => $category->deleted_at,
                 ];
             }
 
@@ -295,7 +297,9 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 'description' => '',
                 'category_type' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

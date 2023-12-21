@@ -131,7 +131,9 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
                     'site_id' => $cinema->site_id,
                     'site_name' => $cinema->site_name,
                     'cinema_id' => $cinema->cinema_id,
+                    'created_at' => $cinema->created_at,
                     'updated_at' => $cinema->updated_at,
+                    'deleted_at' => $cinema->deleted_at,
                 ];
             }
 

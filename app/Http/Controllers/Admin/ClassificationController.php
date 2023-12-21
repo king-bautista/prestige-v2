@@ -179,7 +179,9 @@ class ClassificationController extends AppBaseController implements Classificati
                     'id' => $classification->id,  
                     'name' => $classification->name,
                     'active' => $classification->active,
+                    'created_at' => $classification->created_at,
                     'updated_at' => $classification->updated_at,
+                    'deleted_at' => $classification->deleted_at,
                 ];
             }
 
@@ -222,7 +224,9 @@ class ClassificationController extends AppBaseController implements Classificati
                     'id' => '',  
                     'name' => '',
                     'active' => '',
+                    'created_at' => '',
                     'updated_at' => '',
+                    'deleted_at' => '',
                 ];
             }
 

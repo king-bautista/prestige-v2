@@ -137,6 +137,8 @@ class FAQController extends AppBaseController implements FAQControllerInterface
                     'answer' => $faq->answer,
                     'active' => $faq->active,
                     'updated_at' => $faq->updated_at,
+                    'created_at' => $faq->created_at,
+                    'deleted_at' => $faq->deleted_at,
                 ];
             }
 
@@ -181,6 +183,8 @@ class FAQController extends AppBaseController implements FAQControllerInterface
                     'answer' => '',
                     'active' => '',
                     'updated_at' => '',
+                    'created_at' => '',
+                    'deleted_at' => '',
                 ];
             }
 

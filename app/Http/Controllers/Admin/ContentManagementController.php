@@ -304,7 +304,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->paginate(request('perPage'));
+                ->paginate(request('perPage'));
 
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -364,7 +364,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     'screen_type' => $playlist->screen_type,
                     //'orientation' => $playlist->orientation,
                     'site_id' => $playlist->site_id,
-                    //'site_name' => $playlist->site_name,
+                    'site_name' => $playlist->site_name,
                     'site_code_name' => $playlist->site_code_name,
                     // 'site_building_id' => $playlist->site_building_id,
                     // 'site_building_name' => $playlist->building_name,
@@ -374,7 +374,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     // 'site_screen_location' => $playlist->site_screen_location,
                     // 'dimensions' => $playlist->dimensions,
                     //'playlist' => $playlist->playlist,
+                    'created_at' => $playlist->created_at,
                     'updated_at' => $playlist->updated_at,
+                    'deleted_at' => $playlist->deleted_at,
                 ];
             }
 
@@ -415,8 +417,11 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 'serial_number' => '',
                 'screen_type' => '',
                 'site_id' => '',
+                'site_name' => '',
                 'site_code_name' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
@@ -455,6 +460,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             foreach ($upload_manage_ads as $upload) {
                 $reports[] = [
                     'id' => $upload->id,
+                    'serial_number' => $upload->serial_number,
                     'material_thumbnails_path' => $upload->material_thumbnails_path,
                     //'material_path' => $upload->,
                     'dimension' => $upload->dimension,
@@ -466,7 +472,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     'air_dates' => $upload->air_dates,
                     'transaction_status_id' => $upload->status_id,
                     'transaction_status_name' => TransactionStatus::find($upload->status_id)['name'],
+                    'active' => $upload->active,
+                    'created_at' => $upload->created_at,
                     'updated_at' => $upload->updated_at,
+                    'deleted_at' => $upload->deleted_at,
                 ];
             }
 
@@ -503,6 +512,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
             $reports[] = [
                 'id' => '',
+                'serial_number' => '',
                 'material_thumbnails_path' => '',
                 'dimension' => '',
                 'ad_name' => '',
@@ -513,7 +523,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 'air_dates' => '',
                 'transaction_status_id' => '',
                 'transaction_status_name' => '',
+                'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

@@ -152,17 +152,34 @@ class ClientUserController extends AppBaseController implements ClientUserContro
                 $full_name = explode(",", $user->full_name);
                 $reports[] = [
                     'id' => $user->id,
-                    'company_id' => $user->company['id'],
-                    'company_name' => $user->company['name'],
-                    'company_address' => $user->company['address'],
-                    'company_email' => $user->company['email'],
-                    'company_contact_number' => $user->company['contact_number'],
-                    'company_tin' => $user->company['tin'],
                     'first_name' => $full_name[0],
                     'last_name' => $full_name[1],
-                    'password' => '',
+                    'email' => $user->email,
+                    'email_verified_at' => $user->email_verified_at,
+                    'api_token' => $user->api_token,
+                    'password' => $user->password,
+                    'salt' => $user->salt,
+                    'login_attempt' => $user->login_attempt,
+                    'is_blocked' => $user->is_blocked,
                     'active' => $user->active,
+                    'activation_token' => $user->activation_token,
+                    'created_by' => $user->created_by,
+                    'updated_by' => $user->updated_by,
+                    'remember_token' => $user->remember_token, 
+                    'created_at' => $user->created_at,
                     'updated_at' => $user->updated_at,
+                    'deleted_at' => $user->deleted_at,
+                    'company_id' => $user->company['id'],
+                    'company_name' => $user->company['name'],
+                    'company_name' => $user->company['name'],
+                    'classification_id' => $user->company['classification_id'],
+                    'classification_name' => $user->company['classification_name'],
+                    'brand_id' => $this->brands($user->company['brands'], 'id'),
+                    'brand_name' => $this->brands($user->company['brands'], 'name'),
+                    'contracts_id' => $this->contracts($user->company['contracts'], 'id'),
+                    'contracts_name' => $this->contracts($user->company['contracts'], 'name'),
+                    'user_role_id' => $this->roles($user->roles, 'id'),
+                    'user_role_name' => $this->roles($user->roles, 'name'),
                 ];
             }
 
@@ -209,7 +226,9 @@ class ClientUserController extends AppBaseController implements ClientUserContro
                 'last_name' => '',
                 'password' => '',
                 'active' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
@@ -238,5 +257,37 @@ class ClientUserController extends AppBaseController implements ClientUserContro
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function brands($brands, $field)
+    {
+        $user_brand = [];
+        if (count($brands) > 0) {
+            foreach ($brands as $brand) {
+                $user_brand[] = ($field == 'id') ? (string) $brand->id." " : $brand->name;
+            }
+            return implode(",", $user_brand);
+        }
+        return 0;
+    }
+    public function contracts($contracts, $field)
+    {
+        $user_contract = [];
+        if (count($contracts) > 0) {
+            foreach ($contracts as $contract) {
+                $user_contract[] = ($field == 'id') ? (string) $contract->id." " : $contract->name;
+            }
+            return implode(",", $user_contract);
+        }
+        return 0;
+    }
+
+    public function roles($roles, $field)
+    {
+        $user_role = [];
+        foreach ($roles as $role) {
+            $user_role[] = ($field == 'id') ? $role->id : $role->name;
+        }
+        return implode(",",$user_role);
     }
 }

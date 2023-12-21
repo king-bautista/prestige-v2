@@ -87,7 +87,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
             $customer_care_id = 'TID-' . date("y") . sprintf('%05d', $customer_care->id);
 
             $ticket_id = ['ticket_id' => $customer_care_id];
-            $insert_ticket_id->update($ticket_id);    
+            $insert_ticket_id->update($ticket_id);
 
             return $this->response($customer_care, 'Successfully Created!', 200);
         } catch (\Exception $e) {
@@ -199,8 +199,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                     'concern_id' => $customer->concern_id,
                     'concern_name' => $customer->concern_details['name'],
                     'concern_description' => $customer->concern_details['description'],
-                    'concern_active' => $customer->concern_details['active'],
-                    'concern_updated_at' => $customer->concern_details['updated_at'],
+                    //'concern_active' => $customer->concern_details['active'],
+                    //'concern_updated_at' => $customer->concern_details['updated_at'],
                     'ticket_id' => $customer->ticket_id,
                     'user_id' => $customer->user_id,
                     'user_full_name' => $customer->user_details['full_name'],
@@ -218,7 +218,10 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                     'assigned_to_email' => ($customer->admin_details) ? $customer->admin_details['email'] : '',
                     'assigned_to_alias' => $customer->assigned_to_alias,
                     'internal_remark' => $customer->internal_remark,
-                    'active' => $customer->active
+                    'active' => $customer->active,
+                    'created_at' => $customer->created_at,
+                    'updated_at' => $customer->updated_at,
+                    'deleted_at' => $customer->deleted_at,
                 ];
             }
 
@@ -258,8 +261,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'concern_id' => '',
                 'concern_name' => '',
                 'concern_description' => '',
-                'concern_active' => '',
-                'concern_updated_at' => '',
+                //'concern_active' => '',
+                //'concern_updated_at' => '',
                 'ticket_id' => '',
                 'user_id' => '',
                 'user_full_name' => '',
@@ -278,6 +281,9 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'assigned_to_alias' => '',
                 'internal_remark' => '',
                 'active' =>  '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
             ];
 
 

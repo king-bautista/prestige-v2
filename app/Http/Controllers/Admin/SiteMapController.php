@@ -80,8 +80,8 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
             foreach ($sitemaps as $sitemap) {
                 $reports[] = [
                     'id' => $sitemap->id,
-                    
-                    'site_code_name',
+
+                    'site_code_name' => $sitemap->site_code_name,
                     'site_building_id' => $sitemap->site_building_id,
                     'building_name' => $sitemap->building_name,
                     'site_building_level_id' => $sitemap->site_building_level_id,
@@ -94,7 +94,9 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
                     'orientation' => $sitemap->orientation,
                     'status' => $sitemap->active,
                     'is_default' => $sitemap->is_default,
+                    'created_at' => $sitemap->created_at,
                     'updated_at' => $sitemap->updated_at,
+                    'deleted_at' => $sitemap->deleted_at,
                 ];
             }
 
