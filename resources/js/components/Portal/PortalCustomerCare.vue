@@ -8,17 +8,43 @@
 					</div>
 					<div class="card-body">
 						<div class="row">
-							<div class="col-sm-2">
-								<img :src="company_image" class="img-fluid" />
-							</div>
-							<div class="col-md-3">
+							<div class="col-md-5">
+								<div class="form-group row">
+									<label for="ticketSubject" class="col-sm-3 col-form-label">Company Name</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" readonly v-model="contact.company" style="background-color:#f5f5f5;"
+											placeholder="Company" required>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="ticketSubject" class="col-sm-3 col-form-label">First Name</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" readonly v-model="contact.first_name" style="background-color:#f5f5f5;"
+											placeholder="First Name" required>
+									</div>
+								</div>
 
-								<p><b style="font-weight: 600;">Company Name:</b> {{ company.name }}<br>
-									<b style="font-weight: 600;">First Namer:</b>{{ company.first_name }}<br>
-									<b style="font-weight: 600;">Last Name:</b>{{ company.last_name }}<br>
-									<b style="font-weight: 600;">Email:</b> {{ company.user_email }}<br>
-									<b style="font-weight: 600;">Contact Number:</b>{{ company.contact_number }}<br>
-								</p>
+								<div class="form-group row">
+									<label for="ticketSubject" class="col-sm-3 col-form-label">Last Name</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" readonly v-model="contact.last_name" style="background-color:#f5f5f5;"
+											placeholder="Last Name" required>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="ticketSubject" class="col-sm-3 col-form-label">Email</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" v-model="contact.email"
+											placeholder="Email" required>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="ticketSubject" class="col-sm-3 col-form-label">Contact Number</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" v-model="contact.number"
+											placeholder="Contact Number" required>
+									</div>
+								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group row mb-4">
@@ -38,7 +64,7 @@
 											class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-9">
 										<input type="text" class="form-control" v-model="customer_care.ticket_subject"
-											placeholder="Subject" required>
+											placeholder="Ticket Subject" required>
 									</div>
 								</div>
 								<div class="form-group row">
@@ -53,7 +79,8 @@
 									<label for="firstName" class="col-sm-4 col-form-label">Image <span
 											class="font-italic text-danger"> *</span></label>
 									<div class="col-sm-5">
-										<input type="file" id="fileinput" accept="image/*" ref="image" @change="ImageChange">
+										<input type="file" id="fileinput" accept="image/*" ref="image"
+											@change="ImageChange">
 										<footer class="blockquote-footer">Image max size is 5MB</footer>
 									</div>
 									<div class="col-sm-3 text-center">
@@ -96,6 +123,13 @@ export default {
 				ticket_description: '',
 				image: '/images/no-image-available.png',
 			},
+			contact: {
+				company: '',
+				first_name: '',
+				last_name: '',
+				email: '',
+				number: '',
+			},
 			image: '',
 			company: [],
 			concerns: [],
@@ -106,8 +140,8 @@ export default {
 	},
 
 	created() {
-		this.getCompany();
 		this.getConcerns();
+		this.AddNewCustomerCare();
 	},
 
 	methods: {
@@ -124,10 +158,22 @@ export default {
 			this.customer_care.ticket_subject = '';
 			this.customer_care.ticket_description = '';
 			this.customer_care.image = '/images/no-image-available.png';
+			axios.get('/portal/customer-care/get-company')
+				.then(response => {
+					var company = response.data.data;
+					this.contact.company = company.name;
+					this.contact.first_name = company.first_name;
+					this.contact.last_name = company.last_name;
+					this.contact.email = company.user_email;
+					this.contact.number = company.contact_number;
+					}
+				);
 		},
 
 		storeCustomerCare: function () {
 			let formData = new FormData();
+			formData.append("contact_email", this.contact.email);
+			formData.append("contact_number", this.contact.number);
 			formData.append("concern_id", this.customer_care.concern_id);
 			formData.append("first_name", this.customer_care.first_name);
 			formData.append("last_name", this.customer_care.last_name);
@@ -148,10 +194,6 @@ export default {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 				});
-		},
-		getCompany: function () {
-			axios.get('/portal/customer-care/get-company')
-				.then(response => this.company = response.data.data);
 		},
 		getConcerns: function () {
 			axios.get('/portal/customer-care/get-concerns')

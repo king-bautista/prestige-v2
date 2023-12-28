@@ -23,7 +23,7 @@ class PortalCustomerCareRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        return [    
             "concern_id" => "required|string",
             "ticket_subject" => "required|string",
             "ticket_description" => "required|string",

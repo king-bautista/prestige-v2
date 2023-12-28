@@ -59,6 +59,7 @@
 							8: '<span class="badge bg-success">Archive</span>',
 						}
 					},
+					external_remark: "Remark",
 					image_path: {
 						name: "image",
 						type: "logo",

@@ -76,8 +76,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
                 'internal_remark' => $request->internal_remark,
+                'external_remark' => $request->external_remark,
                 'assigned_to_id' => $request->assigned_to_id,
-                'assigned_to_alias' => $request->assigned_to_alias,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
@@ -114,8 +114,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
                 'internal_remark' => $request->internal_remark,
+                'external_remark' => $request->external_remark,
                 'assigned_to_id' => $request->assigned_to_id,
-                'assigned_to_alias' => $request->assigned_to_alias,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
@@ -216,8 +216,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                     'assigned_to_id' => $customer->assigned_to_id,
                     'assigned_to_full_name' => ($customer->admin_details) ? $customer->admin_details['full_name'] : '',
                     'assigned_to_email' => ($customer->admin_details) ? $customer->admin_details['email'] : '',
-                    'assigned_to_alias' => $customer->assigned_to_alias,
                     'internal_remark' => $customer->internal_remark,
+                    'external_remark' => $customer->external_remark,
                     'active' => $customer->active,
                     'created_at' => $customer->created_at,
                     'updated_at' => $customer->updated_at,
@@ -278,8 +278,8 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'assigned_to_id' => '',
                 'assigned_to_full_name' => '',
                 'assigned_to_email' => '',
-                'assigned_to_alias' => '',
                 'internal_remark' => '',
+                'external_remark' => '',
                 'active' =>  '',
                 'created_at' => '',
                 'updated_at' => '',

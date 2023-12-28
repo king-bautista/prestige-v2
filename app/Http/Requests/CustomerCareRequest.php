@@ -25,7 +25,6 @@ class CustomerCareRequest extends FormRequest
     {
         return [
             "internal_remark" => "required|string",
-            "assigned_to_alias" => "required|string",
             "assigned_to_id" => "required|string",
             "status_id" => "required",
             "ticket_description" => "required|string",
