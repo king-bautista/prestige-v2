@@ -24,15 +24,17 @@ class CustomerCareRequest extends FormRequest
     public function rules()
     {
         return [
-            "internal_remark" => "required|string",
-            "assigned_to_id" => "required|string",
             "status_id" => "required",
-            "ticket_description" => "required|string",
-            "ticket_subject" => "required|string",
-            "last_name" => "required|string",
-            "first_name" => "required|string",
-            "user_id" => "required",
-            "concern_id" => "required",
+            'status_id' => "required",
+            'concern_id' => "required",
+            'user_id' => "required",
+            'first_name' => "required|string",
+            'last_name' => "required|string",
+            'ticket_subject' => "required|string",
+            'ticket_description' => "required|string",
+            'assigned_to_id' => "required",
+            'internal_remark' => "required|string",
+            'external_remark' => "required|string",
         ];
     }
 }

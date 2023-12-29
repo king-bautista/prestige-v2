@@ -113,10 +113,15 @@
 								<label for="User" class="col-sm-3 col-form-label">Assigned to ID<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-									<multiselect v-model="customer_care.assigned_to_id" track-by="full_name"
-										label="full_name" placeholder="User Name" :options="admin_users" :searchable="true"
-										:allow-empty="false">
+									<multiselect v-model="customer_care.assigned_to_id" :options="admin_users" :multiple="false" 
+									:close-on-select="true"  :searchable="true" :allow-empty="false"  track-by="full_name" 
+										label="full_name" placeholder="User Name" >
 									</multiselect>
+
+									<!-- <multiselect v-model="advertisement.brand_id" :options="brands" :multiple="false"
+										:close-on-select="true" :searchable="true" :allow-empty="false" track-by="name"
+										label="name" placeholder="Select Brand">
+									</multiselect> -->
 								</div>
 							</div>
 							<div class="form-group row">
@@ -341,16 +346,16 @@ export default {
 			var user_id = this.customer_care.user_id;
 			var concern_id = this.customer_care.concern_id;
 			let formData = new FormData();
-			formData.append("user_id", JSON.stringify(this.customer_care.user_id.id));
-			formData.append("status_id", JSON.stringify(this.customer_care.status_id.id));
-			formData.append("concern_id", JSON.stringify(this.customer_care.concern_id.id));
+			formData.append("user_id", (this.customer_care.user_id.id) ? JSON.stringify(this.customer_care.user_id.id) : '');
+			formData.append("status_id", (this.customer_care.status_id.id) ? JSON.stringify(this.customer_care.status_id.id) : ''); 
+			formData.append("concern_id", (this.customer_care.concern_id.id) ? JSON.stringify(this.customer_care.concern_id.id) : '');
 			formData.append("first_name", this.customer_care.first_name);
 			formData.append("last_name", this.customer_care.last_name);
 			formData.append("ticket_subject", this.customer_care.ticket_subject);
 			formData.append("ticket_description", this.customer_care.ticket_description);
 			formData.append("internal_remark", this.customer_care.internal_remark);
 			formData.append("external_remark", this.customer_care.external_remark);
-			formData.append("assigned_to_id", this.customer_care.assigned_to_id.id);
+			formData.append("assigned_to_id", (this.customer_care.assigned_to_id.id) ? JSON.stringify(this.customer_care.assigned_to_id.id) : '');
 			formData.append("active", this.customer_care.active);
 			axios.post('/admin/customer-care/store', formData, {
 				headers: {
