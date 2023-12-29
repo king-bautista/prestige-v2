@@ -43,7 +43,7 @@ class CustomerCareRequest extends FormRequest
             'concern_id.required' => 'The ticket type field is required.',
             'user_id.required' => 'The user name field is required.',
             //'assigned_to_id.required' => 'The assigned to id field is required.',
-            'assigned_to_id.required|int' => 'The assigned to id field is required.',
+            'assigned_to_id.int' => 'The assigned to id field is required.',
         ];
     }
 }
