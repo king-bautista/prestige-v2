@@ -75,9 +75,9 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'last_name' => $request->last_name,
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
+                'assigned_to_id' => $request->assigned_to_id,
                 'internal_remark' => $request->internal_remark,
                 'external_remark' => $request->external_remark,
-                'assigned_to_id' => $request->assigned_to_id,
                 'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
