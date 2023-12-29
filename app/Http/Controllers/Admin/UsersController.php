@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Requests\EditRegistrationeRequest;
 use App\Helpers\PasswordHelper;
+use App\Imports\UsersImport;
 use App\Exports\Export;
 use Storage;
 use Hash;
@@ -133,6 +134,23 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             $user->delete();
             return $this->response($user, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+    
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new UsersImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

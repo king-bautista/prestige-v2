@@ -57,7 +57,7 @@
 									</multiselect>
 								</div>
 							</div>
-							<div class="form-group row" v-show="select_user_full_name">
+							<div class="form-group row">
 								<label for="User" class="col-sm-3 col-form-label">User Name<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -109,31 +109,19 @@
 								</div>
 							</div>
 
-							<div class="form-group row" v-show="select_admin_full_name">
-								<label for="User" class="col-sm-3 col-form-label">Assigned to ID<span
-										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-9">
-									<multiselect v-model="customer_care.assigned_to_id" track-by="full_name"
-										label="full_name" placeholder="User Name" :options="admin_users" :searchable="true"
-										:allow-empty="false">
-									</multiselect>
-								</div>
-							</div>
-							<div class="form-group row" v-show="input_admin_full_name">
-								<label for="User" class="col-sm-3 col-form-label">Assigned to ID<span
-										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-9">
-									<input type="text" class="form-control readonly"
-										v-model="customer_care.assigned_to_id['full_name']" placeholder="Admin Name"
-										required>
-								</div>
-							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Assigned to Alias <span
+								<label for="User" class="col-sm-3 col-form-label">Assigned to ID<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" v-model="customer_care.assigned_to_alias"
-										placeholder="Assigned to Alias" required>
+									<multiselect v-model="customer_care.assigned_to_id" :options="admin_users" :multiple="false" 
+									:close-on-select="true"  :searchable="true" :allow-empty="false"  track-by="full_name" 
+										label="full_name" placeholder="User Name" >
+									</multiselect>
+
+									<!-- <multiselect v-model="advertisement.brand_id" :options="brands" :multiple="false"
+										:close-on-select="true" :searchable="true" :allow-empty="false" track-by="name"
+										label="name" placeholder="Select Brand">
+									</multiselect> -->
 								</div>
 							</div>
 							<div class="form-group row">
@@ -142,6 +130,14 @@
 								<div class="col-sm-9">
 									<textarea class="form-control" rows="5" v-model="customer_care.internal_remark"
 										placeholder="Internal Remarks"></textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Remarks<span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<textarea class="form-control" rows="5" v-model="customer_care.external_remark"
+										placeholder="Remarks"></textarea>
 								</div>
 							</div>
 							<div class="form-group row" v-show="input_user_full_name">
@@ -202,8 +198,9 @@ export default {
 				ticket_subject: '',
 				ticket_description: '',
 				internal_remark: '',
+				external_remark: '',
+				remark:'',
 				assigned_to_id: '',
-				assigned_to_alias: '',
 				image: '/images/no-image-available.png',
 				active: true,
 			},
@@ -215,8 +212,6 @@ export default {
 			add_record: true,
 			edit_record: false,
 			input_user_full_name: false,
-			select_user_full_name: false,
-			input_admin_full_name: false,
 			select_admin_full_name: false,
 			dataFields: {
 				concern_name: "Ticket Type Name",
@@ -335,13 +330,11 @@ export default {
 			this.customer_care.ticket_subject = '';
 			this.customer_care.ticket_description = '';
 			this.customer_care.internal_remark = '';
+			this.customer_care.external_remark = '';
 			this.customer_care.assigned_to_id = '';
-			this.customer_care.assigned_to_alias = '';
 			this.customer_care.active = true;
-			this.select_user_full_name = true;
 			this.input_user_full_name = false;
 			this.select_admin_full_name = true,
-				this.input_admin_full_name = false;
 			this.add_record = true,
 				this.edit_record = false,
 				$(".readonly").attr('readonly', false);
@@ -353,16 +346,16 @@ export default {
 			var user_id = this.customer_care.user_id;
 			var concern_id = this.customer_care.concern_id;
 			let formData = new FormData();
-			formData.append("user_id", JSON.stringify(this.customer_care.user_id.id));
-			formData.append("status_id", JSON.stringify(this.customer_care.status_id.id));
-			formData.append("concern_id", JSON.stringify(this.customer_care.concern_id.id));
+			formData.append("user_id", (this.customer_care.user_id.id) ? JSON.stringify(this.customer_care.user_id.id) : '');
+			formData.append("status_id", (this.customer_care.status_id.id) ? JSON.stringify(this.customer_care.status_id.id) : ''); 
+			formData.append("concern_id", (this.customer_care.concern_id.id) ? JSON.stringify(this.customer_care.concern_id.id) : '');
 			formData.append("first_name", this.customer_care.first_name);
 			formData.append("last_name", this.customer_care.last_name);
 			formData.append("ticket_subject", this.customer_care.ticket_subject);
 			formData.append("ticket_description", this.customer_care.ticket_description);
 			formData.append("internal_remark", this.customer_care.internal_remark);
-			formData.append("assigned_to_id", this.customer_care.assigned_to_id.id);
-			formData.append("assigned_to_alias", this.customer_care.assigned_to_alias);
+			formData.append("external_remark", this.customer_care.external_remark);
+			formData.append("assigned_to_id", (this.customer_care.assigned_to_id.id) ? JSON.stringify(this.customer_care.assigned_to_id.id) : '');
 			formData.append("active", this.customer_care.active);
 			axios.post('/admin/customer-care/store', formData, {
 				headers: {
@@ -390,15 +383,13 @@ export default {
 					this.customer_care.ticket_subject = customer_care.ticket_subject;
 					this.customer_care.ticket_description = customer_care.ticket_description;
 					this.customer_care.internal_remark = customer_care.internal_remark;
+					this.customer_care.external_remark = customer_care.external_remark;
 					this.customer_care.assigned_to_id = (customer_care.admin_details) ? customer_care.admin_details : '';
-					this.customer_care.assigned_to_alias = customer_care.assigned_to_alias;
 					this.customer_care.active = customer_care.active;
 					this.add_record = false;
 					this.edit_record = true;
-					this.select_user_full_name = false;
 					this.input_user_full_name = true;
 					this.select_admin_full_name = (customer_care.admin_details) ? false : true;
-					this.input_admin_full_name = (customer_care.admin_details) ? true : false;
 					if (customer_care.image) {
 						this.image = customer_care.image_path;
 					}
@@ -424,8 +415,8 @@ export default {
 			formData.append("ticket_subject", this.customer_care.ticket_subject);
 			formData.append("ticket_description", this.customer_care.ticket_description);
 			formData.append("internal_remark", this.customer_care.internal_remark);
+			formData.append("external_remark", this.customer_care.external_remark);
 			formData.append("assigned_to_id", this.customer_care.assigned_to_id.id);
-			formData.append("assigned_to_alias", this.customer_care.assigned_to_alias);
 			formData.append("active", this.customer_care.active);
 			axios.post('/admin/customer-care/update', formData, {
 				headers: {

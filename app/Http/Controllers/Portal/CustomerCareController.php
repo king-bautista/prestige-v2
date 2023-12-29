@@ -11,9 +11,10 @@ use App\Http\Requests\PortalCustomerCareRequest;
 
 use App\Models\CustomerCare;
 use App\Models\Concern;
+use App\Models\Company;
+use App\Models\User;
 use App\Models\AdminViewModels\CompanyViewModel;
 use App\Models\AdminViewModels\CustomerCareViewModel;
-//use App\Models\ViewModels\UserViewModel;
 use App\Models\AdminViewModels\UserViewModel;
 use Carbon\Carbon;
 
@@ -84,7 +85,9 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
                 'image' => str_replace('\\', '/', $image_path),
-                'assigned_to_id' => '',
+                // 'assigned_to_id' => '',
+                // 'internal_remark' => '',
+                // 'external_remark' => '',
                 'status_id' => 2,
                 'active' => 1,
             ];
@@ -96,6 +99,10 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
 
             $ticket_id = ['ticket_id' => $customer_care_id];
             $insert_ticket_id->update($ticket_id);
+            $client_user = User::find($user->id);
+            $client_user->update(['email' => $request->contact_email]);
+            $company = Company::find($user->company['id']);
+            $company->update(['contact_number' => $request->contact_number]);
 
             return $this->response($customer_care, 'Successfully Created!', 200);
         } catch (\Exception $e) {

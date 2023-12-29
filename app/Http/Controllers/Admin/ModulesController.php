@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\ModulesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ModuleRequest;
+use App\Imports\ModulesImport;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -151,6 +152,23 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
             $count = Module::where('parent_id', $id)->get()->count();
             return $this->response($count, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new ModulesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

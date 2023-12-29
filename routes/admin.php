@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/users/{id}', 'Admin\UsersController@details')->where('id', '[0-9]+')->name('admin.users.details');
     Route::put('/admin/users/update', 'Admin\UsersController@update')->name('admin.users.update');
     Route::get('/admin/users/delete/{id}', 'Admin\UsersController@delete')->where('id', '[0-9]+')->name('admin.user.delete');
+    Route::post('/admin/users/batch-upload', 'Admin\UsersController@batchUpload')->name('admin.user.batch-upload');
     Route::get('/admin/users/download-csv', 'Admin\UsersController@downloadCsv')->name('admin.user.download-csv');
     Route::get('/admin/users/download-csv-template', 'Admin\UsersController@downloadCsvTemplate')->name('admin.user.download-csv-template');
 
@@ -65,6 +66,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/modules/get-parent/{id}', 'Admin\ModulesController@getParent')->where('id', '[0-9]+')->name('admin.modules.get-parent');
     Route::get('/admin/modules/delete/{id}', 'Admin\ModulesController@delete')->where('id', '[0-9]+')->name('admin.modules.delete');
     Route::get('/admin/modules/get-all-links', 'Admin\ModulesController@getAllLinks')->where('id', '[0-9]+')->name('admin.modules.get-all-links');
+    Route::post('/admin/modules/batch-upload', 'Admin\ModulesController@batchUpload')->name('admin.modules.batch-upload');
     Route::get('/admin/modules/download-csv', 'Admin\ModulesController@downloadCsv')->name('admin.modules.download-csv');
     Route::get('/admin/modules/download-csv-template', 'Admin\ModulesController@downloadCsvTemplate')->name('admin.modules.download-csv-template');
 
