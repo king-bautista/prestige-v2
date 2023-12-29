@@ -23,7 +23,7 @@
         <?php include('resources/include/common/contents/categories/tabs/electronics_tab/electronics_tab_alphabetical.php'); ?>
     </div>
     
-    <div class="tab-pane" id="pills-Latest" role="tabpanel" aria-labelledby="pills-Latest-tab">
+    <div class="tab-pane" id="Tab-Latest" role="tabpanel" aria-labelledby="pills-Latest-tab">
         <?php include('resources/include/common/contents/categories/tabs/electronics_tab/electronics_tab_latest.php'); ?>
     </div>
 
@@ -35,13 +35,13 @@
     <span class="mr-4 nav-tab-title">View stores by: </span>
     <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active nav-tab-pills-btn" id="Tab-Category-Tab" data-toggle="pill" data-target="#Electronics-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
+            <button class="nav-link active nav-tab-pills-btn" id="Tab-Electronics-Tab" data-toggle="pill" data-target="#Electronics-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Electronics-Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link nav-tab-pills-btn" id="pills-Latest-tab" data-toggle="pill" data-target="#pills-Latest" type="button" role="tab" aria-controls="pills-Latest" aria-selected="false">Latest</button>
+            <button class="nav-link nav-tab-pills-btn" id="Tab-Latest-Tab" data-toggle="pill" data-target="#Tab-Latest" type="button" role="tab" aria-controls="pills-Latest" aria-selected="false">Latest</button>
         </li>
     </ul>
 </div>

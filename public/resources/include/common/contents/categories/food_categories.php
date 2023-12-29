@@ -23,7 +23,7 @@
         <?php include('resources/include/common/contents/categories/tabs/food_tab/food_tab_alphabetical.php'); ?>
     </div>
     
-    <div class="tab-pane" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+    <div class="tab-pane" id="Tab-Cravings" role="tabpanel" aria-labelledby="Tab-Cravings-Tab">
         <?php include('resources/include/common/contents/categories/tabs/food_tab/food_tab_cravings.php'); ?>
     </div>
 
@@ -41,7 +41,7 @@
             <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link nav-tab-pills-btn" id="pills-contact-tab" data-toggle="pill" data-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Cravings</button>
+            <button class="nav-link nav-tab-pills-btn" id="Tab-Cravings-Tab" data-toggle="pill" data-target="#Tab-Cravings" type="button" role="tab" aria-controls="Tab-Cravings" aria-selected="false">Cravings</button>
         </li>
     </ul>
 </div>

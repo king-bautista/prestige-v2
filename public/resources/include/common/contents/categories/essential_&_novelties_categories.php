@@ -23,7 +23,7 @@
         <?php include('resources/include/common/contents/categories/tabs/essentials_tab/essentials_tab_alphabetical.php'); ?>
     </div>
     
-    <div class="tab-pane" id="pills-Goodies" role="tabpanel" aria-labelledby="pills-Goodies-tab">
+    <div class="tab-pane" id="Tab-Goodies" role="tabpanel" aria-labelledby="pills-Goodies-tab">
         <?php include('resources/include/common/contents/categories/tabs/essentials_tab/essentials_tab_goodies.php'); ?>
     </div>
 
@@ -35,13 +35,13 @@
     <span class="mr-4 nav-tab-title">View stores by: </span>
     <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active nav-tab-pills-btn" id="Tab-Category-Tab" data-toggle="pill" data-target="#Essentials-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
+            <button class="nav-link active nav-tab-pills-btn" id="Tab-Essentials-Tab" data-toggle="pill" data-target="#Essentials-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Essentials-Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link nav-tab-pills-btn" id="pills-Goodies-tab" data-toggle="pill" data-target="#pills-Goodies" type="button" role="tab" aria-controls="pills-Goodies" aria-selected="false">Goodies</button>
+            <button class="nav-link nav-tab-pills-btn" id="Tab-Goodies-Tab" data-toggle="pill" data-target="#Tab-Goodies" type="button" role="tab" aria-controls="Tab-Goodies" aria-selected="false">Goodies</button>
         </li>
     </ul>
 </div>

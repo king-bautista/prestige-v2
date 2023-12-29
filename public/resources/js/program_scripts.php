@@ -173,7 +173,7 @@
     //-------- FOR Tab categories --------
         /*-------- for food button to its contents --------*/
         $("#Categories-nav-tab").on("click", function () {
-            $("#TenantPage").hide();
+            $("#TenantPage, #tenant-store-default").hide();
             $("#CatTabCategories").show();
         });
 
@@ -183,6 +183,12 @@
             $("#TenantPage").show();
             $("#CatTabCategories").hide();
             showFoodCategoriesSlides(slideFoodCategories);
+        });
+
+        //-------- FOR STORE TENANT PAGE DEFAULT --------
+        $("#foodBtnDefault").on("click", function () {
+            $("#tenant-store-default").show();
+            $("#CatTabCategories").hide();
         });
 
         //-------- FOR STORE TENANT PAGE --------
@@ -252,7 +258,7 @@
     /*-------- for logo button to view about page --------*/
     $("#ImgMallLogo").on("click", function () {
         $("#DirectoryAboutPage, #search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4").show();
-        $("#ImgMallLogo, #home-container, #home-food-contents, #search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
+        $("#ImgMallLogo, #home-container, #home-food-contents, #search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents, #tenant-store-default").hide();
         $("#home_txt").removeClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
@@ -263,18 +269,24 @@
     /*-------- for home button --------*/
     $("#home_btn").on("click", function () {
         $("#home-container, #search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-food-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
+        $("#home-food-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents, #tenant-store-default").hide();
         $("#home_txt").addClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
         $("#promos_txt").removeClass("nav-btn-active");
         $("#cinema_txt").removeClass("nav-btn-active");
+
+        $('#Tab-Category-Tab').trigger('click');
+        $('#Tab-Fashion-Tab').trigger('click');
+        $('#Tab-Electronics-Tab').trigger('click');
+        $('#Tab-Service-Tab').trigger('click');
+        $('#Tab-Essentials-Tab').trigger('click');
     });
 
     /*-------- for search button --------*/
     $("#search_btn").on("click", function () {
         $("#search-container, #search_v4s, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-container, #home-food-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
+        $("#home-container, #home-food-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents, #tenant-store-default").hide();
         $("#search_txt").addClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
@@ -285,7 +297,7 @@
     /*-------- for map button --------*/
     $("#map_btn").on("click", function () {
         $("#map-container, #map_v4s, #home_v4, #search_v4, #promos_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-container, #home-food-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
+        $("#home-container, #home-food-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents, #tenant-store-default").hide();
         $("#map_txt").addClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
@@ -296,7 +308,7 @@
     /*-------- for promos button --------*/
     $("#promos_btn").on("click", function () {
         $("#promos-container, #promos_v4s, #home_v4, #search_v4, #map_v4, #cinema_v4, #ImgMallLogo").show();
-        $("#home-container, #home-food-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
+        $("#home-container, #home-food-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents, #tenant-store-default").hide();
         $("#promos_txt").addClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
@@ -313,27 +325,20 @@
     /*-------- for cinema button --------*/
     $("#cinema_btn").on("click", function () {
         $("#cinema-container, #cinema_v4s, #home_v4, #search_v4, #promos_v4, #map_v4, #ImgMallLogo").show();
-        $("#home-container, #home-food-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents").hide();
+        $("#home-container, #home-food-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-subscriber-content, #TenantPage, #DirectoryAboutPage, #promos-default, #tenant-store-content, #home-fashion-contents, #home-electronics-contents, #home-services-contents, #home-essentials-contents, #tenant-store-default").hide();
         $("#cinema_txt").addClass("nav-btn-active");
         $("#home_txt").removeClass("nav-btn-active");
         $("#map_txt").removeClass("nav-btn-active");
         $("#promos_txt").removeClass("nav-btn-active");
         $("#search_txt").removeClass("nav-btn-active");
+
+        $('#Tab-Cinema-Tab').trigger('click');
         
         // for cinema sched if there is no movie available
         var cinemaContentDefault = $(".cinemaCardPosition > div").length;
         if (cinemaContentDefault == 0) {
             $("#CinemaTabDefault").show();
             $("#CinemaTabSchedule").hide();
-        }
-
-        // for adjusting the column if the content is more than 6 cards
-        var cinemaContentPosition = $("#CinemaCardContent > div").length;
-        if (cinemaContentPosition >= 6) {
-            $("#CinemaCardContent").removeClass("cinema-card-container");
-            $("#CinemaCardContent").addClass("cinema-card-container-expand");
-            $(".cinemaCards").addClass("col-xl-6");
-            $(".cinemaCards").addClass("col-lg-6");
         }
 
         // for adjusting the column if the content of cinema sched is more than 6 cards

@@ -23,7 +23,7 @@
         <?php include('resources/include/common/contents/categories/tabs/services_tab/services_tab_alphabetical.php'); ?>
     </div>
     
-    <div class="tab-pane" id="pills-Services" role="tabpanel" aria-labelledby="pills-Services-tab">
+    <div class="tab-pane" id="Tab-Services" role="tabpanel" aria-labelledby="pills-Services-tab">
         <?php include('resources/include/common/contents/categories/tabs/services_tab/services_tab_services.php'); ?>
     </div>
 
@@ -35,13 +35,13 @@
     <span class="mr-4 nav-tab-title">View stores by: </span>
     <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active nav-tab-pills-btn" id="Tab-Category-Tab" data-toggle="pill" data-target="#Services-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
+            <button class="nav-link active nav-tab-pills-btn" id="Tab-Service-Tab" data-toggle="pill" data-target="#Services-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Services-Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link nav-tab-pills-btn" id="pills-Services-tab" data-toggle="pill" data-target="#pills-Services" type="button" role="tab" aria-controls="pills-Services" aria-selected="false">Services</button>
+            <button class="nav-link nav-tab-pills-btn" id="Tab-Services-Tab" data-toggle="pill" data-target="#Tab-Services" type="button" role="tab" aria-controls="pills-Services" aria-selected="false">Services</button>
         </li>
     </ul>
 </div>

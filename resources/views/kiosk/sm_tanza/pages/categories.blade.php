@@ -19,7 +19,7 @@
         <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
             <div id="CatTabCategories" class="cat-cards">
                 <!-- MAIN CATEGORY TITLE -->
-                <div class="p-2 text-center title-page-content font-weight-bold category-title">Food</div>
+                <div class="p-2 text-center title-page-content font-weight-bold category-title">Main Category</div>
                 <!-- SUB-CATEGORY LIST -->
                 <div class="row mt-5 cat-row-card">
                 </div>
@@ -27,8 +27,8 @@
             <div id="TenantPage">
                 <!-- MAIN CATEGORY TITLE -->
                 <div class="Category-Container-Banner">
-                    <img class="category-img-banner" src="resources/uploads/categories/food/strips/kiosk/Casual Dining.png">
-                    <div class="hts-strip-align hts-strip-color">Casual Dining</div>
+                    <img class="category-img-banner" src="#">
+                    <div class="hts-strip-align hts-strip-color category-banner-title">Sub-Category</div>
                 </div>
                 <!-- TENANT LIST PER SUB-CATEGORY -->
                 <div class="slideshow-content-container sub-category-tenants">
@@ -38,7 +38,7 @@
         <div class="tab-pane" id="Tab-Alphabetical" role="tabpanel">
             <!-- MAIN CATEGORY TITLE -->
             <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
-                <div class="title-page-content-2 category-title">Food</div>
+                <div class="title-page-content-2 category-title">Main Category</div>
             </div>
 
             <!-- TENANT LIST PER ALPHABETICAL -->
@@ -114,6 +114,7 @@
     var main_category = '';
     var supplementals = '';
     var alphabetical = '';
+    var tenant_list = '';
 
     $(document).ready(function() {
         $('#Tab-Alphabetical-tab').on('click', function() {
@@ -184,7 +185,7 @@
         $.each(tenant_list, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
-            tenant_list_element += '<div class="carousel-content-container-per-food-category">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-5">';
             tenant_list_element += '<div class="row tenants-'+key+'">';
             tenant_list_element += '</div>';
             tenant_list_element += '</div>';
@@ -217,7 +218,7 @@
         }); 
         owl_tenant = $('.owl-wrapper-tenant-list');
         owl_tenant.owlCarousel({
-            margin: 15,
+            margin: 0,
             nav: false,
             loop: false,
             items: 1,
@@ -225,6 +226,7 @@
 
         $('#TenantPage').show();
         $('#CatTabCategories').hide();
+        $('#Tab-Category-Tab').click();
     }
 
     function showAlphabetical() {
@@ -233,7 +235,7 @@
         $.each(alphabetical, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
-            tenant_list_element += '<div class="carousel-content-container-per-food-category">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-5">';
             tenant_list_element += '<div class="row tenants-'+key+'">';
             tenant_list_element += '</div>';
             tenant_list_element += '</div>';
@@ -266,7 +268,7 @@
         }); 
         owl_tenant = $('.owl-wrapper-alpha-tenant-list');
         owl_tenant.owlCarousel({
-            margin: 15,
+            margin: 0,
             nav: false,
             loop: false,
             items: 1,
@@ -274,50 +276,44 @@
     }
 
     function showSupplementals() {
-        console.log(supplementals);
-        // $('.supplemental-list').html('');
-        // $( ".supplemental-list" ).html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
-        // $.each(supplementals, function(key,supplemental) {
-        //     var supplemental_element = '';
-        //     supplemental_element = '<div class="item">';
-        //     supplemental_element += '<div class="carousel-content-container-per-food-cravings">';
-        //     supplemental_element += '<div class="row supplemental-'+key+'">';
-        //     supplemental_element += '</div>';
-        //     supplemental_element += '</div>';
-        //     supplemental_element += '</div>';
-        //     $( ".owl-wrapper-supplemental" ).append(supplemental_element);
+        $('.supplemental-list').html('');
+        $( ".supplemental-list" ).html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
+        $.each(supplementals, function(key,supplemental) {
+            var supplemental_element = '';
+            supplemental_element = '<div class="item">';
+            supplemental_element += '<div class="carousel-content-container-per-food-cravings">';
+            supplemental_element += '<div class="row supplemental-'+key+'">';
+            supplemental_element += '</div>';
+            supplemental_element += '</div>';
+            supplemental_element += '</div>';
+            $( ".owl-wrapper-supplemental" ).append(supplemental_element);
 
-        //     $.each(tenants, function(index,tenant) {
-        //         var supplemental_item = '';
-        //         tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
-        //         tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed alpha-tenant-item-'+tenant.id+'">';
-        //         tenant_item += '<div class="tenant-store-contents">';
-        //         tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
-        //         tenant_item += '</div>';
-        //         tenant_item += '<div class="text-left tenant-store-details">';
-        //         tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
-        //         tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
-        //         tenant_item += '<div class="tenant-store-status">';
-        //         tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
-        //         if(tenant.is_subscriber)
-        //             tenant_item += '<span class="featured_shop">Featured</span>';
-        //         tenant_item += '</div>';
-        //         tenant_item += '</div>';
-        //         tenant_item += '</div>';
-        //         tenant_item += '</div>';
-        //         $( ".supplemental-"+key ).append(tenant_item);                
-        //         $('.alpha-tenant-item'+tenant.id).on('click', function() {
-        //             showTenantDetails(tenant);
-        //         });
-        //     });
-        // }); 
-        // owl_tenant = $('.owl-wrapper-supplemental');
-        // owl_tenant.owlCarousel({
-        //     margin: 15,
-        //     nav: false,
-        //     loop: false,
-        //     items: 1,
-        // });
+            $.each(supplemental, function(index,category) {
+                var supplemental_item = '';
+                supplemental_item += '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
+                supplemental_item += '<div class="cat-btn-adjustment mx-auto supplemental-item-'+category.id+'">';
+                supplemental_item += '<img class="cat-btn-img" src="'+category.kiosk_image_primary_path+'" />';
+                supplemental_item += '<div class="cat-btn-align-2">';
+                supplemental_item += '<p class="cat-text">'+category.category_name+'</p>';
+                supplemental_item += '</div>';
+                supplemental_item += '</div>';
+                supplemental_item += '</div>';
+                $( ".supplemental-"+key ).append(supplemental_item);                
+                $('.supplemental-item-'+category.id).on('click', function() {
+                    $('.category-img-banner').attr('src', category.kiosk_image_top_path);
+                    $('.category-banner-title').html(category.category_name);
+                    tenant_list = category.tenants;
+                    showTenantList();
+                });
+            });
+        }); 
+        owl_tenant = $('.owl-wrapper-supplemental');
+        owl_tenant.owlCarousel({
+            margin: 0,
+            nav: false,
+            loop: false,
+            items: 1,
+        });
     }
 
     showHomeCategories();

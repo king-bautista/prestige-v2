@@ -23,7 +23,7 @@
         <?php include('resources/include/common/contents/categories/tabs/fashion_tab/fashion_tab_alphabetical.php'); ?>
     </div>
     
-    <div class="tab-pane" id="pills-Trends" role="tabpanel" aria-labelledby="pills-Trends-tab">
+    <div class="tab-pane" id="Tab-Trends" role="tabpanel" aria-labelledby="pills-Trends-tab">
         <?php include('resources/include/common/contents/categories/tabs/fashion_tab/fashion_tab_trends.php'); ?>
     </div>
 
@@ -35,13 +35,13 @@
     <span class="mr-4 nav-tab-title">View stores by: </span>
     <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active nav-tab-pills-btn" id="Tab-Category-Tab" data-toggle="pill" data-target="#Fashion-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
+            <button class="nav-link active nav-tab-pills-btn" id="Tab-Fashion-Tab" data-toggle="pill" data-target="#Fashion-Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Fashion-Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
+            <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-Tab" data-toggle="pill" data-target="#Fashion-Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link nav-tab-pills-btn" id="pills-Trends-tab" data-toggle="pill" data-target="#pills-Trends" type="button" role="tab" aria-controls="pills-Trends" aria-selected="false">Trends</button>
+            <button class="nav-link nav-tab-pills-btn" id="Tab-Trends-Tab" data-toggle="pill" data-target="#Tab-Trends" type="button" role="tab" aria-controls="Tab-Trends" aria-selected="false">Trends</button>
         </li>
     </ul>
 </div>

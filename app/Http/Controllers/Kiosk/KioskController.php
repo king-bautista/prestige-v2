@@ -78,7 +78,12 @@ class KioskController extends AppBaseController
         }
 
         foreach($categories as $index => $category) {
-            $category['tenants'] = $this->getTenants($site_id, $category['category_id'], $category['sub_category_id']);
+            if($category->category_type == 1) {
+                $category['tenants'] = $this->getTenants($site_id, $category['category_id'], $category['sub_category_id']);
+            }
+            else {
+                $category['tenants'] = $this->getTenantsBySupplementals($site_id, $category['sub_category_id']);
+            }
             $child_categories[] = $category;
         }
 
@@ -88,7 +93,8 @@ class KioskController extends AppBaseController
     public function getSupplemental($site_id, $category_id) {
         $supplemental_category = Category::where('supplemental_category_id', $category_id)->first();
         $supplemental['name'] = $supplemental_category->name;
-        $supplemental['sub_categories'] = $this->getChildCategories($site_id, $supplemental_category->id);
+        $sub_categories = $this->getChildCategories($site_id, $supplemental_category->id);
+        $supplemental['sub_categories'] = array_chunk($sub_categories, 15);
 
         return $supplemental;
     }
@@ -120,6 +126,30 @@ class KioskController extends AppBaseController
         return $tenants;
     }
 
+    public function getTenantsBySupplementals($site_id = null, $supplemental_id = null) {
+        $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
+        ->where('brand_supplementals.supplemental_id', $supplemental_id)
+        ->where('site_tenants.site_id', $site_id)
+        ->join('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
+        ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+        ->leftJoin('site_tenant_metas', function($join)
+        {
+            $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+            ->where('site_tenant_metas.meta_key', 'address');
+        })
+        ->when(config('app.env') == 'prod', function($query) {
+            $query->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id');
+        })
+        ->select('site_tenants.*', 'site_tenant_metas.meta_value as address')
+        ->orderBy('brands.name', 'ASC')
+        ->orderBy('site_tenants.site_building_level_id', 'ASC')
+        ->orderBy('address', 'ASC')
+        ->get()->toArray();
+            
+        $site_tenants = array_chunk($site_tenants, 15);
+        return $site_tenants;
+    }
+
     public function getPromos($site_id) {
         $current_date = date('Y-m-d');
 
@@ -149,7 +179,7 @@ class KioskController extends AppBaseController
         ->orderBy('brands.name', 'ASC')
         ->get()->toArray();
         
-        $cinemas = array_chunk($cinemas, 2);
+        $cinemas = array_chunk($cinemas, 12);
         return json_encode($cinemas);
     }
 

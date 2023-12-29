@@ -204,7 +204,12 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
-        
+        sub_categories = '';
+        main_category = '';
+        supplementals = '';
+        alphabetical = '';
+        tenant_list = '';
+        $('#Tab-Category-Tab').click();        
     });
 
     /* for search button */
@@ -238,6 +243,7 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
+        showPromos();
     });
 
     /* for cinema button */
@@ -249,6 +255,7 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
+        showCinemas();
     });
 
     /* for hiding the div and showing the home div */
