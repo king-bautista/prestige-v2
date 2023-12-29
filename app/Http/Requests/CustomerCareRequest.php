@@ -24,7 +24,6 @@ class CustomerCareRequest extends FormRequest
     public function rules()
     {
         return [
-            "status_id" => "required",
             'status_id' => "required",
             'concern_id' => "required",
             'user_id' => "required",
@@ -35,6 +34,15 @@ class CustomerCareRequest extends FormRequest
             'assigned_to_id' => "required",
             'internal_remark' => "required|string",
             'external_remark' => "required|string",
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'status_id.required' => 'The status field is required',
+            'concern_id.required' => 'The ticket type field is required.',
+            'user_id.required' => 'The user name field is required.',
+            'assigned_to_id.required' => 'The assigned to id field is required.',
         ];
     }
 }
