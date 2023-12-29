@@ -85,7 +85,9 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'ticket_subject' => $request->ticket_subject,
                 'ticket_description' => $request->ticket_description,
                 'image' => str_replace('\\', '/', $image_path),
-                'assigned_to_id' => '',
+                // 'assigned_to_id' => '',
+                // 'internal_remark' => '',
+                // 'external_remark' => '',
                 'status_id' => 2,
                 'active' => 1,
             ];
