@@ -302,7 +302,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 Storage::delete($file);
             }
 
-            $filename = "screen_management.csv";
+            $filename = "site-screen.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -367,7 +367,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 Storage::delete($file);
             }
 
-            $filename = "screen_management-template.csv";
+            $filename = "site-screen-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

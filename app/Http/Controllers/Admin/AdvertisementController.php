@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdvertisementRequest;
+use App\Imports\AdvertisementsImport;
 use App\Exports\Export;
 use Storage;
 
@@ -235,6 +236,23 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
             return $this->response($material, 'Successfully Deleted!.', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new AdvertisementsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

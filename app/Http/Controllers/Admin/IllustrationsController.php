@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\IllustrationsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Imports\IllustrationsImport;
 
 use App\Models\CompanyCategory;
 use App\Models\AdminViewModels\CompanyCategoryViewModel;
@@ -165,6 +166,23 @@ class IllustrationsController extends AppBaseController implements Illustrations
             $company_category->delete();
             return $this->response($company_category, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new IllustrationsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\EventsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Imports\EventsImport;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -146,6 +147,23 @@ class EventsController extends AppBaseController implements EventsControllerInte
         }
     }
 
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new EventsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try {
@@ -157,6 +175,7 @@ class EventsController extends AppBaseController implements EventsControllerInte
                     'site_id' => $event->site_id,
                     'site_name' => $event->site_name,
                     'event_name' => $event->event_name,
+                    'location' => $event->location,
                     'event_date' => $event->event_date,
                     'image_url' => $event->image_url,
                     'start_date' => $event->start_date,
@@ -204,6 +223,7 @@ class EventsController extends AppBaseController implements EventsControllerInte
                 'site_id' => '',
                 'site_name' => '',
                 'event_name' => '',
+                'location' =>  '',
                 'event_date' => '',
                 'image_url' => '',
                 'start_date' => '',

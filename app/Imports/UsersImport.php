@@ -20,7 +20,7 @@ class UsersImport implements ToCollection, WithHeadingRow
      * @param Collection $collection
      */
     public function collection(Collection $rows)
-    {
+    {////////echo '<pre>'; print_r($rows); echo '</pre>';
         foreach ($rows as $row) {
 
             $data = [
@@ -54,6 +54,6 @@ class UsersImport implements ToCollection, WithHeadingRow
         foreach ($roles as $role) {
             $admin_role[] = $role->id;
         }
-        return implode(",",$admin_role);
+        return explode(",",$admin_role);
     }
 }

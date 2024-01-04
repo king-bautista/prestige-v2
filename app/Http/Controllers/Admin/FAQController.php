@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\FAQControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\FAQsRequest;
+use App\Imports\FAQsImport;
 
 use App\Models\FAQ;
 use App\Exports\Export;
@@ -124,6 +125,23 @@ class FAQController extends AppBaseController implements FAQControllerInterface
         }
     }
 
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new FAQsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try {
@@ -136,8 +154,8 @@ class FAQController extends AppBaseController implements FAQControllerInterface
                     'question' => $faq->question,
                     'answer' => $faq->answer,
                     'active' => $faq->active,
-                    'updated_at' => $faq->updated_at,
                     'created_at' => $faq->created_at,
+                    'updated_at' => $faq->updated_at,
                     'deleted_at' => $faq->deleted_at,
                 ];
             }
@@ -182,8 +200,8 @@ class FAQController extends AppBaseController implements FAQControllerInterface
                     'question' => '',
                     'answer' => '',
                     'active' => '',
-                    'updated_at' => '',
                     'created_at' => '',
+                    'updated_at' => '',
                     'deleted_at' => '',
                 ];
             }

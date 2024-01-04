@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\SiteScreenProductRequest;
+use App\Imports\SiteScreenProductsImport;
 use Storage;
 
 use App\Models\AdminViewModels\SiteScreenProductViewModel;
@@ -248,7 +249,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     public function batchUpload(Request $request)
     {
         try {
-            Excel::import(new ScreensImport, $request->file('file'));
+            Excel::import(new SiteScreenProductsImport, $request->file('file'));
             return $this->response(true, 'Successfully Uploaded!', 200);
         } catch (\Exception $e) {
             return response([

@@ -14,7 +14,7 @@ use Storage;
 
 use App\Models\Site;
 
-class PIProductsImport implements ToCollection, WithHeadingRow
+class SitesImport implements ToCollection, WithHeadingRow
 {
     /**
      * @param Collection $collection
@@ -23,26 +23,59 @@ class PIProductsImport implements ToCollection, WithHeadingRow
     {
         foreach ($rows as $row) {
 
-            if ($row['product_application'] == 'Digital Signage' || $row['product_application'] == 'Directory' ) {
-                $pi_product = PiProduct::updateOrCreate(
+            if ($row['name']) {
+                $site = Site::updateOrCreate(
                     [
-                        'product_application' => $row['product_application'],
-                        'ad_type' => $row['ad_type']
+                        'name' => $row['name'],
+                        'descriptions' => $row['descriptions'],
                     ],
                     [
-                        'descriptions' => $row['descriptions'],
-                        'remarks' => $row['remarks'],
-                        'sec_slot' => $row['sec_slot'],
-                        'slots' => $row['slots'],
-                        'is_exclusive' => $row['is_exclusive'],
-                        'active' => $row['active'],
+                        'site_logo' =>  substr(parse_url($row['site_logo'])['path'], 1),
+                        'site_banner' => substr(parse_url($row['site_banner'])['path'], 1),
+                        'site_background' => substr(parse_url($row['site_background'])['path'], 1),
+                        'site_background_portrait' => substr(parse_url($row['site_background_portrait'])['path'], 1),
+                        'is_default' => ($row['is_default'] == 1) ? 1 : 0,
+                        'active' => ($row['active'] == 1) ? 1 : 0,
                     ]
                 );
+
+                $meta_value = [
+                    'company_id' => ($row['company_id']) ? $row['company_id'] : null,
+                    'facebook' => ($row['facebook']) ? $row['facebook'] : null,
+                    'instagram' => ($row['instagram']) ? $row['instagram'] : null,
+                    'twitter' => ($row['twitter']) ? $row['twitter'] : null,
+                    'website' => ($row['website']) ? $row['website'] : null,
+                    'premiere' => $this->checkBolean($row['premiere']),
+                    'multilanguage' => $this->checkBolean($row['multilanguage']),
+                    'site_code' => $row['site_code']
+                ];
                 
-                if(empty($pi_product->serial_number))
-                    $pi_product->serial_number = 'PI-'.Str::padLeft($pi_product->id, 5, '0');
-                    $pi_product->save();
+                if (empty($site->serial_number))
+                    $site->serial_number = 'ST-' . Str::padLeft($site->id, 5, '0');
+                $site->save();
+                $site->saveMeta($meta_value);
             }
+        }
+    }
+
+    public function checkBolean($bolean)
+    {
+        switch (strval($bolean)) {
+            case "true":
+                return true;
+                break;
+            case "1":
+                return true;
+                break;
+            case "false":
+                return false;
+                break;
+            case "0":
+                return false;
+                break;
+            default:
+                return false;
+                break;
         }
     }
 }

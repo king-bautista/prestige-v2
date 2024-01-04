@@ -83,7 +83,7 @@ class PiProductController extends AppBaseController implements PiProductControll
             }
 
             $data = [
-                'physical_configuration' => $request->physical_configuration,
+                //'physical_configuration' => $request->physical_configuration,
                 'product_application' => $request->product_application,
                 'ad_type' => $request->ad_type,
                 'descriptions' => $request->descriptions,

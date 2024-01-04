@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\LandmarkControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\LandmarkRequest;
+use App\Imports\LandmarksImport;
 
 use App\Models\Landmark;
 use App\Exports\Export;
@@ -149,6 +150,23 @@ class LandmarkController extends AppBaseController implements LandmarkController
             $landmark->delete();
             return $this->response($landmark, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new LandmarksImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
