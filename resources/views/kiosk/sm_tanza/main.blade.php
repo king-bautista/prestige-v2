@@ -204,7 +204,13 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
-        
+        sub_categories = '';
+        main_category = '';
+        supplementals = '';
+        alphabetical = '';
+        tenant_list = '';
+        $('#videocontainer').html('');
+        $('#Tab-Category-Tab').click();        
     });
 
     /* for search button */
@@ -216,6 +222,7 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
+        $('#videocontainer').html('');
     });
 
     /* for map button */
@@ -227,6 +234,7 @@
         $('#home_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
+        $('#videocontainer').html('');
     });
 
     /* for promos button */
@@ -238,6 +246,8 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
+        $('#videocontainer').html('');
+        showPromos();
     });
 
     /* for cinema button */
@@ -249,6 +259,9 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
+        $('#videocontainer').html('');
+        showCinemas();
+        $('#Tab-Cinema-Tab').click();
     });
 
     /* for hiding the div and showing the home div */

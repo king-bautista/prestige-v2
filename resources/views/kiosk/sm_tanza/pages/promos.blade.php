@@ -1,8 +1,10 @@
 <div class="p-3 font-weight-bold nav-titles">Promos</div>
 
-<div class="slideshow-content-container">
-    <div class="owl-carousel owl-theme owl-wrapper-promo">
-    </div>
+<div class="slideshow-content-container promo-list">
+</div>
+
+<div class="d-flex justify-content-center no-promos-found">
+    <img class="ImgPromoDefault" src="{{ URL::to('themes/sm_default/images/stick-around.png') }}">
 </div>
 
 <div id="imgPromoModal" class="modal promo-modal-content">
@@ -21,19 +23,17 @@
 <script>
     var promos = "{{ $promos }}";
 
-    $(document).ready(function() {
-        var promo = $('.owl-wrapper-promo');
-        promo.owlCarousel({
-            margin: 10,
-            nav: false,
-            loop: false,
-            items: 1,
-        });
-    });
-
     function showPromos() {
         var my_promos = JSON.parse(decodeEntities(promos));
-        $( ".owl-wrapper-promo" ).html('');
+
+        if(my_promos.length == 0) {
+            $('.promo-list').hide();
+            $('.no-promos-found').show();
+            return false;
+        }
+        
+        $('.promo-list').html('');
+        $('.promo-list').html('<div class="owl-carousel owl-theme owl-wrapper-promo"></div>');
         $.each(my_promos, function(key,promos) {
             var promo_element = '';
             promo_element += '<div class="item">';
@@ -65,12 +65,16 @@
                 $('.tenants_tenant_store_'+promo.promo_id).on('click', function() {
                     showTenantDetails(promo);
                 });
-
             });
+        });
 
+        var promo = $('.owl-wrapper-promo');
+        promo.owlCarousel({
+            margin: 0,
+            nav: false,
+            loop: false,
+            items: 1,
         });
     }
-
-    showPromos();
 </script>
 @endpush

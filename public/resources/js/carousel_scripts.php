@@ -9,29 +9,29 @@
         //     showFoodCategoriesSlides((slideFoodCategories += n));
         // }
 
-        function currentSlidePerFoodCategory(n) {
+        function currentSlideFoodCategories(n) {
             showFoodCategoriesSlides((slideFoodCategories = n));
         }
 
-        $(".categoryPrev").on("click", function(){
+        $(".FoodCategoriesPrev").on("click", function(){
             const n = -1;
             showFoodCategoriesSlides((slideFoodCategories += n));
         });
-        $(".categoryNext").on("click", function(){
+        $(".FoodCategoriesNext").on("click", function(){
             const n = 1;
             showFoodCategoriesSlides((slideFoodCategories += n));
         });
 
         function showFoodCategoriesSlides(n) {
-            let slidesFood = $(".carousel-item-per-food-category");
-            let dotsFood = $(".carousel-dot-per-food-category");
+            let slidesFoodCategories = $(".carousel-item-per-food-category");
+            let dotsFoodCategories = $(".carousel-dot-per-food-category");
 
-            slideFoodCategories = n > slidesFood.length ? 1 : n < 1 ? slidesFood.length : slideFoodCategories;
-            $(".right-btn-carousel-per-food-category").toggle(slideFoodCategories !== slidesFood.length);
+            slideFoodCategories = n > slidesFoodCategories.length ? 1 : n < 1 ? slidesFoodCategories.length : slideFoodCategories;
+            $(".right-btn-carousel-per-food-category").toggle(slideFoodCategories !== slidesFoodCategories.length);
             $(".left-btn-carousel-per-food-category").toggle(slideFoodCategories !== 1);
 
-            slidesFood.hide().eq(slideFoodCategories - 1).show();
-            dotsFood.removeClass("carousel-active").eq(slideFoodCategories - 1).addClass("carousel-active");
+            slidesFoodCategories.hide().eq(slideFoodCategories - 1).show();
+            dotsFoodCategories.removeClass("carousel-active").eq(slideFoodCategories - 1).addClass("carousel-active");
         }
 
         //---------------- for food alphabetical carousel ----------------
@@ -381,32 +381,167 @@
         }
     </script>
 
+    <script>
+        //---------------- for search carousel ----------------
+        let slideSearch = 1;
+        showSearchSlides(slideSearch);
 
-<!---------------- for promo carousel content ---------------->
-<script>
-    // for promos carousel
-    let slideIndex = 1;
-    showSlides(slideIndex);
+        // function plusSlidesCinema(n) {
+        //     showSearchSlides((slideSearch += n));
+        // }
 
-    function plusSlides(n) {
-        showSlides((slideIndex += n));
-    }
+        function currentSlidePerSearch(n) {
+            showSearchSlides((slideSearch = n));
+        }
 
-    function currentSlide(n) {
-        showSlides((slideIndex = n));
-    }
+        $(".SearchPrev").on("click", function(){
+            const n = -1;
+            showSearchSlides((slideSearch += n));
+        });
+        $(".SearchNext").on("click", function(){
+            const n = 1;
+            showSearchSlides((slideSearch += n));
+        });
 
-    function showSlides(n) {
-        let slides = $(".carousel-item-promo");
-        let dots = $(".carousel-dot-promo");
+        function showSearchSlides(n) {
+            let slidesSearch = $(".carousel-item-per-search");
+            let dotsSearch = $(".carousel-dot-per-search");
 
-        slideIndex = n > slides.length ? 1 : n < 1 ? slides.length : slideIndex;
+            slideSearch = n > slidesSearch.length ? 1 : n < 1 ? slidesSearch.length : slideSearch;
+            $(".right-btn-carousel-per-search").toggle(slideSearch !== slidesSearch.length);
+            $(".left-btn-carousel-per-search").toggle(slideSearch !== 1);
 
-        $(".right-btn-carousel").toggle(slideIndex !== slides.length);
-        $(".left-btn-carousel").toggle(slideIndex !== 1);
+            slidesSearch.hide().eq(slideSearch - 1).show();
+            dotsSearch.removeClass("carousel-active").eq(slideSearch - 1).addClass("carousel-active");
+        }
+    </script>
 
-        slides.hide().eq(slideIndex - 1).show();
-        dots.removeClass("carousel-active").eq(slideIndex - 1).addClass("carousel-active");
-    }
-</script>
+    <!---------------- for promo carousel content ---------------->
+    <script>
+        // for promos carousel
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides((slideIndex += n));
+        }
+
+        function currentSlide(n) {
+            showSlides((slideIndex = n));
+        }
+
+        function showSlides(n) {
+            let slides = $(".carousel-item-promo");
+            let dots = $(".carousel-dot-promo");
+
+            slideIndex = n > slides.length ? 1 : n < 1 ? slides.length : slideIndex;
+
+            $(".right-btn-carousel").toggle(slideIndex !== slides.length);
+            $(".left-btn-carousel").toggle(slideIndex !== 1);
+
+            slides.hide().eq(slideIndex - 1).show();
+            dots.removeClass("carousel-active").eq(slideIndex - 1).addClass("carousel-active");
+        }
+    </script>
+
+    <!---------------- for cinema carousels contents ---------------->
+    <script>
+        //---------------- for cinema - cinema locator carousel ----------------
+        let slideCinemaLocator = 1;
+        showCinemaLocatorSlides(slideCinemaLocator);
+
+        // function plusSlidesCinema(n) {
+        //     showCinemaLocatorSlides(( slideCinemaLocator += n));
+        // }
+
+        // function currentSlidePerCinemaLocator(n) {
+        //     showCinemaLocatorSlides((slideCinemaLocator = n));
+        // }
+
+        $(".CinemaLocatorPrev").on("click", function(){
+            const n = -1;
+            showCinemaLocatorSlides((slideCinemaLocator += n));
+        });
+        $(".CinemaLocatorNext").on("click", function(){
+            const n = 1;
+            showCinemaLocatorSlides((slideCinemaLocator += n));
+        });
+
+        function showCinemaLocatorSlides(n) {
+            let slidesCinemaLocator = $(".carousel-item-per-cinema-locator");
+
+            // let dotsCinemaLocator = $(".carousel-dot-per-cinema-locator");
+
+            slideCinemaLocator = n > slidesCinemaLocator.length ? 1 : n < 1 ? slidesCinemaLocator.length : slideCinemaLocator;
+            $(".right-btn-carousel-per-cinema-locator").toggle(slideCinemaLocator !== slidesCinemaLocator.length);
+            $(".left-btn-carousel-per-cinema-locator").toggle(slideCinemaLocator !== 1);
+
+            // for adjusting the column if the content is more than 6 cards
+            var cinemaContentPosition = $("#CinemaCardContentCinemaLocator > div").length;
+            if (cinemaContentPosition <= 6) {
+                $(".cinemaCardsCinemaLocator").addClass("col-lg-12");
+                $(".cinemaCardsCinemaLocator").addClass("col-xl-12");
+                $(".CinemaCardContentCinemaLocator").addClass("cinema-card-container");
+                $(".CinemaCardContentCinemaLocator").removeClass("cinema-card-container-expand");
+                $(".cinemaCardsCinemaLocator").removeClass("col-xl-6");
+                $(".cinemaCardsCinemaLocator").removeClass("col-lg-6");
+            }
+
+            else if (cinemaContentPosition > 6) {
+                $(".cinemaCardsCinemaLocator").removeClass("col-lg-12");
+                $(".cinemaCardsCinemaLocator").removeClass("col-xl-12");
+                $(".CinemaCardContentCinemaLocator").removeClass("cinema-card-container");
+                $(".CinemaCardContentCinemaLocator").addClass("cinema-card-container-expand");
+                $(".cinemaCardsCinemaLocator").addClass("col-xl-6");
+                $(".cinemaCardsCinemaLocator").addClass("col-lg-6");
+            }
+
+            slidesCinemaLocator.hide().eq(slideCinemaLocator - 1).show();
+            // dotsCinemaLocator.removeClass("carousel-active").eq(slideCinemaLocator - 1).addClass("carousel-active");
+
+            if(slideCinemaLocator == slidesCinemaLocator.length){
+                var cinemaCount = $(".CinemaCardContentCinemaLocator > div").length;
+                var cinemaModulo = cinemaCount %  12;
+                if (cinemaModulo <= 6){
+                    $(".CinemaCardContentCinemaLocator").each(function(){
+                        // $(".cinemaCardsCinemaLocator").removeClass("mx-auto");
+                        $(".cinemaCardsCinemaLocator").addClass("col-lg-12");
+                        $(".cinemaCardsCinemaLocator").addClass("col-xl-12");
+                        $(".CinemaCardContentCinemaLocator").addClass("cinema-card-container");
+                        $(".CinemaCardContentCinemaLocator").removeClass("cinema-card-container-expand");
+                    });
+                    
+                }
+                else if (cinemaModulo === 0){
+                    $(".CinemaCardContentCinemaLocator").each(function(){
+                        $(".cinemaCardsCinemaLocator").removeClass("col-lg-12");
+                        $(".cinemaCardsCinemaLocator").removeClass("col-xl-12");
+                        $("#CinemaCardContentCinemaLocator").removeClass("cinema-card-container");
+                        $("#CinemaCardContentCinemaLocator").addClass("cinema-card-container-expand");
+                        $(".cinemaCardsCinemaLocator").addClass("col-xl-6");
+                        $(".cinemaCardsCinemaLocator").addClass("col-lg-6");
+                    });
+                }
+                else if (cinemaModulo > 6){
+                    $(".CinemaCardContentCinemaLocator").each(function(){
+                        $(".cinemaCardsCinemaLocator").removeClass("mx-auto");
+                        $(".CinemaCardContentCinemaLocator").addClass("cinema-card-container-expand");
+                    });
+                }
+
+            }
+            $(".left-btn-carousel-per-cinema-locator").click(function () {
+                $(".CinemaCardContentCinemaLocator").each(function(){
+                    $(".cinemaCardsCinemaLocator").removeClass("col-lg-12");
+                    $(".cinemaCardsCinemaLocator").removeClass("col-xl-12");
+                    $("#CinemaCardContentCinemaLocator").removeClass("cinema-card-container");
+                    $("#CinemaCardContentCinemaLocator").addClass("cinema-card-container-expand");
+                    $(".cinemaCardsCinemaLocator").addClass("col-xl-6");
+                    $(".cinemaCardsCinemaLocator").addClass("col-lg-6");
+                });
+                
+            });
+            
+        }
+    </script>
 

@@ -2,7 +2,7 @@
 
 <div class="row mt-5 cat-row-card">
     <div class="col-sm-6 mt-3">
-        <div class="cat-btn" id="CatBtnCasualDining">
+        <div class="cat-btn text-right" id="CatBtnCasualDining">
             <img class="cat-btn-img" src="resources/uploads/categories/food/Casual Dining.png" />
             <div class="cat-btn-align">
                 <p class="cat-text">Casual Dining</p>
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="col-sm-6 mt-3">
-        <div class="cat-btn">
+        <div class="cat-btn text-right">
             <img class="cat-btn-img" src="resources/uploads/categories/food/Food Court.png" />
             <div class="cat-btn-align">
                 <p class="cat-text">Food Court</p>
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="col-sm-6 mt-3">
-        <div class="cat-btn text-right">
+        <div class="cat-btn text-right" id="foodBtnDefault">
             <img class="cat-btn-img" src="resources/uploads/categories/food/Food Hall2.png" />
             <div class="cat-btn-align">
                 <p class="cat-text">Food Hall</p>

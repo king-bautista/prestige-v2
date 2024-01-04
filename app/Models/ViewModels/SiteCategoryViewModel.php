@@ -45,6 +45,7 @@ class SiteCategoryViewModel extends Model
         'parent_category_id',
         'category_class',
         'category_name',
+        'category_type',
         'kiosk_image_primary_path',
         'kiosk_image_top_path',    
     ];
@@ -78,6 +79,16 @@ class SiteCategoryViewModel extends Model
         }
         else {
             return Category::find($this->category_id)->class_name;
+        }
+        return null;
+    }
+
+    public function getCategoryTypeAttribute() {
+        if($this->sub_category_id) {
+            return Category::find($this->sub_category_id)->category_type;
+        }
+        else {
+            return Category::find($this->category_id)->category_type;
         }
         return null;
     }
