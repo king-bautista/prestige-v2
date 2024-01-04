@@ -106,6 +106,11 @@ body {
     position: absolute;
 }
 
+.title-page-container2 {
+    top: 114px;
+    position: absolute;
+}
+
 .bg-kiosk {
     height: 1080px !important;
     width: 100% !important;
@@ -454,6 +459,11 @@ body {
     margin-left: 0px;
 }
 
+.carousel-content-container-per-search {
+    padding: 133.5px 133.5px 0px 153.5px;
+    margin-left: 0px;
+}
+
 .tenant-store-card-container {
     border: 1px solid #efefef !important; 
     padding: 5px !important; 
@@ -522,6 +532,13 @@ body {
     height: 72.34px; 
 }
 
+.searchDefaultMessage {
+    font-size: 40px;
+    font-family: 'Henry Sans Regular' !important;
+    margin-top: 391px;
+    margin-left: 20px;
+}
+
 /*---- css for help when landscape ----*/
 
 .help-img-btn {
@@ -578,6 +595,31 @@ body {
 .canvas-canvas {
     width: 1450px;
     height: 800px;
+}
+
+.btn-pwd {
+    background-color:#ffffff;
+    color: #0030ff;
+    width: 67px !important; 
+    height: 64px !important; 
+    outline-style: none; 
+    border-top-right-radius: 18px !important; 
+    border-bottom-right-radius: 18px !important; 
+    border: 0.5px solid #aaa; 
+    border-left: 0px !important;
+}
+
+/* .btn-pwd:focus, .btn-pwd-icon:focus {
+    background-color:#0030ff !important;
+    color: #ffffff !important;
+    border: 0.5px solid #fff !important;
+} */
+
+.btn-pwd-icon {
+    font-size: 26px; 
+    display: inline-block !important; 
+    vertical-align: -0.125em !important; 
+    height: 1.8em !important;
 }
 
 /* css for cinema container */
@@ -657,6 +699,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 5px 10px;
+    z-index: 2;
 }
 
 .cinema-schedule-page-content {
@@ -680,8 +723,9 @@ body {
 .img-cinema-card {
     width: 159px;
     height: 240px;
-    margin-left: 48px;
-    margin-right: 48px;
+    margin: auto;
+    /* margin-left: 48px;
+    margin-right: 48px; */
     object-fit: cover !important;
     border-radius: 20px !important;
     border: 0px !important;
@@ -714,6 +758,7 @@ body {
 }
 
 .MovieTitle {
+    height: 120px;
     font-size: 1.3em;
     color: #000000;
     padding: 12px 0px;
@@ -721,7 +766,6 @@ body {
 }
 
 .ViewDetails {
-    position: absolute;
     top: 360px;
     left: 73px;
 }
@@ -819,6 +863,8 @@ body {
 .cinema-details-sched-container {
     overflow: auto;
     white-space: nowrap;
+    height: 200px;
+    width: 1081px;
 }
 
 .cinema-details-sched-content {
@@ -849,7 +895,7 @@ body {
 
 .movieDetailsContentContainer {
     width: 1180px;
-    height: 632px;
+    height: 700px;
     border-radius: 20px !important;
     margin-top: 0px;
     font-family: "Henry Sans Regular" !important;
@@ -1211,6 +1257,15 @@ body {
     right: 0px;
 }
 
+.dot-container-4 {
+    position: absolute;
+    text-align: center !important;
+    width: 100%;
+    bottom: 258px;
+    left: 10.00px;
+    right: 0px;
+}
+
 .carousel-dot {
     cursor: pointer;
     height: 17px;
@@ -1441,6 +1496,18 @@ body {
     position: absolute !important;
     right: 30px;
     top: -136px;
+}
+
+.left-btn-carousel-per-search {
+    position: absolute !important;
+    left: 50px;
+    top: -127px;
+}
+
+.right-btn-carousel-per-search {
+    position: absolute !important;
+    right: 30px;
+    top: -127px;
 }
 
 .container-alphabet {
@@ -1721,10 +1788,6 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     display: block;
 }
 
-#home-cat-contents {
-    display: none;
-}
-
 #TenantPage {
     display: none;
 }
@@ -1750,6 +1813,14 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 #search-container {
+    display: none;
+}
+
+#searchList {
+    display: block;
+}
+
+#searchNone {
     display: none;
 }
 
@@ -2023,6 +2094,16 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
         right: 0px;
     }
 
+    .carousel-item-per-search {
+        margin-top: 20px;
+    }
+
+    .dot-container-4 {
+        bottom: 10px;
+        left: 10px;
+        right: 0px;
+    }
+
     .hts-strip-align {
         width: 250px;
     }
@@ -2076,6 +2157,14 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
         top: 2.5px;
     }
 
+    .left-btn-carousel-per-search {
+        top: 2.5px;
+    }
+    
+    .right-btn-carousel-per-search {
+        top: 2.5px;
+    }
+
     .title-page-content-2 {
         margin-left: -14px !important;
         width: 1080px;
@@ -2109,13 +2198,13 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
     .cinema-card-container {
         width: 632.5px !important;
-        padding-top: 65px !important;
+        padding-top: 125px !important;
         margin-left: 75px !important;
     }
 
     .cinema-card-container-expand {
         width: 970px !important;
-        padding-top: 65px !important;
+        padding-top: 125px !important;
         margin-left: -115px !important;
     }
 
@@ -2168,6 +2257,11 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
     .cinema-details-sched-content-adjustment {
         padding-left: 0px !important;
+    }
+
+    .searchDefaultMessage {
+        margin-top: 550px;
+        margin-left: 20px;
     }
 
     /*---- css for map when portrait ---- */

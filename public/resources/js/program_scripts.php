@@ -292,6 +292,17 @@
         $("#map_txt").removeClass("nav-btn-active");
         $("#promos_txt").removeClass("nav-btn-active");
         $("#cinema_txt").removeClass("nav-btn-active");
+
+        var searchListCardsContent = $(".searchListCards > div").length;
+            if (searchListCardsContent >= 1) {
+                $("#searchList").show();
+                $("#searchNone").hide();
+            }
+
+            else {
+                $("#searchList").hide();
+                $("#searchNone").show();
+            }
     });
 
     /*-------- for map button --------*/
@@ -303,6 +314,14 @@
         $("#home_txt").removeClass("nav-btn-active");
         $("#promos_txt").removeClass("nav-btn-active");
         $("#cinema_txt").removeClass("nav-btn-active");
+
+        $('#btnpwdchange').on('click', function() {
+            $(this).toggleClass('clicked').css({
+                'background-color': $(this).hasClass('clicked') ? '#0030ff' : 'white',
+                'color': $(this).hasClass('clicked') ? 'white' : '#0030ff',
+                'border-color': $(this).hasClass('clicked') ? '0.5px solid #fff' : ''
+            });
+        });
     });
 
     /*-------- for promos button --------*/

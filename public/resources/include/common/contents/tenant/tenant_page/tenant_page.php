@@ -351,12 +351,12 @@
 
         </div>
 
-        <a class="promo-prev categoryPrev">
+        <a class="promo-prev FoodCategoriesPrev">
             <div class="left-btn-carousel left-btn-carousel-per-food-category">
                 <img src="resources/uploads/imagebutton/Left.png">
             </div>
         </a>
-        <a class="promo-next categoryNext">
+        <a class="promo-next FoodCategoriesNext">
             <div class="right-btn-carousel right-btn-carousel-per-food-category">
                 <img src="resources/uploads/imagebutton/Right.png">
             </div>
@@ -366,8 +366,7 @@
 
 <!-- carousel dot tab identifier -->
     <div class="dot-container-3 justify-content-center">
-        <span class="carousel-dot carousel-dot-per-food-category" onclick="currentSlidePerFoodCategory(1)"></span>
-        <span class="carousel-dot carousel-dot-per-food-category" onclick="currentSlidePerFoodCategory(2)"></span>
-        
+        <span class="carousel-dot carousel-dot-per-food-category" onclick="currentSlideFoodCategories(1)"></span>
+        <span class="carousel-dot carousel-dot-per-food-category" onclick="currentSlideFoodCategories(2)"></span>
     </div>
 

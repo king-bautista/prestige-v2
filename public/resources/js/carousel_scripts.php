@@ -9,29 +9,29 @@
         //     showFoodCategoriesSlides((slideFoodCategories += n));
         // }
 
-        function currentSlidePerFoodCategory(n) {
+        function currentSlideFoodCategories(n) {
             showFoodCategoriesSlides((slideFoodCategories = n));
         }
 
-        $(".categoryPrev").on("click", function(){
+        $(".FoodCategoriesPrev").on("click", function(){
             const n = -1;
             showFoodCategoriesSlides((slideFoodCategories += n));
         });
-        $(".categoryNext").on("click", function(){
+        $(".FoodCategoriesNext").on("click", function(){
             const n = 1;
             showFoodCategoriesSlides((slideFoodCategories += n));
         });
 
         function showFoodCategoriesSlides(n) {
-            let slidesFood = $(".carousel-item-per-food-category");
-            let dotsFood = $(".carousel-dot-per-food-category");
+            let slidesFoodCategories = $(".carousel-item-per-food-category");
+            let dotsFoodCategories = $(".carousel-dot-per-food-category");
 
-            slideFoodCategories = n > slidesFood.length ? 1 : n < 1 ? slidesFood.length : slideFoodCategories;
-            $(".right-btn-carousel-per-food-category").toggle(slideFoodCategories !== slidesFood.length);
+            slideFoodCategories = n > slidesFoodCategories.length ? 1 : n < 1 ? slidesFoodCategories.length : slideFoodCategories;
+            $(".right-btn-carousel-per-food-category").toggle(slideFoodCategories !== slidesFoodCategories.length);
             $(".left-btn-carousel-per-food-category").toggle(slideFoodCategories !== 1);
 
-            slidesFood.hide().eq(slideFoodCategories - 1).show();
-            dotsFood.removeClass("carousel-active").eq(slideFoodCategories - 1).addClass("carousel-active");
+            slidesFoodCategories.hide().eq(slideFoodCategories - 1).show();
+            dotsFoodCategories.removeClass("carousel-active").eq(slideFoodCategories - 1).addClass("carousel-active");
         }
 
         //---------------- for food alphabetical carousel ----------------
@@ -381,6 +381,40 @@
         }
     </script>
 
+    <script>
+        //---------------- for search carousel ----------------
+        let slideSearch = 1;
+        showSearchSlides(slideSearch);
+
+        // function plusSlidesCinema(n) {
+        //     showSearchSlides((slideSearch += n));
+        // }
+
+        function currentSlidePerSearch(n) {
+            showSearchSlides((slideSearch = n));
+        }
+
+        $(".SearchPrev").on("click", function(){
+            const n = -1;
+            showSearchSlides((slideSearch += n));
+        });
+        $(".SearchNext").on("click", function(){
+            const n = 1;
+            showSearchSlides((slideSearch += n));
+        });
+
+        function showSearchSlides(n) {
+            let slidesSearch = $(".carousel-item-per-search");
+            let dotsSearch = $(".carousel-dot-per-search");
+
+            slideSearch = n > slidesSearch.length ? 1 : n < 1 ? slidesSearch.length : slideSearch;
+            $(".right-btn-carousel-per-search").toggle(slideSearch !== slidesSearch.length);
+            $(".left-btn-carousel-per-search").toggle(slideSearch !== 1);
+
+            slidesSearch.hide().eq(slideSearch - 1).show();
+            dotsSearch.removeClass("carousel-active").eq(slideSearch - 1).addClass("carousel-active");
+        }
+    </script>
 
     <!---------------- for promo carousel content ---------------->
     <script>

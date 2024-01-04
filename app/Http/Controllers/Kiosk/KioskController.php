@@ -187,22 +187,9 @@ class KioskController extends AppBaseController
         $start_date =  date('Y-m-d 00:00:00');
         $end_date =  date('Y-m-d 23:59:59');
         
-        // $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
-        // ->where('show_time', '<=', $end_date)
-        // ->where('site_id', $site_id)
-        // ->select('site_id', 'film_id', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre')
-        // ->groupBy('film_id')
-        // ->orderBy('title')
-        // ->get()->toArray();
-
-        // $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
-        // ->where('show_time', '<=', $end_date)
-        // ->where('site_id', $site_id)
-        // ->groupBy('film_id')
-        // ->orderBy('title')
-        // ->get()->toArray();
-
-        $now_showing = CinemaScheduleViewModel::where('site_id', $site_id)
+        $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
+        ->where('show_time', '<=', $end_date)
+        ->where('site_id', $site_id)
         ->select('site_id', 'film_id', 'title', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre', 'synopsis')
         ->groupBy('film_id')
         ->orderBy('title')

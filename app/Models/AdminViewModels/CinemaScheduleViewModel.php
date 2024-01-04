@@ -68,8 +68,8 @@ class CinemaScheduleViewModel extends Model
 
         $cinema_schedules = CinemaSchedule::where('film_id', $this->film_id)
         ->where('site_id', $this->site_id)
-        // ->where('show_time', '>=', $start_date)
-        // ->where('show_time', '<=', $end_date)
+        ->where('show_time', '>=', $start_date)
+        ->where('show_time', '<=', $end_date)
         ->get();
 
         foreach($cinema_schedules as $index => $schedule) {

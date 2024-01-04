@@ -3,6 +3,10 @@
 <div class="slideshow-content-container promo-list">
 </div>
 
+<div class="d-flex justify-content-center no-promos-found">
+    <img class="ImgPromoDefault" src="{{ URL::to('themes/sm_default/images/stick-around.png') }}">
+</div>
+
 <div id="imgPromoModal" class="modal promo-modal-content">
   <!-- Modal content -->
     <div class="modal-dialog modal-dialog-centered">
@@ -21,6 +25,12 @@
 
     function showPromos() {
         var my_promos = JSON.parse(decodeEntities(promos));
+
+        if(my_promos.length == 0) {
+            $('.promo-list').hide();
+            $('.no-promos-found').show();
+            return false;
+        }
         
         $('.promo-list').html('');
         $('.promo-list').html('<div class="owl-carousel owl-theme owl-wrapper-promo"></div>');
