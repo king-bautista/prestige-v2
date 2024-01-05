@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Storage;
 
-use App\Models\Role;
+use App\Models\Site;
+use App\Models\Landmark;
+
 
 class LandmarksImport implements ToCollection, WithHeadingRow
 {
@@ -23,35 +25,25 @@ class LandmarksImport implements ToCollection, WithHeadingRow
     {
         foreach ($rows as $row) {
 
-            // $data = [
-            //     'name' => $row['name'],
-            //     'role' => $row['role'],
-            //     'link' => $this->link($row['link'])
-
-            // ];
-            //  echo '<pre>'; print_r($data); echo '</pre>';
-            if ($row['name']) {
-                $module = Role::updateOrCreate(
+            if ($row['landmark'] && ($this->site($row['site_id'])> 0)) {
+                $landmark = Landmark::updateOrCreate(
                     [
-                        'name' => $row['name'],
-                        'role' => $row['role'],
-                        'link' => $this->link($row['link']),
+                        'site_id' => $row['site_id'],
+                        'landmark' => $row['landmark'],
+                        'image_url' =>  substr(parse_url($row['image_url'])['path'], 1),
+                        'image_thumbnail_url' =>  substr(parse_url($row['image_thumbnail_url'])['path'], 1),
                     ],
                     [
-                        'parent_id' => $row['parent_id'],
-                        'class_name' => $row['class_name'],
-                        'active' => $row['active'],
+                        'descriptions' => $row['descriptions'],
+                        'active' => ($row['active'] == 1) ? 1 : 0,
                     ],
                 );
             }
         }
     }
-
-    public function link($link = '')
+    public function site($site_id)
     {
-        if ($link != '#') {
-            return str_replace((empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]", "", $link);
-        }
-        return '#';
+        return Site::where('id', $site_id)
+            ->count();
     }
 }

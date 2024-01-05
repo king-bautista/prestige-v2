@@ -29,7 +29,8 @@ class AmenitiesImport implements ToCollection, WithHeadingRow
                         'name' => $row['name']
                     ],
                     [
-                        'icon' => ($row['icon']) ? $this->uploadIcon($row['icon']) : null
+                        'icon' => ($row['icon']) ? substr(parse_url($row['icon'])['path'], 1) : null,
+                        'active' => ($row['active'] == 1) ? 1 : 0,
                     ]
                 );
             }

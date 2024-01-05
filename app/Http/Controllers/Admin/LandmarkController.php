@@ -14,6 +14,7 @@ use App\Models\Landmark;
 use App\Exports\Export;
 use Storage;
 use Route;
+use URL;
 
 class LandmarkController extends AppBaseController implements LandmarkControllerInterface
 {
@@ -187,8 +188,8 @@ class LandmarkController extends AppBaseController implements LandmarkController
                     'site_name' => $landmark->site_name,
                     'landmark' => $landmark->landmark,
                     'descriptions' => $landmark->descriptions,
-                    'image_url' => $landmark->image_url,
-                    'image_thumbnail_ur' => $landmark->image_thumbnail_url,
+                    'image_url' => ($landmark->image_url != "") ? URL::to("/" . $landmark->image_url) : " ",
+                    'image_thumbnail_url' => ($landmark->image_thumbnail_url != "") ? URL::to("/" . $landmark->image_thumbnail_url) : " ",
                     'active' => $landmark->active,
                     'created_at' => $landmark->created_at,
                     'updated_at' => $landmark->updated_at,
@@ -234,7 +235,7 @@ class LandmarkController extends AppBaseController implements LandmarkController
                 'landmark' => '',
                 'descriptions' => '',
                 'image_url' => '',
-                'image_thumbnail_ur' => '',
+                'image_thumbnail_url' => '',
                 'active' => '',
                 'created_at' => '',
                 'updated_at' => '',

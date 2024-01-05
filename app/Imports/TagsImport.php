@@ -27,7 +27,7 @@ class TagsImport implements ToCollection, WithHeadingRow
                         'name' => ucfirst($row['name'])
                     ],
                     [
-                        'active' => 1
+                        'active' => ($row['active'] == 1) ? 1 : 0,
                     ],
 
                 );
