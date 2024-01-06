@@ -185,7 +185,7 @@
         $.each(tenant_list, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
-            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-5">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
             tenant_list_element += '<div class="row tenants-'+key+'">';
             tenant_list_element += '</div>';
             tenant_list_element += '</div>';
@@ -235,7 +235,7 @@
         $.each(alphabetical, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
-            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-5">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
             tenant_list_element += '<div class="row tenants-'+key+'">';
             tenant_list_element += '</div>';
             tenant_list_element += '</div>';
@@ -281,7 +281,7 @@
         $.each(supplementals, function(key,supplemental) {
             var supplemental_element = '';
             supplemental_element = '<div class="item">';
-            supplemental_element += '<div class="carousel-content-container-per-food-cravings">';
+            supplemental_element += '<div class="carousel-content-container-per-food-cravings mb-5">';
             supplemental_element += '<div class="row supplemental-'+key+'">';
             supplemental_element += '</div>';
             supplemental_element += '</div>';

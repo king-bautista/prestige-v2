@@ -4,21 +4,24 @@
 <div class="tab-content" id="Cinema-nav-tab-content">
     <div class="tab-pane show active" id="Tab-Cinema" role="tabpanel">
         <div class="p-2 text-center cinema-page-title">Cinema Locator</div>
+        <!-- CINEMA LIST -->
         <div class="slideshow-content-container cinema-list">
         </div>
     </div>    
     <div class="tab-pane" id="Tab-Schedule" role="tabpanel">
+        <!-- NOW SHOWING LIST -->
         <div id="CinemaTabSchedule">
             <div class="p-2 text-center cinema-page-title-2">Now Showing</div>
             <div class="slideshow-content-container d-flex justify-content-center now-showing-list">
             </div>
-        </div>        
+        </div>  
+        <!-- SHOWING NOT FOUND -->
         <div id="CinemaTabDefault">
             <div class="p-2 text-center cinema-page-title-2">Now Showing</div>
             <div class="d-flex justify-content-center">
                 <img class="ImgCinemaDefault" src="{{ URL::to('themes/sm_default/images/cinema-default-desktop.png') }}">
             </div>
-        </div>
+        </div>      
     </div>
 </div>
 
@@ -35,8 +38,8 @@
     </ul>
 </div>
 
+<!-- SHOWING DETAILS -->
 <div id="CinemaDetailsModal" class="modal CinemaDetailsModalContent">
-    <!-- Modal content -->
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 CinemaDeatilsModalContainer">
             <span class="close closeCinemaDetails text-white">&times;</span>
@@ -102,12 +105,7 @@
         });
 
         var modalCinema = $("#CinemaDetailsModal");
-        var btnCinema = $("#CinemaDetailsViewBtn");
         var spanCinema = $(".closeCinemaDetails");
-
-        btnCinema.on("click", function () {
-            modalCinema.css("display", "block");
-        });
 
         spanCinema.on("click", function () {
             $('#videocontainer').html('');
@@ -171,6 +169,13 @@
 
     function showNowShowing() {
         var my_showing = JSON.parse(decodeEntities(now_showing));
+        console.log(my_showing.length);
+        if(my_showing.length == 0) {
+            $('#CinemaTabSchedule').hide();
+            $('#CinemaTabDefault').show();
+            return false;
+        }
+
         $('.now-showing-list').html('');
         $('.now-showing-list').html('<div class="owl-carousel owl-theme owl-wrapper-now-showing"></div>');
         $.each(my_showing, function(key,showings) {
