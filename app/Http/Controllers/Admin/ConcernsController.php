@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\ConcernsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ConcernRequest;
+use App\Imports\ConcernsImport;
 use App\Exports\Export;
 use Storage;
 use Route;
@@ -137,6 +138,23 @@ class ConcernsController extends AppBaseController implements ConcernsController
         }
     }
 
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new ConcernsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try {
@@ -146,7 +164,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 $reports[] = [
                     'id' => $concern->id,
                     'name' => $concern->name,
-                    'dscription' => $concern->description,
+                    'description' => $concern->description,
                     'active' => $concern->active,
                     'created_at' => $concern->created_at,
                     'updated_at' => $concern->updated_at,
@@ -189,7 +207,7 @@ class ConcernsController extends AppBaseController implements ConcernsController
             $reports[] = [
                 'id' => '',
                 'name' => '',
-                'dscription' => '',
+                'description' => '',
                 'active' => '',
                 'created_at' => '',
                 'updated_at' => '',

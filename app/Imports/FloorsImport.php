@@ -12,38 +12,38 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Storage;
 
+use App\Models\SiteBuilding;
 use App\Models\SiteBuildingLevel;
 
-class AmenitiesImport implements ToCollection, WithHeadingRow
+class FloorsImport implements ToCollection, WithHeadingRow
 {
     /**
-    * @param Collection $collection
-    */
+     * @param Collection $collection
+     */
     public function collection(Collection $rows)
     {
+        $site_id = session()->get('site_id');
         foreach ($rows as $row) {
-    
-            if($row['name']) { 
-                $brand = Amenity::updateOrCreate(
+            
+            //if ($this->floor($site_id, $row['site_building_id']) > 0) {
+                $floor = SiteBuildingLevel::updateOrCreate(
                     [
-                        'name' => $row['name']
+                        'site_id' => $row['site_id'],
+                        'site_building_id' => $row['site_building_id'],
+                        'name' => $row['name'],
                     ],
                     [
-                        'icon' => ($row['icon']) ? $this->uploadIcon($row['icon']) : null
+                        'active' => ($row['active'] == 1) ? 1 : 0,
                     ]
                 );
-            }
-	    }
-
+            //}
+        }
     }
 
-    public function uploadIcon($icon = '')
-    {   
-        if($icon){ 
-            if(file_exists(public_path().'/'.$icon))
-                return $icon;
-            return null;
-        }
-        return null;
+    public function floor($site_id, $site_building_id)
+    {
+        return SiteBuilding::where('site_id', $site_id)
+            ->where('id', $site_building_id)
+            ->count();
     }
 }

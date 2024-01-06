@@ -23,29 +23,53 @@ class SupplementalsImport implements ToCollection, WithHeadingRow
     {
         foreach ($rows as $row) {
 
-            if ($row['name']) {
-                $brand = Category::updateOrCreate(
+            if ($row['name'] && ($row['category_type'] == 2)) {
+                $category = Category::updateOrCreate(
                     [
                         'name' => $row['name']
                     ],
                     [
-                        'parent_id' => ($row['parent_name']) ? $this->getParentCategoryId($row['parent_name']) : null,
-                        'supplemental_category_id' => ($row['supplemental_category_name']) ? $this->getSupplementalCategoryId($row['supplemental_category_name']) : null,
+                        'parent_id' => ($row['parent_id']) ? $this->getParentCategoryId($row['parent_id']) : null,
+                        'supplemental_category_id' => ($row['supplemental_category_id']) ? $this->getSupplementalCategoryId($row['supplemental_category_id']) : null,
                         'descriptions' => $row['descriptions'],
                         'class_name' => $row['class_name'],
                         'category_type' => $row['category_type'],
-                        'active' => $row['active'],
+                        'active' => ($row['active'] == 1) ? 1 : 0,
                     ]
                 );
             }
         }
     }
 
-    public function getParentCategoryId($category = '')
+    // public function getParentCategoryId($category = '')
+    // {
+    //     if($category) {
+    //         $category_id = Category::where('name', 'like', '%'.rtrim(ltrim($category)).'%')->where('category_type', 1)->whereNULL('parent_id')->first();
+    //         if($category_id)
+    //             return $category_id['id'];
+    //         return 0;
+    //     }
+
+    //     return 0;
+    // }
+
+    // public function getSupplementalCategoryId($category = '')
+    // {
+    //     if($category) {
+    //         $category_id = Category::where('name', 'like', '%'.rtrim(ltrim($category)).'%')->where('category_type', 2)->whereNull('parent_id')->first();
+    //         if($category_id)
+    //             return $category_id['id'];
+    //         return 0;
+    //     }
+
+    //     return 0;
+    // }
+
+    public function getParentCategoryId($parent_id = '')
     {
-        if($category) {
-            $category_id = Category::where('name', 'like', '%'.rtrim(ltrim($category)).'%')->where('category_type', 1)->whereNULL('parent_id')->first();
-            if($category_id)
+        if ($parent_id) {
+            $category_id = Category::where('id', $parent_id)->first();
+            if ($category_id)
                 return $category_id['id'];
             return 0;
         }
@@ -53,11 +77,11 @@ class SupplementalsImport implements ToCollection, WithHeadingRow
         return 0;
     }
 
-    public function getSupplementalCategoryId($category = '')
+    public function getSupplementalCategoryId($supplemental_category_id = '')
     {
-        if($category) {
-            $category_id = Category::where('name', 'like', '%'.rtrim(ltrim($category)).'%')->where('category_type', 2)->whereNull('parent_id')->first();
-            if($category_id)
+        if ($supplemental_category_id) {
+            $category_id = Category::where('id', $supplemental_category_id)->first();
+            if ($category_id)
                 return $category_id['id'];
             return 0;
         }

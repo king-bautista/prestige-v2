@@ -17,33 +17,24 @@ use App\Models\SiteBuilding;
 class BuildingsImport implements ToCollection, WithHeadingRow
 {
     /**
-    * @param Collection $collection
-    */
+     * @param Collection $collection
+     */
     public function collection(Collection $rows)
     {
+        $site_id = session()->get('site_id');
         foreach ($rows as $row) {
-    
-            if($row['name']) { 
-                $brand = Amenity::updateOrCreate(
+            if ($site_id == $row['site_id']) {
+                $building = SiteBuilding::updateOrCreate(
                     [
-                        'name' => $row['name']
+                        'site_id' => $row['site_id'],
+                        'name' => $row['name'],
+                        'descriptions' => $row['descriptions']
                     ],
                     [
-                        'icon' => ($row['icon']) ? $this->uploadIcon($row['icon']) : null
+                        'active' => ($row['active'] == 1) ? 1 : 0,
                     ]
                 );
             }
-	    }
-
-    }
-
-    public function uploadIcon($icon = '')
-    {   
-        if($icon){ 
-            if(file_exists(public_path().'/'.$icon))
-                return $icon;
-            return null;
         }
-        return null;
     }
 }

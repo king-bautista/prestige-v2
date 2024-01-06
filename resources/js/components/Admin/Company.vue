@@ -9,9 +9,8 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewCompany="AddNewCompany"
-									v-on:editButton="editCompany" v-on:downloadCsv="downloadCsv"
-									v-on:downloadTemplate="downloadTemplate"  
-									ref="dataTable">
+									v-on:editButton="editCompany" v-on:modalBatchUpload="modalBatchUpload"
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -278,7 +277,8 @@
 						</div>
 					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary btn-sm float-right" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary btn-sm float-right"
+							data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary btn-sm float-right" v-show="add_record"
 							@click="storeCompany">Add New Company</button>
 						<button type="button" class="btn btn-primary btn-sm float-right" v-show="edit_record"
@@ -306,7 +306,8 @@
 						</div>
 					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary btn-sm float-right" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary btn-sm float-right"
+							data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
@@ -341,13 +342,16 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Name <span
+									class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" v-model="contract.name" placeholder="Contract Name" required>
+								<input type="text" class="form-control" v-model="contract.name" placeholder="Contract Name"
+									required>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">Brands <span
+									class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
 								<multiselect v-model="contract.brands" :options="company.brands" :multiple="true"
 									:close-on-select="true" placeholder="Select Brands" label="name" track-by="name">
@@ -355,7 +359,8 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-4 col-form-label">SSP <span class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-4 col-form-label">SSP <span
+									class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-8">
 								<multiselect v-model="contract.screens" :options="screens" :multiple="false"
 									:close-on-select="true" placeholder="Select Screens" label="site_screen_location"
@@ -390,13 +395,15 @@
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-4 col-form-label">Reference Code</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" v-model="contract.reference_code" placeholder="Reference Code">
+								<input type="text" class="form-control" v-model="contract.reference_code"
+									placeholder="Reference Code">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-4 col-form-label">Business ID</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" v-model="contract.business_id" placeholder="Business ID">
+								<input type="text" class="form-control" v-model="contract.business_id"
+									placeholder="Business ID">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -408,13 +415,15 @@
 						<div class="form-group row">
 							<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
 							<div class="col-sm-8">
-								<date-picker v-model="contract.start_date" placeholder="YYYY-MM-DD" :config="options" id="date_from" autocomplete="off"></date-picker>
+								<date-picker v-model="contract.start_date" placeholder="YYYY-MM-DD" :config="options"
+									id="date_from" autocomplete="off"></date-picker>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="userName" class="col-sm-4 col-form-label">End Date</label>
 							<div class="col-sm-8">
-								<date-picker v-model="contract.end_date" placeholder="YYYY-MM-DD" :config="options" id="date_to" autocomplete="off"></date-picker>
+								<date-picker v-model="contract.end_date" placeholder="YYYY-MM-DD" :config="options"
+									id="date_to" autocomplete="off"></date-picker>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -449,7 +458,8 @@
 						</div>
 					</div><!-- /.card-body -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary btn-sm float-right" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary btn-sm float-right"
+							data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary btn-sm float-right" v-show="add_contract"
 							@click="storeContract">Add New Contract</button>
 						<button type="button" class="btn btn-primary btn-sm float-right" v-show="edit_contract"
@@ -492,7 +502,38 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -504,7 +545,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import Multiselect from 'vue-multiselect';
 
-import datePicker from 'vue-bootstrap-datetimepicker';    
+import datePicker from 'vue-bootstrap-datetimepicker';
 // Import date picker css
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 
@@ -603,6 +644,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
@@ -685,7 +733,7 @@ export default {
 			this.company.contracts = [];
 			this.data_list = false;
 			this.data_form = true;
-			$('#company-details').modal('show');	
+			$('#company-details').modal('show');
 		},
 
 		modalAdd: function () {
@@ -801,7 +849,7 @@ export default {
 			this.contract.active = false;
 			this.add_contract = true;
 			this.edit_contract = false;
-			this.edit_record = false;		
+			this.edit_record = false;
 			$('#contract-form').modal('show');
 		},
 
@@ -893,6 +941,34 @@ export default {
 					this.edit_record = true;
 					$('#contract-form').modal('show');
 				});
+		},
+
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/company/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
 		},
 
 		downloadCsv: function () {

@@ -5,6 +5,7 @@ namespace App\Models\AdminViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Site;
 use App\Models\SiteMap;
 use App\Models\SiteBuilding;
 
@@ -43,6 +44,7 @@ class SiteBuildingLevelViewModel extends Model
      * @var string
      */
 	public $appends = [
+        'site_name',
         'building_name',
         'building_floor_name',
     ];
@@ -50,6 +52,10 @@ class SiteBuildingLevelViewModel extends Model
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
+    public function getSiteNameAttribute() 
+    {
+        return Site::find($this->site_id)->name;
+    }
     public function getBuildingNameAttribute() 
     {
         return SiteBuilding::find($this->site_building_id)->name;

@@ -13,7 +13,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="flooractionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewFloor="AddNewFloor"
 									v-on:editButton="editFloor" v-on:DeleteFloor="DeleteFloor"
-									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
+									v-on:modalBatchUploadFloor="modalBatchUploadFloor" v-on:downloadCsv="downloadCsv"
 									v-on:downloadTemplate="downloadTemplate" ref="floorsDataTable">
 								</Table>
 							</div>
@@ -100,6 +100,38 @@
 				</div>
 			</div>
 		</div>
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModalFloor" tabindex="-1" role="dialog" aria-labelledby="batchModalLabelFloor"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabelFloor">Batch Uploadxxxxxxxxxxxxxxxxxxxxx</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUploadFloor()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInputFloor">
+									<label class="custom-file-label" id="batchInputLabelFloor" for="batchInputFloor">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatchFloor">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 	</div>
 </template>
@@ -167,7 +199,7 @@ export default {
 				},
 				batchUpload: {
 					title: 'Batch Upload',
-					v_on: 'modalBatchUpload',
+					v_on: 'modalBatchUploadFloor',
 					icon: '<i class="fas fa-upload"></i> Batch Upload',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
@@ -256,30 +288,30 @@ export default {
 				});
 		},
 
-		modalBatchUpload: function () {
-			$('#batchModal').modal('show');
+		modalBatchUploadFloor: function () {
+			$('#batchModalFloor').modal('show');
 		},
 
-		handleFileUpload: function () {
+		handleFileUploadFloor: function () {
 			this.file = this.$refs.file.files[0];
-			$('#batchInputLabel').html(this.file.name)
+			$('#batchInputLabelFloor').html(this.file.name)
 		},
 
-		storeBatch: function () {
+		storeBatchFloor: function () {
 			let formData = new FormData();
 			formData.append('file', this.file);
 
-			axios.post('/admin/amenity/batch-upload', formData,
+			axios.post('/admin/site/floor/batch-upload', formData,
 				{
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					}
-				}).then(response => {
+				}).then(response => { 
 					this.$refs.file.value = null;
-					this.$refs.dataTable.fetchData();
+					this.$refs.floorsDataTable.fetchData();
 					toastr.success(response.data.message);
-					$('#batchModal').modal('hide');
-					$('#batchInputLabel').html('Choose File');
+					$('#batchModalFloor').modal('hide');
+					$('#batchInputLabelFloor').html('Choose File');
 					//window.location.reload();
 				})
 		},

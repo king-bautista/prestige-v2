@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\IllustrationsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Imports\IllustrationsImport;
 
 use App\Models\CompanyCategory;
 use App\Models\AdminViewModels\CompanyCategoryViewModel;
@@ -173,6 +174,23 @@ class IllustrationsController extends AppBaseController implements Illustrations
         }
     }
 
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new IllustrationsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try {
@@ -190,8 +208,8 @@ class IllustrationsController extends AppBaseController implements Illustrations
                     'site_id' => $illustration->site_id,
                     'site_name' => $illustration->site_name,
                     'label' => $illustration->label,
-                    'kiosk_image_primary_path' => $illustration->kiosk_image_primary_path,
-                    'kiosk_image_top_path' => $illustration->kiosk_image_top_path,
+                    'kiosk_image_primary' => $illustration->kiosk_image_primary_path,
+                    'kiosk_image_top' => $illustration->kiosk_image_top_path,
                     'online_image_primary' => $illustration->online_image_primary,
                     'online_image_top' => $illustration->online_image_top,
                     'mobile_image_primary' => $illustration->mobile_image_primary,
@@ -244,8 +262,8 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 'site_id' => '',
                 'site_name' => '',
                 'label' => '',
-                'kiosk_image_primary_path' => '',
-                'kiosk_image_top_path' => '',
+                'kiosk_image_primary' => '',
+                'kiosk_image_top' => '',
                 'online_image_primary' => '',
                 'online_image_top' => '',
                 'mobile_image_primary' => '',

@@ -11,6 +11,17 @@ class FAQ extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'question',
+        'answer',
+        'active',
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>

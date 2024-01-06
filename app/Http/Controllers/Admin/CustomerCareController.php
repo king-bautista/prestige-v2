@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Interfaces\CustomerCareControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomerCareRequest;
+use App\Imports\CustomerCaresImport;
 use App\Exports\Export;
 use Storage;
 use App\Models\Concern;
@@ -187,6 +188,23 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
         }
     }
 
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new CustomerCaresImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+    
     public function downloadCsv()
     {
         try {
@@ -218,6 +236,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                     'assigned_to_email' => ($customer->admin_details) ? $customer->admin_details['email'] : '',
                     'internal_remark' => $customer->internal_remark,
                     'external_remark' => $customer->external_remark,
+                    'image' => $customer->image,
                     'active' => $customer->active,
                     'created_at' => $customer->created_at,
                     'updated_at' => $customer->updated_at,
@@ -280,6 +299,7 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
                 'assigned_to_email' => '',
                 'internal_remark' => '',
                 'external_remark' => '',
+                'ímage' => '',
                 'active' =>  '',
                 'created_at' => '',
                 'updated_at' => '',

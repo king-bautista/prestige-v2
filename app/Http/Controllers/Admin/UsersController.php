@@ -167,7 +167,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             foreach ($admin_management as $admin) {
                 $reports[] = [
                     'id' => $admin->id,
-                    'full_nama' => $admin->full_name,
+                    'full_name' => $admin->full_name,
                     'email' => $admin->email,
                     'email_verified_at' => $admin->email_verified_at,
                     'password' => $admin->password,
@@ -224,7 +224,7 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         try {
             $reports[] = [
                 'id' => '',
-                    'full_nama' => '',
+                    'full_name' => '',
                     'email' => '',
                     'email_verified_at' => '',
                     'password' => '',

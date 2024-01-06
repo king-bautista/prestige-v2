@@ -658,7 +658,7 @@ export default {
 			let formData = new FormData();
 			formData.append('file', this.file);
 
-			axios.post('/admin/amenity/batch-upload', formData,
+			axios.post('/admin/site/batch-upload', formData,
 				{
 					headers: {
 						'Content-Type': 'multipart/form-data'

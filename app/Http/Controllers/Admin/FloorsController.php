@@ -169,7 +169,7 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
                 $reports[] = [
                     'id' => $level->id,
                     'site_id' => $level->site_id,
-                    'site_name' => $level->building_name,
+                    'site_name' => $level->site_name,
                     'site_building_id' => $level->site_building_id,
                     'site_building_name' => $level->building_name,
                     'name' => $level->name,

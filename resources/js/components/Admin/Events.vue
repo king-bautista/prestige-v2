@@ -7,17 +7,10 @@
 					<div class="col-md-12">
 						<div class="card">
 							<div class="card-body">
-								<Table 
-                                    :dataFields="dataFields" 
-                                    :dataUrl="dataUrl" 
-                                    :actionButtons="actionButtons"
-									:otherButtons="otherButtons" 
-                                    :primaryKey="primaryKey" 
-                                    v-on:AddNewEvent="AddNewEvent"
-									v-on:editButton="editEvent"
-									v-on:downloadCsv="downloadCsv" 
-									v-on:downloadTemplate="downloadTemplate"
-                                    ref="dataTable">
+								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
+									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewEvent="AddNewEvent"
+									v-on:editButton="editEvent" v-on:modalBatchUpload="modalBatchUpload"
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -45,7 +38,8 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Banner <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
 									<input type="file" accept="image/*" ref="fileImgBanner" @change="bannerChange">
 									<footer class="blockquote-footer">image max size is 355 x 660 pixels</footer>
@@ -54,8 +48,9 @@
 									<img v-if="imgBanner" :src="imgBanner" class="img-thumbnail" />
 								</div>
 							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<select class="custom-select" v-model="event.site_id">
 										<option value="">Select Site</option>
@@ -64,29 +59,35 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Event<span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Event<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="event.event_name" placeholder="Event Name" maxlength="15" required>
+									<input type="text" class="form-control" v-model="event.event_name"
+										placeholder="Event Name" maxlength="15" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Event Date <span class="font-italic text-danger"> *</span></label>
+								<label for="lastName" class="col-sm-4 col-form-label">Event Date <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="event.event_date" placeholder="Event Date" maxlength="15" required>
+									<input type="text" class="form-control" v-model="event.event_date"
+										placeholder="Event Date" maxlength="15" required>
 								</div>
 							</div>
-                            <div class="form-group row">
-                                <label for="userName" class="col-sm-4 col-form-label">Start Date</label>
-                                <div class="col-sm-8">
-                                    <date-picker v-model="event.start_date" placeholder="YYYY-MM-DD" :config="options" id="date_from" autocomplete="off"></date-picker>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="userName" class="col-sm-4 col-form-label">End Date</label>
-                                <div class="col-sm-8">
-                                    <date-picker v-model="event.end_date" placeholder="YYYY-MM-DD" :config="options" id="date_to" autocomplete="off"></date-picker>
-                                </div>
-                            </div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="event.start_date" placeholder="YYYY-MM-DD" :config="options"
+										id="date_from" autocomplete="off"></date-picker>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">End Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="event.end_date" placeholder="YYYY-MM-DD" :config="options"
+										id="date_to" autocomplete="off"></date-picker>
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -111,12 +112,43 @@
 			</div>
 		</div>
 		<!-- End Modal Add New User -->
-
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
 import Table from '../Helpers/Table';
-import datePicker from 'vue-bootstrap-datetimepicker';    
+import datePicker from 'vue-bootstrap-datetimepicker';
 // Import date picker css
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 
@@ -136,13 +168,13 @@ export default {
 				active: 0,
 			},
 			imgBanner: '',
-            site_list: [],
-            options: {
+			site_list: [],
+			options: {
 				format: 'YYYY/MM/DD',
 				useCurrent: false,
 			},
 			add_record: true,
-			edit_record: false,            
+			edit_record: false,
 			dataFields: {
 				image_url_path: {
 					name: "Banner",
@@ -190,6 +222,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
@@ -209,11 +248,11 @@ export default {
 	},
 
 	created() {
-        this.getSites();
+		this.getSites();
 	},
 
 	methods: {
-        getSites: function () {
+		getSites: function () {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
 		},
@@ -255,11 +294,11 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-            .then(response => {
-                toastr.success(response.data.message);
-                this.$refs.dataTable.fetchData();
-                $('#event-form').modal('hide');
-            })
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#event-form').modal('hide');
+				})
 		},
 
 		editEvent: function (id) {
@@ -268,15 +307,15 @@ export default {
 					var event = response.data.data;
 					this.event.id = id;
 					this.event.site_id = event.site_id;
-                    this.event.event_name = event.event_name;
-                    this.event.location = event.location;
-                    this.event.event_date = event.event_date;
-                    this.event.start_date = event.start_date;
-                    this.event.end_date = event.end_date;
-                    this.imgBanner = event.image_url_path;
+					this.event.event_name = event.event_name;
+					this.event.location = event.location;
+					this.event.event_date = event.event_date;
+					this.event.start_date = event.start_date;
+					this.event.end_date = event.end_date;
+					this.imgBanner = event.image_url_path;
 					this.event.image_url = '',
-                    this.event.active = event.active;
-                    this.$refs.fileImgBanner.value = '';
+						this.event.active = event.active;
+					this.$refs.fileImgBanner.value = '';
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -302,13 +341,39 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-            .then(response => {
-                toastr.success(response.data.message);
-                this.$refs.dataTable.fetchData();
-                $('#event-form').modal('hide');
-            })
-        },
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#event-form').modal('hide');
+				})
+		},
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
 
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/event/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
+		},
 		downloadCsv: function () {
 			axios.get('/admin/event/download-csv')
 				.then(response => {
@@ -334,7 +399,7 @@ export default {
 
 	components: {
 		Table,
-        datePicker
+		datePicker
 	}
 };
 </script> 

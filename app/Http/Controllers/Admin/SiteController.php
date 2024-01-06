@@ -266,12 +266,12 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
             $sites_management = SiteViewModel::get();
             $reports = [];
-            foreach ($sites_management as $site) {
+            foreach ($sites_management as $site) { 
                 $reports[] = [
                     'id' => $site->id,
                     'serial_number' => $site->serial_number,
                     'name' => $site->name,
-                    'description' => $site->descriptions,
+                    'descriptions' => $site->descriptions,
                     'site_logo' => ($site->site_logo != "") ? URL::to("/" . $site->site_logo) : " ",
                     'site_banner' => ($site->site_banner != "") ? URL::to("/" . $site->site_banner) : " ",
                     'site_background' => ($site->site_background != "") ? URL::to("/" . $site->site_background) : " ",
@@ -283,7 +283,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                     'instagram' => $site->details['instagram'],
                     'twitter' => $site->details['twitter'],
                     'website' => $site->details['website'],
-                    'schedules' => $site->details,
+                    'schedules' => $site->details['schedules'],
                     //'operational_hours' => $this->getOperationalHour($site->details),
                         //'time_from' => ($site->details['time_from']),
                          //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
@@ -333,7 +333,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'id' => '',
                 'serial_number' => '',
                 'name' => '',
-                'description' => '',
+                'descriptions' => '',
                 'site_logo' => '',
                 'site_banner' => '',
                 'site_background' => '',
