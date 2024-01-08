@@ -178,7 +178,7 @@
             } 
 
             .subscriber-holder {
-                border: solid 1px;
+                width: 1101px;
             }
             
         </style>
