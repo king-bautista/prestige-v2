@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Portal\Interfaces\FloorsControllerInterface;
 use Illuminate\Http\Request;
 
-use App\Models\SiteBuildingLevel;
 use App\Models\SiteMap;
-use App\Models\ViewModels\SiteBuildingLevelViewModel;
+use App\Models\SiteBuildingLevel;
+use App\Models\AdminViewModels\SiteBuildingLevelViewModel;
 
 class FloorsController extends AppBaseController implements FloorsControllerInterface
 {

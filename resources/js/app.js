@@ -120,6 +120,7 @@ Vue.component('portal-manage-maps', require('./components/Portal/ManageMaps.vue'
 
 Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
 Vue.component('portal-customer-care', require('./components/Portal/PortalCustomerCare.vue').default);
+Vue.component('portal-customer-care-view-ticket', require('./components/Portal/PortalCustomerCareViewTicket.vue').default);
 Vue.component('portal-faqs', require('./components/Portal/FAQs.vue').default);
 
 Vue.component('portal-report_kiosk_usage', require('./components/Portal/ReportKioskUsage.vue').default);
@@ -209,9 +210,6 @@ const app = new Vue({
     },
 
     mounted() {
-        // document.addEventListener('touchstart', this.getTouchPoints);
-        // document.addEventListener('touchend', this.getTouchPoints);
-        // document.addEventListener('touchmove', this.getTouchPoints);
         this.enableInterceptor();
     },
 

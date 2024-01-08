@@ -1,0 +1,254 @@
+<!-- title -->
+<div class="p-3 font-weight-bold nav-titles">Search</div>
+
+<div id="keyboard-section" class="row">
+    <div class="col-md-10 offset-md-1 mt-5 pt-5">
+       <form class="row form text-center" id="form_search">
+            <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
+                <input type="text" id="code" name="code" class="form-control input-mg search-box">
+                <button class="btn search-box-button translateme" type="button" data-en="Search">Search</button>
+                <label class="notification">Please type at least two (2) letters to search.</label>
+            </div>                    
+            <div class="softkeys softkeys-search-page mt-5" data-target="input[name='code']"></div>
+        </form>
+    </div>
+</div>
+
+<div class="p-2 text-center mx-auto title-page-container2 search-for">
+    <div class="title-page-content-2">
+        You searched for ‘<span id="search_str"></span>’:
+    </div>
+</div>
+
+<div id="searchList">
+    <div class="slideshow-content-container search-results">
+    </div>
+</div>
+
+<div id="searchNone">
+    <div class="searchDefaultMessage text-center">
+        No results found
+    </div>
+</div>
+
+
+@push('scripts')
+<script>
+    var suggestions =  "{{ $suggestions }}";
+    var site_id = "{{ $site->id }}";
+    var tenant_searchList = '';
+
+    $(document).ready(function() {
+        var suggestion_list = JSON.parse(decodeEntities(suggestions));
+
+        $("#form_search").submit(function(e){
+            e.preventDefault();
+        });
+
+        $('#code').autocomplete({
+            minLength: 2,
+            source: suggestion_list,
+            select: function(event, ui) {
+                if(ui.item.id)
+                {
+                    onClickSuggest(ui.item.id);
+                }else{
+                    event.preventDefault();
+                    this.value = $('<div />').html(ui.item.label).text();
+                    $(".search-box-button").trigger('click');
+                }
+            }
+        }).data("uiAutocomplete")._renderItem = function (ul, item) {
+            let text = decodeEntities(item.value);
+
+            var newText = String(text).replace(
+                    new RegExp(this.term, "gi"),
+                    "<span class='prestige-text-color text-bold'>$&</span>");
+            var floor = item.floor_name === null?"": ", " + item.floor_name;
+            var bldg = item.building_name === null?"": ", " + item.building_name;
+            
+            if (item.building_name == 'Main Building'){
+                var attrib = floor;
+            }else{
+                var attrib = floor + bldg;
+            }
+
+            if(item.address !== null || item.address !== 'undefined' || item.address !== 'null') {
+                var attrib = ", " + item.address;
+            }
+
+            if(attrib === null || attrib === ', null' || attrib === ', undefined')
+                attrib = '';
+
+            return $("<li></li>")
+                .data("item.autocomplete", item)
+                .append("<div>" + newText + attrib + "</div>")
+                .appendTo(ul);
+        };
+
+        // KEYBOARD
+        $('.softkeys').softkeys({
+            target : $('.softkeys').data('target'),
+            layout : [
+                [
+                    '1','2','3','4','5','6','7','8','9','0',
+                ],
+                [
+                    ['Q','~'],
+                    ['W','!'],
+                    ['E','@'],
+                    ['R','#'],
+                    ['T','$'],
+                    ['Y','%'],
+                    ['U','^'],
+                    ['I','&'],
+                    ['O','*'],
+                    ['P','('],
+                    ['-',')'],
+                ],
+                [
+                    ['A','['],
+                    ['S',']'],
+                    ['D','-'],
+                    ['F','+'],
+                    ['G','='],
+                    ['H',':'],
+                    ['J',';'],
+                    ['K','\''],
+                    ['L','&#34;'],
+                    ['&bsol;'],
+                ],
+                [
+                    'shift',
+                    ['Z','{'],
+                    ['X','}'],
+                    ['C','<'],
+                    ['V','>'],
+                    ['B','_'],
+                    ['N','?'],
+                    ['M','/'],
+                    'delete',
+                ],
+                [
+                    [','],
+                    'space',
+                    ['.'],
+                    'Search',
+                ]
+            ]
+        });
+
+        $('.search-box-button, .softkeys__btn--search').on('click', function() {
+            var search_key = $('#code').val();
+            tenant_searchList = '';
+            if (search_key.length >= 2) {
+                $('.notification').hide();
+                $.post( "/api/v1/search", { site_id: site_id, id: null, key_words: search_key } )
+                .done(function(responce) {
+                    if(responce.tenants.length > 0) {
+
+                        showTenantSearch(responce.tenants);
+                        showSubscriber(responce.suggest_subscribers)
+                        $('#search_str').html(search_key);
+                        $('.search-for').show();
+                        $('#keyboard-section').hide();
+                        $('#searchList').show();
+                    }
+                    else {
+                        $('#search_str').html(search_key);
+                        $('.search-for').show();
+                        $('#searchNone').show();
+                        $('#keyboard-section').hide();
+                        $('#searchList').hide();
+                    }
+                })
+            }
+            else {
+                $('.notification').show();
+            }
+        })
+    });
+
+    function showTenantSearch(search_results) {
+        $('.search-results').html('');
+        $('.search-results').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-search-list"></div>');
+        $.each(search_results, function(key,tenants) {
+            var tenant_list_element = '';
+            tenant_list_element = '<div class="item">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
+            tenant_list_element += '<div class="row tenants-'+key+'">';
+            tenant_list_element += '</div>';
+            tenant_list_element += '</div>';
+            tenant_list_element += '</div>';
+            $( ".owl-wrapper-tenant-search-list" ).append(tenant_list_element);
+
+            $.each(tenants, function(index,tenant) {
+                var tenant_item = '';
+                tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
+                tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
+                tenant_item += '<div class="tenant-store-contents">';
+                tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
+                tenant_item += '</div>';
+                tenant_item += '<div class="text-left tenant-store-details">';
+                tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
+                tenant_item += '<div class="tenant-store-status">';
+                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                if(tenant.is_subscriber)
+                    tenant_item += '<span class="featured_shop">Featured</span>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                tenant_item += '</div>';
+                $( ".tenants-"+key ).append(tenant_item);                
+                $('.tenant-item-'+tenant.id).on('click', function() {
+                    showTenantDetails(tenant);
+                });
+            });
+        }); 
+        owl_search = $('.owl-wrapper-tenant-search-list');
+        owl_search.owlCarousel({
+            margin: 0,
+            nav: false,
+            loop: false,
+            items: 1,
+        });
+    }
+
+    function showSubscriber(subscriber) {
+        var want_to_try = '';
+        want_to_try += '<div class="want-to-try">';
+        want_to_try += '<div class="row">';
+        want_to_try += '<div class="col-12 pl-170">';
+        want_to_try += '<span class="translateme" data-en="You might want to try : ">You might want to try : </span>';
+        want_to_try += '</div>';
+        want_to_try += '</div>';
+        want_to_try += '</div>';
+
+        want_to_try += '<div class="row">';
+        want_to_try += '<div class="col-12 pl-170">';
+        want_to_try += '<div class="subscriber-holder">';
+
+        $.each(subscriber, function(index,tenant) {
+            want_to_try += '<img class="shop-logo tenant-store" src="'+tenant.tenant_details.subscriber_logo+'">';
+            // show tenant
+        });
+
+        want_to_try += '</div>';
+        want_to_try += '</div>';
+        want_to_try += '</div>';
+
+        $('.search-results').append(want_to_try);
+    }
+
+    function onClickSuggest(id) {
+        var search_id = id;
+        var search_key = $('#code').val();
+
+        // SHOW TENANT
+        showTenantDetails(tenant);
+
+    }
+
+</script>
+@endpush

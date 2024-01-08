@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\UserViewModel;
+use App\Models\AdminViewModels\AdminViewModel;
+use App\Models\AdminViewModels\UserViewModel;
 
 /**
  * @OA\Info(
@@ -76,6 +76,27 @@ class AppBaseController extends Controller
         ];
 
         return response($response, $code);
+    }
+
+    public function checkBolean($bolean) 
+    {
+        switch(strval($bolean)) {
+            case "true":
+                return true;
+            break;
+            case "1":
+                return true;
+            break;
+            case "false":
+                return false;
+            break;         
+            case "0":
+                return false;
+            break;       
+            default:
+                return false;
+            break;
+        }    
     }
 
 }

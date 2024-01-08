@@ -5,9 +5,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Site : {{$site_details->name}}
-        <a type="button" href="/admin/sites" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back to Sites</a>
-        </h1>
+        <h1 class="m-0">Site : {{$site_details->name}}</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -21,8 +19,8 @@
 </div>
 <!-- /.content-header -->
 
-<admin-buildings></admin-buildings>
-<admin-building-floors></admin-building-floors>
+<admin-buildings :site-name="{{json_encode(strtolower(str_replace(' ','-',$site_details->name)))}}"></admin-buildings>
+<admin-building-floors :site-name="{{json_encode(strtolower(str_replace(' ','-',$site_details->name)))}}"></admin-building-floors>
 
 @stop
 

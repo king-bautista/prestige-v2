@@ -24,14 +24,25 @@ class CustomerCareRequest extends FormRequest
     public function rules()
     {
         return [
-            "assigned_to_alias" => "required|string",
-            "assigned_to_id" => "required|string",
-            "status_id" => "required",
-            "ticket_description" => "required|string",
-            "ticket_subject" => "required|string",
-            "last_name" => "required|string",
-            "first_name" => "required|string",
-            "user_id" => "required|string",
+            'status_id' => "required",
+            'concern_id' => "required",
+            'user_id' => "required",
+            'first_name' => "required|string",
+            'last_name' => "required|string",
+            'ticket_subject' => "required|string",
+            'ticket_description' => "required|string",
+            'assigned_to_id' => "required|integer",
+            'internal_remark' => "required|string",
+            'external_remark' => "required|string",
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'status_id.required' => 'The status field is required',
+            'concern_id.required' => 'The ticket type field is required.',
+            'user_id.required' => 'The user name field is required.',
+            'assigned_to_id.integer' => 'The assigned to id field is required.',
         ];
     }
 }

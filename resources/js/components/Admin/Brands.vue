@@ -10,7 +10,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewBrand="AddNewBrand"
 									v-on:editButton="editBrand" v-on:modalBatchUpload="modalBatchUpload"
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" 
+									ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -56,7 +57,7 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<textarea class="form-control" v-model="brand.descriptions"
@@ -185,10 +186,8 @@ export default {
 					type: "logo",
 				},
 				name: "Name",
-				descriptions: "Descriptions",
 				category_name: "Category Name",
 				supplemental_names: "Supplementals",
-				tag_names: "Tags",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -246,6 +245,13 @@ export default {
 					title: 'Download',
 					v_on: 'downloadCsv',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -307,7 +313,7 @@ export default {
 			this.add_record = true;
 			this.edit_record = false;
 			this.brand.name = '';
-			this.brand.description = '';
+			this.brand.descriptions = '';
 			this.brand.category_id = null;
 			this.brand.logo = '/images/no-image-available.png';
 			this.brand.supplementals = [];
@@ -326,17 +332,18 @@ export default {
 			formData.append("logo", this.brand.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
+			formData.append("active", this.brand.active);
 
 			axios.post('/admin/brand/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-					$('#brand-form').modal('hide');
-				})
+			.then(response => {
+				toastr.success(response.data.message);
+				this.$refs.dataTable.fetchData();
+				$('#brand-form').modal('hide');
+			})
 
 		},
 
@@ -348,7 +355,7 @@ export default {
 					this.brand.category_id = brand.category_id;
 					this.brand.name = brand.name;
 					this.brand.descriptions = brand.descriptions;
-					this.brand.supplementals = brand.supplementals;
+					this.brand.supplementals = brand.brand_details.supplementals;
 					this.brand.tags = brand.tags;
 					this.brand.active = brand.active;
 					this.add_record = false;
@@ -363,11 +370,11 @@ export default {
 					this.$refs.logo.value = null;
 					this.product_view = true;
 
-					brand.supplementals.forEach((value) => {
+					brand.brand_details.supplementals.forEach((value) => {
 						this.supplemental_ids.push(value.id);
 					});
 
-					brand.tags.forEach((value) => {
+					brand.brand_details.tags.forEach((value) => {
 						this.tags_ids.push(value.id);
 					});
 
@@ -384,6 +391,7 @@ export default {
 			formData.append("logo", this.brand.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
+			formData.append("active", this.brand.active);
 
 			axios.post('/admin/brand/update', formData, {
 				headers: {
@@ -427,6 +435,17 @@ export default {
 
 		downloadCsv: function () {
 			axios.get('/admin/brand/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+		
+		downloadTemplate: function () {
+			axios.get('/admin/brand/download-csv-template')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;

@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Tag;
-use App\Models\ViewModels\AdminViewModel;
 use App\Imports\TagsImport;
 use App\Exports\Export;
 use Storage;
@@ -18,7 +17,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 {
     public function __construct()
     {
-        $this->module_id = 32; 
+        $this->module_id = 32;
         $this->module_name = 'Tags';
     }
 
@@ -29,19 +28,14 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 
     public function list(Request $request)
     {
-        try
-        {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
-            $tags = Tag::when(request('search'), function($query){
+        try {
+            $tags = Tag::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($tags, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -52,13 +46,10 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 
     public function details($id)
     {
-        try
-        {
+        try {
             $tag = Tag::find($id);
             return $this->response($tag, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -69,8 +60,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 
     public function store(Request $request)
     {
-        try
-    	{
+        try {
             $data = [
                 'name' => $request->name,
                 'active' => 1,
@@ -79,9 +69,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             $tag = Tag::create($data);
 
             return $this->response($tag, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -92,21 +80,18 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 
     public function update(Request $request)
     {
-        try
-    	{
+        try {
             $tag = Tag::find($request->id);
 
             $data = [
                 'name' => $request->name,
-                'active' => (!$request->active) ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $tag->update($data);
 
             return $this->response($tag, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -117,14 +102,11 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $tag = Tag::find($id);
             $tag->delete();
             return $this->response($tag, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -135,13 +117,10 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
 
     public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new TagsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -154,13 +133,16 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
     {
         try {
 
-            $tag_management =  Tag::get();         
+            $tag_management =  Tag::get();
             $reports = [];
             foreach ($tag_management as $tag) {
                 $reports[] = [
-                    'name' => $tag->name,  
-                    'status' => ($tag->active == 1) ? 'Active' : 'Inactive',
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                    'active' => $tag->active,
+                    'created_at' => $tag->created_at,
                     'updated_at' => $tag->updated_at,
+                    'deleted_at' => $tag->deleted_at,
                 ];
             }
 
@@ -170,7 +152,47 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
                 Storage::delete($file);
             }
 
-            $filename = "tag_management.csv";
+            $filename = "tag-management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'name' => '',
+                'active' => '',
+                'created_at' => '', 
+                'updated_at' => '',
+                'deleted_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "tag-management-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

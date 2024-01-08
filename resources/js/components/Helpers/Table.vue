@@ -38,7 +38,7 @@
                         <th v-if="checkBox == true">
                             <!-- <input class="form-check-select" type="checkbox" value="" id="selectAll" name="selectAll" @click="checkedAll"> -->
                         </th>
-                        <th v-for="(tHeader, index) in dataFields" v-bind:key="index" class="text-nowrap">
+                        <th v-for="(tHeader, index) in dataFields" v-bind:key="index" class="text-nowrap tbl-header">
 	                        <span v-if="tHeader.type == 'Boolean'">
 	                        {{ tHeader.name }}
 	                        </span>
@@ -54,6 +54,9 @@
 	                        <span v-else>
 	                        {{ tHeader }}
 	                        </span>
+                            <span>
+                                <i class="fas fa-sort data-sort"></i>
+                            </span>
                     	</th>
                     </tr>
                 </thead>
@@ -108,7 +111,11 @@
             </table>
         </div>
 
-        <div v-if="!dataTable.length" class="d-flex align-items-center justify-content-center">
+        <div v-if="pre_loader" class="d-flex align-items-center justify-content-center">
+            <div class="loader"></div>
+        </div>
+        
+        <div v-if="!dataTable.length && !pre_loader" class="d-flex align-items-center justify-content-center">
             <p>No Record Found</p>
         </div>
 
@@ -213,6 +220,7 @@
                 tobeDeleted: 0,
                 filters: [],
                 helper: new Helpers(),
+                pre_loader: false,
         	}
         },
 
@@ -271,6 +279,8 @@
 
         	fetchData() {
                 //var id = this.$route.params.id;
+                this.dataTable = [];
+                this.pre_loader = true;
                 var data_url = this.dataUrl;
                 if(this.dataParams)
                     data_url = this.dataUrl+'/'+id;
@@ -287,6 +297,8 @@
                     this.dataTable = [];
                     this.dataTable = response.data.data;
                     this.meta = response.data.meta;
+                    this.pre_loader = false;
+                    window.scrollTo(0,0);
                 })
         	},
 
@@ -449,6 +461,58 @@
 
     .img-logo {
         max-width: 5rem;
+    }
+
+    .loader {
+        width: 4vmax;
+        height: 4vmax;
+        border-right: 2px solid #000;
+        border-radius: 100%;
+        animation: spinRight-9c7a2d6e 800ms linear infinite;
+        
+        &:before, &:after {
+            content: "";
+            width: 3vmax;
+            height: 3vmax;
+            display: block;
+            position: absolute;
+            top: calc(50% - 1.5vmax);
+            left: calc(50% - 1.5vmax);
+            border-left: 2px solid #3498db;
+            border-radius: 100%;
+            animation: spinLeft-9c7a2d6e 800ms linear infinite;
+        }
+        
+        &:after {
+            width: 2vmax;
+            height: 2vmax;
+            top: calc(50% - 1vmax);
+            left: calc(50% - 1vmax);
+            border: 0;
+            border-right: 2px solid #000;
+            animation: none;
+        }
+    }
+
+    @keyframes spinLeft {
+        from {transform:rotate(0deg);}
+        to {transform:rotate(720deg);}
+    }
+
+    @keyframes spinRight {
+        from {transform:rotate(360deg);}
+        to {transform:rotate(0deg);}
+    }
+
+    .tbl-header {
+        position: relative;
+        padding-right: 25px;
+    }
+    
+    .data-sort {
+        position: absolute;
+        right: 5px;
+        padding: 5px;
     }
 
 </style>

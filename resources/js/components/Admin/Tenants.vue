@@ -51,7 +51,7 @@
 								<div class="col-sm-9">
 									<multiselect v-model="tenant.brand_id" track-by="name" label="name"
 										placeholder="Select Brand" :options="brands" :searchable="true"
-										:allow-empty="false">
+										:allow-empty="false" :loading="isLoading" @search-change="getBrands">
 									</multiselect>
 								</div>
 							</div>
@@ -382,6 +382,7 @@ export default {
 			edit_record: false,
 			subscriber_logo: '',
 			brands: [],
+			isLoading: false,
 			sites: [],
 			property_owner: '',
 			buildings: [],
@@ -395,10 +396,7 @@ export default {
 				},
 				brand_name: "Brand Name",
 				site_name: "Site Name",
-				building_name: "Building Name",
-				floor_name: "Floor Name",
 				store_address: "Store Address",
-				// like_count: "Likes",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -482,7 +480,6 @@ export default {
 
 	created() {
 		this.getSites();
-		this.GetBrands();
 		this.getCompany();
 	},
 
@@ -498,9 +495,17 @@ export default {
 				.then(response => this.sites = response.data.data);
 		},
 
-		GetBrands: function () {
-			axios.get('/admin/brand/get-all')
-				.then(response => this.brands = response.data.data);
+		getBrands: function (query) {
+			this.isLoading = true;
+			axios.get('/admin/brand/search', {
+				params: {
+					search: query,
+				}
+			})
+			.then(response => {
+				this.brands = response.data.data;
+				this.isLoading = false;
+			});
 		},
 
 		getCompany: function () {
@@ -584,8 +589,8 @@ export default {
 			formData.append("site_building_level_id", this.tenant.site_building_level_id);
 			formData.append("company_id", this.tenant.company_id);
 			formData.append("space_number", this.tenant.space_number);
-			formData.append("client_locator_number", this.tenant.client_locator_number);
-			formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+			formData.append("client_locator_number", this.tenant.client_locator_number);formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+			
 			formData.append("active", this.tenant.active);
 			formData.append("is_subscriber", this.tenant.is_subscriber);
 			formData.append("subscriber_logo", this.tenant.subscriber_logo);
@@ -775,11 +780,14 @@ export default {
 		},
 
 		downloadTemplate: function () { 
-			const link = document.createElement('a');
-			link.href = '/uploads/csv/site-tenant-batch-upload.csv';
-			link.setAttribute('downloadFile', '/uploads/csv/site-tenant-batch-upload.csv'); //or any other extension
-			document.body.appendChild(link);
-			link.click();
+			axios.get('/admin/site/tenant/download-csv-template')
+				 .then(response => {
+                const link = document.createElement('a');
+                link.href = response.data.data.filepath;
+                link.setAttribute('download', response.data.data.filename); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+              })
 		},
 
 	},

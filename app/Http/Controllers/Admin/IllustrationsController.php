@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\IllustrationsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Imports\IllustrationsImport;
 
 use App\Models\CompanyCategory;
-use App\Models\ViewModels\CompanyCategoryViewModel;
-use App\Models\ViewModels\AdminViewModel;
+use App\Models\AdminViewModels\CompanyCategoryViewModel;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -35,15 +35,20 @@ class IllustrationsController extends AppBaseController implements Illustrations
     public function list(Request $request)
     {
         try {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $company_categories = CompanyCategoryViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('address', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('tin', 'LIKE', '%' . request('search') . '%');
+                return $query->where('label', 'LIKE', request('search') . '%')
+                    ->orWhere('c1.name', 'LIKE', request('search') . '%')
+                    ->orWhere('c2.name', 'LIKE', request('search') . '%')
+                    ->orWhere('label', 'LIKE', '%' . request('search'))
+                    ->orWhere('c1.name', 'LIKE', '%' . request('search'))
+                    ->orWhere('c2.name', 'LIKE', '%' . request('search'));
             })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->leftJoin('categories as c1', 'company_categories.category_id', '=', 'c1.id')
+            ->leftJoin('categories as c2', 'company_categories.sub_category_id', '=', 'c2.id')
+            ->select('company_categories.*')
+            ->orderBy('company_categories.updated_at', 'DESC')
+            ->paginate(request('perPage'));
+
             return $this->responsePaginate($company_categories, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -92,6 +97,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 'category_id' => ($request->category_id == 'null') ? 0 : $request->category_id,
                 'sub_category_id' => ($request->sub_category_id == 'null') ? 0 : $request->sub_category_id,
                 'site_id' => ($request->site_id == 'null') ? 0 : $request->site_id,
+                'label' => ($request->label) ? $request->label : null,
                 'kiosk_image_primary' => str_replace('\\', '/', $kiosk_image_primary_path),
                 'kiosk_image_top' => str_replace('\\', '/', $kiosk_image_top_path),
                 'active' => 1,
@@ -135,9 +141,10 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 'category_id' => ($request->category_id == 'null') ? 0 : $request->category_id,
                 'sub_category_id' => ($request->sub_category_id == 'null') ? 0 : $request->sub_category_id,
                 'site_id' => ($request->site_id == 'null') ? 0 : $request->site_id,
+                'label' => ($request->label) ? $request->label : null,
                 'kiosk_image_primary' => ($kiosk_image_primary_path) ? str_replace('\\', '/', $kiosk_image_primary_path) : $company_category->kiosk_image_primary,
                 'kiosk_image_top' => ($kiosk_image_top_path) ? str_replace('\\', '/', $kiosk_image_top_path) : $company_category->kiosk_image_top,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $company_category->update($data);
@@ -167,6 +174,23 @@ class IllustrationsController extends AppBaseController implements Illustrations
         }
     }
 
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new IllustrationsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try {
@@ -175,14 +199,25 @@ class IllustrationsController extends AppBaseController implements Illustrations
             $reports = [];
             foreach ($illustration_management as $illustration) {
                 $reports[] = [
-                    //'kiosk_image_primary_path' => ($illustration->kiosk_image_primary_path != "") ? URL::to("/" . $illustration->kiosk_image_primary_path) : " ",
-                    //'kiosk_image_top_path' => ($illustration->kiosk_image_top_path != "") ? URL::to("/" . $illustration->kiosk_image_top_path) : " ",
-                    //'company_name' => $illustration->company_name,
-                    //'category_name' => $illustration->category_name,
-                    //'sub_category_name' => $illustration->sub_category_name,
-                    //'site_name' => $illustration->site_name,
-                    'status' => ($illustration->active == 1) ? 'Active' : 'Inactive',
+                    'id' => $illustration->id,
+                    'company_id' => $illustration->company_id,
+                    'company_name' => $illustration->company_name,
+                    'category_id' => $illustration->category_id,
+                    'category_name' => $illustration->category_name,
+                    'sub_category_id' => $illustration->sub_category_id,
+                    'site_id' => $illustration->site_id,
+                    'site_name' => $illustration->site_name,
+                    'label' => $illustration->label,
+                    'kiosk_image_primary' => $illustration->kiosk_image_primary_path,
+                    'kiosk_image_top' => $illustration->kiosk_image_top_path,
+                    'online_image_primary' => $illustration->online_image_primary,
+                    'online_image_top' => $illustration->online_image_top,
+                    'mobile_image_primary' => $illustration->mobile_image_primary,
+                    'mobile_image_top' => $illustration->mobile_image_top,
+                    'active' => $illustration->active,
+                    'created_at' => $illustration->created_at,
                     'updated_at' => $illustration->updated_at,
+                    'deleted_at' => $illustration->deleted_at,
                 ];
             }
 
@@ -192,7 +227,60 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 Storage::delete($file);
             }
 
-            $filename = "illustration_management.csv";
+            $filename = "site-categories-illustration.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'company_id' => '',
+                'company_name' => '',
+                'category_id' => '',
+                'category_name' => '',
+                'sub_category_id' => '',
+                'site_id' => '',
+                'site_name' => '',
+                'label' => '',
+                'kiosk_image_primary' => '',
+                'kiosk_image_top' => '',
+                'online_image_primary' => '',
+                'online_image_top' => '',
+                'mobile_image_primary' => '',
+                'mobile_image_top' => '',
+                'active' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "site-categories-illustration-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

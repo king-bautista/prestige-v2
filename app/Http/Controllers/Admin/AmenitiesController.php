@@ -9,7 +9,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 use App\Models\Amenity;
-use App\Models\ViewModels\AdminViewModel;
+
+use App\Imports\AmenitiesImport;
 use App\Exports\Export;
 use Storage;
 use URL;
@@ -35,8 +36,6 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $amenitiess = Amenity::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -147,6 +146,23 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         {
             return response([
                 'message' => $e->getMessage(),
+                'status' => false,  
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new AmenitiesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
                 'status' => false,
                 'status_code' => 422,
             ], 422);
@@ -155,16 +171,19 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
 
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $amenity_management =  Amenity::get();         
             $reports = [];
             foreach ($amenity_management as $amenity) {
                 $reports[] = [
+                    'id' => $amenity->id,
                     'name' => $amenity->name,  
                     'icon' => ($amenity->icon != "") ? URL::to("/" . $amenity->icon) : " ",
-                    'status' => ($amenity->active == 1) ? 'Active' : 'Inactive',
+                    'active' => $amenity->active,
+                    'created_at' => $amenity->created_at,
                     'updated_at' => $amenity->updated_at,
+                    'deleted_at' => $amenity->deleted_at,
                 ];
             }
 
@@ -174,7 +193,51 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 Storage::delete($file);
             }
 
-            $filename = "amenity_management.csv";
+            $filename = "amenity-management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try 
+        {
+            $amenity_management =  Amenity::get();         
+            
+                $reports[] = [
+                    'id' => '',
+                    'name' => '',  
+                    'icon' => '',
+                    'active' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
+                ];
+            
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "amenity-management-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

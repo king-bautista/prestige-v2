@@ -47,7 +47,6 @@
                 <!-- End Page-content -->
             </div>
             <!-- Main Footer -->
-            <loader :is-visible="isLoading"></loader>
              @include('layout.portal.footer')
         </div>
         <!-- ./wrapper -->

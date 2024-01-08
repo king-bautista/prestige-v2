@@ -7,12 +7,8 @@
 					<div class="col-md-12">
 						<div class="card">
 							<div class="card-body">
-								<Table :dataFields="dataFields" 
-									:dataUrl="dataUrl" 
-									:actionButtons="actionButtons"
-									:otherButtons="otherButtons" 
-									:primaryKey="primaryKey" 
-									v-on:downloadCsv="downloadCsv"
+								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
+									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:downloadCsv="downloadCsv"
 									v-on:DefaultScreen="DefaultScreen"
 									ref="screensDataTable">
 								</Table>
@@ -55,12 +51,12 @@ export default {
 			dataFields: {
 				screen_location: "Location",
 				site_name: "Site Name",
-				orientation: "Orientation", 
+				orientation: "Orientation",
 				active: {
-					name: "Status", 
-					type:"Boolean", 
-					status: { 
-						0: '<span class="badge badge-danger">Deactivated</span>', 
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
@@ -102,7 +98,7 @@ export default {
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
-				},
+				}
 			}
 		};
 	},
@@ -122,8 +118,8 @@ export default {
 				})
 		},
 
-		downloadCsv: function () {
-			axios.get('/admin/site/screen/download-csv')
+		downloadCsv: function () { 
+			axios.get('/admin/site/maps/download-csv')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;
@@ -132,7 +128,6 @@ export default {
 					link.click();
 				})
 		},
-
 	},
 
 	components: {

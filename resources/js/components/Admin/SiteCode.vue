@@ -10,7 +10,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
 									v-on:AddNewSiteCode="AddNewSiteCode" v-on:editButton="editSiteCode"
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -125,6 +125,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			}
 		};
 	},
@@ -179,6 +186,17 @@ export default {
 		},
 		downloadCsv: function () {
 			axios.get('/admin/cinema/site-code/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		downloadTemplate: function () {
+			axios.get('/admin/cinema/site-code/download-csv-template')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;

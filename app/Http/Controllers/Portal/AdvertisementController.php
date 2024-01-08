@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateAdvertisementRequest;
 
 use App\Models\Advertisement;
-use App\Models\ViewModels\AdvertisementViewModel;
-use App\Models\ViewModels\UserViewModel;
+use App\Models\AdminViewModels\AdvertisementViewModel;
+use App\Models\AdminViewModels\UserViewModel;
 
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {
@@ -35,14 +35,19 @@ class AdvertisementController extends AppBaseController implements Advertisement
         {
             $id = Auth::guard('portal')->user()->id;
             $user = UserViewModel::find($id);
-            
+
             $advertisements = AdvertisementViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->where('serial_number', 'LIKE', '%' . request('search') . '%');
+                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
             })
             ->where('company_id', $user->company_id)
-            ->latest()
+            ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+            ->select('advertisements.*')
+            ->orderBy('advertisements.created_at', 'DESC')
             ->paginate(request('perPage'));
+
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

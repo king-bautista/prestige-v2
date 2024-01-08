@@ -8,18 +8,19 @@ use App\Http\Controllers\Admin\Interfaces\CompaniesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Exports\Export;
+use Storage;
+
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\ContractRequest;
+use App\Imports\CompaniesImport;
+
 
 use App\Models\Company;
 use App\Models\CompanyBrands;
 use App\Models\Contract;
-use App\Models\ViewModels\CompanyViewModel;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\ContractViewModel;
-use App\Exports\Export;
-use Storage;
-
+use App\Models\AdminViewModels\CompanyViewModel;
+use App\Models\AdminViewModels\ContractViewModel;
 
 class CompaniesController extends AppBaseController implements CompaniesControllerInterface
 {
@@ -82,18 +83,19 @@ class CompaniesController extends AppBaseController implements CompaniesControll
         try
     	{
             $data = [
-                'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
+                'parent_id' => ($request->parent_id) ? $request->parent_id : null,
                 'classification_id' => $request->classification_id,
                 'name' => $request->name,
-                'email' => $request->email,
-                'contact_number' => $request->contact_number,
-                'address' => $request->address,
-                'tin' => $request->tin,
-                'active' => 1
+                'email' => ($request->email) ? $request->email : null,
+                'contact_number' => ($request->contact_number) ? $request->contact_number : null,
+                'address' => ($request->address) ? $request->address : null,
+                'tin' => ($request->tin) ? $request->tin : null,
+                'active' => 1,
             ];
 
             $company = Company::create($data);
             $company->saveBrands($request->brands);
+            $company = CompanyViewModel::find($company->id);
 
             return $this->response($company, 'Successfully Created!', 200);
         }
@@ -114,14 +116,14 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $company = Company::find($request->id);
 
             $data = [
-                'parent_id' => ($request->parent_id == 'null') ? 0 : $request->parent_id,
+                'parent_id' => ($request->parent_id) ? $request->parent_id : null,
                 'classification_id' => $request->classification_id,
                 'name' => $request->name,
-                'email' => $request->email,
-                'contact_number' => $request->contact_number,
-                'address' => $request->address,
-                'tin' => $request->tin,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'email' => ($request->email) ? $request->email : null,
+                'contact_number' => ($request->contact_number) ? $request->contact_number : null,
+                'address' => ($request->address) ? $request->address : null,
+                'tin' => ($request->tin) ? $request->tin : null,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $company->update($data);
@@ -271,17 +273,18 @@ class CompaniesController extends AppBaseController implements CompaniesControll
     	{
             $data = [
                 'name' => $request->name,
-                'reference_code' => $request->reference_code,
-                'remarks' => $request->remarks,
-                'company_id' => $request->company_id,
-                'display_duration' => $request->display_duration,
-                'slots_per_loop' => $request->slots_per_loop,
-                'exposure_per_day' => $request->exposure_per_day,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'is_exclusive' => ($request->is_exclusive == false) ? 0 : $request->is_exclusive,
-                'is_indefinite' => ($request->is_indefinite == false) ? 0 : $request->is_indefinite,
-                'active' => $request->active
+                'reference_code' => ($request->reference_code) ? $request->reference_code : null,
+                'business_id' => ($request->business_id) ? $request->business_id : null,
+                'remarks' => ($request->remarks) ? $request->remarks : null,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'display_duration' => ($request->display_duration) ? $request->display_duration : 0,
+                'slots_per_loop' => ($request->slots_per_loop) ? $request->slots_per_loop : 0,
+                'exposure_per_day' => ($request->exposure_per_day) ? $request->exposure_per_day : 0,
+                'start_date' => ($request->start_date) ? $request->start_date: null,
+                'end_date' => ($request->end_date) ? $request->end_date : null,
+                'is_exclusive' => $this->checkBolean($request->is_exclusive),
+                'is_indefinite' => $this->checkBolean($request->is_indefinite),
+                'active' => 1
             ];
 
             $contract = Contract::create($data);
@@ -307,24 +310,25 @@ class CompaniesController extends AppBaseController implements CompaniesControll
 
     public function updateContract(ContractRequest $request)
     {
-        // try
-    	// {
+        try
+    	{
             $contract = Contract::find($request->id);
 
             $data = [
                 'serial_number' => ($contract->serial_number) ? $contract->serial_number : 'CTR-'.Str::padLeft($contract->id, 5, '0'),
                 'name' => $request->name,
-                'reference_code' => $request->reference_code,
-                'remarks' => $request->remarks,
-                'company_id' => $request->company_id,
-                'display_duration' => $request->display_duration,
-                'slots_per_loop' => $request->slots_per_loop,
-                'exposure_per_day' => $request->exposure_per_day,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'is_exclusive' => ($request->is_exclusive == false) ? 0 : $request->is_exclusive,
-                'is_indefinite' => ($request->is_indefinite == false) ? 0 : $request->is_indefinite,
-                'active' => ($request->active == false) ? 0 : $request->active,
+                'reference_code' => ($request->reference_code) ? $request->reference_code : null,
+                'business_id' => ($request->business_id) ? $request->business_id : null,
+                'remarks' => ($request->remarks) ? $request->remarks : null,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'display_duration' => ($request->display_duration) ? $request->display_duration : 0,
+                'slots_per_loop' => ($request->slots_per_loop) ? $request->slots_per_loop : 0,
+                'exposure_per_day' => ($request->exposure_per_day) ? $request->exposure_per_day : 0,
+                'start_date' => ($request->start_date) ? $request->start_date: null,
+                'end_date' => ($request->end_date) ? $request->end_date : null,
+                'is_exclusive' => $this->checkBolean($request->is_exclusive),
+                'is_indefinite' => $this->checkBolean($request->is_indefinite),
+                'active' => $this->checkBolean($request->active),
             ];
 
             $contract->update($data);
@@ -334,15 +338,15 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $contract = ContractViewModel::find($contract->id);
 
             return $this->response($contract, 'Successfully Created!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function deleteContract($id)
@@ -364,8 +368,8 @@ class CompaniesController extends AppBaseController implements CompaniesControll
 
     function duplicateContract($id) 
     {
-        // try
-    	// {
+        try
+    	{
             $contract = Contract::find($id)->toArray();
             $contract_details = ContractViewModel::find($id);
 
@@ -379,15 +383,31 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $new_contract = ContractViewModel::find($new_contract->id);
 
             return $this->response($new_contract, 'Successfully Deleted!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new CompaniesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function downloadCsv()
@@ -398,15 +418,21 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $reports = [];
             foreach ($company_management as $company) {
                 $reports[] = [
+                    'id' => $company->id,
+                    'parent_id' => $company->parent_id,
                     'name' => $company->name,
-                    'parent_company' => $company->parent_company,
-                    'classification_name' => $company->classification_name,
+                    'classification_id' => $company->classification_details['id'],
+                    'classification_name' => $company->classification_details['name'],
+                    //'classification_active' => $company->classification_details['active'],
+                    //'classification_updated_at' => $company->classification_details['updated_at'],
                     'email' => $company->email,
                     'contact_number' => $company->contact_number,
                     'address' => $company->address,
-                    'tin_number' => $company->tin,
-                    'status' => ($company->active == 1) ? 'Active' : 'Inactive',
+                    'tin' => $company->tin,
+                    'active' => $company->active,
+                    'created_at' => $company->created_at,
                     'updated_at' => $company->updated_at,
+                    'deleted_at' => $company->deleted_at,
                 ];
             }
 
@@ -417,6 +443,54 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             }
 
             $filename = "company.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+                $reports[] = [
+                    'id' => '',
+                    'parent_id' => '',
+                    'name' => '',
+                    'classification_id' => '',
+                    'classification_name' => '',
+                    //'classification_active' => '',
+                    //'classification_updated_at' => '',
+                    'email' => '',
+                    'contact_number' => '',
+                    'address' => '',
+                    'tin_number' => '',
+                    'status' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
+                ];
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "company-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

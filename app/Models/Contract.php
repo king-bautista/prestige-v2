@@ -19,6 +19,7 @@ class Contract extends Model
         'company_id',
         'name',
         'reference_code',
+        'business_id',
         'remarks',
         'is_indefinite',
         'is_exclusive',

@@ -8,23 +8,22 @@ use App\Http\Controllers\Admin\Interfaces\ModulesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ModuleRequest;
-
-use App\Models\Module;
-use App\Models\ViewModels\ModuleViewModel;
-use App\Models\ViewModels\AdminViewModel;
-
+use App\Imports\ModulesImport;
 use App\Exports\Export;
 use Storage;
 use URL;
 
+use App\Models\Module;
+use App\Models\AdminViewModels\ModuleViewModel;
+
 class ModulesController extends AppBaseController implements ModulesControllerInterface
 {
     /************************************
-    * 			MODULE MANAGEMENT		*
-    ************************************/
+     * 			MODULE MANAGEMENT		*
+     ************************************/
     public function __construct()
     {
-        $this->module_id = 4; 
+        $this->module_id = 4;
         $this->module_name = 'Modules';
     }
 
@@ -35,22 +34,17 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
     public function list(Request $request)
     {
-        try
-        {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
-            $modules = ModuleViewModel::when(request('search'), function($query){
+        try {
+            $modules = ModuleViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('link', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('role', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('class_name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('link', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('role', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('class_name', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($modules, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -61,13 +55,10 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
     public function details($id)
     {
-        try
-        {
+        try {
             $module = Module::find($id);
             return $this->response($module, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -78,8 +69,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
     public function store(ModuleRequest $request)
     {
-        try
-    	{
+        try {
             $data = [
                 'name' => $request->name,
                 'parent_id' => $request->parent_id,
@@ -92,9 +82,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
             $module = Module::create($data);
 
             return $this->response($module, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -105,8 +93,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
     public function update(ModuleRequest $request)
     {
-        try
-    	{
+        try {
             $module = Module::find($request->id);
 
             $data = [
@@ -121,9 +108,7 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
             $module->update($data);
 
             return $this->response($module, 'Successfully Modified!!!!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -134,14 +119,11 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $module = Module::find($id);
             $module->delete();
             return $this->response($module, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -152,13 +134,10 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
     public function getAllLinks()
     {
-        try
-        {
+        try {
             $modules = Module::whereNull('parent_id')->get();
             return $this->response($modules, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -169,10 +148,24 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
 
     public function getParent($id)
     {
-        try
-        {
+        try {
             $count = Module::where('parent_id', $id)->get()->count();
             return $this->response($count, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new ModulesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
         }
         catch (\Exception $e)
         {
@@ -185,21 +178,22 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
     }
 
     public function downloadCsv()
-    { 
+    {
         try {
-
             $module_management = ModuleViewModel::get();
             $reports = [];
             foreach ($module_management as $module) {
                 $reports[] = [
+                    'id' => $module->id,
+                    'parent_id' => $module->parent_id,
                     'name' => $module->name,
-                    'icon_class_name' => $module->class_name,
-                    'parent_link' => $module->parent_link,
-                    'role' => $module->role,
                     'link' => URL::to("" . $module->link),
-                    //'link' => ($module->link != "#") ? URL::to("/" . $module->link) : " ",
-                    'status' => ($module->active == 1) ? 'Active' : 'Inactive',
+                    'role' => $module->role,
+                    'class_name' => $module->class_name,
+                    'active' => $module->active,
+                    'created_at' => $module->created_ad,
                     'updated_at' => $module->updated_at,
+                    'deleted_at' => $module->deleted_at,
                 ];
             }
 
@@ -231,4 +225,47 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
         }
     }
 
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'parent_id' => '',
+                'name' => '',
+                'link' => '',
+                'role' => '',
+                'class_name' => '',
+                'active' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "module-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

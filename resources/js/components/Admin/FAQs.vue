@@ -9,7 +9,9 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewFAQs="AddNewFAQs"
-									v-on:editButton="editFAQs" v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:modalBatchUpload="modalBatchUpload"
+									v-on:editButton="editFAQs" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -37,15 +39,18 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="question" class="col-sm-4 col-form-label">Question <span class="font-italic text-danger"> *</span></label>
+								<label for="question" class="col-sm-4 col-form-label">Question <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="faqs.question" placeholder="Question">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="answer" class="col-sm-4 col-form-label">Answer <span class="font-italic text-danger"> *</span></label>
+								<label for="answer" class="col-sm-4 col-form-label">Answer <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" rows="5" v-model="faqs.answer" placeholder="Answer"></textarea>
+									<textarea class="form-control" rows="5" v-model="faqs.answer"
+										placeholder="Answer"></textarea>
 								</div>
 							</div>
 
@@ -73,9 +78,38 @@
 			</div>
 		</div>
 		<!-- End Modal Add New User -->
-
-
-
+<!-- Batch Upload -->
+<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -97,7 +131,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				shorten_question:"Question",
+				shorten_question: "Question",
 				shorten_answer: "Answer",
 				active: {
 					name: "Status",
@@ -137,10 +171,24 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -208,15 +256,52 @@ export default {
 					$('#faqs-form').modal('hide');
 				})
 		},
-		downloadCsv: function () { 
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/faq/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
+		},
+		downloadCsv: function () {
 			axios.get('/admin/faq/download-csv')
-				 .then(response => {
-                const link = document.createElement('a');
-                link.href = response.data.data.filepath;
-                link.setAttribute('download', response.data.data.filename); //or any other extension
-                document.body.appendChild(link);
-                link.click();
-              })
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+		downloadTemplate: function () {
+			axios.get('/admin/faq/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 
 	},

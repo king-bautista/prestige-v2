@@ -1,0 +1,23 @@
+Lookups
+- admin/amenities
+- admin/brands
+- admin/categories
+- admin/classifications
+- admin/supplementals
+- admin/tags
+
+PI Products
+admin/site/pi-products
+
+Site Screens
+- admin/site/screens
+
+Site Screen Products
+- admin/site/site-screen-products
+
+Site Management/ -> Sites/Buildings
+- admin/sites
+- admin/site/buildings/id
+
+Site Management/ -> Tenants
+ - admin/site/tenants

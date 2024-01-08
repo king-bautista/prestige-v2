@@ -21,6 +21,7 @@ class CreateBrandsTable extends Migration
             $table->string('name');
             $table->mediumText('descriptions')->nullable();      
             $table->mediumText('logo')->nullable();      
+            $table->mediumText('thumbnail')->nullable();      
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
@@ -51,6 +52,7 @@ class CreateBrandsTable extends Migration
             
             $table->bigIncrements('id');
             $table->bigInteger('brand_id')->unsigned()->nullable();
+            $table->bigInteger('tenant_id')->nullable()->index();
             $table->string('name');
             $table->mediumText('descriptions')->nullable();      
             $table->enum('type', ['product', 'promo']);

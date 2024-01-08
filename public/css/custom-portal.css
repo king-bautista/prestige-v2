@@ -246,3 +246,21 @@ margin-left: 10px;
 .offline {
     color: #FE5E80;
 }
+
+/* .img-thumbnail {
+    max-width: 4rem;
+} */
+
+.img-thumbnail-brands {
+    max-width: 4rem;
+}
+
+.modal-title {
+    color: #353535;
+}
+
+.custom-btn:not(:disabled):not(.disabled).active {
+    color: #fff;
+    background-color: #568ae5;
+    border-color: #88a7df;
+}

@@ -19,13 +19,14 @@ class CompanyCategory extends Model
         'category_id',
         'sub_category_id',
         'site_id',
-        'active',
+        'label',
         'kiosk_image_primary',
         'kiosk_image_top',
         'online_image_primary',
         'online_image_top',
         'mobile_image_primary',
         'mobile_image_top',
+        'active',
     ];
 
     /**

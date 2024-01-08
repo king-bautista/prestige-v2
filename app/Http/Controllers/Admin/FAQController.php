@@ -8,10 +8,9 @@ use App\Http\Controllers\Admin\Interfaces\FAQControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\FAQsRequest;
+use App\Imports\FAQsImport;
 
 use App\Models\FAQ;
-use App\Models\ViewModels\FAQViewModel;
-use App\Models\ViewModels\AdminViewModel;
 use App\Exports\Export;
 use Storage;
 use Route;
@@ -37,14 +36,13 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     public function list(Request $request)
     {
         try {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-            $faqs = FAQViewModel::when(request('search'), function ($query) {
-
+            $faqs = FAQ::when(request('search'), function ($query) {
                 return $query->where('faqs.question', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('faqs.answer', 'LIKE', '%' . request('search') . '%');
             })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->latest()
+            ->paginate(request('perPage'));
+
             return $this->responsePaginate($faqs, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -58,7 +56,7 @@ class FAQController extends AppBaseController implements FAQControllerInterface
     public function details($id)
     {
         try {
-            $faq = FAQViewModel::find($id);
+            $faq = FAQ::find($id);
             return $this->response($faq, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -127,17 +125,38 @@ class FAQController extends AppBaseController implements FAQControllerInterface
         }
     }
 
+    Public function batchUpload(Request $request)
+    { 
+        try
+        {
+            Excel::import(new FAQsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
         try {
 
-            $faqs = FAQViewModel::get();
+            $faqs = FAQ::get();
             $reports = [];
             foreach ($faqs as $faq) {
                 $reports[] = [
+                    'id' => $faq->id,
                     'question' => $faq->question,
                     'answer' => $faq->answer,
-                    'status' => ($faq->active == 1)?'Active': 'Inactive'
+                    'active' => $faq->active,
+                    'created_at' => $faq->created_at,
+                    'updated_at' => $faq->updated_at,
+                    'deleted_at' => $faq->deleted_at,
                 ];
             }
 
@@ -148,6 +167,52 @@ class FAQController extends AppBaseController implements FAQControllerInterface
             }
 
             $filename = "faq.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+
+            $faqs = FAQ::get();
+            $reports = [];
+            foreach ($faqs as $faq) {
+                $reports[] = [
+                    'id' => '',
+                    'question' => '',
+                    'answer' => '',
+                    'active' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "faq-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

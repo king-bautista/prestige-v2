@@ -8,15 +8,13 @@ use App\Http\Controllers\Admin\Interfaces\CinemasControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Helpers\CinemaHelper;
+use App\Exports\Export;
+use Storage;
 
 use App\Models\CinemaSite;
 use App\Models\CinemaGenre;
 use App\Models\CinemaSchedule;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\CinemaScheduleViewModel;
-use App\Exports\Export;
-use Storage;
-
+use App\Models\AdminViewModels\CinemaScheduleViewModel;
 
 class CinemasScheduleController extends AppBaseController implements CinemasControllerInterface
 {
@@ -38,8 +36,6 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $movies = CinemaScheduleViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
@@ -61,7 +57,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     {
         try
     	{
-            $cinema_site = CinemaSite::find($request->site_id);
+            $cinema_site = CinemaSite::find(1);
             $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
 
             $cinema_helper = new CinemaHelper($cinema_id);
@@ -103,10 +99,12 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     public function saveSchedule($movie, $sessions, $casting, $site_id)
     {
         foreach ($sessions as $time_slot) {
+            $synopsis = filter_var(htmlentities(preg_replace("/\r\n|\r|\n/", '<br/>', $movie->Synopsis)), FILTER_SANITIZE_STRING);
+
             $data = [
                 'site_id' => $site_id,
-                'title'=> $movie->Title,
-                'synopsis' => addslashes($movie->Synopsis),
+                'title'=> addslashes(filter_var($movie->Title, FILTER_SANITIZE_STRING)),
+                'synopsis' => addslashes($synopsis),
                 'opening_date' => $movie->OpeningDate,
                 'rating' => $movie->Rating,
                 'rating_description'=> $movie->RatingDescription,
@@ -115,7 +113,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
                 'trailer_url' => addslashes($movie->TrailerUrl),
                 'cinema_id_code' => $movie->CinemaId,
                 'screen_code'=> $time_slot->ScreenNameAlt,
-                'screen_name'=> addslashes($time_slot->ScreenName),
+                'screen_name'=> addslashes(filter_var($time_slot->ScreenName, FILTER_SANITIZE_STRING)),
                 'film_id' => $movie->ScheduledFilmId,
                 'genre'=> $movie->GenreId,
                 'genre2'=> $movie->GenreId2,
@@ -153,13 +151,28 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
             $reports = [];
             foreach ($cinema_schedule_management as $schedule) {
                 $reports[] = [  
-                    'title' => $schedule->title,
-                    'synopsis' => $schedule->synopsis,
+                    'id' => $schedule->id,
+                    'site_id' => $schedule->site_id,
                     'site_name' => $schedule->site_name,
+                    'title' => $schedule->tile,
+                    'synopsis' => $schedule->synopsis,
+                    'opening_date' => $schedule->opening_date,
                     'rating' => $schedule->rating,
+                    'rating_description' => $schedule->rating_description,
+                    'runtime' => $schedule->runtime,
+                    'casting' => $schedule->casting,
+                    'trailer_url' => $schedule->trailer_url,
+                    'cinema_id' => $schedule->cinema_id,
+                    'cinema_id_code' => $schedule->cinema_id_code,
+                    'screen_code' => $schedule->screen_code,
                     'screen_name' => $schedule->screen_name,
+                    'film_id' => $schedule->film_id,
+                    'genre' => $schedule->genre,
+                    'genre2' => $schedule->genre2,
+                    'genre3' => $schedule->genre3,
                     'genre_name' => $schedule->genre_name,
-                    'time_slot' => $schedule->show_time,
+                    'show_time' => $schedule->show_time,
+                    'created_at' => $schedule->created_at,
                     'updated_at' => $schedule->updated_at,
                 ];
             }
@@ -170,7 +183,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
                 Storage::delete($file);
             }
 
-            $filename = "cinema_schedule_management.csv";
+            $filename = "cinema-schedule-management.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

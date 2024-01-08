@@ -21,11 +21,15 @@ class TagsImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-            if($row['tags']) {
+            if($row['name']) {
                 $tags = Tag::updateOrCreate(
                     [
-                        'name' => ucfirst($row['tags'])
-                    ]
+                        'name' => ucfirst($row['name'])
+                    ],
+                    [
+                        'active' => ($row['active'] == 1) ? 1 : 0,
+                    ],
+
                 );
             }
 	    }
