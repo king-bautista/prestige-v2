@@ -40,6 +40,10 @@ class ClientUserController extends AppBaseController implements ClientUserContro
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('email', 'LIKE', '%' . request('search') . '%');
             })
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                return $query->orderBy($column, request('sort'));
+            })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($user, 'Successfully Retreived!', 200);

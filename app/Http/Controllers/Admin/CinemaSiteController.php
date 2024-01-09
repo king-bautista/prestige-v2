@@ -32,10 +32,16 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
     {
         try {
             $cinema_sites = CinemaSite::when(request('search'), function ($query) {
-                return $query->where('sites.name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('sites.name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('cinema_sites.cinema_id', 'LIKE', '%' . request('search') . '%');
             })
                 ->join('sites', 'cinema_sites.site_id', '=', 'sites.id')
                 ->select('cinema_sites.*', 'sites.name as site_name')
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    $field = ($column == 'site_name') ? 'sites.name' : $column;
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($cinema_sites, 'Successfully Retreived!', 200);

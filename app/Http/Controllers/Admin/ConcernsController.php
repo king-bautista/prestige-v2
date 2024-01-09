@@ -39,6 +39,10 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 return $query->where('concerns.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('concerns.description', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
 
@@ -138,15 +142,12 @@ class ConcernsController extends AppBaseController implements ConcernsController
         }
     }
 
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new ConcernsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

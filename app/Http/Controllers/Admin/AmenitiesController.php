@@ -39,6 +39,10 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             $amenitiess = Amenity::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                return $query->orderBy($column, request('sort'));
+            })
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($amenitiess, 'Successfully Retreived!', 200);
