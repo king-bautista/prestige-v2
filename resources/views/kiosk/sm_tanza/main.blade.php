@@ -24,7 +24,7 @@
 
             <!--Start of the directory search content categories-->
             <div id="search-container">
-                <?php include('resources/include/common/contents/directory_search.php'); ?>
+                @include('kiosk.sm_tanza.pages.search')
             </div>
             <!--End of the directory search content categories-->
 
@@ -210,7 +210,12 @@
         alphabetical = '';
         tenant_list = '';
         $('#videocontainer').html('');
+        $('.modal').hide();
         $('#Tab-Category-Tab').click();        
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
     });
 
     /* for search button */
@@ -222,7 +227,13 @@
         $('#map_txt').removeClass("nav-btn-active");
         $('#promos_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
+        $('#code').val('');
         $('#videocontainer').html('');
+        $('.modal').hide();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
     });
 
     /* for map button */
@@ -235,6 +246,11 @@
         $('#promos_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
         $('#videocontainer').html('');
+        $('.modal').hide();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
     });
 
     /* for promos button */
@@ -247,6 +263,11 @@
         $('#search_txt').removeClass("nav-btn-active");
         $('#cinema_txt').removeClass("nav-btn-active");
         $('#videocontainer').html('');
+        $('.modal').hide();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
         showPromos();
     });
 
@@ -260,8 +281,13 @@
         $('#promos_txt').removeClass("nav-btn-active");
         $('#search_txt').removeClass("nav-btn-active");
         $('#videocontainer').html('');
-        showCinemas();
+        $('.modal').hide();
         $('#Tab-Cinema-Tab').click();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
+        showCinemas();
     });
 
     /* for hiding the div and showing the home div */

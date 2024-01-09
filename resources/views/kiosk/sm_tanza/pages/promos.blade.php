@@ -23,6 +23,15 @@
 <script>
     var promos = "{{ $promos }}";
 
+    $(document).ready(function () {
+        var promomodal = $("#imgPromoModal");
+        var span = $(".close");
+
+        span.on("click", function () {
+            promomodal.css("display", "none");
+        });
+    });
+
     function showPromos() {
         var my_promos = JSON.parse(decodeEntities(promos));
 

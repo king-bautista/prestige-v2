@@ -73,6 +73,9 @@ class SiteTenantViewModel extends Model
     public function getBrandDetails()
     {   
         $brand = Brand::find($this->brand_id);
+        if(!$brand)
+            return null;
+
         $category = Category::find($brand->category_id);
         $parent_category = '';
         if($category)
@@ -101,14 +104,14 @@ class SiteTenantViewModel extends Model
     public function getBrandNameAttribute()
     {
         $this->brand_details = $this->getBrandDetails();
-        if($this->brand_details['brand'])
+        if(isset($this->brand_details['brand']))
             return $this->brand_details['brand']->name; 
         return null;
     }
 
     public function getBrandLogoAttribute() 
     {
-        if($this->brand_details['brand']->logo)
+        if(isset($this->brand_details['brand']->logo))
             return asset($this->brand_details['brand']->logo);  
 
         if(isset($this->brand_details['brand']->category_id)) {
@@ -123,28 +126,28 @@ class SiteTenantViewModel extends Model
 
     public function getCategoryIdAttribute()
     {
-        if($this->brand_details['category']->id)
+        if(isset($this->brand_details['category']->id))
             return $this->brand_details['category']->id;
         return null;
     }
 
     public function getCategoryNameAttribute()
     {
-        if($this->brand_details['category']->name)
+        if(isset($this->brand_details['category']->name))
             return $this->brand_details['category']->name;
         return null; 
     }
 
     public function getParentCategoryIdAttribute()
     {
-        if($this->brand_details['parent_category']->id)
+        if(isset($this->brand_details['parent_category']->id))
             return $this->brand_details['parent_category']->id;
         return null;
     }
 
     public function getParentCategoryNameAttribute()
     {
-        if($this->brand_details['parent_category']->name)
+        if(isset($this->brand_details['parent_category']->name))
             return $this->brand_details['parent_category']->name;
         return null;
     }
