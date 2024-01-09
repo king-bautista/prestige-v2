@@ -158,12 +158,63 @@
             });
         });
 
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.cinema-list').append(navigation_button);
+
         var cinema = $('.owl-wrapper-cinema');
-        cinema.owlCarousel({
+        cinema.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
+        });
+
+        $('.promo-next').click(function() {
+            cinema.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            cinema.trigger('prev.owl.carousel');
+        })
+
+        cinema.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
         });
     }
 
@@ -220,12 +271,63 @@
 
         });
 
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.now-showing-list').append(navigation_button);
+
         var showing = $('.owl-wrapper-now-showing');
-        showing.owlCarousel({
+        showing.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
+        });
+
+        $('.promo-next').click(function() {
+            showing.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            showing.trigger('prev.owl.carousel');
+        })
+
+        showing.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
         });
     }
 

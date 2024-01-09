@@ -216,12 +216,64 @@
                 });
             });
         }); 
+
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.sub-category-tenants').append(navigation_button);
+
         owl_tenant = $('.owl-wrapper-tenant-list');
-        owl_tenant.owlCarousel({
+        owl_tenant.on("initialized.owl.carousel", function(e) {
+            if(e.item.count > 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
+        });
+
+        $('.promo-next').click(function() {
+            owl_tenant.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            owl_tenant.trigger('prev.owl.carousel');
+        })
+
+        owl_tenant.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
         });
 
         $('#TenantPage').show();
@@ -266,18 +318,70 @@
                 });
             });
         }); 
+
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.alpha-tenants').append(navigation_button);
+
         owl_tenant = $('.owl-wrapper-alpha-tenant-list');
-        owl_tenant.owlCarousel({
+        owl_tenant.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
         });
+
+        $('.promo-next').click(function() {
+            owl_tenant.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            owl_tenant.trigger('prev.owl.carousel');
+        })
+
+        owl_tenant.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
+        });
     }
 
     function showSupplementals() {
         $('.supplemental-list').html('');
-        $( ".supplemental-list" ).html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
+        $('.supplemental-list').html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
         $.each(supplementals, function(key,supplemental) {
             var supplemental_element = '';
             supplemental_element = '<div class="item">';
@@ -307,12 +411,64 @@
                 });
             });
         }); 
+
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.supplemental-list').append(navigation_button);
+
         owl_tenant = $('.owl-wrapper-supplemental');
-        owl_tenant.owlCarousel({
+        owl_tenant.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
+        });
+
+        $('.promo-next').click(function() {
+            owl_tenant.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            owl_tenant.trigger('prev.owl.carousel');
+        })
+
+        owl_tenant.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
         });
     }
 

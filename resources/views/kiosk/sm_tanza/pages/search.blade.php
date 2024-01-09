@@ -167,6 +167,15 @@
                 $('.notification').show();
             }
         })
+
+        $(".softkeys__btn").on('mousedown',function(){                
+        }).on('mouseup',function(){
+            $('#code').trigger('keydown');
+            $('.notification').hide();
+        }).on('touchend',function(){
+            $('.notification').hide();
+            $('#code').trigger('keydown');
+        });
     });
 
     function showTenantSearch(search_results) {
@@ -206,13 +215,66 @@
                 });
             });
         }); 
+
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.search-results').append(navigation_button);
+
         owl_search = $('.owl-wrapper-tenant-search-list');
-        owl_search.owlCarousel({
+        owl_search.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
         });
+
+        $('.promo-next').click(function() {
+            owl_search.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            owl_search.trigger('prev.owl.carousel');
+        })
+
+        owl_search.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
+        });
+
     }
 
     function showSubscriber(subscriber) {
