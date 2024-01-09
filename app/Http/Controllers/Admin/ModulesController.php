@@ -37,12 +37,22 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
         try {
             $modules = ModuleViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('link', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('link', 'LI   KE', '%' . request('search') . '%')
                     ->orWhere('role', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('class_name', 'LIKE', '%' . request('search') . '%');
             })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->when(request('order'), function ($query) {
+                // $order = request('order');
+                // if($order == 'parent_link'){
+
+                // }else{
+
+                // }
+                $column = $this->checkcolumn(request('order'));
+                return $query->orderBy($column, request('sort'));
+            })
+            ->latest()
+            ->paginate(request('perPage'));
             return $this->responsePaginate($modules, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -160,15 +170,12 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
         }
     }
 
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new ModulesImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

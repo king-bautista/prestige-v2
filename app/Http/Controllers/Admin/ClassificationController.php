@@ -37,6 +37,10 @@ class ClassificationController extends AppBaseController implements Classificati
             $classifications = Classification::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                return $query->orderBy($column, request('sort'));
+            })
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($classifications, 'Successfully Retreived!', 200);
