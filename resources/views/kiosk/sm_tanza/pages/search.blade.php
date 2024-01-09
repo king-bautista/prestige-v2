@@ -138,6 +138,15 @@
             ]
         });
 
+        $(".softkeys__btn").on('mousedown',function(){                
+        }).on('mouseup',function(){
+            $('#code').trigger('keydown');
+            $('.notification').hide();
+        }).on('touchend',function(){
+            $('.notification').hide();
+            $('#code').trigger('keydown');
+        });
+
         $('.search-box-button, .softkeys__btn--search').on('click', function() {
             var search_key = $('#code').val();
             tenant_searchList = '';
@@ -166,15 +175,6 @@
             else {
                 $('.notification').show();
             }
-        })
-
-        $(".softkeys__btn").on('mousedown',function(){                
-        }).on('mouseup',function(){
-            $('#code').trigger('keydown');
-            $('.notification').hide();
-        }).on('touchend',function(){
-            $('.notification').hide();
-            $('#code').trigger('keydown');
         });
     });
 
