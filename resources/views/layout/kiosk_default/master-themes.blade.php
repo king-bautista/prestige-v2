@@ -180,6 +180,17 @@
             .subscriber-holder {
                 width: 1101px;
             }
+
+            .letter-selected::first-letter {
+                font-weight: bold;
+                color: #532be2;
+                text-decoration: underline;
+            }
+
+            .alphabet-box a.active {
+                text-decoration: underline;
+                color: #005aff !important;
+            }
             
         </style>
     </head>

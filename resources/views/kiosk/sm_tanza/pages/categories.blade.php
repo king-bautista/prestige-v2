@@ -48,33 +48,6 @@
                 <div class="col">
                     <div class="alphabet-content">
                         <div class="alphabet-box">
-                            <a class="link-alpha selected">#</a>
-                            <a class="link-alpha"> A </a>
-                            <a class="link-alpha"> B </a>
-                            <a class="link-alpha"> C </a>
-                            <a class="link-alpha"> D </a>
-                            <span class="link-alpha-disabled">E</span>
-                            <a class="link-alpha"> F </a>
-                            <a class="link-alpha"> G </a>
-                            <span class="link-alpha-disabled">H</span>
-                            <a class="link-alpha"> I </a>
-                            <a class="link-alpha"> J </a>
-                            <a class="link-alpha"> K </a>
-                            <a class="link-alpha"> L </a>
-                            <a class="link-alpha"> M </a>
-                            <a class="link-alpha"> N </a>
-                            <span class="link-alpha-disabled">O</span>
-                            <a class="link-alpha"> P </a>
-                            <span class="link-alpha-disabled">Q</span>
-                            <a class="link-alpha"> R </a>
-                            <a class="link-alpha"> S </a>
-                            <span class="link-alpha-disabled">T</span>
-                            <span class="link-alpha-disabled">U</span>
-                            <span class="link-alpha-disabled">V</span>
-                            <span class="link-alpha-disabled">W</span>
-                            <span class="link-alpha-disabled">X</span>
-                            <a class="link-alpha"> Y </a>
-                            <a class="link-alpha"> Z </a>
                         </div>
                     </div>
                 </div>
@@ -115,8 +88,14 @@
     var supplementals = '';
     var alphabetical = '';
     var tenant_list = '';
+    var navigation_letters = ['#'];
+    var available_letters = '';
 
     $(document).ready(function() {
+        $('#Tab-Category-Tab').on('click', function() {
+            showSubCategories();
+        });
+
         $('#Tab-Alphabetical-tab').on('click', function() {
             showAlphabetical();
         });
@@ -153,8 +132,9 @@
     }
 
     function showSubCategories() {
+        $('.sub-category-tenants').html('');
         $('.cat-row-card').html('');
-        $( ".category-title" ).html(main_category);
+        $('.category-title').html(main_category);
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
             subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
@@ -177,6 +157,7 @@
         $('#home-cat-contents').show();
         $('#CatTabCategories').show();
         $('#home-container').hide();
+        $('#TenantPage').hide();
     }
 
     function showTenantList() {
@@ -278,10 +259,10 @@
 
         $('#TenantPage').show();
         $('#CatTabCategories').hide();
-        $('#Tab-Category-Tab').click();
     }
 
     function showAlphabetical() {
+        console.log(alphabetical);
         $('.alpha-tenants').html('');
         $('.alpha-tenants').html('<div class="owl-carousel owl-theme owl-wrapper-alpha-tenant-list"></div>');
         $.each(alphabetical, function(key,tenants) {
@@ -296,16 +277,21 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
+                var store_status = 'Close';
+                if(tenant.operational_hours.is_open) {
+                    store_status = 'Open';
+                }
+
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
                 tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed alpha-tenant-item-'+tenant.id+'">';
                 tenant_item += '<div class="tenant-store-contents">';
                 tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+tenant.brand_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                tenant_item += '<span class="text-success">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';
@@ -377,6 +363,9 @@
             }
             
         });
+
+        generateLetters();
+
     }
 
     function showSupplementals() {
@@ -470,6 +459,79 @@
             }
             
         });
+    }
+
+    function generateLetters() {
+
+        filterLetterNavigator();
+
+        $('.alphabet-box').html('');
+        $('.alphabet-box').append('<a class="link-alpha selected">#</a>');
+        for (let i = 65; i <= 90; i++) {
+
+            var class_name = (available_letters.includes(String.fromCharCode(i))) ? 'link-alpha' : 'link-alpha-disabled';
+            $('.alphabet-box').append('<a class="'+class_name+'" onclick="moveTo(\''+String.fromCharCode(i)+'\')">'+String.fromCharCode(i)+'</a>');
+
+        }
+
+    }
+
+    function filterLetterNavigator() {
+        let letter_container = [];
+
+        $(".tenant-store-name").each(function(){
+            let tenant_name = $(this).html().charAt(0);
+            if (tenant_name.match(/^\d/)) {
+                letter_container.push("#");
+            }else{
+                letter_container.push(tenant_name);
+            };
+        });
+
+        available_letters = [...new Set(letter_container)];
+    }
+
+    function moveTo(letter) {
+        $(".tenant-store-name").removeClass('letter-selected'); 
+        $(".alphabet-box a").removeClass('active');
+
+        let index = 0;
+        // GET SLIDE INDEX
+        $(".tenant-store-name").each(function(){
+            if($(this).html().startsWith(letter, 0)){
+                index = $(this).attr('parent-index');
+                return false;
+            };
+            if ($(this).html().match(/^\d/) && letter=="#") {
+                index = $(this).attr('parent-index');
+                return false;
+            };
+        });
+
+        // ADD ACTIVE CLASS
+        $(".tenant-store-name").each(function(){
+            if($(this).html().startsWith(letter, 0)){
+                $(this).addClass('letter-selected');
+            };
+            if ($(this).html().match(/^\d/) && letter=="#") {
+                $(this).addClass('letter-selected');
+            };
+        });
+
+        // ADD ACTIVE CLASS
+        $(".alphabet-box .link-alpha").each(function(){
+            if($(this).html().startsWith(letter, 0)){
+                console.log($(this).html());
+                $(this).addClass('active');
+            };
+        });
+
+        $(".owl-dots button").each(function(key){
+            if (key == parseInt(index)){
+                $(this).trigger('click');
+            }
+        });
+
     }
 
     showHomeCategories();

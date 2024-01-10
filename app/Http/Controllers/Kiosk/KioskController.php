@@ -110,6 +110,8 @@ class KioskController extends AppBaseController
 
     public function getTenants($site_id = null, $parent_category_id = null, $category_id = null) {
 
+        SiteTenantViewModel::setSiteId($site_id);
+
         $tenants = SiteTenantViewModel::where('site_tenants.site_id', $site_id)
         ->where('categories.parent_id', $parent_category_id)
         ->when($category_id, function($query) use($category_id) {

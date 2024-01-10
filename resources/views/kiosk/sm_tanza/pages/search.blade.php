@@ -278,39 +278,42 @@
     }
 
     function showSubscriber(subscriber) {
-        var want_to_try = '';
-        want_to_try += '<div class="want-to-try">';
-        want_to_try += '<div class="row">';
-        want_to_try += '<div class="col-12 pl-170">';
-        want_to_try += '<span class="translateme" data-en="You might want to try : ">You might want to try : </span>';
-        want_to_try += '</div>';
-        want_to_try += '</div>';
-        want_to_try += '</div>';
-
-        want_to_try += '<div class="row">';
-        want_to_try += '<div class="col-12 pl-170">';
-        want_to_try += '<div class="owl-carousel subscriber-holder">';
-
-        $.each(subscriber, function(index,tenant) {        
-            want_to_try += '<div class="item">';            
-            want_to_try += '<img class="shop-logo tenant-store" src="'+tenant.tenant_details.subscriber_logo+'">';
+        if(subscriber.length > 0) {
+            var want_to_try = '';
+            want_to_try += '<div class="want-to-try">';
+            want_to_try += '<div class="row">';
+            want_to_try += '<div class="col-12 pl-170">';
+            want_to_try += '<span class="translateme" data-en="You might want to try : ">You might want to try : </span>';
             want_to_try += '</div>';
-            // show tenant
-        });
+            want_to_try += '</div>';
+            want_to_try += '</div>';
 
-        want_to_try += '</div>';
-        want_to_try += '</div>';
-        want_to_try += '</div>';
+            want_to_try += '<div class="row">';
+            want_to_try += '<div class="col-12 pl-170">';
+            want_to_try += '<div class="owl-carousel subscriber-holder">';
 
-        $('.search-results').append(want_to_try);
+            $.each(subscriber, function(index,tenant) {        
+                want_to_try += '<div class="item">';            
+                want_to_try += '<img class="shop-logo tenant-store" src="'+tenant.tenant_details.subscriber_logo+'">';
+                want_to_try += '</div>';
+                // show tenant
+            });
 
-        owl_subscriber = $('.subscriber-holder');
-        owl_subscriber.owlCarousel({
-            margin: 0,
-            nav: false,
-            loop: false,
-            items: 4,
-        });
+            want_to_try += '</div>';
+            want_to_try += '</div>';
+            want_to_try += '</div>';
+
+            $('.search-results').append(want_to_try);
+
+            owl_subscriber = $('.subscriber-holder');
+            owl_subscriber.owlCarousel({
+                margin: 0,
+                nav: false,
+                loop: false,
+                items: 4,
+            });
+
+        }
     }
 
     function onClickSuggest(id) {

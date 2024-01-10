@@ -14,6 +14,7 @@ use App\Models\Company;
 use App\Models\Category;
 use App\Models\CompanyCategory;
 use App\Models\AdminViewModels\BrandProductViewModel;
+use App\Models\AdminViewModels\SiteViewModel;
 
 class SiteTenantViewModel extends Model
 {
@@ -46,6 +47,8 @@ class SiteTenantViewModel extends Model
 
     public $brand_details = '';
 
+    static $site_id = null;
+
     /**
      * Append additiona info to the return data
      *
@@ -69,6 +72,10 @@ class SiteTenantViewModel extends Model
         'products',
         'location',
     ];
+
+    static function setSiteId($id) {
+        self::$site_id = $id;
+    }
 
     public function getBrandDetails()
     {   
@@ -251,6 +258,12 @@ class SiteTenantViewModel extends Model
                 return $this->getTodaySchedule($json_data);
             }            
         }
+
+        $site_id = self::$site_id;
+        $site = SiteViewModel::find($site_id);
+        if($site->operational_hours)
+            return $site->operational_hours;
+
         return null;
     }
 
