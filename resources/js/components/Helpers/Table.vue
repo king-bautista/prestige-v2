@@ -59,7 +59,8 @@
                             <span v-else>
                                 {{ tHeader }}
                             </span>
-                            <span>{{ index }}
+                            <span>
+                                <!-- {{ index }} -->
                                 <i class="fas fa-sort" :id="index" @click="sortBy(index, dataFields)"></i>
                             </span>
                         </th>
