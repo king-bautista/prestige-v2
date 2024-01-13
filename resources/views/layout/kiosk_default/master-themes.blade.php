@@ -39,7 +39,7 @@
             }
 
             .no-promos-found {
-                display: none;
+                display: flex;
             }
 
             .now-showing-details {

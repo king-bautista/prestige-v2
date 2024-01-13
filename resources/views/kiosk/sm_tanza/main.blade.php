@@ -5,7 +5,7 @@
     <div class="row w-100 m-0">
         <div class="col-xl-3 col-lg-12 dca-1">
             <!--Start of the directory banner-->
-            <?php include('resources/include/common/multirotator/banner_landscape.php'); ?>
+            @include('kiosk.sm_tanza.multirotator.banner')
             <!--End of the directory banner-->
         </div>
 

@@ -14,7 +14,7 @@
     </div>
 </a>
 
-<div class="d-flex justify-content-center no-promos-found">
+<div class="justify-content-center no-promos-found">
     <img class="ImgPromoDefault" src="{{ URL::to('themes/sm_default/images/stick-around.png') }}">
 </div>
 
@@ -51,7 +51,7 @@
             $('.no-promos-found').show();
             return false;
         }
-        
+        $('.no-promos-found').hide();
         $('.promo-list').html('');
         $('.promo-list').html('<div class="owl-carousel owl-theme owl-wrapper-promo"></div>');
         $.each(my_promos, function(key,promos) {
