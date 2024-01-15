@@ -39,7 +39,7 @@
     var tenant_searchList = '';
 
     $(document).ready(function() {
-        var suggestion_list = JSON.parse(decodeEntities(suggestions));
+        var suggestion_list = JSON.parse(helper.decodeEntities(suggestions));
 
         $("#form_search").submit(function(e){
             e.preventDefault();
@@ -59,7 +59,7 @@
                 }
             }
         }).data("uiAutocomplete")._renderItem = function (ul, item) {
-            let text = decodeEntities(item.value);
+            let text = helper.decodeEntities(item.value);
 
             var newText = String(text).replace(
                     new RegExp(this.term, "gi"),
@@ -193,6 +193,11 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
+                var store_status = 'Close';
+                if(tenant.operational_hours.is_open) {
+                    store_status = 'Open';
+                }
+
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
                 tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
                 tenant_item += '<div class="tenant-store-contents">';
@@ -202,7 +207,7 @@
                 tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                tenant_item += '<span class="text-success">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';

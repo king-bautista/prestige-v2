@@ -261,7 +261,7 @@ class SiteTenantViewModel extends Model
 
         $site_id = self::$site_id;
         $site = SiteViewModel::find($site_id);
-        if($site->operational_hours)
+        if(isset($site->operational_hours))
             return $site->operational_hours;
 
         return null;

@@ -105,14 +105,8 @@
         });
     });
 
-    function decodeEntities(encodedString) {
-        var textArea = document.createElement('textarea');
-        textArea.innerHTML = encodedString;
-        return textArea.value;
-    }
-
     function showHomeCategories() {
-        var my_categories = JSON.parse(decodeEntities(categories));
+        var my_categories = JSON.parse(helper.decodeEntities(categories));
         $.each(my_categories, function(key,category) {
             var category_element = '';
             category_element = '<div class="home-category-holder '+ category.category_class +' main-'+ category.id +'">';
@@ -175,6 +169,11 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
+                var store_status = 'Close';
+                if(tenant.operational_hours.is_open) {
+                    store_status = 'Open';
+                }
+
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
                 tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
                 tenant_item += '<div class="tenant-store-contents">';
@@ -184,7 +183,7 @@
                 tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                tenant_item += '<span class="text-success">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';
@@ -262,7 +261,6 @@
     }
 
     function showAlphabetical() {
-        console.log(alphabetical);
         $('.alpha-tenants').html('');
         $('.alpha-tenants').html('<div class="owl-carousel owl-theme owl-wrapper-alpha-tenant-list"></div>');
         $.each(alphabetical, function(key,tenants) {
@@ -298,8 +296,8 @@
                 tenant_item += '</div>';
                 tenant_item += '</div>';
                 tenant_item += '</div>';
-                $( ".tenants-"+key ).append(tenant_item);                
-                $('.alpha-tenant-item'+tenant.id).on('click', function() {
+                $('.tenants-'+key ).append(tenant_item);                
+                $('.alpha-tenant-item-'+tenant.id).on('click', function() {
                     showTenantDetails(tenant);
                 });
             });

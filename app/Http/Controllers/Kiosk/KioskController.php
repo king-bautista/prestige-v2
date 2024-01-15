@@ -37,7 +37,7 @@ class KioskController extends AppBaseController
         $cinemas = $this->getCinemas($site->id);
         $now_showing = $this->getShowing($site->id);
         $suggestions = $this->getSuggestionList($site->id);
-        return $banner_ads = $this->getBannerAds($site->id);
+        $banner_ads = $this->getBannerAds($site->id);
 
         $template_name = str_replace("-", "_", strtolower($site_name));
         return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads'));
@@ -305,8 +305,10 @@ class KioskController extends AppBaseController
     }
 
     public function search(Request $request) {
-        try
-        {
+        // try
+        // {
+            SiteTenantViewModel::setSiteId($request->site_id);
+
             if (!$request->id) {
                 $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
 
@@ -367,14 +369,14 @@ class KioskController extends AppBaseController
 
             }
 
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // } 
     }
 
     public function getBannerAds($site_id) {
@@ -400,7 +402,7 @@ class KioskController extends AppBaseController
                      ->whereRaw('play_lists.dimension = site_screen_products.dimension');
             })            
             ->select('play_lists.*')
-            ->orderBy('play_lists.id', 'ASC')
+            ->orderBy('play_lists.sequence', 'ASC')
             ->get()
             ->toArray();
 

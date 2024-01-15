@@ -58,7 +58,6 @@
 </div>
 <!-- /.content -->
 @stop
-
 @push('scripts')
 <script>
     /* script for popover */

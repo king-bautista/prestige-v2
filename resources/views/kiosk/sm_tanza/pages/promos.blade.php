@@ -44,7 +44,7 @@
     });
 
     function showPromos() {
-        var my_promos = JSON.parse(decodeEntities(promos));
+        var my_promos = JSON.parse(helper.decodeEntities(promos));
 
         if(my_promos.length == 0) {
             $('.promo-list').hide();

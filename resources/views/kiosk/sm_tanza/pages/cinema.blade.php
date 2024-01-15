@@ -124,7 +124,7 @@
     });
 
     function showCinemas() {
-        var my_cinemas = JSON.parse(decodeEntities(cinemas));
+        var my_cinemas = JSON.parse(helper.decodeEntities(cinemas));
         $('.cinema-list').html('');
         $('.cinema-list').html('<div class="owl-carousel owl-theme owl-wrapper-cinema"></div>');
         $.each(my_cinemas, function(key,cinemas) {
@@ -219,7 +219,7 @@
     }
 
     function showNowShowing() {
-        var my_showing = JSON.parse(decodeEntities(now_showing));
+        var my_showing = JSON.parse(helper.decodeEntities(now_showing));
         console.log(my_showing.length);
         if(my_showing.length == 0) {
             $('#CinemaTabSchedule').hide();

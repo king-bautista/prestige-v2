@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\SiteScreenProduct;
 use App\Models\Category;
 use App\Models\AdvertisementMaterial;
+use App\Models\ViewModels\SiteTenantViewModel;
 
 class PlayListViewModel extends Model
 {
@@ -46,6 +47,7 @@ class PlayListViewModel extends Model
         'advertisement_details',
         'material_details',
         'thumbnail_path',
+        'material_path',
         'content_details',
         'content_serial_number',
         'brand_details',
@@ -60,6 +62,8 @@ class PlayListViewModel extends Model
         'active',
         'duration',
         'display_duration',
+        'file_type',
+        'tenant_details',
     ];
 
     public function getAdvertisementDetails() {
@@ -93,6 +97,11 @@ class PlayListViewModel extends Model
         return AdvertisementMaterial::where('advertisement_id', $this->advertisement_id)->where('dimension', $this->dimension)->first();
     }
 
+    public function getSiteScreenDetails()
+    {
+        return $this->hasOne('App\Models\AdminViewModels\SiteScreenViewModel', 'id', 'site_screen_id');
+    }
+
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/
@@ -124,6 +133,13 @@ class PlayListViewModel extends Model
     {
         if($this->material_details)
             return asset($this->material_details->thumbnail_path);
+        return asset('/images/no-image-available.png');
+    }
+
+    public function getMaterialPathAttribute() 
+    {
+        if($this->material_details)
+            return asset($this->material_details->file_path);
         return asset('/images/no-image-available.png');
     }
 
@@ -222,6 +238,22 @@ class PlayListViewModel extends Model
     {
         if($this->advertisement_details)
             return $this->advertisement_details->display_duration;
+        return null;
+    }
+
+    public function getFileTypeAttribute() 
+    {
+        if($this->material_details)
+            return $this->material_details->file_type;
+        return null;
+    }
+
+    public function getTenantDetailsAttribute()
+    {
+        $site_screen = $this->getSiteScreenDetails()->first();
+        if($site_screen) {
+            return SiteTenantViewModel::where('site_id', $site_screen->site_id)->where('brand_id', $this->brand_id)->first();
+        }
         return null;
     }
     
