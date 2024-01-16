@@ -39,6 +39,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             $amenitiess = Amenity::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('name', 'ASC');
+            })
             ->when(request('order'), function ($query) {
                 $column = $this->checkcolumn(request('order'));
                 return $query->orderBy($column, request('sort'));
@@ -197,7 +200,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 Storage::delete($file);
             }
 
-            $filename = "amenity-management.csv";
+            $filename = "amenity.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -241,7 +244,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 Storage::delete($file);
             }
 
-            $filename = "amenity-management-template.csv";
+            $filename = "amenity-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

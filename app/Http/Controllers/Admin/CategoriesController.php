@@ -40,8 +40,14 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->where('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-                ->when(request('order'), function ($query) {
+                ->select('categories.*', 'categories.name')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('name', 'ASC'); 
+                })
+                ->when(request('order'), function ($query) { 
                     $column = $this->checkcolumn(request('order'));
+                   // $column
+
                     return $query->orderBy($column, request('sort'));
                 })
                 ->where('category_type', 1)

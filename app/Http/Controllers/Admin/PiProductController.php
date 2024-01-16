@@ -36,10 +36,20 @@ class PiProductController extends AppBaseController implements PiProductControll
     {
         try {
             $pi_products = PiProduct::when(request('search'), function ($query) {
-                return $query->where('physical_configuration', 'LIKE', '%' . request('search') . '%')
+                return $query->where('serial_number', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('product_application', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('ad_type', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('ad_type', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('remarks', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sec_slot', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('slots', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('serial_number', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
 
