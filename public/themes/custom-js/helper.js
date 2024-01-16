@@ -108,4 +108,40 @@ Helpers.prototype = {
         });  
     },
 
+    setTranslation: function() {
+        var translations_by_language;
+        if (content_language != 'english') {
+            translations_by_language = my_translations.filter(option => option.language == content_language);
+        }else {
+            translations_by_language = my_translations;
+        }
+
+        $(".translateme").each(function(){
+            let data_en = $(this).attr('data-en');
+            var translated = translations_by_language.find(option => option.english == data_en);
+
+            if (translated != null) {                         
+                if (content_language != 'english') {
+                    $(this).html(translated.translated);
+                } else {
+                    $(this).html(translated.english);
+                }
+            }
+
+        });
+
+        if (content_language == 'japanese') {
+            $('.resize').css({'font-size':'22px'});
+            $('.resize').css({'line-height':'19px'});
+        }
+        else if(content_language == 'korean') {
+            $('.resize').css({'font-size':'23px'});
+            $('.resize').css({'line-height':''});
+        }        
+        else {
+            $('.resize').css({'font-size':''});
+            $('.resize').css({'line-height':''});
+        }
+    }
+
 };

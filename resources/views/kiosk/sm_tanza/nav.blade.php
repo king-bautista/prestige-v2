@@ -10,11 +10,11 @@
 		    </button>
 		    <div class="dropdown-menu dropdown-container-adjustment">
 		        <!-- Dropdown menu links -->
-		        <a class="dropdown-item dropdown-item-language" href="#" data-language="korean">한국어</a>
-		        <a class="dropdown-item dropdown-item-language" href="#" data-language="japanese">日本人</a>
-		        <a class="dropdown-item dropdown-item-language" href="#" data-language="chinese">中文</a>
-		        <a class="dropdown-item dropdown-item-language" href="#" data-language="filipino">FILIPINO</a>
-		        <a class="dropdown-item dropdown-item-language" href="#" data-language="english">ENGLISH</a>
+		        <a class="dropdown-item dropdown-item-language" data-language="korean">한국어</a>
+		        <a class="dropdown-item dropdown-item-language" data-language="japanese">日本人</a>
+		        <a class="dropdown-item dropdown-item-language" data-language="chinese">中文</a>
+		        <a class="dropdown-item dropdown-item-language" data-language="filipino">FILIPINO</a>
+		        <a class="dropdown-item dropdown-item-language" data-language="english">ENGLISH</a>
 		    </div>
 		</div>
 		<div class="language-title">LANGUAGE SELECT</div>
@@ -26,7 +26,7 @@
 			<div class="nav-btn-container">
 				<img id="home_v4s" class="" src="{{ URL::to('themes/sm_default/images/Homev4s.png') }}">
 				<img id="home_v4" class="" src="{{ URL::to('themes/sm_default/images/Homev4.png') }}">
-				<div id="home_txt" class="nav-home-button-align nav-btn-active">Home</div>
+				<div id="home_txt" class="nav-home-button-align nav-btn-active translateme" data-en="Home">Home</div>
 			</div>
 		</div>
 
@@ -34,7 +34,7 @@
 			<div class="nav-btn-container">
 				<img id="search_v4s" class="" src="{{ URL::to('themes/sm_default/images/Searchv4s.png') }}">
 				<img id="search_v4" class="" src="{{ URL::to('themes/sm_default/images/Searchv4.png') }}">
-				<div id="search_txt" class="nav-search-button-align">Search</div>
+				<div id="search_txt" class="nav-search-button-align translateme" data-en="Search">Search</div>
 			</div>
 		</div>
 
@@ -42,7 +42,7 @@
 			<div class="nav-btn-container">
 				<img id="map_v4s" class="" src="{{ URL::to('themes/sm_default/images/Mapv4s.png') }}">
 				<img id="map_v4" class="" src="{{ URL::to('themes/sm_default/images/Mapv4.png') }}">
-				<div id="map_txt" class="nav-map-button-align">Map</div>
+				<div id="map_txt" class="nav-map-button-align translateme" data-en="Map">Map</div>
 			</div>
 		</div>
 
@@ -50,7 +50,7 @@
 			<div class="nav-btn-container">
 				<img id="promos_v4s" class="" src="{{ URL::to('themes/sm_default/images/Promosv4s.png') }}">
 				<img id="promos_v4" class="" src="{{ URL::to('themes/sm_default/images/Promosv4.png') }}">
-				<div id="promos_txt" class="nav-promo-button-align">Promos</div>
+				<div id="promos_txt" class="nav-promo-button-align translateme resize" data-en="Promos">Promos</div>
 			</div>
 		</div>
 
@@ -58,7 +58,7 @@
 			<div class="nav-btn-container">
 				<img id="cinema_v4s" class="" src="{{ URL::to('themes/sm_default/images/Cinemav4s.png') }}">
 				<img id="cinema_v4" class="" src="{{ URL::to('themes/sm_default/images/Cinemav4.png') }}">
-				<div id="cinema_txt" class="nav-cinema-button-align">Cinema</div>
+				<div id="cinema_txt" class="nav-cinema-button-align translateme" data-en="Cinema">Cinema</div>
 			</div>
 		</div>
 
@@ -67,25 +67,43 @@
 
 @push('scripts')
 <script>
+    var translations = "{{ $translations }}";
+    var assistant_message = "{{ $assistant_message }}";
+    var current_location = 'home';
+    var content_language = 'english';
+    var my_assistant_message = [];
+    var current_assistant_messages = [];
+    var my_translations = '';
+
+    function filterAssist() {
+        current_assistant_messages = my_assistant_message.filter(option => option.location == current_location && option.content_language == content_language);
+    }
+
 	/* script for popover */
     $(document).ready(function(){
+        my_assistant_message = JSON.parse(helper.decodeEntities(assistant_message));        
+        my_translations = JSON.parse(helper.decodeEntities(translations));
+        current_assistant_messages = my_assistant_message.filter(option => option.location == current_location && option.content_language == content_language);
         $('[data-toggle="popover"]').popover();   
+    });
+
+    $('.dropdown-menu a').on('click', function () {
+        var txt= ($(this).text());
+        content_language = $(this).data('language');
+        filterAssist();
+        helper.setTranslation();
+        $('.dropup button').html(txt);
     });
 
     /* script for random content of popover */
     $('[data-toggle="popover"]').on("click", function () {
-        const assistant_messages = [
-            "Touch a featured store or your desired store to get directions. You may check the latest product and promo offers. Scroll to view more.",
-            "Need help? Touch here.",
-            "Looking for outfits? Try searching dress or shirt.",
-        ];
-
-        var contentIndex = Math.floor(Math.random() * assistant_messages.length);
-        var newMessage = assistant_messages[contentIndex];
-
+        var contentIndex = Math.floor(Math.random() * current_assistant_messages.length);
+        var newMessage = helper.decodeEntities(current_assistant_messages[contentIndex].content);
         // Set the 'data-content' attribute for the popover
         $(this).attr("data-content", newMessage);
     });
+
+    
 
 	// for navigation positioning if remove another nav
     var NavContentPositioning = $("#NavContentContainer > div").length;
@@ -160,6 +178,8 @@
         $('#keyboard-section').show();
 		$('#home-cat-contents,#search-container,#map-container,#promos-container,#cinema-container').hide();
         $('#home-container').show();
+        current_location = 'home';
+        filterAssist();
     });
 
     /* for search button */
@@ -178,6 +198,8 @@
         $('#searchNone').hide();
         $('#searchList').hide();
         $('#keyboard-section').show();
+        current_location = 'searchbox';
+        filterAssist();
     });
 
     /* for map button */
@@ -195,6 +217,8 @@
         $('#searchNone').hide();
         $('#searchList').hide();
         $('#keyboard-section').show();
+        current_location = 'map';
+        filterAssist();
     });
 
     /* for promos button */
@@ -213,6 +237,8 @@
         $('#searchList').hide();
         $('#keyboard-section').show();
         showPromos();
+        current_location = 'promo';
+        filterAssist();
     });
 
     /* for cinema button */
@@ -232,6 +258,8 @@
         $('#searchList').hide();
         $('#keyboard-section').show();
         showCinemas();
+        current_location = 'cinema';
+        filterAssist();
     });
 	
 </script>
