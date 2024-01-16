@@ -34,9 +34,20 @@ class EventsController extends AppBaseController implements EventsControllerInte
     {
         try {
             $event = Event::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('events.image_url', 'LIKE', '%' . request('search') . '%')
+                    ->where('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->where('events.name', 'LIKE', '%' . request('search') . '%')
+                    ->where('events.start_date', 'LIKE', '%' . request('search') . '%')
+                    ->where('events.end_date', 'LIKE', '%' . request('search') . '%')
+                    ;
             })
-                ->select('events.*')
+                ->leftJoin('sites', 'events.site_id', '=', 'sites.id')
+                ->select('events.*', 'sites.name')
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    $field = ($column == 'site_name') ? 'sites.name' : $column;
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($event, 'Successfully Retreived!', 200);
@@ -147,15 +158,12 @@ class EventsController extends AppBaseController implements EventsControllerInte
         }
     }
 
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new EventsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

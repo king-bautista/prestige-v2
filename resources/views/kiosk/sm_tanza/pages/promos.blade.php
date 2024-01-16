@@ -3,7 +3,18 @@
 <div class="slideshow-content-container promo-list">
 </div>
 
-<div class="d-flex justify-content-center no-promos-found">
+<a class="promo-prev">
+    <div class="left-btn-carousel">
+        <img src="resources/uploads/imagebutton/Left.png">
+    </div>
+</a>
+<a class="promo-next">
+    <div class="right-btn-carousel">
+        <img src="resources/uploads/imagebutton/Right.png">
+    </div>
+</a>
+
+<div class="justify-content-center no-promos-found">
     <img class="ImgPromoDefault" src="{{ URL::to('themes/sm_default/images/stick-around.png') }}">
 </div>
 
@@ -33,14 +44,14 @@
     });
 
     function showPromos() {
-        var my_promos = JSON.parse(decodeEntities(promos));
+        var my_promos = JSON.parse(helper.decodeEntities(promos));
 
         if(my_promos.length == 0) {
             $('.promo-list').hide();
             $('.no-promos-found').show();
             return false;
         }
-        
+        $('.no-promos-found').hide();
         $('.promo-list').html('');
         $('.promo-list').html('<div class="owl-carousel owl-theme owl-wrapper-promo"></div>');
         $.each(my_promos, function(key,promos) {
@@ -78,12 +89,51 @@
         });
 
         var promo = $('.owl-wrapper-promo');
-        promo.owlCarousel({
+        promo.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
         });
+        
+        $('.promo-next').click(function() {
+            promo.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            promo.trigger('prev.owl.carousel');
+        })
+
+        promo.on('changed.owl.carousel', function(e) {
+
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
+        });
+
     }
 </script>
 @endpush

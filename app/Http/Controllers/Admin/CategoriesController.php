@@ -40,6 +40,10 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->where('descriptions', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->where('category_type', 1)
                 ->latest()
                 ->paginate(request('perPage'));

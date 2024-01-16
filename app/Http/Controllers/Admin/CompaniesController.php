@@ -43,9 +43,17 @@ class CompaniesController extends AppBaseController implements CompaniesControll
         try
         {
             $companies = CompanyViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('address', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('tin', 'LIKE', '%' . request('search') . '%');
+                return $query->where('companies.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('companies.email', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('companies.contact_number', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('classifications.name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->leftJoin('classifications', 'companies.classification_id', '=', 'classifications.id')
+            ->select('companies.*', 'classifications.name')
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                $field = ($column == 'classification_name') ? 'classifications.name' : $column;
+                return $query->orderBy($field, request('sort'));
             })
             ->latest()
             ->paginate(request('perPage'));

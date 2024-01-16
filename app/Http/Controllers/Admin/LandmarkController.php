@@ -36,9 +36,16 @@ class LandmarkController extends AppBaseController implements LandmarkController
     {
         try {
             $landmark = Landmark::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('landmarks.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
             })
-                ->select('landmarks.*')
+                ->leftJoin('sites', 'landmarks.site_id', '=', 'sites.id')
+                ->select('landmarks.*', 'sites.name')
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    $field = ($column == 'site_name') ? 'sites.name' : $column;
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($landmark, 'Successfully Retreived!', 200);
@@ -159,15 +166,12 @@ class LandmarkController extends AppBaseController implements LandmarkController
         }
     }
 
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new LandmarksImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

@@ -57,13 +57,26 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $brands = BrandViewModel::when(request('search'), function($query){
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('supplementals.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
             })
             ->when(count($brand_ids) > 0, function($query) use ($brand_ids){
                 return $query->whereIn('brands.id', $brand_ids);
             })
             ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-            ->select('brands.*')
+            ->leftJoin('supplementals', 'brands.category_id', '=', 'supplementals.id')
+            ->select('brands.*','categories.name','supplementals.name')
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                if($column == 'category_name'){
+                    $field = 'categories.name';
+                }else if($column == 'supplemental_names'){
+                    $field = 'supplementals.name';
+                }else{
+                    $fields = $column;
+                } 
+                return $query->orderBy($field, request('sort'));
+            })
             ->latest()
             ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);

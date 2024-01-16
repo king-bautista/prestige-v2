@@ -7,9 +7,8 @@ use App\Http\Controllers\Api\Interfaces\LogsControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\Log;
-use App\Models\ViewModels\SiteAdViewModel;
-use App\Models\ViewModels\SiteViewModel;
-use App\Models\ViewModels\SiteScreenViewModel;
+use App\Models\AdminViewModels\SiteViewModel;
+use App\Models\AdminViewModels\SiteScreenViewModel;
 
 class LogsController extends AppBaseController implements LogsControllerInterface
 {
@@ -33,11 +32,10 @@ class LogsController extends AppBaseController implements LogsControllerInterfac
     public function getLogDetails($request)
     {
         $log_data = [];
-        $site = SiteViewModel::where('is_default', 1)->where('active', 1)->first();
-        $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site->id)->first();  
+        $site_id = $request->tenant_details['site_id'];
+        $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site_id)->first();  
 
-        $log_data = $request;
-        $log_data['site_id'] = $site->id;
+        $log_data['site_id'] = $site_id;
         $log_data['site_screen_id'] = $site_screen->id;
         $log_data['category_id'] = $request->category_id;
         $log_data['parent_category_id'] = $request->parent_category_id;
@@ -50,6 +48,6 @@ class LogsController extends AppBaseController implements LogsControllerInterfac
         $log_data['page'] = $request->page;
         $log_data['key_words'] =  $request->key_words;
         $log_data['results'] =  $request->results;
-        return $log_data->toArray();
+        return $log_data;
     }
 }

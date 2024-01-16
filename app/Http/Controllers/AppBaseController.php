@@ -17,15 +17,14 @@ use App\Models\AdminViewModels\UserViewModel;
 
 class AppBaseController extends Controller
 {
-    public $permissions; 
-    public $module_id; 
+    public $permissions;
+    public $module_id;
 
     public function response($data = [], $message = '', $code = 200, $count = 0)
     {
-        if(Auth::guard('portal')->check()) {
+        if (Auth::guard('portal')->check()) {
             $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-        }
-        else if(Auth::user()) {
+        } else if (Auth::user()) {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
         }
 
@@ -46,10 +45,9 @@ class AppBaseController extends Controller
 
     public function responsePaginate($data = [], $message = '', $code = 200)
     {
-        if(Auth::guard('portal')->check()) {
+        if (Auth::guard('portal')->check()) {
             $this->permissions = UserViewModel::find(Auth::guard('portal')->user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-        }
-        else if(Auth::user()) {
+        } else if (Auth::user()) {
             $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
         }
 
@@ -68,7 +66,7 @@ class AppBaseController extends Controller
                 'to' => $data->count(),
                 'permissions' => $this->permissions,
             ],
-            'data' => $data->items(),         
+            'data' => $data->items(),
             'message' => $message,
             'status_code' => $code,
             'status' => true,
@@ -78,25 +76,56 @@ class AppBaseController extends Controller
         return response($response, $code);
     }
 
-    public function checkBolean($bolean) 
+    public function checkBolean($bolean)
     {
-        switch(strval($bolean)) {
+        switch (strval($bolean)) {
             case "true":
                 return true;
-            break;
+                break;
             case "1":
                 return true;
-            break;
+                break;
             case "false":
                 return false;
-            break;         
+                break;
             case "0":
                 return false;
-            break;       
+                break;
             default:
                 return false;
-            break;
-        }    
+                break;
+        }
     }
 
+    public function checkColumn($column)
+    {
+        if ($column == 'shorten_question') {
+            return 'question';
+        } else if ($column == 'shorten_answer') {
+            return 'answer';
+        } else if ($column == 'parent_link') {
+            return 'parent_id';
+        } else if ($column == 'icon_path') {
+            return 'icon';
+        } else if ($column == 'image_thumbnail_url_path') {
+            return 'image_thumbnail_url';
+        } else if ($column == 'genre_name') {
+             return 'genre';
+        }else if ($column == 'logo_image_path') {
+            return 'logo';
+        }else if ($column == 'shorten_name') {
+             return 'name';
+        }else if ($column == 'shorten_description') {
+            return 'description';
+        } else if ($column == 'image_path') {
+            return 'image';
+        
+        } else if ($column == 'image_url_path') {
+            return 'image_url';
+        }
+        else{
+            return $column;
+        }
+    }
 }
+//icon_path

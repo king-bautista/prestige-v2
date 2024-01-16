@@ -19,11 +19,11 @@ use App\Models\AdminViewModels\CinemaScheduleViewModel;
 class CinemasScheduleController extends AppBaseController implements CinemasControllerInterface
 {
     /****************************************
-    * 			CINEMAS MANAGEMENT		    *
-    ****************************************/
+     * 			CINEMAS MANAGEMENT		    *
+     ****************************************/
     public function __construct()
     {
-        $this->module_id = 41; 
+        $this->module_id = 41;
         $this->module_name = 'Schedules';
     }
 
@@ -34,17 +34,26 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
 
     public function list(Request $request)
     {
-        try
-        {
-            $movies = CinemaScheduleViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+        try {
+            $movies = CinemaScheduleViewModel::when(request('search'), function ($query) {
+                return $query->where('cinema_schedules.title', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('cinema_schedules.rating', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('cinema_schedules.screen_name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('cinema_genre.genre_label', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->leftJoin('sites', 'cinema_schedules.site_id', '=', 'sites.id')
+                ->leftJoin('cinema_genre', 'cinema_schedules.genre', '=', 'cinema_genre.genre_code')
+                ->select('cinema_schedules.*', 'sites.name')
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    $field = ($column == 'site_name') ? 'sites.name' : $column;
+                    return $query->orderBy($field, request('sort'));
+                })
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($movies, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -55,8 +64,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
 
     public function store(Request $request)
     {
-        try
-    	{
+        try {
             $cinema_site = CinemaSite::find(1);
             $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
 
@@ -66,17 +74,15 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
             // DELETE SCHEDULE PER SITE
             CinemaSchedule::where('site_id', $cinema_site->site_id)->delete();
 
-            if(count($movies->value)) {
+            if (count($movies->value)) {
                 foreach ($movies->value as $movie) {
                     $casting = $this->getCast($movie->Cast);
                     $this->saveSchedule($movie, $movie->Sessions, $casting, $cinema_site->site_id);
                 }
             }
 
-            return $this->response(true, 'Successfully Retreived!', 200);            
-        }
-        catch (\Exception $e) 
-        {
+            return $this->response(true, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -88,10 +94,10 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     public function getCast($casts)
     {
         $mcasts = '';
-        if(count($casts)) {
+        if (count($casts)) {
             foreach ($casts as $cast) {
-                $mcasts = $mcasts .  $cast->FirstName ." ". $cast->LastName .  ", ";		
-            }    
+                $mcasts = $mcasts .  $cast->FirstName . " " . $cast->LastName .  ", ";
+            }
         }
         return $mcasts;
     }
@@ -103,38 +109,34 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
 
             $data = [
                 'site_id' => $site_id,
-                'title'=> addslashes(filter_var($movie->Title, FILTER_SANITIZE_STRING)),
+                'title' => addslashes(filter_var($movie->Title, FILTER_SANITIZE_STRING)),
                 'synopsis' => addslashes($synopsis),
                 'opening_date' => $movie->OpeningDate,
                 'rating' => $movie->Rating,
-                'rating_description'=> $movie->RatingDescription,
-                'runtime'=> $movie->RunTime,
-                'casting'=> $casting, 
+                'rating_description' => $movie->RatingDescription,
+                'runtime' => $movie->RunTime,
+                'casting' => $casting,
                 'trailer_url' => addslashes($movie->TrailerUrl),
                 'cinema_id_code' => $movie->CinemaId,
-                'screen_code'=> $time_slot->ScreenNameAlt,
-                'screen_name'=> addslashes(filter_var($time_slot->ScreenName, FILTER_SANITIZE_STRING)),
+                'screen_code' => $time_slot->ScreenNameAlt,
+                'screen_name' => addslashes(filter_var($time_slot->ScreenName, FILTER_SANITIZE_STRING)),
                 'film_id' => $movie->ScheduledFilmId,
-                'genre'=> $movie->GenreId,
-                'genre2'=> $movie->GenreId2,
-                'genre3'=> $movie->GenreId3,
+                'genre' => $movie->GenreId,
+                'genre2' => $movie->GenreId2,
+                'genre3' => $movie->GenreId3,
                 'show_time' => $time_slot->Showtime
             ];
 
             CinemaSchedule::create($data);
-
         }
     }
 
     public function getSiteCodes()
     {
-        try
-        {
+        try {
             $cinema_sites = CinemaSchedule::get();
             return $this->response($cinema_sites, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -150,7 +152,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
             $cinema_schedule_management = CinemaScheduleViewModel::get();
             $reports = [];
             foreach ($cinema_schedule_management as $schedule) {
-                $reports[] = [  
+                $reports[] = [
                     'id' => $schedule->id,
                     'site_id' => $schedule->site_id,
                     'site_name' => $schedule->site_name,

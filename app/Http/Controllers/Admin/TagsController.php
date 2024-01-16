@@ -32,6 +32,10 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
             $tags = Tag::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($tags, 'Successfully Retreived!', 200);
@@ -181,7 +185,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
                 'id' => '',
                 'name' => '',
                 'active' => '',
-                'created_at' => '', 
+                'created_at' => '',
                 'updated_at' => '',
                 'deleted_at' => '',
             ];

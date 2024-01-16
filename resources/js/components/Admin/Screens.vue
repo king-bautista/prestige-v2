@@ -286,6 +286,14 @@ export default {
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
+				is_default: {
+					name: "Is Default",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">No</span>',
+						1: '<span class="badge badge-info">Yes</span>'
+					}
+				},
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
@@ -307,6 +315,15 @@ export default {
 					button: '<i class="fas fa-toggle-off"></i> Inactive',
 					method: 'custom_delete',
 					v_on: 'DeleteScreen',
+				},
+				view: {
+					title: 'Set as Default',
+					name: 'Link',
+					apiUrl: '/admin/site/screen/set-default/',
+					routeName: '',
+					button: '<i class="fa fa-tag"></i> Set as Default',
+					method: 'view',
+					v_on: 'DefaultScreen',
 				},
 			},
 			otherButtons: {

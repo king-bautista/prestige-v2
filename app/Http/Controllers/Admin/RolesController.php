@@ -40,6 +40,10 @@ class RolesController extends AppBaseController implements RolesControllerInterf
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('description', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($roles, 'Successfully Retreived!', 200);
@@ -170,15 +174,12 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
     }
 
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new RolesImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,

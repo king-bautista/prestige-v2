@@ -2,7 +2,7 @@
 <div class="p-3 font-weight-bold nav-titles">Store Page</div>
 
 <div class="row">
-    <div class="promo-featured-container" id="bigcontainer">
+    <div class="promo-featured-container" id="isSubscriber">
         <!-- BANNER -->
         <div class="col-sm-12">
             <div class="store-banner-container">                
@@ -14,10 +14,17 @@
             </div>
         </div>
     </div>
+    <div class="promo-featured-container my-auto" id="nonSubscriber">
+        <div class="d-flex justify-content-center">
+            <div class="card border-0 bg-transparent tenantCardImgContainer">
+                <img class="tenantCardImgContent" src="#">
+            </div>
+        </div>
+    </div>
     <!-- TENANT DETAILS -->
     <div class="bg-white p-3 shadow tenant-card-info-tab">
         <div class="my-auto p-1">
-            <img class="tenant-store-page-logo" src="resources\uploads\tenants\logo\JOLLIBEE.jpg" align="left">
+            <img class="tenant-store-page-logo" src="#" align="left">
             <div class="font-weight-bold tenant-store-page-name"></div>
             <div class="tenant-store-page-floor"></div>
             <div class="tenant-store-page-views"><span class="view-count">0</span> Views</div>
@@ -62,13 +69,7 @@
             </div>
             <div class="col-sm-6">
                 <span class="text-danger ml-2 btn-like">
-                    <svg class="svg-inline--fa fa-heart fa-w-16 heart-icon-btn" aria-hidden="true" focusable="false"
-                        data-prefix="fa" data-icon="heart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" >
-                        <path
-                            fill="currentColor"
-                            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
-                        ></path>
-                    </svg>
+                    <i class="far fa-heart svg-inline--fa fa-heart fa-w-16 heart-icon-btn btn-heart" aria-hidden="true"></i>
                     <a class="display-likes-btn">
                         <span class="like_counts"></span> <span>likes</span>
                     </a>
@@ -128,6 +129,8 @@
 @push('scripts')
 <script>
     var site_schedule = '{{ $site_schedule }}';
+    var tenant_id = '';
+    var tenant_likes = 0;
 
     $(document).ready(function () {
         var modalTenant = $("#imgPromoModalTenant");
@@ -142,6 +145,7 @@
         spanBanner.on("click", function () {
             modalBanner.css("display", "none");
         });
+
     });
 
     function showProducts(products) {
@@ -176,13 +180,15 @@
 
     function showTenantDetails(tenant) {
         console.log(tenant);
-        var site_info = JSON.parse(decodeEntities(site_schedule));
+
+        var site_info = JSON.parse(helper.decodeEntities(site_schedule));
+        tenant_id = tenant.id;
+        tenant_likes = tenant.like_count;
+
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
         $('.tenant-store-page-name').html(tenant.brand_name);
         $('.tenant-store-page-floor').html(tenant.location);
-        $('.view-count').html(tenant.view_count);
-        $('.like_counts').html(tenant.like_count);
 
         // STORE OR SITE HOURS
         $('.mall-hours-title').removeClass('text-success').removeClass('text-error')
@@ -198,34 +204,60 @@
         // PRODUCT AND LOGO
         if(tenant.is_subscriber) {
             showProducts(tenant.products);
+            $('#isSubscriber').show();
+            $('#nonSubscriber').hide();
         }
         else {
-            
+            $('.tenantCardImgContent').attr('src', tenant.brand_logo);
+            $('#isSubscriber').hide();
+            $('#nonSubscriber').show();            
         }
         
         // STORE SOCIAL MEDIA
         $('.social-media-fb-container').show();    
         $('.social-media-ig-container').show();    
         $('.social-media-twitter-container').show();    
-        if(!tenant.tenant_details.facebook) 
+        if(!tenant.tenant_details) {
             $('.social-media-fb-container').hide();    
-        if(!tenant.tenant_details.facebook)
             $('.social-media-ig-container').hide();    
-        if(!tenant.tenant_details.twitter)
-            $('.social-media-twitter-container').hide();    
+            $('.social-media-twitter-container').hide();
+        }
+        else {
+            $('.social-media-fb').html(tenant.tenant_details.facebook);
+            $('.social-media-ig').html(tenant.tenant_details.instagram);
+            $('.social-media-twitter').html(tenant.tenant_details.twitter);
+            
+            if(!tenant.tenant_details.facebook) 
+                $('.social-media-fb-container').hide();    
+            if(!tenant.tenant_details.facebook)
+                $('.social-media-ig-container').hide();    
+            if(!tenant.tenant_details.twitter)
+                $('.social-media-twitter-container').hide();            
+        }
 
-        $('.social-media-fb').html(tenant.tenant_details.facebook);
-        $('.social-media-ig').html(tenant.tenant_details.instagram);
-        $('.social-media-twitter').html(tenant.tenant_details.twitter);
-
-        $('#tenant-store-content').show();
         $('#promos-container').hide();
+        $('#home-container').hide();
+        $('#home-cat-contents').hide();
+        $('#search-container').hide();
+        $('#tenant-store-content').show();
 
         var contentPosition = $("#bigcontainer > div").length;
         if(contentPosition == 1){
             $("#bigcontainer").addClass("my-auto");
             $(".promo-row-container").addClass("dflex justify-content-center")
+        }       
+        
+        if($(".btn-heart").hasClass("fas")) {
+            $(".btn-heart").removeClass('fas').addClass('far');
         }
+
+        $('.btn-like').on('click', function() {
+            helper.updateLikeCount(tenant.id, tenant.view_count);
+        });
+
+        helper.updateViewCount(tenant.id, tenant.view_count);        
+        helper.setTenantCountDetails(tenant.id);
+
     }
 </script>
 @endpush

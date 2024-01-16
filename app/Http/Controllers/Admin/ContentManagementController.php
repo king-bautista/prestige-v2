@@ -251,7 +251,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         $sequence = 1;
         for ($row = 1; $row <= $total_rows; $row++) {
-            $playlist = $this->getPlaylistPerCategory($screen_id, $site_partner_id, false);
+            $playlist = $this->getPlaylistPerCategory($screen_id, $site_partner_id, true);
             if (!$playlist)
                 return false;
 
@@ -262,7 +262,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 $sequence++;
             }
 
-            $playlist = $this->getPlaylistPerCategory($screen_id, $site_partner_id, true);
+            $playlist = $this->getPlaylistPerCategory($screen_id, $site_partner_id, false);
             if (!$playlist)
                 return false;
 

@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\BrandTag;
 use App\Models\Tag;
+use App\Models\SiteScreen;
+use App\Models\SiteTenant;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\AdminViewModels\CinemaScheduleViewModel;
 use App\Models\ViewModels\SiteCategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
+use App\Models\AdminViewModels\PlayListViewModel;
 
 class KioskController extends AppBaseController
 {
@@ -35,12 +38,11 @@ class KioskController extends AppBaseController
         $cinemas = $this->getCinemas($site->id);
         $now_showing = $this->getShowing($site->id);
         $suggestions = $this->getSuggestionList($site->id);
+        $banner_ads = $this->getBannerAds($site->id);
+        $fullscreen_ads = $this->getFullScreenAds($site->id);
 
         $template_name = str_replace("-", "_", strtolower($site_name));
-        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions'));
-
-        // GET PLAYLIST
-        // MAP
+        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads', 'fullscreen_ads'));
     }
 
     public function getCategories($site_id= 0) {
@@ -109,6 +111,8 @@ class KioskController extends AppBaseController
     }
 
     public function getTenants($site_id = null, $parent_category_id = null, $category_id = null) {
+
+        SiteTenantViewModel::setSiteId($site_id);
 
         $tenants = SiteTenantViewModel::where('site_tenants.site_id', $site_id)
         ->where('categories.parent_id', $parent_category_id)
@@ -205,13 +209,19 @@ class KioskController extends AppBaseController
         $start_date =  date('Y-m-d 00:00:00');
         $end_date =  date('Y-m-d 23:59:59');
         
-        $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
-        ->where('show_time', '<=', $end_date)
-        ->where('site_id', $site_id)
+        $now_showing = CinemaScheduleViewModel::where('site_id', $site_id)
         ->select('site_id', 'film_id', 'title', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre', 'synopsis')
         ->groupBy('film_id')
         ->orderBy('title')
         ->get()->toArray();
+
+        // $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
+        // ->where('show_time', '<=', $end_date)
+        // ->where('site_id', $site_id)
+        // ->select('site_id', 'film_id', 'title', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre', 'synopsis')
+        // ->groupBy('film_id')
+        // ->orderBy('title')
+        // ->get()->toArray();
         
         $now_showing = array_chunk($now_showing, 3);
         return json_encode($now_showing);
@@ -296,6 +306,8 @@ class KioskController extends AppBaseController
     public function search(Request $request) {
         // try
         // {
+            SiteTenantViewModel::setSiteId($request->site_id);
+
             if (!$request->id) {
                 $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
 
@@ -364,6 +376,82 @@ class KioskController extends AppBaseController
         //         'status_code' => 200,
         //     ], 200);
         // } 
+    }
+
+    public function getBannerAds($site_id) {
+
+        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site_id)->first();
+        if(!$site_screen)
+            return null;
+        
+        $site_screen_id = $site_screen->id;
+        $current_date = date('Y-m-d');
+
+        $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
+            ->where('content_management.status_id', 5)
+            ->where('content_management.active', 1)
+            ->where('site_screen_products.ad_type', 'Banner Ad')
+            ->whereNull('content_management.deleted_at')
+            ->whereDate('content_management.start_date', '<=', $current_date)
+            ->whereDate('content_management.end_date', '>=', $current_date)
+            ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+            ->leftJoin('site_screen_products', function($join)
+            {
+                $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                     ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+            })            
+            ->select('play_lists.*')
+            ->orderBy('play_lists.sequence', 'ASC')
+            ->get()
+            ->toArray();
+
+        return json_encode($playlist);
+    }
+
+    public function getFullScreenAds($site_id) {
+
+        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site_id)->first();
+        if(!$site_screen)
+            return null;
+
+        $site_screen_id = $site_screen->id;
+        $current_date = date('Y-m-d');
+
+        $playlist = PlayListViewModel::where('play_lists.site_screen_id', $site_screen_id)
+        ->where('content_management.status_id', 5)
+        ->where('content_management.active', 1)
+        ->where('site_screen_products.ad_type', 'Full Screen Ad')
+        ->whereNull('content_management.deleted_at')
+        ->whereDate('content_management.start_date', '<=', $current_date)
+        ->whereDate('content_management.end_date', '>=', $current_date)
+        ->join('content_management', 'play_lists.content_id', '=', 'content_management.id')
+        ->leftJoin('site_screen_products', function($join)
+        {
+            $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                    ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+        })            
+        ->select('play_lists.*')
+        ->select('play_lists.*')
+        ->orderBy('play_lists.sequence', 'ASC')
+        ->get()
+        ->toArray();
+
+        return json_encode($playlist);
+    }
+
+    public function putLikeCount(Request $request)
+    {
+        SiteTenant::where('id', $request->id)->update(['like_count' => $request->like_count]);
+    }
+
+    public function putViewCount(Request $request)
+    {
+        SiteTenant::where('id', $request->id)->update(['view_count' => $request->view_count]);
+    }
+
+    public function getTenantCountDetails(Request $request)
+    {
+        return SiteTenant::find($request->id);
     }
 
 }

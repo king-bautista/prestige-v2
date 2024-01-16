@@ -37,7 +37,21 @@ class CustomerCareController extends AppBaseController implements CustomerCareCo
     {
         try {
             $advertisements = CustomerCareViewModel::when(request('search'), function ($query) {
-                return $query->where('ticket_id', 'LIKE', '%' . request('search') . '%');
+                return $query->where('concerns.name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('customer_care.ticket_id', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('customer_care.first_name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('customer_care.last_name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('customer_care.ticket_subject', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('customer_care.ticket_description', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('customer_care.image', 'LIKE', '%' . request('search') . '%')
+                ;
+            })
+            ->leftJoin('concerns', 'customer_care.concern_id', '=', 'concerns.id')
+            ->select('customer_care.*', 'concerns.name')
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                $field = ($column == 'concern_name') ? 'concerns.name' : $column;
+                return $query->orderBy($field, request('sort'));
             })
                 ->latest()
                 ->paginate(request('perPage'));

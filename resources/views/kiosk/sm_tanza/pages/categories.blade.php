@@ -17,22 +17,20 @@
 
     <div class="tab-content" id="Categories-nav-tab-content">
         <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
-            <div id="CatTabCategories" class="cat-cards">
+            <div class="CatTabCategories cat-cards">
                 <!-- MAIN CATEGORY TITLE -->
                 <div class="p-2 text-center title-page-content font-weight-bold category-title">Main Category</div>
                 <!-- SUB-CATEGORY LIST -->
-                <div class="row mt-5 cat-row-card">
-                </div>
+                <div class="row mt-5 cat-row-card"></div>
             </div>
-            <div id="TenantPage">
+            <div class="TenantPage">
                 <!-- MAIN CATEGORY TITLE -->
                 <div class="Category-Container-Banner">
                     <img class="category-img-banner" src="#">
                     <div class="hts-strip-align hts-strip-color category-banner-title">Sub-Category</div>
                 </div>
                 <!-- TENANT LIST PER SUB-CATEGORY -->
-                <div class="slideshow-content-container sub-category-tenants">
-                </div>
+                <div class="slideshow-content-container sub-category-tenants"></div>
             </div>
         </div>        
         <div class="tab-pane" id="Tab-Alphabetical" role="tabpanel">
@@ -48,46 +46,26 @@
                 <div class="col">
                     <div class="alphabet-content">
                         <div class="alphabet-box">
-                            <a class="link-alpha selected">#</a>
-                            <a class="link-alpha"> A </a>
-                            <a class="link-alpha"> B </a>
-                            <a class="link-alpha"> C </a>
-                            <a class="link-alpha"> D </a>
-                            <span class="link-alpha-disabled">E</span>
-                            <a class="link-alpha"> F </a>
-                            <a class="link-alpha"> G </a>
-                            <span class="link-alpha-disabled">H</span>
-                            <a class="link-alpha"> I </a>
-                            <a class="link-alpha"> J </a>
-                            <a class="link-alpha"> K </a>
-                            <a class="link-alpha"> L </a>
-                            <a class="link-alpha"> M </a>
-                            <a class="link-alpha"> N </a>
-                            <span class="link-alpha-disabled">O</span>
-                            <a class="link-alpha"> P </a>
-                            <span class="link-alpha-disabled">Q</span>
-                            <a class="link-alpha"> R </a>
-                            <a class="link-alpha"> S </a>
-                            <span class="link-alpha-disabled">T</span>
-                            <span class="link-alpha-disabled">U</span>
-                            <span class="link-alpha-disabled">V</span>
-                            <span class="link-alpha-disabled">W</span>
-                            <span class="link-alpha-disabled">X</span>
-                            <a class="link-alpha"> Y </a>
-                            <a class="link-alpha"> Z </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>        
         <div class="tab-pane" id="Tab-Supplemental" role="tabpanel" aria-labelledby="Tab-Supplemental-tab">
-            <!-- MAIN CATEGORY TITLE -->
-            <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
-                <div class="title-page-content-2 category-title">Food</div>
+            <div class="CatTabCategories">
+                <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
+                    <div class="title-page-content-2 category-title">Food</div>
+                </div>
+                <div class="slideshow-content-container supplemental-list"></div>
             </div>
-
-            <!-- TENANT LIST PER ALPHABETICAL -->
-            <div class="slideshow-content-container supplemental-list"></div>
+            <div class="TenantPage">
+                <div class="Category-Container-Banner">
+                    <img class="category-img-banner" src="#">
+                    <div class="hts-strip-align hts-strip-color category-banner-title">Sub-Category</div>
+                </div>
+                <div class="slideshow-content-container sub-category-tenants"></div>
+            </div>
+            
         </div>
     </div>
     <!-- categories navigation -->
@@ -115,8 +93,14 @@
     var supplementals = '';
     var alphabetical = '';
     var tenant_list = '';
+    var navigation_letters = ['#'];
+    var available_letters = '';
 
     $(document).ready(function() {
+        $('#Tab-Category-Tab').on('click', function() {
+            showSubCategories();
+        });
+
         $('#Tab-Alphabetical-tab').on('click', function() {
             showAlphabetical();
         });
@@ -126,14 +110,8 @@
         });
     });
 
-    function decodeEntities(encodedString) {
-        var textArea = document.createElement('textarea');
-        textArea.innerHTML = encodedString;
-        return textArea.value;
-    }
-
     function showHomeCategories() {
-        var my_categories = JSON.parse(decodeEntities(categories));
+        var my_categories = JSON.parse(helper.decodeEntities(categories));
         $.each(my_categories, function(key,category) {
             var category_element = '';
             category_element = '<div class="home-category-holder '+ category.category_class +' main-'+ category.id +'">';
@@ -153,8 +131,9 @@
     }
 
     function showSubCategories() {
+        $('.sub-category-tenants').html('');
         $('.cat-row-card').html('');
-        $( ".category-title" ).html(main_category);
+        $('.category-title').html(main_category);
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
             subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
@@ -175,8 +154,9 @@
             });
         }); 
         $('#home-cat-contents').show();
-        $('#CatTabCategories').show();
+        $('.CatTabCategories').show();
         $('#home-container').hide();
+        $('.TenantPage').hide();
     }
 
     function showTenantList() {
@@ -194,6 +174,11 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
+                var store_status = 'Close';
+                if(tenant.operational_hours.is_open) {
+                    store_status = 'Open';
+                }
+
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
                 tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
                 tenant_item += '<div class="tenant-store-contents">';
@@ -203,7 +188,7 @@
                 tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                tenant_item += '<span class="text-success">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';
@@ -216,17 +201,68 @@
                 });
             });
         }); 
+
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.sub-category-tenants').append(navigation_button);
+
         owl_tenant = $('.owl-wrapper-tenant-list');
-        owl_tenant.owlCarousel({
+        owl_tenant.on("initialized.owl.carousel", function(e) {
+            if(e.item.count > 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
         });
 
-        $('#TenantPage').show();
-        $('#CatTabCategories').hide();
-        $('#Tab-Category-Tab').click();
+        $('.promo-next').click(function() {
+            owl_tenant.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            owl_tenant.trigger('prev.owl.carousel');
+        })
+
+        owl_tenant.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
+        });
+
+        $('.TenantPage').show();
+        $('.CatTabCategories').hide();
     }
 
     function showAlphabetical() {
@@ -244,40 +280,100 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
+                var store_status = 'Close';
+                if(tenant.operational_hours.is_open) {
+                    store_status = 'Open';
+                }
+
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
                 tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed alpha-tenant-item-'+tenant.id+'">';
                 tenant_item += '<div class="tenant-store-contents">';
                 tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+tenant.brand_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success">'+tenant.operational_hours+'</span>';
+                tenant_item += '<span class="text-success">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';
                 tenant_item += '</div>';
                 tenant_item += '</div>';
                 tenant_item += '</div>';
-                $( ".tenants-"+key ).append(tenant_item);                
-                $('.alpha-tenant-item'+tenant.id).on('click', function() {
+                $('.tenants-'+key ).append(tenant_item);                
+                $('.alpha-tenant-item-'+tenant.id).on('click', function() {
                     showTenantDetails(tenant);
                 });
             });
         }); 
+
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.alpha-tenants').append(navigation_button);
+
         owl_tenant = $('.owl-wrapper-alpha-tenant-list');
-        owl_tenant.owlCarousel({
+        owl_tenant.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
         });
+
+        $('.promo-next').click(function() {
+            owl_tenant.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            owl_tenant.trigger('prev.owl.carousel');
+        })
+
+        owl_tenant.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
+        });
+
+        generateLetters();
+
     }
 
     function showSupplementals() {
         $('.supplemental-list').html('');
-        $( ".supplemental-list" ).html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
+        $('.supplemental-list').html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
         $.each(supplementals, function(key,supplemental) {
             var supplemental_element = '';
             supplemental_element = '<div class="item">';
@@ -303,17 +399,146 @@
                     $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                     $('.category-banner-title').html(category.category_name);
                     tenant_list = category.tenants;
+                    console.log(tenant_list);
                     showTenantList();
                 });
             });
         }); 
+
+        var navigation_button = '';
+        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+        navigation_button += '<a class="promo-next">';
+        navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
+        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '</div>';
+        navigation_button += '</a>';
+
+        $('.supplemental-list').append(navigation_button);
+
         owl_tenant = $('.owl-wrapper-supplemental');
-        owl_tenant.owlCarousel({
+        owl_tenant.on("initialized.owl.carousel", function(e) {
+            if(e.item.count == 1) {
+                $('.promo-prev').hide();
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-prev').hide();
+                $('.promo-next').show();
+            }
+        }).owlCarousel({
             margin: 0,
             nav: false,
             loop: false,
             items: 1,
         });
+
+        $('.promo-next').click(function() {
+            owl_tenant.trigger('next.owl.carousel');
+        })
+
+        $('.promo-prev').click(function() {
+            owl_tenant.trigger('prev.owl.carousel');
+        })
+
+        owl_tenant.on('changed.owl.carousel', function(e) {
+            var first = ( !e.item.index)
+            if( first ){
+                $('.promo-prev').hide();
+            }
+            else {
+                $('.promo-prev').show();
+            }
+
+            var total = e.relatedTarget.items().length - 1;
+            var current = e.item.index;
+            if(total == current) {
+                $('.promo-next').hide();
+            }
+            else {
+                $('.promo-next').show();
+            }
+            
+        });
+
+        $('.TenantPage').hide();
+        $('.CatTabCategories').show();
+    }
+
+    function generateLetters() {
+
+        filterLetterNavigator();
+
+        $('.alphabet-box').html('');
+        $('.alphabet-box').append('<a class="link-alpha selected">#</a>');
+        for (let i = 65; i <= 90; i++) {
+
+            var class_name = (available_letters.includes(String.fromCharCode(i))) ? 'link-alpha' : 'link-alpha-disabled';
+            $('.alphabet-box').append('<a class="'+class_name+'" onclick="moveTo(\''+String.fromCharCode(i)+'\')">'+String.fromCharCode(i)+'</a>');
+
+        }
+
+    }
+
+    function filterLetterNavigator() {
+        let letter_container = [];
+
+        $(".tenant-store-name").each(function(){
+            let tenant_name = $(this).html().charAt(0);
+            if (tenant_name.match(/^\d/)) {
+                letter_container.push("#");
+            }else{
+                letter_container.push(tenant_name);
+            };
+        });
+
+        available_letters = [...new Set(letter_container)];
+    }
+
+    function moveTo(letter) {
+        $(".tenant-store-name").removeClass('letter-selected'); 
+        $(".alphabet-box a").removeClass('active');
+
+        let index = 0;
+        // GET SLIDE INDEX
+        $(".tenant-store-name").each(function(){
+            if($(this).html().startsWith(letter, 0)){
+                index = $(this).attr('parent-index');
+                return false;
+            };
+            if ($(this).html().match(/^\d/) && letter=="#") {
+                index = $(this).attr('parent-index');
+                return false;
+            };
+        });
+
+        // ADD ACTIVE CLASS
+        $(".tenant-store-name").each(function(){
+            if($(this).html().startsWith(letter, 0)){
+                $(this).addClass('letter-selected');
+            };
+            if ($(this).html().match(/^\d/) && letter=="#") {
+                $(this).addClass('letter-selected');
+            };
+        });
+
+        // ADD ACTIVE CLASS
+        $(".alphabet-box .link-alpha").each(function(){
+            if($(this).html().startsWith(letter, 0)){
+                console.log($(this).html());
+                $(this).addClass('active');
+            };
+        });
+
+        $(".owl-dots button").each(function(key){
+            if (key == parseInt(index)){
+                $(this).trigger('click');
+            }
+        });
+
     }
 
     showHomeCategories();

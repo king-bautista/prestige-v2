@@ -42,6 +42,10 @@ class UsersController extends AppBaseController implements UsersControllerInterf
                     ->orWhere('email', 'LIKE', '%' . request('search') . '%');
             })
                 ->where('full_name', '<>', 'Administrator')
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($user, 'Successfully Retreived!', 200);
@@ -141,16 +145,13 @@ class UsersController extends AppBaseController implements UsersControllerInterf
             ], 422);
         }
     }
-    
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new UsersImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -224,27 +225,27 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         try {
             $reports[] = [
                 'id' => '',
-                    'full_name' => '',
-                    'email' => '',
-                    'email_verified_at' => '',
-                    'password' => '',
-                    'api_token' => '',
-                    'salt' => '',
-                    'login_attempt' => '',
-                    'is_blocked' => '',
-                    'activation_token' => '',
-                    'admin_role_id' => '',
-                    'admin_role_name' => '',
-                    'admin_meta_first_name' => '',
-                    'admin_meta_last_name' => '',
-                    'active' => '',
-                    'activation_token' => '',
-                    'created_by' => '',
-                    'updated_by' => '',
-                    'remember_token' => '',
-                    'created_at' => '',
-                    'updated_at' => '',
-                    'deleted_at' => '',
+                'full_name' => '',
+                'email' => '',
+                'email_verified_at' => '',
+                'password' => '',
+                'api_token' => '',
+                'salt' => '',
+                'login_attempt' => '',
+                'is_blocked' => '',
+                'activation_token' => '',
+                'admin_role_id' => '',
+                'admin_role_name' => '',
+                'admin_meta_first_name' => '',
+                'admin_meta_last_name' => '',
+                'active' => '',
+                'activation_token' => '',
+                'created_by' => '',
+                'updated_by' => '',
+                'remember_token' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
@@ -281,6 +282,6 @@ class UsersController extends AppBaseController implements UsersControllerInterf
         foreach ($roles as $role) {
             $admin_role[] = ($field == 'id') ? $role->id : $role->name;
         }
-        return implode(",",$admin_role);
+        return implode(",", $admin_role);
     }
 }

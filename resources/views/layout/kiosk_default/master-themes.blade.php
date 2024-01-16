@@ -8,6 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Set Custom Theme UI -->
+        <link rel="stylesheet" href="{{ URL::to('plugins/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('resources/css/style.css') }}">
         <link rel="stylesheet" href="{{ URL::to('resources/css/bootstrap.min.css') }}"> 
         <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.carousel.min.css') }}">
@@ -39,7 +40,7 @@
             }
 
             .no-promos-found {
-                display: none;
+                display: flex;
             }
 
             .now-showing-details {
@@ -178,7 +179,18 @@
             } 
 
             .subscriber-holder {
-                border: solid 1px;
+                width: 1101px;
+            }
+
+            .letter-selected::first-letter {
+                font-weight: bold;
+                color: #532be2;
+                text-decoration: underline;
+            }
+
+            .alphabet-box a.active {
+                text-decoration: underline;
+                color: #005aff !important;
             }
             
         </style>
@@ -193,6 +205,7 @@
     <script src="{{ URL::to('themes/owlcarousel/owl.carousel.js') }}"></script>
     <script src="{{ URL::to('themes/softkeys/softkeys-0.0.1.js') }}"></script>
     <script src="{{ URL::to('themes/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ URL::to('themes/custom-js/helper.js') }}"></script>
 
     @stack('scripts') <!-- To include script links -->
         
