@@ -64,3 +64,175 @@
 
 	</div>
 </div>
+
+@push('scripts')
+<script>
+	/* script for popover */
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();   
+    });
+
+    /* script for random content of popover */
+    $('[data-toggle="popover"]').on("click", function () {
+        const assistant_messages = [
+            "Touch a featured store or your desired store to get directions. You may check the latest product and promo offers. Scroll to view more.",
+            "Need help? Touch here.",
+            "Looking for outfits? Try searching dress or shirt.",
+        ];
+
+        var contentIndex = Math.floor(Math.random() * assistant_messages.length);
+        var newMessage = assistant_messages[contentIndex];
+
+        // Set the 'data-content' attribute for the popover
+        $(this).attr("data-content", newMessage);
+    });
+
+	// for navigation positioning if remove another nav
+    var NavContentPositioning = $("#NavContentContainer > div").length;
+	if(NavContentPositioning == 1){
+		$("#NavContentContainer").removeClass("nav-content-container");
+		$("#NavContentContainer").addClass("nav-content-container-4");
+	}
+
+	else if(NavContentPositioning == 2){
+		$("#NavContentContainer").removeClass("nav-content-container");
+		$("#NavContentContainer").removeClass("nav-content-container-1");
+		$("#NavContentContainer").removeClass("nav-content-container-2");
+		$("#NavContentContainer").removeClass("nav-content-container-4");
+		$("#NavContentContainer").addClass("nav-content-container-3");
+	}
+
+	else if(NavContentPositioning == 3){
+		$("#NavContentContainer").removeClass("nav-content-container");
+		$("#NavContentContainer").removeClass("nav-content-container-1");
+		$("#NavContentContainer").removeClass("nav-content-container-3");
+		$("#NavContentContainer").removeClass("nav-content-container-4");
+		$("#NavContentContainer").addClass("nav-content-container-2");
+	}
+
+	else if(NavContentPositioning == 4){
+		$("#NavContentContainer").removeClass("nav-content-container");
+		$("#NavContentContainer").removeClass("nav-content-container-2");
+		$("#NavContentContainer").removeClass("nav-content-container-3");
+		$("#NavContentContainer").removeClass("nav-content-container-4");
+		$("#NavContentContainer").addClass("nav-content-container-1");
+	}
+
+	else {
+		$("#NavContentContainer").removeClass("nav-content-container-1");
+		$("#NavContentContainer").removeClass("nav-content-container-2");
+		$("#NavContentContainer").removeClass("nav-content-container-3");
+		$("#NavContentContainer").removeClass("nav-content-container-4");
+		$("#NavContentContainer").addClass("nav-content-container");
+	}
+
+	/* for logo button to view about page */
+    $("#ImgMallLogo").on('click', function(){
+        $('#DirectoryAboutPage, #search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4').show();
+        $('#ImgMallLogo, #home-container, #home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage').hide();
+        $('#home_txt').removeClass("nav-btn-active");
+        $('#search_txt').removeClass("nav-btn-active");
+        $('#map_txt').removeClass("nav-btn-active");
+        $('#promos_txt').removeClass("nav-btn-active");
+        $('#cinema_txt').removeClass("nav-btn-active");
+    });
+
+	/* for home button */
+    $("#home_btn").on('click', function(){
+        $('#home-container, #search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo').show();
+        $('#home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
+        $('#home_txt').addClass("nav-btn-active");
+        $('#search_txt').removeClass("nav-btn-active");
+        $('#map_txt').removeClass("nav-btn-active");
+        $('#promos_txt').removeClass("nav-btn-active");
+        $('#cinema_txt').removeClass("nav-btn-active");
+        sub_categories = '';
+        main_category = '';
+        supplementals = '';
+        alphabetical = '';
+        tenant_list = '';
+        $('#videocontainer').html('');
+        $('.modal').hide();
+        $('#Tab-Category-Tab').click();        
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
+		$('#home-cat-contents,#search-container,#map-container,#promos-container,#cinema-container').hide();
+        $('#home-container').show();
+    });
+
+    /* for search button */
+    $("#search_btn").on('click', function(){
+        $('#search-container, #search_v4s, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo').show();
+        $('#home-container, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
+        $('#search_txt').addClass("nav-btn-active");
+        $('#home_txt').removeClass("nav-btn-active");
+        $('#map_txt').removeClass("nav-btn-active");
+        $('#promos_txt').removeClass("nav-btn-active");
+        $('#cinema_txt').removeClass("nav-btn-active");
+        $('#code').val('');
+        $('#videocontainer').html('');
+        $('.modal').hide();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
+    });
+
+    /* for map button */
+    $("#map_btn").on('click', function(){
+        $('#map-container, #map_v4s, #home_v4, #search_v4, #promos_v4, #cinema_v4, #ImgMallLogo').show();
+        $('#home-container, #home-cat-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
+        $('#map_txt').addClass("nav-btn-active");
+        $('#search_txt').removeClass("nav-btn-active");
+        $('#home_txt').removeClass("nav-btn-active");
+        $('#promos_txt').removeClass("nav-btn-active");
+        $('#cinema_txt').removeClass("nav-btn-active");
+        $('#videocontainer').html('');
+        $('.modal').hide();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
+    });
+
+    /* for promos button */
+    $("#promos_btn").on('click', function(){
+        $('#promos-container, #promos_v4s, #home_v4, #search_v4, #map_v4, #cinema_v4, #ImgMallLogo').show();
+        $('#home-container, #home-cat-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
+        $('#promos_txt').addClass("nav-btn-active");
+        $('#home_txt').removeClass("nav-btn-active");
+        $('#map_txt').removeClass("nav-btn-active");
+        $('#search_txt').removeClass("nav-btn-active");
+        $('#cinema_txt').removeClass("nav-btn-active");
+        $('#videocontainer').html('');
+        $('.modal').hide();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
+        showPromos();
+    });
+
+    /* for cinema button */
+    $("#cinema_btn").on('click', function(){
+        $('#cinema-container, #cinema_v4s, #home_v4, #search_v4, #promos_v4, #map_v4, #ImgMallLogo').show();
+        $('#home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage').hide();
+        $('#cinema_txt').addClass("nav-btn-active");
+        $('#home_txt').removeClass("nav-btn-active");
+        $('#map_txt').removeClass("nav-btn-active");
+        $('#promos_txt').removeClass("nav-btn-active");
+        $('#search_txt').removeClass("nav-btn-active");
+        $('#videocontainer').html('');
+        $('.modal').hide();
+        $('#Tab-Cinema-Tab').click();
+        $('.search-for').hide();
+        $('#searchNone').hide();
+        $('#searchList').hide();
+        $('#keyboard-section').show();
+        showCinemas();
+    });
+	
+</script>
+@endpush

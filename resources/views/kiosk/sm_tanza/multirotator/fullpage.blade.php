@@ -27,7 +27,6 @@
             screensaver_handle = setTimeout(() => {
                 $("#screensaverwidget").height('100%').width('100%');
             }, 5000); // 5 sec delay before showing screensaver
-            obj.callHomeMethod();
         }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
     });
 
@@ -81,7 +80,7 @@
     }
 
     function callHomeMethod() {
-
+        $('#home_btn').click();
     }
 
     showFullscreenAds();
