@@ -55,10 +55,6 @@ Helpers.prototype = {
         });
     },
 
-    saveBannerCount: function(banner_id) {
-        
-    },
-
     updateLikeCount: function(id, count) {
         var tenant_count = 0;
         if($(".btn-heart").hasClass("fas")) {
@@ -76,12 +72,33 @@ Helpers.prototype = {
         }
 
         $.post( "/api/v1/like-count", params ,function(response) {
-            
+            $('.like_counts').html(tenant_count);
+            tenant_likes = tenant_count;
         });
     },
 
     updateViewCount: function(id, count) {
-        $.post( "/api/v1/view-count", params ,function(response) {});
+
+        var view_count = parseInt(count) + 1;
+        let params = {
+            id: id,
+            view_count: view_count
+        }
+
+        $.post( "/api/v1/view-count", params ,function(response) {
+            $('.view-count').html(view_count);
+        });
+    },
+
+    setTenantCountDetails: function(id) {
+        let params = {
+            id: id
+        }
+
+        $.post( "/api/v1/tenant-count-details", params ,function(response) {
+            $('.view-count').html(response.view_count);
+            $('.like_counts').html(response.like_count);
+        });
     },
 
 };

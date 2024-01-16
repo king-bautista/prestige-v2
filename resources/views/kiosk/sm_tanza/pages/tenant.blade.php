@@ -129,6 +129,8 @@
 @push('scripts')
 <script>
     var site_schedule = '{{ $site_schedule }}';
+    var tenant_id = '';
+    var tenant_likes = 0;
 
     $(document).ready(function () {
         var modalTenant = $("#imgPromoModalTenant");
@@ -143,6 +145,7 @@
         spanBanner.on("click", function () {
             modalBanner.css("display", "none");
         });
+
     });
 
     function showProducts(products) {
@@ -177,13 +180,15 @@
 
     function showTenantDetails(tenant) {
         console.log(tenant);
+
         var site_info = JSON.parse(helper.decodeEntities(site_schedule));
+        tenant_id = tenant.id;
+        tenant_likes = tenant.like_count;
+
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
         $('.tenant-store-page-name').html(tenant.brand_name);
         $('.tenant-store-page-floor').html(tenant.location);
-        $('.view-count').html(tenant.view_count);
-        $('.like_counts').html(tenant.like_count);
 
         // STORE OR SITE HOURS
         $('.mall-hours-title').removeClass('text-success').removeClass('text-error')
@@ -240,7 +245,19 @@
         if(contentPosition == 1){
             $("#bigcontainer").addClass("my-auto");
             $(".promo-row-container").addClass("dflex justify-content-center")
+        }       
+        
+        if($(".btn-heart").hasClass("fas")) {
+            $(".btn-heart").removeClass('fas').addClass('far');
         }
+
+        $('.btn-like').on('click', function() {
+            helper.updateLikeCount(tenant.id, tenant.view_count);
+        });
+
+        helper.updateViewCount(tenant.id, tenant.view_count);        
+        helper.setTenantCountDetails(tenant.id);
+
     }
 </script>
 @endpush

@@ -17,22 +17,20 @@
 
     <div class="tab-content" id="Categories-nav-tab-content">
         <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
-            <div id="CatTabCategories" class="cat-cards">
+            <div class="CatTabCategories cat-cards">
                 <!-- MAIN CATEGORY TITLE -->
                 <div class="p-2 text-center title-page-content font-weight-bold category-title">Main Category</div>
                 <!-- SUB-CATEGORY LIST -->
-                <div class="row mt-5 cat-row-card">
-                </div>
+                <div class="row mt-5 cat-row-card"></div>
             </div>
-            <div id="TenantPage">
+            <div class="TenantPage">
                 <!-- MAIN CATEGORY TITLE -->
                 <div class="Category-Container-Banner">
                     <img class="category-img-banner" src="#">
                     <div class="hts-strip-align hts-strip-color category-banner-title">Sub-Category</div>
                 </div>
                 <!-- TENANT LIST PER SUB-CATEGORY -->
-                <div class="slideshow-content-container sub-category-tenants">
-                </div>
+                <div class="slideshow-content-container sub-category-tenants"></div>
             </div>
         </div>        
         <div class="tab-pane" id="Tab-Alphabetical" role="tabpanel">
@@ -54,13 +52,20 @@
             </div>
         </div>        
         <div class="tab-pane" id="Tab-Supplemental" role="tabpanel" aria-labelledby="Tab-Supplemental-tab">
-            <!-- MAIN CATEGORY TITLE -->
-            <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
-                <div class="title-page-content-2 category-title">Food</div>
+            <div class="CatTabCategories">
+                <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
+                    <div class="title-page-content-2 category-title">Food</div>
+                </div>
+                <div class="slideshow-content-container supplemental-list"></div>
             </div>
-
-            <!-- TENANT LIST PER ALPHABETICAL -->
-            <div class="slideshow-content-container supplemental-list"></div>
+            <div class="TenantPage">
+                <div class="Category-Container-Banner">
+                    <img class="category-img-banner" src="#">
+                    <div class="hts-strip-align hts-strip-color category-banner-title">Sub-Category</div>
+                </div>
+                <div class="slideshow-content-container sub-category-tenants"></div>
+            </div>
+            
         </div>
     </div>
     <!-- categories navigation -->
@@ -149,9 +154,9 @@
             });
         }); 
         $('#home-cat-contents').show();
-        $('#CatTabCategories').show();
+        $('.CatTabCategories').show();
         $('#home-container').hide();
-        $('#TenantPage').hide();
+        $('.TenantPage').hide();
     }
 
     function showTenantList() {
@@ -256,8 +261,8 @@
             
         });
 
-        $('#TenantPage').show();
-        $('#CatTabCategories').hide();
+        $('.TenantPage').show();
+        $('.CatTabCategories').hide();
     }
 
     function showAlphabetical() {
@@ -394,6 +399,7 @@
                     $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                     $('.category-banner-title').html(category.category_name);
                     tenant_list = category.tenants;
+                    console.log(tenant_list);
                     showTenantList();
                 });
             });
@@ -457,6 +463,9 @@
             }
             
         });
+
+        $('.TenantPage').hide();
+        $('.CatTabCategories').show();
     }
 
     function generateLetters() {

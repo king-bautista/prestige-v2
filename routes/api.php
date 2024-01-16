@@ -39,6 +39,9 @@ Route::group(['prefix' => 'v1'], function ()
     */  
     Route::post('/search', 'Kiosk\KioskController@search')->name('kiosk.search');
     Route::post('/save-logs', 'Api\LogsController@storeLogs')->name('api.save-logs');
+    Route::post('/like-count', 'Kiosk\KioskController@putLikeCount')->name('kiosk.like-count');
+    Route::post('/view-count', 'Kiosk\KioskController@putViewCount')->name('kiosk.view-count');
+    Route::post('/tenant-count-details', 'Kiosk\KioskController@getTenantCountDetails')->name('kiosk.tenant-count-details');
 
 
     // Route::get('/site', 'Kiosk\MainController@getSite')->name('kiosk.site');
@@ -47,9 +50,6 @@ Route::group(['prefix' => 'v1'], function ()
     // Route::get('/tenants/category/{id}', 'Kiosk\MainController@getTenantsByCategory')->where('id', '[0-9]+')->name('kiosk.tenants.by-category');
     // Route::get('/tenants/supplemental/{id}', 'Kiosk\MainController@getTenantsBySupplementals')->where('id', '[0-9]+')->name('kiosk.tenants.by-supplemental');
     // Route::get('/tenants/suggestion/list', 'Kiosk\MainController@getSuggestionList')->where('id', '[0-9]+')->name('kiosk.tenants.suggestion');
-    // Route::get('/get-like-count/{id}', 'Kiosk\MainController@getLikeCount')->name('kiosk.get-like-count');
-    // Route::post('/like-count', 'Kiosk\MainController@putLikeCount')->name('kiosk.like-count');
-    // Route::post('/view-count', 'Kiosk\MainController@putViewCount')->name('kiosk.view-count');
     // Route::post('/feedback', 'Kiosk\MainController@putFeedback')->name('kiosk.feedback');
     // Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');
     // Route::get('/translation', 'Kiosk\MainController@getTranslation')->name('kiosk.translation');

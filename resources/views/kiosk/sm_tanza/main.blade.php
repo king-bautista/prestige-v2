@@ -56,6 +56,8 @@
         </div>
     </div>
 </div>
+@include('kiosk.sm_tanza.multirotator.fullpage')
+
 <!-- /.content -->
 @stop
 @push('scripts')

@@ -1,20 +1,8 @@
 <!-- image and video for landscape directory -->
-<div class="multirotator_landscape_container">
-	<img class="multirotator_landscape" id="imge" src="resources/uploads/multirotator/bg.png">
-
-	<video class="multirotator_landscape" autoplay="autoplay" muted playsinline loop>
-	  	<source src="http://127.0.0.1:8000/uploads/media/advertisements/materials/sunnies_studios_libtheora.ogv" type="video/ogg" />
-	</video>
-</div>
+<div class="multirotator_landscape_container"></div>
 
 <!-- image and video for portrait directory -->
-<div class="multirotator_portrait_container">
-	<img class="multirotator_portrait" id="imge" src="resources/uploads/multirotator/pbg.png">
-
-	<video class="multirotator_portrait" id="vido" autoplay="autoplay" muted playsinline loop>
-	  	<source src="resources/uploads/multirotator/6e5d549c-e18a-408d.ogv" type="video/ogg" />
-	</video>
-</div>
+<div class="multirotator_portrait_container"></div>
 
 @push('scripts')
 <script>
@@ -22,10 +10,11 @@
     var banner_ads = "{{ $banner_ads }}";
 
     function showBannerAds() {
+
         var my_banner_ads = JSON.parse(helper.decodeEntities(banner_ads));
-        console.log(my_banner_ads);
-        $('.multirotator_landscape_container').html('');
-        $('.multirotator_landscape_container').html('<div class="owl-carousel owl-wrapper-banner-ads"></div>');
+        
+        $('.multirotator_landscape_container, .multirotator_portrait_container').html('');
+        $('.multirotator_landscape_container, .multirotator_portrait_container').html('<div class="owl-carousel owl-wrapper-banner-ads"></div>');
         $.each(my_banner_ads, function(key,banner_ad) {
             var banner_element = '';
             banner_element += '<div class="item" data-display_duration="'+banner_ad.display_duration*1000+'">';
