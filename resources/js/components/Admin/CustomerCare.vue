@@ -57,7 +57,7 @@
 									</multiselect>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row" v-show="select_user_full_name">
 								<label for="User" class="col-sm-3 col-form-label">User Name<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -240,6 +240,7 @@ export default {
 			concerns: [],
 			add_record: true,
 			edit_record: false,
+			select_user_full_name: true,
 			input_user_full_name: false,
 			select_admin_full_name: false,
 			dataFields: {
@@ -424,6 +425,7 @@ export default {
 					this.customer_care.active = customer_care.active;
 					this.add_record = false;
 					this.edit_record = true;
+					this.select_user_full_name = false;
 					this.input_user_full_name = true;
 					this.select_admin_full_name = (customer_care.admin_details) ? false : true;
 					if (customer_care.image) {
