@@ -166,7 +166,6 @@ Helpers.prototype = {
         current_location = 'home';
         $('.back-img-btn').hide();
         page_history = [];
-        console.log(page_history);
     },
 
     searchBtnClick: function() {

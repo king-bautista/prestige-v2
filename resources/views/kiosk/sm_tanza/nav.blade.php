@@ -159,10 +159,7 @@
                 case 'cinemaschedule':
                     helper.backToCinemaschedule();
                     break;
-
             }
-
-            console.log(page_history);
         }
     });
     
