@@ -1,9 +1,9 @@
 <!-- title -->
-<div class="p-3 font-weight-bold nav-titles">Cinema</div>
+<div class="p-3 font-weight-bold nav-titles translateme" data-en="Cinema">Cinema</div>
 
 <div class="tab-content" id="Cinema-nav-tab-content">
     <div class="tab-pane show active" id="Tab-Cinema" role="tabpanel">
-        <div class="p-2 text-center cinema-page-title">Cinema Locator</div>
+        <div class="p-2 text-center cinema-page-title translateme" data-en="Cinema Locator">Cinema Locator</div>
         <!-- CINEMA LIST -->
         <div class="slideshow-content-container cinema-list">
         </div>
@@ -11,13 +11,13 @@
     <div class="tab-pane" id="Tab-Schedule" role="tabpanel">
         <!-- NOW SHOWING LIST -->
         <div id="CinemaTabSchedule">
-            <div class="p-2 text-center cinema-page-title-2">Now Showing</div>
+            <div class="p-2 text-center cinema-page-title-2 translateme" data-en="Now Showing">Now Showing</div>
             <div class="slideshow-content-container d-flex justify-content-center now-showing-list">
             </div>
         </div>  
         <!-- SHOWING NOT FOUND -->
         <div id="CinemaTabDefault">
-            <div class="p-2 text-center cinema-page-title-2">Now Showing</div>
+            <div class="p-2 text-center cinema-page-title-2 translateme" data-en="Now Showing">Now Showing</div>
             <div class="d-flex justify-content-center">
                 <img class="ImgCinemaDefault" src="{{ URL::to('themes/sm_default/images/cinema-default-desktop.png') }}">
             </div>
@@ -27,13 +27,13 @@
 
 <!-- Cinema navigation -->
 <div class="cinema-nav-tabs"> 
-    <span class="mr-4 nav-tab-title">Select to view: </span>
+    <span class="mr-4 nav-tab-title translateme" data-en="Select to view">Select to view: </span>
     <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Cinema-nav-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active nav-tab-pills-btn" id="Tab-Cinema-Tab" data-toggle="pill" data-target="#Tab-Cinema" type="button" role="tab" aria-controls="Tab-Cinema" aria-selected="true">Cinema</button>
+            <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Cinema-Tab" data-toggle="pill" data-target="#Tab-Cinema" type="button" role="tab" aria-controls="Tab-Cinema" aria-selected="true" data-en="Cinema">Cinema</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link nav-tab-pills-btn" id="Tab-Schedule-tab" data-toggle="pill" data-target="#Tab-Schedule" type="button" role="tab" aria-controls="Tab-Schedule" aria-selected="false">Schedule</button>
+            <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Schedule-tab" data-toggle="pill" data-target="#Tab-Schedule" type="button" role="tab" aria-controls="Tab-Schedule" aria-selected="false" data-en="Schedule">Schedule</button>
         </li>
     </ul>
 </div>

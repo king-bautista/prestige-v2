@@ -40,6 +40,9 @@ class RolesController extends AppBaseController implements RolesControllerInterf
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('description', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('name', 'ASC');
+                })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
                     return $query->orderBy($column, request('sort'));

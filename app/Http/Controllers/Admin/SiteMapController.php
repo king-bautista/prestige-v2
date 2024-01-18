@@ -57,7 +57,19 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
                 ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
                 ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_screens.*')
+                ->select('site_screens.*', 'sites.name as site_name')
+                ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name) AS screen_location")
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    if ($column == 'screen_location') {
+                        $fields = 'screen_location';
+                    } else if ($column == 'site_name') {
+                        $fields = 'site_name';
+                    } else{
+                        $fields = $column;
+                    }
+                    return $query->orderBy($fields, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
 

@@ -41,6 +41,20 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
+                // ->leftJoin('sites_meta', function ($join) {
+                //     $join->on('sites.id', '=', 'sites_meta.site_id')
+                //         ->where('sites_meta.meta_key', '=', 'site_code');
+                // })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    // if ($column == 'site_screen_location') {
+                    //     $fields = 'site_screen_location';
+                    // } else {
+                    //     $fields = $column;
+                    // }
+                    // return $query->orderBy($fields, request('sort'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
 
@@ -266,7 +280,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
             $sites_management = SiteViewModel::get();
             $reports = [];
-            foreach ($sites_management as $site) { 
+            foreach ($sites_management as $site) {
                 $reports[] = [
                     'id' => $site->id,
                     'serial_number' => $site->serial_number,
@@ -285,8 +299,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                     'website' => $site->details['website'],
                     'schedules' => $site->details['schedules'],
                     //'operational_hours' => $this->getOperationalHour($site->details),
-                        //'time_from' => ($site->details['time_from']),
-                         //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                    //'time_from' => ($site->details['time_from']),
+                    //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
                     'premiere' => $site->details['premiere'],
                     'site_code' => $site->details['site_code'],
                     'active' => $site->active,

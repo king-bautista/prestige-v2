@@ -9,8 +9,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Set Custom Theme UI -->
         <link rel="stylesheet" href="{{ URL::to('plugins/fontawesome-free/css/all.min.css') }}">
-        <link rel="stylesheet" href="{{ URL::to('resources/css/style.css') }}">
-        <link rel="stylesheet" href="{{ URL::to('resources/css/bootstrap.min.css') }}"> 
+        <link rel="stylesheet" href="{{ URL::to('themes/sm_default/css/style.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('themes/sm_default/css/bootstrap.min.css') }}"> 
         <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.carousel.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.theme.default.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/softkeys/softkeys-0.0.1.css') }}">
@@ -192,6 +192,16 @@
                 text-decoration: underline;
                 color: #005aff !important;
             }
+
+            #loadingDiv {
+                position:absolute;;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+                z-index: 99999;
+                background-color:#000;
+            }
             
         </style>
     </head>
@@ -200,8 +210,8 @@
     @yield('content')
 
     <script src="{{ URL::to('themes/owlcarousel/vendors/jquery.min.js') }}"></script>
-    <script src="{{ URL::to('resources/js/popper.min.js') }}"></script>
-    <script src="{{ URL::to('resources/js/bootstrap.min.js') }}"></script>
+    <script src="{{ URL::to('themes/sm_default/js/popper.min.js') }}"></script>
+    <script src="{{ URL::to('themes/sm_default/js/bootstrap.min.js') }}"></script>
     <script src="{{ URL::to('themes/owlcarousel/owl.carousel.js') }}"></script>
     <script src="{{ URL::to('themes/softkeys/softkeys-0.0.1.js') }}"></script>
     <script src="{{ URL::to('themes/jquery-ui/jquery-ui.min.js') }}"></script>

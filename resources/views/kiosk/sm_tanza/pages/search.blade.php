@@ -1,5 +1,5 @@
 <!-- title -->
-<div class="p-3 font-weight-bold nav-titles">Search</div>
+<div class="p-3 font-weight-bold nav-titles translateme" data-en="Search">Search</div>
 
 <div id="keyboard-section" class="row">
     <div class="col-md-10 offset-md-1 mt-5 pt-5">
@@ -7,7 +7,7 @@
             <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
                 <input type="text" id="code" name="code" class="form-control input-mg search-box">
                 <button class="btn search-box-button translateme" type="button" data-en="Search">Search</button>
-                <label class="notification">Please type at least two (2) letters to search.</label>
+                <label class="notification translateme" data-en="Please type at least two (2) letters to search.">Please type at least two (2) letters to search.</label>
             </div>                    
             <div class="softkeys softkeys-search-page mt-5" data-target="input[name='code']"></div>
         </form>
@@ -16,7 +16,7 @@
 
 <div class="p-2 text-center mx-auto title-page-container2 search-for">
     <div class="title-page-content-2">
-        You searched for ‘<span id="search_str"></span>’:
+        <span class="translateme" data-en="You searched for">You searched for</span> ‘<span id="search_str"></span>’:
     </div>
 </div>
 
@@ -26,7 +26,7 @@
 </div>
 
 <div id="searchNone">
-    <div class="searchDefaultMessage text-center">
+    <div class="searchDefaultMessage text-center translateme" data-en="No results found">
         No results found
     </div>
 </div>

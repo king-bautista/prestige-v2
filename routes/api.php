@@ -44,6 +44,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::post('/tenant-count-details', 'Kiosk\KioskController@getTenantCountDetails')->name('kiosk.tenant-count-details');
 
 
+    // Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');
     // Route::get('/site', 'Kiosk\MainController@getSite')->name('kiosk.site');
     // Route::get('/categories', 'Kiosk\MainController@getCategories')->name('kiosk.categories');
     // Route::get('/tenants/alphabetical/{id}', 'Kiosk\MainController@getTenantsAlphabetical')->where('id', '[0-9]+')->name('kiosk.tenants');
@@ -51,7 +52,6 @@ Route::group(['prefix' => 'v1'], function ()
     // Route::get('/tenants/supplemental/{id}', 'Kiosk\MainController@getTenantsBySupplementals')->where('id', '[0-9]+')->name('kiosk.tenants.by-supplemental');
     // Route::get('/tenants/suggestion/list', 'Kiosk\MainController@getSuggestionList')->where('id', '[0-9]+')->name('kiosk.tenants.suggestion');
     // Route::post('/feedback', 'Kiosk\MainController@putFeedback')->name('kiosk.feedback');
-    // Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');
     // Route::get('/translation', 'Kiosk\MainController@getTranslation')->name('kiosk.translation');
 
     // Route::get('/advertisements/banners', 'Kiosk\MainController@getBanners')->name('kiosk.banners');

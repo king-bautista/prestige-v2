@@ -41,13 +41,10 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
                     ->orWhere('role', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('class_name', 'LIKE', '%' . request('search') . '%');
             })
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('name', 'ASC');
+            })
             ->when(request('order'), function ($query) {
-                // $order = request('order');
-                // if($order == 'parent_link'){
-
-                // }else{
-
-                // }
                 $column = $this->checkcolumn(request('order'));
                 return $query->orderBy($column, request('sort'));
             })

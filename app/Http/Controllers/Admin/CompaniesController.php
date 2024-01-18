@@ -49,10 +49,19 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                              ->orWhere('classifications.name', 'LIKE', '%' . request('search') . '%');
             })
             ->leftJoin('classifications', 'companies.classification_id', '=', 'classifications.id')
-            ->select('companies.*', 'classifications.name')
+            ->select('companies.*', 'classifications.name', 'companies.name')
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('companies.name', 'ASC'); 
+            })
             ->when(request('order'), function ($query) {
-                $column = $this->checkcolumn(request('order'));
-                $field = ($column == 'classification_name') ? 'classifications.name' : $column;
+                $column = $this->checkcolumn(request('order')); 
+                if ($column == 'classification_name') {
+                    $field = 'classifications.name';
+                }else if ($column == 'name') {
+                    $field = 'companies.name';
+                } else {
+                    $field = $column;
+                }
                 return $query->orderBy($field, request('sort'));
             })
             ->latest()

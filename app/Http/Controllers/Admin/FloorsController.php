@@ -32,7 +32,7 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
     }
 
     public function list(Request $request)
-    {
+    { 
         try {
             $site_id = session()->get('site_id');
             $buildings = SiteBuildingLevelViewModel::when(request('search'), function ($query) {
@@ -45,6 +45,18 @@ class FloorsController extends AppBaseController implements FloorsControllerInte
                 ->leftJoin('site_buildings', 'site_building_levels.site_building_id', '=', 'site_buildings.id')
                 ->where('site_building_levels.site_id', $site_id)
                 ->select('site_building_levels.*')
+                ->when(request('order'), function($query){
+                    $column = $this->checkcolumn(request('order')); 
+                    $field = ($column == 'building_name') ? 'site_buildings.name' : $column;
+                    return $query->orderBy($field, request('sort'));
+                })
+
+                // ->select('cinema_sites.*', 'sites.name as site_name')
+                // ->when(request('order'), function ($query) {
+                //     $column = $this->checkcolumn(request('order'));
+                //     $field = ($column == 'site_name') ? 'sites.name' : $column;
+                //     return $query->orderBy($field, request('sort'));
+                // })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($buildings, 'Successfully Retreived!', 200);

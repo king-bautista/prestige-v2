@@ -1,4 +1,4 @@
-<div class="p-3 font-weight-bold nav-titles">Promos</div>
+<div class="p-3 font-weight-bold nav-titles translateme" data-en="Promos">Promos</div>
 
 <div class="slideshow-content-container promo-list">
 </div>

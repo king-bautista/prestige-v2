@@ -1,4 +1,4 @@
-<div style="width:0;height:0;position:absolute; top: 0; z-index: 9999; overflow: hidden;" id="screensaverwidget" @click="reload_page">
+<div style="width:0;height:0;position:absolute; top: 0; z-index: 9999; overflow: hidden;" id="screensaverwidget">
     <div class="multirotator-fullscreen-container"></div>
 </div>
 
@@ -8,6 +8,10 @@
     var screensaver_handle = '';
 
     $(document).ready(function(){
+        $('#screensaverwidget').on('click', function() {
+            $("#home_btn").click();
+        });
+
         $(document).on('click',function(){
             $("#screensaverwidget").height('0').width('0');
             if(screensaver_handle) {
@@ -18,16 +22,16 @@
             screensaver_handle = setTimeout(() => {
                 screensaver_handle = setTimeout(() => {
                     $("#screensaverwidget").height('100%').width('100%');
+                    showFullscreenAds();
                 }, 5000); // 5 sec delay before showing screensaver
-                callHomeMethod();
             }, 1000 * 60 * 2); // 2 min idle time, return to screensaver mode
         });
 
         screensaver_handle = setTimeout(() => {
             screensaver_handle = setTimeout(() => {
                 $("#screensaverwidget").height('100%').width('100%');
+                showFullscreenAds();
             }, 5000); // 5 sec delay before showing screensaver
-            obj.callHomeMethod();
         }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
     });
 
@@ -79,11 +83,5 @@
         });
 
     }
-
-    function callHomeMethod() {
-
-    }
-
-    showFullscreenAds();
 </script>
 @endpush

@@ -119,9 +119,12 @@ class AppBaseController extends Controller
             return 'description';
         } else if ($column == 'image_path') {
             return 'image';
-        
         } else if ($column == 'image_url_path') {
             return 'image_url';
+        } else if ($column == 'site_logo_path') {
+            return 'site_logo';    
+        }else if ($column == 'serial_number') {
+            return 'id';
         }
         else{
             return $column;

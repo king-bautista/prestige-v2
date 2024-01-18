@@ -9,6 +9,8 @@
     var helper = new Helpers();
     var banner_ads = "{{ $banner_ads }}";
 
+    setTimeout(helper.removeLoader, 20000);
+
     function showBannerAds() {
 
         var my_banner_ads = JSON.parse(helper.decodeEntities(banner_ads));
