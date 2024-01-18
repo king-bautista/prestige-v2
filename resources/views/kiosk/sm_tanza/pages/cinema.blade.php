@@ -329,6 +329,9 @@
             }
             
         });
+
+        current_location = 'cinemaschedule';
+        page_history.push(current_location);
     }
 
     function generateSchedules(cinemas) {

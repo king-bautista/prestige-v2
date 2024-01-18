@@ -150,7 +150,7 @@ Helpers.prototype = {
 
     homeBtnClick: function() {
         $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
-        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList, .back-img-btn').hide();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
         $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
         $('#home_txt').addClass("nav-btn-active");
 
@@ -164,6 +164,9 @@ Helpers.prototype = {
 		$('#home-cat-contents').hide();
         $('#home-container').show();
         current_location = 'home';
+        $('.back-img-btn').hide();
+        page_history = [];
+        console.log(page_history);
     },
 
     searchBtnClick: function() {
@@ -203,5 +206,98 @@ Helpers.prototype = {
         $('#Tab-Cinema-Tab').click();
         current_location = 'cinema';
     },
+
+    backToTenant: function() {
+        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
+        $('#home_txt').addClass("nav-btn-active");
+
+        $('#promos-container').hide();
+        $('#home-container').hide();
+        $('#home-cat-contents').hide();
+        $('#search-container').hide();
+        $('#tenant-store-content').show();
+    },
+
+    backToTenantCategory: function() {
+        $('.CatTabCategories').hide();
+        $('#tenant-store-content').hide();
+        $('#promos-container').hide();
+        $('#home-container').hide();
+        $('#search-container').hide();
+        $('#tenant-store-content').hide();
+        $('#home-cat-contents').show();
+        $('.TenantPage').show();
+    },
+
+    backToSupplemental: function() {
+        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
+        $('#home_txt').addClass("nav-btn-active");
+        $('#home-cat-contents').show();
+        if($('.TenantPage').is(":visible")) {
+            $('.TenantPage').hide();
+            $('.CatTabCategories').show();    
+        }
+    },
+
+    backToAlphabet: function() {
+        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
+        $('#home_txt').addClass("nav-btn-active");
+        $('#home-cat-contents').show();
+        if($('.TenantPage').is(":visible")) {
+            $('.CatTabCategories').hide();
+            $('.TenantPage').show();
+            $('#Tab-Alphabetical-tab').click();
+            page_history.splice(-1);    
+        }        
+    },
+
+    backToSubcategory: function() {
+        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
+        $('#home_txt').addClass("nav-btn-active");
+        $('.CatTabCategories').hide();
+        $('.TenantPage').show();
+        $('#Tab-Category-Tab').click();
+        page_history.splice(-1);
+    },
+
+    backToSearchresult: function() {
+        $('#home_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
+        $('#search_txt').addClass("nav-btn-active");
+        $('.TenantPage').hide();
+        $('#tenant-store-content').hide();
+        $('#keyboard-section').hide();
+        $('.search-for').show();
+        $('#search-container').show();
+        $('#searchList').show();
+    },
+
+    backToSearchnoresult: function() {
+        $('#search-container, #search_v4s, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
+        $('#home-container, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#home_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
+        $('#search_txt').addClass("nav-btn-active");
+        $('.search-for').show();
+        $('#searchNone').show();
+        $('#keyboard-section').hide();
+        $('#searchList').hide();
+    },
+
+    backToCinemaschedule: function() {
+        $('#cinema-container, #cinema_v4s, #home_v4, #search_v4, #promos_v4, #map_v4, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
+        $('#home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#home_txt, #map_txt, #promos_txt, #search_txt').removeClass("nav-btn-active");
+        $('#cinema_txt').addClass("nav-btn-active");
+        $('#videocontainer').html('');
+        $('#Tab-Schedule-tab').click();
+        page_history.splice(-1);
+    }
 
 };
