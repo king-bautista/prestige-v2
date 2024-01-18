@@ -254,7 +254,11 @@ Helpers.prototype = {
             $('.TenantPage').show();
             $('#Tab-Alphabetical-tab').click();
             page_history.splice(-1);    
-        }        
+        }
+        else {
+            $('#Tab-Alphabetical-tab').click();
+            page_history.splice(-1);
+        }
     },
 
     backToSubcategory: function() {
