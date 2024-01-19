@@ -258,6 +258,9 @@
         helper.updateViewCount(tenant.id, tenant.view_count);        
         helper.setTenantCountDetails(tenant.id);
 
+        current_location = 'tenant';
+        page_history.push(current_location);
+
     }
 </script>
 @endpush

@@ -160,7 +160,11 @@
         $('.CatTabCategories').show();
         $('#home-container').hide();
         $('.TenantPage').hide();
+        $('.back-img-btn').show();
         helper.setTranslation();
+        
+        current_location = 'subcategory';
+        page_history.push(current_location);
     }
 
     function showTenantList() {
@@ -268,6 +272,8 @@
         $('.TenantPage').show();
         $('.CatTabCategories').hide();
         helper.setTranslation();
+        current_location = 'tenantcategory';
+        page_history.push(current_location);
     }
 
     function showAlphabetical() {
@@ -374,7 +380,8 @@
 
         generateLetters();
         helper.setTranslation();
-
+        current_location = 'alphabet';
+        page_history.push(current_location);
     }
 
     function showSupplementals() {
@@ -473,6 +480,8 @@
         $('.TenantPage').hide();
         $('.CatTabCategories').show();
         helper.setTranslation();
+        current_location = 'supplemental';
+        page_history.push(current_location);
     }
 
     function generateLetters() {
@@ -540,7 +549,7 @@
             };
         });
 
-        $(".owl-dots button").each(function(key){
+        $('.alpha-tenants').parent("div").find(".owl-dots button").each(function(key){
             if (key == parseInt(index)){
                 $(this).trigger('click');
             }
