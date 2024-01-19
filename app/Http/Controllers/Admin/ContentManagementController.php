@@ -62,7 +62,23 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
                 ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
                 ->select('content_management.*')
-                ->orderBy('content_management.created_at', 'DESC')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('brands.name', 'ASC'); 
+                })
+                ->when(request('order'), function ($query) { 
+                   // echo request('order');
+                    $column = $this->checkcolumn(request('order')); 
+                    if ($column == 'category_name') {
+                        $field = 'categories.name';
+                    } else if ($column == 'supplemental_names') {
+                        $field = 'supplementals.name';
+                    } else if ($column == 'name') {
+                        $field = 'brands.name';
+                    } else {
+                        $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->paginate(request('perPage'));
             return $this->responsePaginate($contents, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
