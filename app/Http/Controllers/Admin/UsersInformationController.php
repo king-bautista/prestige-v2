@@ -10,7 +10,7 @@ use App\Http\Requests\UserInformationRequest;
 
 use App\Helpers\PasswordHelper;
 use App\Models\Admin;
-use App\Models\ViewModels\AdminViewModel;
+use App\Models\AdminViewModels\AdminViewModel;
 use Hash;
 
 class UsersInformationController extends AppBaseController implements UsersInformationControllerInterface
