@@ -549,7 +549,7 @@
             };
         });
 
-        $(".owl-dots button").each(function(key){
+        $('.alpha-tenants').parent("div").find(".owl-dots button").each(function(key){
             if (key == parseInt(index)){
                 $(this).trigger('click');
             }

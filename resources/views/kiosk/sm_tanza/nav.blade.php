@@ -135,9 +135,31 @@
                 case 'cinema':
                     helper.cinemaBtnClick();
                     break;
+                case 'tenant':
+                    helper.backToTenant();
+                    break;
+                case 'tenantcategory':
+                    helper.backToTenantCategory();
+                    break;
+                case 'supplemental':
+                    helper.backToSupplemental();
+                    break;
+                case 'alphabet':
+                    helper.backToAlphabet();
+                    break;
+                case 'subcategory':
+                    helper.backToSubcategory();
+                    break;
+                case 'searchresult':
+                    helper.backToSearchresult();
+                    break;
+                case 'searchnoresult':
+                    helper.backToSearchnoresult();
+                    break;
+                case 'cinemaschedule':
+                    helper.backToCinemaschedule();
+                    break;
             }
-
-            console.log(page_history);
         }
     });
     

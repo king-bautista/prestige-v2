@@ -162,6 +162,8 @@
                         $('.search-for').show();
                         $('#keyboard-section').hide();
                         $('#searchList').show();
+                        current_location = 'searchresult';
+                        page_history.push(current_location);
                     }
                     else {
                         $('#search_str').html(search_key);
@@ -169,6 +171,8 @@
                         $('#searchNone').show();
                         $('#keyboard-section').hide();
                         $('#searchList').hide();
+                        current_location = 'searchnoresult';
+                        page_history.push(current_location);
                     }
                 })
             }
