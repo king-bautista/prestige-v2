@@ -240,6 +240,11 @@ class ContentManagementController extends AppBaseController implements ContentMa
         return null;
     }
 
+
+    public function setPlayListSequence($screen_id, $site_id, $total_rows){
+
+    }
+
     public function setSequence($screen_id, $site_id, $total_rows)
     {
         if (!$site_id) {
