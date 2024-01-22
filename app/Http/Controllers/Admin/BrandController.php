@@ -64,7 +64,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 })
                 ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
                 ->leftJoin('supplementals', 'brands.category_id', '=', 'supplementals.id')
-                ->select('brands.*', 'categories.name', 'supplementals.name', 'brands.names')
+                ->select('brands.*', 'categories.name', 'supplementals.name', 'brands.name')
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('brands.name', 'ASC'); 
                 })

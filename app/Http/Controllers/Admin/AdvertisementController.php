@@ -55,14 +55,18 @@ class AdvertisementController extends AppBaseController implements Advertisement
                 })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
-                    if ($column == 'name') {
-                        $field = 'advertisement_name';
-                    } else if ($column == 'company_name') {
-                        $field = 'company_name';
-                    } else if ($column == 'brand_name') {
-                        $field = 'brand_name';
-                    } else {
-                        $field = $column;
+                    switch ($column) {
+                        case 'name':
+                            $field = 'advertisement_name';
+                            break;
+                        case 'company_name':
+                            $field = 'company_name';
+                            break;
+                        case 'brand_name':
+                            $field = 'brand_name';
+                            break;
+                        default:
+                            $field = $column;
                     }
                     return $query->orderBy($field, request('sort'));
                 })

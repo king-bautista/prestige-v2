@@ -48,9 +48,11 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                     ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_screens.serial_number', 'LIKE', '%' . request('search') . '%');
-                    //->orWhere("CONCAT(site_screens.name,',',site_buildings.name,',',site_building_levels.name)", 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('sites.namezz', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screens.serial_number', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(site_screens.name,", ",site_buildings.name,", ",site_building_levels.name)', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw("CONCAT(`nvp`, ' ', `vpv`) LIKE ?", ['%'.$this->searchNeedle.'%']);
+                    //;
             })
                 ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
                     return $query->whereIn('site_screens.site_id', $site_ids);
@@ -58,16 +60,25 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
                 ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
                 ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_screens.*')
+                ->select('site_screens.*',)
                 ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name) AS screen_location")
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('site_screens.serial_number', 'ASC');
+                })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
-                    if ($column == 'screen_location') {
-                        $fields = 'screen_location';
-                    } else {
-                        $fields = $column;
+
+                    switch ($column) {
+                        case 'screen_location':
+                            $field = 'screen_location';
+                            break;
+                        case 'site_name':
+                            $field = 'sites.name';
+                            break;
+                        default:
+                            $field = $column;
                     }
-                    return $query->orderBy($fields, request('sort'));
+                    return $query->orderBy($field, request('sort'));
                 })
                 ->latest()
                 ->paginate(request('perPage'));
