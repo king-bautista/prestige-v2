@@ -53,14 +53,14 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                     ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_screens.serial_number', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
             })
                 ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
                     return $query->whereIn('site_screens.site_id', $site_ids);
                 })
                 ->leftJoin('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
-                //->leftJoin('sites_meta', 'sites.id', '=', 'sites_meta.site_id')
                 ->leftJoin('sites_meta', function ($join) {
                     $join->on('sites.id', '=', 'sites_meta.site_id')
                         ->where('sites_meta.meta_key', '=', 'site_code');
@@ -73,6 +73,13 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name) AS site_screen_location")
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
+                    switch ($column) {
+                        case 'site_screen_location':
+                            $field = 'site_screen_location';
+                            break;
+                        default:
+                            $field = $column;
+                    }
                     if ($column == 'site_screen_location') {
                         $fields = 'site_screen_location';
                     } else {
