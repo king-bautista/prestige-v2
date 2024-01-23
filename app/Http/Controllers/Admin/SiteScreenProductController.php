@@ -80,11 +80,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                         default:
                             $field = $column;
                     }
-                    if ($column == 'site_screen_location') {
-                        $fields = 'site_screen_location';
-                    } else {
-                        $fields = $column;
-                    }
+                    
                     return $query->orderBy($fields, request('sort'));
                 })
                 ->latest()
