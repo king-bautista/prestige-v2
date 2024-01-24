@@ -59,6 +59,16 @@
 								    </select>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Map Type <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+                                    <select class="custom-select" v-model="map_form.map_type">
+									    <option value="">Select Map Type</option>
+									    <option value="2D"> 2D</option>
+									    <option value="3D"> 3D</option>
+								    </select>
+								</div>
+							</div>
                             <div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Map File <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
@@ -73,57 +83,6 @@
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="map_preview" :src="map_preview" class="img-thumbnail" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Position X <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="map_form.position_x" placeholder="0.00" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Position Y <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="map_form.position_y" placeholder="0.00" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Position Z <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="map_form.position_z" placeholder="0.00" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Text Y Position <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="map_form.text_y_position" placeholder="0.00" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Default Zoom <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="map_form.default_zoom" placeholder="0.00" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Desktop Default Zoom <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="map_form.default_zoom_desktop" placeholder="0.00" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Mobile Default Zoom <span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="map_form.default_zoom_mobile" placeholder="0.00" required>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="is_default" class="col-sm-4 col-form-label">Is Default</label>
-								<div class="col-sm-8">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="is_default" v-model="map_form.is_default">
-										<label class="custom-control-label" for="is_default"></label>
-									</div>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -177,11 +136,7 @@
         	site_id: {
         		type: Number,
         		required: true
-        	},
-			site_screen_id: {
-        		type: Number,
-        		required: true
-			},
+        	}
         },
         data() {
             return {
@@ -189,17 +144,10 @@
                     id: '',
                     site_building_id: '',
                     site_building_level_id: '',
+					map_type: '',
 					map_file: '',
 					map_preview: '',
-					position_x: '10.00',
-					position_y: '0.20',
-					position_z: '5.00',
-					text_y_position: '4.00',
-					default_zoom: '0.40',
-					default_zoom_desktop: '0.40',
-					default_zoom_mobile: '0.40',
 					active: '',
-					is_default: '',
 				},
                 map_preview: '',
                 add_record: true,
@@ -208,13 +156,13 @@
                 floors: [],
 				map_default_id: '',
             	dataFields: {
-            		map_file_path: {
+            		map_preview_path: {
             			name: "Map Preview", 
             			type:"logo", 
             		},
-					site_name: "Site Name",
 					building_name: "Building Name",
 					floor_name: "Floor Name",
+					map_type: "Map Type",
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -223,18 +171,10 @@
             				1: '<span class="badge badge-info">Active</span>'
             			}
             		},
-                    is_default: {
-            			name: "Is Default", 
-            			type:"Boolean", 
-            			status: { 
-            				0: '<span class="badge badge-danger">No</span>', 
-            				1: '<span class="badge badge-info">Yes</span>'
-            			}
-            		},
                     updated_at: "Last Updated"
             	},
             	primaryKey: "id",
-            	dataUrl: "/admin/site/manage-map/list/"+this.site_screen_id,
+            	dataUrl: "/admin/site/manage-map/list/"+this.site_id,
             	actionButtons: {
             		edit: {
             			title: 'Edit this Map',
@@ -260,15 +200,15 @@
             			button: '<i class="fa fa-map-marker" aria-hidden="true"></i> Manage',
             			method: 'link',
             		},
-					view: {
-            			title: 'Set as Default',
-            			name: 'Set as Default',
-            			apiUrl: '',
-            			routeName: '',
-            			button: '<i class="fa fa-tag"></i> Set as Default',
-            			method: 'view',
-						v_on: 'DefaultMap',
-            		},
+					// view: {
+            		// 	title: 'Set as Default',
+            		// 	name: 'Set as Default',
+            		// 	apiUrl: '',
+            		// 	routeName: '',
+            		// 	button: '<i class="fa fa-tag"></i> Set as Default',
+            		// 	method: 'view',
+					// 	v_on: 'DefaultMap',
+            		// },
             	},
 				otherButtons: {
 					addNew: {
@@ -290,9 +230,17 @@
         },
 
         created(){
+			// this.getScreens();
         },
 
         methods: {
+			// getScreens: function (id) {
+			// 	axios.post('/admin/site/site-screen-product/get-screens', { contract_id: id })
+			// 		.then(response => {
+			// 			this.screens = response.data.data
+			// 		});
+			// },
+
 			GetBuildings: function() {
 				axios.get('/admin/site/get-buildings/'+this.site_id)
                 .then(response => this.buildings = response.data.data);
@@ -320,16 +268,9 @@
 				this.edit_record = false;
                 this.map_form.site_building_id = '';
                 this.map_form.site_building_level_id = '';
+                this.map_form.map_type = '';
 				this.map_form.map_file = '';
-                this.map_form.map_preview = '';
-                this.map_form.position_x = '10.00';
-                this.map_form.position_y = '0.20';
-                this.map_form.position_z = '5.00';
-                this.map_form.text_y_position = '4.00';
-                this.map_form.default_zoom = '0.40';
-                this.map_form.default_zoom_desktop = '0.40';
-                this.map_form.default_zoom_mobile = '0.40';
-                this.map_form.is_default = false;         
+                this.map_form.map_preview = '';      
                 this.map_preview = '';
 				this.$refs.mapFile.value = null;
 				this.$refs.mapPreview.value = null;
@@ -342,17 +283,10 @@
                 formData.append("site_building_id", this.map_form.site_building_id);
                 formData.append("site_building_level_id", this.map_form.site_building_level_id);
                 formData.append("site_screen_id", this.site_screen_id);
+				formData.append("map_type", this.map_form.map_type);
 				formData.append("map_file", this.map_form.map_file);
 				formData.append("map_preview", this.map_form.map_preview);
-				formData.append("position_x", this.map_form.position_x);
-				formData.append("position_y", this.map_form.position_y);
-				formData.append("position_z", this.map_form.position_z);
-				formData.append("text_y_position", this.map_form.text_y_position);
-				formData.append("default_zoom", this.map_form.default_zoom);
-				formData.append("default_zoom_desktop", this.map_form.default_zoom_desktop);
-				formData.append("default_zoom_mobile", this.map_form.default_zoom_mobile);
 				formData.append("active", this.map_form.active);
-				formData.append("is_default", this.map_form.is_default);
 
                 axios.post('/admin/site/manage-map/store', formData, {
 					headers: {
@@ -375,17 +309,9 @@
                     this.map_form.id = site_map.id;
                     this.map_form.site_building_id = site_map.site_building_id;
                     this.getFloorLevel(site_map.site_building_id);
-
                     this.map_form.site_building_level_id = site_map.site_building_level_id;
-					this.map_form.position_x = site_map.position_x;
-					this.map_form.position_y = site_map.position_y;
-					this.map_form.position_z = site_map.position_z;
-					this.map_form.text_y_position = site_map.text_y_position;
-					this.map_form.default_zoom = site_map.default_zoom;
-					this.map_form.default_zoom_desktop = site_map.default_zoom_desktop;
-					this.map_form.default_zoom_mobile = site_map.default_zoom_mobile;
+					this.map_form.map_type = site_map.map_type;
 					this.map_form.active = site_map.active;  
-					this.map_form.is_default = site_map.is_default;  
 					this.map_preview = site_map.map_preview_path; 
 					this.$refs.mapFile.value = null;
 					this.$refs.mapPreview.value = null;
@@ -402,17 +328,10 @@
                 formData.append("site_building_id", this.map_form.site_building_id);
                 formData.append("site_building_level_id", this.map_form.site_building_level_id);
                 formData.append("site_screen_id", this.site_screen_id);
+				formData.append("map_type", this.map_form.map_type);
 				formData.append("map_file", this.map_form.map_file);
 				formData.append("map_preview", this.map_form.map_preview);
-				formData.append("position_x", this.map_form.position_x);
-				formData.append("position_y", this.map_form.position_y);
-				formData.append("position_z", this.map_form.position_z);
-				formData.append("text_y_position", this.map_form.text_y_position);
-				formData.append("default_zoom", this.map_form.default_zoom);
-				formData.append("default_zoom_desktop", this.map_form.default_zoom_desktop);
-				formData.append("default_zoom_mobile", this.map_form.default_zoom_mobile);
 				formData.append("active", this.map_form.active);
-				formData.append("is_default", this.map_form.is_default);
 
                 axios.post('/admin/site/manage-map/update', formData, {
 					headers: {
