@@ -242,7 +242,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/brand/product/update', 'Admin\ProductsController@update')->name('admin.brand.product.update');
     Route::get('/admin/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('admin.brand.product.delete');
     Route::get('/admin/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('admin.brand.product.by-brand');
-
+    Route::get('/admin/brand/product/download-csv', 'Admin\ProductsController@downloadCsv')->name('admin.brand.product.download-csv');
+    Route::get('/admin/brand/product/download-csv-template', 'Admin\ProductsController@downloadCsvTemplate')->name('admin.brand.product.download-csv-template');
+    Route::post('/admin/brand/product/batch-upload', 'Admin\ProductsController@batchUpload')->name('admin.brand.product.batch-upload');
     /*
     |--------------------------------------------------------------------------
     | Sites Routes

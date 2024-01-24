@@ -31,10 +31,31 @@ class SupplementalController extends AppBaseController implements SupplementalCo
     public function list(Request $request)
     {
         try {
-            $categories = CategoryViewModel::where('category_type', 2)
+            $categories = CategoryViewModel::where('categories.category_type', 2)
                 ->when(request('search'), function ($query) {
-                    return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                        ->where('descriptions', 'LIKE', '%' . request('search') . '%');
+                    return $query->Where('categories.name', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('categories.descriptions', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('cp.name', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('cs.name', 'LIKE', '%' . request('search') . '%');
+                })
+                ->leftJoin('categories as cp', 'categories.parent_id', '=', 'cp.id')
+                ->leftJoin('categories as cs', 'categories.supplemental_category_id', '=', 'cs.id')
+                ->select('categories.*')
+                ->selectRaw('(select cb.name from categories cb where categories.parent_id = cb.id) as parent_supplemental')
+                ->selectRaw('(select cc.name from categories cc where categories.supplemental_category_id = cc.id) as category_name')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    if ($column == 'parent_category') {
+                        $fields = 'parent_supplemental';
+                    } else if ($column == 'supplemental_category_name') {
+                        $fields = 'category_name';
+                    } else {
+                        $fields = $column;
+                    }
+                    return $query->orderBy($fields, request('sort'));
                 })
                 ->latest()
                 ->paginate(request('perPage'));

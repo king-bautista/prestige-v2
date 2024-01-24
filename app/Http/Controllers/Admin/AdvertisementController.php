@@ -49,8 +49,27 @@ class AdvertisementController extends AppBaseController implements Advertisement
             })
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
                 ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
-                ->select('advertisements.*')
-                ->orderBy('advertisements.created_at', 'DESC')
+                ->select('advertisements.*', 'advertisements.name as advertisement_name','brands.name as brand_name', 'companies.name as company_name')
+                ->when(is_null(request('order')), function ($query) { 
+                    return $query->orderBy('advertisements.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    switch ($column) {
+                        case 'name':
+                            $field = 'advertisement_name';
+                            break;
+                        case 'company_name':
+                            $field = 'company_name';
+                            break;
+                        case 'brand_name':
+                            $field = 'brand_name';
+                            break;
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -244,15 +263,12 @@ class AdvertisementController extends AppBaseController implements Advertisement
         }
     }
 
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new AdvertisementsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
