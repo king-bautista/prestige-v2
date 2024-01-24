@@ -38,24 +38,39 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     {
         try {
             $sites = SiteViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                return $query->where('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(`smsc`.`meta_value`) LIKE \'%' . request('search') . '%\'')
+                    ->orWhereRaw('CONCAT(`smm`.`meta_value`) LIKE \'%' . request('search') . '%\'');
+                    
             })
-                // ->leftJoin('sites_meta', function ($join) {
-                //     $join->on('sites.id', '=', 'sites_meta.site_id')
-                //         ->where('sites_meta.meta_key', '=', 'site_code');
-                // })
+                ->leftJoin('sites_meta as smsc', function ($join) {
+                    $join->on('sites.id', '=', 'smsc.site_id')
+                        ->where('smsc.meta_key', '=', 'site_code');
+                })
+                ->leftJoin('sites_meta as smm', function ($join) {
+                    $join->on('sites.id', '=', 'smm.site_id')
+                        ->where('smm.meta_key', '=', 'multilanguage');
+                })
+                ->select('sites.*', 'smsc.meta_value as short_code', 'smm.meta_value as multilanguage')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('sites.name', 'ASC');
+                })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
-                    // if ($column == 'site_screen_location') {
-                    //     $fields = 'site_screen_location';
-                    // } else {
-                    //     $fields = $column;
-                    // }
-                    // return $query->orderBy($fields, request('sort'));
+                    switch ($column) {
+                        case 'short_code':
+                            $field = 'short_code';
+                            break;
+                            case 'multilanguage':
+                                $field = 'multilanguage';
+                                break;    
+                        default:
+                            $field = $column;
+                    }
                     return $query->orderBy($column, request('sort'));
                 })
-                ->latest()
+                
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);

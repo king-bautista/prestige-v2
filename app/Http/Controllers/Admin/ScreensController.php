@@ -48,11 +48,9 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
                     ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('sites.namezz', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_screens.serial_number', 'LIKE', '%' . request('search') . '%')
-                    ->orWhereRaw('CONCAT(site_screens.name,", ",site_buildings.name,", ",site_building_levels.name)', 'LIKE', '%' . request('search') . '%')
-                    ->orWhereRaw("CONCAT(`nvp`, ' ', `vpv`) LIKE ?", ['%'.$this->searchNeedle.'%']);
-                    //;
+                    ->orWhereRaw('CONCAT(`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`) LIKE \'%' . request('search') . '%\'');
             })
                 ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
                     return $query->whereIn('site_screens.site_id', $site_ids);
