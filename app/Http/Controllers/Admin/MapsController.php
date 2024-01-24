@@ -41,6 +41,12 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         return view('admin.manage_map', compact("site"));
     }
 
+    public function mapConfig($id) 
+    {
+        $site = SiteViewModel::find($id);
+        return view('admin.manage_map_config', compact("site"));        
+    }
+
     public function list($id)
     {
         // try

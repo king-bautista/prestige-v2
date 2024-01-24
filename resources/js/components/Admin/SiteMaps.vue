@@ -76,6 +76,14 @@ export default {
 					button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
 					method: 'link',
 				},
+				config: {
+					title: 'Manage Config',
+					name: 'Manage Config',
+					apiUrl: '/admin/site/manage-config',
+					routeName: '',
+					button: '<i class="fas fa-tasks" aria-hidden="true"></i> Manage Config',
+					method: 'link',
+				},
 			},
 			otherButtons: {
 				download: {

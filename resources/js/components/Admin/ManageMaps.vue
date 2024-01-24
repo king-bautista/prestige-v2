@@ -16,7 +16,6 @@
 						v-on:AddNewMap="AddNewMap"
 						v-on:GenRoutes="GenRoutes"
 						v-on:editButton="editMap"
-						v-on:DefaultMap="DefaultMap"
                         ref="dataTable">
 			          	</Table>
 		          	</div>
@@ -106,25 +105,6 @@
 		</div>
 		<!-- Manage map -->
 
-		<!-- Confirm modal -->
-		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header bg-primary">
-						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
-					</div>
-					<div class="modal-body">
-						<h6>Do you really want to set this map as default?</h6>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary" @click="setDefault">OK</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Confirm modal -->
-
     </div>
 </template>
 <script> 
@@ -200,15 +180,6 @@
             			button: '<i class="fa fa-map-marker" aria-hidden="true"></i> Manage',
             			method: 'link',
             		},
-					// view: {
-            		// 	title: 'Set as Default',
-            		// 	name: 'Set as Default',
-            		// 	apiUrl: '',
-            		// 	routeName: '',
-            		// 	button: '<i class="fa fa-tag"></i> Set as Default',
-            		// 	method: 'view',
-					// 	v_on: 'DefaultMap',
-            		// },
             	},
 				otherButtons: {
 					addNew: {
@@ -218,29 +189,14 @@
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
-					genRoutes: {
-						title: 'Generate Routes',
-						v_on: 'GenRoutes',
-						icon: '<i class="fab fa-connectdevelop"></i> Generate Routes',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
 				}
             };
         },
 
         created(){
-			// this.getScreens();
         },
 
         methods: {
-			// getScreens: function (id) {
-			// 	axios.post('/admin/site/site-screen-product/get-screens', { contract_id: id })
-			// 		.then(response => {
-			// 			this.screens = response.data.data
-			// 		});
-			// },
-
 			GetBuildings: function() {
 				axios.get('/admin/site/get-buildings/'+this.site_id)
                 .then(response => this.buildings = response.data.data);
@@ -344,27 +300,6 @@
                     $('#map-form').modal('hide');
 				})
             },
-
-			DefaultMap: function(data) {
-				this.map_default_id = data.id;
-				$('#confirmModal').modal('show');
-			},
-
-			setDefault: function() {
-				axios.get('/admin/site/map/set-default/'+this.map_default_id)
-				.then(response => {
-					toastr.success(response.data.message);
-					this.$refs.dataTable.fetchData();
-                    $('#confirmModal').modal('hide');
-				})
-			},
-
-			GenRoutes: function() {
-				axios.get('/admin/site/map/generate-routes/'+this.site_id+'/'+this.site_screen_id)
-				.then(response => {
-					toastr.success(response.data.message);
-				})
-			},
 
         },
 
