@@ -9,7 +9,8 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewConcern="AddNewConcern"
-									v-on:editButton="editConcern" v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:editButton="editConcern" v-on:modalBatchUpload="modalBatchUpload"
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -27,9 +28,9 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" v-show="add_record"><i class="fa fa-plus" aria-hidden="true"></i> Add New
-							Concern</h5>
+							Ticket Type</h5>
 						<h5 class="modal-title" v-show="edit_record"><i class="fa fa-pencil-square-o"
-								aria-hidden="true"></i> Edit Concern</h5>
+								aria-hidden="true"></i> Edit Ticket Type</h5>
 						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -37,15 +38,18 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="name" class="col-sm-4 col-form-label">Name <span class="font-italic text-danger"> *</span></label>
+								<label for="name" class="col-sm-4 col-form-label">Name <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" v-model="concerns.name" placeholder="Name">
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="description" class="col-sm-4 col-form-label">Description <span class="font-italic text-danger"> *</span></label>
+								<label for="description" class="col-sm-4 col-form-label">Description <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-                                    <textarea class="form-control" rows="5" v-model="concerns.description" placeholder="Description"></textarea>
+									<textarea class="form-control" rows="5" v-model="concerns.description"
+										placeholder="Description"></textarea>
 								</div>
 							</div>
 
@@ -63,7 +67,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 							<button type="button" class="btn btn-primary pull-right" v-show="add_record"
-								@click="storeConcern">Add New Concern</button>
+								@click="storeConcern">Add New Ticket Type</button>
 							<button type="button" class="btn btn-primary pull-right" v-show="edit_record"
 								@click="updateConcern">Save Changes</button>
 						</div>
@@ -73,7 +77,38 @@
 			</div>
 		</div>
 		<!-- End Modal Add New User -->
-
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 	</div>
@@ -97,7 +132,7 @@ export default {
 			add_record: true,
 			edit_record: false,
 			dataFields: {
-				shorten_name:"Name",
+				shorten_name: "Name",
 				shorten_description: "Description",
 				active: {
 					name: "Status",
@@ -110,10 +145,10 @@ export default {
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
-			dataUrl: "/admin/customer-care/concern/list",
+			dataUrl: "/admin/customer-care/ticket-type/list",
 			actionButtons: {
 				edit: {
-					title: 'Edit this Concern',
+					title: 'Edit this Ticket Type',
 					name: 'Edit',
 					apiUrl: '',
 					routeName: 'concerns.edit',
@@ -121,9 +156,9 @@ export default {
 					method: 'edit'
 				},
 				delete: {
-					title: 'Delete this Concern',
+					title: 'Delete this Ticket Type',
 					name: 'Delete',
-					apiUrl: '/admin/customer-care/concern/delete',
+					apiUrl: '/admin/customer-care/ticket-type/delete',
 					routeName: '',
 					button: '<i class="fas fa-trash-alt"></i> Delete',
 					method: 'delete'
@@ -131,9 +166,16 @@ export default {
 			},
 			otherButtons: {
 				addNew: {
-					title: 'New Concern',
+					title: 'New Ticket Type',
 					v_on: 'AddNewConcern',
-					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Concern',
+					icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Ticket Type',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -144,6 +186,14 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+
 			},
 		};
 	},
@@ -164,7 +214,7 @@ export default {
 			formData.append("name", this.concerns.name);
 			formData.append("description", this.concerns.description);
 			formData.append("active", this.concerns.active);
-			axios.post('/admin/customer-care/concern/store', formData, {
+			axios.post('/admin/customer-care/ticket-type/store', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
@@ -177,7 +227,7 @@ export default {
 		},
 
 		editConcern: function (id) {
-			axios.get('/admin/customer-care/concern/' + id)
+			axios.get('/admin/customer-care/ticket-type/' + id)
 				.then(response => {
 					var concerns = response.data.data;
 					this.concerns.id = concerns.id;
@@ -197,7 +247,7 @@ export default {
 			formData.append("name", this.concerns.name);
 			formData.append("description", this.concerns.description);
 			formData.append("active", this.concerns.active);
-			axios.post('/admin/customer-care/concern/update', formData, {
+			axios.post('/admin/customer-care/ticket-type/update', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				},
@@ -208,15 +258,53 @@ export default {
 					$('#concerns-form').modal('hide');
 				})
 		},
-		downloadCsv: function () { 
-			axios.get('/admin/customer-care/concern/download-csv')
-				 .then(response => {
-                const link = document.createElement('a');
-                link.href = response.data.data.filepath;
-                link.setAttribute('download', response.data.data.filename); //or any other extension
-                document.body.appendChild(link);
-                link.click();
-              })
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/customer-care/ticket-type/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
+		},
+		downloadCsv: function () {
+			axios.get('/admin/customer-care/ticket-type/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		downloadTemplate: function () {
+			axios.get('/admin/customer-care/ticket-type/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
 		},
 
 	},

@@ -19,6 +19,7 @@ class Brand extends Model
         'name',
         'descriptions',
         'logo',
+        'thumbnail',
         'active',
     ];
 
@@ -49,11 +50,8 @@ class Brand extends Model
 
     public function saveSupplementals($supplementals)
     {
-
+        BrandSupplemental::where('brand_id', $this->id)->delete();
         if($supplementals) {
-
-            BrandSupplemental::where('brand_id', $this->id)->delete();
-
             $supplenmetals_ids =  explode(',',$supplementals);
             foreach ($supplenmetals_ids as $index => $data) {
                 BrandSupplemental::updateOrCreate(
@@ -68,10 +66,8 @@ class Brand extends Model
 
     public function saveTags($tags)
     {
+        BrandTag::where('brand_id', $this->id)->delete();
         if($tags) {
-
-            BrandTag::where('brand_id', $this->id)->delete();
-
             $tag_ids =  explode(',',$tags);
             foreach ($tag_ids as $index => $data) {
                 BrandTag::updateOrCreate(

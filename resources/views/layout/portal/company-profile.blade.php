@@ -34,7 +34,7 @@
                             <div class="col-sm-8 col-form-label">{{ $user->company->address }}</div>
                         </div>
                     </div>
-                </div>
+                </div>                               
             </div>
         </div>
     </div>

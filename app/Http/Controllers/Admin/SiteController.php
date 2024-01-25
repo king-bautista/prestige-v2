@@ -9,14 +9,14 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\SiteRequest;
 use Illuminate\Support\Str;
-
-use App\Models\Site;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\SiteViewModel;
+use App\Imports\SitesImport;
 use App\Exports\Export;
 use Storage;
 use URL;
 
+use App\Models\Site;
+use App\Models\Company;
+use App\Models\AdminViewModels\SiteViewModel;
 
 class SiteController extends AppBaseController implements SiteControllerInterface
 {
@@ -38,12 +38,41 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     {
         try {
             $sites = SiteViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                return $query->where('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(`smsc`.`meta_value`) LIKE \'%' . request('search') . '%\'')
+                    ->orWhereRaw('CONCAT(`smm`.`meta_value`) LIKE \'%' . request('search') . '%\'');
+                    
             })
-            ->latest()
-            ->paginate(request('perPage'));
-            
+                ->leftJoin('sites_meta as smsc', function ($join) {
+                    $join->on('sites.id', '=', 'smsc.site_id')
+                        ->where('smsc.meta_key', '=', 'site_code');
+                })
+                ->leftJoin('sites_meta as smm', function ($join) {
+                    $join->on('sites.id', '=', 'smm.site_id')
+                        ->where('smm.meta_key', '=', 'multilanguage');
+                })
+                ->select('sites.*', 'smsc.meta_value as short_code', 'smm.meta_value as multilanguage')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('sites.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    switch ($column) {
+                        case 'short_code':
+                            $field = 'short_code';
+                            break;
+                            case 'multilanguage':
+                                $field = 'multilanguage';
+                                break;    
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($column, request('sort'));
+                })
+                
+                ->paginate(request('perPage'));
+
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -105,30 +134,29 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
             $data = [
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
-                'site_logo' => str_replace('\\', '/', $site_logo_path),
-                'site_banner' => str_replace('\\', '/', $site_banner_path),
-                'site_background' => str_replace('\\', '/', $site_background_path),
-                'site_background_portrait' => str_replace('\\', '/', $site_background_portrait_path),
-                'active' => 1,
-                'is_default' => ($request->is_default === 'false') ? 0 : 1,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : null,
+                'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : null,
+                'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : null,
+                'site_background' => ($site_background_path) ? str_replace('\\', '/', $site_background_path) : null,
+                'site_background_portrait' => ($site_background_portrait_path) ? str_replace('\\', '/', $site_background_portrait_path) : null,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
             ];
 
             $meta_value = [
-                'company_id' => $request->company_id,
-                'facebook' => $request->facebook,
-                'instagram' => $request->instagram,
-                'twitter' => $request->twitter,
-                'time_from' => $request->time_from,
-                'time_to' => $request->time_to,
-                'website' => $request->website,
-                'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
-                'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'facebook' => ($request->facebook) ? $request->facebook : null,
+                'instagram' => ($request->instagram) ? $request->instagram : null,
+                'twitter' => ($request->twitter) ? $request->twitter : null,
+                'website' => ($request->website) ? $request->website : null,
+                'premiere' => $this->checkBolean($request->is_premiere),
+                'multilanguage' => $this->checkBolean($request->multilanguage),
                 'site_code' => $request->site_code,
+                'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
             ];
 
             $site = Site::create($data);
-            $site->serial_number = 'ST-'.Str::padLeft($site->id, 5, '0');
+            $site->serial_number = 'ST-' . Str::padLeft($site->id, 5, '0');
             $site->save();
             $site->saveMeta($meta_value);
 
@@ -180,28 +208,27 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             }
 
             $data = [
-                'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-'.Str::padLeft($site->id, 5, '0'),
+                'serial_number' => ($site->serial_number) ? $site->serial_number : 'ST-' . Str::padLeft($site->id, 5, '0'),
                 'name' => $request->name,
-                'descriptions' => $request->descriptions,
+                'descriptions' => ($request->descriptions) ? $request->descriptions : null,
                 'site_logo' => ($site_logo_path) ? str_replace('\\', '/', $site_logo_path) : $site->site_logo,
                 'site_banner' => ($site_banner_path) ? str_replace('\\', '/', $site_banner_path) : $site->site_banner,
                 'site_background' => ($site_background_path) ? str_replace('\\', '/', $site_background_path) : $site->site_background,
                 'site_background_portrait' => ($site_background_portrait_path) ? str_replace('\\', '/', $site_background_portrait_path) : $site->site_background_portrait,
-                'active' => ($request->active == 'false') ? 0 : 1,
-                'is_default' => ($request->is_default == 'true') ? 1 : 0,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
             ];
 
             $meta_value = [
-                'company_id' => $request->company_id,
-                'facebook' => $request->facebook,
-                'instagram' => $request->instagram,
-                'twitter' => $request->twitter,
-                'time_from' => $request->time_from,
-                'time_to' => $request->time_to,
-                'website' => $request->website,
-                'premiere' => ($request->is_premiere == 'true') ? 1 : 0,
-                'multilanguage' => ($request->multilanguage == 'true') ? 1 : 0,
                 'site_code' => $request->site_code,
+                'company_id' => ($request->company_id) ? $request->company_id : null,
+                'facebook' => ($request->facebook) ? $request->facebook : null,
+                'instagram' => ($request->instagram) ? $request->instagram : null,
+                'twitter' => ($request->twitter) ? $request->twitter : null,
+                'website' => ($request->website) ? $request->website : null,
+                'premiere' => $this->checkBolean($request->is_premiere),
+                'multilanguage' => $this->checkBolean($request->multilanguage),
+                'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
             ];
 
             $site->update($data);
@@ -270,14 +297,32 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             $reports = [];
             foreach ($sites_management as $site) {
                 $reports[] = [
+                    'id' => $site->id,
+                    'serial_number' => $site->serial_number,
                     'name' => $site->name,
-                    'description' => $site->descriptions,
-                    'logo' => ($site->site_logo != "") ? URL::to("/" . $site->site_logo) : " ",
-                    'banner' => ($site->site_banner != "") ? URL::to("/" . $site->site_banner) : " ",
-                    'background' => ($site->site_background != "") ? URL::to("/" . $site->site_background) : " ",
-                    'status' => ($site->active == 1) ? 'Active' : 'Inactive',
-                    'is_default' => ($site->is_default == 1) ? 'Yes' : 'No',
+                    'descriptions' => $site->descriptions,
+                    'site_logo' => ($site->site_logo != "") ? URL::to("/" . $site->site_logo) : " ",
+                    'site_banner' => ($site->site_banner != "") ? URL::to("/" . $site->site_banner) : " ",
+                    'site_background' => ($site->site_background != "") ? URL::to("/" . $site->site_background) : " ",
+                    'site_background_portrait' => ($site->site_background_portrait != "") ? URL::to("/" . $site->site_background_portrait) : " ",
+                    'company_id' => $site->details['company_id'],
+                    'company_name' => ($site->details['company_id']) ? Company::find($site->details['company_id'])->name : '',
+                    'multilanguage' => $site->details['multilanguage'],
+                    'facebook' => $site->details['facebook'],
+                    'instagram' => $site->details['instagram'],
+                    'twitter' => $site->details['twitter'],
+                    'website' => $site->details['website'],
+                    'schedules' => $site->details['schedules'],
+                    //'operational_hours' => $this->getOperationalHour($site->details),
+                    //'time_from' => ($site->details['time_from']),
+                    //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                    'premiere' => $site->details['premiere'],
+                    'site_code' => $site->details['site_code'],
+                    'active' => $site->active,
+                    'is_default' => $site->is_default,
+                    'created_at' => $site->created_at,
                     'updated_at' => $site->updated_at,
+                    'deleted_at' => $site->deleted_at,
                 ];
             }
 
@@ -287,7 +332,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 Storage::delete($file);
             }
 
-            $filename = "site_management.csv";
+            $filename = "site.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -308,4 +353,88 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
             ], 422);
         }
     }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports = [];
+            $reports[] = [
+                'id' => '',
+                'serial_number' => '',
+                'name' => '',
+                'descriptions' => '',
+                'site_logo' => '',
+                'site_banner' => '',
+                'site_background' => '',
+                'site_background_portrait' => '',
+                'company_id' => '',
+                'company_name' => '',
+                'multilanguage' => '',
+                'facebook' => '',
+                'instagram' => '',
+                'twitter' => '',
+                'website' => '',
+                'schedules' => '',
+                //'time_from' => ($site->details['time_from']) ? $site->details['time_from'] : '',
+                //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                'premiere' => '',
+                'site_code' => '',
+                'active' => '',
+                'is_default' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "site-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try {
+            Excel::import(new SitesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+    // public function getOperationalHour($operational_hours){
+    //     $time =[];
+    //     if(count($operational_hours) > 0){
+    //         // foreach($operational_hours as $operational_hour){
+    //         //     $time[] = $operational_hour['company_id'];
+    //         // }
+    //         return ($operational_hours['schedules'])?$operational_hours['schedules']:'';
+    //     }
+    //     return null;
+    // }
 }

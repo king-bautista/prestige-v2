@@ -9,8 +9,8 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewLandmark="AddNewLandmark"
-									v-on:editButton="editLandmark" v-on:modalBatchUpload="modalBatchUpload"
-									v-on:downloadCsv="downloadCsv" ref="dataTable">
+									v-on:editButton="editLandmark" v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -75,19 +75,7 @@
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<textarea class="form-control" v-model="landmark.descriptions" placeholder="Descriptions"></textarea>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Created By<span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="landmark.name" placeholder="Created By" required>
-								</div>
-							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Title<span class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="landmark.title" placeholder="Title" required>
+									<textarea class="form-control" rows="5" v-model="landmark.descriptions" placeholder="Descriptions"></textarea>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -114,7 +102,38 @@
 			</div>
 		</div>
 		<!-- End Modal Add New User -->
-
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -153,8 +172,6 @@ export default {
 				site_name: "Site Name",
 				landmark: "Landmark",
 				descriptions: "Descriptions",
-				name: "Name",
-				title: "Title",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -193,6 +210,27 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 		};
 	},
@@ -225,10 +263,8 @@ export default {
 			this.landmark.site_id = '';
 			this.landmark.landmark = '';
 			this.landmark.descriptions = '';
-			this.landmark.name = '';
-			this.landmark.title = '';
-			this.landmark.imgBanner = '/images/no-image-available.png';
-			this.landmark.imgBannerThumbnail = '/images/no-image-available.png';
+			this.landmark.image_url = '';
+			this.landmark.image_thumbnail_url = '';
 			this.imgBanner = '/images/no-image-available.png';
 			this.imgBannerThumbnail = '/images/no-image-available.png';
 			this.landmark.active = false;
@@ -243,8 +279,6 @@ export default {
 			formData.append("site_id", this.landmark.site_id);
 			formData.append("landmark", this.landmark.landmark);
 			formData.append("descriptions", this.landmark.descriptions);
-			formData.append("name", this.landmark.name);
-			formData.append("title", this.landmark.title);
 			formData.append("imgBanner", this.landmark.image_url);
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
 
@@ -268,8 +302,6 @@ export default {
 					this.landmark.site_id = landmark.site_id;
                     this.landmark.landmark = landmark.landmark;
                     this.landmark.descriptions = landmark.descriptions;
-                    this.landmark.name = landmark.name;
-                    this.landmark.title = landmark.title;
                     this.imgBanner = landmark.image_url_path;
                     this.imgBannerThumbnail = landmark.image_thumbnail_url_path;
                     this.landmark.active = landmark.active;
@@ -288,8 +320,6 @@ export default {
 			formData.append("site_id", this.landmark.site_id);
 			formData.append("landmark", this.landmark.landmark);
 			formData.append("descriptions", this.landmark.descriptions);
-			formData.append("name", this.landmark.name);
-			formData.append("title", this.landmark.title);
 			formData.append("imgBanner", this.landmark.image_url);
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
 			formData.append("active", this.landmark.active);
@@ -305,6 +335,53 @@ export default {
                 $('#landmark-form').modal('hide');
             })
         },
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/landmark/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
+		},
+		downloadCsv: function () {
+			axios.get('/admin/landmark/download-csv')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+		downloadTemplate: function () {
+			axios.get('/admin/landmark/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
 	},
 
 	components: {

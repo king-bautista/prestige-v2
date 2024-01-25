@@ -8,11 +8,11 @@ use App\Http\Controllers\Admin\Interfaces\RolesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+use App\Imports\RolesImport;
 
 use App\Models\Role;
-use App\Models\ViewModels\ModuleViewModel;
-use App\Models\ViewModels\RoleViewModel;
-use App\Models\ViewModels\AdminViewModel;
+use App\Models\AdminViewModels\ModuleViewModel;
+use App\Models\AdminViewModels\RoleViewModel;
 
 use App\Exports\Export;
 use Storage;
@@ -20,11 +20,11 @@ use Storage;
 class RolesController extends AppBaseController implements RolesControllerInterface
 {
     /************************************
-    * 			ROLES MANAGEMENT		*
-    ************************************/
+     * 			ROLES MANAGEMENT		*
+     ************************************/
     public function __construct()
     {
-        $this->module_id = 3; 
+        $this->module_id = 3;
         $this->module_name = 'Roles';
     }
 
@@ -35,20 +35,22 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function list(Request $request)
     {
-        try
-        {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
-            $roles = Role::when(request('search'), function($query){
+        try {
+            $roles = Role::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('description', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('description', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($roles, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -59,13 +61,10 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function details($id)
     {
-        try
-        {
+        try {
             $role = RoleViewModel::find($id);
             return $this->response($role, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -76,8 +75,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function store(RoleRequest $request)
     {
-        try
-    	{
+        try {
             $data = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -88,9 +86,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
             $role = Role::create($data);
 
             return $this->response($role, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -101,8 +97,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function update(RoleRequest $request)
     {
-        try
-    	{
+        try {
             $role = Role::find($request->id);
 
             $data = [
@@ -116,9 +111,7 @@ class RolesController extends AppBaseController implements RolesControllerInterf
             $role->setPermissions($request->permissions);
 
             return $this->response($role, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -129,14 +122,11 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $role = Role::find($id);
             $role->delete();
             return $this->response($role, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -147,13 +137,10 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function getModules(Request $request)
     {
-        try
-    	{            
+        try {
             $modules = ModuleViewModel::whereNull('parent_id')->where('role', $request->type)->get();
             return $this->response($modules, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -164,13 +151,10 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function getAdmin()
     {
-        try
-    	{
+        try {
             $roles = Role::where('type', 'Admin')->get();
             return $this->response($roles, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -181,13 +165,24 @@ class RolesController extends AppBaseController implements RolesControllerInterf
 
     public function getPortal()
     {
-        try
-    	{
+        try {
             $roles = Role::where('type', 'Portal')->get();
             return $this->response($roles, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
         }
-        catch (\Exception $e) 
-        {
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try {
+            Excel::import(new RolesImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -199,16 +194,20 @@ class RolesController extends AppBaseController implements RolesControllerInterf
     public function downloadCsv()
     {
         try {
-
             $role_management = RoleViewModel::get();
             $reports = [];
             foreach ($role_management as $role) {
                 $reports[] = [
+                    'id' =>  $role->id,
                     'name' => $role->name,
                     'descirption' => $role->description,
                     'type' => $role->type,
-                    'status' => ($role->active == 1) ? 'Active' : 'Inactive',
+                    'company_id' => $role->company_id,
+                    'company_name' => ($role->company_id) ? $role->company['name'] : '',
+                    'active' => $role->active,
+                    'created_at' => $role->created_at,
                     'updated_at' => $role->updated_at,
+                    'deleted_at' => $role->deleted_at,
                 ];
             }
 
@@ -240,4 +239,47 @@ class RolesController extends AppBaseController implements RolesControllerInterf
         }
     }
 
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' =>  '',
+                'name' => '',
+                'descirption' => '',
+                'type' => '',
+                'company_id' => '',
+                'company_name' => '',
+                'active' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "role-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

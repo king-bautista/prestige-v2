@@ -8,11 +8,11 @@ use App\Http\Controllers\Admin\Interfaces\ClassificationControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClassificationRequest;
-
-use App\Models\Classification;
-use App\Models\ViewModels\AdminViewModel;
+use App\Imports\ClassificationsImport;
 use App\Exports\Export;
 use Storage;
+
+use App\Models\Classification;
 
 class ClassificationController extends AppBaseController implements ClassificationControllerInterface
 {
@@ -34,10 +34,12 @@ class ClassificationController extends AppBaseController implements Classificati
     {
         try
         {
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
             $classifications = Classification::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                return $query->orderBy($column, request('sort'));
             })
             ->latest()
             ->paginate(request('perPage'));
@@ -153,17 +155,37 @@ class ClassificationController extends AppBaseController implements Classificati
         }
     }
 
+    public function batchUpload(Request $request)
+    {
+        try
+        {
+            Excel::import(new ClassificationsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);  
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function downloadCsv()
     {
-        try {
-
+        try 
+        {
             $classification_management = Classification::get();
             $reports = [];
             foreach ($classification_management as $classification) {
                 $reports[] = [  
+                    'id' => $classification->id,  
                     'name' => $classification->name,
-                    'status' => ($classification->active == 1) ? 'Active' : 'Inactive',
+                    'active' => $classification->active,
+                    'created_at' => $classification->created_at,
                     'updated_at' => $classification->updated_at,
+                    'deleted_at' => $classification->deleted_at,
                 ];
             }
 
@@ -173,7 +195,52 @@ class ClassificationController extends AppBaseController implements Classificati
                 Storage::delete($file);
             }
 
-            $filename = "classification_management.csv";
+            $filename = "classification-management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try 
+        {
+            $classification_management = Classification::get();
+            $reports = [];
+            foreach ($classification_management as $classification) {
+                $reports[] = [
+                    'id' => '',  
+                    'name' => '',
+                    'active' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "classification-management-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

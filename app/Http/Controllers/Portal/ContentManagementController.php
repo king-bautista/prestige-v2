@@ -10,10 +10,10 @@ use App\Http\Requests\UploadContentRequest;
 
 use App\Models\ContentManagement;
 use App\Models\TransactionStatus;
-use App\Models\ViewModels\UserViewModel;
-use App\Models\ViewModels\ContentManagementViewModel;
-use App\Models\ViewModels\ContentMaterialViewModel;
-use App\Models\ViewModels\SiteScreenProductPlaylistViewModel;
+use App\Models\AdminViewModels\UserViewModel;
+use App\Models\AdminViewModels\AdvertisementViewModel;
+use App\Models\AdminViewModels\ContentManagementViewModel;
+use App\Models\AdminViewModels\SiteScreenPlaylistViewModel;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
 {
@@ -44,14 +44,18 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $user = UserViewModel::find($id);
 
             $contents = ContentManagementViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
+
             })
-            ->whereNull('advertisement_materials.deleted_at')
-            ->whereNull('advertisements.deleted_at')
-            ->where('advertisements.company_id', $user->company_id)
-            ->join('advertisement_materials', 'content_management.material_id', '=', 'advertisement_materials.id')
-            ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+            ->where('advertisements.company_id', $user->company->id)
+            ->leftJoin('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.advertisement_id')
+            ->leftJoin('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+            ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
             ->select('content_management.*')
+            ->groupBy('content_management.serial_number')
             ->orderBy('content_management.created_at', 'DESC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($contents, 'Successfully Retreived!', 200);
@@ -66,25 +70,23 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function getAllType(Request $request)
+    public function getUploads(Request $request)
     {
         try
         {
             $id = Auth::guard('portal')->user()->id;
             $user = UserViewModel::find($id);
 
-            $advertisements = ContentMaterialViewModel::when(request('search'), function($query){
+            $advertisements = AdvertisementViewModel::when(request('search'), function($query){
                 return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
-                             ->where('companies.name', 'LIKE', '%' . request('search') . '%')
-                             ->where('brands.name', 'LIKE', '%' . request('search') . '%');
+                             ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('advertisements.status_id', 5)
             ->where('advertisements.company_id', $user->company_id)
-            ->join('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
-            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
             ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
-            ->select('advertisement_materials.*')
-            ->latest()
+            ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+            ->select('advertisements.*')
+            ->orderBy('advertisements.created_at', 'DESC')
             ->paginate(request('perPage'));
             return $this->responsePaginate($advertisements, 'Successfully Retreived!', 200);
         }
@@ -102,14 +104,16 @@ class ContentManagementController extends AppBaseController implements ContentMa
     {
         try
         {
-            $play_list = SiteScreenProductPlaylistViewModel::when(request('search'), function($query){
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+            $site_ids = $user->getSiteIds();
+
+            $play_list = SiteScreenPlaylistViewModel::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
             })
-            ->join('content_screens', 'site_screen_products.id', '=', 'content_screens.site_screen_product_id')
-            ->select('site_screen_products.*')
-            ->groupBy('site_screen_products.id')
-            ->orderBy('site_screen_products.id', 'ASC')
+            ->whereIn('site_id', $site_ids)
             ->paginate(request('perPage'));
+
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
         }
         catch (\Exception $e)

@@ -26,36 +26,74 @@
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Brands <span class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-9">
-								<multiselect v-model="tenant.brand_id" 
-								track-by="name" 
-								label="name" 
-								placeholder="Select Brand" 
-								:options="brands" 
-								:searchable="true" 
-								:allow-empty="false">
-								</multiselect> 
+								<multiselect v-model="tenant.brand_id" track-by="name" label="name"
+									placeholder="Select Brand" :options="brands" :searchable="true"
+									:allow-empty="false" :loading="isLoading" @search-change="getBrands">
+								</multiselect>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-3 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-3 col-form-label">Logo </label>
 							<div class="col-sm-9">
-								<select class="form-select" v-model="tenant.site_id" @change="getBuildings($event.target.value)">
+								<img :src="tenant.brand_id.logo_image_path ? tenant.brand_id.logo_image_path : '/images/no-image-available.png'" class="img-thumbnail" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Main Category </label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" placeholder="Main Category" :value="tenant.brand_id.main_category_name" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Sub Category </label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" placeholder="Sub Category" title="this is a lorem" :value="tenant.brand_id.category_name" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Supplementals</label>
+							<div class="col-sm-9">
+								<textarea class="form-control" placeholder="Supplementals" readonly>{{ tenant.brand_id.supplemental_names }}</textarea>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Tags</label>
+							<div class="col-sm-9">
+								<textarea class="form-control" placeholder="Tags" readonly>{{ tenant.brand_id.tag_names }}</textarea>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Site <span
+									class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="tenant.site_id"
+									@change="getBuildings($event.target.value, $event)">
 									<option value="">Select Site</option>
-									<option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
+									<option v-for="site in sites" :data-siteinfo="site.property_owner" :value="site.id"> {{ site.name }}</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-3 col-form-label">Building <span class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-3 col-form-label">Property Owner</label>
 							<div class="col-sm-9">
-								<select class="form-select" v-model="tenant.site_building_id" @change="getFloorLevel($event.target.value)">
+								<input class="form-control" placeholder="Property Owner" :value="property_owner" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Building <span
+									class="font-italic text-danger"> *</span></label>
+							<div class="col-sm-9">
+								<select class="form-select" v-model="tenant.site_building_id"
+									@change="getFloorLevel($event.target.value)">
 									<option value="">Select Building</option>
-									<option v-for="building in buildings" :value="building.id"> {{ building.name }}</option>
+									<option v-for="building in buildings" :value="building.id"> {{ building.name }}
+									</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="firstName" class="col-sm-3 col-form-label">Floor <span class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-3 col-form-label">Floor <span
+									class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-9">
 								<select class="form-select" v-model="tenant.site_building_level_id">
 									<option value="">Select Floor</option>
@@ -64,36 +102,62 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="lastName" class="col-sm-3 col-form-label">Company</label>
+							<label for="lastName" class="col-sm-3 col-form-label">Client Company</label>
 							<div class="col-sm-9">
-								<treeselect v-model="tenant.company_id" :options="companies" placeholder="Select Company"/>
+								<select class="form-select" v-model="tenant.company_id">
+									<option value="">Select Company</option>
+									<option v-for="company in companies" :value="company.id"> {{ company.name }}</option>
+								</select>
 							</div>
-						</div>					
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Space Number</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="tenant.space_number"
+									placeholder="Space Number">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Client Locator Number</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="tenant.client_locator_number"
+									placeholder="Client Locator Number">
+							</div>
+						</div>
 						<div class="form-group row">
 							<label for="is_subscriber" class="col-sm-3 col-form-label">Operational Hours</label>
 							<div class="col-sm-9">
 								<div class="row mb-3 mx-0" v-for="(operational, index)  in tenant.operational_hours ">
-									<div class="col-9 d-flex mx-0 px-0">
-										<div class="btn-group-toggle" data-toggle="buttons">
-											<label v-bind:class="conditionActive(operational.schedules, 'Sun', index)" @click="getChecked('Sun', index)">SU</label>
-											<label v-bind:class="conditionActive(operational.schedules, 'Mon', index)" @click="getChecked('Mon', index)">M</label>
-											<label v-bind:class="conditionActive(operational.schedules, 'Tue', index)" @click="getChecked('Tue', index)">T</label>
-											<label v-bind:class="conditionActive(operational.schedules, 'Wed', index)" @click="getChecked('Wed', index)">W</label>
-											<label v-bind:class="conditionActive(operational.schedules, 'Thu', index)" @click="getChecked('Thu', index)">TH</label>
-											<label v-bind:class="conditionActive(operational.schedules, 'Fri', index)" @click="getChecked('Fri', index)">F</label>
-											<label v-bind:class="conditionActive(operational.schedules, 'Sat', index)" @click="getChecked('Sat', index)">S</label>
+									<div class="col-9 d-flex">
+										<div class="btn-group-toggle mr-2" data-toggle="buttons">
+											<label v-bind:class="conditionActive(operational.schedules, 'Sun', index)"
+												@click="getChecked('Sun', index)">SU</label>
+											<label v-bind:class="conditionActive(operational.schedules, 'Mon', index)"
+												@click="getChecked('Mon', index)">M</label>
+											<label v-bind:class="conditionActive(operational.schedules, 'Tue', index)"
+												@click="getChecked('Tue', index)">T</label>
+											<label v-bind:class="conditionActive(operational.schedules, 'Wed', index)"
+												@click="getChecked('Wed', index)">W</label>
+											<label v-bind:class="conditionActive(operational.schedules, 'Thu', index)"
+												@click="getChecked('Thu', index)">TH</label>
+											<label v-bind:class="conditionActive(operational.schedules, 'Fri', index)"
+												@click="getChecked('Fri', index)">F</label>
+											<label v-bind:class="conditionActive(operational.schedules, 'Sat', index)"
+												@click="getChecked('Sat', index)">S</label>
 										</div>
-										<input type="time" v-model="operational.start_time" class="form-control ms-2 me-2 time" style="width: 120px">
+										<input type="time" v-model="operational.start_time" class="form-control ml-1 time mr-2" style="width: 120px; height: 34px; margin: 0 5px 0 5px;">
 										<p class="m-0 pt-2">to</p>
-										<input type="time" v-model="operational.end_time" class="form-control time ms-2" style="width: 120px">
+										<input type="time" v-model="operational.end_time" class="form-control time ml-2" style="width: 120px; height: 34px; margin: 0 5px 0 5px;">
 									</div>
 									<div class="col-3">
-										<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{ operational.start_time }} <span v-if="operational.end_time">to</span> {{ operational.end_time }}</i>
+										<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{
+											operational.start_time }} <span v-if="operational.end_time">to</span> {{ operational.end_time }}</i>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-12">
-										<button class="btn btn-link" style="padding-left:0px" @click="addOperationalHours">Add Hours +</button>
+										<button class="btn btn-link" style="padding-left:0px"
+											@click="addOperationalHours">Add Hours +</button>
 									</div>
 								</div>
 							</div>
@@ -101,51 +165,65 @@
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Store Address</label>
 							<div class="col-sm-9">
-								<textarea class="form-control" v-model="tenant.address" placeholder="Store Address"></textarea>
+								<textarea class="form-control" v-model="tenant.address"
+									placeholder="Store Address"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Store E-mail</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="tenant.email" placeholder="Store E-mail">
+								<input type="text" class="form-control" v-model="tenant.email"
+									placeholder="Store E-mail">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="firstName" class="col-sm-3 col-form-label">Store Contact Person</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" v-model="tenant.contact_person"
+									placeholder="Store Contact Person">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Store Contact Number</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="tenant.contact_number" placeholder="Store Contact No.">
+								<input type="text" class="form-control" v-model="tenant.contact_number"
+									placeholder="Store Contact No.">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Store Facebook</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="tenant.facebook" placeholder="Store Facebook">
+								<input type="text" class="form-control" v-model="tenant.facebook"
+									placeholder="Store Facebook">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Store Twitter</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="tenant.twitter" placeholder="Store Twitter">
+								<input type="text" class="form-control" v-model="tenant.twitter"
+									placeholder="Store Twitter">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Store Instagram</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="tenant.instagram" placeholder="Store Instagram">
+								<input type="text" class="form-control" v-model="tenant.instagram"
+									placeholder="Store Instagram">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="firstName" class="col-sm-3 col-form-label">Store Website</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" v-model="tenant.website" placeholder="Store Website">
+								<input type="text" class="form-control" v-model="tenant.website"
+									placeholder="Store Website">
 							</div>
 						</div>
-						<div class="form-group row" >
+						<div class="form-group row">
 							<label for="tennat_active" class="col-sm-3 col-form-label">Active</label>
 							<div class="col-sm-3">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" role="switch" id="tennat_active" v-model="tenant.active">
-									<label class="form-check-label" for="tennat_active">Checked switch checkbox input</label>
+									<input class="form-check-input" type="checkbox" role="switch" id="tennat_active" value="1" v-model="tenant.active">
+									<label class="form-check-label" for="tennat_active"></label>
 								</div>
 							</div>
 						</div>
@@ -153,15 +231,17 @@
 							<label for="is_subscriber" class="col-sm-3 col-form-label">Is Subscriber</label>
 							<div class="col-sm-3">
 								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" role="switch" id="is_subscriber" v-model="tenant.is_subscriber">
-									<label class="form-check-label" for="is_subscriber">Checked switch checkbox input</label>
+									<input class="form-check-input" type="checkbox" role="switch" id="is_subscriber" value="1" v-model="tenant.is_subscriber">
+									<label class="form-check-label" for="is_subscriber"></label>
 								</div>
 							</div>
 						</div>
 						<div class="form-group row" v-if="tenant.is_subscriber == 1">
-							<label for="firstName" class="col-sm-3 col-form-label">Subscriber Logo <span class="font-italic text-danger"> *</span></label>
+							<label for="firstName" class="col-sm-3 col-form-label">Subscriber Logo <span
+									class="font-italic text-danger"> *</span></label>
 							<div class="col-sm-3">
-								<input type="file" accept="image/*" ref="subscriber_logo" @change="subscriberLogoChange">
+								<input type="file" accept="image/*" ref="subscriber_logo"
+									@change="subscriberLogoChange">
 								<footer class="blockquote-footer">Max file size is 15MB</footer>
 								<footer class="blockquote-footer">image max size is 550 x 550 pixels</footer>
 							</div>
@@ -244,22 +324,25 @@
         data() {
             return {
                 tenant: {
-                    id: '',
-                    brand_id: '',
-                    site_id: '',
-                    site_building_id: '',
-                    site_building_level_id: '',
-                    company_id: '',
-                    active: true,
-                    is_subscriber: false,
+					id: '',
+					brand_id: '',
+					site_id: '',
+					site_building_id: '',
+					site_building_level_id: '',
+					company_id: '',
+					space_number: '',
+					client_locator_number: '',
+					active: true,
+					is_subscriber: false,
 					operational_hours: [],
-                    address: '',
-                    email: '',
-                    contact_number: '',
-                    facebook: '',
-                    twitter: '',
-                    instagram: '',
-                    website: '',
+					address: '',
+					email: '',
+					contact_person: '',
+					contact_number: '',
+					facebook: '',
+					twitter: '',
+					instagram: '',
+					website: '',
                 },
 				id_to_deleted: 0,
                 data_list: true,
@@ -267,11 +350,13 @@
                 add_record: true,
                 edit_record: false,
 				subscriber_logo: '',
-                brands: [],
-                sites: [],
-                buildings: [],
-                floors: [],
-                companies: [],
+				brands: [],
+				isLoading: false,
+				sites: [],
+				property_owner: '',
+				buildings: [],
+				floors: [],
+				companies: [],
             	dataFields: {
 					brand_logo: {
             			name: "Brand Logo", 
@@ -337,56 +422,60 @@
 						class: 'btn btn-primary btn-sm',
 						method: 'add'
 					},
-					// batchUpload: {
-                    //     title: 'Batch Upload',
-                    //     v_on: 'modalBatchUpload',
-                    //     icon: '<i class="fas fa-upload"></i> Batch Upload',
-                    //     class: 'btn btn-primary btn-sm',
-                    //     method: 'add'
-		            // },
 				}
             };
         },
 
         created(){
 			this.getSites();
-            this.GetBrands();
 			this.getCompany();
         },
 
         methods: {
-			subscriberLogoChange: function(e) {
+			subscriberLogoChange: function (e) {
 				const file = e.target.files[0];
-      			this.subscriber_logo = URL.createObjectURL(file);
+				this.subscriber_logo = URL.createObjectURL(file);
 				this.tenant.subscriber_logo = file;
 			},
 
-			getSites: function() {
-                axios.get('/portal/property-details/get-all')
-                .then(response => this.sites = response.data.data);
-            },
-
-            GetBrands: function() {
-				axios.get('/portal/brand/get-all')
-                .then(response => this.brands = response.data.data);
+			getSites: function () {
+				axios.get('/portal/site/get-all')
+					.then(response => this.sites = response.data.data);
 			},
 
-			getCompany: function() {
+			getBrands: function (query) {
+				this.isLoading = true;
+				axios.get('/portal/brand/search', {
+					params: {
+						search: query,
+					}
+				})
+				.then(response => {
+					this.brands = response.data.data;
+					this.isLoading = false;
+				});
+			},
+
+			getCompany: function () {
 				axios.get('/portal/company/get-all')
-                .then(response => this.companies = response.data.data);
+					.then(response => this.companies = response.data.data);
 			},
 
-            getBuildings: function(id) {
-				axios.get('/portal/property-details/get-buildings/'+id)
-                .then(response => this.buildings = response.data.data);
+			getBuildings: function (id, event) {
+				this.property_owner = event;
+				if(event.target) {
+					this.property_owner = event.target.selectedOptions[0].dataset.siteinfo;
+				}
+				axios.get('/portal/property-details/get-buildings/' + id)
+					.then(response => this.buildings = response.data.data);
 			},
 
-            getFloorLevel: function(id) {
-				axios.get('/portal/property-details/floors/'+id)
-                .then(response => this.floors = response.data.data);
-            },
+			getFloorLevel: function (id) {
+				axios.get('/portal/property-details/floors/' + id)
+					.then(response => this.floors = response.data.data);
+			},
 
-			addOperationalHours: function() {
+			addOperationalHours: function () {
 				this.tenant.operational_hours.push({
 					schedules: '',
 					start_time: '',
@@ -394,14 +483,14 @@
 				});
 			},
 
-			getChecked: function(item, index) {
+			getChecked: function (item, index) {
 				var position = (schedules[index]) ? schedules[index].indexOf(item) : -1;
-				if(position >= 0) {
-					schedules[index] = schedules[index].replace(", "+item, "").replace(item+",", "").replace(item, "");
+				if (position >= 0) {
+					schedules[index] = schedules[index].replace(", " + item, "").replace(item + ",", "").replace(item, "");
 				}
 				else {
-					if(schedules[index]) {
-						schedules[index] += ', '+item;
+					if (schedules[index]) {
+						schedules[index] += ', ' + item;
 					}
 					else {
 						schedules[index] = item;
@@ -414,11 +503,15 @@
 			AddNewTenant: function() {
 				this.removeActiveStatus();
 				schedules = [];
-                this.tenant.brand_id = null;
-                this.tenant.site_id = '';
-                this.tenant.site_building_id = '';
-                this.tenant.site_building_level_id = '';
-                this.tenant.company_id = null;
+				this.add_record = true;
+				this.edit_record = false;
+				this.tenant.brand_id = '';
+				this.tenant.site_id = '';
+				this.tenant.site_building_id = '';
+				this.tenant.site_building_level_id = '';
+				this.tenant.company_id = '';
+				this.tenant.space_number = '';
+				this.tenant.client_locator_number = '';
 				this.tenant.operational_hours = [];
 				this.tenant.subscriber_logo = '';
 				this.tenant.active = true;
@@ -426,11 +519,12 @@
 				this.subscriber_logo = null;
 				this.tenant.address = '';
 				this.tenant.email = '';
+				this.tenant.contact_person = '';
 				this.tenant.contact_number = '';
 				this.tenant.facebook = '';
 				this.tenant.twitter = '';
 				this.tenant.instagram = '';
-				this.tenant.website = '';			
+				this.tenant.website = '';
 				this.addOperationalHours();
 				this.data_list = false;
 				this.data_form = true;
@@ -440,22 +534,25 @@
 
             storeTenant: function() {
 				let formData = new FormData();
-				formData.append("brand_id", (this.tenant.brand_id) ? JSON.stringify(this.tenant.brand_id) : '');
+				formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
 				formData.append("site_id", this.tenant.site_id);
 				formData.append("site_building_id", this.tenant.site_building_id);
 				formData.append("site_building_level_id", this.tenant.site_building_level_id);
 				formData.append("company_id", this.tenant.company_id);
-				formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
+				formData.append("space_number", this.tenant.space_number);
+				formData.append("client_locator_number", this.tenant.client_locator_number);formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));				
 				formData.append("active", this.tenant.active);
 				formData.append("is_subscriber", this.tenant.is_subscriber);
 				formData.append("subscriber_logo", this.tenant.subscriber_logo);
-				formData.append("address", this.tenant.address);
-				formData.append("email", this.tenant.email);
-				formData.append("contact_number", this.tenant.contact_number);
-				formData.append("facebook", this.tenant.facebook);
-				formData.append("twitter", this.tenant.twitter);
-				formData.append("instagram", this.tenant.instagram);
-				formData.append("website", this.tenant.website);
+				formData.append("address", (this.tenant.address) ? this.tenant.address : '');
+				formData.append("email", (this.tenant.email) ? this.tenant.email : '');
+				formData.append("contact_person", (this.tenant.contact_person) ? this.tenant.contact_person : '');
+				formData.append("contact_number", (this.tenant.contact_number) ? this.tenant.contact_number : '');
+				formData.append("facebook", (this.tenant.facebook) ? this.tenant.facebook : '');
+				formData.append("twitter", (this.tenant.twitter) ? this.tenant.twitter : '');
+				formData.append("instagram", (this.tenant.instagram) ? this.tenant.instagram : '');
+				formData.append("website", (this.tenant.website) ? this.tenant.website : '');
+
                 axios.post('/portal/tenant/store', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
@@ -475,28 +572,31 @@
 					this.tenant.operational_hours = [];
 					schedules = [];
 
-                    var tenant = response.data.data;
-                    this.tenant.id = tenant.id;
-                    this.tenant.brand_id = tenant.brand_details;
-                    this.tenant.site_id = tenant.site_id;
-                    this.tenant.site_building_id = tenant.site_building_id;
-					alert(tenant.site_building_id);
-                    this.getBuildings(tenant.site_id);
-                    this.getFloorLevel(tenant.site_building_id);
+					var tenant = response.data.data;
+					this.tenant.id = tenant.id;
+					this.tenant.brand_id = tenant.brand_details;
+					this.tenant.site_id = tenant.site_id;
+					this.tenant.site_building_id = tenant.site_building_id;
 
-                    this.tenant.site_building_level_id = tenant.site_building_level_id;
-                    this.tenant.company_id = (tenant.company_id) ? tenant.company_id : null;
-                    this.tenant.active = tenant.active;
-                    this.tenant.is_subscriber = tenant.is_subscriber;
-					this.tenant.address = (tenant.tenant_details.address != 'undefined') ? tenant.tenant_details.address : '';
-					this.tenant.email = (tenant.tenant_details.email != 'undefined') ? tenant.tenant_details.email : '';
-					this.tenant.contact_number = (tenant.tenant_details.contact_number != 'undefined') ? tenant.tenant_details.contact_number : '';
-					this.tenant.facebook = (tenant.tenant_details.facebook != 'undefined') ? tenant.tenant_details.facebook : '';
-					this.tenant.twitter = (tenant.tenant_details.twitter != 'undefined') ? tenant.tenant_details.twitter : '';
-					this.tenant.instagram = (tenant.tenant_details.instagram != 'undefined') ? tenant.tenant_details.instagram : '';
-					this.tenant.website = (tenant.tenant_details.website != 'undefined') ? tenant.tenant_details.website : '';
-					
-					if(tenant.tenant_details.length == 0 || tenant.tenant_details.schedules === 'undefined') {
+					this.getBuildings(tenant.site_id, tenant.property_owner);
+					this.getFloorLevel(tenant.site_building_id);
+
+					this.tenant.site_building_level_id = tenant.site_building_level_id;
+					this.tenant.company_id = (tenant.company_id) ? tenant.company_id : null;
+					this.tenant.space_number = (tenant.space_number) ? tenant.space_number : '';
+					this.tenant.client_locator_number = (tenant.client_locator_number) ? tenant.client_locator_number : '';
+					this.tenant.active = tenant.active;
+					this.tenant.is_subscriber = tenant.is_subscriber;
+					this.tenant.address = (tenant.tenant_details.address != 'null') ? tenant.tenant_details.address : '';
+					this.tenant.email = (tenant.tenant_details.email != 'null') ? tenant.tenant_details.email : '';
+					this.tenant.contact_person = (tenant.tenant_details.contact_person != 'null') ? tenant.tenant_details.contact_person : '';
+					this.tenant.contact_number = (tenant.tenant_details.contact_number != 'null') ? tenant.tenant_details.contact_number : '';
+					this.tenant.facebook = (tenant.tenant_details.facebook != 'null') ? tenant.tenant_details.facebook : '';
+					this.tenant.twitter = (tenant.tenant_details.twitter != 'null') ? tenant.tenant_details.twitter : '';
+					this.tenant.instagram = (tenant.tenant_details.instagram != 'null') ? tenant.tenant_details.instagram : '';
+					this.tenant.website = (tenant.tenant_details.website != 'null') ? tenant.tenant_details.website : '';
+
+					if (tenant.tenant_details.length == 0 || tenant.tenant_details.schedules === 'null') {
 						this.tenant.operational_hours = [];
 						this.addOperationalHours();
 					}
@@ -504,12 +604,7 @@
 						this.tenant.operational_hours = JSON.parse(tenant.tenant_details.schedules);
 					}
 
-					this.subscriber_logo = '';
-					if(tenant.is_subscriber == true) {
-						this.tenant.subscriber_logo = '';
-						this.subscriber_logo = tenant.subscriber_logo;
-					}
-				
+					this.subscriber_logo = '';				
 					this.data_list = false;
 					this.data_form = true;
 					this.add_record = false;
@@ -525,17 +620,21 @@
 				formData.append("site_building_id", this.tenant.site_building_id);
 				formData.append("site_building_level_id", this.tenant.site_building_level_id);
 				formData.append("company_id", this.tenant.company_id);
+				formData.append("space_number", this.tenant.space_number);
+				formData.append("client_locator_number", this.tenant.client_locator_number);
 				formData.append("operational_hours", JSON.stringify(this.tenant.operational_hours));
 				formData.append("active", this.tenant.active);
 				formData.append("is_subscriber", this.tenant.is_subscriber);
 				formData.append("subscriber_logo", this.tenant.subscriber_logo);
-				formData.append("address", this.tenant.address);
-				formData.append("email", this.tenant.email);
-				formData.append("contact_number", this.tenant.contact_number);
-				formData.append("facebook", this.tenant.facebook);
-				formData.append("twitter", this.tenant.twitter);
-				formData.append("instagram", this.tenant.instagram);
-				formData.append("website", this.tenant.website);
+				formData.append("address", (this.tenant.address) ? this.tenant.address : '');
+				formData.append("email", (this.tenant.email) ? this.tenant.email : '');
+				formData.append("contact_person", (this.tenant.contact_person) ? this.tenant.contact_person : '');
+				formData.append("contact_number", (this.tenant.contact_number) ? this.tenant.contact_number : '');
+				formData.append("facebook", (this.tenant.facebook) ? this.tenant.facebook : '');
+				formData.append("twitter", (this.tenant.twitter) ? this.tenant.twitter : '');
+				formData.append("instagram", (this.tenant.instagram) ? this.tenant.instagram : '');
+				formData.append("website", (this.tenant.website) ? this.tenant.website : '');
+
                 axios.post('/portal/tenant/update', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'

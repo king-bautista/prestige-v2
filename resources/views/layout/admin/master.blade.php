@@ -21,6 +21,8 @@
 
     <!-- Ekko Lightbox -->
     <link rel="stylesheet" href="{{ URL::to('plugins/ekko-lightbox/ekko-lightbox.css') }}">
+    <!-- CSRF and expired login forms -->
+    <meta http-equiv="refresh" content="{{ config('session.lifetime') * 60 }}">
     
 </head>
 

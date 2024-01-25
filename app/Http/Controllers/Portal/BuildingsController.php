@@ -8,7 +8,7 @@ use App\Http\Controllers\Portal\Interfaces\BuildingsControllerInterface;
 use Illuminate\Http\Request;
 
 use App\Models\SiteBuilding;
-use App\Models\ViewModels\SiteViewModel;
+use App\Models\AdminViewModels\SiteViewModel;
 
 class BuildingsController extends AppBaseController implements BuildingsControllerInterface
 {

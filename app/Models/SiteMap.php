@@ -19,20 +19,12 @@ class SiteMap extends Model
         'site_building_id',
         'site_building_level_id',
         'site_screen_id',
+        'map_type',
         'map_file',
-        'descriptions',
+        'map_preview',
         'image_size_width',
         'image_size_height',
-        'position_x',
-        'position_y',
-        'position_z',
-        'text_y_position',
-        'default_zoom',
-        'default_zoom_desktop',
-        'default_zoom_mobile',
-        'map_preview',
         'active',
-        'is_default',
     ];
 
     /**

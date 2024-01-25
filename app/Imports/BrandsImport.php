@@ -24,13 +24,16 @@ class BrandsImport implements ToCollection, WithHeadingRow
     */
     public function collection(Collection $rows)
     {
+      
         foreach ($rows as $row) {
-            if($row['brand_name']) {
+    
+            if($row['brand_name']) { 
                 $brand = Brand::updateOrCreate(
                     [
                         'name' => $row['brand_name']
                     ],
                     [
+                        'descriptions' => $row['brand_description'],
                         'category_id' => ($row['sub_category']) ? $this->getCategoryId($row['sub_category']) : 0,
                         'logo' => ($row['logo']) ? $this->uploadLogo($row['logo']) : null
                     ]
@@ -40,13 +43,14 @@ class BrandsImport implements ToCollection, WithHeadingRow
                 $tag_ids = $this->saveTags($row['tags']);
                 if($tag_ids)
                     $brand->saveTags($tag_ids);
-                // SAVE SUPPLIMENTALS
-                $supplemental_ids = $this->getSupplementalIds($row['supplementals']);
+                // // SAVE SUPPLIMENTALS
+                 $supplemental_ids = $this->getSupplementalIds($row['supplementals']); 
                 if($supplemental_ids)
                     $brand->saveSupplementals($supplemental_ids);
 
             }
 	    }
+
     }
 
     public function getCategoryId($category = '')
@@ -62,31 +66,33 @@ class BrandsImport implements ToCollection, WithHeadingRow
     }
 
     public function uploadLogo($logo = '')
-    {
-        if($logo) {
-            $contents = file_get_contents($logo);
-            $name = str_replace(' ','-',substr($logo, strrpos($logo, '/') + 1));
-            if(Storage::disk('brand')->put($name, $contents))
-                return 'uploads/media/brand/'.$name;
+    {   
+        if($logo){ 
+                if(file_get_contents(public_path().'/'.$logo))
+                    return $logo;
+            // $contents = file_get_contents($logo);   
+            // $name = str_replace(' ','-',substr($logo, strrpos($logo, '/') + 1));
+            // if(Storage::disk('brand')->put($name, $contents))
+            //     return 'uploads/media/brand/'.$name;
             return null;
         }
-
         return null;
     }
 
     public function saveTags($tags = '')
-    {
+    {   
         $tag_ids = '';
-        if($tags) {
+        if($tags) { 
             $tags = explode(',', $tags);
+           
             foreach($tags as $tag) {
                 $tag_id = Tag::updateOrCreate(
                     [
                         'name' => ucfirst(rtrim(ltrim($tag)))
-                    ]
+                    ]   
                 );
 
-                $tag_ids .= $tag_id->id.',';
+                $tag_ids .= $tag_id->id.',';   
             }
 
             return rtrim($tag_ids, ",");
@@ -98,13 +104,16 @@ class BrandsImport implements ToCollection, WithHeadingRow
     {
         $supplemental_ids = '';
         if($supplementals) {
-            $supplementals = explode(',', $supplementals);
+             $supplementals = explode(',', $supplementals);
             foreach($supplementals as $supplemental) {
                 $category = Category::where('name', 'like', '%'.rtrim(ltrim($supplemental)).'%')->first();
-
+                
+                if ($category == NULL) {
+                    continue;
+                }
                 $supplemental_ids .= $category['id'].',';
             }
-
+            
             return rtrim($supplemental_ids, ",");
         }
         return null;

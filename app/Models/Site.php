@@ -22,6 +22,7 @@ class Site extends Model
         'site_banner',
         'site_background',
         'site_background_portrait',
+        'map_type',
         'active',
         'is_default',
     ];

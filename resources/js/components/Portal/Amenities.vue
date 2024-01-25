@@ -79,6 +79,10 @@
                 edit_record: false,
             	dataFields: {
             		name: "Name", 
+					icon_path: {
+						name: "Icon",
+						type: "logo",
+					},
             		active: {
             			name: "Status", 
             			type:"Boolean", 
@@ -91,33 +95,33 @@
             	},
             	primaryKey: "id",
             	dataUrl: "/portal/amenity/list",
-            	actionButtons: {
-            		edit: {
-            			title: 'Edit this Amenities',
-            			name: 'Edit',
-            			apiUrl: '',
-            			routeName: 'amenity.edit',
-            			button: '<i class="fas fa-edit"></i> Edit',
-            			method: 'edit'
-            		},
-            		delete: {
-            			title: 'Delete this Amenities',
-            			name: 'Delete',
-            			apiUrl: '/portal/amenity/delete',
-            			routeName: '',
-            			button: '<i class="fas fa-trash-alt"></i> Delete',
-            			method: 'delete'
-            		},
-            	},
-				otherButtons: {
-					addNew: {
-						title: 'New Amenities',
-						v_on: 'AddNewAmenities',
-						icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Amenities',
-						class: 'btn btn-primary btn-sm',
-						method: 'add'
-					},
-				}
+            	// actionButtons: {
+            	// 	edit: {
+            	// 		title: 'Edit this Amenities',
+            	// 		name: 'Edit',
+            	// 		apiUrl: '',
+            	// 		routeName: 'amenity.edit',
+            	// 		button: '<i class="fas fa-edit"></i> Edit',
+            	// 		method: 'edit'
+            	// 	},
+            	// 	delete: {
+            	// 		title: 'Delete this Amenities',
+            	// 		name: 'Delete',
+            	// 		apiUrl: '/portal/amenity/delete',
+            	// 		routeName: '',
+            	// 		button: '<i class="fas fa-trash-alt"></i> Delete',
+            	// 		method: 'delete'
+            	// 	},
+            	// },
+				// otherButtons: {
+				// 	addNew: {
+				// 		title: 'New Amenities',
+				// 		v_on: 'AddNewAmenities',
+				// 		icon: '<i class="fa fa-plus" aria-hidden="true"></i> New Amenities',
+				// 		class: 'btn btn-primary btn-sm',
+				// 		method: 'add'
+				// 	},
+				// }
             };
         },
 

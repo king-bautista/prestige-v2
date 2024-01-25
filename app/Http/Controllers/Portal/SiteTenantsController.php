@@ -8,12 +8,13 @@ use App\Http\Controllers\Portal\Interfaces\SiteTenantsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\TenantRequest;
+use Illuminate\Support\Str;
 
 use App\Models\SiteTenant;
 use App\Models\SiteTenantProduct;
-use App\Models\ViewModels\UserViewModel;
-use App\Models\ViewModels\SiteTenantViewModel;
-use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\AdminViewModels\UserViewModel;
+use App\Models\AdminViewModels\SiteTenantViewModel;
+use App\Models\AdminViewModels\BrandProductViewModel;
 use App\Models\ViewModels\TenantsDropdownViewModel;
 
 use App\Imports\SiteTenantsImport;
@@ -44,12 +45,17 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {      
         try
         {
+            $id = Auth::guard('portal')->user()->id;
+            $user = UserViewModel::find($id);
+            $site_ids = $user->getSiteIds();
+
             $site_tenants = SiteTenantViewModel::when(request('search'), function($query){
                 return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
             })
+            ->whereIn('site_tenants.site_id', $site_ids)
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->leftJoin('sites', 'site_tenants.site_id', '=', 'sites.id')
             ->leftJoin('site_buildings', 'site_tenants.site_building_id', '=', 'site_buildings.id')
@@ -103,25 +109,31 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'company_id' => $request->company_id,
-                'active' => ($request->active) ? 1 : 0,
-                'is_subscriber' => ($request->is_subscriber == 'true') ? 1 : 0,
+                'company_id' => ($request->company_id) ? $request->company_id : 0,
+                'space_number' => ($request->space_number) ? $request->space_number : null,
+                'client_locator_number' => ($request->client_locator_number) ? $request->client_locator_number : null,
+                'active' => $this->checkBolean($request->active),
+                'is_subscriber' => $this->checkBolean($request->is_subscriber),
             ];
 
             $site_tenant = SiteTenant::create($data);
-
+            $site_tenant->serial_number = 'TN-'.Str::padLeft($site_tenant->id, 5, '0');
+            $site_tenant->save();
+ 
             $meta_details = [
-                "address" => $request->address, 
-                "email" => $request->email,
-                "contact_number" => $request->contact_number,
-                "facebook" => $request->facebook,
-                "twitter" => $request->twitter,
-                "instagram" => $request->instagram,
-                "website" => $request->website,
-                "schedules" => $request->operational_hours,
-                "subscriber_logo" => str_replace('\\', '/', $subscriber_logo_path)
+                "address" => ($request->address) ? $request->address : null, 
+                "email" => ($request->email) ? $request->email : null, 
+                "contact_person" => ($request->contact_person) ? $request->contact_person : null, 
+                "contact_number" => ($request->contact_number) ? $request->contact_number : null, 
+                "facebook" => ($request->facebook) ? $request->facebook : null, 
+                "twitter" => ($request->twitter) ? $request->twitter : null, 
+                "instagram" => ($request->instagram) ? $request->instagram : null, 
+                "website" => ($request->website) ? $request->website : null, 
+                "schedules" => ($request->operational_hours) ? $request->operational_hours : null, 
+                "subscriber_logo" => ($subscriber_logo_path) ? str_replace('\\', '/', $subscriber_logo_path) : null
             ];
             $site_tenant->saveMeta($meta_details);
+
 
             return $this->response($site_tenant, 'Successfully Created!', 200);
         }
@@ -151,33 +163,31 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
 
             $brand_id = json_decode($request->brand_id, 1);
             $data = [
+                'serial_number' => ($site_tenant->serial_number) ? $site_tenant->serial_number : 'TN-'.Str::padLeft($site_tenant->id, 5, '0'),
                 'brand_id' => $brand_id['id'],
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'company_id' => $request->company_id,
-                'active' => ($request->active) ? 1 : 0,
-                'is_subscriber' => ($request->is_subscriber) ? 1 : 0,
+                'company_id' => ($request->company_id) ? $request->company_id : 0,
+                'space_number' => ($request->space_number) ? $request->space_number : null,
+                'client_locator_number' => ($request->client_locator_number) ? $request->client_locator_number : null,
+                'active' => $this->checkBolean($request->active),
+                'is_subscriber' => $this->checkBolean($request->is_subscriber),
             ];
-
             $site_tenant->update($data);
 
             $meta_details = [
-                "address" => $request->address, 
-                "email" => $request->email,
-                "contact_number" => $request->contact_number,
-                "facebook" => $request->facebook,
-                "twitter" => $request->twitter,
-                "instagram" => $request->instagram,
-                "website" => $request->website,
+                "address" => ($request->address) ? $request->address : null, 
+                "email" => ($request->email) ? $request->email : null, 
+                "contact_person" => ($request->contact_person) ? $request->contact_person : null, 
+                "contact_number" => ($request->contact_number) ? $request->contact_number : null, 
+                "facebook" => ($request->facebook) ? $request->facebook : null, 
+                "twitter" => ($request->twitter) ? $request->twitter : null, 
+                "instagram" => ($request->instagram) ? $request->instagram : null, 
+                "website" => ($request->website) ? $request->website : null, 
+                "schedules" => ($request->operational_hours) ? $request->operational_hours : null, 
+                "subscriber_logo" => ($subscriber_logo_path) ? str_replace('\\', '/', $subscriber_logo_path) : null
             ];
-
-            if($request->operational_hours)
-                $meta_details["schedules"] = $request->operational_hours;
-            
-            if($subscriber_logo_path)
-                $meta_details["subscriber_logo"] = str_replace('\\', '/', $subscriber_logo_path);
-
             $site_tenant->saveMeta($meta_details);
 
             return $this->response($site_tenant, 'Successfully Modified!', 200);

@@ -8,43 +8,44 @@ use App\Http\Controllers\Admin\Interfaces\ConcernsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\ConcernRequest;
-
-use App\Models\Concern;
-use App\Models\ViewModels\ConcernViewModel;
-use App\Models\ViewModels\AdminViewModel;
+use App\Imports\ConcernsImport;
 use App\Exports\Export;
 use Storage;
 use Route;
 
+use App\Models\Concern;
+use App\Models\AdminViewModels\ConcernViewModel;
+
 class ConcernsController extends AppBaseController implements ConcernsControllerInterface
 {
-   // public $listFAQ;
-
     /************************************************
-     * 			FAQ's MANAGEMENT	 	*
+     * 			Concern's MANAGEMENT	 	*
      ************************************************/
     public function __construct()
     {
         $this->module_id = 73;
-        $this->module_name = 'Concerns';
+        $this->module_name = 'Ticket Type';
     }
 
     public function index()
-    {  
+    {
         return view('admin.concerns');
     }
 
     public function list(Request $request)
     {
         try {
-                $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-                $concerns = ConcernViewModel::when(request('search'), function ($query) {
-
+            $concerns = ConcernViewModel::when(request('search'), function ($query) {
                 return $query->where('concerns.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('concerns.description', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
-                ->paginate(request('perPage')); 
+                ->paginate(request('perPage'));
+
             return $this->responsePaginate($concerns, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -129,13 +130,24 @@ class ConcernsController extends AppBaseController implements ConcernsController
 
     public function getAll()
     {
-        try
-        {
+        try {
             $concerns = ConcernViewModel::get();
             return $this->response($concerns, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
         }
-        catch (\Exception $e)
-        {
+    }
+
+    public function batchUpload(Request $request)
+    {
+        try {
+            Excel::import(new ConcernsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -147,14 +159,18 @@ class ConcernsController extends AppBaseController implements ConcernsController
     public function downloadCsv()
     {
         try {
-
             $concerns = ConcernViewModel::get();
             $reports = [];
             foreach ($concerns as $concern) {
                 $reports[] = [
-                    'question' => $concern->question,
-                    'answer' => $concern->answer,
-                    'status' => ($concern->active == 1)?'Active': 'Inactive'
+                    'id' => $concern->id,
+                    'name' => $concern->name,
+                    'description' => $concern->description,
+                    'active' => $concern->active,
+                    'created_at' => $concern->created_at,
+                    'updated_at' => $concern->updated_at,
+                    'deleted_at' => $concern->deleted_at,
+
                 ];
             }
 
@@ -164,7 +180,49 @@ class ConcernsController extends AppBaseController implements ConcernsController
                 Storage::delete($file);
             }
 
-            $filename = "concern.csv";
+            $filename = "ticket-type.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'name' => '',
+                'description' => '',
+                'active' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "ticket-type-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

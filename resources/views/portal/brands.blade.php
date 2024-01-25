@@ -1,20 +1,25 @@
 @extends('layout.portal.master')
 @section('Page-Title')
-<h4>User Brands</h4>
+<h4>Brands</h4>
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="#">Home&nbsp;</a></li>
-  <li class="breadcrumb-item active">User Brands</li>
+  <li class="breadcrumb-item"><a href="#">Manage Property</a></li>
+  <li class="breadcrumb-item active">Brands</li>
 </ol>
 @endsection
 @section('content')
+<!-- Main content -->
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-12">
     @include('layout.portal.company-profile')
   </div>
-  <div class="col-md-10">
+</div>
+<div class="row">
+  <div class="col-md-12">
   <portal-brands></portal-brands>
   </div>
 </div>
+<!-- /.content -->
 @stop
 
 @push('scripts')    

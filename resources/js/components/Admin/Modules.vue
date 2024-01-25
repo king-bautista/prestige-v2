@@ -9,7 +9,7 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewModule="AddNewModule"
-									v-on:editButton="editModule" v-on:downloadCsv="downloadCsv"
+									v-on:editButton="editModule"  v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" 
 									v-on:DeleteModule="DeleteModule" ref="dataTable">
 								</Table>
 							</div>
@@ -120,6 +120,38 @@
 				</div>
 			</div>
 		</div>
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="batchModalLabel">Batch Upload</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group col-md-12">
+								<label>CSV File: <span class="text-danger">*</span></label>
+								<div class="custom-file">
+									<input type="file" ref="file" v-on:change="handleFileUpload()"
+										accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+										class="custom-file-input" id="batchInput">
+									<label class="custom-file-label" id="batchInputLabel" for="batchInput">Choose
+										file</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -194,10 +226,31 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				batchUpload: {
+					title: 'Batch Upload',
+					v_on: 'modalBatchUpload',
+					icon: '<i class="fas fa-upload"></i> Batch Upload',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 				download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
 					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
@@ -264,6 +317,34 @@ export default {
 				})
 		},
 
+		modalBatchUpload: function () {
+			$('#batchModal').modal('show');
+		},
+
+		handleFileUpload: function () {
+			this.file = this.$refs.file.files[0];
+			$('#batchInputLabel').html(this.file.name)
+		},
+
+		storeBatch: function () {
+			let formData = new FormData();
+			formData.append('file', this.file);
+
+			axios.post('/admin/modules/batch-upload', formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
+					this.$refs.file.value = null;
+					this.$refs.dataTable.fetchData();
+					toastr.success(response.data.message);
+					$('#batchModal').modal('hide');
+					$('#batchInputLabel').html('Choose File');
+					//window.location.reload();
+				})
+		},
+
 		downloadCsv: function () {
 			axios.get('/admin/modules/download-csv')
 				.then(response => {
@@ -275,23 +356,33 @@ export default {
 				})
 		},
 
+		downloadTemplate: function () {
+			axios.get('/admin/modules/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
 		DeleteModule: function (data) {
 			axios.get('/admin/modules/get-parent/' + data.id)
-				.then(response => {
-					var parent_id_count = response.data.data;  alert(parent_id_count);
-					if (parent_id_count == 0) {
-						this.id_to_deleted = data.id;
-						this.modal_label = "Confirm";
-						this.delete_record = true;
-					}else{
-						this.modal_label = "Error";
-						this.modal_message = "You cannot delete the record.";
-						this.delete_record = false;
-					}
+			.then(response => {	
+				var parent_id_count = response.data.data;
+				if (parent_id_count == 0) {
+					this.id_to_deleted = data.id;
+					this.modal_label = "Confirm";
+					this.delete_record = true;
+				}else{
+					this.modal_label = "Error";
+					this.modal_message = "You cannot delete the record.";
+					this.delete_record = false;
+				}
 
-					$('#moduleDeleteModal').modal('show');
-				})
-
+				$('#moduleDeleteModal').modal('show');
+			});
 		},
 
 		removeModule: function () {

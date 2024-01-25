@@ -5,22 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ProductsControllerInterface;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
+use App\Imports\BrandProductsImport;
+use App\Exports\Export;
+use Storage;
+use Image;
+use VideoThumbnail;
 
 use App\Models\BrandProductPromos;
-use App\Models\ViewModels\AdminViewModel;
-use App\Models\ViewModels\BrandViewModel;
-use App\Models\ViewModels\BrandProductViewModel;
+use App\Models\Brand;
+use App\Models\AdminViewModels\BrandProductViewModel;
 
 class ProductsController extends AppBaseController implements ProductsControllerInterface
 {
     protected $brand_id;
     /********************************************
-    * 			BRANDS PRODUCTS MANAGEMENT	 	*
-    ********************************************/
+     * 			BRANDS PRODUCTS MANAGEMENT	 	*
+     ********************************************/
     public function __construct()
     {
-        $this->module_id = 10; 
+        $this->module_id = 10;
         $this->module_name = 'Brand Product Management';
     }
 
@@ -28,28 +34,34 @@ class ProductsController extends AppBaseController implements ProductsController
     {
         session()->forget('brand_id');
         session()->put('brand_id', $id);
-        $brand = BrandViewModel::find($id);
+        $brand = Brand::find($id);
         return view('admin.products', compact("brand"));
     }
 
     public function list(Request $request)
     {
-        try
-        {
+        try {
             $brand_id = session()->get('brand_id');
-            $this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
-
-            $products = BrandProductViewModel::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+            $products = BrandProductViewModel::when(request('search'), function ($query) {
+                $query->where(function ($query) {
+                    $query->where('name', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('type', 'LIKE', '%' . request('search') . '%');
+                });
             })
-            ->where('brand_id', $brand_id)
-            ->latest()
-            ->paginate(request('perPage'));
+                ->where('brand_id', $brand_id)
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+
+                    return $query->orderBy($column, request('sort'));
+                })
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($products, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -60,13 +72,10 @@ class ProductsController extends AppBaseController implements ProductsController
 
     public function getProductsByBrand($id)
     {
-        try
-        {
+        try {
             $products = BrandProductViewModel::where('brand_id', $id)->where('active', 1)->get();
             return $this->response($products, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -77,13 +86,10 @@ class ProductsController extends AppBaseController implements ProductsController
 
     public function details($id)
     {
-        try
-        {
+        try {
             $product = BrandProductViewModel::find($id);
             return $this->response($product, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -94,22 +100,44 @@ class ProductsController extends AppBaseController implements ProductsController
 
     public function store(Request $request)
     {
-        try
-    	{
+        try {
             $brand_id = session()->get('brand_id');
-
-            $thumbnail = $request->file('thumbnail');
-            $thumbnail_path = '';
-            if($thumbnail) {
-                $originalname = $thumbnail->getClientOriginalName();
-                $thumbnail_path = $thumbnail->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
-            }
 
             $image_url = $request->file('image_url');
             $image_url_path = '';
-            if($image_url) {
+            $thumbnails_path = '';
+            if ($image_url) {
                 $originalname = $image_url->getClientOriginalName();
-                $image_url_path = $image_url->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
+                $mime_type = explode("/", $image_url->getClientMimeType());
+                $file_type = $mime_type[0];
+                $image_url_path = $image_url->move('uploads/media/brand/products/', str_replace(' ', '-', $originalname));
+
+                $image_size = getimagesize($image_url_path);
+                $required_size = 150;
+                $new_width = 0;
+                $new_height = 0;
+
+                if ($file_type == 'image') {
+                    $width = $image_size[0];
+                    $height = $image_size[1];
+
+                    $aspect_ratio = $width / $height;
+                    if ($aspect_ratio >= 1.0) {
+                        $new_width = $required_size;
+                        $new_height = $required_size / $aspect_ratio;
+                    } else {
+                        $new_width = $required_size * $aspect_ratio;
+                        $new_height = $required_size;
+                    }
+
+                    $thumbnails_path = public_path('uploads/media/brand/products/thumbnails/');
+                    $img = Image::make($image_url_path);
+                    $img->resize($new_width, $new_height, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($thumbnails_path . str_replace(' ', '-', $originalname));
+
+                    $thumbnails_path = 'uploads/media/brand/products/thumbnails/' . str_replace(' ', '-', $originalname);
+                }
             }
 
             $data = [
@@ -119,7 +147,7 @@ class ProductsController extends AppBaseController implements ProductsController
                 'type' => $request->type,
                 'date_from' => $request->date_from,
                 'date_to' => $request->date_to,
-                'thumbnail' => str_replace('\\', '/', $thumbnail_path),
+                'thumbnail' => str_replace('\\', '/', $thumbnails_path),
                 'image_url' => str_replace('\\', '/', $image_url_path),
                 'active' => 1
             ];
@@ -127,9 +155,7 @@ class ProductsController extends AppBaseController implements ProductsController
             $product = BrandProductPromos::create($data);
 
             return $this->response($product, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -140,24 +166,46 @@ class ProductsController extends AppBaseController implements ProductsController
 
     public function update(Request $request)
     {
-        try
-    	{
+        try {
             $brand_id = session()->get('brand_id');
             $product = BrandProductPromos::find($request->id);
 
-            $thumbnail = $request->file('thumbnail');
-            $thumbnail_path = '';
-            if($thumbnail) {
-                $originalname = $thumbnail->getClientOriginalName();
-                $thumbnail_path = $thumbnail->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
-            }
-
             $image_url = $request->file('image_url');
             $image_url_path = '';
-            if($image_url) {
+            $thumbnails_path = '';
+            if ($image_url) {
                 $originalname = $image_url->getClientOriginalName();
-                $image_url_path = $image_url->move('uploads/media/brand/products/', str_replace(' ','-', $originalname)); 
-            }         
+                $mime_type = explode("/", $image_url->getClientMimeType());
+                $file_type = $mime_type[0];
+                $image_url_path = $image_url->move('uploads/media/brand/products/', str_replace(' ', '-', $originalname));
+
+                $image_size = getimagesize($image_url_path);
+                $required_size = 150;
+                $new_width = 0;
+                $new_height = 0;
+
+                if ($file_type == 'image') {
+                    $width = $image_size[0];
+                    $height = $image_size[1];
+
+                    $aspect_ratio = $width / $height;
+                    if ($aspect_ratio >= 1.0) {
+                        $new_width = $required_size;
+                        $new_height = $required_size / $aspect_ratio;
+                    } else {
+                        $new_width = $required_size * $aspect_ratio;
+                        $new_height = $required_size;
+                    }
+
+                    $thumbnails_path = public_path('uploads/media/brand/products/thumbnails/');
+                    $img = Image::make($image_url_path);
+                    $img->resize($new_width, $new_height, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($thumbnails_path . str_replace(' ', '-', $originalname));
+
+                    $thumbnails_path = 'uploads/media/brand/products/thumbnails/' . str_replace(' ', '-', $originalname);
+                }
+            }
 
             $data = [
                 'brand_id' => $brand_id,
@@ -166,17 +214,15 @@ class ProductsController extends AppBaseController implements ProductsController
                 'type' => $request->type,
                 'date_from' => ($request->date_from) ? $request->date_from : null,
                 'date_to' => ($request->date_to) ? $request->date_to : null,
-                'thumbnail' => ($thumbnail_path) ? str_replace('\\', '/', $thumbnail_path) : $product->thumbnail,
+                'thumbnail' => ($thumbnails_path) ? str_replace('\\', '/', $thumbnails_path) : $product->thumbnail,
                 'image_url' => ($image_url_path) ? str_replace('\\', '/', $image_url_path) : $product->image_url,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active)
             ];
 
             $product->update($data);
 
             return $this->response($product, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -187,14 +233,11 @@ class ProductsController extends AppBaseController implements ProductsController
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $product = BrandProductPromos::find($id);
             $product->delete();
             return $this->response($product, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -202,5 +245,114 @@ class ProductsController extends AppBaseController implements ProductsController
             ], 422);
         }
     }
-    
+
+    public function batchUpload(Request $request)
+    {
+        try {
+            Excel::import(new BrandProductsImport, $request->file('file'));
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsv()
+    {
+        try {
+            $brand_id = session()->get('brand_id');
+            $brand_management =  BrandProductViewModel::where('brand_id', $brand_id)->get();
+            $reports = [];
+            foreach ($brand_management as $brand) {
+                $reports[] = [
+                    'id' => $brand->id,
+                    'brand_id' => $brand->brand_id,
+                    'brand_name' => $brand->brand_name,
+                    'name' => $brand->name,
+                    'descriptions' => $brand->descriptions,
+                    'thumbnail' => $brand->thumbnail,
+                    'image_url' => $brand->image_url,
+                    'active' => $brand->active,
+                    'created_at' => $brand->created_at,
+                    'updated_at' => $brand->updated_at,
+                    'deleted_at' => $brand->deleted_at,
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = $brand_id."_brand-products-management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvtemplate()
+    {
+        try {
+            $brand_id = session()->get('brand_id');
+            $reports[] = [
+                'id' => '',
+                'brand_id' => '',
+                'brand_name' => '',
+                'name' => '',
+                'descriptions' => '',
+                'thumbnail' => '',
+                'image_url' => '',
+                'active' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = $brand_id."_brand-products-management-template.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
 }

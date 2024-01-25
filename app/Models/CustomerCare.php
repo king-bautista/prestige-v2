@@ -24,7 +24,9 @@ class CustomerCare extends Model
         'ticket_description',
         'status_id',
         'assigned_to_id',
-        'assigned_to_alias',
+        'internal_remark',
+        'external_remark',
+        'image',
         'active',
     ];
 
