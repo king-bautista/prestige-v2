@@ -13,6 +13,8 @@ use App\Http\Requests\ScreenRequest;
 
 use App\Models\SiteScreen;
 use App\Models\AdminViewModels\SiteScreenViewModel;
+use App\Models\AdminViewModels\SiteViewModel;
+
 use App\Exports\Export;
 use Storage;
 
@@ -35,45 +37,18 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
     public function list(Request $request)
     {
         try {
-            $filters = json_decode($request->filters);
-            $site_ids = [];
-            if ($filters)
-                $site_ids = $filters->site_ids;
-
-            $site_screens = SiteScreenViewModel::when(request('search'), function ($query) {
-                return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
+            $sites = SiteViewModel::when(request('search'), function ($query) {
+                return $query->where('name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-                ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
-                    return $query->whereIn('site_screens.site_id', $site_ids);
-                })
-                ->where('site_screens.product_application', 'Directory')
-                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
-                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_screens.*', 'sites.name as site_name')
-                ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name) AS screen_location")
-                ->when(request('order'), function ($query) {
-                    $column = $this->checkcolumn(request('order'));
-                    if ($column == 'screen_location') {
-                        $fields = 'screen_location';
-                    } else if ($column == 'site_name') {
-                        $fields = 'site_name';
-                    } else{
-                        $fields = $column;
-                    }
-                    return $query->orderBy($fields, request('sort'));
-                })
-                ->latest()
-                ->paginate(request('perPage'));
+            ->when(request('order'), function ($query) {
+                $column = $this->checkcolumn(request('order'));
+                return $query->orderBy($column, request('sort'));
+            })
+            ->latest()
+            ->paginate(request('perPage'));
 
-            return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -82,6 +57,57 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
             ], 422);
         }
     }
+
+    // public function list(Request $request)
+    // {
+    //     try {
+    //         $filters = json_decode($request->filters);
+    //         $site_ids = [];
+    //         if ($filters)
+    //             $site_ids = $filters->site_ids;
+
+    //         $site_screens = SiteScreenViewModel::when(request('search'), function ($query) {
+    //             return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
+    //                 ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
+    //                 ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
+    //                 ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
+    //                 ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+    //                 ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+    //                 ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
+    //                 ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
+    //         })
+    //             ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
+    //                 return $query->whereIn('site_screens.site_id', $site_ids);
+    //             })
+    //             ->where('site_screens.product_application', 'Directory')
+    //             ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+    //             ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+    //             ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+    //             ->select('site_screens.*', 'sites.name as site_name')
+    //             ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name) AS screen_location")
+    //             ->when(request('order'), function ($query) {
+    //                 $column = $this->checkcolumn(request('order'));
+    //                 if ($column == 'screen_location') {
+    //                     $fields = 'screen_location';
+    //                 } else if ($column == 'site_name') {
+    //                     $fields = 'site_name';
+    //                 } else{
+    //                     $fields = $column;
+    //                 }
+    //                 return $query->orderBy($fields, request('sort'));
+    //             })
+    //             ->latest()
+    //             ->paginate(request('perPage'));
+
+    //         return $this->responsePaginate($site_screens, 'Successfully Retreived!', 200);
+    //     } catch (\Exception $e) {
+    //         return response([
+    //             'message' => $e->getMessage(),
+    //             'status' => false,
+    //             'status_code' => 422,
+    //         ], 422);
+    //     }
+    // }
 
     public function downloadCsv()
     {

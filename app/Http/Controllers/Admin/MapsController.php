@@ -14,13 +14,15 @@ use App\Models\SiteScreen;
 use App\Models\SiteMap;
 use App\Models\SitePointLink;
 use App\Models\SiteMapPaths;
-use App\Models\ViewModels\SiteViewModel;
-use App\Models\ViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
-use App\Models\ViewModels\SiteScreenViewModel;
-use App\Models\ViewModels\AdminViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SitePointLinkViewModel;
+
+use App\Models\AdminViewModels\SiteMapViewModel;
+use App\Models\AdminViewModels\SiteScreenViewModel;
+use App\Models\AdminViewModels\SiteViewModel;
+
+
 
 class MapsController extends AppBaseController implements MapsControllerInterface
 {
@@ -35,31 +37,36 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function index($id)
     {
-        $site_screen = SiteScreenViewModel::find($id);
-        return view('admin.manage_map', compact("site_screen"));
+        $site = SiteViewModel::find($id);
+        return view('admin.manage_map', compact("site"));
+    }
+
+    public function mapConfig($id) 
+    {
+        $site = SiteViewModel::find($id);
+        return view('admin.manage_map_config', compact("site"));        
     }
 
     public function list($id)
     {
-        try
-        {
+        // try
+        // {
             $site_maps = SiteMapViewModel::when(request('search'), function($query){
                 return $query->where('map_file', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->where('site_screen_id', $id)
-            ->latest()
+            ->where('site_id', $id)
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_maps, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
     public function details($id)
@@ -91,9 +98,6 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             if($map_file) {
                 $originalname = $map_file->getClientOriginalName();
                 $map_file_path = $map_file->move('uploads/map/files/', str_replace(' ','-', $originalname)); 
-                $imagesize = getimagesize($map_file_path);
-                $width = $imagesize[0]; 
-                $height = $imagesize[1];
             }
 
             $map_preview = $request->file('map_preview');
@@ -101,31 +105,21 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             if($map_preview) {
                 $originalname = $map_preview->getClientOriginalName();
                 $map_preview_path = $map_preview->move('uploads/map/preview/', str_replace(' ','-', $originalname)); 
-            }
-
-            if($request->is_default == 'true') {
-                SiteMap::where('site_id', $request->site_id)->where('site_screen_id', $request->site_screen_id)->update(['is_default' => 0]);
+                $imagesize = getimagesize($map_preview_path);
+                $width = $imagesize[0]; 
+                $height = $imagesize[1];
             }
 
             $data = [
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_screen_id' => $request->site_screen_id,
-                'image_size_width' => $width,
-                'image_size_height' => $height,
-                'descriptions' => $request->name,
-                'position_x' => $request->position_x,
-                'position_y' => $request->position_y,
-                'position_z' => $request->position_z,
-                'text_y_position' => $request->text_y_position,
-                'default_zoom' => $request->default_zoom,
-                'default_zoom_desktop' => $request->default_zoom_desktop,
-                'default_zoom_mobile' => $request->default_zoom_mobile,
+                'map_type' => $request->map_type,
                 'map_file' => str_replace('\\', '/', $map_file_path),
                 'map_preview' => str_replace('\\', '/', $map_preview_path),
-                'active' => ($request->active == 'false') ? 0 : 1,
-                'is_default' => ($request->is_default == 'false') ? 0 : 1,
+                'image_size_width' => $width,
+                'image_size_height' => $height,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $site_map = SiteMap::create($data);
@@ -167,29 +161,16 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 $map_preview_path = $map_preview->move('uploads/map/preview/', str_replace(' ','-', $originalname)); 
             }
 
-            if($request->is_default == 'true') {
-                SiteMap::where('site_id', $request->site_id)->where('site_screen_id', $request->site_screen_id)->update(['is_default' => 0]);
-            }
-
             $data = [
                 'site_id' => $request->site_id,
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
-                'site_screen_id' => $request->site_screen_id,
-                'image_size_width' => ($width) ? $width : $site_map->image_size_width,
-                'image_size_height' => ($height) ? $height : $site_map->image_size_height,
-                'descriptions' => $request->name,
-                'position_x' => $request->position_x,
-                'position_y' => $request->position_y,
-                'position_z' => $request->position_z,
-                'text_y_position' => $request->text_y_position,
-                'default_zoom' => $request->default_zoom,
-                'default_zoom_desktop' => $request->default_zoom_desktop,
-                'default_zoom_mobile' => $request->default_zoom_mobile,
+                'map_type' => $request->map_type,
                 'map_file' => ($map_file_path) ? str_replace('\\', '/', $map_file_path) : $site_map->map_file,
                 'map_preview' => ($map_preview_path) ? str_replace('\\', '/', $map_preview_path) : $site_map->map_preview,
-                'active' => ($request->active == 'false') ? 0 : 1,
-                'is_default' => ($request->is_default == 'false') ? 0 : 1,
+                'image_size_width' => ($width) ? $width : $site_map->image_size_width,
+                'image_size_height' => ($height) ? $height : $site_map->image_size_height,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $site_map->update($data);

@@ -46,6 +46,7 @@ class KioskController extends AppBaseController
         $translations = $this->getTranslation();
 
         $template_name = str_replace("-", "_", strtolower($site_name));
+
         return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads', 'fullscreen_ads', 'assistant_message', 'translations'));
     }
 

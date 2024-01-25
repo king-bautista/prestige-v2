@@ -211,3 +211,7 @@
 .offline {
     color: #FE5E80;
 }
+
+.custom-control-input {
+    z-index: 1 !important;
+}
