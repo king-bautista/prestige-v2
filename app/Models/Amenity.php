@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Site;
 
 class Amenity extends Model
 {
@@ -37,7 +38,7 @@ class Amenity extends Model
      * The table associated with the model.
      *
      * @var string
-    */
+     */
     protected $table = 'amenities';
 
     /**
@@ -52,22 +53,22 @@ class Amenity extends Model
      *
      * @var string
      */
-	public $appends = [
+    public $appends = [
         'icon_path',
-      //  'site_name',
-    ]; 
+        'site_name',
+    ];
 
     public function getIconPathAttribute()
     {
-        if($this->icon)
+        if ($this->icon)
             return asset($this->icon);
         return asset('/images/no-image-available.png');
-    } 
+    }
 
     public function getSiteNameAttribute()
     {
-        $name = Site::find($this->site_id)->name;
-        if($name)
+        $name = ($this->site_id > 0)?Site::find($this->site_id)->name: null;
+        if ($name)
             return $name;
         return null;
     }
