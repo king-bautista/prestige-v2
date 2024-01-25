@@ -49,16 +49,46 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
-                    
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_tenant_metas.meta_value', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(`site_buildings`.`name`,\', \',`site_building_levels`.`name`) LIKE \'%' . request('search') . '%\'');
             })
-            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-            ->leftJoin('sites', 'site_tenants.site_id', '=', 'sites.id')
-            ->leftJoin('site_buildings', 'site_tenants.site_building_id', '=', 'site_buildings.id')
-            ->leftJoin('site_building_levels', 'site_tenants.site_building_level_id', '=', 'site_building_levels.id')
-            ->select('site_tenants.*')
-            ->latest()
-            ->paginate(request('perPage'));
+                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+                ->leftJoin('sites', 'site_tenants.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_tenants.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_tenants.site_building_level_id', '=', 'site_building_levels.id')
+                ->leftJoin('site_tenant_metas', function ($join) {
+                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                        ->where('site_tenant_metas.meta_key', '=', 'address');
+                })
+                
+                ->select('site_tenants.*', 'brands.logo as brand_logo', 'brands.name as brand_name', 'sites.name as site_name')
+                ->selectRaw("CONCAT(site_buildings.name,', ',site_building_levels.name) AS store_address")
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('sites.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    switch ($column) {
+                        case 'brand_logo':
+                            $field = 'brand_logo';
+                            break;
+                        case 'brand_name':
+                            $field = 'brand_name';
+                            break;
+                        case 'site_name':
+                            $field = 'site_name';
+                            break;
+                        case 'store_address':
+                            $field = 'store_address';
+                            break;    
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($site_tenants, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -368,22 +398,22 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 $reports[] = [
                     'id' => '',
                     'serial_number' => '',
-                    'brand_id'=> '',
-                    'brand_name'=> '',
-                    'brand_logo'=> '',
-                    'site_id'=> '',
-                    'site_name'=> '',
-                    'site_building_id'=> '',
-                    'site_building_name'=> '',
-                    'site_building_level_id'=> '',
-                    'company_id'=> '',
-                    'company_name'=> '',
-                    'space_number'=> '',
-                    'client_locator_number'=> '',
-                    'view_count'=> '',
-                    'like_count'=> '',
-                    'active'=> '',
-                    'is_subscriber'=> '',
+                    'brand_id' => '',
+                    'brand_name' => '',
+                    'brand_logo' => '',
+                    'site_id' => '',
+                    'site_name' => '',
+                    'site_building_id' => '',
+                    'site_building_name' => '',
+                    'site_building_level_id' => '',
+                    'company_id' => '',
+                    'company_name' => '',
+                    'space_number' => '',
+                    'client_locator_number' => '',
+                    'view_count' => '',
+                    'like_count' => '',
+                    'active' => '',
+                    'is_subscriber' => '',
                     'created_at' => '',
                     'updated_at' => '',
                     'deleted_at' => '',

@@ -17,6 +17,8 @@ class Amenity extends Model
     protected $fillable = [
         'name',
         'icon',
+        'site_id',
+        'site_name',
         'active',
     ];
 
@@ -52,6 +54,7 @@ class Amenity extends Model
      */
 	public $appends = [
         'icon_path',
+      //  'site_name',
     ]; 
 
     public function getIconPathAttribute()
@@ -60,4 +63,12 @@ class Amenity extends Model
             return asset($this->icon);
         return asset('/images/no-image-available.png');
     } 
+
+    public function getSiteNameAttribute()
+    {
+        $name = Site::find($this->site_id)->name;
+        if($name)
+            return $name;
+        return null;
+    }
 }

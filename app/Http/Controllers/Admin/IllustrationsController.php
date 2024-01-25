@@ -40,14 +40,45 @@ class IllustrationsController extends AppBaseController implements Illustrations
                     ->orWhere('c1.name', 'LIKE', request('search') . '%')
                     ->orWhere('c2.name', 'LIKE', request('search') . '%')
                     ->orWhere('label', 'LIKE', '%' . request('search'))
-                    ->orWhere('c1.name', 'LIKE', '%' . request('search'))
-                    ->orWhere('c2.name', 'LIKE', '%' . request('search'));
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search'))
+                    ->orWhere('companies.name', 'LIKE', '%' . request('search'));
             })
-            ->leftJoin('categories as c1', 'company_categories.category_id', '=', 'c1.id')
-            ->leftJoin('categories as c2', 'company_categories.sub_category_id', '=', 'c2.id')
-            ->select('company_categories.*')
-            ->orderBy('company_categories.updated_at', 'DESC')
-            ->paginate(request('perPage'));
+                ->leftJoin('categories as c1', 'company_categories.category_id', '=', 'c1.id')
+                ->leftJoin('categories as c2', 'company_categories.sub_category_id', '=', 'c2.id')
+                ->leftJoin('sites', 'company_categories.site_id', '=', 'sites.id')
+                ->leftJoin('companies', 'company_categories.company_id', '=', 'companies.id')
+                ->select('company_categories.*', 'sites.name as site_name','companies.name as company_name')
+
+                // ->selectRaw('CONCAT(`content_management`.`start_date`,"-",`content_management`.`end_date`) AS air_dates')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('label', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    
+                    switch ($column) {
+                        case 'category_name':
+                            $field = 'category_name';
+                            break;
+                        case 'site_name':
+                            $field = 'site_name';
+                            break;
+                        case 'company_name':
+                            $field = 'company_name';
+                            break;
+                        case 'kiosk_image_primary_path':
+                            $field = 'company_categories.kiosk_image_primary';
+                            break;
+                        case 'kiosk_image_top_path':
+                            $field = 'company_categories.kiosk_image_top';
+                            break;
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
+
+                ->paginate(request('perPage'));
 
             return $this->responsePaginate($company_categories, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -174,15 +205,12 @@ class IllustrationsController extends AppBaseController implements Illustrations
         }
     }
 
-    Public function batchUpload(Request $request)
-    { 
-        try
-        {
+    public function batchUpload(Request $request)
+    {
+        try {
             Excel::import(new IllustrationsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
