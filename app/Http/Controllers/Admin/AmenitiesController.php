@@ -233,6 +233,8 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 $reports[] = [
                     'id' => '',
                     'name' => '',  
+                    'site_id' => '',
+                    'site_name' => '',
                     'icon' => '',
                     'active' => '',
                     'created_at' => '',
