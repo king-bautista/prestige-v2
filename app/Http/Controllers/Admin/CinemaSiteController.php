@@ -33,7 +33,7 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
         try {
             $cinema_sites = CinemaSite::when(request('search'), function ($query) {
                 return $query->where('sites.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('cinema_sites.cinema_id', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('cinema_sites.cinema_id', 'LIKE', '%' . request('search') . '%');
             })
                 ->join('sites', 'cinema_sites.site_id', '=', 'sites.id')
                 ->select('cinema_sites.*', 'sites.name as site_name')
@@ -179,7 +179,9 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
                 'site_id' => '',
                 'site_name' => '',
                 'cinema_id' => '',
+                'created_at' => '',
                 'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

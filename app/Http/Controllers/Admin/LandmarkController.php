@@ -37,6 +37,7 @@ class LandmarkController extends AppBaseController implements LandmarkController
         try {
             $landmark = Landmark::when(request('search'), function ($query) {
                 return $query->where('landmarks.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('landmarks.descriptions', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
             })
                 ->leftJoin('sites', 'landmarks.site_id', '=', 'sites.id')

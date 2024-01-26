@@ -185,7 +185,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             foreach ($amenity_management as $amenity) {
                 $reports[] = [
                     'id' => $amenity->id,
-                    'name' => $amenity->name,  
+                    'name' => $amenity->name, 
+                    'site_id' => $amenity->site_id,
+                    'site_name' => $amenity->site_name,
                     'icon' => ($amenity->icon != "") ? URL::to("/" . $amenity->icon) : " ",
                     'active' => $amenity->active,
                     'created_at' => $amenity->created_at,
@@ -231,6 +233,8 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 $reports[] = [
                     'id' => '',
                     'name' => '',  
+                    'site_id' => '',
+                    'site_name' => '',
                     'icon' => '',
                     'active' => '',
                     'created_at' => '',
