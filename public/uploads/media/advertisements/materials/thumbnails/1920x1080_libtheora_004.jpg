@@ -6,11 +6,11 @@
         <title>PRESTIGE INTERACTIVE</title>
         <link rel="shortcut icon" href="https://theme.prestigeinteractive.com.ph/images/prestige-favicon.png">
         <!-- CSRF Token -->
-        <meta name="csrf-token" content="VSeisWxZ6uVZs7Yse9bGJSzXyK5AZuBgYZSpGXhW">
+        <meta name="csrf-token" content="haA56VZJFv0rMrT7yeJf8VorMVrb8HpFnGRoV3RL">
         <!-- Set Custom Theme UI -->
         <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/plugins/fontawesome-free/css/all.min.css">
-        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/resources/css/style.css">
-        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/resources/css/bootstrap.min.css"> 
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/sm_default/css/style.css">
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/sm_default/css/bootstrap.min.css"> 
         <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/assets/owl.carousel.min.css">
         <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/assets/owl.theme.default.min.css">
         <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/softkeys/softkeys-0.0.1.css">
@@ -218,8 +218,8 @@
 </div>
 
     <script src="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/vendors/jquery.min.js"></script>
-    <script src="https://theme.prestigeinteractive.com.ph/resources/js/popper.min.js"></script>
-    <script src="https://theme.prestigeinteractive.com.ph/resources/js/bootstrap.min.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/sm_default/js/popper.min.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/sm_default/js/bootstrap.min.js"></script>
     <script src="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/owl.carousel.js"></script>
     <script src="https://theme.prestigeinteractive.com.ph/themes/softkeys/softkeys-0.0.1.js"></script>
     <script src="https://theme.prestigeinteractive.com.ph/themes/jquery-ui/jquery-ui.min.js"></script>
