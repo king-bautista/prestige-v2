@@ -166,6 +166,7 @@ body {
     width: 349px;
     height: 528px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-fashion-card {
@@ -174,6 +175,7 @@ body {
     width: 349px;
     height: 528px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-electronics-card {
@@ -182,6 +184,7 @@ body {
     width: 228px;
     height: 343px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-function-card {
@@ -190,6 +193,7 @@ body {
     width: 228px;
     height: 343px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-finds-card {
@@ -199,6 +203,7 @@ body {
     width: 508px;
     height: 159px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .ct-food-button-allign {
@@ -488,6 +493,8 @@ body {
     left: 50%; 
     transform: translate(-50%, -50%); 
     border-radius: 10px;
+    width: 78px !important;
+    height: 78px !important;
 }
 
 .tenant-store-details {
@@ -558,7 +565,7 @@ body {
     position: absolute;
     top: 800px;
     right: 0px;
-    z-index: 9999;
+    z-index: 1009;
 }
 
 /*---- css for language when landscape ----*/
@@ -567,6 +574,7 @@ body {
     position: absolute;
     right: 6px;
     top: 1000px;
+    z-index: 9999;
 }
 
 .language-btn-font {
@@ -994,8 +1002,10 @@ body {
 }
 
 .promo-img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: 279.44px !important;
+    height: 279.44px !important;
     object-fit: cover;
     border-radius: 15px !important;
 }

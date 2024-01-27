@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\MapsControllerInterface;
 use Illuminate\Http\Request;
 use App\Helpers\DijkstraHelper;
+use Illuminate\Support\Str;
 
 use App\Models\Amenity;
 use App\Models\SitePoint;
@@ -14,6 +15,7 @@ use App\Models\SiteScreen;
 use App\Models\SiteMap;
 use App\Models\SitePointLink;
 use App\Models\SiteMapPaths;
+use App\Models\SiteMapConfig;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SitePointLinkViewModel;
@@ -21,8 +23,7 @@ use App\Models\ViewModels\SitePointLinkViewModel;
 use App\Models\AdminViewModels\SiteMapViewModel;
 use App\Models\AdminViewModels\SiteScreenViewModel;
 use App\Models\AdminViewModels\SiteViewModel;
-
-
+use App\Models\AdminViewModels\SiteMapConfigViewModel;
 
 class MapsController extends AppBaseController implements MapsControllerInterface
 {
@@ -49,8 +50,8 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function list($id)
     {
-        // try
-        // {
+        try
+        {
             $site_maps = SiteMapViewModel::when(request('search'), function($query){
                 return $query->where('map_file', 'LIKE', '%' . request('search') . '%')
                              ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
@@ -58,15 +59,15 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             ->where('site_id', $id)
             ->paginate(request('perPage'));
             return $this->responsePaginate($site_maps, 'Successfully Retreived!', 200);
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function details($id)
@@ -575,6 +576,128 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         }
         
         return $this->response($routes, 'Successfully Modified!', 200);
+    }
+
+    public function configList($id) {
+        try
+        {
+            $site_maps = SiteMapConfigViewModel::when(request('search'), function($query){
+                return $query->where('map_file', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+            })
+            ->join('site_maps', 'site_map_configs.site_map_id', '=', 'site_maps.id')
+            ->where('site_maps.site_id', $id)
+            ->select('site_map_configs.*', 'site_maps.map_type')
+            ->paginate(request('perPage'));
+            return $this->responsePaginate($site_maps, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function configDetails($id)
+    {
+        try
+        {
+            $site_map = SiteMapConfigViewModel::find($id);
+            return $this->response($site_map, 'Successfully Retreived!', 200);
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function configStore(Request $request){
+        try
+    	{
+            $data = [
+                'site_map_id' => $request->map_details,
+                'site_screen_id' => $request->site_screen_id,
+                'start_scale' => ($request->start_scale) ? $request->start_scale : 0,
+                'start_x' => ($request->start_x) ? $request->start_x : 0,
+                'start_y' => ($request->start_y) ? $request->start_y : 0,
+                'default_zoom' => ($request->default_zoom) ? $request->default_zoom : 0,
+                'default_x' => ($request->default_x) ? $request->default_x : 0,
+                'default_y' => ($request->default_y) ? $request->default_y : 0,
+                'name_angle' => ($request->name_angle) ? $request->name_angle : 0,
+                'view_angle' => ($request->view_angle) ? $request->view_angle : 0,
+                'building_label_height' => ($request->building_label_height) ? $request->building_label_height : 0,
+                'building_label_space' => ($request->building_label_space) ? $request->building_label_space : 0,
+                'building_animation_height' => ($request->building_animation_height) ? $request->building_animation_height : 0,
+                'floor_label_height' => ($request->floor_label_height) ? $request->floor_label_height : 0,
+                'floor_label_space' => ($request->floor_label_space) ? $request->floor_label_space : 0,
+                'floor_animation_height' => ($request->floor_animation_height) ? $request->floor_animation_height : 0,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
+            ];
+
+            $site_config = SiteMapConfig::create($data);
+            $site_config->serial_number = 'SMC-' . Str::padLeft($site_config->id, 5, '0');
+            $site_config->save();
+    
+            return $this->response($site_config, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function configUpdate(Request $request)
+    {
+        try
+    	{
+            $site_config = SiteMapConfig::find($request->id);
+
+            $data = [
+                'serial_number' => ($site_config->serial_number) ? $site_config->serial_number : 'SMC-' . Str::padLeft($site_config->id, 5, '0'),
+                'site_map_id' => $request->map_details,
+                'site_screen_id' => $request->site_screen_id,
+                'start_scale' => ($request->start_scale) ? $request->start_scale : 0,
+                'start_x' => ($request->start_x) ? $request->start_x : 0,
+                'start_y' => ($request->start_y) ? $request->start_y : 0,
+                'default_zoom' => ($request->default_zoom) ? $request->default_zoom : 0,
+                'default_x' => ($request->default_x) ? $request->default_x : 0,
+                'default_y' => ($request->default_y) ? $request->default_y : 0,
+                'name_angle' => ($request->name_angle) ? $request->name_angle : 0,
+                'view_angle' => ($request->view_angle) ? $request->view_angle : 0,
+                'building_label_height' => ($request->building_label_height) ? $request->building_label_height : 0,
+                'building_label_space' => ($request->building_label_space) ? $request->building_label_space : 0,
+                'building_animation_height' => ($request->building_animation_height) ? $request->building_animation_height : 0,
+                'floor_label_height' => ($request->floor_label_height) ? $request->floor_label_height : 0,
+                'floor_label_space' => ($request->floor_label_space) ? $request->floor_label_space : 0,
+                'floor_animation_height' => ($request->floor_animation_height) ? $request->floor_animation_height : 0,
+                'active' => $this->checkBolean($request->active),
+                'is_default' => $this->checkBolean($request->is_default),
+            ];
+
+            $site_config->update($data);
+
+            return $this->response($site_config, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
 }

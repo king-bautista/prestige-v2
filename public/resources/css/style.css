@@ -166,6 +166,7 @@ body {
     width: 349px;
     height: 528px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-fashion-card {
@@ -174,6 +175,7 @@ body {
     width: 349px;
     height: 528px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-electronics-card {
@@ -182,6 +184,7 @@ body {
     width: 228px;
     height: 343px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-function-card {
@@ -190,6 +193,7 @@ body {
     width: 228px;
     height: 343px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-finds-card {
@@ -199,6 +203,7 @@ body {
     width: 508px;
     height: 159px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .ct-food-button-allign {

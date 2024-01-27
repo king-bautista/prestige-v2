@@ -116,7 +116,7 @@
             var category_element = '';
             category_element = '<div class="home-category-holder '+ category.category_class +' main-'+ category.id +'">';
             category_element += '<img class="category-fashion-img" src="'+ category.kiosk_image_primary_path +'" />';
-            category_element += '<div class="ct-fashion-button-allign translateme" data-en="'+ category.category_name +'">'+ category.category_name +'</div>';
+            category_element += '<div class="ct-food-button-allign translateme" data-en="'+ category.category_name +'">'+ category.category_name +'</div>';
             category_element += '</div>';
             $( "#categories-container" ).append(category_element);
             $('.main-'+category.id).on('click', function() {
