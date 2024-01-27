@@ -1,6 +1,6 @@
 <div id="home-container">
     <div class="text-center">
-        <div class="title-page title-page-portrait">Search your favorite stores</div>
+        <div class="title-page title-page-portrait translateme" data-en="Search your favorite stores">Search your favorite stores</div>
     </div>
 
     <div class="categories-card-container">
@@ -13,13 +13,13 @@
 
 <div id="home-cat-contents">
     <!-- TITLE -->
-    <div class="p-3 font-weight-bold nav-titles">Store List</div>
+    <div class="p-3 font-weight-bold nav-titles translateme" data-en="Store List">Store List</div>
 
     <div class="tab-content" id="Categories-nav-tab-content">
         <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
             <div class="CatTabCategories cat-cards">
                 <!-- MAIN CATEGORY TITLE -->
-                <div class="p-2 text-center title-page-content font-weight-bold category-title">Main Category</div>
+                <div class="p-2 text-center title-page-content font-weight-bold category-title translateme" data-en="Main Category">Main Category</div>
                 <!-- SUB-CATEGORY LIST -->
                 <div class="row mt-5 cat-row-card"></div>
             </div>
@@ -27,7 +27,7 @@
                 <!-- MAIN CATEGORY TITLE -->
                 <div class="Category-Container-Banner">
                     <img class="category-img-banner" src="#">
-                    <div class="hts-strip-align hts-strip-color category-banner-title">Sub-Category</div>
+                    <div class="hts-strip-align hts-strip-color category-banner-title translateme" data-en="Sub-Category">Sub-Category</div>
                 </div>
                 <!-- TENANT LIST PER SUB-CATEGORY -->
                 <div class="slideshow-content-container sub-category-tenants"></div>
@@ -36,7 +36,7 @@
         <div class="tab-pane" id="Tab-Alphabetical" role="tabpanel">
             <!-- MAIN CATEGORY TITLE -->
             <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
-                <div class="title-page-content-2 category-title">Main Category</div>
+                <div class="title-page-content-2 category-title translateme" data-en="Main Category">Main Category</div>
             </div>
 
             <!-- TENANT LIST PER ALPHABETICAL -->
@@ -54,14 +54,14 @@
         <div class="tab-pane" id="Tab-Supplemental" role="tabpanel" aria-labelledby="Tab-Supplemental-tab">
             <div class="CatTabCategories">
                 <div class="p-2 text-center mx-auto font-weight-bold title-page-container">
-                    <div class="title-page-content-2 category-title">Food</div>
+                    <div class="title-page-content-2 category-title translateme" data-en="Food">Food</div>
                 </div>
                 <div class="slideshow-content-container supplemental-list"></div>
             </div>
             <div class="TenantPage">
                 <div class="Category-Container-Banner">
                     <img class="category-img-banner" src="#">
-                    <div class="hts-strip-align hts-strip-color category-banner-title">Sub-Category</div>
+                    <div class="hts-strip-align hts-strip-color category-banner-title translateme" data-en="Sub-Category">Sub-Category</div>
                 </div>
                 <div class="slideshow-content-container sub-category-tenants"></div>
             </div>
@@ -70,16 +70,16 @@
     </div>
     <!-- categories navigation -->
     <div class="cat-nav-tabs"> 
-        <span class="mr-4 nav-tab-title">View stores by: </span>
+        <span class="mr-4 nav-tab-title translateme" data-en="View stores by">View stores by: </span>
         <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active nav-tab-pills-btn" id="Tab-Category-Tab" data-toggle="pill" data-target="#Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true">Category</button>
+                <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Category-Tab" data-toggle="pill" data-target="#Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true" data-en="Category">Category</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link nav-tab-pills-btn" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false">Alphabetical</button>
+                <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false" data-en="Alphabetical">Alphabetical</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link nav-tab-pills-btn" id="Tab-Supplemental-tab" data-toggle="pill" data-target="#Tab-Supplemental" type="button" role="tab" aria-controls="Tab-Supplemental" aria-selected="false">Cravings</button>
+                <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Supplemental-tab" data-toggle="pill" data-target="#Tab-Supplemental" type="button" role="tab" aria-controls="Tab-Supplemental" aria-selected="false" data-en="Cravings">Cravings</button>
             </li>
         </ul>
     </div>
@@ -116,7 +116,7 @@
             var category_element = '';
             category_element = '<div class="home-category-holder '+ category.category_class +' main-'+ category.id +'">';
             category_element += '<img class="category-fashion-img" src="'+ category.kiosk_image_primary_path +'" />';
-            category_element += '<div class="ct-fashion-button-allign">'+ category.category_name +'</div>';
+            category_element += '<div class="ct-food-button-allign translateme" data-en="'+ category.category_name +'">'+ category.category_name +'</div>';
             category_element += '</div>';
             $( "#categories-container" ).append(category_element);
             $('.main-'+category.id).on('click', function() {
@@ -125,6 +125,7 @@
                 alphabetical = category.alphabetical;
                 supplementals = category.supplemental.sub_categories;
                 $('#Tab-Supplemental-tab').html(category.supplemental.name);
+                $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
                 showSubCategories();
             });
         }); 
@@ -134,13 +135,14 @@
         $('.sub-category-tenants').html('');
         $('.cat-row-card').html('');
         $('.category-title').html(main_category);
+        $('.category-title').attr('data-en', main_category);
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
             subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
             subcategory_element += '<div class="cat-btn">';
             subcategory_element += '<img class="cat-btn-img" src="'+ category.kiosk_image_primary_path +'" />';
             subcategory_element += '<div class="cat-btn-align">';
-            subcategory_element += '<p class="cat-text">'+ category.category_name +'</p>';
+            subcategory_element += '<p class="cat-text translateme" data-en="'+ category.category_name +'">'+ category.category_name +'</p>';
             subcategory_element += '</div>';
             subcategory_element += '</div>';
             subcategory_element += '</div>';
@@ -149,6 +151,7 @@
             $('.show-tenants-'+category.id).on('click', function() {
                 $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                 $('.category-banner-title').html(category.category_name);
+                $('.category-banner-title').attr('data-en', category.category_name);
                 tenant_list = category.tenants;
                 showTenantList();
             });
@@ -157,6 +160,11 @@
         $('.CatTabCategories').show();
         $('#home-container').hide();
         $('.TenantPage').hide();
+        $('.back-img-btn').show();
+        helper.setTranslation();
+        
+        current_location = 'subcategory';
+        page_history.push(current_location);
     }
 
     function showTenantList() {
@@ -263,6 +271,9 @@
 
         $('.TenantPage').show();
         $('.CatTabCategories').hide();
+        helper.setTranslation();
+        current_location = 'tenantcategory';
+        page_history.push(current_location);
     }
 
     function showAlphabetical() {
@@ -368,7 +379,9 @@
         });
 
         generateLetters();
-
+        helper.setTranslation();
+        current_location = 'alphabet';
+        page_history.push(current_location);
     }
 
     function showSupplementals() {
@@ -390,7 +403,7 @@
                 supplemental_item += '<div class="cat-btn-adjustment mx-auto supplemental-item-'+category.id+'">';
                 supplemental_item += '<img class="cat-btn-img" src="'+category.kiosk_image_primary_path+'" />';
                 supplemental_item += '<div class="cat-btn-align-2">';
-                supplemental_item += '<p class="cat-text">'+category.category_name+'</p>';
+                supplemental_item += '<p class="cat-text translateme" data-en="'+ category.category_name +'">'+category.category_name+'</p>';
                 supplemental_item += '</div>';
                 supplemental_item += '</div>';
                 supplemental_item += '</div>';
@@ -398,8 +411,8 @@
                 $('.supplemental-item-'+category.id).on('click', function() {
                     $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                     $('.category-banner-title').html(category.category_name);
+                    $('.category-banner-title').attr('data-en', category.category_name);
                     tenant_list = category.tenants;
-                    console.log(tenant_list);
                     showTenantList();
                 });
             });
@@ -466,6 +479,9 @@
 
         $('.TenantPage').hide();
         $('.CatTabCategories').show();
+        helper.setTranslation();
+        current_location = 'supplemental';
+        page_history.push(current_location);
     }
 
     function generateLetters() {
@@ -533,7 +549,7 @@
             };
         });
 
-        $(".owl-dots button").each(function(key){
+        $('.alpha-tenants').parent("div").find(".owl-dots button").each(function(key){
             if (key == parseInt(index)){
                 $(this).trigger('click');
             }

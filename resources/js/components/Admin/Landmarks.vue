@@ -8,8 +8,9 @@
 						<div class="card">
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
-									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewLandmark="AddNewLandmark"
-									v-on:editButton="editLandmark" v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
+									:otherButtons="otherButtons" :primaryKey="primaryKey"
+									v-on:AddNewLandmark="AddNewLandmark" v-on:editButton="editLandmark"
+									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
 									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
@@ -38,27 +39,32 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner <span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Banner <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="imgBanner" @change="bannerChange">
+									<input type="file" id="img_banner" accept="image/*" ref="imgBanner"
+										@change="bannerChange">
 									<footer class="blockquote-footer">image max size is 355 x 660 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="imgBanner" :src="imgBanner" class="img-thumbnail" />
 								</div>
 							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Thumbnail <span class="font-italic text-danger"> *</span></label>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Banner Thumbnail <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="imgBannerThumbnail" @change="bannerThumbnailChange">
+									<input type="file" id="img_banner_thumbnail" accept="image/*" ref="imgBannerThumbnail"
+										@change="bannerThumbnailChange">
 									<footer class="blockquote-footer">image max size is 315 x 265 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="imgBannerThumbnail" :src="imgBannerThumbnail" class="img-thumbnail" />
 								</div>
 							</div>
-                            <div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site <span class="font-italic text-danger"> *</span></label>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<select class="custom-select" v-model="landmark.site_id">
 										<option value="">Select Site</option>
@@ -67,15 +73,19 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Landmark<span class="font-italic text-danger"> *</span></label>
+								<label for="firstName" class="col-sm-4 col-form-label">Landmark<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" v-model="landmark.landmark" placeholder="Landmark Name" required>
+									<input type="text" class="form-control" v-model="landmark.landmark"
+										placeholder="Landmark Name" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span class="font-italic text-danger"> *</span></label>
+								<label for="lastName" class="col-sm-4 col-form-label">Descriptions <span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<textarea class="form-control" rows="5" v-model="landmark.descriptions" placeholder="Descriptions"></textarea>
+									<textarea class="form-control" rows="5" v-model="landmark.descriptions"
+										placeholder="Descriptions"></textarea>
 								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
@@ -134,6 +144,20 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-block alert-danger">
+							<p>{{ error_message }}</p>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -160,8 +184,8 @@ export default {
 				active: false,
 			},
 			imgBanner: '',
-            imgBannerThumbnail: '',
-            site_list: [],
+			imgBannerThumbnail: '',
+			site_list: [],
 			add_record: true,
 			edit_record: false,
 			dataFields: {
@@ -236,26 +260,83 @@ export default {
 	},
 
 	created() {
-        this.getSites();
+		this.getSites();
 	},
 
 	methods: {
-        getSites: function () {
+		getSites: function () {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
 		},
 
 		bannerChange: function (e) {
+			// const file = e.target.files[0];
+			// this.imgBanner = URL.createObjectURL(file);
+			// this.landmark.image_url = file;
+
 			const file = e.target.files[0];
-			this.imgBanner = URL.createObjectURL(file);
-			this.landmark.image_url = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.imgBanner = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 355 && this.image_height == 660) {
+						obj.landmark.image_url = this.file;
+					} else {
+						$('#img_banner').val('');
+						obj.imgBanner = null;
+						obj.landmark.image_url = '';
+						obj.error_message = "Invalid Image Size! Must be width: 355 and height: 600 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_banner').val('');
+				this.imgBanner = null;
+				this.landmark.image_url = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
-        bannerThumbnailChange: function (e) {
-            const file = e.target.files[0];
-			this.imgBannerThumbnail = URL.createObjectURL(file);
-			this.landmark.image_thumbnail_url = file;
-        },
+		bannerThumbnailChange: function (e) {
+			// const file = e.target.files[0];
+			// this.imgBannerThumbnail = URL.createObjectURL(file);
+			// this.landmark.image_thumbnail_url = file;
+			const file = e.target.files[0];
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.imgBannerThumbnail = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 315 && this.image_height == 265) {
+						obj.landmark.image_thumbnail_url = this.file;
+					} else {
+						$('#img_banner_thumbnail').val('');
+						obj.imgBannerThumbnail = null;
+						obj.landmark.image_thumbnail_url = '';
+						obj.error_message = "Invalid Image Size! Must be width: 315 and height: 265 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_banner_thumbnail').val('');
+				this.imgBannerThumbnail = null;
+				this.landmark.image_thumbnail_url = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
+		},
 
 		AddNewLandmark: function () {
 			this.add_record = true;
@@ -287,11 +368,11 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-            .then(response => {
-                toastr.success(response.data.message);
-                this.$refs.dataTable.fetchData();
-                $('#landmark-form').modal('hide');
-            })
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#landmark-form').modal('hide');
+				})
 		},
 
 		editLandmark: function (id) {
@@ -300,13 +381,13 @@ export default {
 					var landmark = response.data.data;
 					this.landmark.id = id;
 					this.landmark.site_id = landmark.site_id;
-                    this.landmark.landmark = landmark.landmark;
-                    this.landmark.descriptions = landmark.descriptions;
-                    this.imgBanner = landmark.image_url_path;
-                    this.imgBannerThumbnail = landmark.image_thumbnail_url_path;
-                    this.landmark.active = landmark.active;
-                    this.$refs.imgBanner.value = null;
-                    this.$refs.imgBannerThumbnail.value = null;
+					this.landmark.landmark = landmark.landmark;
+					this.landmark.descriptions = landmark.descriptions;
+					this.imgBanner = landmark.image_url_path;
+					this.imgBannerThumbnail = landmark.image_thumbnail_url_path;
+					this.landmark.active = landmark.active;
+					this.$refs.imgBanner.value = null;
+					this.$refs.imgBannerThumbnail.value = null;
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -329,12 +410,12 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-            .then(response => {
-                toastr.success(response.data.message);
-                this.$refs.dataTable.fetchData();
-                $('#landmark-form').modal('hide');
-            })
-        },
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#landmark-form').modal('hide');
+				})
+		},
 		modalBatchUpload: function () {
 			$('#batchModal').modal('show');
 		},

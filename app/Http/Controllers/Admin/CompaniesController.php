@@ -49,10 +49,19 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                              ->orWhere('classifications.name', 'LIKE', '%' . request('search') . '%');
             })
             ->leftJoin('classifications', 'companies.classification_id', '=', 'classifications.id')
-            ->select('companies.*', 'classifications.name')
+            ->select('companies.*', 'classifications.name', 'companies.name')
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('companies.name', 'ASC'); 
+            })
             ->when(request('order'), function ($query) {
-                $column = $this->checkcolumn(request('order'));
-                $field = ($column == 'classification_name') ? 'classifications.name' : $column;
+                $column = $this->checkcolumn(request('order')); 
+                if ($column == 'classification_name') {
+                    $field = 'classifications.name';
+                }else if ($column == 'name') {
+                    $field = 'companies.name';
+                } else {
+                    $field = $column;
+                }
                 return $query->orderBy($field, request('sort'));
             })
             ->latest()
@@ -431,8 +440,6 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                     'name' => $company->name,
                     'classification_id' => $company->classification_details['id'],
                     'classification_name' => $company->classification_details['name'],
-                    //'classification_active' => $company->classification_details['active'],
-                    //'classification_updated_at' => $company->classification_details['updated_at'],
                     'email' => $company->email,
                     'contact_number' => $company->contact_number,
                     'address' => $company->address,
@@ -481,13 +488,11 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                     'name' => '',
                     'classification_id' => '',
                     'classification_name' => '',
-                    //'classification_active' => '',
-                    //'classification_updated_at' => '',
                     'email' => '',
                     'contact_number' => '',
                     'address' => '',
-                    'tin_number' => '',
-                    'status' => '',
+                    'tin' => '',
+                    'active' => '',
                     'created_at' => '',
                     'updated_at' => '',
                     'deleted_at' => '',

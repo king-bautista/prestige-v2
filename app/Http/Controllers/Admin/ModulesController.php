@@ -37,17 +37,14 @@ class ModulesController extends AppBaseController implements ModulesControllerIn
         try {
             $modules = ModuleViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('link', 'LI   KE', '%' . request('search') . '%')
+                    ->orWhere('link', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('role', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('class_name', 'LIKE', '%' . request('search') . '%');
             })
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('name', 'ASC');
+            })
             ->when(request('order'), function ($query) {
-                // $order = request('order');
-                // if($order == 'parent_link'){
-
-                // }else{
-
-                // }
                 $column = $this->checkcolumn(request('order'));
                 return $query->orderBy($column, request('sort'));
             })

@@ -49,23 +49,18 @@ export default {
 	data() {
 		return {
 			dataFields: {
-				screen_location: "Location",
-				site_name: "Site Name",
-				orientation: "Orientation",
+				name: "Site Name",
+				short_code: "Short Code",
+				site_logo_path: {
+					name: "Logo",
+					type: "image",
+				},
 				active: {
 					name: "Status",
 					type: "Boolean",
 					status: {
 						0: '<span class="badge badge-danger">Deactivated</span>',
 						1: '<span class="badge badge-info">Active</span>'
-					}
-				},
-				is_default: {
-					name: "Is Default",
-					type: "Boolean",
-					status: {
-						0: '<span class="badge badge-danger">No</span>',
-						1: '<span class="badge badge-info">Yes</span>'
 					}
 				},
 				updated_at: "Last Updated"
@@ -81,14 +76,13 @@ export default {
 					button: '<i class="fa fa-map" aria-hidden="true"></i> Manage Maps',
 					method: 'link',
 				},
-				view: {
-					title: 'Set as Default',
-					name: 'Link',
-					apiUrl: '/admin/site/buildings',
+				config: {
+					title: 'Manage Config',
+					name: 'Manage Config',
+					apiUrl: '/admin/site/manage-config',
 					routeName: '',
-					button: '<i class="fa fa-tag"></i> Set as Default',
-					method: 'view',
-					v_on: 'DefaultScreen',
+					button: '<i class="fas fa-tasks" aria-hidden="true"></i> Manage Config',
+					method: 'link',
 				},
 			},
 			otherButtons: {

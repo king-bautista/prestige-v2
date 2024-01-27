@@ -42,6 +42,7 @@ class BrandProductViewModel extends Model
 	public $appends = [
         'thumbnail_path',
         'image_url_path',
+        'brand_name',
     ]; 
 
     /****************************************
@@ -60,4 +61,13 @@ class BrandProductViewModel extends Model
             return asset($this->image_url);
         return null;
     }  
+
+    public function getBrandNameAttribute() 
+    {     
+        $brand = BrandViewModel::find($this->brand_id);
+        if($brand)
+            return $brand->name;
+        return '';
+       // return $this->brand_details->name;
+    }
 }

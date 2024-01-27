@@ -38,10 +38,39 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
     {
         try {
             $sites = SiteViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                return $query->where('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(`smsc`.`meta_value`) LIKE \'%' . request('search') . '%\'')
+                    ->orWhereRaw('CONCAT(`smm`.`meta_value`) LIKE \'%' . request('search') . '%\'');
+                    
             })
-                ->latest()
+                ->leftJoin('sites_meta as smsc', function ($join) {
+                    $join->on('sites.id', '=', 'smsc.site_id')
+                        ->where('smsc.meta_key', '=', 'site_code');
+                })
+                ->leftJoin('sites_meta as smm', function ($join) {
+                    $join->on('sites.id', '=', 'smm.site_id')
+                        ->where('smm.meta_key', '=', 'multilanguage');
+                })
+                ->select('sites.*', 'smsc.meta_value as short_code', 'smm.meta_value as multilanguage')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('sites.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    switch ($column) {
+                        case 'short_code':
+                            $field = 'short_code';
+                            break;
+                            case 'multilanguage':
+                                $field = 'multilanguage';
+                                break;    
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($column, request('sort'));
+                })
+                
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
@@ -266,7 +295,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
             $sites_management = SiteViewModel::get();
             $reports = [];
-            foreach ($sites_management as $site) { 
+            foreach ($sites_management as $site) {
                 $reports[] = [
                     'id' => $site->id,
                     'serial_number' => $site->serial_number,
@@ -285,8 +314,8 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                     'website' => $site->details['website'],
                     'schedules' => $site->details['schedules'],
                     //'operational_hours' => $this->getOperationalHour($site->details),
-                        //'time_from' => ($site->details['time_from']),
-                         //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
+                    //'time_from' => ($site->details['time_from']),
+                    //'time_to' => ($site->details['time_to']) ? $site->details['time_to'] : '',
                     'premiere' => $site->details['premiere'],
                     'site_code' => $site->details['site_code'],
                     'active' => $site->active,

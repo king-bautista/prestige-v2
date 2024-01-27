@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\AmenitiesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\AmenitiesRequest;
 use App\Models\Amenity;
 
 use App\Imports\AmenitiesImport;
@@ -38,6 +38,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         {
             $amenitiess = Amenity::when(request('search'), function($query){
                 return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            })
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('name', 'ASC');
             })
             ->when(request('order'), function ($query) {
                 $column = $this->checkcolumn(request('order'));
@@ -74,7 +77,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         }
     }
 
-    public function store(Request $request)
+    public function store(AmenitiesRequest $request)
     {
         try
     	{
@@ -105,7 +108,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         }
     }
 
-    public function update(Request $request)
+    public function update(AmenitiesRequest $request)
     {
         try
     	{
@@ -182,7 +185,9 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             foreach ($amenity_management as $amenity) {
                 $reports[] = [
                     'id' => $amenity->id,
-                    'name' => $amenity->name,  
+                    'name' => $amenity->name, 
+                    'site_id' => $amenity->site_id,
+                    'site_name' => $amenity->site_name,
                     'icon' => ($amenity->icon != "") ? URL::to("/" . $amenity->icon) : " ",
                     'active' => $amenity->active,
                     'created_at' => $amenity->created_at,
@@ -197,7 +202,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 Storage::delete($file);
             }
 
-            $filename = "amenity-management.csv";
+            $filename = "amenity.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
@@ -228,6 +233,8 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 $reports[] = [
                     'id' => '',
                     'name' => '',  
+                    'site_id' => '',
+                    'site_name' => '',
                     'icon' => '',
                     'active' => '',
                     'created_at' => '',
@@ -241,7 +248,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
                 Storage::delete($file);
             }
 
-            $filename = "amenity-management-template.csv";
+            $filename = "amenity-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

@@ -55,14 +55,39 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $contents = ContentManagementViewModel::when(request('search'), function ($query) {
                 return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('companies.names', 'LIKE', '%' . request('search') . '%');
+                    //->orWhereRaw('CONCAT(`content_management`.`start_date`,"-",`content_management`.`end_date`)', 'LIKE', '%' . request('search') . '%');
             })
                 ->leftJoin('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.id')
                 ->leftJoin('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
                 ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
-                ->select('content_management.*')
-                ->orderBy('content_management.created_at', 'DESC')
+                ->select('content_management.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name')
+                ->selectRaw('CONCAT(`content_management`.`start_date`,"-",`content_management`.`end_date`) AS air_dates')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('advertisement_name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    switch ($column) {
+                        case 'ad_name':
+                            $field = 'advertisement_name';
+                            break;
+                        case 'company_name':
+                            $field = 'company_name';
+                            break;
+                        case 'brand_name':
+                            $field = 'brand_name';
+                            break;
+                        case 'air_dates':
+                            $field = 'air_dates';
+                            break;
+
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->paginate(request('perPage'));
             return $this->responsePaginate($contents, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {

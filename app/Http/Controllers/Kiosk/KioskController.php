@@ -13,9 +13,11 @@ use App\Models\SiteScreen;
 use App\Models\SiteTenant;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\AdminViewModels\CinemaScheduleViewModel;
+use App\Models\AdminViewModels\PlayListViewModel;
 use App\Models\ViewModels\SiteCategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
-use App\Models\AdminViewModels\PlayListViewModel;
+use App\Models\ViewModels\AssistantMessageViewModel;
+use App\Models\ViewModels\TranslationViewModel;
 
 class KioskController extends AppBaseController
 {
@@ -40,9 +42,12 @@ class KioskController extends AppBaseController
         $suggestions = $this->getSuggestionList($site->id);
         $banner_ads = $this->getBannerAds($site->id);
         $fullscreen_ads = $this->getFullScreenAds($site->id);
+        $assistant_message = $this->getAssistantMessage();
+        $translations = $this->getTranslation();
 
         $template_name = str_replace("-", "_", strtolower($site_name));
-        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads', 'fullscreen_ads'));
+
+        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads', 'fullscreen_ads', 'assistant_message', 'translations'));
     }
 
     public function getCategories($site_id= 0) {
@@ -452,6 +457,42 @@ class KioskController extends AppBaseController
     public function getTenantCountDetails(Request $request)
     {
         return SiteTenant::find($request->id);
+    }
+
+    public function getAssistantMessage()
+    {
+        $messages = AssistantMessageViewModel::all();
+
+        $collection = collect([]);
+        foreach ($messages as $value) {
+            $content = filter_var(htmlentities(preg_replace("/\r\n|\r|\n|\t/", ' ', $value->content)), FILTER_SANITIZE_STRING);
+
+            $collection->push([
+                'location' => $value->location,
+                'content' => $content,
+                'content_language' => $value->content_language,
+            ]);
+        }
+
+        return json_encode($collection);
+    }
+
+    public function getTranslation()
+    {
+        $translations = TranslationViewModel::all();
+
+        $collection = collect([]);
+        foreach ($translations as $value) {
+            $translated = filter_var(htmlentities(preg_replace("/\r\n|\r|\n|\t/", ' ', $value->translated)), FILTER_SANITIZE_STRING);
+            $english = filter_var(htmlentities(preg_replace("/\r\n|\r|\n|\t/", ' ', $value->english)), FILTER_SANITIZE_STRING);
+            $collection->push([
+                'language' => $value->language,
+                'english' => $english,
+                'translated' => $translated,
+            ]);
+        }
+
+        return json_encode($collection);
     }
 
 }

@@ -39,6 +39,8 @@ Vue.component('admin-building-screens', require('./components/Admin/Screens.vue'
 Vue.component('admin-building-tenants', require('./components/Admin/Tenants.vue').default);
 Vue.component('admin-advertisements', require('./components/Admin/Advertisements.vue').default);
 Vue.component('admin-manage-maps', require('./components/Admin/ManageMaps.vue').default);
+Vue.component('admin-manage-maps-config', require('./components/Admin/ManageMapsConfig.vue').default);
+
 Vue.component('admin-companies', require('./components/Admin/Company.vue').default);
 Vue.component('admin-company-workflows', require('./components/Admin/CompanyWorkflows.vue').default);
 Vue.component('admin-illustrations', require('./components/Admin/Illustrations.vue').default);
@@ -116,7 +118,7 @@ Vue.component('portal-building-floors', require('./components/Portal/Floors.vue'
 Vue.component('portal-amenities', require('./components/Portal/Amenities.vue').default);
 Vue.component('portal-building-tenants', require('./components/Portal/Tenants.vue').default);
 Vue.component('portal-building-screens', require('./components/Portal/Screens.vue').default);
-Vue.component('portal-manage-maps', require('./components/Portal/ManageMaps.vue').default);
+Vue.component('portal-manage-maps', require('./components/Portal/ManageMaps.vue').default)
 
 Vue.component('portal-tenant-products', require('./components/Portal/TenantProducts.vue').default);
 Vue.component('portal-customer-care', require('./components/Portal/PortalCustomerCare.vue').default);

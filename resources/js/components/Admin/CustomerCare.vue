@@ -57,7 +57,7 @@
 									</multiselect>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row" v-show="select_user_full_name">
 								<label for="User" class="col-sm-3 col-form-label">User Name<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -240,6 +240,7 @@ export default {
 			concerns: [],
 			add_record: true,
 			edit_record: false,
+			select_user_full_name: true,
 			input_user_full_name: false,
 			select_admin_full_name: false,
 			dataFields: {
@@ -270,9 +271,9 @@ export default {
 						3: '<span class="badge bg-info">Pending approval</span>',
 						4: '<span class="badge bg-danger">Disapprove</span>',
 						5: '<span class="badge bg-success">Approved</span>',
-						6: '<span class="badge bg-secondary">For review</span>',
-						7: '<span class="badge bg-info">Archive</span>',
-						8: '<span class="badge bg-success">Saved</span>',
+						6: '<span class="badge bg-secondary">Saved</span>',
+						7: '<span class="badge bg-info">For review</span>',
+						8: '<span class="badge bg-success">Archive</span>',
 					}
 				},
 				updated_at: "Last Updated",
@@ -424,6 +425,7 @@ export default {
 					this.customer_care.active = customer_care.active;
 					this.add_record = false;
 					this.edit_record = true;
+					this.select_user_full_name = false;
 					this.input_user_full_name = true;
 					this.select_admin_full_name = (customer_care.admin_details) ? false : true;
 					if (customer_care.image) {

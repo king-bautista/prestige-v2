@@ -242,7 +242,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/brand/product/update', 'Admin\ProductsController@update')->name('admin.brand.product.update');
     Route::get('/admin/brand/product/delete/{id}', 'Admin\ProductsController@delete')->where('id', '[0-9]+')->name('admin.brand.product.delete');
     Route::get('/admin/brand/product-by-id/{id}', 'Admin\ProductsController@getProductsByBrand')->where('id', '[0-9]+')->name('admin.brand.product.by-brand');
-
+    Route::get('/admin/brand/product/download-csv', 'Admin\ProductsController@downloadCsv')->name('admin.brand.product.download-csv');
+    Route::get('/admin/brand/product/download-csv-template', 'Admin\ProductsController@downloadCsvTemplate')->name('admin.brand.product.download-csv-template');
+    Route::post('/admin/brand/product/batch-upload', 'Admin\ProductsController@batchUpload')->name('admin.brand.product.batch-upload');
     /*
     |--------------------------------------------------------------------------
     | Sites Routes
@@ -348,6 +350,14 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/manage-map/update', 'Admin\MapsController@update')->name('admin.site.manage.map.update');
     Route::get('/admin/site/manage-map/delete/{id}', 'Admin\MapsController@delete')->where('id', '[0-9]+')->name('admin.site.manage.map.delete');
 
+    Route::get('/admin/site/manage-config/{id}', 'Admin\MapsController@mapConfig')->where('id', '[0-9]+')->name('admin.site.manage-config');
+    Route::get('/admin/site/manage-config/list/{id}', 'Admin\MapsController@configList')->where('id', '[0-9]+')->name('admin.site.manage.config.list');
+    Route::get('/admin/site/manage-config/details/{id}', 'Admin\MapsController@configDetails')->where('id', '[0-9]+')->name('admin.site.manage.config.details');
+    Route::post('/admin/site/manage-config/store', 'Admin\MapsController@configStore')->name('admin.site.manage.config.store');
+    Route::post('/admin/site/manage-config/update', 'Admin\MapsController@configUpdate')->name('admin.site.manage.config.update');
+    Route::get('/admin/site/manage-config/delete/{id}', 'Admin\MapsController@configDelete')->where('id', '[0-9]+')->name('admin.site.manage.config.delete');
+    Route::get('/admin/site/manage-config/set-default/{id}', 'Admin\MapsController@setDefault')->where('id', '[0-9]+')->name('admin.site.map.set-default');
+
     Route::get('/admin/site/map/{id}', 'Admin\MapsController@getMapDetails')->where('id', '[0-9]+')->name('admin.site.map');
     Route::get('/admin/site/map/get-points/{id}', 'Admin\MapsController@getSitePoints')->where('id', '[0-9]+')->name('admin.site.map.get-points');
     Route::get('/admin/site/map/get-links/{id}', 'Admin\MapsController@getSiteLinks')->where('id', '[0-9]+')->name('admin.site.map.get-links');
@@ -358,7 +368,6 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/map/point-info/{id}', 'Admin\MapsController@pointInfo')->where('id', '[0-9]+')->name('admin.site.map.point-info');
     Route::post('/admin/site/map/connect-point', 'Admin\MapsController@connectPoints')->name('admin.site.map.connect-point');
     Route::get('/admin/site/map/delete-line/{id}', 'Admin\MapsController@deleteLine')->where('id', '[0-9]+')->name('admin.site.map.delete-line');
-    Route::get('/admin/site/map/set-default/{id}', 'Admin\MapsController@setDefault')->where('id', '[0-9]+')->name('admin.site.map.set-default');
     Route::get('/admin/site/map/generate-routes/{site_id}/{screen_id}', 'Admin\MapsController@generateRoutes')->where('id', '[0-9]+')->name('admin.site.map.generate-routes');
 
     /*

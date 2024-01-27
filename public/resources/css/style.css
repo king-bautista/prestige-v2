@@ -166,6 +166,7 @@ body {
     width: 349px;
     height: 528px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-fashion-card {
@@ -174,6 +175,7 @@ body {
     width: 349px;
     height: 528px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-electronics-card {
@@ -182,6 +184,7 @@ body {
     width: 228px;
     height: 343px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-function-card {
@@ -190,6 +193,7 @@ body {
     width: 228px;
     height: 343px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .category-finds-card {
@@ -199,6 +203,7 @@ body {
     width: 508px;
     height: 159px;
     object-fit: cover;
+    color: #000000 !important;
 }
 
 .ct-food-button-allign {
@@ -545,6 +550,7 @@ body {
     position: absolute;
     top: 880px;
     right: -15px;
+    z-index: 9;
 }
 
 .popover {
@@ -1208,8 +1214,13 @@ body {
 .slideshow-content-container {
     max-width: 100%;
     position: relative;
-    height: 1080px;
+    height: 790px;
     margin: auto;
+    overflow: hidden;
+}
+
+.search-results, .promo-list {
+    height: 905px;
 }
 
 .promo-prev,
@@ -1325,193 +1336,160 @@ body {
 }
 
 .left-btn-carousel {
-    position: absolute !important;
     left: 30px;
     top: -145px;
 }
 
 .right-btn-carousel {
-    position: absolute !important;
     right: 52px;
     top: -145px;
 }
 
 .left-btn-carousel-cinema {
-    position: absolute !important;
     left: -608px;
     top: -133px;
 }
 
 .right-btn-carousel-cinema {
-    position: absolute !important;
     right: 61px;
     top: -133px;
 }
 
 .left-btn-carousel-per-food-category {
-    position: absolute !important;
     left: 65px;
     top: -91px;
 }
 
 .right-btn-carousel-per-food-category {
-    position: absolute !important;
     right: 45px;
     top: -91px;
 }
 
 .left-btn-carousel-per-food-alphabetical {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-food-alphabetical {
-    position: absolute !important;
     right: 30px;
-    top: -136px;
 }
 
 .left-btn-carousel-per-food-cravings {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-food-cravings {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-fashion-category {
-    position: absolute !important;
     left: 65px;
     top: -91px;
 }
 
 .right-btn-carousel-per-fashion-category {
-    position: absolute !important;
     right: 45px;
     top: -91px;
 }
 
 .left-btn-carousel-per-fashion-alphabetical {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-fashion-alphabetical {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-trends {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-trends {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-electronics-alphabetical {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-electronics-alphabetical {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-latest {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-latest {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-services-alphabetical {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-services-alphabetical {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-services {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-services {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-essentials-alphabetical {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-essentials-alphabetical {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-goodies {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-goodies {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-cinema-locator {
-    position: absolute !important;
     left: 50px;
     top: -136px;
 }
 
 .right-btn-carousel-per-cinema-locator {
-    position: absolute !important;
     right: 30px;
     top: -136px;
 }
 
 .left-btn-carousel-per-search {
-    position: absolute !important;
     left: 50px;
     top: -127px;
 }
 
 .right-btn-carousel-per-search {
-    position: absolute !important;
     right: 30px;
     top: -127px;
 }

@@ -37,14 +37,28 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try {
             $categories = CategoryViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->where('descriptions', 'LIKE', '%' . request('search') . '%');
+                return $query->where('categories.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('categories.descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('c.name', 'LIKE', '%' . request('search') . '%');
             })
+                ->join('categories as c', function ($join) {
+                    $join->on('categories.parent_id', '=', 'c.id');
+                })
+                ->select('categories.*', 'categories.name')
+                ->selectRaw('(select cb.name from categories cb where categories.parent_id = cb.id) as parent_name')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('name', 'ASC');
+                })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
-                    return $query->orderBy($column, request('sort'));
+                    if ($column == 'parent_category') {
+                        $fields = 'parent_name';
+                    } else {
+                        $fields = $column;
+                    }
+                    return $query->orderBy($fields, request('sort'));
                 })
-                ->where('category_type', 1)
+                ->where('categories.category_type', 1)
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);

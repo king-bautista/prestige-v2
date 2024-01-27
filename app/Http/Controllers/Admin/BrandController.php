@@ -29,11 +29,11 @@ use URL;
 class BrandController extends AppBaseController implements BrandControllerInterface
 {
     /************************************
-    * 			BRANDS MANAGEMENT	 	*
-    ************************************/
+     * 			BRANDS MANAGEMENT	 	*
+     ************************************/
     public function __construct()
     {
-        $this->module_id = 10; 
+        $this->module_id = 10;
         $this->module_name = 'Brand Management';
     }
 
@@ -44,45 +44,48 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function list(Request $request)
     {
-        try
-        {
+        try {
             $filters = json_decode($request->filters);
             $company_id = null;
             $brand_ids = [];
-            if($filters) {
+            if ($filters) {
                 $company_id = $filters->company_id;
                 $brand_ids = CompanyBrands::where('company_id', $company_id)->get()->pluck('brand_id');
-            }            
+            }
 
-            $brands = BrandViewModel::when(request('search'), function($query){
+            $brands = BrandViewModel::when(request('search'), function ($query) {
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('supplementals.name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('supplementals.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
             })
-            ->when(count($brand_ids) > 0, function($query) use ($brand_ids){
-                return $query->whereIn('brands.id', $brand_ids);
-            })
-            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-            ->leftJoin('supplementals', 'brands.category_id', '=', 'supplementals.id')
-            ->select('brands.*','categories.name','supplementals.name')
-            ->when(request('order'), function ($query) {
-                $column = $this->checkcolumn(request('order'));
-                if($column == 'category_name'){
-                    $field = 'categories.name';
-                }else if($column == 'supplemental_names'){
-                    $field = 'supplementals.name';
-                }else{
-                    $fields = $column;
-                } 
-                return $query->orderBy($field, request('sort'));
-            })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->when(count($brand_ids) > 0, function ($query) use ($brand_ids) {
+                    return $query->whereIn('brands.id', $brand_ids);
+                })
+                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+                ->leftJoin('supplementals', 'brands.category_id', '=', 'supplementals.id')
+                ->select('brands.*', 'categories.name', 'supplementals.name', 'brands.name')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('brands.name', 'ASC'); 
+                })
+                ->when(request('order'), function ($query) { 
+                   // echo request('order');
+                    $column = $this->checkcolumn(request('order')); 
+                    if ($column == 'category_name') {
+                        $field = 'categories.name';
+                    } else if ($column == 'supplemental_names') {
+                        $field = 'supplementals.name';
+                    } else if ($column == 'name') {
+                        $field = 'brands.name';
+                    } else {
+                        $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -93,13 +96,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function details($id)
     {
-        try
-        {
+        try {
             $brand = BrandViewModel::find($id);
             return $this->response($brand, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -110,27 +110,26 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function store(BrandRequest $request)
     {
-        try
-    	{
+        try {
             $logo = $request->file('logo');
             $logo_path = '';
             $thumbnails_path = '';
-            if($logo) {
+            if ($logo) {
                 $originalname = $logo->getClientOriginalName();
                 $mime_type = explode("/", $logo->getClientMimeType());
                 $file_type = $mime_type[0];
-                $logo_path = $logo->move('uploads/media/brand/', str_replace(' ','-', $originalname)); 
+                $logo_path = $logo->move('uploads/media/brand/', str_replace(' ', '-', $originalname));
 
                 $image_size = getimagesize($logo_path);
                 $required_size = 150;
                 $new_width = 0;
                 $new_height = 0;
 
-                if($file_type == 'image') {
+                if ($file_type == 'image') {
                     $width = $image_size[0];
                     $height = $image_size[1];
 
-                    $aspect_ratio = $width/$height;
+                    $aspect_ratio = $width / $height;
                     if ($aspect_ratio >= 1.0) {
                         $new_width = $required_size;
                         $new_height = $required_size / $aspect_ratio;
@@ -143,11 +142,11 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                     $img = Image::make($logo_path);
                     $img->resize($new_width, $new_height, function ($constraint) {
                         $constraint->aspectRatio();
-                    })->save($thumbnails_path.str_replace(' ','-', $originalname));
+                    })->save($thumbnails_path . str_replace(' ', '-', $originalname));
 
-                    $thumbnails_path = 'uploads/media/brand/thumbnails/'.str_replace(' ','-', $originalname);
+                    $thumbnails_path = 'uploads/media/brand/thumbnails/' . str_replace(' ', '-', $originalname);
                 }
-            } 
+            }
 
             $data = [
                 'category_id' => $request->category_id,
@@ -163,9 +162,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $brand->saveTags($request->tags);
 
             return $this->response($brand, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -176,30 +173,29 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function update(BrandRequest $request)
     {
-        try
-    	{
+        try {
             $brand = Brand::find($request->id);
             $brand->touch();
 
             $logo = $request->file('logo');
             $logo_path = '';
             $thumbnails_path = '';
-            if($logo) {
+            if ($logo) {
                 $originalname = $logo->getClientOriginalName();
                 $mime_type = explode("/", $logo->getClientMimeType());
                 $file_type = $mime_type[0];
-                $logo_path = $logo->move('uploads/media/brand/', str_replace(' ','-', $originalname)); 
+                $logo_path = $logo->move('uploads/media/brand/', str_replace(' ', '-', $originalname));
 
                 $image_size = getimagesize($logo_path);
                 $required_size = 150;
                 $new_width = 0;
                 $new_height = 0;
 
-                if($file_type == 'image') {
+                if ($file_type == 'image') {
                     $width = $image_size[0];
                     $height = $image_size[1];
 
-                    $aspect_ratio = $width/$height;
+                    $aspect_ratio = $width / $height;
                     if ($aspect_ratio >= 1.0) {
                         $new_width = $required_size;
                         $new_height = $required_size / $aspect_ratio;
@@ -212,11 +208,11 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                     $img = Image::make($logo_path);
                     $img->resize($new_width, $new_height, function ($constraint) {
                         $constraint->aspectRatio();
-                    })->save($thumbnails_path.str_replace(' ','-', $originalname));
+                    })->save($thumbnails_path . str_replace(' ', '-', $originalname));
 
-                    $thumbnails_path = 'uploads/media/brand/thumbnails/'.str_replace(' ','-', $originalname);
+                    $thumbnails_path = 'uploads/media/brand/thumbnails/' . str_replace(' ', '-', $originalname);
                 }
-            }            
+            }
 
             $data = [
                 'category_id' => $request->category_id,
@@ -232,9 +228,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $brand->saveTags($request->tags);
 
             return $this->response($brand, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -245,14 +239,11 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function delete($id)
     {
-        try
-    	{
+        try {
             $brand = Brand::find($id);
             $brand->delete();
             return $this->response($brand, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -263,13 +254,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function getSupplementals()
     {
-        try
-    	{
+        try {
             $supplemental = Supplemental::get();
             return $this->response($supplemental, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -280,13 +268,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function getTags()
     {
-        try
-    	{
+        try {
             $tags = Tag::get();
             return $this->response($tags, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -297,18 +282,15 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function brandProducts(Request $request)
     {
-        try
-    	{
-            $brands = BrandProductViewModel::when(request('search'), function($query){
+        try {
+            $brands = BrandProductViewModel::when(request('search'), function ($query) {
                 return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
             })
-            ->latest()
-            ->paginate(request('perPage'));
+                ->latest()
+                ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -319,13 +301,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function allBrands()
     {
-        try
-    	{
+        try {
             $brands = BrandViewModel::get();
             return $this->response($brands, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -336,13 +315,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function searchBrands(Request $request)
     {
-        try
-    	{
+        try {
             $brands = BrandViewModel::where('name', 'LIKE', request('search') . '%')->get();
             return $this->response($brands, 'Successfully Retreived!', 200);
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -353,13 +329,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
     public function batchUpload(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new BrandsImport, $request->file('file'));
-            return $this->response(true, 'Successfully Uploaded!', 200);  
-        }
-        catch (\Exception $e)
-        {
+            return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -375,7 +348,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $brand_management =  BrandViewModel::get();
             $reports = [];
             foreach ($brand_management as $brand) {
-                $reports[] = [  
+                $reports[] = [
                     'id' => $brand->id,
                     'category_id' => $brand->category_id,
                     'category_name' => $brand->category_name,
@@ -387,10 +360,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                     'created_at' => $brand->created_at,
                     'updated_at' => $brand->updated_at,
                     'deleted_at' => $brand->deleted_at,
-                    
-                    
-                    
-                    
+
+
+
+
                     'supplementals' => $brand->supplemental_names,
                     'tags' => $brand->tag_names,
                 ];
@@ -423,5 +396,4 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             ], 422);
         }
     }
-
 }

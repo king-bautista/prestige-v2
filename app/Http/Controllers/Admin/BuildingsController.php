@@ -50,6 +50,10 @@ class BuildingsController extends AppBaseController implements BuildingsControll
                 });
             })
                 ->where('site_id', $site_id)
+                ->when(request('order'), function($query){
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($buildings, 'Successfully Retreived!', 200);

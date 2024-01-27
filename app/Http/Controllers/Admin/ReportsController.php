@@ -846,18 +846,55 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     public function getUptimeHistory(Request $request)
     {
         try {
-            $site_id = '';
+            $site_id = ''; 
             $filters = json_decode($request->filters);
             if ($filters)
                 $site_id = $filters->site_id;
             if ($request->site_id)
                 $site_id = $request->site_id;
-
-            $screens_uptime = SiteScreenUptime::when($site_id, function ($query) use ($site_id) {
-                return $query->where('site_screens.site_id', $site_id);
+         
+            $screens_uptime = SiteScreenUptime::when($site_id, function ($query) use ($site_id) { 
+                return $query->where('site_screens.site_id', $site_id)
+                    // ->where(function ($query) {
+                    //     $query->where('name', 'LIKE', '%' . request('search') . '%')
+                    //         ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                    // });
+                    ->when(request('search'), function ($query) {
+                        return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+    
+                            ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.opening_hour', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.closing_hour', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.hours_up', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
+                    });
             })
+            ->when(empty($site_id), function ($query) { 
+                return $query->where('site_screen_uptimes.id','>', 0)
+                ->when(request('search'), function ($query) {
+                    return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+
+                        ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('site_screen_uptimes.opening_hour', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('site_screen_uptimes.closing_hour', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('site_screen_uptimes.hours_up', 'LIKE', '%' . request('search') . '%')
+                        ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
+                });
+            })
+                
                 ->select('site_screen_uptimes.*', 'site_screens.name')
                 ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('site_screens.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->get();
 

@@ -35,7 +35,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     }
 
     public function list(Request $request)
-    {
+    { 
         try {
             $filters = json_decode($request->filters);
             $site_ids = [];
@@ -43,14 +43,18 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 $site_ids = $filters->site_ids;
 
             $site_screen_products = SiteScreenProductViewModel::when(request('search'), function ($query) {
-                return $query->where('site_screens.site_point_id', 'LIKE', '%' . request('search') . '%')
+                return $query->where('site_screen_products.serial_number', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_screens.screen_type', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_screens.orientation', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_screens.product_application', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screen_products.ad_type', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_screen_products.dimension', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('site_screens.serial_number', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
             })
                 ->when(count($site_ids) > 0, function ($query) use ($site_ids) {
                     return $query->whereIn('site_screens.site_id', $site_ids);
@@ -59,7 +63,26 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
                 ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
                 ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->leftJoin('sites_meta', function ($join) {
+                    $join->on('sites.id', '=', 'sites_meta.site_id')
+                        ->where('sites_meta.meta_key', '=', 'site_code');
+                })
                 ->select('site_screen_products.*')
+            //    ->selectRaw('CONCAT(JSON_OBJECT("meta_value", sites_meta.meta_key),',',site_screens.name,',',site_buildings.name,',',site_building_levels.name,',',site_screen_products.ad_type) AS screen_location')
+                //->selectRaw('CONCAT(site_screens.name,',',site_buildings.name,',',site_building_levels.name,',',site_screen_products.ad_type) AS screen_location')
+                ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name) AS site_screen_location")
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    switch ($column) {
+                        case 'site_screen_location':
+                            $field = 'site_screen_location';
+                            break;
+                        default:
+                            $field = $column;
+                    }
+                    
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
 

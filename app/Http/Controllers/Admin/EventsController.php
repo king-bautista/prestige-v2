@@ -35,11 +35,11 @@ class EventsController extends AppBaseController implements EventsControllerInte
         try {
             $event = Event::when(request('search'), function ($query) {
                 return $query->where('events.image_url', 'LIKE', '%' . request('search') . '%')
-                    ->where('sites.name', 'LIKE', '%' . request('search') . '%')
-                    ->where('events.name', 'LIKE', '%' . request('search') . '%')
-                    ->where('events.start_date', 'LIKE', '%' . request('search') . '%')
-                    ->where('events.end_date', 'LIKE', '%' . request('search') . '%')
-                    ;
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('events.event_name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('events.start_date', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('events.end_date', 'LIKE', '%' . request('search') . '%');
+                    
             })
                 ->leftJoin('sites', 'events.site_id', '=', 'sites.id')
                 ->select('events.*', 'sites.name')
