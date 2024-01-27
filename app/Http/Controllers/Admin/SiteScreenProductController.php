@@ -61,12 +61,12 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                 })
                 ->leftJoin('site_screens', 'site_screen_products.site_screen_id', '=', 'site_screens.id')
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
                 ->leftJoin('sites_meta', function ($join) {
                     $join->on('sites.id', '=', 'sites_meta.site_id')
                         ->where('sites_meta.meta_key', '=', 'site_code');
                 })
-                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
-                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
                 ->select('site_screen_products.*')
             //    ->selectRaw('CONCAT(JSON_OBJECT("meta_value", sites_meta.meta_key),',',site_screens.name,',',site_buildings.name,',',site_building_levels.name,',',site_screen_products.ad_type) AS screen_location')
                 //->selectRaw('CONCAT(site_screens.name,',',site_buildings.name,',',site_building_levels.name,',',site_screen_products.ad_type) AS screen_location')
@@ -81,7 +81,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                             $field = $column;
                     }
                     
-                    return $query->orderBy($fields, request('sort'));
+                    return $query->orderBy($field, request('sort'));
                 })
                 ->latest()
                 ->paginate(request('perPage'));

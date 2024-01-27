@@ -56,6 +56,7 @@ class SiteBuildingLevelViewModel extends Model
     {
         return Site::find($this->site_id)->name;
     }
+    
     public function getBuildingNameAttribute() 
     {
         return SiteBuilding::find($this->site_building_id)->name;

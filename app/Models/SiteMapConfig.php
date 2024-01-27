@@ -15,6 +15,7 @@ class SiteMapConfig extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'serial_number',
         'site_map_id',
         'site_building_id',
         'site_building_level_id',

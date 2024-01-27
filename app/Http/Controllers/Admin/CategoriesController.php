@@ -37,15 +37,19 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try {
             $categories = CategoryViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
-            })   
+                return $query->where('categories.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('categories.descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('c.name', 'LIKE', '%' . request('search') . '%');
+            })
+                ->join('categories as c', function ($join) {
+                    $join->on('categories.parent_id', '=', 'c.id');
+                })
                 ->select('categories.*', 'categories.name')
                 ->selectRaw('(select cb.name from categories cb where categories.parent_id = cb.id) as parent_name')
                 ->when(is_null(request('order')), function ($query) {
-                    return $query->orderBy('name', 'ASC'); 
+                    return $query->orderBy('name', 'ASC');
                 })
-                ->when(request('order'), function ($query) { 
+                ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
                     if ($column == 'parent_category') {
                         $fields = 'parent_name';

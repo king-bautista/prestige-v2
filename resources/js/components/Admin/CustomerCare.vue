@@ -271,9 +271,9 @@ export default {
 						3: '<span class="badge bg-info">Pending approval</span>',
 						4: '<span class="badge bg-danger">Disapprove</span>',
 						5: '<span class="badge bg-success">Approved</span>',
-						6: '<span class="badge bg-secondary">For review</span>',
-						7: '<span class="badge bg-info">Archive</span>',
-						8: '<span class="badge bg-success">Saved</span>',
+						6: '<span class="badge bg-secondary">Saved</span>',
+						7: '<span class="badge bg-info">For review</span>',
+						8: '<span class="badge bg-success">Archive</span>',
 					}
 				},
 				updated_at: "Last Updated",
