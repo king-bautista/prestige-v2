@@ -9,8 +9,9 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
-									v-on:AddNewAmenities="AddNewAmenities" v-on:editButton="editAmenities" v-on:modalBatchUpload="modalBatchUpload"
-									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
+									v-on:AddNewAmenities="AddNewAmenities" v-on:editButton="editAmenities"
+									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -48,7 +49,7 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Icon <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="icon" @change="IconChange">
+									<input type="file" id="img_icon" accept="image/*" ref="icon" @change="IconChange">
 									<footer class="blockquote-footer">image max size is 170 x 170 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -112,6 +113,20 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-block alert-danger">
+							<p>{{ error_message }}</p>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -131,6 +146,9 @@ export default {
 			icon: '',
 			add_record: true,
 			edit_record: false,
+			image_width: 0,
+			image_height: 0,
+			error_message: '',
 			dataFields: {
 				name: "Name",
 				icon_path: {
@@ -206,8 +224,33 @@ export default {
 	methods: {
 		IconChange: function (e) {
 			const file = e.target.files[0];
-			this.icon = URL.createObjectURL(file);
-			this.amenity.icon = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.icon = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 170 && this.image_height == 170) {
+						obj.amenity.icon = this.file;
+					} else {
+						$('#img_icon').val('');
+						obj.icon = null;
+						obj.amenity.icon = '';
+						obj.error_message = "Invalid Image Size! Must be width: 170 and height: 170 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_icon').val('');
+				this.icon = null;
+				this.amenity.icon = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		AddNewAmenities: function () {
@@ -261,6 +304,7 @@ export default {
 			formData.append("id", this.amenity.id);
 			formData.append("name", this.amenity.name);
 			formData.append("icon", this.amenity.icon);
+			formData.append("active", this.amenity.active);
 
 			axios.post('/admin/amenity/update', formData, {
 				headers: {

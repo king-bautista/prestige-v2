@@ -210,8 +210,7 @@ class PiProductController extends AppBaseController implements PiProductControll
             $reports = [];
             foreach ($pi_products as $pi_product) {
                 $reports[] = [
-                    'id' => $pi_product->id,
-                    'serial_number' => $pi_product->serial_number,
+                    'id' => $pi_product->serial_number,
                     'product_application' => $pi_product->product_application,
                     'ad_type' => $pi_product->ad_type,
                     'descriptions' => $pi_product->descriptions,
@@ -259,7 +258,6 @@ class PiProductController extends AppBaseController implements PiProductControll
         try {
             $reports[] = [
                 'id' => '',
-                'serial_number' => '',
                 'product_application' => '',
                 'ad_type' => '',
                 'descriptions' => '',
