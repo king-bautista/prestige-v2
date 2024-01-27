@@ -30,6 +30,7 @@
         "chart.js": "^4.2.0",
         "jquery-touchswipe": "^1.6.19",
         "pc-bootstrap4-datetimepicker": "^4.17.51",
+        "sweetalert": "^2.1.2",
         "tiny-slider": "^2.9.4",
         "vue-autosuggest": "^2.2.0",
         "vue-bootstrap-datetimepicker": "^4.1.4",

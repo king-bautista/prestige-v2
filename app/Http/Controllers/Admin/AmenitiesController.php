@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\AmenitiesControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\AmenitiesRequest;
 use App\Models\Amenity;
 
 use App\Imports\AmenitiesImport;
@@ -77,7 +77,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         }
     }
 
-    public function store(Request $request)
+    public function store(AmenitiesRequest $request)
     {
         try
     	{
@@ -108,7 +108,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         }
     }
 
-    public function update(Request $request)
+    public function update(AmenitiesRequest $request)
     {
         try
     	{

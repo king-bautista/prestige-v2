@@ -27,6 +27,9 @@ class LandmarkRequest extends FormRequest
             "site_id" => "required",
             "landmark" => "required|string",
             "descriptions" => "required|string",
+            "imgBanner" => "required|mimes:jpeg,bmp,png",
+            "imgBannerThumbnail" => "required|mimes:jpeg,bmp,png",
+
         ];
     }
 }
