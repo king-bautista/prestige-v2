@@ -13,6 +13,7 @@ use App\Models\ContentManagement;
 use App\Models\ContentScreen;
 use App\Models\TransactionStatus;
 use App\Models\PlayList;
+use App\Models\Contract;
 use App\Models\AdvertisementMaterial;
 use App\Models\SiteScreen;
 use App\Models\SiteScreenProduct;
@@ -265,9 +266,171 @@ class ContentManagementController extends AppBaseController implements ContentMa
         return null;
     }
 
+    public function setPlayListSequence(){
 
-    public function setPlayListSequence($screen_id, $site_id, $total_rows){
+        $screen_id = 9;
+        $site_id = 3;
+        $ad_type = 'Banner Ad';
 
+        if (!$site_id) {
+            $site_id = SiteScreen::find($screen_id)->site_id;
+        }
+
+        $site = SiteViewModel::find($site_id);
+        $site_partner_id = $site->details['company_id'];
+
+        $sitePartnersAds = $this->getPlaylistAds($site_partner_id, $screen_id, $ad_type, true);
+        $parentCategoryAds = $this->getPlaylistAds($site_partner_id, $screen_id, $ad_type, false);
+
+        // counting number of site partner ads
+        $totalSitePartnerAds = sizeof($sitePartnersAds);
+        // counting number of parent category ads
+        $totalParentCategoryAds = sizeof($parentCategoryAds);
+        $maxSitePartnerSlot = 4;
+
+        $maxSitePartnerAds = $totalSitePartnerAds > $maxSitePartnerSlot ? $maxSitePartnerSlot : $totalSitePartnerAds;
+        // computation of total number of ads
+        $totalNumberOfAds = $totalSitePartnerAds + $totalParentCategoryAds;
+        // getting the denominator for modulo
+        $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
+        $moduloValue = round($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
+
+        $arrayStore = [];
+        $maxSitePartnerCounter = 0;
+        $maxParentCategoryCounter = 0;
+        $sitePartnerCounter = 0;
+        $sequenceCounter = 1;
+        
+        $loopCount = sizeof(array_chunk($sitePartnersAds->toArray(), $maxSitePartnerSlot));
+
+        if($loopCount >= 1 ){
+            for($loop_index = 0; $loop_index < $loopCount; $loop_index++){
+                for ($index = 0; $index < $totalNumberOfAds; $index++){
+                    if(fmod($index, $moduloValue) == 0){
+                        if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
+                            if($sitePartnerCounter > $maxSitePartnerSlot){
+                                $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type);
+                                $sitePartnerCounter == $totalSitePartnerAds - 1 ? $sitePartnerCounter = -1 : ""; 
+                            }
+                            else{
+                                $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type);
+                            }
+                            array_push($arrayStore, $addSitePartner);
+                            $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : $maxSitePartnerCounter = 0;
+                        }
+                        else{
+                            if($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds){
+                                $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type);
+                                array_push($arrayStore, $addParentCategory);
+                                $maxParentCategoryCounter++;
+                            }
+                        }
+                        $sitePartnerCounter++;
+                    }else{
+                        if($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds){
+                            $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type);
+                            array_push($arrayStore, $addParentCategory);
+                            $maxParentCategoryCounter++;
+                        }
+                        else{
+                            if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
+                                $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type);
+                                array_push($arrayStore, $addSitePartner);
+                                $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : '';
+                            }
+                        }
+                    }
+                }
+                $maxSitePartnerCounter = 0;
+                $maxParentCategoryCounter = 0;
+            }
+        }
+
+        $deletePlayLists = PlayList::leftJoin('site_screen_products', function($join)
+        {
+            $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+        }) 
+        ->where('play_lists.site_screen_id', '=', $screen_id)
+        ->where('site_screen_products.ad_type', $ad_type)
+        ->delete();
+
+        foreach($arrayStore as $items){
+            foreach($items as $item){
+                $fields = $item->toArray();
+                $newplay_list_data = PlayList::create($fields);
+                PlayList::where('id', $newplay_list_data->id)->update(['sequence' => $sequenceCounter]);
+                $sequenceCounter++;
+            }
+        }
+
+
+        return $arrayStore;
+    }
+
+    protected function getPlaylistAds($company_id, $screen_id, $ad_type, $is_sitePartner){
+        $ads = PlayList::leftJoin('site_screen_products', function($join)
+                {
+                    $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                        ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+                }) 
+        ->when($is_sitePartner, function($query) use ($company_id){
+            return $query->where('company_id', '=' , $company_id);
+        })
+        ->when(!$is_sitePartner, function($query) use ($company_id){
+            return $query->where('company_id', '!=' ,$company_id);
+        })
+        ->where('play_lists.site_screen_id', $screen_id)  
+        ->where('site_screen_products.ad_type', $ad_type)
+        ->groupBy('play_lists.content_id')
+        ->get();
+
+        return $ads;
+    }
+
+    protected function insertAd($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type){
+        $category_ids = [1,2,3,4,5];
+        
+        if($offset > 4){
+            $category_counter = 0;
+            $category_id = $category_ids[$category_counter];
+        }
+        else{
+            $category_id = $category_ids[$offset];
+        }
+        $addData = PlayList::select('play_lists.company_id', 'play_lists.main_category_id','play_lists.content_id', 'play_lists.site_screen_id', 'play_lists.brand_id','play_lists.category_id','play_lists.parent_category_id','play_lists.advertisement_id','play_lists.sequence','play_lists.dimension')
+            ->leftJoin('site_screen_products', function($join)
+                    {
+                        $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                            ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+                    }) 
+            ->when($is_sitePartner, function($query) use ($company_id){
+                return $query->where('company_id', '=', $company_id);
+            })
+            // ->when(!$is_sitePartner, function($query) use ($company_id, $category_id){
+            //     return $query->where('company_id', '!=',$company_id)->where('main_category_id', $category_id);
+            // })
+            ->when(!$is_sitePartner, function($query) use ($company_id){
+                return $query->where('company_id', '!=',$company_id);
+            })
+            ->where('play_lists.site_screen_id', $site_screen_id)  
+            ->where('site_screen_products.ad_type', $ad_type)
+            ->limit($limit)
+            ->offset($offset)
+            ->get();
+
+        return $addData;
+    }
+
+    protected function getLargerNumber($tspa, $tpca){
+        if($tspa !== 0 && $tpca !== 0){
+            $deno = ($tspa > $tpca) ? $tpca : $tspa;
+            return $deno;
+        }
+        else{
+            $deno = ($tspa == 0) ? $tpca : $tspa;
+            return $deno;
+        }
     }
 
     public function setSequence($screen_id, $site_id, $total_rows)

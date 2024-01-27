@@ -10,7 +10,8 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewContent="AddNewContent"
 									v-on:editButton="editContent" v-on:downloadCsv="downloadCsv"
-									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
+									v-on:downloadTemplate="downloadTemplate"
+									v-on:getSequence="getSequence" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -289,6 +290,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
+				getSequence: {
+					title: 'Set Sequence',
+					v_on: 'getSequence',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Set Sequence',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 
 			adsDataFields: {
@@ -425,6 +433,21 @@ export default {
 					document.body.appendChild(link);
 					link.click();
 					$('.fa-spinner').removeClass('fa-spinner fa-spin').addClass("fa-download");
+				})
+		},
+
+		getSequence: function () {
+			$('.fa-download').removeClass('fa-download');
+			axios.get('/admin/upload-ad/setPlayListSequence')
+				.then(response => {
+					// const link = document.createElement('a');
+					// link.href = response.data.data.filepath;
+					// link.setAttribute('download', response.data.data.filename); //or any other extension
+					// document.body.appendChild(link);
+					// link.click();
+					// $('.fa-spinner').removeClass('fa-spinner fa-spin').addClass("fa-download");
+
+					console.log("i am here");
 				})
 		},
 	},
