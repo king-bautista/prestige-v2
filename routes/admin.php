@@ -356,6 +356,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/manage-config/store', 'Admin\MapsController@configStore')->name('admin.site.manage.config.store');
     Route::post('/admin/site/manage-config/update', 'Admin\MapsController@configUpdate')->name('admin.site.manage.config.update');
     Route::get('/admin/site/manage-config/delete/{id}', 'Admin\MapsController@configDelete')->where('id', '[0-9]+')->name('admin.site.manage.config.delete');
+    Route::get('/admin/site/manage-config/set-default/{id}', 'Admin\MapsController@setDefault')->where('id', '[0-9]+')->name('admin.site.map.set-default');
 
     Route::get('/admin/site/map/{id}', 'Admin\MapsController@getMapDetails')->where('id', '[0-9]+')->name('admin.site.map');
     Route::get('/admin/site/map/get-points/{id}', 'Admin\MapsController@getSitePoints')->where('id', '[0-9]+')->name('admin.site.map.get-points');
@@ -367,7 +368,6 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/map/point-info/{id}', 'Admin\MapsController@pointInfo')->where('id', '[0-9]+')->name('admin.site.map.point-info');
     Route::post('/admin/site/map/connect-point', 'Admin\MapsController@connectPoints')->name('admin.site.map.connect-point');
     Route::get('/admin/site/map/delete-line/{id}', 'Admin\MapsController@deleteLine')->where('id', '[0-9]+')->name('admin.site.map.delete-line');
-    Route::get('/admin/site/map/set-default/{id}', 'Admin\MapsController@setDefault')->where('id', '[0-9]+')->name('admin.site.map.set-default');
     Route::get('/admin/site/map/generate-routes/{site_id}/{screen_id}', 'Admin\MapsController@generateRoutes')->where('id', '[0-9]+')->name('admin.site.map.generate-routes');
 
     /*

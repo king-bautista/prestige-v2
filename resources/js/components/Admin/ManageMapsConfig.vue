@@ -263,6 +263,7 @@
             	dataFields: {            
 					serial_number: "ID",		
 					site_screen_name: "Site Screen Name",
+					site_screen_location: "Screen Location",
 					map_preview_path: {
             			name: "Map Preview", 
             			type:"logo", 
@@ -300,7 +301,7 @@
             		delete: {
             			title: 'Delete this Map',
             			name: 'Delete',
-            			apiUrl: '/admin/site/manage-map/delete',
+            			apiUrl: '/admin/site/manage-config/delete',
             			routeName: '',
             			button: '<i class="fas fa-trash-alt"></i> Delete',
             			method: 'delete',
@@ -495,7 +496,7 @@
 			},
 
 			setDefault: function() {
-				axios.get('/admin/site/map/set-default/'+this.map_default_id)
+				axios.get('/admin/site/manage-config/set-default/'+this.map_default_id)
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
