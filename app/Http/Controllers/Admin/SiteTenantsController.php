@@ -335,8 +335,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             $reports = [];
             foreach ($tenants_management as $tenant) {
                 $reports[] = [
-                    'id' => $tenant->id,
-                    'serial_number' => $tenant->serial_number,
+                    'id' => $tenant->serial_number,
                     'brand_id' => $tenant->brand_id,
                     'brand_name' => $tenant->brand_name,
                     'brand_logo' => $tenant->brand_logo,
@@ -397,7 +396,6 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
             foreach ($tenants_management as $tenant) {
                 $reports[] = [
                     'id' => '',
-                    'serial_number' => '',
                     'brand_id' => '',
                     'brand_name' => '',
                     'brand_logo' => '',
