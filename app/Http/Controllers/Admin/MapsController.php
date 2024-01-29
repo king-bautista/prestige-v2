@@ -208,14 +208,23 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function getMapDetails($id)
     {
+
+
         $current_map = SiteMapViewModel::find($id);
-        $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('site_screen_id', $current_map->site_screen_id)->get();
-        $site_details = SiteViewModel::find($current_map->site_id);
-        
         $amenities = Amenity::get();
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
-        
-        return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));
+
+        if($current_map->map_type == '3D') {
+            $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)
+            ->where('map_type', '3D')->get();
+            $site_details = SiteViewModel::find($current_map->site_id);
+            return view('admin.map_3d', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));    
+        }
+        else {
+            $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('site_screen_id', $current_map->site_screen_id)->get();
+            $site_details = SiteViewModel::find($current_map->site_id);    
+            return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));
+        }        
     }
 
     public function getSitePoints($id)
@@ -412,28 +421,6 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point_link->delete();
 
             return $this->response($site_point_link, 'Successfully Deleted!', 200);
-        }
-        catch (\Exception $e) 
-        {
-            return response([
-                'message' => $e->getMessage(),
-                'status' => false,
-                'status_code' => 422,
-            ], 422);
-        }
-    }
-
-    public function setDefault($id)
-    {
-        try
-    	{
-            
-            $site_map = SiteMap::find($id);
-
-            SiteMap::where('site_id', $site_map->site_id)->where('site_screen_id', $site_map->site_screen_id)->update(['is_default' => 0]);
-            $site_map->update(['is_default' => 1]);
-
-            return $this->response($site_map, 'Successfully Modified!', 200);
         }
         catch (\Exception $e) 
         {
@@ -689,6 +676,49 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_config->update($data);
 
             return $this->response($site_config, 'Successfully Modified!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function configDelete($id)
+    {
+        try
+    	{
+            $site_config = SiteMapConfig::find($id);
+            $site_config->delete();
+            return $this->response($site_config, 'Successfully Deleted!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function setDefault($id)
+    {
+        try
+    	{
+            $site_config = SiteMapConfigViewModel::find($id);
+            $site_id = $site_config->map_details->site_id;
+
+            SiteMapConfig::where('site_maps.site_id', $site_id)
+            ->join('site_maps', 'site_map_configs.site_map_id', '=', 'site_maps.id')
+            ->update(['site_map_configs.is_default' => 0]);
+
+            $site_config->update(['is_default' => 1]);
+
+            return $this->response($site_config, $site_config->site_screen_name. ' has been set as default!', 200);
         }
         catch (\Exception $e) 
         {

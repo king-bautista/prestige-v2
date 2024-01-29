@@ -10,6 +10,15 @@ class SiteMapConfigViewModel extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'is_default',
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -42,6 +51,7 @@ class SiteMapConfigViewModel extends Model
 	public $appends = [
         'map_details',
         'site_screen_name',
+        'site_screen_location',
         'map_preview_path',
     ];
 
@@ -57,6 +67,13 @@ class SiteMapConfigViewModel extends Model
     {
         if($this->site_screen_id)
             return SiteScreenViewModel::find($this->site_screen_id)->name;
+        return null;
+    }
+
+    public function getSiteScreenLocationAttribute() 
+    {
+        if($this->map_details)
+            return $this->map_details->building_name . ', '.$this->map_details->building_floor_name;
         return null;
     }
 
