@@ -286,8 +286,7 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             $reports = [];
             foreach ($screen_management as $screen) {
                 $reports[] = [
-                    'id' => $screen->id,
-                    'serial_number' => $screen->serial_number,
+                    'id' => $screen->serial_number,
                     'site_id' => $screen->site_id,
                     'site_name' => $screen->site_name,
                     'site_building_id' => $screen->site_building_id,
@@ -353,7 +352,6 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
             foreach ($screen_management as $screen) {
                 $reports[] = [
                     'id' => '',
-                    'serial_number' => '',
                     'site_id' => '',
                     'site_name' => '',
                     'site_building_id' => '',

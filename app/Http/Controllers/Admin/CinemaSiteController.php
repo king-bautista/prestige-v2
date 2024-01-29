@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\CinemaSiteControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\CinemaSiteRequest;
 use App\Exports\Export;
 use Storage;
 
@@ -68,12 +69,13 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
         }
     }
 
-    public function store(Request $request)
+    public function store(CinemaSiteRequest $request)
     {
         try {
             $data = [
                 'site_id' => $request->site_id,
                 'cinema_id' => $request->cinema_id,
+                'active' => 1,
             ];
 
             $cinema_site = CinemaSite::create($data);
@@ -88,7 +90,7 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
         }
     }
 
-    public function update(Request $request)
+    public function update(CinemaSiteRequest $request)
     {
         try {
             $cinema_site = CinemaSite::find($request->id);
@@ -96,6 +98,7 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
             $data = [
                 'site_id' => $request->site_id,
                 'cinema_id' => $request->cinema_id,
+                'active' => ($request->active == 'false') ? 0 : 1,
             ];
 
             $cinema_site->update($data);
@@ -137,6 +140,7 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
                     'site_id' => $cinema->site_id,
                     'site_name' => $cinema->site_name,
                     'cinema_id' => $cinema->cinema_id,
+                    'active' => $cinema->active,
                     'created_at' => $cinema->created_at,
                     'updated_at' => $cinema->updated_at,
                     'deleted_at' => $cinema->deleted_at,
@@ -179,6 +183,7 @@ class CinemaSiteController extends AppBaseController implements CinemaSiteContro
                 'site_id' => '',
                 'site_name' => '',
                 'cinema_id' => '',
+                'active' => '',
                 'created_at' => '',
                 'updated_at' => '',
                 'deleted_at' => '',

@@ -38,12 +38,28 @@ class SiteMapController extends AppBaseController implements SiteMapControllerIn
     {
         try {
             $sites = SiteViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%')
-                             ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
+                return $query->where('sites.name', 'LIKE', '%' . request('search') . '%')
+                             ->orWhere('sites.descriptions', 'LIKE', '%' . request('search') . '%')
+                             ->orWhereRaw('CONCAT(`smsc`.`meta_value`) LIKE \'%' . request('search') . '%\'');
+            })
+            ->leftJoin('sites_meta as smsc', function ($join) {
+                $join->on('sites.id', '=', 'smsc.site_id')
+                    ->where('smsc.meta_key', '=', 'site_code');
+            })
+            ->select('sites.*', 'smsc.meta_value as short_code')
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('sites.name', 'ASC');
             })
             ->when(request('order'), function ($query) {
                 $column = $this->checkcolumn(request('order'));
-                return $query->orderBy($column, request('sort'));
+                switch ($column) {
+                    case 'short_code':
+                        $field = 'short_code';
+                        break;
+                    default:
+                        $field = $column;
+                }
+                return $query->orderBy($field, request('sort'));
             })
             ->latest()
             ->paginate(request('perPage'));

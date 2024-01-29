@@ -291,8 +291,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
             $reports = [];
             foreach ($ssps as $ssp) {
                 $reports[] = [
-                    'id' => $ssp->id,
-                    'serial_number' => $ssp->serial_number,
+                    'id' => $ssp->serial_number,
                     'site_screen_id' => $ssp->site_screen_id,
                     'site_screen_name' => $ssp->site_screen_details['name'],
                     'ad_type' => $ssp->ad_type,
@@ -343,7 +342,6 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
         try {
             $reports[] = [
                 'id' => '',
-                'serial_number' => '',
                 'site_screen_id' => '',
                 'site_screen_name' => '',
                 'ad_type' => '',

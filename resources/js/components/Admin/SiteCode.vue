@@ -54,6 +54,16 @@
 										placeholder="SiteCode Label" required>
 								</div>
 							</div>
+							<div class="form-group row" v-show="edit_record">
+								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
+								<div class="col-sm-8">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input" id="isActive"
+											v-model="site_code.active">
+										<label class="custom-control-label" for="isActive"></label>
+									</div>
+								</div>
+							</div>
 						</div>
 						<!-- /.card-body -->
 					</div>
@@ -81,6 +91,7 @@ export default {
 				id: '',
 				site_id: '',
 				cinema_id: '',
+				active: true,
 			},
 			add_record: true,
 			edit_record: false,
@@ -88,6 +99,14 @@ export default {
 			dataFields: {
 				site_name: "Site Name",
 				cinema_id: "Cinema ID",
+				active: {
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
+						1: '<span class="badge badge-info">Active</span>'
+					}
+				},
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
@@ -151,6 +170,7 @@ export default {
 			this.edit_record = false;
 			this.site_code.site_id = '';
 			this.site_code.cinema_id = '';
+			this.site_code.active = true;
 			$('#site_codes-form').modal('show');
 		},
 
@@ -170,6 +190,7 @@ export default {
 					this.site_code.id = id;
 					this.site_code.site_id = site_code.site_id;
 					this.site_code.cinema_id = site_code.cinema_id;
+					this.site_code.active = site_code.active;
 					this.add_record = false;
 					this.edit_record = true;
 					$('#site_codes-form').modal('show');
@@ -177,13 +198,23 @@ export default {
 		},
 
 		updateSiteCode: function () {
-			axios.put('/admin/cinema/site-code/update', this.site_code)
+			let formData = new FormData();
+			formData.append("id", this.site_code.id);
+			formData.append("site_id", this.site_code.site_id);
+			formData.append("cinema_id", this.site_code.cinema_id);
+			formData.append("active", this.site_code.active);
+			axios.post('/admin/cinema/site-code/update', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				},
+			})
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
 					$('#site_codes-form').modal('hide');
 				})
 		},
+
 		downloadCsv: function () {
 			axios.get('/admin/cinema/site-code/download-csv')
 				.then(response => {

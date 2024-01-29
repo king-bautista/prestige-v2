@@ -16,6 +16,7 @@ class CinemaSite extends Model
     protected $fillable = [
         'site_id',
         'cinema_id',
+        'active',
     ];
 
     /**

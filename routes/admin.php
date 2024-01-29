@@ -431,7 +431,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/cinema/site-code/list', 'Admin\CinemaSiteController@list')->name('admin.site-code.list');
     Route::post('/admin/cinema/site-code/store', 'Admin\CinemaSiteController@store')->name('admin.site-code.store');
     Route::get('/admin/cinema/site-code/{id}', 'Admin\CinemaSiteController@details')->where('id', '[0-9]+')->name('admin.site-code.details');
-    Route::put('/admin/cinema/site-code/update', 'Admin\CinemaSiteController@update')->name('admin.site-code.update');
+    Route::post('/admin/cinema/site-code/update', 'Admin\CinemaSiteController@update')->name('admin.site-code.update');
     Route::get('/admin/cinema/site-code/delete/{id}', 'Admin\CinemaSiteController@delete')->where('id', '[0-9]+')->name('admin.site-code.delete');
     Route::get('/admin/cinema/site-code/download-csv', 'Admin\CinemaSiteController@downloadCsv')->name('admin.site-code.download-csv');
     Route::get('/admin/cinema/site-code/download-csv-template', 'Admin\CinemaSiteController@downloadCsvTemplate')->name('admin.site-code.download-csv-template');

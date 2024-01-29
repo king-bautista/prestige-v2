@@ -39,9 +39,10 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Logo</label>
+								<label for="firstName" class="col-sm-4 col-form-label">Logo<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="logo" @change="logoChange">
+									<input type="file" id="img_logo" accept="image/*" ref="logo" @change="logoChange">
 									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -147,7 +148,20 @@
 				</div>
 			</div>
 		</div>
-
+		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-block alert-danger">
+							<p>{{ error_message }}</p>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -180,6 +194,9 @@ export default {
 			tags: [],
 			add_record: true,
 			edit_record: false,
+			image_width: 0,
+			image_height: 0,
+			error_message: '',
 			dataFields: {
 				logo_image_path: {
 					name: "Logo",
@@ -267,9 +284,35 @@ export default {
 
 	methods: {
 		logoChange: function (e) {
+			
 			const file = e.target.files[0];
-			this.logo = URL.createObjectURL(file);
-			this.brand.logo = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.logo = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 120 && this.image_height == 120) {
+						obj.brand.logo = this.file;
+					} else {
+						$('#img_logo').val('');
+						obj.logo = null;
+						obj.brand.logo = '';
+						obj.error_message = "Invalid Image Size! Must be width: 120 and height: 120 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_logo').val('');
+				this.logo = null;
+				this.brand.logo = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		GetCategories: function () {

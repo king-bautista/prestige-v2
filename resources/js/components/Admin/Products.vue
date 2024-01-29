@@ -80,9 +80,10 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Banner Image</label>
+								<label for="firstName" class="col-sm-4 col-form-label">Banner Image<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="image_url" @change="image_urlChange">
+									<input type="file" accept="image/*" id="img_url" ref="image_url" @change="image_urlChange">
 									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -112,8 +113,8 @@
 				</div>
 			</div>
 		</div>
-<!-- Batch Upload -->
-<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
+		<!-- Batch Upload -->
+		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -140,6 +141,20 @@
 					<div class="modal-footer justify-content-between">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-block alert-danger">
+							<p>{{ error_message }}</p>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
@@ -173,6 +188,9 @@ export default {
 			image_url: '/images/no-image-available.png',
 			add_record: true,
 			edit_record: false,
+			image_width: 0,
+			image_height: 0,
+			error_message: '',
 			dataFields: {
 				thumbnail_path: {
 					name: "Thumbnail",
@@ -250,9 +268,38 @@ export default {
 
 	methods: {
 		image_urlChange: function (e) {
+			//const file = e.target.files[0];
+			// this.image_url = URL.createObjectURL(file);
+			// this.product.image_url = file;
+
 			const file = e.target.files[0];
-			this.image_url = URL.createObjectURL(file);
-			this.product.image_url = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.image_url = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 120 && this.image_height == 120) {
+						obj.product.image_url = this.file;
+					} else {
+						$('#img_url').val('');
+						obj.image_url = null;
+						obj.product.image_url = '';
+						obj.error_message = "Invalid Image Size! Must be width: 120 and height: 120 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_url').val('');
+				this.image_url = null;
+				this.product.image_url = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		AddNewProduct: function () {
@@ -383,7 +430,7 @@ export default {
 					link.click();
 				})
 		},
-		
+
 		downloadTemplate: function () {
 			axios.get('/admin/brand/product/download-csv-template')
 				.then(response => {

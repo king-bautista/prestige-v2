@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\IllustrationsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\CompanyCategoryRequest;
 use App\Imports\IllustrationsImport;
 
 use App\Models\CompanyCategory;
@@ -58,7 +59,8 @@ class IllustrationsController extends AppBaseController implements Illustrations
                     
                     switch ($column) {
                         case 'category_name':
-                            $field = 'category_name';
+                            $field = 'c1.name';
+                            $query->orderBy('c2.name', request('sort'));
                             break;
                         case 'site_name':
                             $field = 'site_name';
@@ -104,7 +106,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
         }
     }
 
-    public function store(Request $request)
+    public function store(CompanyCategoryRequest $request)
     {
         try {
             $kiosk_image_primary_path = null;
@@ -146,7 +148,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
         }
     }
 
-    public function update(Request $request)
+    public function update(CompanyCategoryRequest $request)
     {
         try {
             $company_category = CompanyCategory::find($request->id);

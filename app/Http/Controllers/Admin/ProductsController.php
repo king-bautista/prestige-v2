@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ProductsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductsRequest;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
 use App\Imports\BrandProductsImport;
 use App\Exports\Export;
@@ -98,7 +99,7 @@ class ProductsController extends AppBaseController implements ProductsController
         }
     }
 
-    public function store(Request $request)
+    public function store(ProductsRequest $request)
     {
         try {
             $brand_id = session()->get('brand_id');
@@ -164,7 +165,7 @@ class ProductsController extends AppBaseController implements ProductsController
         }
     }
 
-    public function update(Request $request)
+    public function update(ProductsRequest $request)
     {
         try {
             $brand_id = session()->get('brand_id');
