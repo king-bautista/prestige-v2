@@ -267,7 +267,7 @@
 								<label for="firstName" class="col-sm-3 col-form-label">Subscriber Logo <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-3">
-									<input type="file" accept="image/*" ref="subscriber_logo"
+									<input type="file" id="img_subscriber_logo" accept="image/*" ref="subscriber_logo"
 										@change="subscriberLogoChange">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer">image max size is 550 x 550 pixels</footer>
@@ -340,7 +340,20 @@
 				</div>
 			</div>
 		</div>
-
+		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-block alert-danger">
+							<p>{{ error_message }}</p>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -376,10 +389,14 @@ export default {
 				twitter: '',
 				instagram: '',
 				website: '',
+				subscriber_logo: '/images/no-image-available.png',
 			},
 			id_to_deleted: 0,
 			add_record: true,
 			edit_record: false,
+			image_width: 0,
+			image_height: 0,
+			error_message: '',
 			subscriber_logo: '',
 			brands: [],
 			isLoading: false,
@@ -485,9 +502,37 @@ export default {
 
 	methods: {
 		subscriberLogoChange: function (e) {
+			// const file = e.target.files[0];
+			// this.subscriber_logo = URL.createObjectURL(file);
+			// this.tenant.subscriber_logo = file;
 			const file = e.target.files[0];
-			this.subscriber_logo = URL.createObjectURL(file);
-			this.tenant.subscriber_logo = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.subscriber_logo = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 550 && this.image_height == 550) {
+						obj.tenant.subscriber_logo = this.file;
+					} else {
+						$('#img_icon').val('');
+						obj.subscriber_logo = null;
+						obj.tenant.subscriber_logo = '';
+						obj.error_message = "Invalid Image Size! Must be width: 550 and height: 550 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_icon').val('');
+				this.subscriber_logo = null;
+				this.tenant.subscriber_logo = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		getSites: function () {

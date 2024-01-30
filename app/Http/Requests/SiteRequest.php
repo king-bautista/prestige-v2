@@ -27,6 +27,10 @@ class SiteRequest extends FormRequest
             "name" => "required|string",
             "site_code" => "required|string",
             "descriptions" => "required|string",
+            "site_logo" => "required|mimes:jpeg,bmp,png",
+            "site_banner" => "required|mimes:jpeg,bmp,png",
+            "site_background" => "required|mimes:jpeg,bmp,png",
+            "site_background_portrait" => "required|mimes:jpeg,bmp,png",
         ];
     }
 }

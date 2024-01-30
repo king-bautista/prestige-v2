@@ -60,9 +60,11 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Logo</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Logo<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="site_logo" @change="siteLogoChange">
+									<input type="file" id="img_logo" accept="image/*" ref="site_logo"
+										@change="siteLogoChange">
 									<footer class="blockquote-footer">image max size is 155 x 155 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -70,9 +72,10 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Banner Image</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Banner Image<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="site_banner" @change="siteBannerChange">
+									<input type="file" id="img_banner" accept="image/*" ref="site_banner" @change="siteBannerChange">
 									<footer class="blockquote-footer">image max size is 1451 x 440 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -80,9 +83,10 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Background Image</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Background Image<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="site_background"
+									<input type="file" id="img_background" accept="image/*" ref="site_background"
 										@change="siteBackgroundChange">
 									<footer class="blockquote-footer">image max size is 1920 x 1080 pixels</footer>
 								</div>
@@ -91,10 +95,11 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Background Portrait Image </label>
+								<label for="firstName" class="col-sm-3 col-form-label">Background Portrait Image<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="site_background_portrait"
-										@change="siteBackgroundPortraitChange">
+									<input type="file" id="img_background_portrait" accept="image/*"
+										ref="site_background_portrait" @change="siteBackgroundPortraitChange">
 									<footer class="blockquote-footer">image max size is 1080 x 1920 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -199,7 +204,9 @@
 												style="width: 120px">
 										</div>
 										<div class="col-3">
-											<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span> {{operational.start_time }} <span v-if="operational.end_time">to</span> {{ operational.end_time }}</i>
+											<i>{{ operational.schedules }} <span v-if="operational.start_time">|</span>
+												{{ operational.start_time }} <span v-if="operational.end_time">to</span> {{
+													operational.end_time }}</i>
 										</div>
 									</div>
 									<div class="form-group">
@@ -210,7 +217,21 @@
 									</div>
 								</div>
 							</div>
-
+							<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-body">
+											<div class="alert alert-block alert-danger">
+												<p>{{ error_message }}</p>
+											</div>
+										</div>
+										<div class="modal-footer justify-content-between">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<!-- /.card-body -->
 					</div>
@@ -317,6 +338,9 @@ export default {
 			site_background_portrait: '/images/no-image-available.png',
 			add_record: true,
 			edit_record: false,
+			image_width: 0,
+			image_height: 0,
+			error_message: '',
 			is_default: '',
 			companies: [],
 			options: {
@@ -437,26 +461,126 @@ export default {
 
 		siteLogoChange: function (e) {
 			const file = e.target.files[0];
-			this.site_logo = URL.createObjectURL(file);
-			this.site.site_logo = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.site_logo = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 155 && this.image_height == 155) {
+						obj.site.site_logo = this.file;
+					} else {
+						$('#img_logo').val('');
+						obj.site_logo = null;
+						obj.site.site_logo = '';
+						obj.error_message = "Invalid Image Size! Must be width: 155 and height: 155 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_logo').val('');
+				this.site_logo = null;
+				this.site.site_logo = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		siteBannerChange: function (e) {
 			const file = e.target.files[0];
-			this.site_banner = URL.createObjectURL(file);
-			this.site.site_banner = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.site_banner = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height; 
+					if (this.image_width == 1451 && this.image_height == 440) {
+						obj.site.site_banner = this.file;
+					} else {
+						$('#img_banner').val('');
+						obj.site_banner = null;
+						obj.site.site_banner = '';
+						obj.error_message = "Invalid Image Size! Must be width: 1451 and height: 440 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_banner').val('');
+				this.site_banner = null;
+				this.site.site_banner = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		siteBackgroundChange: function (e) {
 			const file = e.target.files[0];
-			this.site_background = URL.createObjectURL(file);
-			this.site.site_background = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.site_background = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 1920 && this.image_height == 1080) {
+						obj.site.site_background = this.file;
+					} else {
+						$('#img_background').val('');
+						obj.site_background = null;
+						obj.site.site_background = '';
+						obj.error_message = "Invalid Image Size! Must be width: 1920 and height: 1080 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_background').val('');
+				this.site_background = null;
+				this.site.site_background = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		siteBackgroundPortraitChange: function (e) {
 			const file = e.target.files[0];
-			this.site_background_portrait = URL.createObjectURL(file);
-			this.site.site_background_portrait = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.site_background_portrait = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 1080 && this.image_height == 1920) {
+						obj.site.site_background_portrait = this.file;
+					} else {
+						$('#img_background_portrait').val('');
+						obj.site_background_portrait = null;
+						obj.site.site_background_portrait = '';
+						obj.error_message = "Invalid Image Size! Must be width: 1080 and height: 1920 Current width: " + this.image_width + " and height: " + this.image_height;
+						$('#errorModal').modal('show');
+					};
+				}
+			} else {
+				$('#img_background_portrait').val('');
+				this.site_background_portrait = null;
+				this.site.site_background_portrait = '';
+				this.error_message = "The image must be a file type: bmp,jpeg,png.";
+				$('#errorModal').modal('show');
+			}
 		},
 
 		getCompany: function () {
