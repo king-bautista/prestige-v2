@@ -16,10 +16,10 @@ use App\Models\SiteMap;
 use App\Models\SitePointLink;
 use App\Models\SiteMapPaths;
 use App\Models\SiteMapConfig;
-use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SitePointLinkViewModel;
 
+use App\Models\AdminViewModels\SiteTenantViewModel;
 use App\Models\AdminViewModels\SiteMapViewModel;
 use App\Models\AdminViewModels\SiteScreenViewModel;
 use App\Models\AdminViewModels\SiteViewModel;
