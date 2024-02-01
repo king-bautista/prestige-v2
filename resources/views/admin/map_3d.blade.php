@@ -64,7 +64,7 @@
                     <div class="card-body">
                       <div class="row">
                         <div class="col-md-12 map-holder">
-                          <canvas id="canvas" style="position: absolute; height:100%;"></canvas>
+                          <div id="canvas" style="height:100%;"></div>
                         </div>
                       </div>
                     </div>
@@ -237,8 +237,6 @@
 	var vec = new THREE.Vector3(); // create once and reuse
 	var pos = new THREE.Vector3(); // create once and reuse
 
-	var loader1 = new KMZLoader();
-
 	let sphere = new THREE.SphereGeometry( 1,32,32);
 	let	redmarker =	new THREE.MeshBasicMaterial( {color: "rgba(255,0,0)"} );
 
@@ -282,12 +280,6 @@
 
 		$("#info").css('height',h + 'px');
 
-		//container = document.createElement( 'div' );
-		//document.body.appendChild( container );
-
-		//camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 10000 );
-		//camera.position.set( 3, 3, 3 );
-
 		/**setup camera*/
 		var fov = 30; //35 //Camera frustum vertical field of view.
 		var aspect  = w / h; 
@@ -317,8 +309,6 @@
 		pointMarkerHighlight.position.y = 6
 		scene.add(pointMarkerHighlight);
 
-		//createFloor();
-
 		targetForDragging = new THREE.Mesh(
 			new THREE.BoxGeometry(innerWidth,6,innerHeight),
 			new THREE.MeshBasicMaterial()
@@ -327,9 +317,7 @@
 
 		targetForDragging.material.transparent = true;  // This was used for debugging
 		targetForDragging.material.opacity = 1;
-		//floor.add(targetForDragging);
 
-		/**add by arnel sample text */
 		var fontloader = new THREE.FontLoader();
 
 		groupmarker = new THREE.Object3D;
@@ -347,17 +335,16 @@
 		addShadowedLight( 0.5, 1, - 1, 0xFFFFF, .5 );
 
 		@foreach ($site_maps as $site_map)
-      @if($site_map->site_building_level_id == $current_map->site_building_level_id)
-        active_floor = '@php echo $site_map->site_building_level_id; @endphp';
-      @endif
-      createFloor('@php echo $site_map->site_building_level_id; @endphp', '@php echo $site_map->map_file_path; @endphp');
-      //drawLinkLine('@php echo $site_map->site_building_level_id; @endphp');
-    @endforeach
+			@if($site_map->site_building_level_id == $current_map->site_building_level_id)
+				active_floor = '@php echo $site_map->site_building_level_id; @endphp';
+			@endif
+			createFloor('@php echo $site_map->site_building_level_id; @endphp', '@php echo $site_map->map_file_path; @endphp');
+			//drawLinkLine('@php echo $site_map->site_building_level_id; @endphp');
+		@endforeach
 		// renderer
 
 		renderer = new THREE.WebGLRenderer( { antialias: true } );
 		renderer.setPixelRatio( window.devicePixelRatio );
-		//renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.outputEncoding = THREE.sRGBEncoding;
 		var element = renderer.domElement;
 		
@@ -371,40 +358,21 @@
 		rotationPoint.position.set( 0, 0, 0 );
 		scene.add( rotationPoint );
 		
-
 		// Build the controls.
 		controls = new OrbitControls( camera, element );
 		var viewAngle = 60; //60;
 
 		controls.minDistance = 40; //max zoom in
 		controls.maxDistance = 500; //max zoom out
-		
-		//comment to enable z rotation
-		//controls.maxPolarAngle = viewAngle * Math.PI / 180;
-		//controls.minPolarAngle = viewAngle * Math.PI / 180;
-		
-		//controls.enablePan = false;
-		//controls.enableZoom = true; 
-		//controls.maxDistance = 1000; // Set our max zoom out distance (mouse scroll)
-		//controls.minDistance = 60; // Set our min zoom in distance (mouse scroll)
-		//controls.target.copy( new THREE.Vector3( 0, 0, 0 ) );
-		
-		//added by arnel
 		camera.position.set( 500, 0, 500 );
 
 		controls.addEventListener( 'change', controlChange );
 
 		controls.update();
 
-		// stats
-		//stats = new Stats();
-		//container.appendChild( stats.dom );
-
 		window.addEventListener( 'resize', onWindowResize, false );
 		document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		document.addEventListener( 'touchstart', onTouchStart, false );
-
-		//document.addEventListener("dblclick", onDblClick);
 	}
 
 	function addShadowedLight( x, y, z, color, intensity ) {
@@ -453,6 +421,8 @@
 			floors[index].add( kmz.scene );
 			floors[index].visible = is_default;
 		});
+
+		console.log(floors);
 	}
 
 	// Updates to apply to the scene while running.
@@ -468,10 +438,6 @@
 	}
 
 	function render() {
-		//var timer = Date.now() * 0.0005;
-		//camera.position.x = Math.cos( timer ) * 3;
-		//camera.position.z = Math.sin( timer ) * 3;
-		//camera.lookAt( cameraTarget );
 		renderer.render( scene, camera );
 
 		// Don't let the camera go too low.
@@ -516,10 +482,6 @@
 	// Event that fires upon mouse down.
 	function onDocumentMouseDown( event, bypass = false ) {
 		
-		//if(event.target.tagName == 'SELECT' ||  event.target.tagName == 'BUTTON')
-		//{
-			//console.log(event.target.tagName);
-		//}else{
 		if(event.target.tagName == 'CANVAS')
 		{
 			//console.log(event.target.tagName);
@@ -529,13 +491,6 @@
 		// Detect which mouse button was clicked.
 		if ( event.which == 1 )
 		{
-			//stopMovement();
-			//removetrail();
-
-			// Grab the coordinates.
-			//mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
-			//mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
-
 			mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
 			mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
 
@@ -545,27 +500,10 @@
 			// Grab all objects that can be intersected.
 			var intersects = raycaster.intersectObject( floors[active_floor]);
 			if ( intersects.length > 0 ) {
-			//	movements.push(intersects[ 0 ].point);
-				//console.log(intersects[ 0 ].point);
+				//movements.push(intersects[ 0 ].point);
 			}
-			//console.log(mouse);
-
-			/*vec.set(
-				( event.clientX / window.innerWidth ) * 2 - 1,
-				- ( event.clientY / window.innerHeight ) * 2 + 1,
-				0.5 );
-
-			vec.unproject( camera );
-
-			vec.sub( camera.position ).normalize();
-
-			var distance = - camera.position.z / vec.z;
-
-			pos.copy( camera.position ).add( vec.multiplyScalar( distance ) );
-			console.log(pos);*/
 		}
 	}
-
 
 	// remove the dot trail
 	function removetrail()
@@ -577,10 +515,6 @@
 			delete dotstoremove[index];
 		});
 	}
-
-	/**
-	* added by arnel
-	*/
 
 	function moveBall( location, destination, speed = playerSpeed ) {
 		var moveDistance = speed;
@@ -625,18 +559,10 @@
 		location.position.y = location.position.y + ( moveDistance * ( diffY / distance )) * multiplierY;
 		
 		// If the position is close we can call the movement complete.
-		if (( location.position.x <= newPosX + playerSpeed && 
-				location.position.x >= newPosX - playerSpeed ) &&
-			( location.position.z <= newPosZ + playerSpeed && 
-				location.position.z >= newPosZ - playerSpeed ) &&
-			( location.position.y <= newPosY + playerSpeed && 
-				location.position.y >= newPosY - playerSpeed )
-			) {
-			//location.position.x = location.position.x;
-			//location.position.z = location.position.z;
-		
-			// Reset any movements.
-			//stopMovement();
+		if (( location.position.x <= newPosX + playerSpeed && location.position.x >= newPosX - playerSpeed ) &&
+			( location.position.z <= newPosZ + playerSpeed && location.position.z >= newPosZ - playerSpeed ) &&
+			( location.position.y <= newPosY + playerSpeed &&  location.position.y >= newPosY - playerSpeed )) {
+
 			if(currentpos < movements.length - 1)
 			{
 				currentpos++;
@@ -644,14 +570,10 @@
 				location.position.x = movements[0].x;
 				location.position.y = movements[0].y;
 				location.position.z = movements[0].z;
-				currentpos=1;
-				
+				currentpos=1;				
 			}
-			//movements.shift();
-			// Maybe move should return a boolean. True if completed, false if not. 
 		}
 	}
-
 
 	// Stop character movement.
 	function stopMovement() {
@@ -675,7 +597,6 @@
 		tempball.position.set ( posX, .1, posZ);
 		dotstoremove.push(tempball);
 		scene.add(tempball);
-		//////////
 
 		// Set a multiplier just in case we need negative values.
 		var multiplierX = 1;
@@ -700,21 +621,14 @@
 		location.position.z = location.position.z + ( moveDistance * ( diffZ / distance )) * multiplierZ;
 		
 		// If the position is close we can call the movement complete.
-		if (( location.position.x <= newPosX + playerSpeed && 
-				location.position.x >= newPosX - playerSpeed ) &&
-			( location.position.z <= newPosZ + playerSpeed && 
-				location.position.z >= newPosZ - playerSpeed )) {
-			//location.position.x = location.position.x;
-			//location.position.z = location.position.z;
-		
+		if (( location.position.x <= newPosX + playerSpeed && location.position.x >= newPosX - playerSpeed ) &&
+			( location.position.z <= newPosZ + playerSpeed && location.position.z >= newPosZ - playerSpeed )) {		
 			// Reset any movements.
 			stopMovement();
-		
-			// Maybe move should return a boolean. True if completed, false if not. 
 		}
 	}
 
-		// Create the main character.
+	// Create the main character.
 	function createCharacter() {
 		theball = new THREE.Mesh(
 			new THREE.SphereGeometry( .1, 32, 32 ), 
@@ -726,9 +640,6 @@
 	
 	function onTouchStart(event, bypass = false) {
 		event.preventDefault();
-		//window.alert(event.clientX + " ---- " + event.clientY);
-		//stopMovement();
-		//removetrail();
 
 		// Grab the coordinates.
 		mouse.x = ( event.touches[0].clientX / renderer.domElement.clientWidth ) * 2 - 1;
@@ -744,7 +655,6 @@
 		}
 	}
 
-
 	function controlChange()
 	{
 		var c = this;
@@ -755,13 +665,9 @@
 				{
 					this.text.rotation.z = (360 * Math.PI / 180) - this.rotz;
 				}else{
-					/*var axis = new THREE.Vector3(this.coords);
-					var radian = ((360 * Math.PI / 180) - this.rotz) * Math.PI / 180;
-					this.text.rotateOnAxis(axis,radian);*/
 					var children = this.text.children;
 					for(var i = 0, j = children.length; i < j; i++)
 					{
-						//children[i].position.x = this.coords.x - (children.length - i) * info.text_size * 1.5;
 						children[i].rotation.z = (360 * Math.PI / 180) - this.rotz;
 					}
 				}
@@ -772,14 +678,11 @@
 				{
 					this.text.rotation.z = this.rotz;
 				}else{
-					/*var axis = new THREE.Vector3(this.coords);
-					var radian = ((360 * Math.PI / 180) - this.rotz) * Math.PI / 180;
-					this.text.rotateOnAxis(axis,radian);*/
 					var children = this.text.children;
-										for(var i = 0, j = children.length; i < j; i++)
-										{
-												children[i].rotation.z = this.rotz;
-										}
+					for(var i = 0, j = children.length; i < j; i++)
+					{
+						children[i].rotation.z = this.rotz;
+					}
 				}
 			}
 		});
@@ -797,23 +700,10 @@
 		let o = intersects[0];
   		let pIntersect = o.point.clone();
   		floor.worldToLocal(pIntersect);
-
-		/*let pointMarker = new THREE.Mesh(
-			sphere, 
-			redmarker
-		);
-
-		//pointMarker.position.copy(o.face.normal).multiplyScalar(0.25).add(pIntersect);
-
-		pointMarker.position.x = intersects[0].point.x;
-		pointMarker.position.y = 6;
-		pointMarker.position.z = intersects[0].point.z;
-
-		scene.add( pointMarker );*/
-		
 	}
 
 	function setUpMouseHandler(element, mouseDownFunc, mouseDragFunc, mouseUpFunc) {
+
 		/*
 			element -- either the element itself or a string with the id of the element
 			mouseDownFunc(x,y,evt) -- should return a boolean to indicate whether to start a drag operation
@@ -834,6 +724,8 @@
 		var prevX, prevY;
 
 		function doMouseDown(evt) {
+			console.log('dito');
+
 			if (dragging) {
 				return;
 			}
@@ -959,34 +851,6 @@
 		element.addEventListener("touchstart", doTouchStart);
 	}
 
-	function doChangeMouseAction() {
-		if (document.getElementById("mouseRotate").checked) {
-			mouseAction = ROTATE;
-			controls.enabled = true;
-		}
-		else if (document.getElementById("mouseDrag").checked) {
-			mouseAction = DRAG;
-			controls.enabled = false;
-		}
-		else if (document.getElementById("mouseAdd").checked) {
-			mouseAction = ADD;
-			controls.enabled = false;
-		}
-		else if (document.getElementById("mouseDelete").checked) {
-			mouseAction = DELETE;
-		}
-		else if (document.getElementById("mouseLink").checked) {
-			mouseAction = LINK;
-		}
-		else if (document.getElementById("mouseLink2").checked) {
-			mouseAction = LINKSINGLE;
-			links = [];
-		}
-		else {
-			mouseAction = INFO;
-		}
-	}
-
 	function doMouseDown(x,y) {
 		if (mouseAction == ROTATE) {
 			return true;
@@ -996,31 +860,19 @@
 			floors[active_floor].remove(targetForDragging);  // I don't want to check for hits on targetForDragging
 		}
 
-		/*mouse.x = ( event.clientX / innerWidth ) * 2 - 1;
-		mouse.y = - ( event.clientY / innerHeight ) * 2 + 1;	
-		raycaster.setFromCamera(mouse, camera);*/
-
-		//var a = 2 * x / innerWidth - 1;
-		//var b = 1 - 2 * y / innerHeight;
-
 		var a = 2 * x / container.offsetWidth - 1;
 		var b = 1 - 2 * y / container.offsetHeight;
 
 		raycaster.setFromCamera( new THREE.Vector2(a,b), camera );
-		//let intersects = raycaster.intersectObjects(scene.children);
 		let intersects = raycaster.intersectObjects(floors[active_floor].children);
 
 		if (intersects.length < 1) return;
-
-		
 
 		let item = intersects[0];
 		let objectHit = item.object;
   		let pIntersect = item.point.clone();
   		floors[active_floor].worldToLocal(pIntersect);
 
-		console.log(mouseAction);
-		console.log(objectHit);
 		switch (mouseAction) {
 			case ADD:
 				if (objectHit.name == 'floor') {
@@ -1145,16 +997,12 @@
 	function doMouseMove(x,y,evt,prevX,prevY) {
 		if (mouseAction == DRAG) {
 
-			//controls.enabled = false;
 			var a = 2 * x /innerWidth - 1;
 			var b = 1 - 2 * y/innerHeight;
 			raycaster.setFromCamera( new THREE.Vector2(a,b), camera );
 			intersects = raycaster.intersectObject( targetForDragging ); 
 
-			//intersects = raycaster.intersectObject( floors[active_floor] ); 
-			
-			if (intersects.length == 0) {
-				
+			if (intersects.length == 0) {				
 				console.log('moving no in');
 				return;
 			}
@@ -1173,7 +1021,6 @@
 				a = Math.min(w,Math.max(-w,coords.x));  // clamp coords to the range -19 to 19, so object stays on ground
 				b = Math.min(h,Math.max(-h,coords.z));
 				
-
 				dragItem.position.set(a,locationY,b);
 
 				redrawLine(dragItem.userData.id,a,locationY,b);
@@ -1192,27 +1039,26 @@
 	}
 
 	function doMouseUp(x,y) {
-		if (mouseAction == DRAG) {
+		if (mouseAction == DRAG) {			
+			// UPDATE TO site_points TABLE
 
-			//controls.enabled = true;
-			//update to db
-			$.ajax({
-				url: '' + dragItem.userData.id,
-				type: 'POST',
-				data: {'point_x':dragItem.position.x,'point_y':dragItem.position.y,'point_z':dragItem.position.z},
-				dataType: 'JSON',
-				beforeSend: function(){
-				},
-				success: function(data){
-					//obj.userData.id = data.id;
-				},
-				complete: function(){
+			// $.ajax({
+			// 	url: '' + dragItem.userData.id,
+			// 	type: 'POST',
+			// 	data: {'point_x':dragItem.position.x,'point_y':dragItem.position.y,'point_z':dragItem.position.z},
+			// 	dataType: 'JSON',
+			// 	beforeSend: function(){
+			// 	},
+			// 	success: function(data){
+			// 		//obj.userData.id = data.id;
+			// 	},
+			// 	complete: function(){
 					
-				},
-				error: function(jqXHR, textStatus, errorThrown){
+			// 	},
+			// 	error: function(jqXHR, textStatus, errorThrown){
 					
-				}
-			});
+			// 	}
+			// });
 		}
 	}
 
@@ -1255,7 +1101,6 @@
 		
 		if(!lines_start.hasOwnProperty(links[0].userData.id)) lines_start[links[0].userData.id] = [];
 		lines_start[links[0].userData.id].push(line);
-
 
 		if(!lines_end.hasOwnProperty(links[1].userData.id)) lines_end[links[1].userData.id] = [];
 		lines_end[links[1].userData.id].push(line);
@@ -1356,40 +1201,28 @@
 
 		if(info === undefined)
 		{
-			//save to db
-			$.ajax({
-				url: '',
-				type: 'POST',
-				data: {},
-				dataType: 'JSON',
-				beforeSend: function(){
-				},
-				success: function(data){
-					obj.userData = data;
-					map_points[data.id] = obj;
-				},
-				complete: function(){
-					
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					
-				}
+			// SAVE TO site_points
+			$.post("/admin/site/map/create-point", { 
+				map_id: active_floor, 
+				point_x: coords.x, 
+				point_y: coords.y, 
+				point_z: coords.z 
+			}).done(function( data ) {
+				obj.userData = data.data;
+				map_points[data.id] = obj;
 			});
 		}else if(info.tenant_id > 0){
 			
 			let label = info.point_label ? info.point_label : tenants[info.tenant_id].store_name;
-
 
 			if(info.wrap_at > 0 && label.length > info.wrap_at)
 			{
 				var group = new THREE.Object3D();
 				var cutText = label;
 				var origCoords = coords;
-				info.wrap_at = label.split(' ').reduce(
-								function (a, b) {
-									return a.length > b.length ? a : b;
-								}
-							).length;
+				info.wrap_at = label.split(' ').reduce(function (a, b) {
+					return a.length > b.length ? a : b;
+				}).length;
 
 				while(cutText.length > info.wrap_at && cutText.indexOf(' ') >= 0){
 					if( cutText.charAt(info.wrap_at) === ' ' ) {
@@ -1473,14 +1306,11 @@
 				text.position.x = coords.x;
 				text.position.y = coords.y + 1;
 				text.position.z = coords.z;
-			
-				//texts.push({'text':text,'rotz':text.rotation.z});
 				texts[info.id] = {'text':text,'rotz':text.rotation.z,'type':'text'};
 				floors[floor].add( text );
 			}
 
 			//update point details
-			//obj.userData['tenant_id'] = info.tenant_id;
 			obj.userData = info;
 			map_points[info.id] = obj;
 		}else{
@@ -1490,87 +1320,107 @@
 
 	function showPointInfo(objectHit)
 	{
-		$("#info .id").html("Point ID: " + objectHit.userData.id);
-		$("#info .point_x").val(objectHit.position.x);
-		$("#info .point_y").val(objectHit.position.y);
-		$("#info .point_z").val(objectHit.position.z);
+		// $("#info .id").html("Point ID: " + objectHit.userData.id);
+		// $("#info .point_x").val(objectHit.position.x);
+		// $("#info .point_y").val(objectHit.position.y);
+		// $("#info .point_z").val(objectHit.position.z);
 		
-		$("#info .tenant_id").val(objectHit.userData.tenant_id);
-		$("#info #point_id").val(objectHit.userData.id);
-		$("#info .text_size").val(objectHit.userData.text_size);
-		$("#info .rotation_z").val(objectHit.userData.rotation_z);
-		$("#info .point_type").val(objectHit.userData.point_type);
-		$("#info .point_label").val(objectHit.userData.point_label);
-		$("#info .wrap_at").val(objectHit.userData.wrap_at > 0 ? 1: 0);
-		$("#info #customSwitchwrapat").prop('checked',objectHit.userData.wrap_at > 0 ? true: false);
-		$("#info .is_pwd").val(objectHit.userData.is_pwd > 0 ? 1: 0);
-		$("#info #customSwitchpwd").prop('checked',objectHit.userData.is_pwd > 0 ? true: false);
-		console.log(objectHit.userData);
-		pointMarkerHighlight.position.x = objectHit.position.x;
-		pointMarkerHighlight.position.y = objectHit.position.y-1;
-		pointMarkerHighlight.position.z = objectHit.position.z;
-		
-		
-		//show link
-		/*let mapPointsAll = <?php //echo json_encode($map_points);?>;
-		let mapPoints = mapPointsAll[active_floor];
-		let linksDBAll = <?php //echo json_encode($links);?>;
-		let linksDB = linksDBAll[active_floor];
-		
-		$.each(linksDB,function(index){
-			var links = this;
-			$.each(links,function(){
-				if(mapPoints.hasOwnProperty(this.point_a) && mapPoints.hasOwnProperty(this.point_b))*/
+		// $("#info .tenant_id").val(objectHit.userData.tenant_id);
+		// $("#info #point_id").val(objectHit.userData.id);
+		// $("#info .text_size").val(objectHit.userData.text_size);
+		// $("#info .rotation_z").val(objectHit.userData.rotation_z);
+		// $("#info .point_type").val(objectHit.userData.point_type);
+		// $("#info .point_label").val(objectHit.userData.point_label);
+		// $("#info .wrap_at").val(objectHit.userData.wrap_at > 0 ? 1: 0);
+		// $("#info #customSwitchwrapat").prop('checked',objectHit.userData.wrap_at > 0 ? true: false);
+		// $("#info .is_pwd").val(objectHit.userData.is_pwd > 0 ? 1: 0);
+		// $("#info #customSwitchpwd").prop('checked',objectHit.userData.is_pwd > 0 ? true: false);
+		// console.log(objectHit.userData);
+		// pointMarkerHighlight.position.x = objectHit.position.x;
+		// pointMarkerHighlight.position.y = objectHit.position.y-1;
+		// pointMarkerHighlight.position.z = objectHit.position.z;
 	}
-
-	document.getElementById("mouseRotate").onchange = doChangeMouseAction;
-	document.getElementById("mouseDrag").onchange = doChangeMouseAction;
-	document.getElementById("mouseAdd").onchange = doChangeMouseAction;
-	document.getElementById("mouseDelete").onchange = doChangeMouseAction;
-	document.getElementById("mouseInfo").onchange = doChangeMouseAction;
-	document.getElementById("mouseLink").onchange = doChangeMouseAction;
-	document.getElementById("mouseLink2").onchange = doChangeMouseAction;
-
 	
 	setUpMouseHandler(container,doMouseDown,doMouseMove,doMouseUp);
 	setUpTouchHandler(container,doMouseDown,doMouseMove,doMouseUp);
 
-</script>
-<!-- JQUERY METHOD AND ACTIONS -->
-<script>
-  $(document).ready(function() {
-    $('.btn-map').on('click', function() {
-      $('.btn-map').removeClass('active');
-      $(this).addClass('active');
-
-      var floor_id = $(this).data('floor_id');
-      // GET TENANTS ASSIGN FROM FLOOR
-      $.get("/admin/site/tenant/get-tenants-per-floor/"+floor_id, function(data) { 
-        $('#tenant_id').empty();
-        $('#tenant_id').append('<option value="">Select Tenant</option>');
-        $.each(data.data, function(key,val) {             
-          $('#tenant_id').append('<option value="'+val.id+'">'+val.brand_name+'</option>');
+	$(document).ready(function() {
+		$.ajaxSetup({
+            headers:
+            { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
         });
-      });
 
-    });
+		$(".mouseaction").on('click',function() {
+			$(this).addClass('mouseaction-selected');
+			$(".mouseaction").not(this).removeClass('mouseaction-selected');
+			$(this).find('input[type="radio"]').prop("checked", true);
+			var action = $('input[name="action"]:checked').val();
+			switch(action) {
+				case 'rotate':
+					mouseAction = ROTATE;
+					controls.enabled = true;
+				break;
+				case 'drag_point':
+					mouseAction = DRAG;
+					controls.enabled = false;
+				break;
+				case 'add_point':
+					mouseAction = ADD;
+					controls.enabled = false;
+				break;
+				case 'delete_point':
+					mouseAction = DELETE;
+				break;
+				case 'point_info':
+					mouseAction = INFO;
+				break;
+				case 'single_link':
+					mouseAction = LINK;
+				break;
+				case 'continous_link':
+					mouseAction = LINKSINGLE;
+					links = [];
+				break;
+			}
+		});
 
-    $('.toggle-right-button').on('click', function() {
-      $('.map-form-holder').toggle( "slide", { direction: "right" }, function() {
-        $('.map-form-arrow-left').show();
-      });
-    });
+		$('.btn-map').on('click', function() {
+			$('.btn-map').removeClass('active');
+			$(this).addClass('active');
 
-    $('.map-form-arrow-left').on('click', function() {
-      $('.map-form-holder').show( "slide", { direction: "right" } );
-      $('.map-form-arrow-left').hide();
-    });
+			active_floor = $(this).data('floor_id');
 
-    var container_height = $('.content-wrapper').height()-200;
-    // $('.map-holder').css('height', container_height);
-    $('.map-form-holder').css('height', container_height);
+			$.each(floors,function(index){
+				this.visible = (index == active_floor);
+			});
 
-  });
+			// GET TENANTS ASSIGN FROM FLOOR
+			$.get("/admin/site/tenant/get-tenants-per-floor/"+floor_id, function(data) { 
+				$('#tenant_id').empty();
+				$('#tenant_id').append('<option value="">Select Tenant</option>');
+				$.each(data.data, function(key,val) {             
+				$('#tenant_id').append('<option value="'+val.id+'">'+val.brand_name+'</option>');
+				});
+			});
+
+		});
+
+		$('.toggle-right-button').on('click', function() {
+			$('.map-form-holder').toggle( "slide", { direction: "right" }, function() {
+				$('.map-form-arrow-left').show();
+			});
+		});
+
+		$('.map-form-arrow-left').on('click', function() {
+			$('.map-form-holder').show( "slide", { direction: "right" } );
+			$('.map-form-arrow-left').hide();
+		});
+
+		var container_height = $('.content-wrapper').height()-200;
+		// $('.map-holder').css('height', container_height);
+		$('.map-form-holder').css('height', container_height);
+
+	});
 </script>
 <!-- END -->
 

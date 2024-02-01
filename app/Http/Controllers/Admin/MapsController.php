@@ -281,6 +281,8 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'site_map_id' => $request->map_id,
                 'point_x' => $request->point_x,
                 'point_y' => $request->point_y,
+                'point_z' => $request->point_z,
+                'wrap_at' => 0,
             ];
 
             $site_point = SitePoint::create($data);
