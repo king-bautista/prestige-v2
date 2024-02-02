@@ -213,17 +213,18 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         $current_map = SiteMapViewModel::find($id);
         $amenities = Amenity::get();
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
+        return $map_points = SitePointViewModel::where('site_map_id', $current_map->site_id)->get();
 
         if($current_map->map_type == '3D') {
             $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)
             ->where('map_type', '3D')->get();
             $site_details = SiteViewModel::find($current_map->site_id);
-            return view('admin.map_3d', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));    
+            return view('admin.map_3d', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points']));    
         }
         else {
             $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('site_screen_id', $current_map->site_screen_id)->get();
             $site_details = SiteViewModel::find($current_map->site_id);    
-            return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants']));
+            return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points']));
         }        
     }
 
@@ -307,6 +308,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $data = [
                 'point_x' => $request->point_x,
                 'point_y' => $request->point_y,
+                'point_z' => $request->point_z,
             ];
 
             $site_point->update($data);
@@ -330,8 +332,8 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
             $site_point = SitePoint::find($id);
             $site_point->delete();
 
-            SitePointLink::where('point_a', $id)->delete();
-            SitePointLink::where('point_b', $id)->delete();
+            // SitePointLink::where('point_a', $id)->delete();
+            // SitePointLink::where('point_b', $id)->delete();
             return $this->response($site_point, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
@@ -396,9 +398,9 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'rotation_z' => ($request->text_y_position) ? $request->text_y_position : 0,
                 'text_size' => ($request->text_size) ? $request->text_size : 0,
                 'text_width' => ($request->text_width) ? $request->text_width : 0,
-                'is_pwd' => ($request->is_pwd) ? $request->is_pwd : 0,
                 'point_label' => ($request->point_label) ? $request->point_label : null,
                 'wrap_at' => ($request->wrap_at == 1) ? 1 : 0,
+                'is_pwd' => ($request->is_pwd) ? $request->is_pwd : 0,
             ];
 
             $site_point->update($data);

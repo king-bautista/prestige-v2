@@ -66,15 +66,23 @@ class SitePointViewModel extends Model
 
     public function getAmenityNameAttribute() 
     {
-        if($this->point_type) 
-            return Amenity::find($this->point_type)->name;
+        if($this->point_type) {
+            $amenity = Amenity::find($this->point_type);
+            if($amenity)
+                $amenity->name;
+            return null;
+        }
         return null;
     }
 
     public function getIconPathAttribute() 
     {
-        if($this->point_type)
-            return asset(Amenity::find($this->point_type)->icon);
+        if($this->point_type) {
+            $amenity = Amenity::find($this->point_type);
+            if($amenity)
+                $amenity->icon;
+            return null;
+        }
         return null;
     }
 }
