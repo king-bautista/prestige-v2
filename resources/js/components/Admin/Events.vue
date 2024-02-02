@@ -41,11 +41,12 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Banner <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="fileImgBanner" @change="bannerChange">
+									<input type="file" id="img_banner" accept="image/*" ref="image_url"
+										@change="bannerChange">
 									<footer class="blockquote-footer">image max size is 355 x 660 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
-									<img v-if="imgBanner" :src="imgBanner" class="img-thumbnail" />
+									<img v-if="image_url" :src="image_url" class="img-thumbnail" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -162,12 +163,12 @@ export default {
 				event_name: '',
 				location: '',
 				event_date: '',
-				image_url: '/images/no-image-available.png',
+				image_url: '',
 				start_date: '',
 				end_date: '',
 				active: 0,
 			},
-			imgBanner: '',
+			image_url: '',
 			site_list: [],
 			options: {
 				format: 'YYYY/MM/DD',
@@ -175,6 +176,8 @@ export default {
 			},
 			add_record: true,
 			edit_record: false,
+			image_width: 0,
+			image_height: 0,
 			dataFields: {
 				image_url_path: {
 					name: "Banner",
@@ -256,11 +259,33 @@ export default {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
 		},
-
 		bannerChange: function (e) {
 			const file = e.target.files[0];
-			this.imgBanner = URL.createObjectURL(file);
-			this.event.image_url = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.image_url = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == 355 && this.image_height == 660) {
+						obj.event.image_url = this.file;
+					} else {
+						$('#img_banner').val('');
+						obj.image_url = '';
+						obj.event.image_url = '';
+						toastr.error("Invalid Image Size! Must be width: 355 and height: 660. Current width: " + this.image_width + " and height: " + this.image_height);
+					};
+				}
+			} else {
+				$('#img_banner').val('');
+				this.image_url = '';
+				this.event.image_url = '';
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
+			}
 		},
 
 		AddNewEvent: function () {
@@ -272,10 +297,10 @@ export default {
 			this.event.event_date = '';
 			this.event.start_date = '';
 			this.event.end_date = '';
-			this.event.imgBanner = '';
-			this.imgBanner = '/images/no-image-available.png';
+			this.event.image_url = '';
+			this.image_url = '';
 			this.event.active = 0;
-			this.$refs.fileImgBanner.value = null;
+			$('#img_banner').val('');
 			$('#event-form').modal('show');
 		},
 
@@ -287,7 +312,8 @@ export default {
 			formData.append("event_date", (this.event.event_date) ? this.event.event_date : '');
 			formData.append("start_date", this.event.start_date);
 			formData.append("end_date", this.event.end_date);
-			formData.append("imgBanner", this.event.image_url);
+			formData.append("image_url", this.event.image_url);
+			formData.append("image_url_hidden", this.event.image_url);
 
 			axios.post('/admin/event/store', formData, {
 				headers: {
@@ -312,10 +338,15 @@ export default {
 					this.event.event_date = event.event_date;
 					this.event.start_date = event.start_date;
 					this.event.end_date = event.end_date;
-					this.imgBanner = event.image_url_path;
-					this.event.image_url = '',
-						this.event.active = event.active;
-					this.$refs.fileImgBanner.value = '';
+					this.event.active = event.active;
+					if (event.image_url) {
+						//this.icon = amenity.icon_path;
+						this.image_url = event.image_url_path;
+					}
+					else {
+						this.image_url = this.event.image_url;
+					}
+					this.$refs.image_url.value = null;
 
 					this.add_record = false;
 					this.edit_record = true;
@@ -324,7 +355,6 @@ export default {
 		},
 
 		updateEvent: function () {
-			console.log(this.event.image_url);
 			let updateFormData = new FormData();
 			updateFormData.append("id", this.event.id);
 			updateFormData.append("site_id", this.event.site_id);
@@ -333,7 +363,8 @@ export default {
 			updateFormData.append("event_date", (this.event.event_date) ? this.event.event_date : '');
 			updateFormData.append("start_date", this.event.start_date);
 			updateFormData.append("end_date", this.event.end_date);
-			updateFormData.append("imgBanner", this.event.image_url);
+			updateFormData.append("image_url", this.event.image_url);
+			updateFormData.append("image_url_hidden", this.image_url);
 			updateFormData.append("active", this.event.active);
 
 			axios.post('/admin/event/update', updateFormData, {

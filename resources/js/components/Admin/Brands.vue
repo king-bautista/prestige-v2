@@ -148,20 +148,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="alert alert-block alert-danger">
-							<p>{{ error_message }}</p>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-between">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 <script>
@@ -181,7 +167,7 @@ export default {
 				category_id: null,
 				name: '',
 				descriptions: '',
-				logo: '/images/no-image-available.png',
+				logo: '',
 				supplementals: [],
 				tags: [],
 				active: false,
@@ -196,7 +182,6 @@ export default {
 			edit_record: false,
 			image_width: 0,
 			image_height: 0,
-			error_message: '',
 			dataFields: {
 				logo_image_path: {
 					name: "Logo",
@@ -300,18 +285,16 @@ export default {
 						obj.brand.logo = this.file;
 					} else {
 						$('#img_logo').val('');
-						obj.logo = null;
+						obj.logo = '';
 						obj.brand.logo = '';
-						obj.error_message = "Invalid Image Size! Must be width: 120 and height: 120 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 120 and height: 120. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_logo').val('');
-				this.logo = null;
+				this.logo = '';
 				this.brand.logo = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -358,12 +341,12 @@ export default {
 			this.brand.name = '';
 			this.brand.descriptions = '';
 			this.brand.category_id = null;
-			this.brand.logo = '/images/no-image-available.png';
+			this.logo = '';
+			this.brand.logo = '';
 			this.brand.supplementals = [];
 			this.brand.tags = [];
 			this.brand.active = false;
 			this.$refs.logo.value = null;
-
 			$('#brand-form').modal('show');
 		},
 
@@ -373,6 +356,7 @@ export default {
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
 			formData.append("logo", this.brand.logo);
+			formData.append("logo_hidden", this.brand.logo);	
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
 			formData.append("active", this.brand.active);
@@ -432,6 +416,7 @@ export default {
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
 			formData.append("logo", this.brand.logo);
+			formData.append("logo_hidden", this.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
 			formData.append("active", this.brand.active);

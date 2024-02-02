@@ -27,7 +27,17 @@ class ProductsRequest extends FormRequest
             "name" => "required|string",
             "descriptions" => "required|string",
             "type" => "required|string",
-            "image_url" => "required|mimes:jpeg,bmp,png",
+            "image_url_hidden" => "required",
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'image_url_hidden.required' => 'The banner image field is required.',
         ];
     }
 }

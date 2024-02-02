@@ -27,9 +27,20 @@ class LandmarkRequest extends FormRequest
             "site_id" => "required",
             "landmark" => "required|string",
             "descriptions" => "required|string",
-            "imgBanner" => "required|mimes:jpeg,bmp,png",
-            "imgBannerThumbnail" => "required|mimes:jpeg,bmp,png",
+            "imgBanner_hidden" => "required",
+            "imgBannerThumbnail_hidden" => "required",
 
+        ];
+    }
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'site_id.required' => 'The site field is required.',
+            'imgBanner_hidden.required' => 'The banner field is required.',
+            'imgBannerThumbnail_hidden.required' => 'The Banner Thumbnail field is required.',
         ];
     }
 }

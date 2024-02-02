@@ -144,20 +144,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="alert alert-block alert-danger">
-							<p>{{ error_message }}</p>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-between">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 <script>
@@ -179,8 +165,8 @@ export default {
 				descriptions: '',
 				name: '',
 				title: '',
-				image_url: '/images/no-image-available.png',
-				image_thumbnail_url: '/images/no-image-available.png',
+				image_url: '',
+				image_thumbnail_url: '',
 				active: false,
 			},
 			imgBanner: '',
@@ -270,10 +256,6 @@ export default {
 		},
 
 		bannerChange: function (e) {
-			// const file = e.target.files[0];
-			// this.imgBanner = URL.createObjectURL(file);
-			// this.landmark.image_url = file;
-
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
 				this.imgBanner = URL.createObjectURL(file);
@@ -289,25 +271,20 @@ export default {
 						obj.landmark.image_url = this.file;
 					} else {
 						$('#img_banner').val('');
-						obj.imgBanner = null;
+						obj.imgBanner = '';
 						obj.landmark.image_url = '';
-						obj.error_message = "Invalid Image Size! Must be width: 355 and height: 600 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 355 and height: 660. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_banner').val('');
-				this.imgBanner = null;
+				this.imgBanner = '';
 				this.landmark.image_url = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
 		bannerThumbnailChange: function (e) {
-			// const file = e.target.files[0];
-			// this.imgBannerThumbnail = URL.createObjectURL(file);
-			// this.landmark.image_thumbnail_url = file;
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
 				this.imgBannerThumbnail = URL.createObjectURL(file);
@@ -323,18 +300,16 @@ export default {
 						obj.landmark.image_thumbnail_url = this.file;
 					} else {
 						$('#img_banner_thumbnail').val('');
-						obj.imgBannerThumbnail = null;
+						obj.imgBannerThumbnail = '';
 						obj.landmark.image_thumbnail_url = '';
-						obj.error_message = "Invalid Image Size! Must be width: 315 and height: 265 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 315 and height: 265. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_banner_thumbnail').val('');
-				this.imgBannerThumbnail = null;
+				this.imgBannerThumbnail = '';
 				this.landmark.image_thumbnail_url = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -346,8 +321,8 @@ export default {
 			this.landmark.descriptions = '';
 			this.landmark.image_url = '';
 			this.landmark.image_thumbnail_url = '';
-			this.imgBanner = '/images/no-image-available.png';
-			this.imgBannerThumbnail = '/images/no-image-available.png';
+			this.imgBanner = '';
+			this.imgBannerThumbnail = '';
 			this.landmark.active = false;
 			this.$refs.imgBanner.value = null;
 			this.$refs.imgBannerThumbnail.value = null;
@@ -362,6 +337,8 @@ export default {
 			formData.append("descriptions", this.landmark.descriptions);
 			formData.append("imgBanner", this.landmark.image_url);
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
+			formData.append("imgBanner_hidden", this.landmark.image_url);
+			formData.append("imgBannerThumbnail_hidden", this.landmark.image_thumbnail_url);
 
 			axios.post('/admin/landmark/store', formData, {
 				headers: {
@@ -401,8 +378,10 @@ export default {
 			formData.append("site_id", this.landmark.site_id);
 			formData.append("landmark", this.landmark.landmark);
 			formData.append("descriptions", this.landmark.descriptions);
-			formData.append("imgBanner", this.landmark.image_url);
+			formData.append("imgBanner", this.landmark.image_url); 
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
+			formData.append("imgBanner_hidden", this.imgBanner); 
+			formData.append("imgBannerThumbnail_hidden", this.imgBannerThumbnail);
 			formData.append("active", this.landmark.active);
 
 			axios.post('/admin/landmark/update', formData, {

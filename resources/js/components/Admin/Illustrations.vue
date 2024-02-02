@@ -9,8 +9,9 @@
 							<div class="card-body">
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey"
-									v-on:addNewIllustration="addNewIllustration" v-on:editButton="editIllustration" v-on:modalBatchUpload="modalBatchUpload" 
-									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
+									v-on:addNewIllustration="addNewIllustration" v-on:editButton="editIllustration"
+									v-on:modalBatchUpload="modalBatchUpload" v-on:downloadCsv="downloadCsv"
+									v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -72,7 +73,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site</label>
+								<label for="firstName" class="col-sm-4 col-form-label">Site<span
+										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
 									<select class="custom-select" v-model="illustration.site_id">
 										<option value="">Select Site</option>
@@ -91,7 +93,8 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Kiosk Primary <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="kiosk_image_primary" @change="kioskPrimary">
+									<input type="file" id="img_kiosk_primary" accept="image/*" ref="kiosk_image_primary"
+										@change="kioskPrimary">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer"
 										v-if="illustration.category_id && !illustration.sub_category_id">image max size is
@@ -109,7 +112,8 @@
 										v-if="illustration.category_id && illustration.sub_category_id"
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" ref="kiosk_image_top" @change="kioskTop"
+									<input type="file" id="img_kiosk_top" accept="image/*" ref="kiosk_image_top"
+										@change="kioskTop"
 										:disabled="illustration.category_id && !illustration.sub_category_id">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
 									<footer class="blockquote-footer"
@@ -218,6 +222,8 @@ export default {
 			mobile_image_top: '',
 			add_record: true,
 			edit_record: false,
+			image_width: 0,
+			image_height: 0,
 			dataFields: {
 				category_name: "Name",
 				site_name: "Site",
@@ -322,15 +328,69 @@ export default {
 		},
 
 		kioskPrimary: function (e) {
+			// const file = e.target.files[0];
+			// this.kiosk_image_primary = URL.createObjectURL(file);
+			// this.illustration.kiosk_image_primary = file;
 			const file = e.target.files[0];
-			this.kiosk_image_primary = URL.createObjectURL(file);
-			this.illustration.kiosk_image_primary = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.kiosk_image_primary = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+
+					this.image_width = this.width;
+					this.image_height = this.height;
+
+					if (this.image_width == obj.getPrimaryPixel()['width'] && this.image_height == obj.getPrimaryPixel()['height']) {
+						obj.illustration.kiosk_image_primary = this.file;
+					} else {
+						$('#img_kiosk_primary').val('');
+						obj.kiosk_image_primary = '';
+						obj.illustration.kiosk_image_primary = '';
+						toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
+					};
+				}
+			} else {
+				$('#img_kiosk_primary').val('');
+				this.kiosk_image_primary = '';
+				this.illustration.kiosk_image_primary = '';
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
+			}
 		},
 
 		kioskTop: function (e) {
+			// const file = e.target.files[0];
+			// this.kiosk_image_top = URL.createObjectURL(file);
+			// this.illustration.kiosk_image_top = file;
 			const file = e.target.files[0];
-			this.kiosk_image_top = URL.createObjectURL(file);
-			this.illustration.kiosk_image_top = file;
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.kiosk_image_top = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const img = new Image();
+				img.src = _URL.createObjectURL(file);
+				img.file = file;
+				var obj = this;
+				img.onload = function () {
+					this.image_width = this.width;
+					this.image_height = this.height;
+					if (this.image_width == obj.getTopPixel()['width'] && this.image_height == obj.getTopPixel()['height']) {
+						obj.illustration.kiosk_image_top = this.file;
+					} else {
+						$('#img_kiosk_top').val('');
+						obj.kiosk_image_top = '';
+						obj.illustration.kiosk_image_top = '';
+						toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
+					};
+				}
+			} else {
+				$('#img_kiosk_top').val('');
+				this.kiosk_image_top = '';
+				this.illustration.kiosk_image_top = '';
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
+			}
 		},
 
 		addNewIllustration: function () {
@@ -367,6 +427,8 @@ export default {
 			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
 			formData.append("kiosk_image_top", this.illustration.kiosk_image_top);
+			formData.append("kiosk_image_primary_hidden", this.illustration.kiosk_image_primary);
+			formData.append("kiosk_image_top_hidden", this.illustration.kiosk_image_top);
 			formData.append("active", this.illustration.active);
 			axios.post('/admin/site-category/store', formData, {
 				headers: {
@@ -413,7 +475,9 @@ export default {
 			formData.append("site_id", this.illustration.site_id);
 			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
-			formData.append("kiosk_image_top", this.illustration.kiosk_image_top);
+			formData.append("kiosk_image_top", this.illustration.kiosk_image_top); 
+			formData.append("kiosk_image_primary_hidden", this.kiosk_image_primary);
+			formData.append("kiosk_image_top_hidden", this.kiosk_image_top);
 			formData.append("active", this.illustration.active);
 			axios.post('/admin/site-category/update', formData, {
 				headers: {
@@ -474,6 +538,28 @@ export default {
 					link.click();
 				})
 		},
+		getPrimaryPixel: function () {
+			var pixel = new Object();
+			if (this.illustration.category_id && !this.illustration.sub_category_id) {
+				pixel['width'] = 349;
+				pixel['height'] = 528;
+				return pixel;
+			}
+			pixel['width'] = 320;
+			pixel['height'] = 90;
+			return pixel;
+		},
+		getTopPixel: function () {
+			var pixel = new Object();
+			if (this.illustration.category_id && !this.illustration.sub_category_id) {
+				pixel['width'] = '';
+				pixel['height'] = '';
+				return pixel;
+			}
+			pixel['width'] = 1470;
+			pixel['height'] = 72;
+			return pixel;
+		}
 	},
 
 	components: {
