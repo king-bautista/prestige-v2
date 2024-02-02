@@ -275,14 +275,14 @@ export default {
 						obj.event.image_url = this.file;
 					} else {
 						$('#img_banner').val('');
-						obj.image_url = null;
+						obj.image_url = '';
 						obj.event.image_url = '';
 						toastr.error("Invalid Image Size! Must be width: 355 and height: 660. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_banner').val('');
-				this.image_url = null;
+				this.image_url = '';
 				this.event.image_url = '';
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
@@ -313,6 +313,7 @@ export default {
 			formData.append("start_date", this.event.start_date);
 			formData.append("end_date", this.event.end_date);
 			formData.append("image_url", this.event.image_url);
+			formData.append("image_url_hidden", this.event.image_url);
 
 			axios.post('/admin/event/store', formData, {
 				headers: {
@@ -363,6 +364,7 @@ export default {
 			updateFormData.append("start_date", this.event.start_date);
 			updateFormData.append("end_date", this.event.end_date);
 			updateFormData.append("image_url", this.event.image_url);
+			updateFormData.append("image_url_hidden", this.image_url);
 			updateFormData.append("active", this.event.active);
 
 			axios.post('/admin/event/update', updateFormData, {

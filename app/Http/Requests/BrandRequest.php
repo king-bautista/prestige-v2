@@ -27,7 +27,7 @@ class BrandRequest extends FormRequest
             "name" => "required|string",
             "descriptions" => "required|string",
             "category_id" => "required|string",
-            "logo" => "required",
+            "logo_hidden" => "required",
         ];
     }
 
@@ -38,6 +38,7 @@ class BrandRequest extends FormRequest
     {
         return [
             'category_id.required' => 'The category name field is required.',
+            'logo_hidden.required' => 'The logo field is required.',
         ];
     }
 

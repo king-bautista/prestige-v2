@@ -333,7 +333,7 @@ export default {
 					material = document.createElement("video");
 					material.src = file_path;
 					material.addEventListener("loadedmetadata", function () {
-						obj.advertisement.display_duration = this.duration; alert(this.videoHeight + ', ' + this.videoWidth + ', ' + file_type[0]);
+						obj.advertisement.display_duration = this.duration; console.log(material.videoWidth, material.videoHeight);
 						//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
 						obj.setfilter(index, this.videoHeight, this.videoWidth);
 					});

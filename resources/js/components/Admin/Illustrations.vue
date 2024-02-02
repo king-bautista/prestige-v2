@@ -348,14 +348,14 @@ export default {
 						obj.illustration.kiosk_image_primary = this.file;
 					} else {
 						$('#img_kiosk_primary').val('');
-						obj.kiosk_image_primary = null;
+						obj.kiosk_image_primary = '';
 						obj.illustration.kiosk_image_primary = '';
 						toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_kiosk_primary').val('');
-				this.kiosk_image_primary = null;
+				this.kiosk_image_primary = '';
 				this.illustration.kiosk_image_primary = '';
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
@@ -380,14 +380,14 @@ export default {
 						obj.illustration.kiosk_image_top = this.file;
 					} else {
 						$('#img_kiosk_top').val('');
-						obj.kiosk_image_top = null;
+						obj.kiosk_image_top = '';
 						obj.illustration.kiosk_image_top = '';
 						toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_kiosk_top').val('');
-				this.kiosk_image_top = null;
+				this.kiosk_image_top = '';
 				this.illustration.kiosk_image_top = '';
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
@@ -427,6 +427,8 @@ export default {
 			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
 			formData.append("kiosk_image_top", this.illustration.kiosk_image_top);
+			formData.append("kiosk_image_primary_hidden", this.illustration.kiosk_image_primary);
+			formData.append("kiosk_image_top_hidden", this.illustration.kiosk_image_top);
 			formData.append("active", this.illustration.active);
 			axios.post('/admin/site-category/store', formData, {
 				headers: {
@@ -473,7 +475,9 @@ export default {
 			formData.append("site_id", this.illustration.site_id);
 			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
-			formData.append("kiosk_image_top", this.illustration.kiosk_image_top);
+			formData.append("kiosk_image_top", this.illustration.kiosk_image_top); 
+			formData.append("kiosk_image_primary_hidden", this.kiosk_image_primary);
+			formData.append("kiosk_image_top_hidden", this.kiosk_image_top);
 			formData.append("active", this.illustration.active);
 			axios.post('/admin/site-category/update', formData, {
 				headers: {

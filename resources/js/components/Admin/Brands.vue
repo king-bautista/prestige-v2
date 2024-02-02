@@ -167,7 +167,6 @@ export default {
 				category_id: null,
 				name: '',
 				descriptions: '',
-				//logo: '/images/no-image-available.png',
 				logo: '',
 				supplementals: [],
 				tags: [],
@@ -286,14 +285,14 @@ export default {
 						obj.brand.logo = this.file;
 					} else {
 						$('#img_logo').val('');
-						obj.logo = null;
+						obj.logo = '';
 						obj.brand.logo = '';
 						toastr.error("Invalid Image Size! Must be width: 120 and height: 120. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_logo').val('');
-				this.logo = null;
+				this.logo = '';
 				this.brand.logo = '';
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
@@ -342,12 +341,12 @@ export default {
 			this.brand.name = '';
 			this.brand.descriptions = '';
 			this.brand.category_id = null;
+			this.logo = '';
 			this.brand.logo = '';
 			this.brand.supplementals = [];
 			this.brand.tags = [];
 			this.brand.active = false;
 			this.$refs.logo.value = null;
-
 			$('#brand-form').modal('show');
 		},
 
@@ -357,6 +356,7 @@ export default {
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
 			formData.append("logo", this.brand.logo);
+			formData.append("logo_hidden", this.brand.logo);	
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
 			formData.append("active", this.brand.active);
@@ -416,6 +416,7 @@ export default {
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
 			formData.append("logo", this.brand.logo);
+			formData.append("logo_hidden", this.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
 			formData.append("active", this.brand.active);

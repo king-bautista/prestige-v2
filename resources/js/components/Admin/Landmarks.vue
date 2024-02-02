@@ -271,14 +271,14 @@ export default {
 						obj.landmark.image_url = this.file;
 					} else {
 						$('#img_banner').val('');
-						obj.imgBanner = null;
+						obj.imgBanner = '';
 						obj.landmark.image_url = '';
 						toastr.error("Invalid Image Size! Must be width: 355 and height: 660. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_banner').val('');
-				this.imgBanner = null;
+				this.imgBanner = '';
 				this.landmark.image_url = '';
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
@@ -300,14 +300,14 @@ export default {
 						obj.landmark.image_thumbnail_url = this.file;
 					} else {
 						$('#img_banner_thumbnail').val('');
-						obj.imgBannerThumbnail = null;
+						obj.imgBannerThumbnail = '';
 						obj.landmark.image_thumbnail_url = '';
 						toastr.error("Invalid Image Size! Must be width: 315 and height: 265. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_banner_thumbnail').val('');
-				this.imgBannerThumbnail = null;
+				this.imgBannerThumbnail = '';
 				this.landmark.image_thumbnail_url = '';
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
@@ -337,6 +337,8 @@ export default {
 			formData.append("descriptions", this.landmark.descriptions);
 			formData.append("imgBanner", this.landmark.image_url);
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
+			formData.append("imgBanner_hidden", this.landmark.image_url);
+			formData.append("imgBannerThumbnail_hidden", this.landmark.image_thumbnail_url);
 
 			axios.post('/admin/landmark/store', formData, {
 				headers: {
@@ -376,8 +378,10 @@ export default {
 			formData.append("site_id", this.landmark.site_id);
 			formData.append("landmark", this.landmark.landmark);
 			formData.append("descriptions", this.landmark.descriptions);
-			formData.append("imgBanner", this.landmark.image_url);
+			formData.append("imgBanner", this.landmark.image_url); 
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
+			formData.append("imgBanner_hidden", this.imgBanner); 
+			formData.append("imgBannerThumbnail_hidden", this.imgBannerThumbnail);
 			formData.append("active", this.landmark.active);
 
 			axios.post('/admin/landmark/update', formData, {

@@ -224,14 +224,14 @@ export default {
 						obj.amenity.icon = this.file;
 					} else {
 						$('#img_icon').val('');
-						obj.icon = null;
+						obj.icon = '';
 						obj.amenity.icon = '';
 						toastr.error("Invalid Image Size! Must be width: 170 and height: 170. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_icon').val('');
-				this.icon = null;
+				this.icon = '';
 				this.amenity.icon = '';
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
@@ -251,6 +251,7 @@ export default {
 			let formData = new FormData();
 			formData.append("name", this.amenity.name);
 			formData.append("icon", this.amenity.icon);
+			formData.append("icon_hidden", this.amenity.icon); 
 
 			axios.post('/admin/amenity/store', formData, {
 				headers: {
@@ -288,7 +289,8 @@ export default {
 			let formData = new FormData();
 			formData.append("id", this.amenity.id);
 			formData.append("name", this.amenity.name);
-			formData.append("icon", this.amenity.icon);
+			formData.append("icon", this.amenity.icon); 
+			formData.append("icon_hidden", this.icon); 
 			formData.append("active", this.amenity.active);
 
 			axios.post('/admin/amenity/update', formData, {

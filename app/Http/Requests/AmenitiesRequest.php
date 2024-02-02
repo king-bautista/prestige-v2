@@ -25,7 +25,14 @@ class AmenitiesRequest extends FormRequest
     {
         return [
             "name" => "required|max:191",
-            "icon" => "required",
+            "icon_hidden" => "required",
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'icon_hidden.required' => 'The icon field is required.',
         ];
     }
 }

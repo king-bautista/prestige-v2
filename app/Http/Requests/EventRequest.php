@@ -27,7 +27,7 @@ class EventRequest extends FormRequest
             "site_id" => "required",
             "event_name" => "required|string",
             "event_date" => "required|string",
-            "image_url" => "required",
+            "image_url_hidden" => "required",
         ];
     }
 
@@ -36,7 +36,7 @@ class EventRequest extends FormRequest
         return [
             "site_id.required" => "The site field is required.",
             "event_name.required" => "The event field is required.",
-            "image_url.required" => "The banner field is required.",
+            "image_url_hidden.required" => "The banner field is required.",
         ];
     }
 }
