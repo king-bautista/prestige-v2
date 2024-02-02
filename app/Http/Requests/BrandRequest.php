@@ -27,7 +27,7 @@ class BrandRequest extends FormRequest
             "name" => "required|string",
             "descriptions" => "required|string",
             "category_id" => "required|string",
-            "logo" => "required|mimes:jpeg,bmp,png",
+            "logo" => "required",
         ];
     }
 

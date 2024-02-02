@@ -25,7 +25,7 @@ class AmenitiesRequest extends FormRequest
     {
         return [
             "name" => "required|max:191",
-            "icon" => "required|mimes:jpeg,bmp,png",
+            "icon" => "required",
         ];
     }
 }

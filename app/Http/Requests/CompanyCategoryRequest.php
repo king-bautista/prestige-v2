@@ -27,6 +27,9 @@ class CompanyCategoryRequest extends FormRequest
             "category_id" => "required",
             "site_id" => "required",
             "kiosk_image_primary" => "required|mimes:jpeg,bmp,png|max:15240", 
+            "kiosk_image_top" => "required_with:sub_category_id",
+            //"kiosk_image_top" => "required_if:category_id,!=,null",
+          //  "kiosk_image_top" => "required_with:category_id|nullable", //The kiosk image top field is required when category id is present.
         ];
     }
 
@@ -35,8 +38,9 @@ class CompanyCategoryRequest extends FormRequest
         return [
             "category_id.required" => "The category field is required.",
             "site_id.required" => "The site field is required.",
-            "kiosk_image_primary.required" => "The kiosk image primary field is required.",
-            "kiosk_image_primary.max" => "The kiosk image primary may not be greater than 15 megabytes.",
+            "kiosk_image_primary.required" => "The kiosk primary field is required.",
+            "kiosk_image_primary.max" => "The kiosk primary may not be greater than 15 megabytes.",
+            "kiosk_image_top.required_with" => "The kiosk top field is required when category is present.",
         ];
     }
 }

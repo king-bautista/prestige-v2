@@ -145,20 +145,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="alert alert-block alert-danger">
-							<p>{{ error_message }}</p>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-between">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 <script>
@@ -190,7 +176,6 @@ export default {
 			edit_record: false,
 			image_width: 0,
 			image_height: 0,
-			error_message: '',
 			dataFields: {
 				thumbnail_path: {
 					name: "Thumbnail",
@@ -268,10 +253,6 @@ export default {
 
 	methods: {
 		image_urlChange: function (e) {
-			//const file = e.target.files[0];
-			// this.image_url = URL.createObjectURL(file);
-			// this.product.image_url = file;
-
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
 				this.image_url = URL.createObjectURL(file);
@@ -289,16 +270,14 @@ export default {
 						$('#img_url').val('');
 						obj.image_url = null;
 						obj.product.image_url = '';
-						obj.error_message = "Invalid Image Size! Must be width: 120 and height: 120 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 120 and height: 120. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_url').val('');
 				this.image_url = null;
 				this.product.image_url = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -311,11 +290,11 @@ export default {
 			this.product.date_from = '';
 			this.product.date_to = '';
 			this.product.thumbnail = '/images/no-image-available.png';
-			this.product.image_url = '/images/no-image-available.png';
+			this.product.image_url = '';
 			this.product.active = false;
 			this.$refs.image_url.value = null;
 			this.thumbnail = '/images/no-image-available.png';
-			this.image_url = '/images/no-image-available.png';
+			this.image_url = '';
 
 			$('#product-form').modal('show');
 		},

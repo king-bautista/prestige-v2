@@ -245,7 +245,6 @@
 				</div>
 			</div>
 		</div>
-
 		<!-- Confirm modal -->
 		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
 			<div class="modal-dialog">

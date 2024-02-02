@@ -333,8 +333,9 @@ export default {
 					material = document.createElement("video");
 					material.src = file_path;
 					material.addEventListener("loadedmetadata", function () {
-						obj.advertisement.display_duration = this.duration;
-						obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
+						obj.advertisement.display_duration = this.duration; alert(this.videoHeight + ', ' + this.videoWidth + ', ' + file_type[0]);
+						//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
+						obj.setfilter(index, this.videoHeight, this.videoWidth);
 					});
 				}
 			}
@@ -345,9 +346,11 @@ export default {
 			}
 		},
 
-		setfilter: function (index, height, width, file_type) {
+		//setfilter: function (index, height, width, file_type) {
+		setfilter: function (index, height, width) {
 			var up_dimension = width + 'x' + height;
-			if (this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
+			//if (this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
+			if (this.advertisement.materials[index].dimension != up_dimension) {
 				toastr.error('Invalid file dimension.');
 				this.$refs.materials[index].value = null;
 				this.advertisement.materials[index].src = '';

@@ -113,20 +113,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="alert alert-block alert-danger">
-							<p>{{ error_message }}</p>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-between">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 <script>
@@ -139,7 +125,8 @@ export default {
 			amenity: {
 				id: '',
 				name: '',
-				icon: '/images/no-image-available.png',
+				//icon: '/images/no-image-available.png',
+				icon:'',
 				active: false,
 			},
 			parent_links: [],
@@ -148,7 +135,6 @@ export default {
 			edit_record: false,
 			image_width: 0,
 			image_height: 0,
-			error_message: '',
 			dataFields: {
 				name: "Name",
 				icon_path: {
@@ -240,16 +226,14 @@ export default {
 						$('#img_icon').val('');
 						obj.icon = null;
 						obj.amenity.icon = '';
-						obj.error_message = "Invalid Image Size! Must be width: 170 and height: 170 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 170 and height: 170. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_icon').val('');
 				this.icon = null;
 				this.amenity.icon = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -257,7 +241,8 @@ export default {
 			this.add_record = true;
 			this.edit_record = false;
 			this.amenity.name = '';
-			this.amenity.icon = '/images/no-image-available.png';
+			//this.amenity.icon = '/images/no-image-available.png';
+			this.amenity.icon = '';
 			this.amenity.active = false;
 			$('#amenities-form').modal('show');
 		},

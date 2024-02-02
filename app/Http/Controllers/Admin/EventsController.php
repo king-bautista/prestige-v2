@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\EventsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Http\Requests\EventRequest;
 use App\Imports\EventsImport;
 use App\Exports\Export;
 use Storage;
@@ -74,10 +75,10 @@ class EventsController extends AppBaseController implements EventsControllerInte
         }
     }
 
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
         try {
-            $banner = $request->file('imgBanner');
+            $banner = $request->file('image_url');
             $banner_path = '';
 
             if ($banner) {
@@ -107,13 +108,13 @@ class EventsController extends AppBaseController implements EventsControllerInte
         }
     }
 
-    public function update(Request $request)
+    public function update(EventRequest $request)
     {
         try {
             $event = Event::find($request->id);
             $event->touch();
 
-            $banner = $request->file('imgBanner');
+            $banner = $request->file('image_url');
             $banner_path = '';
 
             if ($banner) {

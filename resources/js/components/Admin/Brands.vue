@@ -148,20 +148,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="alert alert-block alert-danger">
-							<p>{{ error_message }}</p>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-between">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 <script>
@@ -181,7 +167,8 @@ export default {
 				category_id: null,
 				name: '',
 				descriptions: '',
-				logo: '/images/no-image-available.png',
+				//logo: '/images/no-image-available.png',
+				logo: '',
 				supplementals: [],
 				tags: [],
 				active: false,
@@ -196,7 +183,6 @@ export default {
 			edit_record: false,
 			image_width: 0,
 			image_height: 0,
-			error_message: '',
 			dataFields: {
 				logo_image_path: {
 					name: "Logo",
@@ -302,16 +288,14 @@ export default {
 						$('#img_logo').val('');
 						obj.logo = null;
 						obj.brand.logo = '';
-						obj.error_message = "Invalid Image Size! Must be width: 120 and height: 120 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 120 and height: 120. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_logo').val('');
 				this.logo = null;
 				this.brand.logo = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -358,7 +342,7 @@ export default {
 			this.brand.name = '';
 			this.brand.descriptions = '';
 			this.brand.category_id = null;
-			this.brand.logo = '/images/no-image-available.png';
+			this.brand.logo = '';
 			this.brand.supplementals = [];
 			this.brand.tags = [];
 			this.brand.active = false;

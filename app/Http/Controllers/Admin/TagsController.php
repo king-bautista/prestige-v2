@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\TagsControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\TagRequest;
 use App\Models\Tag;
 use App\Imports\TagsImport;
 use App\Exports\Export;
@@ -62,7 +62,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
         }
     }
 
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
         try {
             $data = [
@@ -82,7 +82,7 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
         }
     }
 
-    public function update(Request $request)
+    public function update(TagRequest $request)
     {
         try {
             $tag = Tag::find($request->id);
