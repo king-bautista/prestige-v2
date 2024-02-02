@@ -16,10 +16,10 @@ use App\Models\SiteMap;
 use App\Models\SitePointLink;
 use App\Models\SiteMapPaths;
 use App\Models\SiteMapConfig;
-use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SitePointLinkViewModel;
 
+use App\Models\AdminViewModels\SiteTenantViewModel;
 use App\Models\AdminViewModels\SiteMapViewModel;
 use App\Models\AdminViewModels\SiteScreenViewModel;
 use App\Models\AdminViewModels\SiteViewModel;
@@ -281,6 +281,8 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'site_map_id' => $request->map_id,
                 'point_x' => $request->point_x,
                 'point_y' => $request->point_y,
+                'point_z' => $request->point_z,
+                'wrap_at' => 0,
             ];
 
             $site_point = SitePoint::create($data);

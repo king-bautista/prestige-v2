@@ -58,9 +58,8 @@
 }
 
 .map-holder {
-    overflow-x: scroll;
     width: 100%;
-    height: auto;
+    height: 73vh;
 }
 
 .map-holder canvas {
@@ -79,11 +78,33 @@
     top: 13rem;
     right: 2rem;
     width: 300px;
-    height: auto;
-    max-height: 600px;
+    /* height: auto;
+    min-height: 98%; */
     padding: 15px 15px 0px 25px;
     background-color: #343a40;
     z-index: 9999;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 
 .toggle-right-button {
@@ -100,7 +121,7 @@
 
 .map-form-arrow-left {
     position:fixed;
-    top: 28rem;
+    top: 50%;
     right: 2rem;
     width: auto;
     height: auto;
@@ -214,4 +235,9 @@
 
 .custom-control-input {
     z-index: 1 !important;
+}
+
+.h-98 {
+    height: auto;
+    min-height: 98%;
 }
