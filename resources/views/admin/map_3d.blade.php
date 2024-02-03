@@ -267,7 +267,7 @@
 	var font;
 	var textMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, overdraw: true } )
 
-	var active_floor =  @php echo $current_map->site_building_level_id; @endphp;
+	var active_floor =  @php echo $current_map->id; @endphp;
 
 	init();
 	animate();
@@ -322,7 +322,7 @@
 
 		groupmarker = new THREE.Object3D;
 		fontloader.load( "{{ URL::to('themes/three.js/examples/fonts/helvetiker_bold.typeface.json') }}", function ( response ) {
-			font = response
+			font = response;
 
 			drawPoints();
 			//drawLinkLine();
@@ -336,9 +336,9 @@
 
 		@foreach ($site_maps as $site_map)
 			@if($site_map->site_building_level_id == $current_map->site_building_level_id)
-				active_floor = '@php echo $site_map->site_building_level_id; @endphp';
+				active_floor = '@php echo $site_map->id; @endphp';
 			@endif
-			createFloor('@php echo $site_map->site_building_level_id; @endphp', '@php echo $site_map->map_file_path; @endphp');
+			createFloor('@php echo $site_map->id; @endphp', '@php echo $site_map->map_file_path; @endphp');
 			//drawLinkLine('@php echo $site_map->site_building_level_id; @endphp');
 		@endforeach
 		// renderer
@@ -397,11 +397,6 @@
 	}
 
 	function onWindowResize() {
-		/*camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );*/
-
 		var container = document.getElementById('canvas');
 		var w = container.offsetWidth;
 		var h = container.offsetHeight;
@@ -1152,17 +1147,17 @@
 
 	function drawPoints()
 	{
-		// let mapPoints = <?php //echo json_encode($map_points);?>;
-		// var coords = new THREE.Vector3(0,0,0);
+		let mapPoints = @php echo $map_points; @endphp;
+		var coords = new THREE.Vector3(0,0,0);
 
-		// $.each(mapPoints,function(index){
-		// 	$.each(mapPoints[index],function(){
-		// 		coords.x = this.point_x;
-		// 		coords.y = this.point_y;
-		// 		coords.z = this.point_z + 1;
-		// 		addPointMarker(coords,index,this);
-		// 	});
-		// });
+		$.each(mapPoints,function(index){			
+			$.each(mapPoints[index],function(){
+				coords.x = this.point_x;
+				coords.y = this.point_y;
+				coords.z = this.point_z + 1;
+				addPointMarker(coords,index,this);
+			});
+		});
 		
 	}
 
@@ -1192,11 +1187,11 @@
 				toastr.success(data.message);
 			});
 		}else if(info.tenant_id > 0){
-			
-			let label = info.point_label ? info.point_label : tenants[info.tenant_id].store_name;
+			let label = info.point_label ? info.point_label : info.brand_name;
 
 			if(info.wrap_at > 0 && label.length > info.wrap_at)
 			{
+				console.log('here');
 				var group = new THREE.Object3D();
 				var cutText = label;
 				var origCoords = coords;
@@ -1270,7 +1265,11 @@
 				floors[floor].add(group);
 
 				texts[info.id] = {'text':group,'rotz':text.rotation.z,'type':'group','coords':origCoords,'info':info};
-			}else{
+			}
+			else
+			{
+				console.log('dito');
+
 				var text3d = new THREE.TextGeometry( label, {
 					font: font,
 					size: info.text_size,
@@ -1286,8 +1285,10 @@
 				text.position.x = coords.x;
 				text.position.y = coords.y + 1;
 				text.position.z = coords.z;
+			
 				texts[info.id] = {'text':text,'rotz':text.rotation.z,'type':'text'};
 				floors[floor].add( text );
+				console.log(floors);
 			}
 
 			//update point details
@@ -1304,8 +1305,7 @@
 		$("#point_id").html("Point ID: " + objectHit.id);
 		$("#position_x").val(objectHit.point_x);
 		$("#position_y").val(objectHit.point_y);
-		$("#position_y").val(objectHit.point_z);
-		$("#text_y_position").val(objectHit.rotation_z);
+		$("#text_y_position").val(objectHit.point_z);
 		$("#text_size").val(objectHit.text_size);
 		$("#text_width").val(objectHit.text_width);
 		if(objectHit.is_pwd == 1) {
@@ -1361,15 +1361,19 @@
 				break;
 				case 'delete_point':
 					mouseAction = DELETE;
+					controls.enabled = false;
 				break;
 				case 'point_info':
 					mouseAction = INFO;
+					controls.enabled = true;
 				break;
 				case 'single_link':
 					mouseAction = LINK;
+					controls.enabled = false;
 				break;
 				case 'continous_link':
 					mouseAction = LINKSINGLE;
+					controls.enabled = false;
 					links = [];
 				break;
 			}
@@ -1379,8 +1383,9 @@
 			$('.btn-map').removeClass('active');
 			$(this).addClass('active');
 
-			active_floor = $(this).data('floor_id');
-
+			active_floor = $(this).data('map_id');
+			var floor_id = $(this).data('floor_id');
+			
 			$.each(floors,function(index){
 				this.visible = (index == active_floor);
 			});
@@ -1411,7 +1416,6 @@
 			e.preventDefault();
 			$.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
 				if(response.status_code == 200) {
-					console.log(dragItem);
 					toastr.success(response.message);
 				}
 			});
