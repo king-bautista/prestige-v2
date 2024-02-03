@@ -162,20 +162,17 @@
 
             .shop-logo {
                 max-width: 240px;
-                height: 89px !important;
-                margin-right: 10px;
-                border-radius: 10px;
+                width: 173px !important;
+                height: 73px !important;
+                margin-right: 20px;
+                border-radius: 10px !important;
+                object-fit: cover;
             }
 
             .tenant-store {
-                background: url(/images/parqal-tenant-big.png);
-                background-repeat: no-repeat;
-                border: 1px solid #000;
-                padding: 5px;
-                border-radius: 16px;
-                height: 100px;
-                width: 369px;
-                cursor: pointer;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 15px;
             } 
 
             .subscriber-holder {

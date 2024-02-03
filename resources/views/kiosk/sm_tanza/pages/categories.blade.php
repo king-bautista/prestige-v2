@@ -128,7 +128,7 @@
                 $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
                 showSubCategories();
             });
-        }); 
+        });
     }
 
     function showSubCategories() {
@@ -156,6 +156,8 @@
                 showTenantList();
             });
         }); 
+        $('#home_v4').show();
+        $('#home_v4s').hide();
         $('#home-cat-contents').show();
         $('.CatTabCategories').show();
         $('#home-container').hide();
@@ -269,6 +271,8 @@
             
         });
 
+        $('#home_v4').show();
+        $('#home_v4s').hide();
         $('.TenantPage').show();
         $('.CatTabCategories').hide();
         helper.setTranslation();
@@ -282,7 +286,7 @@
         $.each(alphabetical, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
-            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
+            tenant_list_element += '<div class="carousel-content-container-alphabetical mb-4">';
             tenant_list_element += '<div class="row tenants-'+key+'">';
             tenant_list_element += '</div>';
             tenant_list_element += '</div>';
@@ -378,6 +382,8 @@
             
         });
 
+        $('#home_v4').show();
+        $('#home_v4s').hide();
         generateLetters();
         helper.setTranslation();
         current_location = 'alphabet';
@@ -477,6 +483,8 @@
             
         });
 
+        $('#home_v4').show();
+        $('#home_v4s').hide();
         $('.TenantPage').hide();
         $('.CatTabCategories').show();
         helper.setTranslation();
