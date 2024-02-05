@@ -213,7 +213,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         $site_details = SiteViewModel::find($current_map->site_id);
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
         $map_points = $this->getMapPoints($current_map->site_id, $current_map->map_type);
-        return $links = $this->getPointLinks($current_map->site_id, $current_map->map_type);
+        $links = $this->getPointLinks($current_map->site_id, $current_map->map_type);
 
         if($current_map->map_type == '3D') {
             $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('map_type', '3D')->get();
