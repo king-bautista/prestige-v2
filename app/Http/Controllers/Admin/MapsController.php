@@ -213,14 +213,15 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         $site_details = SiteViewModel::find($current_map->site_id);
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
         $map_points = $this->getMapPoints($current_map->site_id, $current_map->map_type);
+        return $links = $this->getPointLinks($current_map->site_id, $current_map->map_type);
 
         if($current_map->map_type == '3D') {
             $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('map_type', '3D')->get();
-            return view('admin.map_3d', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points']));    
+            return view('admin.map_3d', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points', 'links']));    
         }
         else {
             $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('site_screen_id', $current_map->site_screen_id)->get();
-            return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points']));
+            return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points', 'links']));
         }        
     }
 
@@ -237,6 +238,33 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         }
 
         return json_encode($new_map_points);
+    }
+
+    public function getPointLinks($site_id, $map_type) {
+        $new_point_liks = [];
+
+        $point_links = SitePointLinkViewModel::where('site_maps.site_id', $site_id)
+        ->where('site_maps.map_type', $map_type)
+        ->join('site_maps', 'site_point_links.site_map_id', '=', 'site_maps.id')
+        ->select('site_point_links.*');
+
+        $tmp_links = $point_links;
+        $floors = $point_links->groupBy('site_map_id')->get()->pluck('site_map_id');
+
+        foreach($floors as $floor) {
+            foreach($tmp_links as $link) {
+                
+            }
+        }
+
+
+        foreach($point_links as $link) {
+
+
+            $new_point_liks[$link->site_map_id][] = $link;
+        }
+
+        return json_encode($new_point_liks);
     }
 
     public function getSitePoints($id)

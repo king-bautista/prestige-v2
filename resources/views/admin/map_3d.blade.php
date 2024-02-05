@@ -339,7 +339,7 @@
 				active_floor = '@php echo $site_map->id; @endphp';
 			@endif
 			createFloor('@php echo $site_map->id; @endphp', '@php echo $site_map->map_file_path; @endphp');
-			//drawLinkLine('@php echo $site_map->site_building_level_id; @endphp');
+			drawLinkLine('@php echo $site_map->id; @endphp');
 		@endforeach
 		// renderer
 
@@ -416,8 +416,6 @@
 			floors[index].add( kmz.scene );
 			floors[index].visible = is_default;
 		});
-
-		console.log(floors);
 	}
 
 	// Updates to apply to the scene while running.
@@ -900,13 +898,14 @@
 				if (objectHit != floor) {
 					if(objectHit.name == 'point')
 					{
-						//remove from db
 						$.get("/admin/site/map/delete-point/"+objectHit.userData.id).done(function( data ) {				
 							toastr.success(data.message);
 						});
 					} else if(objectHit.name == 'link')
 					{
-						//remove from db
+						$.get("/admin/site/map/delete-line/"+objectHit.userData.id).done(function( data ) {				
+							toastr.success(data.message);
+						});
 						console.log(objectHit.userData);
 						// $.ajax({
 						// 	url: '' + objectHit.userData.mapid + '/' + objectHit.userData.start + '/' + objectHit.userData.end,
@@ -1076,73 +1075,63 @@
 		if(!lines_end.hasOwnProperty(links[1].userData.id)) lines_end[links[1].userData.id] = [];
 		lines_end[links[1].userData.id].push(line);
 
-		console.log(line.userData);
-
-		//save to db
-		// $.ajax({
-		// 	url: '',
-		// 	type: 'POST',
-		// 	data: {},
-		// 	dataType: 'JSON',
-		// 	beforeSend: function(){
-		// 	},
-		// 	success: function(data){
-		// 		if(mouseAction == LINK)
-		// 		{
-		// 			//remove first element
-		// 			links.shift();
-		// 		}else{
-		// 			links = [];
-		// 		}
-		// 	},
-		// 	complete: function(){
-				
-		// 	},
-		// 	error: function(jqXHR, textStatus, errorThrown){
-				
-		// 	}
-		// });
+		// CREATE LINK site_point_liks TABLE
+		$.post("/admin/site/map/connect-point", { 
+			map_id: active_floor, 
+			point_a: links[0].userData.id, 
+			point_b: links[1].userData.id, 
+		}).done(function( data ) {
+			if(mouseAction == LINK) {
+				//remove first element
+				links.shift();
+			}
+			else{
+				links = [];
+			}				
+			toastr.success(data.message);
+		});
 	}
 
 	function drawLinkLine(floor)
 	{
-		// let mapPointsAll = <?php //echo json_encode($map_points);?>;
-		// let mapPoints = mapPointsAll[floor];
-		// let linksDBAll = <?php //echo json_encode($links);?>;
-		// let linksDB = linksDBAll[floor];
-		
-		// $.each(linksDB,function(index){
-		// 	var links = this;
-		// 	$.each(links,function(){
-		// 		if(mapPoints.hasOwnProperty(this.point_a) && mapPoints.hasOwnProperty(this.point_b))
-		// 		{
-		// 			var pointa = mapPoints[this.point_a];
-		// 			var pointb = mapPoints[this.point_b];
-		// 			var points = [];
+		let mapPointsAll = @php echo $map_points; @endphp;
+		let mapPoints = mapPointsAll[floor];
+		let linksDBAll = @php echo $links; @endphp; 
+		let linksDB = linksDBAll[floor];
 
-		// 			var coordsa = new THREE.Vector3(pointa.point_x,pointa.point_y+2,pointa.point_z);
-		// 			var coordsb = new THREE.Vector3(pointb.point_x,pointb.point_y+2,pointb.point_z);
+		$.each(linksDB,function(index){
+			var links = this;
+			$.each(links,function(){
+				if(mapPoints.hasOwnProperty(this.point_a) && mapPoints.hasOwnProperty(this.point_b))
+				{
+					console.log('test');
+					var pointa = mapPoints[this.point_a];
+					var pointb = mapPoints[this.point_b];
+					var points = [];
 
-		// 			points.push(coordsa);
-		// 			points.push(coordsb);
+					var coordsa = new THREE.Vector3(pointa.point_x,pointa.point_y+2,pointa.point_z);
+					var coordsb = new THREE.Vector3(pointb.point_x,pointb.point_y+2,pointb.point_z);
+
+					points.push(coordsa);
+					points.push(coordsb);
 					
-		// 			let geometry = new THREE.BufferGeometry().setFromPoints( points );
-		// 			geometry.dynamic = true;
-		// 			let line = new THREE.Line( geometry, lineMaterial );
-		// 			line.geometry.attributes.position.needsUpdate = true;
-		// 			line.name = "link";
-		// 			line.userData = {"mapid":floor,"start":this.point_a,"end":this.point_b};
-		// 			//scene.add( line );
-		// 			floors[floor].add(line);
+					let geometry = new THREE.BufferGeometry().setFromPoints( points );
+					geometry.dynamic = true;
+					let line = new THREE.Line( geometry, lineMaterial );
+					line.geometry.attributes.position.needsUpdate = true;
+					line.name = "link";
+					line.userData = {"mapid":floor,"start":this.point_a,"end":this.point_b};
+					//scene.add( line );
+					floors[floor].add(line);
 					
-		// 			if(!lines_start.hasOwnProperty(pointa.id)) lines_start[pointa.id] = [];
-		// 			if(!lines_end.hasOwnProperty(pointb.id)) lines_end[pointb.id] = [];
+					if(!lines_start.hasOwnProperty(pointa.id)) lines_start[pointa.id] = [];
+					if(!lines_end.hasOwnProperty(pointb.id)) lines_end[pointb.id] = [];
 
-		// 			lines_start[pointa.id].push(line);
-		// 			lines_end[pointb.id].push(line);
-		// 		}
-		// 	});
-		// });
+					lines_start[pointa.id].push(line);
+					lines_end[pointb.id].push(line);
+				}
+			});
+		});
 	}
 
 	function drawPoints()
@@ -1191,7 +1180,6 @@
 
 			if(info.wrap_at > 0 && label.length > info.wrap_at)
 			{
-				console.log('here');
 				var group = new THREE.Object3D();
 				var cutText = label;
 				var origCoords = coords;
@@ -1268,8 +1256,6 @@
 			}
 			else
 			{
-				console.log('dito');
-
 				var text3d = new THREE.TextGeometry( label, {
 					font: font,
 					size: info.text_size,
@@ -1288,7 +1274,6 @@
 			
 				texts[info.id] = {'text':text,'rotz':text.rotation.z,'type':'text'};
 				floors[floor].add( text );
-				console.log(floors);
 			}
 
 			//update point details
@@ -1424,6 +1409,42 @@
 		$('.frm_info').on('change', function() {
 			if($("#pid").val() > 0) {
 				$('#frmCoordinates').submit();
+
+				map_points[$("#pid").val()].position.x = $("#position_x").val();
+				map_points[$("#pid").val()].position.y = $("#position_y").val();
+				map_points[$("#pid").val()].position.z = $("#text_y_position").val();
+
+				if(texts.hasOwnProperty($("#pid").val()))
+				{
+					texts[$("#pid").val()].text.rotation.z = $("#text_y_position").val() * Math.PI / 180;
+				}
+				else if($("select[name=tenant_id]").val() > 0) 
+				{ 
+					let label = $("select[name=tenant_id] option:selected").text();
+					var text3d = new THREE.TextGeometry( label, {
+						font: font,
+						size: $("#text_size").val(),
+						height: 0.001,
+						bevelEnabled: false,
+						color: "rgba(255,0,0)"
+					});
+					text3d.center();
+
+					var coords = new THREE.Vector3( $("#position_x").val(), $("#position_y").val(), $("#text_y_position").val());
+					scene.worldToLocal(coords);
+
+					var text = new THREE.Mesh( text3d, textMaterial );
+					text.rotation.x = -90 * Math.PI / 180;
+					text.rotation.z = $("#text_y_position").val() * Math.PI / 180;
+					text.position.x = coords.x;
+					text.position.y = coords.y + 1;
+					text.position.z = coords.z;
+					
+					texts[$("#pid").val()] = {'text':text,'rotz':text.rotation.z};
+
+					scene.add( text );
+				}
+				render();
 			}
 		});
 
