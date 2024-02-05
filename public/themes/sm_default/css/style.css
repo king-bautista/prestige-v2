@@ -409,6 +409,28 @@ body {
     margin-left: 0px;
 }
 
+.carousel-content-container-alphabetical {
+    padding: 124.5px 133px 0px 153px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-show-cinema {
+    padding: 189.5px 133px 0px 153px;
+    margin-left: 0px;
+}
+
+.owl-dots {
+    margin-top: 56px !important;
+    margin-left: 10px !important;
+    margin-right: -10px !important;
+}
+
+.owl-dots-2 {
+    margin-top: 56px !important;
+    margin-left: 10px !important;
+    margin-right: -10px !important;
+}
+
 .carousel-content-container-per-food-alphabetical {
     padding: 124.5px 133.5px 0px 153.5px;
     margin-left: 0px;
@@ -1002,7 +1024,6 @@ body {
 }
 
 .promo-img {
-    max-width: 100%;
     max-height: 100%;
     width: 279.44px !important;
     height: 279.44px !important;
@@ -1527,7 +1548,7 @@ body {
 .link-alpha {
     color: #000000 !important;
     font-family: "Henry Sans Regular" !important;
-    padding: 0 10.185px 0 10px !important;
+    padding: 0 16.185px 0 10px !important;
 }
 
 .link-alpha-disabled {

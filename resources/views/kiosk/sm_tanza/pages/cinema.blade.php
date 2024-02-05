@@ -130,7 +130,7 @@
         $.each(my_cinemas, function(key,cinemas) {
             var cinema_element = '';
             cinema_element = '<div class="item">';
-            cinema_element += '<div class="carousel-content-container-per-food-category mb-4">';
+            cinema_element += '<div class="carousel-content-container-show-cinema mb-4">';
             cinema_element += '<div class="row cinema-'+key+'">';
             cinema_element += '</div>';
             cinema_element += '</div>';
