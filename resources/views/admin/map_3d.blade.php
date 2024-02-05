@@ -115,6 +115,12 @@
               <input type="text" id="position_y" name="position_y" class="frm_info form-control form-control-sm" placeholder="0.0">
             </div>
           </div>
+		  <div class="form-group row mb-0">
+            <label for="firstName" class="col-sm-6 col-form-label">Position Z:</label>
+            <div class="col-sm-6">
+              <input type="text" id="position_z" name="position_z" class="frm_info form-control form-control-sm" placeholder="0.0">
+            </div>
+          </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Text Rotation:</label>
             <div class="col-sm-6">
@@ -898,36 +904,21 @@
 				if (objectHit != floor) {
 					if(objectHit.name == 'point')
 					{
-						$.get("/admin/site/map/delete-point/"+objectHit.userData.id).done(function( data ) {				
+						$.get("/admin/site/map/delete-point/"+objectHit.userData.id)
+						.done(function( data ) {				
 							toastr.success(data.message);
 						});
 					} else if(objectHit.name == 'link')
 					{
-						$.get("/admin/site/map/delete-line/"+objectHit.userData.id).done(function( data ) {				
+						$.post("/admin/site/map/delete-line", { 
+							map_id: objectHit.userData.mapid, 
+							start: objectHit.userData.start, 
+							end: objectHit.userData.end, 
+						}).done(function( data ) {
 							toastr.success(data.message);
 						});
-						console.log(objectHit.userData);
-						// $.ajax({
-						// 	url: '' + objectHit.userData.mapid + '/' + objectHit.userData.start + '/' + objectHit.userData.end,
-						// 	type: 'POST',
-						// 	data: {},
-						// 	dataType: 'JSON',
-						// 	beforeSend: function(){
-						// 	},
-						// 	success: function(data){
-								
-						// 	},
-						// 	complete: function(){
-								
-						// 	},
-						// 	error: function(jqXHR, textStatus, errorThrown){
-								
-						// 	}
-						// });
 					}
-					
 
-					//scene.remove(objectHit);
 					floors[active_floor].remove(objectHit);
 					render();
 				}
@@ -1104,7 +1095,6 @@
 			$.each(links,function(){
 				if(mapPoints.hasOwnProperty(this.point_a) && mapPoints.hasOwnProperty(this.point_b))
 				{
-					console.log('test');
 					var pointa = mapPoints[this.point_a];
 					var pointb = mapPoints[this.point_b];
 					var points = [];
@@ -1290,17 +1280,18 @@
 		$("#point_id").html("Point ID: " + objectHit.id);
 		$("#position_x").val(objectHit.point_x);
 		$("#position_y").val(objectHit.point_y);
-		$("#text_y_position").val(objectHit.point_z);
+		$("#position_z").val(objectHit.point_z);
+		$("#text_y_position").val(objectHit.rotation_z);
 		$("#text_size").val(objectHit.text_size);
 		$("#text_width").val(objectHit.text_width);
-		if(objectHit.is_pwd == 1) {
+		if(objectHit.is_pwd > 0) {
           $('#is_pwd').prop( "checked", true);
         }
         else {
           $('#is_pwd').prop( "checked", false);
         }
 
-		if(objectHit.wrap_at == 1) {
+		if(objectHit.wrap_at > 0) {
           $('#wrap_at').prop( "checked", true);
         }
         else {
@@ -1353,11 +1344,11 @@
 					controls.enabled = true;
 				break;
 				case 'single_link':
-					mouseAction = LINK;
+					mouseAction = LINKSINGLE;
 					controls.enabled = false;
 				break;
 				case 'continous_link':
-					mouseAction = LINKSINGLE;
+					mouseAction = LINK;
 					controls.enabled = false;
 					links = [];
 				break;
@@ -1412,7 +1403,7 @@
 
 				map_points[$("#pid").val()].position.x = $("#position_x").val();
 				map_points[$("#pid").val()].position.y = $("#position_y").val();
-				map_points[$("#pid").val()].position.z = $("#text_y_position").val();
+				map_points[$("#pid").val()].position.z = $("#position_z").val();
 
 				if(texts.hasOwnProperty($("#pid").val()))
 				{
@@ -1430,7 +1421,7 @@
 					});
 					text3d.center();
 
-					var coords = new THREE.Vector3( $("#position_x").val(), $("#position_y").val(), $("#text_y_position").val());
+					var coords = new THREE.Vector3( $("#position_x").val(), $("#position_y").val(), $("#position_z").val());
 					scene.worldToLocal(coords);
 
 					var text = new THREE.Mesh( text3d, textMaterial );

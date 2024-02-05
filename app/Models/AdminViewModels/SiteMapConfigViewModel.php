@@ -5,6 +5,8 @@ namespace App\Models\AdminViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\ViewModels\SitePointViewModel;
+
 class SiteMapConfigViewModel extends Model
 {
     use SoftDeletes;
@@ -50,6 +52,7 @@ class SiteMapConfigViewModel extends Model
      */
 	public $appends = [
         'map_details',
+        'site_point_details',
         'site_screen_name',
         'site_screen_location',
         'map_preview_path',
@@ -61,6 +64,11 @@ class SiteMapConfigViewModel extends Model
     public function getMapDetailsAttribute() 
     {
         return SiteMapViewModel::find($this->site_map_id);
+    }
+
+    public function getSitePointDetailsAttribute() 
+    {
+        return SitePointViewModel::find($this->origin_point);
     }
 
     public function getSiteScreenNameAttribute() 

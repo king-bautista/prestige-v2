@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SitePointLink extends Model
 {
-    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
