@@ -209,7 +209,7 @@
 
 	import { GLTFLoader } from "{{ URL::to('themes/three.js/examples/jsm/loaders/GLTFLoader.js') }}";
 
-  var container, stats, controls, theball, rotationPoint;
+  	var container, stats, controls, theball, rotationPoint;
 	var camera, cameraTarget, scene, renderer;
 	var dotstoremove = [];
 
@@ -260,14 +260,14 @@
 				color: "rgb(255,0,0)", linewidth: 3
 			});
 
-  var tenants = @php echo $site_tenants; @endphp;
+  	var tenants = @php echo $site_tenants; @endphp;
 	var lines_start = {};
 	var lines_end = {};
 
 	var font;
 	var textMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, overdraw: true } )
 
-	var active_floor =  @php echo $current_map->site_building_level_id; @endphp;
+	var active_floor =  @php echo $current_map->id; @endphp;
 
 	init();
 	animate();
@@ -322,7 +322,7 @@
 
 		groupmarker = new THREE.Object3D;
 		fontloader.load( "{{ URL::to('themes/three.js/examples/fonts/helvetiker_bold.typeface.json') }}", function ( response ) {
-			font = response
+			font = response;
 
 			drawPoints();
 			//drawLinkLine();
@@ -336,9 +336,9 @@
 
 		@foreach ($site_maps as $site_map)
 			@if($site_map->site_building_level_id == $current_map->site_building_level_id)
-				active_floor = '@php echo $site_map->site_building_level_id; @endphp';
+				active_floor = '@php echo $site_map->id; @endphp';
 			@endif
-			createFloor('@php echo $site_map->site_building_level_id; @endphp', '@php echo $site_map->map_file_path; @endphp');
+			createFloor('@php echo $site_map->id; @endphp', '@php echo $site_map->map_file_path; @endphp');
 			//drawLinkLine('@php echo $site_map->site_building_level_id; @endphp');
 		@endforeach
 		// renderer
@@ -397,11 +397,6 @@
 	}
 
 	function onWindowResize() {
-		/*camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );*/
-
 		var container = document.getElementById('canvas');
 		var w = container.offsetWidth;
 		var h = container.offsetHeight;
@@ -724,8 +719,6 @@
 		var prevX, prevY;
 
 		function doMouseDown(evt) {
-			console.log('dito');
-
 			if (dragging) {
 				return;
 			}
@@ -908,43 +901,30 @@
 					if(objectHit.name == 'point')
 					{
 						//remove from db
-						$.ajax({
-							url: '' + objectHit.userData.id,
-							type: 'POST',
-							data: {},
-							dataType: 'JSON',
-							beforeSend: function(){
-							},
-							success: function(data){
-								
-							},
-							complete: function(){
-								
-							},
-							error: function(jqXHR, textStatus, errorThrown){
-								
-							}
+						$.get("/admin/site/map/delete-point/"+objectHit.userData.id).done(function( data ) {				
+							toastr.success(data.message);
 						});
 					} else if(objectHit.name == 'link')
 					{
 						//remove from db
-						$.ajax({
-							url: '' + objectHit.userData.mapid + '/' + objectHit.userData.start + '/' + objectHit.userData.end,
-							type: 'POST',
-							data: {},
-							dataType: 'JSON',
-							beforeSend: function(){
-							},
-							success: function(data){
+						console.log(objectHit.userData);
+						// $.ajax({
+						// 	url: '' + objectHit.userData.mapid + '/' + objectHit.userData.start + '/' + objectHit.userData.end,
+						// 	type: 'POST',
+						// 	data: {},
+						// 	dataType: 'JSON',
+						// 	beforeSend: function(){
+						// 	},
+						// 	success: function(data){
 								
-							},
-							complete: function(){
+						// 	},
+						// 	complete: function(){
 								
-							},
-							error: function(jqXHR, textStatus, errorThrown){
+						// 	},
+						// 	error: function(jqXHR, textStatus, errorThrown){
 								
-							}
-						});
+						// 	}
+						// });
 					}
 					
 
@@ -965,7 +945,7 @@
 					{
 						drawLine(); //use links = array of points
 					}
-					showPointInfo(objectHit);
+					showPointInfo(objectHit.userData);
 				}
 				
 				return false;
@@ -982,13 +962,13 @@
 					{
 						drawLine(); //use links = array of points
 					}
-					showPointInfo(objectHit);
+					showPointInfo(objectHit.userData);
 				}
 				return false;
 			default: //info
 				if(objectHit.name == 'point')
 				{
-					showPointInfo(objectHit);
+					showPointInfo(objectHit.userData);
 				}
 				return false;
 		}
@@ -1041,24 +1021,15 @@
 	function doMouseUp(x,y) {
 		if (mouseAction == DRAG) {			
 			// UPDATE TO site_points TABLE
-
-			// $.ajax({
-			// 	url: '' + dragItem.userData.id,
-			// 	type: 'POST',
-			// 	data: {'point_x':dragItem.position.x,'point_y':dragItem.position.y,'point_z':dragItem.position.z},
-			// 	dataType: 'JSON',
-			// 	beforeSend: function(){
-			// 	},
-			// 	success: function(data){
-			// 		//obj.userData.id = data.id;
-			// 	},
-			// 	complete: function(){
-					
-			// 	},
-			// 	error: function(jqXHR, textStatus, errorThrown){
-					
-			// 	}
-			// });
+			$.post("/admin/site/map/update-point", { 
+				id: dragItem.userData.id, 
+				point_x: dragItem.position.x, 
+				point_y: dragItem.position.y, 
+				point_z: dragItem.position.z 
+			}).done(function( data ) {				
+				showPointInfo(data.data);
+				toastr.success(data.message);
+			});
 		}
 	}
 
@@ -1105,30 +1076,32 @@
 		if(!lines_end.hasOwnProperty(links[1].userData.id)) lines_end[links[1].userData.id] = [];
 		lines_end[links[1].userData.id].push(line);
 
+		console.log(line.userData);
+
 		//save to db
-		$.ajax({
-				url: '',
-				type: 'POST',
-				data: {},
-				dataType: 'JSON',
-				beforeSend: function(){
-				},
-				success: function(data){
-					if(mouseAction == LINK)
-					{
-						//remove first element
-						links.shift();
-					}else{
-						links = [];
-					}
-				},
-				complete: function(){
-					
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					
-				}
-			});
+		// $.ajax({
+		// 	url: '',
+		// 	type: 'POST',
+		// 	data: {},
+		// 	dataType: 'JSON',
+		// 	beforeSend: function(){
+		// 	},
+		// 	success: function(data){
+		// 		if(mouseAction == LINK)
+		// 		{
+		// 			//remove first element
+		// 			links.shift();
+		// 		}else{
+		// 			links = [];
+		// 		}
+		// 	},
+		// 	complete: function(){
+				
+		// 	},
+		// 	error: function(jqXHR, textStatus, errorThrown){
+				
+		// 	}
+		// });
 	}
 
 	function drawLinkLine(floor)
@@ -1174,17 +1147,17 @@
 
 	function drawPoints()
 	{
-		// let mapPoints = <?php //echo json_encode($map_points);?>;
-		// var coords = new THREE.Vector3(0,0,0);
+		let mapPoints = @php echo $map_points; @endphp;
+		var coords = new THREE.Vector3(0,0,0);
 
-		// $.each(mapPoints,function(index){
-		// 	$.each(mapPoints[index],function(){
-		// 		coords.x = this.point_x;
-		// 		coords.y = this.point_y;
-		// 		coords.z = this.point_z + 1;
-		// 		addPointMarker(coords,index,this);
-		// 	});
-		// });
+		$.each(mapPoints,function(index){			
+			$.each(mapPoints[index],function(){
+				coords.x = this.point_x;
+				coords.y = this.point_y;
+				coords.z = this.point_z + 1;
+				addPointMarker(coords,index,this);
+			});
+		});
 		
 	}
 
@@ -1210,13 +1183,15 @@
 			}).done(function( data ) {
 				obj.userData = data.data;
 				map_points[data.id] = obj;
+				showPointInfo(obj.userData);
+				toastr.success(data.message);
 			});
 		}else if(info.tenant_id > 0){
-			
-			let label = info.point_label ? info.point_label : tenants[info.tenant_id].store_name;
+			let label = info.point_label ? info.point_label : info.brand_name;
 
 			if(info.wrap_at > 0 && label.length > info.wrap_at)
 			{
+				console.log('here');
 				var group = new THREE.Object3D();
 				var cutText = label;
 				var origCoords = coords;
@@ -1290,7 +1265,11 @@
 				floors[floor].add(group);
 
 				texts[info.id] = {'text':group,'rotz':text.rotation.z,'type':'group','coords':origCoords,'info':info};
-			}else{
+			}
+			else
+			{
+				console.log('dito');
+
 				var text3d = new THREE.TextGeometry( label, {
 					font: font,
 					size: info.text_size,
@@ -1306,8 +1285,10 @@
 				text.position.x = coords.x;
 				text.position.y = coords.y + 1;
 				text.position.z = coords.z;
+			
 				texts[info.id] = {'text':text,'rotz':text.rotation.z,'type':'text'};
 				floors[floor].add( text );
+				console.log(floors);
 			}
 
 			//update point details
@@ -1320,25 +1301,34 @@
 
 	function showPointInfo(objectHit)
 	{
-		// $("#info .id").html("Point ID: " + objectHit.userData.id);
-		// $("#info .point_x").val(objectHit.position.x);
-		// $("#info .point_y").val(objectHit.position.y);
-		// $("#info .point_z").val(objectHit.position.z);
-		
-		// $("#info .tenant_id").val(objectHit.userData.tenant_id);
-		// $("#info #point_id").val(objectHit.userData.id);
-		// $("#info .text_size").val(objectHit.userData.text_size);
-		// $("#info .rotation_z").val(objectHit.userData.rotation_z);
-		// $("#info .point_type").val(objectHit.userData.point_type);
-		// $("#info .point_label").val(objectHit.userData.point_label);
-		// $("#info .wrap_at").val(objectHit.userData.wrap_at > 0 ? 1: 0);
-		// $("#info #customSwitchwrapat").prop('checked',objectHit.userData.wrap_at > 0 ? true: false);
-		// $("#info .is_pwd").val(objectHit.userData.is_pwd > 0 ? 1: 0);
-		// $("#info #customSwitchpwd").prop('checked',objectHit.userData.is_pwd > 0 ? true: false);
-		// console.log(objectHit.userData);
-		// pointMarkerHighlight.position.x = objectHit.position.x;
-		// pointMarkerHighlight.position.y = objectHit.position.y-1;
-		// pointMarkerHighlight.position.z = objectHit.position.z;
+		$("#pid").val(objectHit.id);
+		$("#point_id").html("Point ID: " + objectHit.id);
+		$("#position_x").val(objectHit.point_x);
+		$("#position_y").val(objectHit.point_y);
+		$("#text_y_position").val(objectHit.point_z);
+		$("#text_size").val(objectHit.text_size);
+		$("#text_width").val(objectHit.text_width);
+		if(objectHit.is_pwd == 1) {
+          $('#is_pwd').prop( "checked", true);
+        }
+        else {
+          $('#is_pwd').prop( "checked", false);
+        }
+
+		if(objectHit.wrap_at == 1) {
+          $('#wrap_at').prop( "checked", true);
+        }
+        else {
+          $('#wrap_at').prop( "checked", false);
+        }
+
+		$('#tenant_id').val(objectHit.tenant_id);
+        $('#point_type').val(objectHit.point_type);
+        $('#point_label').val(objectHit.point_label);    
+
+		pointMarkerHighlight.position.x = objectHit.point_x;
+		pointMarkerHighlight.position.y = objectHit.point_y-1;
+		pointMarkerHighlight.position.z = objectHit.point_z;
 	}
 	
 	setUpMouseHandler(container,doMouseDown,doMouseMove,doMouseUp);
@@ -1355,6 +1345,7 @@
 			$(".mouseaction").not(this).removeClass('mouseaction-selected');
 			$(this).find('input[type="radio"]').prop("checked", true);
 			var action = $('input[name="action"]:checked').val();
+
 			switch(action) {
 				case 'rotate':
 					mouseAction = ROTATE;
@@ -1370,15 +1361,19 @@
 				break;
 				case 'delete_point':
 					mouseAction = DELETE;
+					controls.enabled = false;
 				break;
 				case 'point_info':
 					mouseAction = INFO;
+					controls.enabled = true;
 				break;
 				case 'single_link':
 					mouseAction = LINK;
+					controls.enabled = false;
 				break;
 				case 'continous_link':
 					mouseAction = LINKSINGLE;
+					controls.enabled = false;
 					links = [];
 				break;
 			}
@@ -1388,8 +1383,9 @@
 			$('.btn-map').removeClass('active');
 			$(this).addClass('active');
 
-			active_floor = $(this).data('floor_id');
-
+			active_floor = $(this).data('map_id');
+			var floor_id = $(this).data('floor_id');
+			
 			$.each(floors,function(index){
 				this.visible = (index == active_floor);
 			});
@@ -1399,7 +1395,7 @@
 				$('#tenant_id').empty();
 				$('#tenant_id').append('<option value="">Select Tenant</option>');
 				$.each(data.data, function(key,val) {             
-				$('#tenant_id').append('<option value="'+val.id+'">'+val.brand_name+'</option>');
+					$('#tenant_id').append('<option value="'+val.id+'">'+val.brand_name+'</option>');
 				});
 			});
 
@@ -1414,6 +1410,21 @@
 		$('.map-form-arrow-left').on('click', function() {
 			$('.map-form-holder').show( "slide", { direction: "right" } );
 			$('.map-form-arrow-left').hide();
+		});
+
+		$('#frmCoordinates').on('submit', function(e) {
+			e.preventDefault();
+			$.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
+				if(response.status_code == 200) {
+					toastr.success(response.message);
+				}
+			});
+		});
+
+		$('.frm_info').on('change', function() {
+			if($("#pid").val() > 0) {
+				$('#frmCoordinates').submit();
+			}
 		});
 
 		var container_height = $('.content-wrapper').height()-200;
