@@ -90,10 +90,10 @@ class SitePointViewModel extends Model
     public function getOriginNameAttribute() 
     {
         if($this->brand_name) {
-            return $this->brand_name;
+            return $this->brand_name .' - '.$this->id;
         }
         else if($this->amenity_name){
-            return $this->amenity_name;
+            return $this->amenity_name .' - '.$this->id;
         }
         return null;
     }
