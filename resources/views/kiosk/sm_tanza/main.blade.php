@@ -34,7 +34,7 @@
 
             <!--Start of the directory map content categories-->
             <div id="map-container">
-                <?php include('resources/include/common/contents/directory_map.php');?>
+                @include('kiosk.sm_tanza.pages.map')
             </div>
             <!--End of the directory map content categories-->
 

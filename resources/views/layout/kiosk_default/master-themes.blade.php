@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.theme.default.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/softkeys/softkeys-0.0.1.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/jquery-ui/jquery-ui.min.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('themes/select2-js/select2.min.css') }}">
         <style>
             .text-mall-details {
                 width: 100%;
@@ -213,6 +214,7 @@
     <script src="{{ URL::to('themes/softkeys/softkeys-0.0.1.js') }}"></script>
     <script src="{{ URL::to('themes/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ URL::to('themes/custom-js/helper.js') }}"></script>
+    <script src="{{ URL::to('themes/select2-js/select2.min.js') }}"></script>
 
     @stack('scripts') <!-- To include script links -->
         
