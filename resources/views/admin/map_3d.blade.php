@@ -172,7 +172,7 @@
             <label for="firstName" class="col-sm-12 col-form-label">Amenity:</label>
             <div class="col-sm-12">
               <select class="frm_info custom-select" id="point_type" name="point_type">
-                <option value="">Select Amenity</option>
+                <option value="0">Regular</option>
                 @foreach ($amenities as $amenity)
                 <option value="{{$amenity->id}}">{{$amenity->name}}</option>
                 @endforeach
