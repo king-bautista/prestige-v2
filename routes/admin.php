@@ -261,6 +261,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/download-csv', 'Admin\SiteController@downloadCsv')->name('admin.site.download-csv');
     Route::get('/admin/site/download-csv-template', 'Admin\SiteController@downloadCsvTemplate')->name('admin.site.download-csv-template');
     Route::post('/admin/site/batch-upload', 'Admin\SiteController@batchUpload')->name('admin.site.batch-upload');
+    Route::get('/admin/site/themes-fodler', 'Admin\SiteController@getThemesFolder')->name('admin.site.themes-fodler');
 
     /*
     |--------------------------------------------------------------------------

@@ -9,13 +9,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Set Custom Theme UI -->
         <link rel="stylesheet" href="{{ URL::to('plugins/fontawesome-free/css/all.min.css') }}">
-        <link rel="stylesheet" href="{{ URL::to('themes/sm_default/css/style.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/sm_default/css/bootstrap.min.css') }}"> 
         <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.carousel.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/owlcarousel/assets/owl.theme.default.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/softkeys/softkeys-0.0.1.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/jquery-ui/jquery-ui.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/select2-js/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ URL::to('themes/sm_default/css/style.css') }}">
         <style>
             .text-mall-details {
                 width: 100%;
@@ -199,6 +199,54 @@
                 height:100%;
                 z-index: 99999;
                 background-color:#000;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: 64px;
+            }
+
+            .select2-container .select2-selection--single {
+                height: 64px;
+            }
+
+            .select2-container--default .select2-selection--single {
+                border-radius: 0;
+                border-bottom-left-radius: 15px;
+                border-top-left-radius: 15px;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 58px;
+                width: 60px;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow b {
+                border: solid #0030ff;
+                border-width: 0 6px 6px 0;
+                display: inline-block;
+                padding: 6px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: rotate(-135deg);
+                -webkit-transform: rotate(-135deg);
+            }
+
+            .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+                border: solid #0030ff;
+                border-width: 0 6px 6px 0;
+                display: inline-block;
+                padding: 6px;
+                position: absolute;
+                top: 40%;
+                left: 50%;
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+            }
+
+            .select2-dropdown--above {
+                display: flex;
+                flex-direction: column-reverse;
             }
             
         </style>
