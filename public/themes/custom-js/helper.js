@@ -149,8 +149,8 @@ Helpers.prototype = {
     },
 
     homeBtnClick: function() {
-        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
-        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
         $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
         $('#home_txt').addClass("nav-btn-active");
 
@@ -163,6 +163,8 @@ Helpers.prototype = {
         $('#Tab-Category-Tab').click();        
 		$('#home-cat-contents').hide();
         $('#home-container').show();
+        $('#home_v4s').show();
+        $('#home_v4').hide();
         current_location = 'home';
         $('.back-img-btn').hide();
         page_history = [];
@@ -207,8 +209,8 @@ Helpers.prototype = {
     },
 
     backToTenant: function() {
-        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
-        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
         $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
         $('#home_txt').addClass("nav-btn-active");
 
@@ -228,11 +230,13 @@ Helpers.prototype = {
         $('#tenant-store-content').hide();
         $('#home-cat-contents').show();
         $('.TenantPage').show();
+        $('#home_v4').show();
+        $('#home_v4s').hide();
     },
 
     backToSupplemental: function() {
-        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
-        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
         $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
         $('#home_txt').addClass("nav-btn-active");
         $('#home-cat-contents').show();
@@ -243,8 +247,8 @@ Helpers.prototype = {
     },
 
     backToAlphabet: function() {
-        $('#search_v4, #home_v4s, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
-        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
+        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
         $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
         $('#home_txt').addClass("nav-btn-active");
         $('#home-cat-contents').show();

@@ -11,9 +11,12 @@ use App\Models\BrandTag;
 use App\Models\Tag;
 use App\Models\SiteScreen;
 use App\Models\SiteTenant;
+use App\Models\SiteMeta;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\AdminViewModels\CinemaScheduleViewModel;
 use App\Models\AdminViewModels\PlayListViewModel;
+use App\Models\AdminViewModels\SiteMapConfigViewModel;
+use App\Models\AdminViewModels\SiteMapViewModel;
 use App\Models\ViewModels\SiteCategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\AssistantMessageViewModel;
@@ -29,11 +32,13 @@ class KioskController extends AppBaseController
         ->when($site_name, function($query) use($site_name) {
             $query->whereRaw('REPLACE(LOWER(name), " ", "-") = ?', [$site_name]);
         })
-        ->where('active', 1)->first(); 
+        ->where('active', 1)
+        ->first(); 
 
         if(!$site)
             return view('kiosk.page-not-found');
 
+        $template_name = $site->details['site_theme'];
         $site_schedule = json_encode($site->operational_hours);
         $categories = $this->getCategories($site->id);
         $promos = $this->getPromos($site->id);
@@ -44,10 +49,10 @@ class KioskController extends AppBaseController
         $fullscreen_ads = $this->getFullScreenAds($site->id);
         $assistant_message = $this->getAssistantMessage();
         $translations = $this->getTranslation();
+        $all_tenants = $this->getTenants($site->id);
+        $site_maps = $this->getSiteMaps($site);
 
-        $template_name = str_replace("-", "_", strtolower($site_name));
-
-        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads', 'fullscreen_ads', 'assistant_message', 'translations'));
+        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads', 'fullscreen_ads', 'assistant_message', 'translations', 'all_tenants', 'site_maps'));
     }
 
     public function getCategories($site_id= 0) {
@@ -117,14 +122,24 @@ class KioskController extends AppBaseController
 
     public function getTenants($site_id = null, $parent_category_id = null, $category_id = null) {
 
-        SiteTenantViewModel::setSiteId($site_id);
+        $map_type = '3D';
+        SiteTenantViewModel::setSiteId($site_id);        
 
-        $tenants = SiteTenantViewModel::where('site_tenants.site_id', $site_id)
-        ->where('categories.parent_id', $parent_category_id)
+        $site_map_type = SiteMeta::where('site_id', $site_id)->where('meta_key', 'map_type')->first();
+        if($site_map_type)
+            $map_type = $site_map_type->meta_value;
+
+        $tenants = SiteTenantViewModel::where('site_tenants.site_id', $site_id)        
+        ->when($parent_category_id, function($query) use($parent_category_id) {
+            $query->where('categories.parent_id', $parent_category_id);
+        })
         ->when($category_id, function($query) use($category_id) {
             $query->where('categories.id', $category_id);
         })
         ->where('site_tenants.active', 1)
+        ->where('site_maps.map_type', $map_type)
+        ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+        ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
         ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
         ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
         ->leftJoin('site_tenant_metas', function($join)
@@ -141,9 +156,10 @@ class KioskController extends AppBaseController
         ->orderBy('address', 'ASC')
         ->get()->toArray();
 
-        $tenants = array_chunk($tenants, 15);
-        return $tenants;
+        if($parent_category_id || $category_id) 
+            $tenants = array_chunk($tenants, 15);
 
+        return $tenants;
     }
 
     public function getTenantsBySupplementals($site_id = null, $supplemental_id = null) {
@@ -493,6 +509,12 @@ class KioskController extends AppBaseController
         }
 
         return json_encode($collection);
+    }
+
+    public function getSiteMaps($site) {
+
+        $site_maps = SiteMapViewModel::where('site_id', $site->id)->where('map_type', $site->details['map_type'])->get();
+        return $site_maps;        
     }
 
 }

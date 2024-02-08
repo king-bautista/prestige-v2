@@ -87,6 +87,15 @@
 										</select>
 									</div>
 								</div>
+								<div class="form-group row">
+									<label for="firstName" class="col-sm-4 col-form-label">Origin Point <span class="font-italic text-danger"> *</span></label>
+									<div class="col-sm-8">
+										<multiselect v-model="map_form.origin_point" track-by="origin_name" label="origin_name"
+											placeholder="Select Origin Point" :options="tenants" :searchable="true"
+											:allow-empty="false" :loading="isLoading" @search-change="getTenants">
+										</multiselect>
+									</div>
+								</div>
 								<div class="form-group row" v-if="map_form.map_details.map_type == '2D'">
 									<label for="firstName" class="col-sm-4 col-form-label">Start Scale</label>
 									<div class="col-sm-8">
@@ -225,6 +234,7 @@
 </template>
 <script> 
 	import Table from '../Helpers/Table';
+	import Multiselect from 'vue-multiselect';
 
 	export default {
         name: "ManageMaps",
@@ -240,6 +250,7 @@
                     id: '',
                     map_details: '',
                     site_screen_id: '',
+					origin_point: '',
 					start_scale: '',
 					start_x: '',
 					start_y: '',
@@ -258,6 +269,7 @@
 					is_default: '',
 				},
 				screens: [],
+				tenants: [],
                 add_record: true,
                 edit_record: false,
             	dataFields: {            
@@ -374,6 +386,7 @@
 				this.edit_record = false;
                 this.map_form.map_details = '';
 				this.map_form.site_screen_id = '';
+				this.map_form.origin_point = '';
 				this.map_form.start_scale = '';
 				this.map_form.start_x = '';
 				this.map_form.start_y = '';
@@ -397,6 +410,7 @@
                 let formData = new FormData();
                 formData.append("map_details", this.map_form.map_details.id);
                 formData.append("site_screen_id", this.map_form.site_screen_id);
+				formData.append("origin_point", JSON.stringify(this.map_form.origin_point));
                 formData.append("start_scale", this.map_form.start_scale);
                 formData.append("start_x", this.start_x);
 				formData.append("start_y", this.map_form.start_y);
@@ -434,6 +448,7 @@
                     this.map_form.id = site_config.id;
                     this.map_form.map_details = site_config.map_details;
 					this.map_form.site_screen_id = site_config.site_screen_id;
+					this.map_form.origin_point = site_config.site_point_details;
 					this.map_form.start_scale = site_config.start_scale;
 					this.map_form.start_x = site_config.start_x;
 					this.map_form.start_y = site_config.start_y;
@@ -461,6 +476,7 @@
                 formData.append("id", this.map_form.id);
                 formData.append("map_details", this.map_form.map_details.id);
                 formData.append("site_screen_id", this.map_form.site_screen_id);
+				formData.append("origin_point", JSON.stringify(this.map_form.origin_point));
                 formData.append("start_scale", this.map_form.start_scale);
                 formData.append("start_x", this.start_x);
 				formData.append("start_y", this.map_form.start_y);
@@ -516,10 +532,25 @@
 				console.log(this.map_form.map_details);
 			},
 
+			getTenants: function (query) {
+				this.isLoading = true;
+				axios.get('/admin/site/manage-config/origin-point', {
+					params: {
+						search: query,
+						map_details: JSON.stringify(this.map_form.map_details)
+					}
+				})
+				.then(response => {
+					this.tenants = response.data.data;
+					this.isLoading = false;
+				});
+			},
+
         },
 
         components: {
-        	Table
+        	Table,
+			Multiselect,
  	    }
     };
 </script> 

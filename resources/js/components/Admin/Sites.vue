@@ -105,6 +105,27 @@
 								<div class="col-sm-3 text-center">
 									<img v-if="site_background" :src="site_background_portrait" class="img-thumbnail" />
 								</div>
+							</div>							
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-3 col-form-label">Map Type <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<select class="custom-select" v-model="site.map_type">
+									    <option value="">Select Map Type</option>
+									    <option value="2D"> 2D</option>
+									    <option value="3D"> 3D</option>
+								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-3 col-form-label">Themes <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<select class="custom-select" v-model="site.site_theme">
+									    <option value="">Select Themes</option>
+										<option v-for="theme in themes" :value="theme"> {{ theme.toUpperCase().replace('_', ' ') }}</option>
+								    </select>
+								</div>
 							</div>
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-3 col-form-label">Client Company</label>
@@ -305,6 +326,8 @@ export default {
 				site_background: '',
 				site_background_portrait: '',
 				company_id: null,
+				map_type: '',
+				site_theme: '',
 				facebook: '',
 				instagram: '',
 				twitter: '',
@@ -326,6 +349,7 @@ export default {
 			image_height: 0,
 			is_default: '',
 			companies: [],
+			themes: [],
 			options: {
 				format: 'hh:mm A',
 				useCurrent: false,
@@ -430,9 +454,17 @@ export default {
 
 	created() {
 		this.getCompany();
+		this.getThemes();		
 	},
 
 	methods: {
+
+		getThemes: function() {
+			axios.get('/admin/site/themes-fodler')
+			.then(response => {
+				this.themes = response.data.data;
+			});
+		},
 
 		addOperationalHours: function () {
 			this.site.operational_hours.push({
@@ -569,6 +601,8 @@ export default {
 			this.edit_record = false;
 			this.site.name = '';
 			this.site.site_code = '';
+			this.site.map_type = '';
+			this.site.site_theme = '';
 			this.site.descriptions = '';
 			this.site.company_id = null;
 			this.site.active = false;
@@ -613,6 +647,8 @@ export default {
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
 			formData.append("website", (this.site.website) ? this.site.website : '');
 			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
+			formData.append("map_type", (this.site.map_type) ? this.site.map_type : '');		
+			formData.append("site_theme", (this.site.site_theme) ? this.site.site_theme : '');		
 			formData.append("active", this.site.active);
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);
@@ -653,6 +689,8 @@ export default {
 					this.site.is_premiere = parseInt(site.details.premiere);
 					this.site.multilanguage = parseInt(site.details.multilanguage);
 					this.site.site_code = site.details.site_code;
+					this.site.map_type = (site.details.map_type == 'null' || site.details.map_type == undefined) ? '' : site.details.map_type;
+					this.site.site_theme = (site.details.site_theme == 'null' || site.details.site_theme == undefined) ? '' : site.details.site_theme;
 					this.add_record = false;
 					this.edit_record = true;
 
@@ -720,6 +758,8 @@ export default {
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
 			formData.append("website", (this.site.website) ? this.site.website : '');
 			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
+			formData.append("map_type", (this.site.map_type) ? this.site.map_type : '');						
+			formData.append("site_theme", (this.site.site_theme) ? this.site.site_theme : '');		
 			formData.append("active", this.site.active);
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);

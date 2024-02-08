@@ -152,7 +152,9 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'premiere' => $this->checkBolean($request->is_premiere),
                 'multilanguage' => $this->checkBolean($request->multilanguage),
                 'site_code' => $request->site_code,
+                'map_type' => $request->map_type,
                 'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
+                'site_theme' => $request->site_theme,
             ];
 
             $site = Site::create($data);
@@ -221,6 +223,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
 
             $meta_value = [
                 'site_code' => $request->site_code,
+                'map_type' => $request->map_type,
                 'company_id' => ($request->company_id) ? $request->company_id : null,
                 'facebook' => ($request->facebook) ? $request->facebook : null,
                 'instagram' => ($request->instagram) ? $request->instagram : null,
@@ -229,6 +232,7 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'premiere' => $this->checkBolean($request->is_premiere),
                 'multilanguage' => $this->checkBolean($request->multilanguage),
                 'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
+                'site_theme' => $request->site_theme,
             ];
 
             $site->update($data);
@@ -426,6 +430,35 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function getThemesFolder() {
+        try {
+            $foler_names = [];
+            $i = 0;
+
+            $dir = resource_path().'/views/kiosk/';
+            $dirList = scandir($dir);
+
+            foreach ($dirList as $key => $value) {
+                if (strpos($value, '.') !== false) {
+                }
+                else {
+                    $foler_names[$i] = $value;
+                    $i++;
+                }
+            }
+            
+            return $this->response($foler_names, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+
+        
     }
     // public function getOperationalHour($operational_hours){
     //     $time =[];

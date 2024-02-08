@@ -272,6 +272,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/download-csv', 'Admin\SiteController@downloadCsv')->name('admin.site.download-csv');
     Route::get('/admin/site/download-csv-template', 'Admin\SiteController@downloadCsvTemplate')->name('admin.site.download-csv-template');
     Route::post('/admin/site/batch-upload', 'Admin\SiteController@batchUpload')->name('admin.site.batch-upload');
+    Route::get('/admin/site/themes-fodler', 'Admin\SiteController@getThemesFolder')->name('admin.site.themes-fodler');
 
     /*
     |--------------------------------------------------------------------------
@@ -368,6 +369,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/site/manage-config/update', 'Admin\MapsController@configUpdate')->name('admin.site.manage.config.update');
     Route::get('/admin/site/manage-config/delete/{id}', 'Admin\MapsController@configDelete')->where('id', '[0-9]+')->name('admin.site.manage.config.delete');
     Route::get('/admin/site/manage-config/set-default/{id}', 'Admin\MapsController@setDefault')->where('id', '[0-9]+')->name('admin.site.map.set-default');
+    Route::get('/admin/site/manage-config/origin-point', 'Admin\MapsController@getOriginPoint')->name('admin.site.map.origin-point');
 
     Route::get('/admin/site/map/{id}', 'Admin\MapsController@getMapDetails')->where('id', '[0-9]+')->name('admin.site.map');
     Route::get('/admin/site/map/get-points/{id}', 'Admin\MapsController@getSitePoints')->where('id', '[0-9]+')->name('admin.site.map.get-points');
@@ -378,7 +380,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/site/map/delete-point/{id}', 'Admin\MapsController@deletePoint')->where('id', '[0-9]+')->name('admin.site.map.delete-point');
     Route::get('/admin/site/map/point-info/{id}', 'Admin\MapsController@pointInfo')->where('id', '[0-9]+')->name('admin.site.map.point-info');
     Route::post('/admin/site/map/connect-point', 'Admin\MapsController@connectPoints')->name('admin.site.map.connect-point');
-    Route::get('/admin/site/map/delete-line/{id}', 'Admin\MapsController@deleteLine')->where('id', '[0-9]+')->name('admin.site.map.delete-line');
+    Route::post('/admin/site/map/delete-line', 'Admin\MapsController@deleteLine')->name('admin.site.map.delete-line');
     Route::get('/admin/site/map/generate-routes/{site_id}/{screen_id}', 'Admin\MapsController@generateRoutes')->where('id', '[0-9]+')->name('admin.site.map.generate-routes');
 
     /*
