@@ -25,6 +25,7 @@ use VideoThumbnail;
 use Storage;
 use Image;
 use URL;
+use Session;
 
 class BrandController extends AppBaseController implements BrandControllerInterface
 {
@@ -43,6 +44,62 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     }
 
     public function list(Request $request)
+    {
+        try {
+            if (Session::has('company_id')) {
+                $company_id = session()->get('company_id');
+                $brand_ids = CompanyBrands::where('company_id', $company_id)->get()->pluck('brand_id');
+            } else {
+                $filters = json_decode($request->filters);
+                $company_id = null;
+                $brand_ids = [];
+                if ($filters) {
+                    $company_id = $filters->company_id;
+                    $brand_ids = CompanyBrands::where('company_id', $company_id)->get()->pluck('brand_id');
+                }
+            }
+
+            $brands = BrandViewModel::when(request('search'), function ($query) {
+                return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('supplementals.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
+            })
+                ->when(count($brand_ids) > 0, function ($query) use ($brand_ids) {
+                    return $query->whereIn('brands.id', $brand_ids);
+                })
+                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+                ->leftJoin('supplementals', 'brands.category_id', '=', 'supplementals.id')
+                ->select('brands.*', 'categories.name', 'supplementals.name', 'brands.name')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('brands.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    if ($column == 'category_name') {
+                        $field = 'categories.name';
+                    } else if ($column == 'supplemental_names') {
+                        $field = 'supplementals.name';
+                    } else if ($column == 'name') {
+                        $field = 'brands.name';
+                    } else {
+                        $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
+                ->latest()
+                ->paginate(request('perPage'));
+            return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function listModal(Request $request)
     {
         try {
             $filters = json_decode($request->filters);
@@ -66,11 +123,10 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 ->leftJoin('supplementals', 'brands.category_id', '=', 'supplementals.id')
                 ->select('brands.*', 'categories.name', 'supplementals.name', 'brands.name')
                 ->when(is_null(request('order')), function ($query) {
-                    return $query->orderBy('brands.name', 'ASC'); 
+                    return $query->orderBy('brands.name', 'ASC');
                 })
-                ->when(request('order'), function ($query) { 
-                   // echo request('order');
-                    $column = $this->checkcolumn(request('order')); 
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
                     if ($column == 'category_name') {
                         $field = 'categories.name';
                     } else if ($column == 'supplemental_names') {
