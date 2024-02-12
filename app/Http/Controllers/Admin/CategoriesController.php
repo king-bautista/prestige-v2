@@ -58,7 +58,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                     }
                     return $query->orderBy($fields, request('sort'));
                 })
-                ->where('categories.category_type', 1)
+                //->where('categories.category_type', 1)
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);
