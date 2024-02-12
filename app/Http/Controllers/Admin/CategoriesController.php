@@ -39,7 +39,8 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             $categories = CategoryViewModel::when(request('search'), function ($query) {
                 return $query->where('categories.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('categories.descriptions', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('c.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('c.name', 'LIKE', '%' . request('search') . '%')
+                    ->where('categories.category_type', 1);
             })
                 ->join('categories as c', function ($join) {
                     $join->on('categories.parent_id', '=', 'c.id');
@@ -58,7 +59,6 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                     }
                     return $query->orderBy($fields, request('sort'));
                 })
-                //->where('categories.category_type', 1)
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($categories, 'Successfully Retreived!', 200);
