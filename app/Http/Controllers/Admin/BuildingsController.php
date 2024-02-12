@@ -201,7 +201,6 @@ class BuildingsController extends AppBaseController implements BuildingsControll
                     'created_at' => $building->created_at,
                     'updated_at' => $building->updated_at,
                     'deleted_at' => $building->deleted_at,
-
                 ];
             }
 

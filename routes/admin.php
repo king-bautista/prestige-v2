@@ -143,14 +143,24 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/admin/company/batch-upload', 'Admin\CompaniesController@batchUpload')->name('admin.company.batch-upload');
     Route::get('/admin/company/download-csv', 'Admin\CompaniesController@downloadCsv')->name('admin.company.download-csv');
     Route::get('/admin/company/download-csv-template', 'Admin\CompaniesController@downloadCsvTemplate')->name('admin.company.download-csv-template');
+    Route::get('/admin/company/download-csv-brand', 'Admin\CompaniesController@downloadCsvBrand')->name('admin.company.download-csv-brand');
+    Route::get('/admin/company/download-csv-template-brand', 'Admin\CompaniesController@downloadCsvTemplateBrand')->name('admin.company.download-csv-template-brand');
+    Route::get('/admin/company/download-csv-contract', 'Admin\CompaniesController@downloadCsvContract')->name('admin.company.download-csv-contract');
+    Route::get('/admin/company/download-csv-template-contract', 'Admin\CompaniesController@downloadCsvTemplateContract')->name('admin.company.download-csv-template-contract');
     Route::post('/admin/company/brand/store', 'Admin\CompaniesController@storeBrand')->name('admin.company.brand.store');
-    Route::get('/admin/company/brand/delete/{id}/{company_id}', 'Admin\CompaniesController@deleteBrand')->where('id', '[0-9]+')->where('company_id', '[0-9]+')->name('admin.company.brand.delete');
+    Route::get('/admin/company/brand/delete/{id}', 'Admin\CompaniesController@deleteBrand')->where('id', '[0-9]+')->where('company_id', '[0-9]+')->name('admin.company.brand.delete');
     Route::post('/admin/company/contract/store', 'Admin\CompaniesController@storeContract')->name('admin.company.contract.store');
     Route::get('/admin/company/contract/{id}', 'Admin\CompaniesController@contractDetails')->name('admin.company.contract.details');
     Route::put('/admin/company/contract/update', 'Admin\CompaniesController@updateContract')->name('admin.company.contract.update');
     Route::get('/admin/company/contract/delete/{id}', 'Admin\CompaniesController@deleteContract')->where('id', '[0-9]+')->name('admin.company.contract.delete');
     Route::get('/admin/company/contract/duplicate/{id}', 'Admin\CompaniesController@duplicateContract')->where('id', '[0-9]+')->name('admin.company.contract.duplicate');
     
+    Route::get('/admin/company/list-brand', 'Admin\CompaniesController@listBrands')->name('admin.company.brand.list');
+    Route::get('/admin/company/list-contract', 'Admin\CompaniesController@listContracts')->name('admin.company.contract.list');
+    Route::get('/admin/company/deleteSession', 'Admin\CompaniesController@deleteCompanySession')->name('admin.company.delete-company-session');
+    
+    Route::get('/admin/companies/{id}', 'Admin\CompaniesController@edit')->name('admin.companies.edit');
+
     /*
     |--------------------------------------------------------------------------
     | Company User Workflows Routes
@@ -218,6 +228,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     */
     Route::get('/admin/brands', 'Admin\BrandController@index')->name('admin.brands');
     Route::get('/admin/brand/list', 'Admin\BrandController@list')->name('admin.brand.list');
+    Route::get('/admin/brand/list-modal', 'Admin\BrandController@listModal')->name('admin.brand.list-modal');
     Route::post('/admin/brand/store', 'Admin\BrandController@store')->name('admin.brand.store');
     Route::get('/admin/brand/{id}', 'Admin\BrandController@details')->where('id', '[0-9]+')->name('admin.brand.details');
     Route::post('/admin/brand/update', 'Admin\BrandController@update')->name('admin.brand.update');
