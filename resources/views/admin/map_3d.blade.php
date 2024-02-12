@@ -202,7 +202,7 @@
 <script src="{{ URL::to('themes/three.js/examples/js/libs/jszip.min.js') }}"></script>
 <script src="{{ URL::to('themes/custom-js/text-wrapper-3js.js') }}"></script>
 <script type="module">
-  import * as THREE from "{{ URL::to('themes/three.js/build/three.module.js') }}";
+  	import * as THREE from "{{ URL::to('themes/three.js/build/three.module.js') }}";
 	import Stats from "{{ URL::to('themes/three.js/examples/jsm/libs/stats.module.js') }}";
 	import { KMZLoader } from "{{ URL::to('themes/three.js/examples/jsm/loaders/KMZLoader.js') }}";
 	import { OBJLoader } from "{{ URL::to('themes/three.js/examples/jsm/loaders/OBJLoader.js') }}";

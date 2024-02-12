@@ -20,6 +20,7 @@ class SiteMap extends Model
         'site_building_level_id',
         'site_screen_id',
         'map_type',
+        'default_zoom',
         'map_file',
         'map_preview',
         'image_size_width',

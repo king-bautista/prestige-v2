@@ -116,6 +116,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'map_type' => $request->map_type,
+                'default_zoom' => $request->default_zoom,
                 'map_file' => str_replace('\\', '/', $map_file_path),
                 'map_preview' => str_replace('\\', '/', $map_preview_path),
                 'image_size_width' => $width,
@@ -167,6 +168,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'map_type' => $request->map_type,
+                'default_zoom' => $request->default_zoom,
                 'map_file' => ($map_file_path) ? str_replace('\\', '/', $map_file_path) : $site_map->map_file,
                 'map_preview' => ($map_preview_path) ? str_replace('\\', '/', $map_preview_path) : $site_map->map_preview,
                 'image_size_width' => ($width) ? $width : $site_map->image_size_width,
@@ -666,6 +668,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'floor_label_height' => ($request->floor_label_height) ? $request->floor_label_height : 0,
                 'floor_label_space' => ($request->floor_label_space) ? $request->floor_label_space : 0,
                 'floor_animation_height' => ($request->floor_animation_height) ? $request->floor_animation_height : 0,
+                'player_speed' => ($request->player_speed) ? $request->player_speed : 0.6,
                 'active' => $this->checkBolean($request->active),
                 'is_default' => $this->checkBolean($request->is_default),
             ];
@@ -712,6 +715,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'floor_label_height' => ($request->floor_label_height) ? $request->floor_label_height : 0,
                 'floor_label_space' => ($request->floor_label_space) ? $request->floor_label_space : 0,
                 'floor_animation_height' => ($request->floor_animation_height) ? $request->floor_animation_height : 0,
+                'player_speed' => ($request->player_speed) ? $request->player_speed : 0.6,
                 'active' => $this->checkBolean($request->active),
                 'is_default' => $this->checkBolean($request->is_default),
             ];

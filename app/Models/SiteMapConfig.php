@@ -34,6 +34,7 @@ class SiteMapConfig extends Model
         'floor_label_height',
         'floor_label_space',
         'floor_animation_height',
+        'player_speed',
         'active',
         'is_default',
     ];

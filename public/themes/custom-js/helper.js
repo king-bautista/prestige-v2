@@ -186,6 +186,7 @@ Helpers.prototype = {
         $('#search_txt, #home_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
         $('#map_txt').addClass("nav-btn-active");
         $('#videocontainer').html('');
+        $('#btnresetmap').click();
         current_location = 'map';
     },
 

@@ -114,7 +114,7 @@
 										<input type="text" class="form-control" v-model="map_form.start_y" placeholder="0.00" required>
 									</div>
 								</div>
-								<div class="form-group row" v-if="map_form.map_details.map_type == '2D'">
+								<div class="form-group row">
 									<label for="firstName" class="col-sm-4 col-form-label">Default Zoom</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" v-model="map_form.default_zoom" placeholder="0.00" required>
@@ -178,6 +178,12 @@
 									<label for="firstName" class="col-sm-4 col-form-label">Floor Animation Height</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" v-model="map_form.floor_animation_height" placeholder="0.00" required>
+									</div>
+								</div>
+								<div class="form-group row" v-if="map_form.map_details.map_type == '3D'">
+									<label for="firstName" class="col-sm-4 col-form-label">Player Speed</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" v-model="map_form.player_speed" placeholder="0.00" required>
 									</div>
 								</div>
 								<div class="form-group row" v-show="edit_record">
@@ -265,6 +271,7 @@
 					floor_label_height: '',
 					floor_label_space: '',
 					floor_animation_height: '',
+					player_speed: 0.6,
 					active: '',
 					is_default: '',
 				},
@@ -401,6 +408,7 @@
 				this.map_form.floor_label_height = '';
 				this.map_form.floor_label_space = '';
 				this.map_form.floor_animation_height = '';
+				this.map_form.player_speed = 0.6;
 				this.map_form.active = true;
 				this.map_form.is_default = false;
               	$('#map-form').modal('show');
@@ -425,6 +433,7 @@
 				formData.append("floor_label_height", this.map_form.floor_label_height);
 				formData.append("floor_label_space", this.map_form.floor_label_space);
 				formData.append("floor_animation_height", this.map_form.floor_animation_height);
+				formData.append("player_speed", this.map_form.player_speed);
 				formData.append("active", this.map_form.active);
 				formData.append("is_default", this.map_form.is_default);
 
@@ -463,6 +472,7 @@
 					this.map_form.floor_label_height = site_config.floor_label_height;
 					this.map_form.floor_label_space = site_config.floor_label_space;
 					this.map_form.floor_animation_height = site_config.floor_animation_height;
+					this.map_form.player_speed = site_config.player_speed;
 					this.map_form.active = site_config.active;
 					this.map_form.is_default = site_config.is_default;
 					this.add_record = false;
@@ -491,6 +501,7 @@
 				formData.append("floor_label_height", this.map_form.floor_label_height);
 				formData.append("floor_label_space", this.map_form.floor_label_space);
 				formData.append("floor_animation_height", this.map_form.floor_animation_height);
+				formData.append("player_speed", this.map_form.player_speed);
 				formData.append("active", this.map_form.active);
 				formData.append("is_default", this.map_form.is_default);
 

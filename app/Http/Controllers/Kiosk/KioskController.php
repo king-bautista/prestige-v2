@@ -12,15 +12,21 @@ use App\Models\Tag;
 use App\Models\SiteScreen;
 use App\Models\SiteTenant;
 use App\Models\SiteMeta;
+use App\Models\Amenity;
+use App\Models\SiteBuilding;
+use App\Models\SiteMapZoom;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\AdminViewModels\CinemaScheduleViewModel;
 use App\Models\AdminViewModels\PlayListViewModel;
 use App\Models\AdminViewModels\SiteMapConfigViewModel;
 use App\Models\AdminViewModels\SiteMapViewModel;
+use App\Models\AdminViewModels\SiteBuildingLevelViewModel;
 use App\Models\ViewModels\SiteCategoryViewModel;
 use App\Models\ViewModels\SiteTenantViewModel;
 use App\Models\ViewModels\AssistantMessageViewModel;
 use App\Models\ViewModels\TranslationViewModel;
+use App\Models\ViewModels\SitePointViewModel;
+use App\Models\ViewModels\SitePointLinkViewModel;
 
 class KioskController extends AppBaseController
 {
@@ -50,9 +56,84 @@ class KioskController extends AppBaseController
         $assistant_message = $this->getAssistantMessage();
         $translations = $this->getTranslation();
         $all_tenants = $this->getTenants($site->id);
+
+        // MAP PAGE DATA
+        $site_config = $this->getSiteConfig($site);
+        $site_buildings = $this->getBuildingFloors($site->id);
+
+        $building_count = $site_buildings['building'];
+        $site_floors = $site_buildings['floors'];
+
         $site_maps = $this->getSiteMaps($site);
 
-        return view('kiosk.'.$template_name.'.main', compact('site', 'site_schedule', 'categories', 'promos', 'cinemas', 'now_showing', 'suggestions', 'banner_ads', 'fullscreen_ads', 'assistant_message', 'translations', 'all_tenants', 'site_maps'));
+        $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
+        $map_points = json_encode($map_points_tenants_links['map_points']);
+        $map_tenants = json_encode($map_points_tenants_links['map_tenants']);
+        $kiosk_zoom = $this->getMapZoom($site_maps, $site_config->view_angle);
+        $kiosk_center = $this->getMapCenter($site_maps, $site_config->view_angle, $site_config->origin_point);
+        if(count($kiosk_center) == 0)
+            $kiosk_center = $this->getMapCenter($site_maps, $site_config->view_angle);
+
+        $kiosk_center = json_encode($kiosk_center);
+        $amenities = $this->getAmenities($site->id);
+
+        // Sprite configuration
+        $icon_version = '4x'; //no names
+        $pin_scale_x = 6.0;
+        $pin_scale_y = 6.0;
+        $pin_scale_z = 0;
+        $icon_scale_x = 3.5;
+        $icon_scale_y = 3.5;
+        $icon_scale_z = 0;
+
+        $floor_font_scale_x = 2;
+        $floor_font_scale_y = 2;
+        $floor_font_scale_z = 2;
+
+        $floor_width = 24;
+        $floor_height = 7;
+
+        $spritepinto_height = 10;
+
+        // END MAP PAGE DATA
+        $data = [
+            'site', 
+            'site_schedule', 
+            'categories', 
+            'promos', 
+            'cinemas', 
+            'now_showing', 
+            'suggestions', 
+            'banner_ads', 
+            'fullscreen_ads', 
+            'assistant_message', 
+            'translations', 
+            'all_tenants', 
+            'site_config', 
+            'building_count',
+            'site_floors',
+            'site_maps', 
+            'map_points', 
+            'map_tenants',
+            'kiosk_zoom',
+            'kiosk_center',
+            'amenities',
+            'icon_version',
+            'pin_scale_x',
+            'pin_scale_y',
+            'pin_scale_z',
+            'icon_scale_x',
+            'icon_scale_y',
+            'icon_scale_z',
+            'floor_font_scale_x',
+            'floor_font_scale_y',
+            'floor_font_scale_z',
+            'floor_width',
+            'floor_height',
+            'spritepinto_height',
+        ];
+
+        return view('kiosk.'.$template_name.'.main', compact($data));
     }
 
     public function getCategories($site_id= 0) {
@@ -515,6 +596,121 @@ class KioskController extends AppBaseController
 
         $site_maps = SiteMapViewModel::where('site_id', $site->id)->where('map_type', $site->details['map_type'])->get();
         return $site_maps;        
+    }
+
+    public function getSiteConfig($site) {
+        $config = SiteMapConfigViewModel::where('site_maps.site_id', $site->id)
+        ->where('site_maps.map_type', $site->details['map_type'])
+        ->where('site_map_configs.is_default', 1)
+        ->where('site_map_configs.active', 1)
+        ->join('site_maps', 'site_map_configs.site_map_id', '=', 'site_maps.id')
+        ->select('site_map_configs.*')
+        ->first();
+
+        return $config;
+    }
+
+    public function getMapPointsTenantLinks($site_maps, $tenant_list) {
+        $map_ids = $site_maps->pluck('id');
+       
+        $points_tmp = SitePointViewModel::whereIn('site_map_id', $map_ids)
+        ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id')
+        ->get();
+
+        $points = [];
+        $tenants = [];
+        $tenant_points = [];
+
+        foreach($points_tmp as $point) {
+            $points[$point['id']] = $point;
+            $tenant_points[] = $point['tenant_id'];
+        }
+
+        foreach($tenant_list as $tenant) {
+            if(in_array($tenant['id'],$tenant_points)) {
+                $tenants[$tenant['id']] = $tenant;
+            }
+        }
+
+        return [
+            'map_points' => $points,
+            'map_tenants' => $tenants,
+        ];
+    }
+
+    public function getAmenities($site_id) {
+        $amenities = [];
+
+        // GET AMENITIES WITH SITE ID
+        $site_amenities = Amenity::where('site_id', $site_id)->get();
+        if($site_amenities) {
+            foreach($site_amenities as $amenity) {
+                if($amenity->icon != null || $amenity->icon != '')
+                    $amenities[$amenity->id] = $amenity->icon; 
+            }
+        }
+
+        // GET DEFAULT AMENITIES
+        $default_amenities = Amenity::where('site_id', 0)->get();
+        if($default_amenities) {
+            foreach($default_amenities as $amenity) {
+                if($amenity->icon != null || $amenity->icon != '')
+                    $amenities[$amenity->id] = $amenity->icon; 
+            }
+        }
+
+        return json_encode($amenities);
+    }
+
+    public function getBuildingFloors($site_id) {
+
+        $building = SiteBuilding::where('site_id', $site_id)->get()->count();
+        $floors = SiteBuildingLevelViewModel::where('site_id', $site_id)->get();
+
+        return [
+            'building' => $building,
+            'floors' => $floors
+        ];
+    }
+
+    public function getMapZoom($site_maps, $view_angle) {
+        $map_ids = $site_maps->pluck('id');
+        $kiosk_zoom = [];
+
+        $map_zoom = SiteMapZoom::whereIn('site_map_id', $map_ids)
+        ->where('view_angle', $view_angle)
+        ->whereIn('meta_key', ['zoomratio','movetop','fitscreen'])
+        ->leftJoin('site_maps', 'site_map_zooms.site_map_id', '=', 'site_maps.id')
+        ->select('site_map_zooms.*', 'site_maps.site_building_level_id as building_level_id')
+        ->get();
+
+        foreach($map_zoom as $zoom) {
+            $kiosk_zoom[$zoom->building_level_id][$zoom->meta_key] = $zoom->meta_value;
+        }
+
+        return json_encode($kiosk_zoom);
+    }
+
+    public function getMapCenter($site_maps, $view_angle, $origin_point = null) {
+        $map_ids = $site_maps->pluck('id');
+        $kiosk_zoom = [];
+
+        $map_zoom = SiteMapZoom::whereIn('site_map_id', $map_ids)
+        ->where('view_angle', $view_angle)
+        ->whereIn('meta_key', ['center_x','center_y','center_z'])
+        ->when($origin_point, function($query) use($origin_point) {
+            $query->where('origin_point', $origin_point);
+        })
+        ->leftJoin('site_maps', 'site_map_zooms.site_map_id', '=', 'site_maps.id')
+        ->select('site_map_zooms.*', 'site_maps.site_building_level_id as building_level_id')
+        ->get();
+
+        foreach($map_zoom as $zoom) {
+            $kiosk_zoom[$zoom->building_level_id][$zoom->meta_key] = $zoom->meta_value;
+        }
+
+        return $kiosk_zoom;
     }
 
 }
