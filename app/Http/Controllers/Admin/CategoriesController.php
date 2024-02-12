@@ -42,7 +42,7 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                     ->orWhere('c.name', 'LIKE', '%' . request('search') . '%')
                     ->where('categories.category_type', 1);
             })
-                ->join('categories as c', function ($join) {
+                ->leftJoin('categories as c', function ($join) {
                     $join->on('categories.parent_id', '=', 'c.id');
                 })
                 ->select('categories.*', 'categories.name')
