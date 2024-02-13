@@ -24,6 +24,7 @@ use App\Models\AdminViewModels\SiteScreenViewModel;
 use App\Models\AdminViewModels\SiteScreenPlaylistViewModel;
 use App\Models\AdminViewModels\PlayListViewModel;
 use App\Imports\PlaylistImport;
+use App\Imports\PlaylistTestImport;
 use App\Exports\PlaylistExport;
 
 use App\Http\Requests\ContentRequest;
@@ -473,14 +474,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ->when(!$is_sitePartner, function($query) use ($company_id, $category_id){
                 return $query->where('company_id', '!=',$company_id)->where('main_category_id', $category_id);
             })
-            // ->when(!$is_sitePartner, function($query) use ($company_id){
-            //     return $query->where('company_id', '!=',$company_id);
-            // })
             ->where('play_lists.site_screen_id', $site_screen_id)  
             ->where('site_screen_products.ad_type', $ad_type);
-            // ->limit($limit)
-            // ->offset($offset)
-            // ->get();
 
             return $ad_per_category;
     }
@@ -598,6 +593,26 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
             Excel::import(new PlaylistImport, $request->file('file'));
             return $this->response(true, 'Successfully Uploaded!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function batchUploadTest(Request $request)
+    {
+        try {
+            // $beng = Excel::import(new PlaylistTestImport, $request->file('file'));
+            $import = new PlaylistTestImport;
+
+            $beng =  Excel::import($import, $request->file('file'));
+            // return $this->response(true, 'Successfully Uploaded!', 200);
+            return $this->response([
+                'site_id' => $import->dimension
+            ]);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
