@@ -37,14 +37,25 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
         try
         {
             $amenitiess = Amenity::when(request('search'), function($query){
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+                return $query->where('amenities.name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('s.name', 'LIKE', '%' . request('search') . '%');
             })
+            ->leftJoin('sites as s', 'amenities.site_id', '=', 's.id')
+            ->select('amenities.*', 's.name as site_name')
             ->when(is_null(request('order')), function ($query) {
-                return $query->orderBy('name', 'ASC');
+                return $query->orderBy('amenities.name', 'ASC');
             })
             ->when(request('order'), function ($query) {
                 $column = $this->checkcolumn(request('order'));
-                return $query->orderBy($column, request('sort'));
+
+                switch ($column) {
+                    case 'site_name':
+                        $field = 'site_name';
+                        break;
+                    default:
+                        $field = $column;
+                }
+                return $query->orderBy($field, request('sort'));
             })
             ->latest()
             ->paginate(request('perPage'));
@@ -89,6 +100,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             }
             
             $data = [
+                'site_id' => ($request->site_id)? $request->site_id: 0,
                 'name' => $request->name,
                 'icon' => str_replace('\\', '/', $icon_path),
                 'active' => 1
@@ -122,9 +134,10 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             }  
 
             $data = [
+                'site_id' => $request->site_id,
                 'name' => $request->name,
                 'icon' => ($icon_path) ? str_replace('\\', '/', $icon_path) : $amenities->icon,
-                'active' => ($request->active == 'false') ? 0 : 1,
+                'active' => $this->checkBolean($request->active),
             ];
 
             $amenities->update($data);
