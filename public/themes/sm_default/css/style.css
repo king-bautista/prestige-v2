@@ -341,7 +341,7 @@ body {
 
 .socialMediaContentHide {
     padding-top: 18px;
-    padding-bottom:  163.5px !important;
+    /* padding-bottom:  163.5px !important; */
 }
 
 .storeNavigationBtn {
@@ -363,6 +363,7 @@ body {
 }
 
 .btn-prestige-order-now {
+    font-family: 'Henry Sans Regular' !important; 
     opacity: 30% !important; 
     color: #b6c3ff !important; 
     border: 1px solid #b6c3ff !important; 
@@ -424,16 +425,34 @@ body {
     margin-left: 0px;
 }
 
-.owl-dots {
+.owl-dots-categories {
     margin-top: 56px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
 
-.owl-dots-2 {
+.owl-dots-tenant-list {
+    margin-top: 11.0px !important;
+    margin-left: 10px !important;
+    margin-right: -10px !important;
+}
+
+.owl-dots-alphabetical {
     margin-top: 56px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
+}
+
+.owl-dots-cravings {
+    margin-top: 31.5px !important;
+    margin-left: 10px !important;
+    margin-right: -10px !important;
+}
+
+.owl-dots-promo {
+    margin-top: -5.0px !important;
+    margin-left: 10.0px !important;
+    margin-right: -10.5px !important;
 }
 
 .carousel-content-container-per-food-alphabetical {
@@ -993,7 +1012,9 @@ body {
 }
 
 .social-media-container {
-    margin: 34px 0 150px 20px;
+    width: auto;
+    height: 164px !important;
+    /* margin: 34px 0 150px 20px; */
 }
 
 .social-media-icons {
@@ -1162,8 +1183,10 @@ body {
     border-color: #e2e2e2 !important;
     font-size: 1em !important;
     width: 180px !important;
+    height: 56px !important;
     margin-right: 30px !important;
     font-family: Henry Sans Regular !important;
+    padding: 9px 37px;
 }
 
 .ShareBtn-2 {
@@ -1195,7 +1218,7 @@ body {
 
 .ShareText {
     float: left;
-    margin: 5px 0px 0px 15px;
+    margin: 3.5px 0px 0px 5px;
     font-size: 1em;
     line-height: normal;
 }
@@ -1211,7 +1234,7 @@ body {
 
 .heart-icon-btn {
     float: left;
-    margin: 6px 0 0 35.5px;
+    margin: 16px 0 0 35.5px;
 }
 
 .display-likes-btn {
@@ -1553,13 +1576,13 @@ body {
 .link-alpha {
     color: #000000 !important;
     font-family: "Henry Sans Regular" !important;
-    padding: 0 16.185px 0 10px !important;
+    padding: 0 14.185px 0 10.5px !important;
 }
 
 .link-alpha-disabled {
     color: #efefef !important;
     font-family: "Henry Sans Regular" !important;
-    padding: 0 10.185px 0 10px !important;
+    padding: 0 14.185px 0 10.5px !important;
 }
 
 a.link-alpha.selected {

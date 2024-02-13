@@ -33,7 +33,10 @@
                     ></path>
                 </svg>
                 <b>
-                    <span class="text-success mall-hours-title"><b class="mall-hours-title">Open</b></span> <span class="mall-hours-divider">|</span> <span class="mall-hours-title">10:00am-10:00pm</span>
+                    <span class="text-success mall-hours-title">
+                        <b class="mall-hours-title">Open</b>
+                    </span> 
+                    <span class="mall-hours-divider">|</span> <span class="mall-hours-title">10:00am-10:00pm</span>
                 </b>
             </span>
         </div>
