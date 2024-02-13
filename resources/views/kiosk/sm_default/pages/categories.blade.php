@@ -278,6 +278,8 @@
         helper.setTranslation();
         current_location = 'tenantcategory';
         page_history.push(current_location);
+
+        $(".owl-wrapper-tenant-list").find(".owl-dots").addClass('owl-dots-tenant-list');
     }
 
     function showAlphabetical() {
@@ -388,6 +390,9 @@
         helper.setTranslation();
         current_location = 'alphabet';
         page_history.push(current_location);
+
+        $(".owl-wrapper-alpha-tenant-list").find(".owl-dots").addClass('owl-dots-alphabetical');
+
     }
 
     function showSupplementals() {
@@ -490,6 +495,9 @@
         helper.setTranslation();
         current_location = 'supplemental';
         page_history.push(current_location);
+
+        $(".owl-wrapper-supplemental").find(".owl-dots").addClass('owl-dots-cravings');
+
     }
 
     function generateLetters() {

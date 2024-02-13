@@ -216,6 +216,7 @@
             }
             
         });
+
     }
 
     function showNowShowing() {
@@ -314,18 +315,22 @@
             var first = ( !e.item.index)
             if( first ){
                 $('.promo-prev').hide();
+                $('.owl-dots').hide();
             }
             else {
                 $('.promo-prev').show();
+                $('.owl-dots').hide();
             }
 
             var total = e.relatedTarget.items().length - 1;
             var current = e.item.index;
             if(total == current) {
                 $('.promo-next').hide();
+                $('.owl-dots').hide();
             }
             else {
                 $('.promo-next').show();
+                $('.owl-dots').hide();
             }
             
         });
