@@ -409,6 +409,33 @@ body {
     margin-left: 0px;
 }
 
+.carousel-content-container-alphabetical {
+    padding: 124.5px 133px 0px 153px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-show-cinema-12 {
+    padding: 189.5px 133px 0px 153px;
+    margin-left: 0px;
+}
+
+.carousel-content-container-show-cinema-6 {
+    padding: 189.5px 441.5px 0px 461.5px;
+    margin-left: 0px;
+}
+
+.owl-dots {
+    margin-top: 56px !important;
+    margin-left: 10px !important;
+    margin-right: -10px !important;
+}
+
+.owl-dots-2 {
+    margin-top: 56px !important;
+    margin-left: 10px !important;
+    margin-right: -10px !important;
+}
+
 .carousel-content-container-per-food-alphabetical {
     padding: 124.5px 133.5px 0px 153.5px;
     margin-left: 0px;
@@ -762,7 +789,7 @@ body {
 
 .carousel-content-container-cinema {
     vertical-align: middle;
-    padding: 204.6px 133px 0px 153px;
+    padding: 204.6px 283px 0px 303px;
     margin-left: 0px;
 }
 
@@ -844,7 +871,7 @@ body {
 .btn-prestige-color {
     background-color: #0030ff !important;
     color: #fff !important;
-    width: 76% !important;
+    /* width: 76% !important; */
     border-radius: 10px !important;
 }
 
@@ -872,7 +899,8 @@ body {
 .cinema-details-sched-container {
     overflow: auto;
     white-space: nowrap;
-    height: 200px;
+    height: auto;
+    max-height: 200px;
     width: 1081px;
 }
 
@@ -902,9 +930,9 @@ body {
     position: relative;
 }
 
-.movieDetailsContentContainer {
+.movie-Details-Content-Container {
     width: 1180px;
-    height: 700px;
+    height: auto;
     border-radius: 20px !important;
     margin-top: 0px;
     font-family: "Henry Sans Regular" !important;
@@ -1002,7 +1030,6 @@ body {
 }
 
 .promo-img {
-    max-width: 100%;
     max-height: 100%;
     width: 279.44px !important;
     height: 279.44px !important;
@@ -1039,7 +1066,7 @@ body {
 
 .promo-row-container {
     overflow-y: scroll !important;
-    max-height: 580px !important;
+    max-height: 580px !important; /*870 if no banner promo*/
     max-width: 973px !important;
     margin-left: 16px !important;
 }
@@ -1056,10 +1083,9 @@ body {
 }
 
 .img-promo-card {
-    width: 279.45px;
-    height: 279.45px;
+    width: 279.45px !important;
     border-radius: 15px !important;
-    margin-bottom: 119px !important;
+    margin-bottom: 16px !important;
     margin-left: 35.5px;
 }
 
@@ -1527,7 +1553,7 @@ body {
 .link-alpha {
     color: #000000 !important;
     font-family: "Henry Sans Regular" !important;
-    padding: 0 10.185px 0 10px !important;
+    padding: 0 16.185px 0 10px !important;
 }
 
 .link-alpha-disabled {
@@ -1725,7 +1751,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     color: #3b3b3b;
     max-height: 470px;
     max-width: 930px;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     font-size: 18px;
     padding-right: 25.3px !important;
     height: 408px;
@@ -1972,7 +1998,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
     .promo-row-container {
         overflow-y: scroll !important;
-        max-height: 925px !important;
+        max-height: 925px !important; /*1100 if no banner promo*/
         max-width: 650px !important;
         margin-left: -10px !important;
     }
@@ -2231,9 +2257,9 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
         margin-top: -10px;
     }
 
-    .movieDetailsContentContainer {
+    .movie-Details-Content-Container {
         width: 985px;
-        height: 632px;
+        height: auto;
         margin-left: 100px;
         margin-top: 0px;
     }

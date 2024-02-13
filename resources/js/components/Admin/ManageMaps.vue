@@ -14,7 +14,6 @@
 						:otherButtons="otherButtons"
                         :primaryKey="primaryKey"
 						v-on:AddNewMap="AddNewMap"
-						v-on:GenRoutes="GenRoutes"
 						v-on:editButton="editMap"
                         ref="dataTable">
 			          	</Table>
@@ -66,6 +65,12 @@
 									    <option value="2D"> 2D</option>
 									    <option value="3D"> 3D</option>
 								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Default Zoom <span class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" v-model="map_form.default_zoom" placeholder="0.00" required>
 								</div>
 							</div>
                             <div class="form-group row">
@@ -125,6 +130,7 @@
                     site_building_id: '',
                     site_building_level_id: '',
 					map_type: '',
+					default_zoom: '',
 					map_file: '',
 					map_preview: '',
 					active: '',
@@ -224,6 +230,7 @@
 				this.edit_record = false;
                 this.map_form.site_building_id = '';
                 this.map_form.site_building_level_id = '';
+                this.map_form.default_zoom = '';				
                 this.map_form.map_type = '';
 				this.map_form.map_file = '';
                 this.map_form.map_preview = '';      
@@ -239,6 +246,7 @@
                 formData.append("site_building_id", this.map_form.site_building_id);
                 formData.append("site_building_level_id", this.map_form.site_building_level_id);
                 formData.append("site_screen_id", this.site_screen_id);
+                formData.append("default_zoom", this.map_form.default_zoom);				
 				formData.append("map_type", this.map_form.map_type);
 				formData.append("map_file", this.map_form.map_file);
 				formData.append("map_preview", this.map_form.map_preview);
@@ -267,6 +275,7 @@
                     this.getFloorLevel(site_map.site_building_id);
                     this.map_form.site_building_level_id = site_map.site_building_level_id;
 					this.map_form.map_type = site_map.map_type;
+					this.map_form.default_zoom = site_map.default_zoom;
 					this.map_form.active = site_map.active;  
 					this.map_preview = site_map.map_preview_path; 
 					this.$refs.mapFile.value = null;
@@ -285,6 +294,7 @@
                 formData.append("site_building_level_id", this.map_form.site_building_level_id);
                 formData.append("site_screen_id", this.site_screen_id);
 				formData.append("map_type", this.map_form.map_type);
+                formData.append("default_zoom", this.map_form.default_zoom);				
 				formData.append("map_file", this.map_form.map_file);
 				formData.append("map_preview", this.map_form.map_preview);
 				formData.append("active", this.map_form.active);

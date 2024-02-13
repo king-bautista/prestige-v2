@@ -17,9 +17,8 @@ class SiteMapConfig extends Model
     protected $fillable = [
         'serial_number',
         'site_map_id',
-        'site_building_id',
-        'site_building_level_id',
         'site_screen_id',
+        'origin_point',
         'map_type',
         'start_scale',
         'start_x',
@@ -35,6 +34,7 @@ class SiteMapConfig extends Model
         'floor_label_height',
         'floor_label_space',
         'floor_animation_height',
+        'player_speed',
         'active',
         'is_default',
     ];

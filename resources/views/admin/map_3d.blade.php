@@ -115,6 +115,12 @@
               <input type="text" id="position_y" name="position_y" class="frm_info form-control form-control-sm" placeholder="0.0">
             </div>
           </div>
+		  <div class="form-group row mb-0">
+            <label for="firstName" class="col-sm-6 col-form-label">Position Z:</label>
+            <div class="col-sm-6">
+              <input type="text" id="position_z" name="position_z" class="frm_info form-control form-control-sm" placeholder="0.0">
+            </div>
+          </div>
           <div class="form-group row mb-0">
             <label for="firstName" class="col-sm-6 col-form-label">Text Rotation:</label>
             <div class="col-sm-6">
@@ -166,7 +172,7 @@
             <label for="firstName" class="col-sm-12 col-form-label">Amenity:</label>
             <div class="col-sm-12">
               <select class="frm_info custom-select" id="point_type" name="point_type">
-                <option value="">Select Amenity</option>
+                <option value="0">Regular</option>
                 @foreach ($amenities as $amenity)
                 <option value="{{$amenity->id}}">{{$amenity->name}}</option>
                 @endforeach
@@ -196,7 +202,7 @@
 <script src="{{ URL::to('themes/three.js/examples/js/libs/jszip.min.js') }}"></script>
 <script src="{{ URL::to('themes/custom-js/text-wrapper-3js.js') }}"></script>
 <script type="module">
-  import * as THREE from "{{ URL::to('themes/three.js/build/three.module.js') }}";
+  	import * as THREE from "{{ URL::to('themes/three.js/build/three.module.js') }}";
 	import Stats from "{{ URL::to('themes/three.js/examples/jsm/libs/stats.module.js') }}";
 	import { KMZLoader } from "{{ URL::to('themes/three.js/examples/jsm/loaders/KMZLoader.js') }}";
 	import { OBJLoader } from "{{ URL::to('themes/three.js/examples/jsm/loaders/OBJLoader.js') }}";
@@ -267,7 +273,7 @@
 	var font;
 	var textMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, overdraw: true } )
 
-	var active_floor =  @php echo $current_map->site_building_level_id; @endphp;
+	var active_floor =  @php echo $current_map->id; @endphp;
 
 	init();
 	animate();
@@ -322,7 +328,7 @@
 
 		groupmarker = new THREE.Object3D;
 		fontloader.load( "{{ URL::to('themes/three.js/examples/fonts/helvetiker_bold.typeface.json') }}", function ( response ) {
-			font = response
+			font = response;
 
 			drawPoints();
 			//drawLinkLine();
@@ -336,10 +342,10 @@
 
 		@foreach ($site_maps as $site_map)
 			@if($site_map->site_building_level_id == $current_map->site_building_level_id)
-				active_floor = '@php echo $site_map->site_building_level_id; @endphp';
+				active_floor = '@php echo $site_map->id; @endphp';
 			@endif
-			createFloor('@php echo $site_map->site_building_level_id; @endphp', '@php echo $site_map->map_file_path; @endphp');
-			//drawLinkLine('@php echo $site_map->site_building_level_id; @endphp');
+			createFloor('@php echo $site_map->id; @endphp', '@php echo $site_map->map_file_path; @endphp');
+			drawLinkLine('@php echo $site_map->id; @endphp');
 		@endforeach
 		// renderer
 
@@ -397,11 +403,6 @@
 	}
 
 	function onWindowResize() {
-		/*camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );*/
-
 		var container = document.getElementById('canvas');
 		var w = container.offsetWidth;
 		var h = container.offsetHeight;
@@ -421,8 +422,6 @@
 			floors[index].add( kmz.scene );
 			floors[index].visible = is_default;
 		});
-
-		console.log(floors);
 	}
 
 	// Updates to apply to the scene while running.
@@ -905,35 +904,21 @@
 				if (objectHit != floor) {
 					if(objectHit.name == 'point')
 					{
-						//remove from db
-						$.get("/admin/site/map/delete-point/"+objectHit.userData.id).done(function( data ) {				
+						$.get("/admin/site/map/delete-point/"+objectHit.userData.id)
+						.done(function( data ) {				
 							toastr.success(data.message);
 						});
 					} else if(objectHit.name == 'link')
 					{
-						//remove from db
-						console.log(objectHit.userData);
-						// $.ajax({
-						// 	url: '' + objectHit.userData.mapid + '/' + objectHit.userData.start + '/' + objectHit.userData.end,
-						// 	type: 'POST',
-						// 	data: {},
-						// 	dataType: 'JSON',
-						// 	beforeSend: function(){
-						// 	},
-						// 	success: function(data){
-								
-						// 	},
-						// 	complete: function(){
-								
-						// 	},
-						// 	error: function(jqXHR, textStatus, errorThrown){
-								
-						// 	}
-						// });
+						$.post("/admin/site/map/delete-line", { 
+							map_id: objectHit.userData.mapid, 
+							start: objectHit.userData.start, 
+							end: objectHit.userData.end, 
+						}).done(function( data ) {
+							toastr.success(data.message);
+						});
 					}
-					
 
-					//scene.remove(objectHit);
 					floors[active_floor].remove(objectHit);
 					render();
 				}
@@ -1081,88 +1066,77 @@
 		if(!lines_end.hasOwnProperty(links[1].userData.id)) lines_end[links[1].userData.id] = [];
 		lines_end[links[1].userData.id].push(line);
 
-		console.log(line.userData);
-
-		//save to db
-		// $.ajax({
-		// 	url: '',
-		// 	type: 'POST',
-		// 	data: {},
-		// 	dataType: 'JSON',
-		// 	beforeSend: function(){
-		// 	},
-		// 	success: function(data){
-		// 		if(mouseAction == LINK)
-		// 		{
-		// 			//remove first element
-		// 			links.shift();
-		// 		}else{
-		// 			links = [];
-		// 		}
-		// 	},
-		// 	complete: function(){
-				
-		// 	},
-		// 	error: function(jqXHR, textStatus, errorThrown){
-				
-		// 	}
-		// });
+		// CREATE LINK site_point_liks TABLE
+		$.post("/admin/site/map/connect-point", { 
+			map_id: active_floor, 
+			point_a: links[0].userData.id, 
+			point_b: links[1].userData.id, 
+		}).done(function( data ) {
+			if(mouseAction == LINK) {
+				//remove first element
+				links.shift();
+			}
+			else{
+				links = [];
+			}				
+			toastr.success(data.message);
+		});
 	}
 
 	function drawLinkLine(floor)
 	{
-		// let mapPointsAll = <?php //echo json_encode($map_points);?>;
-		// let mapPoints = mapPointsAll[floor];
-		// let linksDBAll = <?php //echo json_encode($links);?>;
-		// let linksDB = linksDBAll[floor];
-		
-		// $.each(linksDB,function(index){
-		// 	var links = this;
-		// 	$.each(links,function(){
-		// 		if(mapPoints.hasOwnProperty(this.point_a) && mapPoints.hasOwnProperty(this.point_b))
-		// 		{
-		// 			var pointa = mapPoints[this.point_a];
-		// 			var pointb = mapPoints[this.point_b];
-		// 			var points = [];
+		let mapPointsAll = @php echo $map_points; @endphp;
+		let mapPoints = mapPointsAll[floor];
+		let linksDBAll = @php echo $links; @endphp; 
+		let linksDB = linksDBAll[floor];
 
-		// 			var coordsa = new THREE.Vector3(pointa.point_x,pointa.point_y+2,pointa.point_z);
-		// 			var coordsb = new THREE.Vector3(pointb.point_x,pointb.point_y+2,pointb.point_z);
+		$.each(linksDB,function(index){
+			var links = this;
+			$.each(links,function(){
+				if(mapPoints.hasOwnProperty(this.point_a) && mapPoints.hasOwnProperty(this.point_b))
+				{
+					var pointa = mapPoints[this.point_a];
+					var pointb = mapPoints[this.point_b];
+					var points = [];
 
-		// 			points.push(coordsa);
-		// 			points.push(coordsb);
+					var coordsa = new THREE.Vector3(pointa.point_x,pointa.point_y+2,pointa.point_z);
+					var coordsb = new THREE.Vector3(pointb.point_x,pointb.point_y+2,pointb.point_z);
+
+					points.push(coordsa);
+					points.push(coordsb);
 					
-		// 			let geometry = new THREE.BufferGeometry().setFromPoints( points );
-		// 			geometry.dynamic = true;
-		// 			let line = new THREE.Line( geometry, lineMaterial );
-		// 			line.geometry.attributes.position.needsUpdate = true;
-		// 			line.name = "link";
-		// 			line.userData = {"mapid":floor,"start":this.point_a,"end":this.point_b};
-		// 			//scene.add( line );
-		// 			floors[floor].add(line);
+					let geometry = new THREE.BufferGeometry().setFromPoints( points );
+					geometry.dynamic = true;
+					let line = new THREE.Line( geometry, lineMaterial );
+					line.geometry.attributes.position.needsUpdate = true;
+					line.name = "link";
+					line.userData = {"mapid":floor,"start":this.point_a,"end":this.point_b};
+					//scene.add( line );
+					floors[floor].add(line);
 					
-		// 			if(!lines_start.hasOwnProperty(pointa.id)) lines_start[pointa.id] = [];
-		// 			if(!lines_end.hasOwnProperty(pointb.id)) lines_end[pointb.id] = [];
+					if(!lines_start.hasOwnProperty(pointa.id)) lines_start[pointa.id] = [];
+					if(!lines_end.hasOwnProperty(pointb.id)) lines_end[pointb.id] = [];
 
-		// 			lines_start[pointa.id].push(line);
-		// 			lines_end[pointb.id].push(line);
-		// 		}
-		// 	});
-		// });
+					lines_start[pointa.id].push(line);
+					lines_end[pointb.id].push(line);
+				}
+			});
+		});
 	}
 
 	function drawPoints()
 	{
-		// let mapPoints = <?php //echo json_encode($map_points);?>;
-		// var coords = new THREE.Vector3(0,0,0);
+		let mapPoints = @php echo $map_points; @endphp;
+		var coords = new THREE.Vector3(0,0,0);
 
-		// $.each(mapPoints,function(index){
-		// 	$.each(mapPoints[index],function(){
-		// 		coords.x = this.point_x;
-		// 		coords.y = this.point_y;
-		// 		coords.z = this.point_z + 1;
-		// 		addPointMarker(coords,index,this);
-		// 	});
-		// });
+		$.each(mapPoints,function(index){			
+			$.each(mapPoints[index],function(){
+				coords.x = this.point_x;
+				coords.y = this.point_y;
+				coords.z = this.point_z + 1;
+				addPointMarker(coords,index,this);
+			});
+		});
 		
 	}
 
@@ -1192,8 +1166,7 @@
 				toastr.success(data.message);
 			});
 		}else if(info.tenant_id > 0){
-			
-			let label = info.point_label ? info.point_label : tenants[info.tenant_id].store_name;
+			let label = info.point_label ? info.point_label : info.brand_name;
 
 			if(info.wrap_at > 0 && label.length > info.wrap_at)
 			{
@@ -1270,7 +1243,9 @@
 				floors[floor].add(group);
 
 				texts[info.id] = {'text':group,'rotz':text.rotation.z,'type':'group','coords':origCoords,'info':info};
-			}else{
+			}
+			else
+			{
 				var text3d = new THREE.TextGeometry( label, {
 					font: font,
 					size: info.text_size,
@@ -1286,6 +1261,7 @@
 				text.position.x = coords.x;
 				text.position.y = coords.y + 1;
 				text.position.z = coords.z;
+			
 				texts[info.id] = {'text':text,'rotz':text.rotation.z,'type':'text'};
 				floors[floor].add( text );
 			}
@@ -1304,18 +1280,18 @@
 		$("#point_id").html("Point ID: " + objectHit.id);
 		$("#position_x").val(objectHit.point_x);
 		$("#position_y").val(objectHit.point_y);
-		$("#position_y").val(objectHit.point_z);
+		$("#position_z").val(objectHit.point_z);
 		$("#text_y_position").val(objectHit.rotation_z);
 		$("#text_size").val(objectHit.text_size);
 		$("#text_width").val(objectHit.text_width);
-		if(objectHit.is_pwd == 1) {
+		if(objectHit.is_pwd > 0) {
           $('#is_pwd').prop( "checked", true);
         }
         else {
           $('#is_pwd').prop( "checked", false);
         }
 
-		if(objectHit.wrap_at == 1) {
+		if(objectHit.wrap_at > 0) {
           $('#wrap_at').prop( "checked", true);
         }
         else {
@@ -1361,15 +1337,19 @@
 				break;
 				case 'delete_point':
 					mouseAction = DELETE;
+					controls.enabled = false;
 				break;
 				case 'point_info':
 					mouseAction = INFO;
+					controls.enabled = true;
 				break;
 				case 'single_link':
-					mouseAction = LINK;
+					mouseAction = LINKSINGLE;
+					controls.enabled = false;
 				break;
 				case 'continous_link':
-					mouseAction = LINKSINGLE;
+					mouseAction = LINK;
+					controls.enabled = false;
 					links = [];
 				break;
 			}
@@ -1379,8 +1359,9 @@
 			$('.btn-map').removeClass('active');
 			$(this).addClass('active');
 
-			active_floor = $(this).data('floor_id');
-
+			active_floor = $(this).data('map_id');
+			var floor_id = $(this).data('floor_id');
+			
 			$.each(floors,function(index){
 				this.visible = (index == active_floor);
 			});
@@ -1411,7 +1392,6 @@
 			e.preventDefault();
 			$.post("/admin/site/map/update-details", $( "#frmCoordinates" ).serialize(), function(response) {
 				if(response.status_code == 200) {
-					console.log(dragItem);
 					toastr.success(response.message);
 				}
 			});
@@ -1420,6 +1400,42 @@
 		$('.frm_info').on('change', function() {
 			if($("#pid").val() > 0) {
 				$('#frmCoordinates').submit();
+
+				map_points[$("#pid").val()].position.x = $("#position_x").val();
+				map_points[$("#pid").val()].position.y = $("#position_y").val();
+				map_points[$("#pid").val()].position.z = $("#position_z").val();
+
+				if(texts.hasOwnProperty($("#pid").val()))
+				{
+					texts[$("#pid").val()].text.rotation.z = $("#text_y_position").val() * Math.PI / 180;
+				}
+				else if($("select[name=tenant_id]").val() > 0) 
+				{ 
+					let label = $("select[name=tenant_id] option:selected").text();
+					var text3d = new THREE.TextGeometry( label, {
+						font: font,
+						size: $("#text_size").val(),
+						height: 0.001,
+						bevelEnabled: false,
+						color: "rgba(255,0,0)"
+					});
+					text3d.center();
+
+					var coords = new THREE.Vector3( $("#position_x").val(), $("#position_y").val(), $("#position_z").val());
+					scene.worldToLocal(coords);
+
+					var text = new THREE.Mesh( text3d, textMaterial );
+					text.rotation.x = -90 * Math.PI / 180;
+					text.rotation.z = $("#text_y_position").val() * Math.PI / 180;
+					text.position.x = coords.x;
+					text.position.y = coords.y + 1;
+					text.position.z = coords.z;
+					
+					texts[$("#pid").val()] = {'text':text,'rotz':text.rotation.z};
+
+					scene.add( text );
+				}
+				render();
 			}
 		});
 

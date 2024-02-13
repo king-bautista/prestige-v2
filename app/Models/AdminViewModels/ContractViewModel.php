@@ -44,6 +44,7 @@ class ContractViewModel extends Model
      */
 	public $appends = [
         'brands',
+        'brand_names',
         'screens',
         'screen_locations',
     ]; 
@@ -65,6 +66,13 @@ class ContractViewModel extends Model
     {
         $ids = $this->getBrands()->pluck('brand_id');
         return BrandViewModel::whereIn('id', $ids)->get();
+    }
+
+    public function getBrandNamesAttribute() 
+    {
+        $ids = $this->getBrands()->pluck('brand_id');
+        $names = BrandViewModel::whereIn('id', $ids)->get()->pluck('name')->toArray();
+        return implode(", ",$names);
     }
 
     public function getScreensAttribute() 

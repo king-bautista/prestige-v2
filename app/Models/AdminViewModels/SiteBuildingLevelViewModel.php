@@ -64,6 +64,6 @@ class SiteBuildingLevelViewModel extends Model
 
     public function getBuildingFloorNameAttribute() 
     {
-        return SiteBuilding::find($this->site_building_id)->name. ' - '.$this->name;
+        return $this->name. ' - '.SiteBuilding::find($this->site_building_id)->name;
     } 
 }

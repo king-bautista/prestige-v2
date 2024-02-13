@@ -116,6 +116,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'map_type' => $request->map_type,
+                'default_zoom' => $request->default_zoom,
                 'map_file' => str_replace('\\', '/', $map_file_path),
                 'map_preview' => str_replace('\\', '/', $map_preview_path),
                 'image_size_width' => $width,
@@ -167,6 +168,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'site_building_id' => $request->site_building_id,
                 'site_building_level_id' => $request->site_building_level_id,
                 'map_type' => $request->map_type,
+                'default_zoom' => $request->default_zoom,
                 'map_file' => ($map_file_path) ? str_replace('\\', '/', $map_file_path) : $site_map->map_file,
                 'map_preview' => ($map_preview_path) ? str_replace('\\', '/', $map_preview_path) : $site_map->map_preview,
                 'image_size_width' => ($width) ? $width : $site_map->image_size_width,
@@ -208,24 +210,60 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
 
     public function getMapDetails($id)
     {
-
-
         $current_map = SiteMapViewModel::find($id);
         $amenities = Amenity::get();
+        $site_details = SiteViewModel::find($current_map->site_id);
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
-        return $map_points = SitePointViewModel::where('site_map_id', $current_map->site_id)->get();
+        $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('map_type', $current_map->map_type)->get();
+        $map_points_liks = $this->getMapPointsLinks($site_maps);
+
+        $map_points = json_encode($map_points_liks['map_points']);
+        $links = json_encode($map_points_liks['links']);
 
         if($current_map->map_type == '3D') {
-            $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)
-            ->where('map_type', '3D')->get();
-            $site_details = SiteViewModel::find($current_map->site_id);
-            return view('admin.map_3d', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points']));    
+            return view('admin.map_3d', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points', 'links']));    
         }
         else {
-            $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('site_screen_id', $current_map->site_screen_id)->get();
-            $site_details = SiteViewModel::find($current_map->site_id);    
-            return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points']));
+            return view('admin.map', compact(['site_details', 'site_maps', 'current_map', 'amenities', 'site_tenants', 'map_points', 'links']));
         }        
+    }
+
+    public function getMapPointsLinks($site_maps) {
+        $map_points = [];
+		$links = [];
+
+        foreach($site_maps as $floor) {
+            $map_points[$floor->id] = $this->getMapPoints($floor->id);
+            $links[$floor->id] = $this->getPointLinks($floor->id);
+        }
+
+        return [
+            'map_points' => $map_points,
+            'links' => $links
+        ];
+    }
+
+    public function getMapPoints($floor) {
+        $points_tmp = SitePointViewModel::where('site_map_id', $floor)->get();
+        $points = [];
+
+        foreach($points_tmp as $point) {
+            $points[$point['id']] = $point;
+        }
+
+        return $points;
+    }
+
+    public function getPointLinks($floor) {
+        $tmp_links = SitePointLinkViewModel::where('site_map_id', $floor)->get();
+        $links = [];
+
+        foreach($tmp_links as $link) {
+            if(!isset($links[$link['point_a']])) $links[$link['point_a']] = [];
+            $links[$link['point_a']][] = $link;
+        }
+
+        return $links;
     }
 
     public function getSitePoints($id)
@@ -331,9 +369,6 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     	{
             $site_point = SitePoint::find($id);
             $site_point->delete();
-
-            // SitePointLink::where('point_a', $id)->delete();
-            // SitePointLink::where('point_b', $id)->delete();
             return $this->response($site_point, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
@@ -391,16 +426,16 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     	{
             $site_point = SitePoint::find($request->pid);
             $data = [
-                'tenant_id' => ($request->tenant_id) ? $request->tenant_id : 0,
                 'point_x' => ($request->position_x) ? $request->position_x : 0,
                 'point_y' => ($request->position_y) ? $request->position_y : 0,
-                'point_type' => ($request->point_type) ? $request->point_type : 0,
                 'rotation_z' => ($request->text_y_position) ? $request->text_y_position : 0,
                 'text_size' => ($request->text_size) ? $request->text_size : 0,
                 'text_width' => ($request->text_width) ? $request->text_width : 0,
-                'point_label' => ($request->point_label) ? $request->point_label : null,
-                'wrap_at' => ($request->wrap_at == 1) ? 1 : 0,
                 'is_pwd' => ($request->is_pwd) ? $request->is_pwd : 0,
+                'wrap_at' => ($request->wrap_at == 1) ? 1 : 0,
+                'tenant_id' => ($request->tenant_id) ? $request->tenant_id : 0,
+                'point_type' => ($request->point_type) ? $request->point_type : 0,
+                'point_label' => ($request->point_label) ? $request->point_label : null,
             ];
 
             $site_point->update($data);
@@ -417,13 +452,14 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         }
     }
 
-    public function deleteLine($id)
+    public function deleteLine(Request $request)
     {
         try
     	{
-            $site_point_link = SitePointLink::find($id);
-            $site_point_link->delete();
-
+            $site_point_link = SitePointLink::where('site_map_id', $request->map_id)
+            ->where('point_a', $request->start)
+            ->where('point_b', $request->end)
+            ->delete();
             return $this->response($site_point_link, 'Successfully Deleted!', 200);
         }
         catch (\Exception $e) 
@@ -612,9 +648,12 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     public function configStore(Request $request){
         try
     	{
+            $origin_point = json_decode($request->origin_point, 1);
+
             $data = [
                 'site_map_id' => $request->map_details,
                 'site_screen_id' => $request->site_screen_id,
+                'origin_point' =>  $origin_point['id'],
                 'start_scale' => ($request->start_scale) ? $request->start_scale : 0,
                 'start_x' => ($request->start_x) ? $request->start_x : 0,
                 'start_y' => ($request->start_y) ? $request->start_y : 0,
@@ -629,6 +668,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'floor_label_height' => ($request->floor_label_height) ? $request->floor_label_height : 0,
                 'floor_label_space' => ($request->floor_label_space) ? $request->floor_label_space : 0,
                 'floor_animation_height' => ($request->floor_animation_height) ? $request->floor_animation_height : 0,
+                'player_speed' => ($request->player_speed) ? $request->player_speed : 0.6,
                 'active' => $this->checkBolean($request->active),
                 'is_default' => $this->checkBolean($request->is_default),
             ];
@@ -654,11 +694,13 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         try
     	{
             $site_config = SiteMapConfig::find($request->id);
+            $origin_point = json_decode($request->origin_point, 1);
 
             $data = [
                 'serial_number' => ($site_config->serial_number) ? $site_config->serial_number : 'SMC-' . Str::padLeft($site_config->id, 5, '0'),
                 'site_map_id' => $request->map_details,
                 'site_screen_id' => $request->site_screen_id,
+                'origin_point' =>  $origin_point['id'],
                 'start_scale' => ($request->start_scale) ? $request->start_scale : 0,
                 'start_x' => ($request->start_x) ? $request->start_x : 0,
                 'start_y' => ($request->start_y) ? $request->start_y : 0,
@@ -673,6 +715,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'floor_label_height' => ($request->floor_label_height) ? $request->floor_label_height : 0,
                 'floor_label_space' => ($request->floor_label_space) ? $request->floor_label_space : 0,
                 'floor_animation_height' => ($request->floor_animation_height) ? $request->floor_animation_height : 0,
+                'player_speed' => ($request->player_speed) ? $request->player_speed : 0.6,
                 'active' => $this->checkBolean($request->active),
                 'is_default' => $this->checkBolean($request->is_default),
             ];
@@ -732,6 +775,36 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
                 'status_code' => 422,
             ], 422);
         }
+    }
+
+    public function getOriginPoint(Request $request) 
+    {
+        // try
+    	// {
+            $map_details = json_decode($request->map_details);
+
+            $tenants = SitePointViewModel::where('site_maps.site_id', $map_details->site_id)
+            ->where('site_maps.map_type', $map_details->map_type)
+            ->where(function ($query) {
+                $query->where('tenant_id', '>', 0)->orWhere('point_type', '>', 0);
+            })
+            ->join('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->leftJoin('site_tenants', 'site_points.tenant_id', '=', 'site_tenants.id')
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
+            ->select('site_points.*')
+            ->get();
+
+            return $this->response($tenants, 'Successfully Retreived!', 200);
+        // }
+        // catch (\Exception $e) 
+        // {
+        //     return response([
+        //         'message' => $e->getMessage(),
+        //         'status' => false,
+        //         'status_code' => 422,
+        //     ], 422);
+        // }
     }
 
 }

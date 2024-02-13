@@ -519,7 +519,7 @@ ul#ui-id-1::-webkit-scrollbar-thumb {
 .shop-logo {
     max-width:160px;
     margin-right: 10px;
-    border-radius: 10px;
+    border-radius: 10px !important;
 }
 
 .ui-widget-content {

@@ -95,35 +95,13 @@
 										aria-hidden="true"></i>&nbsp;&nbsp;Add</button>
 							</div>
 							<div class="card-body">
-								<div class="table-responsive mt-2">
-									<table class="table table-hover" id="dataTable" style="width:100%">
-										<thead class="table-dark">
-											<tr>
-												<th>Logo</th>
-												<th>Name</th>
-												<th>Category Name</th>
-												<th>Status</th>
-												<th>Last Updated</th>
-												<th>Action</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr v-for="(data, index) in company.brands" v-bind:key="index">
-												<td><img class="img-thumbnail" :src="data.logo_image_path" /></td>
-												<td class="align-middle">{{ data.name }}</td>
-												<td class="align-middle">{{ data.category_name }}</td>
-												<td class="align-middle">
-													<span v-if="data.active" class="badge badge-info">Active</span>
-													<span v-else class="badge badge-info">Active</span>
-												</td>
-												<td class="align-middle">{{ data.updated_at }}</td>
-												<td class="align-middle"><button type="button"
-														class="btn btn-outline-danger"
-														@click="deleteModal('removeBrand', index)" title="Delete"><i
-															class="fas fa-trash-alt"></i></button></td>
-											</tr>
-										</tbody>
-									</table>
+								<div class="card-body">
+									<Table :dataFields="brandsDataFields" :dataUrl="brandDataUrl"
+										:actionButtons="brandsActionButtons" :otherButtons="otherBrandButtons"
+										v-on:DeleteBrand="DeleteBrand" v-on:downloadBrandsCsv="downloadBrandsCsv"
+										v-on:downloadBrandsTemplate="downloadBrandsTemplate" :primaryKey="brandPrimaryKey"
+										ref="brandsDataTable">
+									</Table>
 								</div>
 							</div>
 						</div>
@@ -140,57 +118,13 @@
 										aria-hidden="true"></i>&nbsp;&nbsp;Add</button>
 							</div>
 							<div class="card-body">
-								<div class="table-responsive mt-2">
-									<table class="table table-hover" id="dataTable" style="width:100%">
-										<thead class="table-dark">
-											<tr>
-												<th>ID</th>
-												<th>Brand/s</th>
-												<th>Name</th>
-												<th>Screen Location</th>
-												<th>Duration (no. of days)</th>
-												<th>No. of slots per loop</th>
-												<th>Exposure per Day</th>
-												<th>Is Exclusive?</th>
-												<th>Status</th>
-												<th>Action</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr v-for="(data, index) in company.contracts" v-bind:key="index">
-												<td class="align-middle">{{ data.serial_number }}</td>
-												<td>
-													<img v-for="(brand, index) in data.brands" class="img-thumbnail"
-														:src="brand.logo_image_path" />
-												</td>
-												<td class="align-middle">{{ data.name }}</td>
-												<td class="align-middle">{{ data.screen_locations }}</td>
-												<td class="align-middle">{{ data.display_duration }}</td>
-												<td class="align-middle">{{ data.slots_per_loop }}</td>
-												<td class="align-middle">{{ data.exposure_per_day }}</td>
-												<td class="align-middle">
-													<span v-if="data.is_exclusive" class="badge badge-info">Yes</span>
-													<span v-else class="badge badge-info">No</span>
-												</td>
-												<td class="align-middle">
-													<span v-if="data.active" class="badge badge-info">Active</span>
-													<span v-else class="badge badge-danger">Deactivated</span>
-												</td>
-												<td class="align-middle text-nowrap">
-													<button type="button" class="btn btn-outline-danger"
-														@click="editContract(data.id)" title="Edit"><i
-															class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-outline-danger"
-														@click="copyModal(index)" title="Duplicate"><i
-															class="fas fa-copy"></i></button>
-													<button type="button" class="btn btn-outline-danger"
-														@click="deleteModal('removeContract', index)" title="Delete"><i
-															class="fas fa-trash-alt"></i></button>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+								<Table :dataFields="contractsDataFields" :dataUrl="contractDataUrl"
+									:actionButtons="contractsActionButtons" :otherButtons="otherContractButtons"
+									v-on:editButton="editContract" v-on:DeleteContract="DeleteContract"
+									v-on:SetDuplicate="SetDuplicate" v-on:downloadContractsCsv="downloadContractsCsv"
+									v-on:downloadContractsTemplate="downloadContractsTemplate" :primaryKey="contractPrimaryKey"
+									ref="contractsDataTable">
+								</Table>
 							</div>
 						</div>
 					</div>
@@ -299,9 +233,9 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<Table :dataFields="brandsDataFields" :dataUrl="brandDataUrl" :primaryKey="brandPrimaryKey"
-								:actionButtons="brandsActionButtons" v-on:editButton="selectedBrand" :rowPerPage=5
-								ref="brandsDataTable">
+							<Table :dataFields="brandsDataFieldsModal" :dataUrl="brandDataUrlModal"
+								:primaryKey="brandPrimaryKey" :actionButtons="brandsActionButtonsModal"
+								v-on:editButton="selectedBrand" :rowPerPage=5 ref="brandsDataTableModal">
 							</Table>
 						</div>
 					</div><!-- /.card-body -->
@@ -486,7 +420,9 @@
 			</div>
 		</div>
 
-		<div class="modal fade" id="copy-record" tabindex="-1" aria-labelledby="copy-record" aria-hidden="true">
+		<!-- Modal -->
+
+		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="copy-record" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header bg-primary">
@@ -502,6 +438,7 @@
 				</div>
 			</div>
 		</div>
+
 		<!-- Batch Upload -->
 		<div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel"
 			aria-hidden="true">
@@ -530,6 +467,39 @@
 					<div class="modal-footer justify-content-between">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="brandDeleteModal" tabindex="-1" aria-labelledby="brandDeleteModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header bg-danger">
+						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+					</div>
+					<div class="modal-body">
+						<h6>Do you really want to delete?</h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" @click="removeBrand">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="contractDeleteModal" tabindex="-1" aria-labelledby="contractDeleteModal"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header bg-danger">
+						<h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+					</div>
+					<div class="modal-body">
+						<h6>Do you really want to delete?</h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" @click="removeContract">OK</button>
 					</div>
 				</div>
 			</div>
@@ -586,6 +556,7 @@ export default {
 				active: false,
 				business_id: '',
 			},
+			id_to_deleted: 0,
 			data_list: true,
 			data_form: false,
 			parent_company: [],
@@ -672,6 +643,67 @@ export default {
 					type: "logo",
 				},
 				name: "Name",
+				category_name: "Category Name",
+				active: {
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
+						1: '<span class="badge badge-info">Active</span>'
+					}
+				},
+				updated_at: "Last Updated"
+			},
+			brandsActionButtons: {
+				delete: {
+					title: 'Delete this Company Brand',
+					name: 'Delete',
+					apiUrl: '/admin/company/brand/delete',
+					routeName: '',
+					button: '<i class="fas fa-trash-alt"></i> Delete',
+					method: 'custom_delete',
+					v_on: 'DeleteBrand',
+				},
+				download: {
+					title: 'Download',
+					v_on: 'downloadBrandsCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadBrandsTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+			},
+			otherBrandButtons: {
+				download: {
+					title: 'Download',
+					v_on: 'downloadBrandsCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadBrandsTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+			},
+			brandPrimaryKey: "id",
+			brandDataUrl: "/admin/company/list-brand",
+
+			brandsDataFieldsModal: {
+				logo_image_path: {
+					name: "Logo",
+					type: "logo",
+				},
+				name: "Name",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -681,7 +713,7 @@ export default {
 					}
 				},
 			},
-			brandsActionButtons: {
+			brandsActionButtonsModal: {
 				edit: {
 					title: 'Add',
 					name: 'Edit',
@@ -691,8 +723,82 @@ export default {
 					method: 'view'
 				},
 			},
-			brandPrimaryKey: "id",
-			brandDataUrl: "/admin/brand/list",
+			brandDataUrlModal: "/admin/brand/list-modal",
+
+
+			contractsDataFields: {
+
+				serial_number: "ID",
+				brand_names: "Brand",
+				name: "Name",
+				screen_locations: "Screen Location",
+				display_duration: "Duration (no. of days)",
+				slots_per_loop: "No. of slots per loop",
+				exposure_per_day: "Exposure per Day",
+				is_exclusive: {
+					name: "Is Exclusive",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">No</span>',
+						1: '<span class="badge badge-info">Yes</span>'
+					}
+				},
+				active: {
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
+						1: '<span class="badge badge-info">Active</span>'
+					}
+				},
+				updated_at: "Last Updated"
+			},
+			contractsActionButtons: {
+				edit: {
+					title: 'Edit this Floor',
+					name: 'Edit',
+					apiUrl: '',
+					routeName: 'floor.edit',
+					button: '<i class="fas fa-edit"></i> Edit',
+					method: 'edit'
+				},
+				delete: {
+					title: 'Delete this Company Brand',
+					name: 'Delete',
+					apiUrl: '/admin/company/contract/delete',
+					routeName: '',
+					button: '<i class="fas fa-trash-alt"></i> Delete',
+					method: 'custom_delete',
+					v_on: 'DeleteContract',
+				},
+				view: {
+					title: 'Duplicate',
+					name: 'Link',
+					apiUrl: '/admin/site/buildings',
+					routeName: '',
+					button: '<i class="fa fa-tag"></i> Duplicate',
+					method: 'view',
+					v_on: 'SetDuplicate',
+				},
+			},
+			otherContractButtons: {
+				download: {
+					title: 'Download',
+					v_on: 'downloadContractsCsv',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+				downloadCsv: {
+					title: 'Download',
+					v_on: 'downloadContractsTemplate',
+					icon: '<i class="fa fa-download" aria-hidden="true"></i> Template',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
+			},
+			contractPrimaryKey: "id",
+			contractDataUrl: "/admin/company/list-contract",
 		};
 	},
 
@@ -717,8 +823,13 @@ export default {
 			axios.get('/admin/classification/get-all')
 				.then(response => this.classifications = response.data.data);
 		},
+		deleteSession: function () {
+			axios.get('/admin/company/deleteSession');
+		},
 
 		AddNewCompany: function () {
+			this.$refs.brandsDataTable.fetchData();
+			this.$refs.contractsDataTable.fetchData();
 			this.add_record = true;
 			this.edit_record = false;
 			this.company.parent_id = null;
@@ -745,6 +856,8 @@ export default {
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
+					this.$refs.brandsDataTable.fetchData();
+					this.$refs.contractsDataTable.fetchData();
 
 					var company = response.data.data;
 					this.company.id = company.id;
@@ -774,7 +887,8 @@ export default {
 				.then(response => {
 					this.company.brands = [];
 					this.company.contracts = [];
-
+					this.$refs.brandsDataTable.fetchData();
+					this.$refs.contractsDataTable.fetchData();
 					var company = response.data.data;
 					this.company.id = id;
 					this.company.name = company.name;
@@ -808,6 +922,7 @@ export default {
 		backToList: function () {
 			this.data_list = true;
 			this.data_form = false;
+			this.deleteSession();
 		},
 
 		selectedBrand: function (data) {
@@ -815,22 +930,42 @@ export default {
 			axios.post('/admin/company/brand/store', data)
 				.then(response => {
 					if (response.data.data.brand_id) {
+						this.$refs.brandsDataTable.fetchData();
 						toastr.success('Brand ' + data.name + ' has been added.');
 						this.company.brands.push(data);
 					}
 				});
 		},
 
-		removeBrand: function (index) {
-			axios.get('/admin/company/brand/delete/' + this.company.brands[index].id + '/' + this.company.id)
+		DeleteBrand: function (data) {
+			this.id_to_deleted = data.id;
+			$('#brandDeleteModal').modal('show');
+		},
+
+		removeBrand: function () {
+			axios.get('/admin/company/brand/delete/' + this.id_to_deleted)
 				.then(response => {
-					if (response.data.data) {
-						this.company.brands.splice(index, 1);
-						toastr.success('Brand has been removed.');
-					}
+					this.$refs.brandsDataTable.fetchData();
+					this.id_to_deleted = 0;
+					$('#brandDeleteModal').modal('hide');
+					toastr.success('Brand has been removed.');
 				});
 		},
 
+		DeleteContract: function (data) {
+			this.id_to_deleted = data.id;
+			$('#contractDeleteModal').modal('show');
+		},
+
+		removeContract: function () {
+			axios.get('/admin/company/contract/delete/' + this.id_to_deleted)
+				.then(response => {
+					this.$refs.contractsDataTable.fetchData();
+					this.id_to_deleted = 0;
+					$('#contractDeleteModal').modal('hide');
+					toastr.success('Contract has been removed.');
+				});
+		},
 		AddNewContract: function () {
 			this.contract.company_id = this.company.id;
 			this.contract.name = '';
@@ -857,6 +992,8 @@ export default {
 			axios.post('/admin/company/contract/store', this.contract)
 				.then(response => {
 					toastr.success(response.data.message);
+					this.$refs.brandsDataTable.fetchData();
+					this.$refs.contractsDataTable.fetchData();
 					this.company.contracts.push(response.data.data);
 					$('#contract-form').modal('hide');
 				})
@@ -869,28 +1006,6 @@ export default {
 					this.editCompany(this.company.id);
 					$('#contract-form').modal('hide');
 				})
-		},
-
-		removeContract: function (index) {
-			axios.get('/admin/company/contract/delete/' + this.company.contracts[index].id)
-				.then(response => {
-					if (response.data.data) {
-						this.company.contracts.splice(index, 1);
-						toastr.success('Contract has been removed.');
-					}
-				});
-		},
-
-		duplicateContract: function () {
-			axios.get('/admin/company/contract/duplicate/' + this.company.contracts[this.delete_index].id)
-				.then(response => {
-					if (response.data.data) {
-						this.company.contracts.push(response.data.data);
-						toastr.success('Contract has been copy.');
-						$('#copy-record').modal('hide');
-						this.editContract(response.data.data.id);
-					}
-				});
 		},
 
 		deleteModal: function (action, index) {
@@ -993,6 +1108,63 @@ export default {
 				})
 		},
 
+		downloadBrandsCsv: function () {
+			axios.get('/admin/company/download-csv-brand')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		downloadBrandsTemplate: function () {
+			axios.get('/admin/company/download-csv-template-brand')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		downloadContractsCsv: function () {
+			axios.get('/admin/company/download-csv-contract')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		downloadContractsTemplate: function () {
+			axios.get('/admin/company/download-csv-template-contract')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+		},
+
+		SetDuplicate: function (data) {
+			this.is_default = data.id;
+			$('#confirmModal').modal('show');
+		},
+
+		duplicateContract: function () {
+			axios.get('/admin/company/contract/duplicate/' + this.is_default)
+				.then(response => {
+					toastr.success('Contract has been copy.');
+					this.$refs.contractsDataTable.fetchData();
+					$('#confirmModal').modal('hide');
+				})
+		},
 	},
 
 	components: {
@@ -1003,6 +1175,7 @@ export default {
 	}
 };
 </script> 
-<style lang="scss" scoped>.img-thumbnail {
+<style lang="scss" scoped>
+.img-thumbnail {
 	max-width: 4rem;
 }</style>

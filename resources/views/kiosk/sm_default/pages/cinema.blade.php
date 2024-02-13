@@ -43,7 +43,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 CinemaDeatilsModalContainer">
             <span class="close closeCinemaDetails text-white">&times;</span>
-            <div class="modal-body p-5 card card-body movieDetailsContentContainer">
+            <div class="modal-body px-5 pt-5 card card-body movie-Details-Content-Container">
                 <div class="now-showing-details">
                     <div class="row">
                         <div class="col-9 text-left">
@@ -130,7 +130,7 @@
         $.each(my_cinemas, function(key,cinemas) {
             var cinema_element = '';
             cinema_element = '<div class="item">';
-            cinema_element += '<div class="carousel-content-container-per-food-category mb-4">';
+            cinema_element += '<div class="carousel-content-container-show-cinema-6 mb-4">';
             cinema_element += '<div class="row cinema-'+key+'">';
             cinema_element += '</div>';
             cinema_element += '</div>';
@@ -139,7 +139,7 @@
 
             $.each(cinemas, function(index,cinema) {
                 var cinema_item = '';
-                cinema_item += '<div class="col-md-6 mt-3 mx-auto cinemaCards">';
+                cinema_item += '<div class="col-md-12 mt-3 mx-auto cinemaCards">';
                 cinema_item += '<div class="card cinema-cards border-0">';
                 cinema_item += '<div class="d-flex flex-row pb-1 my-auto">';
                 cinema_item += '<div class="my-auto">';

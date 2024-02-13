@@ -37,12 +37,12 @@ class SitePointLinkViewModel extends Model
      *
      * @var string
      */
-	public $appends = [
-        'point_a_x',
-        'point_a_y',
-        'point_b_x',
-        'point_b_y',
-    ];
+	// public $appends = [
+    //     'point_a_x',
+    //     'point_a_y',
+    //     'point_b_x',
+    //     'point_b_y',
+    // ];
 
     /****************************************
     *           ATTRIBUTES PARTS            *

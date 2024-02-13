@@ -105,6 +105,27 @@
 								<div class="col-sm-3 text-center">
 									<img v-if="site_background" :src="site_background_portrait" class="img-thumbnail" />
 								</div>
+							</div>							
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-3 col-form-label">Map Type <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<select class="custom-select" v-model="site.map_type">
+									    <option value="">Select Map Type</option>
+									    <option value="2D"> 2D</option>
+									    <option value="3D"> 3D</option>
+								    </select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="lastName" class="col-sm-3 col-form-label">Themes <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<select class="custom-select" v-model="site.site_theme">
+									    <option value="">Select Themes</option>
+										<option v-for="theme in themes" :value="theme"> {{ theme.toUpperCase().replace('_', ' ') }}</option>
+								    </select>
+								</div>
 							</div>
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-3 col-form-label">Client Company</label>
@@ -217,21 +238,6 @@
 									</div>
 								</div>
 							</div>
-							<div class="modal" id="errorModal" tabindex="-1" role="dialog">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-body">
-											<div class="alert alert-block alert-danger">
-												<p>{{ error_message }}</p>
-											</div>
-										</div>
-										<div class="modal-footer justify-content-between">
-											<button type="button" class="btn btn-secondary"
-												data-bs-dismiss="modal">Close</button>
-										</div>
-									</div>
-								</div>
-							</div>
 						</div>
 						<!-- /.card-body -->
 					</div>
@@ -320,6 +326,8 @@ export default {
 				site_background: '',
 				site_background_portrait: '',
 				company_id: null,
+				map_type: '',
+				site_theme: '',
 				facebook: '',
 				instagram: '',
 				twitter: '',
@@ -331,17 +339,17 @@ export default {
 				multilanguage: false,
 				site_code: '',
 			},
-			site_logo: '/images/no-image-available.png',
-			site_banner: '/images/no-image-available.png',
-			site_background: '/images/no-image-available.png',
-			site_background_portrait: '/images/no-image-available.png',
+			site_logo: '',
+			site_banner: '',
+			site_background: '',
+			site_background_portrait: '',
 			add_record: true,
 			edit_record: false,
 			image_width: 0,
 			image_height: 0,
-			error_message: '',
 			is_default: '',
 			companies: [],
+			themes: [],
 			options: {
 				format: 'hh:mm A',
 				useCurrent: false,
@@ -446,9 +454,17 @@ export default {
 
 	created() {
 		this.getCompany();
+		this.getThemes();		
 	},
 
 	methods: {
+
+		getThemes: function() {
+			axios.get('/admin/site/themes-fodler')
+			.then(response => {
+				this.themes = response.data.data;
+			});
+		},
 
 		addOperationalHours: function () {
 			this.site.operational_hours.push({
@@ -474,18 +490,16 @@ export default {
 						obj.site.site_logo = this.file;
 					} else {
 						$('#img_logo').val('');
-						obj.site_logo = null;
+						obj.site_logo = '';
 						obj.site.site_logo = '';
-						obj.error_message = "Invalid Image Size! Must be width: 155 and height: 155 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 155 and height: 155. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_logo').val('');
-				this.site_logo = null;
+				this.site_logo = '';
 				this.site.site_logo = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -505,18 +519,16 @@ export default {
 						obj.site.site_banner = this.file;
 					} else {
 						$('#img_banner').val('');
-						obj.site_banner = null;
+						obj.site_banner = '';
 						obj.site.site_banner = '';
-						obj.error_message = "Invalid Image Size! Must be width: 1451 and height: 440 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 1451 and height: 400. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_banner').val('');
-				this.site_banner = null;
+				this.site_banner = '';
 				this.site.site_banner = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -536,18 +548,16 @@ export default {
 						obj.site.site_background = this.file;
 					} else {
 						$('#img_background').val('');
-						obj.site_background = null;
+						obj.site_background = '';
 						obj.site.site_background = '';
-						obj.error_message = "Invalid Image Size! Must be width: 1920 and height: 1080 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 1920 and height: 1080. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_background').val('');
-				this.site_background = null;
+				this.site_background = '';
 				this.site.site_background = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -567,18 +577,16 @@ export default {
 						obj.site.site_background_portrait = this.file;
 					} else {
 						$('#img_background_portrait').val('');
-						obj.site_background_portrait = null;
+						obj.site_background_portrait = '';
 						obj.site.site_background_portrait = '';
-						obj.error_message = "Invalid Image Size! Must be width: 1080 and height: 1920 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 1080 and height: 1920. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_background_portrait').val('');
-				this.site_background_portrait = null;
+				this.site_background_portrait = '';
 				this.site.site_background_portrait = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
@@ -593,6 +601,8 @@ export default {
 			this.edit_record = false;
 			this.site.name = '';
 			this.site.site_code = '';
+			this.site.map_type = '';
+			this.site.site_theme = '';
 			this.site.descriptions = '';
 			this.site.company_id = null;
 			this.site.active = false;
@@ -606,14 +616,14 @@ export default {
 			this.site.website = '';
 			this.$refs.site_logo.value = null;
 			this.$refs.site_banner.value = null;
-			this.site.site_logo = '/images/no-image-available.png';
-			this.site.site_banner = '/images/no-image-available.png';
-			this.site.site_background = '/images/no-image-available.png';
-			this.site.site_background_portrait = '/images/no-image-available.png';
-			this.site_logo = '/images/no-image-available.png';
-			this.site_banner = '/images/no-image-available.png';
-			this.site_background = '/images/no-image-available.png';
-			this.site_background_portrait = '/images/no-image-available.png';
+			this.site.site_logo = '';
+			this.site.site_banner = '';
+			this.site.site_background = '';
+			this.site.site_background_portrait = '';
+			this.site_logo = '';
+			this.site_banner = '';
+			this.site_background = '';
+			this.site_background_portrait = '';
 			this.addOperationalHours();
 
 			$('#site-form').modal('show');
@@ -623,16 +633,22 @@ export default {
 			let formData = new FormData();
 			formData.append("name", this.site.name);
 			formData.append("descriptions", (this.site.descriptions) ? this.site.descriptions : '');
-			formData.append("site_logo", (this.site.site_logo) ? this.site.site_logo : '');
-			formData.append("site_banner", (this.site.site_banner) ? this.site.site_banner : '');
-			formData.append("site_background", (this.site.site_background) ? this.site.site_background : '');
-			formData.append("site_background_portrait", (this.site.site_background_portrait) ? this.site.site_background_portrait : '');
+			formData.append("site_logo", this.site.site_logo);
+			formData.append("site_banner", this.site.site_banner);
+			formData.append("site_background", this.site.site_background);
+			formData.append("site_background_portrait", this.site.site_background_portrait);
+			formData.append("site_logo_hidden", this.site.site_logo);
+			formData.append("site_banner_hidden", this.site.site_banner);
+			formData.append("site_background_hidden", this.site.site_background);
+			formData.append("site_background_portrait_hidden", this.site.site_background_portrait);
 			formData.append("company_id", (this.site.company_id) ? this.site.company_id : '');
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
 			formData.append("website", (this.site.website) ? this.site.website : '');
 			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
+			formData.append("map_type", (this.site.map_type) ? this.site.map_type : '');		
+			formData.append("site_theme", (this.site.site_theme) ? this.site.site_theme : '');		
 			formData.append("active", this.site.active);
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);
@@ -673,6 +689,8 @@ export default {
 					this.site.is_premiere = parseInt(site.details.premiere);
 					this.site.multilanguage = parseInt(site.details.multilanguage);
 					this.site.site_code = site.details.site_code;
+					this.site.map_type = (site.details.map_type == 'null' || site.details.map_type == undefined) ? '' : site.details.map_type;
+					this.site.site_theme = (site.details.site_theme == 'null' || site.details.site_theme == undefined) ? '' : site.details.site_theme;
 					this.add_record = false;
 					this.edit_record = true;
 
@@ -730,12 +748,18 @@ export default {
 			formData.append("site_banner", (this.site.site_banner) ? this.site.site_banner : '');
 			formData.append("site_background", (this.site.site_background) ? this.site.site_background : '');
 			formData.append("site_background_portrait", (this.site.site_background_portrait) ? this.site.site_background_portrait : '');
+			formData.append("site_logo_hidden", this.site_logo);
+			formData.append("site_banner_hidden", this.site_banner);
+			formData.append("site_background_hidden", this.site_background);
+			formData.append("site_background_portrait_hidden", this.site_background_portrait);
 			formData.append("company_id", (this.site.company_id) ? this.site.company_id : '');
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
 			formData.append("website", (this.site.website) ? this.site.website : '');
 			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
+			formData.append("map_type", (this.site.map_type) ? this.site.map_type : '');						
+			formData.append("site_theme", (this.site.site_theme) ? this.site.site_theme : '');		
 			formData.append("active", this.site.active);
 			formData.append("is_default", this.site.is_default);
 			formData.append("is_premiere", this.site.is_premiere);

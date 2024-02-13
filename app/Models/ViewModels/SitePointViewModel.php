@@ -44,6 +44,7 @@ class SitePointViewModel extends Model
         'brand_name',
         'amenity_name',
         'icon_path',
+        'origin_name',
     ];
 
     /****************************************
@@ -69,7 +70,7 @@ class SitePointViewModel extends Model
         if($this->point_type) {
             $amenity = Amenity::find($this->point_type);
             if($amenity)
-                $amenity->name;
+                return $amenity->name;
             return null;
         }
         return null;
@@ -82,6 +83,17 @@ class SitePointViewModel extends Model
             if($amenity)
                 $amenity->icon;
             return null;
+        }
+        return null;
+    }
+
+    public function getOriginNameAttribute() 
+    {
+        if($this->brand_name) {
+            return $this->brand_name .' - '.$this->id;
+        }
+        else if($this->amenity_name){
+            return $this->amenity_name .' - '.$this->id;
         }
         return null;
     }
