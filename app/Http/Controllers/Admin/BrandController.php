@@ -411,15 +411,11 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                     'name' => $brand->name,
                     'descriptions' => $brand->descriptions,
                     'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
-                    'thumbnail' => $brand->thumbnail,
+                    //'thumbnail' => $brand->thumbnail,
                     'active' => $brand->active,
                     'created_at' => $brand->created_at,
                     'updated_at' => $brand->updated_at,
                     'deleted_at' => $brand->deleted_at,
-
-
-
-
                     'supplementals' => $brand->supplemental_names,
                     'tags' => $brand->tag_names,
                 ];
@@ -432,6 +428,53 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             }
 
             $filename = "brand_management.csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvTemplate()
+    {
+        try {
+            $reports[] = [
+                'id' => '',
+                'category_id' => '',
+                'category_name' => '',
+                'name' => '',
+                'descriptions' => '',
+                'logo' => '',
+               //'thumbnail' => '',
+                'active' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
+                'supplementals' => '',
+                'tags' => '',
+            ];
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "brand-managemet-template.csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 
