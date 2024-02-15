@@ -91,4 +91,5 @@ class SiteMapViewModel extends Model
             return $this->floor_name.', '.$this->building_name;
         }     
     }
+
 }

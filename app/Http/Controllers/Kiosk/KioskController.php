@@ -30,6 +30,8 @@ use App\Models\ViewModels\SitePointLinkViewModel;
 
 class KioskController extends AppBaseController
 {
+    public $site = '';
+
     public function index($site_name = null)
     {
         $site = SiteViewModel::when(!$site_name, function($query) {
@@ -44,27 +46,29 @@ class KioskController extends AppBaseController
         if(!$site)
             return view('kiosk.page-not-found');
 
-        $template_name = $site->details['site_theme'];
-        $site_schedule = json_encode($site->operational_hours);
-        $categories = $this->getCategories($site->id);
-        $promos = $this->getPromos($site->id);
-        $cinemas = $this->getCinemas($site->id);
-        $now_showing = $this->getShowing($site->id);
-        $suggestions = $this->getSuggestionList($site->id);
-        $banner_ads = $this->getBannerAds($site->id);
-        $fullscreen_ads = $this->getFullScreenAds($site->id);
+        $this->site = $site;
+        
+        $template_name = $this->site->details['site_theme'];
+        $site_schedule = json_encode($this->site->operational_hours);
+        $categories = $this->getCategories();
+        $promos = $this->getPromos();
+        $cinemas = $this->getCinemas();
+        $now_showing = $this->getShowing();
+        $suggestions = $this->getSuggestionList();
+        $banner_ads = $this->getBannerAds();
+        $fullscreen_ads = $this->getFullScreenAds();
         $assistant_message = $this->getAssistantMessage();
         $translations = $this->getTranslation();
-        $all_tenants = $this->getTenants($site->id);
+        $all_tenants = $this->getTenants();
 
         // MAP PAGE DATA
-        $site_config = $this->getSiteConfig($site);
-        $site_buildings = $this->getBuildingFloors($site->id);
+        $site_config = $this->getSiteConfig();
+        $site_buildings = $this->getBuildingFloors();
 
         $building_count = $site_buildings['building'];
         $site_floors = $site_buildings['floors'];
 
-        $site_maps = $this->getSiteMaps($site);
+        $site_maps = $this->getSiteMaps();
 
         $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
         $map_points = json_encode($map_points_tenants_links['map_points']);
@@ -75,7 +79,7 @@ class KioskController extends AppBaseController
             $kiosk_center = $this->getMapCenter($site_maps, $site_config->view_angle);
 
         $kiosk_center = json_encode($kiosk_center);
-        $amenities = $this->getAmenities($site->id);
+        $amenities = $this->getAmenities();
 
         // Sprite configuration
         $icon_version = '4x'; //no names
@@ -136,16 +140,15 @@ class KioskController extends AppBaseController
         return view('kiosk.'.$template_name.'.main', compact($data));
     }
 
-    public function getCategories($site_id= 0) {
-
+    public function getCategories() {
         $new_categories = [];
-        $categories = SiteCategoryViewModel::where('site_id', $site_id)->whereNull('sub_category_id')->get();
+        $categories = SiteCategoryViewModel::where('site_id', $this->site->id)->whereNull('sub_category_id')->get();
         if($categories) {
             foreach($categories as $index => $category) {
                 $category = json_decode($category, TRUE);
-                $category['sub_categories'] = $this->getChildCategories($site_id, $category['category_id']);
-                $category['alphabetical'] = $this->getTenants($site_id, $category['category_id']);
-                $category['supplemental'] = $this->getSupplemental($site_id, $category['category_id']);
+                $category['sub_categories'] = $this->getChildCategories($this->site->id, $category['category_id']);
+                $category['alphabetical'] = $this->getTenants($this->site->id, $category['category_id']);
+                $category['supplemental'] = $this->getSupplemental($this->site->id, $category['category_id']);
                 $new_categories[] = $category;
             }
         }
@@ -154,17 +157,17 @@ class KioskController extends AppBaseController
 
     }
 
-    public function getChildCategories($site_id, $category_id) {
+    public function getChildCategories($category_id) {
 
         $child_categories = [];
         if (config('app.env') == 'local') { 
-            $categories = SiteCategoryViewModel::where('site_id', $site_id)
+            $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
             ->where('category_id', $category_id)
             ->whereNotNull('sub_category_id')
             ->get();
         }
         else {
-            $categories = SiteCategoryViewModel::where('company_categories.site_id', $site_id)
+            $categories = SiteCategoryViewModel::where('company_categories.site_id', $this->site->id)
             ->where('company_categories.category_id', $category_id)
             ->where('site_tenants.active', 1)
             ->whereNotNull('company_categories.sub_category_id')
@@ -178,10 +181,10 @@ class KioskController extends AppBaseController
 
         foreach($categories as $index => $category) {
             if($category->category_type == 1) {
-                $category['tenants'] = $this->getTenants($site_id, $category['category_id'], $category['sub_category_id']);
+                $category['tenants'] = $this->getTenants($this->site->id, $category['category_id'], $category['sub_category_id']);
             }
             else {
-                $category['tenants'] = $this->getTenantsBySupplementals($site_id, $category['sub_category_id']);
+                $category['tenants'] = $this->getTenantsBySupplementals($this->site->id, $category['sub_category_id']);
             }
             $child_categories[] = $category;
         }
@@ -190,27 +193,27 @@ class KioskController extends AppBaseController
 
     }
 
-    public function getSupplemental($site_id, $category_id) {
+    public function getSupplemental($category_id) {
 
         $supplemental_category = Category::where('supplemental_category_id', $category_id)->first();
         $supplemental['name'] = $supplemental_category->name;
-        $sub_categories = $this->getChildCategories($site_id, $supplemental_category->id);
+        $sub_categories = $this->getChildCategories($this->site->id, $supplemental_category->id);
         $supplemental['sub_categories'] = array_chunk($sub_categories, 15);
 
         return $supplemental;
 
     }
 
-    public function getTenants($site_id = null, $parent_category_id = null, $category_id = null) {
+    public function getTenants($parent_category_id = null, $category_id = null) {
 
         $map_type = '3D';
-        SiteTenantViewModel::setSiteId($site_id);        
+        SiteTenantViewModel::setSiteId($this->site->id);        
 
-        $site_map_type = SiteMeta::where('site_id', $site_id)->where('meta_key', 'map_type')->first();
+        $site_map_type = SiteMeta::where('site_id', $this->site->id)->where('meta_key', 'map_type')->first();
         if($site_map_type)
             $map_type = $site_map_type->meta_value;
 
-        $tenants = SiteTenantViewModel::where('site_tenants.site_id', $site_id)        
+        $tenants = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)        
         ->when($parent_category_id, function($query) use($parent_category_id) {
             $query->where('categories.parent_id', $parent_category_id);
         })
@@ -243,11 +246,11 @@ class KioskController extends AppBaseController
         return $tenants;
     }
 
-    public function getTenantsBySupplementals($site_id = null, $supplemental_id = null) {
+    public function getTenantsBySupplementals($supplemental_id = null) {
 
         $site_tenants = SiteTenantViewModel::where('site_tenants.active', 1)
         ->where('brand_supplementals.supplemental_id', $supplemental_id)
-        ->where('site_tenants.site_id', $site_id)
+        ->where('site_tenants.site_id', $this->site->id)
         ->join('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
         ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
         ->leftJoin('site_tenant_metas', function($join)
@@ -269,11 +272,11 @@ class KioskController extends AppBaseController
 
     }
 
-    public function getPromos($site_id) {
+    public function getPromos() {
 
         $current_date = date('Y-m-d');
 
-        $promos = SiteTenantViewModel::where('site_tenants.site_id', $site_id)
+        $promos = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)
         ->where('brand_products_promos.type', 'promo')
         ->whereDate('brand_products_promos.date_from', '<=', $current_date)
         ->whereDate('brand_products_promos.date_to', '>=', $current_date)
@@ -287,13 +290,13 @@ class KioskController extends AppBaseController
 
     }
 
-    public function getCinemas($site_id) {
+    public function getCinemas() {
 
         $cinemas = SiteTenantViewModel::where('site_tenants.active', 1)
         ->where('brands.name', 'like', '%CINEMA%')
         ->where('brands.name', 'not like', '%LOBBY%')
         ->where('categories.name', 'like', '%Amusement & Exhibitions%')
-        ->where('site_tenants.site_id', $site_id)
+        ->where('site_tenants.site_id', $this->site->id)
         ->join('brands', 'site_tenants.brand_id', '=', 'brands.id')
         ->join('categories', 'brands.category_id', '=', 'categories.id')
         ->select('site_tenants.*')
@@ -306,12 +309,12 @@ class KioskController extends AppBaseController
 
     }
 
-    public function getShowing($site_id) {
+    public function getShowing() {
 
         $start_date =  date('Y-m-d 00:00:00');
         $end_date =  date('Y-m-d 23:59:59');
         
-        $now_showing = CinemaScheduleViewModel::where('site_id', $site_id)
+        $now_showing = CinemaScheduleViewModel::where('site_id', $this->site->id)
         ->select('site_id', 'film_id', 'title', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre', 'synopsis')
         ->groupBy('film_id')
         ->orderBy('title')
@@ -319,7 +322,7 @@ class KioskController extends AppBaseController
 
         // $now_showing = CinemaScheduleViewModel::where('show_time', '>=', $start_date)
         // ->where('show_time', '<=', $end_date)
-        // ->where('site_id', $site_id)
+        // ->where('site_id', $this->site->id)
         // ->select('site_id', 'film_id', 'title', 'rating', 'casting', 'screen_name', 'trailer_url', 'genre', 'synopsis')
         // ->groupBy('film_id')
         // ->orderBy('title')
@@ -330,9 +333,9 @@ class KioskController extends AppBaseController
 
     }
 
-    public function getSuggestionList($site_id) {
+    public function getSuggestionList() {
 
-        $tenants = SiteTenantViewModel::where('site_tenants.site_id', $site_id)
+        $tenants = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)
         ->where('site_tenants.active', 1)
         ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
         ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
@@ -480,9 +483,9 @@ class KioskController extends AppBaseController
         // } 
     }
 
-    public function getBannerAds($site_id) {
+    public function getBannerAds() {
 
-        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site_id)->first();
+        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $this->site->id)->first();
         if(!$site_screen)
             return null;
         
@@ -510,9 +513,9 @@ class KioskController extends AppBaseController
         return json_encode($playlist);
     }
 
-    public function getFullScreenAds($site_id) {
+    public function getFullScreenAds() {
 
-        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $site_id)->first();
+        $site_screen = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $this->site->id)->first();
         if(!$site_screen)
             return null;
 
@@ -592,15 +595,14 @@ class KioskController extends AppBaseController
         return json_encode($collection);
     }
 
-    public function getSiteMaps($site) {
-
-        $site_maps = SiteMapViewModel::where('site_id', $site->id)->where('map_type', $site->details['map_type'])->get();
+    public function getSiteMaps() {
+        $site_maps = SiteMapViewModel::where('site_id', $this->site->id)->where('map_type', $this->site->details['map_type'])->get();
         return $site_maps;        
     }
 
-    public function getSiteConfig($site) {
-        $config = SiteMapConfigViewModel::where('site_maps.site_id', $site->id)
-        ->where('site_maps.map_type', $site->details['map_type'])
+    public function getSiteConfig() {
+        $config = SiteMapConfigViewModel::where('site_maps.site_id', $this->site->id)
+        ->where('site_maps.map_type', $this->site->details['map_type'])
         ->where('site_map_configs.is_default', 1)
         ->where('site_map_configs.active', 1)
         ->join('site_maps', 'site_map_configs.site_map_id', '=', 'site_maps.id')
@@ -639,11 +641,11 @@ class KioskController extends AppBaseController
         ];
     }
 
-    public function getAmenities($site_id) {
+    public function getAmenities() {
         $amenities = [];
 
         // GET AMENITIES WITH SITE ID
-        $site_amenities = Amenity::where('site_id', $site_id)->get();
+        $site_amenities = Amenity::where('site_id', $this->site->id)->get();
         if($site_amenities) {
             foreach($site_amenities as $amenity) {
                 if($amenity->icon != null || $amenity->icon != '')
@@ -663,10 +665,10 @@ class KioskController extends AppBaseController
         return json_encode($amenities);
     }
 
-    public function getBuildingFloors($site_id) {
+    public function getBuildingFloors() {
 
-        $building = SiteBuilding::where('site_id', $site_id)->get()->count();
-        $floors = SiteBuildingLevelViewModel::where('site_id', $site_id)->get();
+        $building = SiteBuilding::where('site_id', $this->site->id)->get()->count();
+        $floors = SiteBuildingLevelViewModel::where('site_id', $this->site->id)->get();
 
         return [
             'building' => $building,
@@ -712,5 +714,357 @@ class KioskController extends AppBaseController
 
         return $kiosk_zoom;
     }
+    
+    public function getPath(Request $request) {
+        $from = $request->from;
+        $to = $request->to;
+        $pwd = $request->pwd;
+        $type = $request->type;
+        $this->site = SiteViewModel::find($request->site_id);
 
+        // GET MAPS PER SITE
+        $site_maps = $this->getSiteMaps();
+        $maps_ids = [];
+
+        foreach($site_maps as $map) {
+            $maps_ids[] = $map->id;
+        }
+
+        // GET SITE BUILDINGS AND FLOORS
+        $site_buildings = $this->getBuildingFloors();
+
+        $maps_filter_ids = [];
+		$maps_final_ids = [];
+
+        if($type == 'store') {
+            $store_point_a = SitePointViewModel::whereIn('site_map_id', $maps_ids)
+            ->where('tenant_id', $from)
+            ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->select('site_points.*')
+            ->get()->toArray();
+        }
+        else{
+            $store_point_a = SitePointViewModel::where('id', $from)->get()->toArray();
+        }
+        
+        $store_point_b = SitePointViewModel::whereIn('site_map_id', $maps_ids)
+        ->where('tenant_id', $to)
+        ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+        ->select('site_points.*')
+        ->get()->toArray();
+
+         // if same building and floor
+        if($store_point_a[0]['site_map_id'] == $store_point_b[0]['site_map_id']) {
+            $maps_filter_ids[] = $store_point_b[0]['site_map_id'];
+            $maps_final_ids = array_intersect($maps_ids, $maps_filter_ids);
+        }
+        else {
+            // CHECK IF MULTIPLE BUILDING
+            if($site_buildings['building'] > 1) {
+                // MULTI BUILDING PROCESS HERE
+            }
+            else {
+                $maps_filter_ids[] = $store_point_a[0]['site_map_id'];
+                $maps_filter_ids[] = $store_point_b[0]['site_map_id'];
+                $maps_final_ids = array_intersect($maps_ids, $maps_filter_ids);    
+            }
+        }
+
+        // GET MAP POINTS
+        $points_tmp = SitePointViewModel::whereIn('site_map_id', $maps_final_ids)
+        ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id', 'site_maps.site_building_id as building_id')
+        ->get();
+
+        $points = [];
+        foreach($points_tmp as $point) {
+            if($pwd) {
+                if($point['is_pwd'])
+				{
+					if($point['tenant_id'] == $to){
+						$points[$point['id']] = $point;
+					}
+                    elseif($point['tenant_id'] == 0){
+						$points[$point['id']] = $point;
+					}
+				}
+            }
+            else {
+                if($point['point_type'] != 2)
+                {
+                    if($point['tenant_id'] == $to) {
+                        $points[$point['id']] = $point;
+                    }
+                    elseif($point['tenant_id'] == 0){
+                        $points[$point['id']] = $point;
+                    }
+                }
+            }
+        }
+    
+        // GET MAP POINT LINKS
+        $point_links_tmp = SitePointLinkViewModel::whereIn('site_map_id', $maps_final_ids)->get()->toArray();
+		$point_links = [];
+        
+        foreach($point_links_tmp as $link) {
+            if($link['point_a'] && $link['point_b'] && array_key_exists($link['point_a'],$points) && array_key_exists($link['point_b'],$points)) {
+                $distance = $this->getDistance($points[$link['point_a']]['point_x'], 
+                            $points[$link['point_a']]['point_z'],
+                            $points[$link['point_b']]['point_x'],
+                            $points[$link['point_b']]['point_z']);
+                $point_a = intval($link['point_a']);
+                $point_b = intval($link['point_b']);
+                
+                if(!isset($point_links[$point_a])) $point_links[$point_a] = [];
+                if(!isset($point_links[$point_a][$point_b]))
+                {
+                    $point_links[$point_a][$point_b] = abs($distance);
+                }
+                
+                if(!isset($point_links[$point_b])) $point_links[$point_b] = [];
+                if(!isset($point_links[$point_b][$point_a]))
+                {
+                    $point_links[$point_b][$point_a] = abs($distance);
+                }
+            }
+
+        }
+
+        // get tenant name and building name and floor name
+		$tenant_guide = SiteTenantViewModel::find($to);
+        $building_guide = $tenant_guide['building_name'];
+        $level_guide = $tenant_guide['floor_name'];
+
+        if($building_guide == "Main Building"){
+			$building_guide = '';
+		}
+
+        $shortestpath = $this->findShortestPath($point_links,$store_point_a[0]['id'],$store_point_b[0]['id']);
+        $path = $shortestpath['path'];
+		$coordinates = [];
+        $guide = [];
+
+		$current_level = 0;
+		$total_levels = 0;
+		$level_end_points = [];
+		$adjustment = ($type == 'store') ? 2 : 1;
+
+        for($i=count($path)-$adjustment;$i>0;$i--)
+		{
+			if(!isset($level_end_points[$points[$path[$i]]['building_level_id']])) $level_end_points[$points[$path[$i]]['building_level_id']] = [];
+			if($current_level == 0)
+			{
+				$level_end_points[$points[$path[$i]]['building_level_id']][] = $points[$path[$i]];
+				$total_levels++;
+			}
+            elseif($current_level <> $points[$path[$i]]['building_level_id']){
+				if(!isset($level_end_points[$current_level])) $level_end_points[$current_level] = [];
+				$level_end_points[$current_level][] = $points[$path[$i+1]];
+				$level_end_points[$points[$path[$i-1]]['building_level_id']][] = $points[$path[$i-1]];
+				$total_levels++;
+			}
+
+			$coordinates[] = ($points[$path[$i]] ?? 0);
+			$current_level = $points[$path[$i]]['building_level_id'];
+		}
+		$level_end_points[$points[$path[$i]]['building_level_id']][] = $points[$path[$i]];
+
+        $directions = $this->generateDirections($coordinates);
+        $directions[] = 'Follow the <span class="text-danger">red path</span> to your destination';
+
+        // if multi building exist
+        if($building_guide != ''){
+            $textdestination = $tenant_guide->brand_name.', '.$building_guide.' - '.$level_guide;
+        }else{
+            $textdestination = $tenant_guide->brand_name.', '.$level_guide;
+        }
+
+        return ['coords'=>$coordinates,
+                'distance'=>$shortestpath['distance'],
+                'guide'=>$directions,
+                'level_end_points'=>$level_end_points,
+                'directions'=>$directions,
+                'total_levels'=>$total_levels,
+                'destination'=>$store_point_b,
+                'tenant_guide'=>$textdestination
+        ];
+    }
+
+    private function getDistance($x1,$y1,$x2,$y2) {
+		$pi = pi(); 
+		$x = sin($x1 * $pi/180) * 	
+			sin($x2 * $pi/180) + 
+			cos($x1 * $pi/180) * 
+			cos($x2 * $pi/180) * 
+			cos(($y2 * $pi/180) - ($y1 * $pi/180));
+		$x = atan((sqrt(1 - pow($x, 2))) / $x); 
+		return ($x / $pi) * 180;
+	}
+
+    private function shortestDistanceNode($distances, $visited) {
+		$shortest = null;
+		foreach (array_keys($distances) as $node) {
+			$currentIsShortest = $shortest === null || $distances[$node] < $distances[$shortest];
+
+			if ($currentIsShortest && !in_array($node,$visited)) {
+				$shortest = $node;
+			}
+		}
+		return $shortest;
+	}
+
+	private function findShortestPath($graph,$startNode, $endNode) {
+		$distances = [];
+		$distances[$endNode] = INF;
+		foreach($graph[$startNode] as $node=>$distance)
+		{
+			$distances[$node] = $distance;
+		}
+		
+		// track paths
+		$parents = [ $endNode => null ];
+		foreach (array_keys($graph[$startNode]) as $child) {
+			$parents[$child] = $startNode;
+		}
+
+		// track nodes that have already been visited
+		$visited = [];
+
+		// find the nearest node
+		$node = $this->shortestDistanceNode($distances, $visited);
+		while ($node) {
+			$distance = $distances[$node];
+			$children = $graph[$node];
+
+			foreach(array_keys($children) as $child)
+			{
+				if($child == $startNode)
+				{
+					continue;
+				}else{
+					$newdistance = $distance + $children[$child];
+
+					if (!isset($distances[$child]) || $distances[$child] > $newdistance) 
+					{
+						$distances[$child] = $newdistance;
+						$parents[$child] = $node;
+					}
+				}
+			}
+			// move the node to the visited set
+			$visited[] = $node;	
+			$node = $this->shortestDistanceNode($distances, $visited);
+		}
+
+		// using the stored paths from start node to end node
+		// record the shortest path
+		$shortestPath = [$endNode];
+		$parent = $parents[$endNode];
+		while ($parent) {
+			$shortestPath[] = $parent;
+			$parent = $parents[$parent] ?? 0;
+		}
+
+        return [
+			'distance' => $distances[$endNode],
+			'path' => $shortestPath
+		];
+	}
+
+    private function generateDirections($SamplePath) {
+        $TURNTHRESHOLD = deg2rad(10);
+
+		$PathList = [];
+
+		//create temporary Pathlist
+		// note: comment this one if used in Podium
+		$temp_pathlist_level = [];
+		
+		$LoopMax = count($SamplePath) - 3;
+		$LoopCount = 0;
+		$current_turn = '';
+		while ($LoopCount <= $LoopMax)
+		{
+			$ThreePoints = [
+			0 => $SamplePath[$LoopCount],
+			1 => $SamplePath[$LoopCount+1],
+			2 => $SamplePath[$LoopCount+2],
+			];
+
+			$TranslatedPoints = $this->translatePoints($ThreePoints);
+			$RotationAngle = $this->computeAngle($TranslatedPoints[1]);
+			$NewSecondPoint = $this->rotatePoint($TranslatedPoints[1], $RotationAngle * ($TranslatedPoints[1]['point_x'] / abs($TranslatedPoints[1]['point_x'] == 0 ? 1 : $TranslatedPoints[1]['point_x'])));
+			$NewThirdPoint = $this->rotatePoint($TranslatedPoints[2], $RotationAngle * ($TranslatedPoints[2]['point_x'] / abs($TranslatedPoints[2]['point_x'] == 0 ? 1 : $TranslatedPoints[2]['point_x'])));
+			$ThirdPointAngle = $this->computeAngle($NewThirdPoint);
+			
+			if (!((abs($ThirdPointAngle) >= $TURNTHRESHOLD) && (abs($ThirdPointAngle) < 180))) {
+				//$PathList[] = "STRAIGHT";
+			}
+            elseif ($NewThirdPoint['point_x'] < 0) {
+                $current_turn = 'Turn Right';
+                $PathList[] = "{$current_turn}"  . ($SamplePath[$LoopCount+1]['point_label'] ? " on {$SamplePath[$LoopCount+1]['point_label']}" : "");
+			}else{
+                $current_turn = 'Turn Left';
+                $PathList[] = "{$current_turn}"  . ($SamplePath[$LoopCount+1]['point_label'] ? " on {$SamplePath[$LoopCount+1]['point_label']}" : "");
+            }				
+		
+			if($ThreePoints[1]['building_id'] != $ThreePoints[2]['building_id'])
+			{
+				$PathList[] = "Take {$ThreePoints[2]['point_label']} to " . $ThreePoints[2]['building_name'];
+
+			}else{
+				if($ThreePoints[1]['level_order'] != $ThreePoints[2]['level_order'])
+				{
+					$PathList[] = "Take {$ThreePoints[2]['point_label']} to " . $ThreePoints[2]['level_name'];
+					// note: comment this one if used in Podium
+					$temp_pathlist_level[] = "Take {$ThreePoints[2]['point_label']} to " . $ThreePoints[2]['level_name'];
+				}
+			}
+
+			$LoopCount++;
+		}
+		
+		return $PathList;
+	}
+
+    private function translatePoints($ThreePoints) {
+		$ReturnValue = [
+			'success' => 0,
+			0 => [
+				'point_x' => 0,
+				'point_y' => $ThreePoints[0]['point_y'],
+				'point_z' => 0,
+			],
+			1 => [
+				'point_x' => $ThreePoints[1]['point_x'] - $ThreePoints[0]['point_x'],
+				'point_y' => $ThreePoints[1]['point_y'],
+				'point_z' => $ThreePoints[1]['point_z'] - $ThreePoints[0]['point_z'],
+			],
+			2 => [
+				'point_x' => $ThreePoints[2]['point_x'] - $ThreePoints[0]['point_x'],
+				'point_y' => $ThreePoints[2]['point_y'],
+				'point_z' => $ThreePoints[2]['point_z'] - $ThreePoints[0]['point_z'],
+			],
+		];
+		return $ReturnValue;
+	}
+
+    private function computeAngle($TargetPoint) {
+		$Radius = sqrt(pow($TargetPoint['point_x'], 2) + pow($TargetPoint['point_z'], 2));
+		$OppLineWidth = sqrt(pow($TargetPoint['point_x'], 2) + pow($TargetPoint['point_z'] - $Radius, 2));
+		$Angle = acos((2 * pow($Radius, 2) - pow($OppLineWidth, 2)) / (2 * pow($Radius, 2)));
+
+		return $Angle;
+	}
+
+    private function rotatePoint($TargetPoint, $Radians) {
+		$ReturnValue = [
+			'point_x' => round(($TargetPoint['point_x'] * cos($Radians)) - ($TargetPoint['point_z'] * sin($Radians)), 10),
+			'point_y' => $TargetPoint['point_y'],
+			'point_z' => round($TargetPoint['point_x'] * sin($Radians) + $TargetPoint['point_z'] * cos($Radians), 10),
+		];
+	
+		return $ReturnValue;
+	}
+    
 }

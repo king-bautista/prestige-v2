@@ -240,7 +240,7 @@
             linePathGroup[floor.id] = new THREE.Group();
             scene.add(linePathGroup[floor.id]);
 
-            default_zoom[floor.id]  = site_maps.find(sm => sm.site_building_level_id == floor.id).default_zoom;
+            default_zoom[floor.id]  = site_config.default_zoom;
         }); 
 
         theball = new THREE.Mesh(
@@ -916,6 +916,17 @@
 		render(); //ERROR		
 	}
 
+	function distanceVector(x0,y0,z0,x1,y1,z1){
+
+		var deltaX = x1 - x0;
+		var deltaY = y1 - y0;
+		var deltaZ = z1 - z0;
+
+		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+
+		return distance;
+	}
+
     function render() {
         renderer.render( scene, camera );
 		var nav_zoom_level = 1;
@@ -946,13 +957,18 @@
 					}
                 });
 
-                fitCameraToScreen3(nav_zoom_level, move_top);                
+				console.log(move_top);
+                fitCameraToScreen(nav_zoom_level, move_top);                
             }
 
+			console.log(movements[currentpos].l);
+			console.log($("#floor-select").val());
             if(movements[currentpos].l != $("#floor-select").val())
 			{
                 if(transitioning  == 0)
 				{
+					console.log('here 2');
+
                     transitioning = 1;
 
                     if(movements[currentpos-1] && movements[currentpos].b != movements[currentpos-1].b && @php echo $building_count; @endphp > 1)
@@ -1001,6 +1017,7 @@
 						}
                     }
                     else {
+						console.log('here 3');
 
                         theball.visible = false;
                         if(movements[currentpos].l > $("#floor-select").val())
@@ -1219,7 +1236,7 @@
                                     }
                                 });
 	
-								fitCameraToScreen3(nav_zoom_level, move_top);
+								fitCameraToScreen(nav_zoom_level, move_top);
 								console.log(level_end_points[movements[currentpos].l].length + ' fit to end to end-- --'+cf+' condition' + ' current pos: '+movements[currentpos].l+' current pos: '+movements[currentpos].l);
 							}
 							
@@ -1246,6 +1263,11 @@
     }
 
     function moveBall( ball, destination, speed = playerSpeed ) {
+		console.log(ball);
+		console.log(destination);
+		console.log(speed);
+		return false;
+
 		var moveDistance = speed;
 
 		if(typeof destination == 'undefined')
@@ -1311,22 +1333,22 @@
 				currentpos = 1;
 				
 				//enable dropdown
-				$('.direction-to').prop('disabled', false);
-				$('#floor-select').prop('disabled', false);
-				$('.btn-pwd').prop('disabled', false);
+				// $('#tenant-select').prop('disabled', false);
+				// $('#floor-select').prop('disabled', false);
+				// $('#btnpwdchange').prop('disabled', false);
 
-				if($("#ispwd").prop('checked') == false) {
-					$(".btn-pwd").addClass('btn-prestige-white');
-				}else{
-					$(".btn-pwd").addClass('btn-prestige-color');
-				};
+				// if($("#ispwd").prop('checked') == false) {
+				// 	$(".btn-pwd").addClass('btn-prestige-white');
+				// }else{
+				// 	$(".btn-pwd").addClass('btn-prestige-color');
+				// };
 				
 				//show map pointer
 				spritePinTo.visible = true;
 				
-				$(".maprepeat").show();
+				// $(".maprepeat").show();
 				//change class of mapexpand
-				$('.mapexpand').addClass('btn-prestige-rounded2').removeClass('btn-prestige-rounded3');
+				// $('.mapexpand').addClass('btn-prestige-rounded2').removeClass('btn-prestige-rounded3');
 				
 			}
 		}
@@ -1386,7 +1408,7 @@
 		// $(".building-select").val(building_id).change();
 		// building_change_user = 1;
 
-        // if(spritePinTo.userData.floor == value && $(".direction-to").val() > 0){
+        // if(spritePinTo.userData.floor == value && $(".#tenant-select").val() > 0){
 		// 	// spritePinTo.visible = true;
 		// }else{
 		// 	spritePinTo.visible = false;
@@ -1405,30 +1427,8 @@
         fitCameraToScreen(zoom_level);
     }
 
-    function diffTwoRealNum(num1, num2){
-		if(num1 > num2){
-			if(num1 > 0 && num2 > 0){
-				return num1 - num2;
-			}else if(num1 < 0 && num2 < 0){
-				return (num2*(-1)) - (num1*(-1));
-			}else if(num1 > 0 && num2 < 0){
-				return num1 + (num2*(-1));
-			}
-
-		} else {
-			if(num1 > 0 && num2 > 0){
-				return (num2 - num1) * (-1);
-			}else if(num1 < 0 && num2 < 0){
-				return ((num2*(-1)) - (num1*(-1))) * (-1);
-			}else if(num1 < 0 && num2 > 0){
-				return ((num1*(-1)) + (num2*(-1))) * (-1);
-			}
-		}
-	}
-
     //SET ZOOM when switching floors
-	function fitCameraToScreen(fitOffset = 1)
-	{
+	function fitCameraToScreen(fitOffset = 1, moveTop = 0) {
         if(boundaries.hasOwnProperty($("#floor-select").val()))
 		{  
             const box = new THREE.Box3();
@@ -1454,6 +1454,20 @@
 			}else{
 				console.log("portrait",fitHeightDistance,fitWidthDistance);
 				distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );
+			}
+
+			if(moveTop != 0){
+				if(KIOSK_VIEW_ANGLE == 0){
+					center.z = diffTwoRealNum(center.z, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 180){
+					center.z = diffTwoRealNum(center.z, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 90){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 270){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 45){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}
 			}
 
             //MOVE MAP UP AND DOWN ON SELECTOR
@@ -1491,6 +1505,103 @@
 		controls.update();	
     }
 
+	function fitCameraToScreen3(fitOffset = 1, moveTop = 0)
+	{
+		if(boundaries.hasOwnProperty($("#floor-select").val()))
+		{
+			const box = new THREE.Box3();
+			boundaries[$(".floor-select").val()].forEach(object => {box.expandByObject(object);});
+			
+			const size = box.getSize( new THREE.Vector3() );
+			const center = box.getCenter( new THREE.Vector3() );
+			const maxSize = Math.max( size.x, size.y, size.z );
+			const fitHeightDistance = maxSize / ( 2 * Math.atan( Math.PI * camera.fov / 360 ) );
+			const fitWidthDistance = fitHeightDistance / camera.aspect;
+
+			var floor = $("#floor-select").val();
+
+			var distance = fitOffset * Math.min( fitHeightDistance, fitWidthDistance );
+
+            if(KIOSK_VIEW_ANGLE != 270 && KIOSK_VIEW_ANGLE != 90)
+			{
+				if(size.z > size.x)
+				{
+					console.log(fitHeightDistance,fitWidthDistance);
+					distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );
+				}
+			}else{
+				console.log("portrait",fitHeightDistance,fitWidthDistance);
+				distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );
+			}
+
+			if(moveTop != 0){
+				if(KIOSK_VIEW_ANGLE == 0){
+					center.z = diffTwoRealNum(center.z, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 180){
+					center.z = diffTwoRealNum(center.z, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 90){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 270){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 45){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}
+			}
+
+			var kiosk_center = @php echo $kiosk_center; @endphp;
+            center.y = center.y+parseFloat(kiosk_center[floor].center_y); //UP DOWN
+            center.x = center.x+parseFloat(kiosk_center[floor].center_x); //LEFT RIGHT
+            center.z = center.z+parseFloat(kiosk_center[floor].center_z); //LEFT RIGHT
+
+			const direction = controls.target.clone()
+				.sub( camera.position )
+				.normalize()
+				.multiplyScalar( distance );
+
+			controls.maxDistance = distance * 10;
+			controls.target.copy( center );
+			camera.near = distance / 100;
+			camera.far = distance * 100;
+			camera.updateProjectionMatrix();
+			camera.position.copy( controls.target ).sub(direction);
+			//controls.update();
+
+			//backup centermarker
+			centerMarker.position.x = center.x;
+			centerMarker.position.z = center.z;
+			centerMarker.position.y = endMarker.position.y;
+
+		}
+		controls.maxPolarAngle = viewAngle * Math.PI / 180;
+		controls.minPolarAngle = viewAngle * Math.PI / 180;
+
+		controls.minAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180;
+		controls.maxAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180;
+
+		controls.update();	
+	}
+
+	function diffTwoRealNum(num1, num2){
+		if(num1 > num2){
+			if(num1 > 0 && num2 > 0){
+				return num1 - num2;
+			}else if(num1 < 0 && num2 < 0){
+				return (num2*(-1)) - (num1*(-1));
+			}else if(num1 > 0 && num2 < 0){
+				return num1 + (num2*(-1));
+			}
+
+		} else {
+			if(num1 > 0 && num2 > 0){
+				return (num2 - num1) * (-1);
+			}else if(num1 < 0 && num2 < 0){
+				return ((num2*(-1)) - (num1*(-1))) * (-1);
+			}else if(num1 < 0 && num2 > 0){
+				return ((num1*(-1)) + (num2*(-1))) * (-1);
+			}
+		}
+	}
+
 	function mapReset(){
 		alert(default_floor);
 		if(default_floor) {
@@ -1515,7 +1626,10 @@
 
 		$('#btnresetmap').on('click', function() {
 
+			// RESET TO DEFAULT FLOOR
 			$("#floor-select").val(default_floor).change();
+			// RESET Input Destination
+			$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Input Destination');
 			onWindowResize();
 
 			movements = [];
@@ -1533,7 +1647,7 @@
 			spritePinTo.visible = false;
 
 			//zoom to default zoom
-			var zoom_level =  0.4;
+			var zoom_level =  0.8;
 
 			fitCameraToScreen(zoom_level);					
 			var kiosk = map_points[KIOSK_ID];
@@ -1544,11 +1658,15 @@
 			coords.z = kiosk.point_z;
 			coords.y = kiosk.point_y;
 
+			//overwrite coords
+			coords.z = (Math.abs(site_config.default_z) > 0) ? parseFloat(coords.z)+parseFloat(site_config.default_z) : coords.z;
+			coords.x = (Math.abs(site_config.default_x) > 0) ? parseFloat(coords.x)+parseFloat(site_config.default_x) : coords.x;
+			
 			scene.worldToLocal(coords);
 			controls.target = coords;
-			
+
 			//camera.position.y = 100;
-			camera.position.y = default_zoom[default_floor];
+			camera.position.y = site_config.default_y;
 			camera.position.x = coords.x;
 			camera.position.z = coords.z;
 			controls.update();
@@ -1585,11 +1703,139 @@
 					}
 				});
 
-				console.log(zoom_level);
-
 				fitCameraToScreen(zoom_level);				
 			}
 		});
+
+		$('#tenant-select').on('change', function() {
+			// KEYBOARD INPUT CLEAR
+
+			// HIDE DIRECTION DETAILS
+			$("#toggle-down").addClass('hideArrow');
+			$("#toggle-up").removeClass('hideArrow');
+			$("#toggle-updown-text").html('Show Text Guide');
+			$("#hiddenPanel2").hide();
+
+			runner.visible = false;
+			runner2.visible = false;
+			runner3.visible = false;
+			$.each(floors_label,function(){
+				this.visible = false;
+			});
+			$.each(bldg_label,function(){
+				this.visible = false;
+			});
+
+			spritePinTo.visible = false;
+			theball.visible = false;
+
+			var selected_text = $(this).find("option:selected").text();
+			$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Directions to '+selected_text);
+
+			$.each(floors,function(index){
+				linePathGroup[index].remove(...linePathGroup[index].children);
+			});
+
+			// TERMINATE ACTION IF VALUE IS 0
+			if(KIOSK_ID == 0 || $(this).val() == 0)
+			{
+				return false;
+			}
+
+			$.post( "/api/v1/get-routes", { from: KIOSK_ID, to: $(this).val(), pwd: ($("#ispwd").is(':checked') ? 1: 0), type: 'kiosk', site_id:@php echo $site->id; @endphp} )
+			.done(function(data) {
+				$('#tenant-select').prop('disabled', true);
+				$('#floor-select').prop('disabled', true);
+				$('#btnpwdchange').prop('disabled', true);
+
+				// ADD DISABLED COLOR FOR PWD HERE
+
+				// var steps = (data['distance'] * 1.3).toFixed(0);
+				// var mins = (steps / 100).toFixed(0);
+				// $(".map-distance").html(data['distance'].toFixed(0)  + 'm distance');
+				// $(".map-steps").html( steps + ' steps');
+				// $(".map-minutes").html( mins + ' minute' + (mins > 1 ? 's' : ''));
+
+
+				// $("#mapguide li").remove();
+				// $.each(data['guide'],function(){
+				// 	if (this == "Turn Left" || this == "Turn Right") {
+
+				// 	}else if (this == "Turn Left on Escalator" || this == "Turn Right on Escalator") {
+
+				// 	}else if (this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
+
+				// 	}else {
+				// 		$("#mapguide").append('<li>' + this + '</li>');
+				// 	}
+				// });
+
+				level_end_points = data['level_end_points'];
+				var destination_wayfind = data['destination'];
+				var tenant_guide = data['tenant_guide'];
+				total_floors = data['total_levels'];
+				var start_point = level_end_points[Object.keys(level_end_points)[0]];
+				var initial_level = start_point[0]['building_level_id'];
+				// $("#mapguide-destination").html(tenant_guide);
+
+				movements = [];
+				var line_points = {};
+				var current_level = 0;
+				var current_building = 0;
+				
+				console.log(data['coords']);
+				$.each(data['coords'],function(index) {
+					if(index == 0) {
+						theball.position.set(this.point_x,this.point_y - 1,this.point_z);
+
+						spritePinFrom.position.x = this.point_x;
+						spritePinFrom.position.z = this.point_z;
+						spritePinFrom.visible = true;
+						spritePinFrom.userData = {'floor':this.building_level_id};
+					}
+					
+					// if( index == data['coords'].length-1) {						
+					// 	spritePinTo.position.x = destination_wayfind[0].point_x;
+					// 	spritePinTo.position.z = destination_wayfind[0].point_z;						
+					// 	spritePinTo.userData = {'floor':destination_wayfind[0].map_id+1};
+					// }
+					
+					// if(!line_points.hasOwnProperty(this.building_level_id)) { 
+					// 	line_points[this.building_level_id] = [];
+					// 	line_points[this.building_level_id].push([]);
+					// }
+
+					// if(current_level > 0 && this.building_level_id != current_level) {
+					// 	spritePinTo.visible = false;
+					// 	line_points[this.building_level_id].push([]);
+					// }
+					
+					// let current_line_index = line_points[this.building_level_id].length - 1;
+
+					if(current_building == 0 || current_building == this.building_id) {
+						console.log(current_building);
+					 	// line_points[this.building_level_id][current_line_index].push(new THREE.Vector3(this.point_x,this.point_y + 1,this.point_z));
+					 	// movements.push({x:parseFloat(this.point_x),y:parseFloat(this.point_y) + 1,z:parseFloat(this.point_z),l:this.building_level_id,b:this.building_id});
+					}
+
+					// current_level = this.building_level_id;
+					current_building = this.building_id;
+				});
+
+				// $.each(line_points,function(index){
+				// 	var line_points_group = this;
+				// 	$.each(line_points_group,function(){
+				// 		var geometry = new THREE.BufferGeometry().setFromPoints(this);
+				// 		var line = new THREE.Line( geometry, lineMaterial );
+				// 		linePathGroup[index].add( line );
+				// 	})
+				// });
+
+			})
+			
+
+
+		})
 
     });
     
