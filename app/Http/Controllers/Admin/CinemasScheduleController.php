@@ -64,32 +64,31 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
 
     public function store(Request $request)
     {
-        echo $request->site_id;
-        // try {
-        //     $cinema_site = CinemaSite::where($request->site);
-        //     $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
+        try {
+            $cinema_site = CinemaSite::where($request->site_id);
+            $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
 
-        //     $cinema_helper = new CinemaHelper($cinema_id);
-        //     $movies = $cinema_helper->getSchedules();
+            $cinema_helper = new CinemaHelper($cinema_id);
+            $movies = $cinema_helper->getSchedules();
 
-        //     // DELETE SCHEDULE PER SITE
-        //     CinemaSchedule::where('site_id', $cinema_site->site_id)->delete();
+            // DELETE SCHEDULE PER SITE
+            CinemaSchedule::where('site_id', $cinema_site->site_id)->delete();
 
-        //     if (count($movies->value)) {
-        //         foreach ($movies->value as $movie) {
-        //             $casting = $this->getCast($movie->Cast);
-        //             $this->saveSchedule($movie, $movie->Sessions, $casting, $cinema_site->site_id);
-        //         }
-        //     }
+            if (count($movies->value)) {
+                foreach ($movies->value as $movie) {
+                    $casting = $this->getCast($movie->Cast);
+                    $this->saveSchedule($movie, $movie->Sessions, $casting, $cinema_site->site_id);
+                }
+            }
 
-        //     return $this->response(true, 'Successfully Retreived!', 200);
-        // } catch (\Exception $e) {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+            return $this->response(true, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function getCast($casts)
