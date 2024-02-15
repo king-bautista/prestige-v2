@@ -64,7 +64,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
 
     public function store(Request $request)
     {
-        echo $request->site_code;
+        echo $request->site_id;
         // try {
         //     $cinema_site = CinemaSite::where($request->site);
         //     $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
