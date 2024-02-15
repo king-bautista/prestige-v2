@@ -41,7 +41,7 @@ class SiteScreenProductRequest extends FormRequest
     {
         return [
             'site_screen_id.required' => 'The site screen is required.',
-            'ad_type.required' => 'The advertisement type field is required.',
+            'ad_type.required' => 'The product type field is required.',
         ];
     }
 }
