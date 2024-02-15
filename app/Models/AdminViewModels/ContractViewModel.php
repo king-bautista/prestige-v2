@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\ContractBrand;
 use App\Models\ContractScreen;
+use App\Models\SiteScreen;
 
 class ContractViewModel extends Model
 {
@@ -45,8 +46,10 @@ class ContractViewModel extends Model
 	public $appends = [
         'brands',
         'brand_names',
+        'brand_ids',
         'screens',
         'screen_locations',
+        'screen_ids',
     ]; 
 
     public function getBrands()
@@ -62,6 +65,11 @@ class ContractViewModel extends Model
     /****************************************
     *           ATTRIBUTES PARTS            *
     ****************************************/   
+    public function getBrandIdsAttribute() 
+    {
+        return $this->getBrands()->pluck('brand_id');
+    }
+
     public function getBrandsAttribute() 
     {
         $ids = $this->getBrands()->pluck('brand_id');
@@ -73,6 +81,18 @@ class ContractViewModel extends Model
         $ids = $this->getBrands()->pluck('brand_id');
         $names = BrandViewModel::whereIn('id', $ids)->get()->pluck('name')->toArray();
         return implode(", ",$names);
+    }
+
+    public function getScreenIdsAttribute() 
+    {
+        
+        $site_screen_id = $this->getScreens()->pluck('site_screen_id')[0]; 
+        if($site_screen_id == 0){
+            $site_id = $this->getScreens()->pluck('site_id')[0];
+            $ids = SiteScreen::where('site_id', $site_id)->get()->pluck('id')->toArray();
+            return implode(", ",$ids);
+         }
+         return $site_screen_id;
     }
 
     public function getScreensAttribute() 

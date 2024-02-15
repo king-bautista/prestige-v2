@@ -276,6 +276,7 @@ export default {
 						8: '<span class="badge bg-success">Archive</span>',
 					}
 				},
+				created_at: "Created",
 				updated_at: "Last Updated",
 
 			},

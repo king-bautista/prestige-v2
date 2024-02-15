@@ -400,44 +400,45 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     public function downloadCsv()
     {
         try {
+            echo BrandViewModel::get()->count();
 
-            $brand_management =  BrandViewModel::get();
-            $reports = [];
-            foreach ($brand_management as $brand) {
-                $reports[] = [
-                    'id' => $brand->id,
-                    'category_id' => $brand->category_id,
-                    'category_name' => $brand->category_name,
-                    'name' => $brand->name,
-                    'descriptions' => $brand->descriptions,
-                    'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
-                    //'thumbnail' => $brand->thumbnail,
-                    'active' => $brand->active,
-                    'created_at' => $brand->created_at,
-                    'updated_at' => $brand->updated_at,
-                    'deleted_at' => $brand->deleted_at,
-                    'supplementals' => $brand->supplemental_names,
-                    'tags' => $brand->tag_names,
-                ];
-            }
+            //$brand_management =  BrandViewModel::get();
+            // $reports = [];
+            // foreach ($brand_management as $brand) {
+            //     $reports[] = [
+            //         'id' => $brand->id,
+            //         'category_id' => $brand->category_id,
+            //         'category_name' => $brand->category_name,
+            //         'name' => $brand->name,
+            //         'descriptions' => $brand->descriptions,
+            //         'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
+            //         //'thumbnail' => $brand->thumbnail,
+            //         'active' => $brand->active,
+            //         'created_at' => $brand->created_at,
+            //         'updated_at' => $brand->updated_at,
+            //         'deleted_at' => $brand->deleted_at,
+            //         'supplementals' => $brand->supplemental_names,
+            //         'tags' => $brand->tag_names,
+            //     ];
+            // }
 
-            $directory = 'public/export/reports/';
-            $files = Storage::files($directory);
-            foreach ($files as $file) {
-                Storage::delete($file);
-            }
+            // $directory = 'public/export/reports/';
+            // $files = Storage::files($directory);
+            // foreach ($files as $file) {
+            //     Storage::delete($file);
+            // }
 
-            $filename = "brand_management.csv";
-            // Store on default disk
-            Excel::store(new Export($reports), $directory . $filename);
+            // $filename = "brand_management.csv";
+            // // Store on default disk
+            // Excel::store(new Export($reports), $directory . $filename);
 
-            $data = [
-                'filepath' => '/storage/export/reports/' . $filename,
-                'filename' => $filename
-            ];
+            // $data = [
+            //     'filepath' => '/storage/export/reports/' . $filename,
+            //     'filename' => $filename
+            // ];
 
-            if (Storage::exists($directory . $filename))
-                return $this->response($data, 'Successfully Retreived!', 200);
+            // if (Storage::exists($directory . $filename))
+            //     return $this->response($data, 'Successfully Retreived!', 200);
 
             return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {

@@ -65,7 +65,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     public function store(Request $request)
     {
         try {
-            $cinema_site = CinemaSite::find(1);
+            $cinema_site = CinemaSite::find($request->site_id);
             $cinema_id = str_pad($cinema_site->cinema_id, 10, '0', STR_PAD_LEFT);
 
             $cinema_helper = new CinemaHelper($cinema_id);
@@ -132,9 +132,9 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     }
 
     public function getSiteCodes()
-    {
+    { 
         try {
-            $cinema_sites = CinemaSchedule::get();
+            $cinema_sites = CinemaSite::get();
             return $this->response($cinema_sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([

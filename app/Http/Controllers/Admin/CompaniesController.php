@@ -20,6 +20,7 @@ use App\Imports\CompaniesImport;
 use App\Models\Company;
 use App\Models\CompanyBrands;
 use App\Models\Contract;
+use App\Models\ContractScreen;
 use App\Models\AdminViewModels\CompanyViewModel;
 use App\Models\AdminViewModels\BrandViewModel;
 use App\Models\AdminViewModels\ContractViewModel;
@@ -104,7 +105,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                 'email' => ($request->email) ? $request->email : null,
                 'contact_number' => ($request->contact_number) ? $request->contact_number : null,
                 'address' => ($request->address) ? $request->address : null,
-                'tin' => $request->tin,//($request->tin) ? $request->tin : null,
+                'tin' => $request->tin, //($request->tin) ? $request->tin : null,
                 'active' => 1,
             ];
 
@@ -135,7 +136,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                 'email' => ($request->email) ? $request->email : null,
                 'contact_number' => ($request->contact_number) ? $request->contact_number : null,
                 'address' => ($request->address) ? $request->address : null,
-                'tin' => $request->tin,//($request->tin) ? $request->tin : null,
+                'tin' => $request->tin, //($request->tin) ? $request->tin : null,
                 'active' => $this->checkBolean($request->active),
             ];
 
@@ -274,7 +275,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                 'end_date' => ($request->end_date) ? $request->end_date : null,
                 'is_exclusive' => $this->checkBolean($request->is_exclusive),
                 'is_indefinite' => $this->checkBolean($request->is_indefinite),
-                'active' => 1
+                'active' => 0
             ];
 
             $contract = Contract::create($data);
@@ -647,12 +648,18 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $contracts = ContractViewModel::when(request('search'), function ($query) {
                 return $query->where('contracts.name', 'LIKE', '%' . request('search') . '%');
             })
-                ->leftJoin('contract_screens', 'contracts.id', '=', 'contract_screens.contract_id')
-                // ->leftJoin('site_screens', 'contract_screens.site_screen_id', '=', 'site_screens.id')
+                ->leftJoin('contract_screens as cs', 'contracts.id', '=', 'cs.contract_id')
+                //   ->leftJoin('site_screens as ss', 'cs.site_screen_id', '=', 'ss.id')
 
                 // ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
                 // ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
                 // ->select('companies.*', 'classifications.name', 'companies.name')
+
+                // ->leftJoin('sites_meta', function ($join) {
+                //     $join->on('sites.id', '=', 'sites_meta.site_id')
+                //         ->where('sites_meta.meta_key', '=', 'site_code');
+                // })
+
                 ->where('contracts.company_id', $company_id)
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('contracts.name', 'ASC');
@@ -693,8 +700,10 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                         'id' => $contract->serial_number,
                         'company_id' => $company_id,
                         'company_name' => $company_name,
+                        'brand_IDs' => $contract->brand_ids,
                         'brand_names' => $contract->brand_names,
                         'name' => $contract->name,
+                        'site_screen_id' => $contract->screen_ids,
                         'screen_locations' => $contract->screen_locations,
                         'reference_code' => $contract->reference_code,
                         'business_id' => $contract->business_id,
@@ -746,26 +755,28 @@ class CompaniesController extends AppBaseController implements CompaniesControll
     {
         try {
             $reports[] = [
-                'id' => '',
-                'company_id' => '',
-                'company_name' => '',
-                'brand_names' => '',
-                'name' => '',
-                'screen_locations' => '',
-                'reference_code' => '',
-                'business_id' => '',
-                'remarks' => '',
-                'is_indefinite' => '',
-                'is_exclusive' => '',
-                'display_duration' => '',
-                'slots_per_loop' => '',
-                'exposure_per_day' => '',
-                'start_date' => '',
-                'end_date' => '',
-                'active' => '',
-                'created_at' => '',
-                'updated_at' => '',
-                'deleted_at' => '',
+                'id' => $contract->serial_number,
+                        'company_id' =>'',
+                        'company_name' => '',
+                        'brand_IDs' => '',
+                        'brand_names' => '',
+                        'name' => '',
+                        'site_screen_id' => '',
+                        'screen_locations' => '',
+                        'reference_code' => '',
+                        'business_id' => '',
+                        'remarks' => '',
+                        'is_indefinite' => '',
+                        'is_exclusive' => '',
+                        'display_duration' => '',
+                        'slots_per_loop' => '',
+                        'exposure_per_day' => '',
+                        'start_date' => '',
+                        'end_date' => '',
+                        'active' => '',
+                        'created_at' => '',
+                        'updated_at' => '',
+                        'deleted_at' => '',
             ];
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
