@@ -738,19 +738,22 @@ class KioskController extends AppBaseController
 
         if($type == 'store') {
             $store_point_a = SitePointViewModel::whereIn('site_map_id', $maps_ids)
-            ->where('tenant_id', $from)
+            ->where('site_points.tenant_id', $from)
             ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-            ->select('site_points.*')
+            ->select('site_points.*', 'site_maps.site_building_id as building_id', 'site_maps.site_building_level_id as building_level_id')
             ->get()->toArray();
         }
         else{
-            $store_point_a = SitePointViewModel::where('id', $from)->get()->toArray();
+            $store_point_a = SitePointViewModel::where('site_points.id', $from)
+            ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->select('site_points.*', 'site_maps.site_building_id as building_id', 'site_maps.site_building_level_id as building_level_id')
+            ->get()->toArray();
         }
         
         $store_point_b = SitePointViewModel::whereIn('site_map_id', $maps_ids)
         ->where('tenant_id', $to)
         ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-        ->select('site_points.*')
+        ->select('site_points.*', 'site_maps.site_building_id as building_id', 'site_maps.site_building_level_id as building_level_id')
         ->get()->toArray();
 
          // if same building and floor

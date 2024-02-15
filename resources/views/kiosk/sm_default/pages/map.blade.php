@@ -957,7 +957,6 @@
 					}
                 });
 
-				console.log(move_top);
                 fitCameraToScreen(nav_zoom_level, move_top);                
             }
 
@@ -1263,11 +1262,7 @@
     }
 
     function moveBall( ball, destination, speed = playerSpeed ) {
-		console.log(ball);
-		console.log(destination);
-		console.log(speed);
-		return false;
-
+		console.log(linePathGroup);
 		var moveDistance = speed;
 
 		if(typeof destination == 'undefined')
@@ -1333,8 +1328,8 @@
 				currentpos = 1;
 				
 				//enable dropdown
-				// $('#tenant-select').prop('disabled', false);
-				// $('#floor-select').prop('disabled', false);
+				$('#tenant-select').prop('disabled', false);
+				$('#floor-select').prop('disabled', false);
 				// $('#btnpwdchange').prop('disabled', false);
 
 				// if($("#ispwd").prop('checked') == false) {
@@ -1602,15 +1597,6 @@
 		}
 	}
 
-	function mapReset(){
-		alert(default_floor);
-		if(default_floor) {
-			$("#floor-select").val(default_floor);
-
-		}
-
-	}
-
     $(document).ready(function() {
         init();
         loadFont();
@@ -1641,10 +1627,12 @@
 			// CLEAR TENANT DROPDOWN
 
 			$.each(floors,function(index){
-				linePathGroup[index].visible = false;
+				linePathGroup[index].visible = (index == default_floor);
 			});
 
+			console.log(linePathGroup);
 			spritePinTo.visible = false;
+			theball.visible = false;
 
 			//zoom to default zoom
 			var zoom_level =  0.8;
@@ -1776,6 +1764,7 @@
 				total_floors = data['total_levels'];
 				var start_point = level_end_points[Object.keys(level_end_points)[0]];
 				var initial_level = start_point[0]['building_level_id'];
+	
 				// $("#mapguide-destination").html(tenant_guide);
 
 				movements = [];
@@ -1783,53 +1772,51 @@
 				var current_level = 0;
 				var current_building = 0;
 				
-				console.log(data['coords']);
 				$.each(data['coords'],function(index) {
 					if(index == 0) {
-						theball.position.set(this.point_x,this.point_y - 1,this.point_z);
+						theball.position.set(parseFloat(this.point_x),(parseFloat(this.point_y) - 1),parseFloat(this.point_z));
 
-						spritePinFrom.position.x = this.point_x;
-						spritePinFrom.position.z = this.point_z;
+						spritePinFrom.position.x = parseFloat(this.point_x);
+						spritePinFrom.position.z = parseFloat(this.point_z);
 						spritePinFrom.visible = true;
 						spritePinFrom.userData = {'floor':this.building_level_id};
 					}
 					
-					// if( index == data['coords'].length-1) {						
-					// 	spritePinTo.position.x = destination_wayfind[0].point_x;
-					// 	spritePinTo.position.z = destination_wayfind[0].point_z;						
-					// 	spritePinTo.userData = {'floor':destination_wayfind[0].map_id+1};
-					// }
+					if( index == data['coords'].length-1) {						
+						spritePinTo.position.x = parseFloat(destination_wayfind[0].point_x);
+						spritePinTo.position.z = parseFloat(destination_wayfind[0].point_z);						
+						spritePinTo.userData = {'floor':destination_wayfind[0].building_level_id};
+					}
 					
-					// if(!line_points.hasOwnProperty(this.building_level_id)) { 
-					// 	line_points[this.building_level_id] = [];
-					// 	line_points[this.building_level_id].push([]);
-					// }
-
-					// if(current_level > 0 && this.building_level_id != current_level) {
-					// 	spritePinTo.visible = false;
-					// 	line_points[this.building_level_id].push([]);
-					// }
-					
-					// let current_line_index = line_points[this.building_level_id].length - 1;
-
-					if(current_building == 0 || current_building == this.building_id) {
-						console.log(current_building);
-					 	// line_points[this.building_level_id][current_line_index].push(new THREE.Vector3(this.point_x,this.point_y + 1,this.point_z));
-					 	// movements.push({x:parseFloat(this.point_x),y:parseFloat(this.point_y) + 1,z:parseFloat(this.point_z),l:this.building_level_id,b:this.building_id});
+					if(!line_points.hasOwnProperty(this.building_level_id)) { 
+						line_points[this.building_level_id] = [];
+						line_points[this.building_level_id].push([]);
 					}
 
-					// current_level = this.building_level_id;
+					if(current_level > 0 && this.building_level_id != current_level) {
+						spritePinTo.visible = false;
+						line_points[this.building_level_id].push([]);
+					}
+					
+					let current_line_index = line_points[this.building_level_id].length - 1;
+
+					if(current_building == 0 || current_building == this.building_id) {
+					 	line_points[this.building_level_id][current_line_index].push(new THREE.Vector3(parseFloat(this.point_x),(parseFloat(this.point_y) + 1),parseFloat(this.point_z)));
+					 	movements.push({x:parseFloat(this.point_x),y:(parseFloat(this.point_y) + 1),z:parseFloat(this.point_z),l:this.building_level_id,b:this.building_id});
+					}
+
+					current_level = this.building_level_id;
 					current_building = this.building_id;
 				});
 
-				// $.each(line_points,function(index){
-				// 	var line_points_group = this;
-				// 	$.each(line_points_group,function(){
-				// 		var geometry = new THREE.BufferGeometry().setFromPoints(this);
-				// 		var line = new THREE.Line( geometry, lineMaterial );
-				// 		linePathGroup[index].add( line );
-				// 	})
-				// });
+				$.each(line_points,function(index){
+					var line_points_group = this;
+					$.each(line_points_group,function(){
+						var geometry = new THREE.BufferGeometry().setFromPoints(this);
+						var line = new THREE.Line( geometry, lineMaterial );
+						linePathGroup[index].add( line );
+					})
+				});
 
 			})
 			
