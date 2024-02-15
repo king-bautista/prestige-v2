@@ -50,6 +50,7 @@ class AdvertisementViewModel extends Model
         'contract_details',
         'transaction_status',
         'category_details',
+        'dimensions',
     ]; 
 
     function getAdvertisementMaterials()
@@ -122,6 +123,13 @@ class AdvertisementViewModel extends Model
         if(count($this->materials) > 0)
             return asset($this->materials[0]->thumbnail_path);
         return asset('/images/no-image-available.png');
+    }
+
+    public function getDimensionsAttribute()
+    {
+        if(count($this->materials) > 0)
+            return explode("X",$this->materials[0]->dimensions);
+        return '0X0';
     }
 
     public function getCompanyDetailsAttribute()

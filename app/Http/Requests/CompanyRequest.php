@@ -28,7 +28,7 @@ class CompanyRequest extends FormRequest
             //"email" => "required|string",
             //"address" => "required|string",
             //"contact_number" => "required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11",
-            "tin" => "numeric",//"required|alpha_num",
+            "tin" => "nullable|numeric",
             "classification_id" => "required|numeric",
         ];
     }
@@ -40,7 +40,6 @@ class CompanyRequest extends FormRequest
     {
         return [
             'name.required' => 'The company name field is required.',
-            'tin.required' => 'The TIN number field is required.',
             'classification_id.required' => 'The classification field is required.',
         ];
     }

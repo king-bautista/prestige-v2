@@ -132,9 +132,9 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     }
 
     public function getSiteCodes()
-    {
+    { 
         try {
-            $cinema_sites = CinemaSchedule::get();
+            $cinema_sites = CinemaSite::get();
             return $this->response($cinema_sites, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([

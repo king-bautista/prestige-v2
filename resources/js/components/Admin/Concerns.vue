@@ -142,6 +142,7 @@ export default {
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
+				created_at: "Created",
 				updated_at: "Last Updated"
 			},
 			primaryKey: "id",

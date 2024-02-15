@@ -283,7 +283,8 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
             $create_contents = AdvertisementViewModel::get();
             $reports = [];
-            foreach ($create_contents as $create_content) {
+            foreach ($create_contents as $create_content) { echo '>>>';
+                echo '???'; print_r($create_content->dimensions);
                 $reports[] = [
                     'id' => $create_content->id,
                     'material_thumbnails_path' => $create_content->material_thumbnails_path,
@@ -296,6 +297,8 @@ class AdvertisementController extends AppBaseController implements Advertisement
                     'brand_id' => $create_content->brand_id,
                     'brand_name' => $create_content->brand_name,
                     'display_duration' => $create_content->display_duration,
+                    'width' => '',
+                    'height' => '',
                     'ssp' =>  $this->getSSP($create_content->contract_id),
                     'active' => $create_content->active,
                     'created_at' => $create_content->created_at,
