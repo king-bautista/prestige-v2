@@ -56,6 +56,15 @@
 									<img v-if="icon" :src="icon" class="img-thumbnail" />
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site</label>
+								<div class="col-sm-8">
+									<select class="custom-select" v-model="amenity.site_id">
+										<option value="">Select Site</option>
+										<option v-for="site in site_list" :value="site.id"> {{ site.name }}</option>
+									</select>
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -125,12 +134,13 @@ export default {
 			amenity: {
 				id: '',
 				name: '',
-				//icon: '/images/no-image-available.png',
 				icon:'',
+				site_id: '',
 				active: false,
 			},
 			parent_links: [],
 			icon: '',
+			site_list: [],
 			add_record: true,
 			edit_record: false,
 			image_width: 0,
@@ -141,6 +151,7 @@ export default {
 					name: "Icon",
 					type: "logo",
 				},
+				site_name: "Site Name",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -205,9 +216,14 @@ export default {
 	},
 
 	created() {
+		this.getSites();
 	},
 
 	methods: {
+		getSites: function () {
+			axios.get('/admin/site/get-all')
+				.then(response => this.site_list = response.data.data);
+		},
 		IconChange: function (e) {
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
@@ -241,7 +257,7 @@ export default {
 			this.add_record = true;
 			this.edit_record = false;
 			this.amenity.name = '';
-			//this.amenity.icon = '/images/no-image-available.png';
+			this.amenity.site_id = '';
 			this.amenity.icon = '';
 			this.amenity.active = false;
 			$('#amenities-form').modal('show');
@@ -250,6 +266,7 @@ export default {
 		storeAmenities: function () {
 			let formData = new FormData();
 			formData.append("name", this.amenity.name);
+			formData.append("site_id", this.amenity.site_id);
 			formData.append("icon", this.amenity.icon);
 			formData.append("icon_hidden", this.amenity.icon); 
 
@@ -271,6 +288,7 @@ export default {
 					var amenity = response.data.data;
 					this.amenity.id = id;
 					this.amenity.name = amenity.name;
+					this.amenity.site_id = amenity.site_id;
 					this.amenity.active = amenity.active;
 					if (amenity.icon) {
 						this.icon = amenity.icon_path;
@@ -289,6 +307,7 @@ export default {
 			let formData = new FormData();
 			formData.append("id", this.amenity.id);
 			formData.append("name", this.amenity.name);
+			formData.append("site_id", this.amenity.site_id);
 			formData.append("icon", this.amenity.icon); 
 			formData.append("icon_hidden", this.icon); 
 			formData.append("active", this.amenity.active);

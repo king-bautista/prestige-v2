@@ -427,8 +427,9 @@ export default {
 			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
 			formData.append("kiosk_image_top", this.illustration.kiosk_image_top);
-			formData.append("kiosk_image_primary_hidden", this.illustration.kiosk_image_primary);
-			formData.append("kiosk_image_top_hidden", this.illustration.kiosk_image_top);
+			formData.append("kiosk_image_primary_hidden", this.illustration.kiosk_image_primary); 
+			// var image_available = (this.illustration.kiosk_image_top.includes("/images/no-image-available.png"))?'':this.illustration.kiosk_image_top;
+			// formData.append("kiosk_image_top_hidden", image_available);
 			formData.append("active", this.illustration.active);
 			axios.post('/admin/site-category/store', formData, {
 				headers: {
@@ -476,7 +477,10 @@ export default {
 			formData.append("label", this.illustration.label);
 			formData.append("kiosk_image_primary", this.illustration.kiosk_image_primary);
 			formData.append("kiosk_image_top", this.illustration.kiosk_image_top); 
-			formData.append("kiosk_image_primary_hidden", this.kiosk_image_primary);
+			formData.append("kiosk_image_primary_hidden", this.kiosk_image_primary); 
+			var image_available = (this.kiosk_image_top.includes("/images/no-image-available.png"))?'':this.kiosk_image_top;
+			alert(image_available);
+			formData.append("kiosk_image_top_hidden", image_available);
 			formData.append("kiosk_image_top_hidden", this.kiosk_image_top);
 			formData.append("active", this.illustration.active);
 			axios.post('/admin/site-category/update', formData, {

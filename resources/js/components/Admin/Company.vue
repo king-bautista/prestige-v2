@@ -704,6 +704,7 @@ export default {
 					type: "logo",
 				},
 				name: "Name",
+				category_name: "Category Name",
 				active: {
 					name: "Status",
 					type: "Boolean",

@@ -381,7 +381,7 @@ export default {
 			formData.append("imgBanner", this.landmark.image_url); 
 			formData.append("imgBannerThumbnail", this.landmark.image_thumbnail_url);
 			formData.append("imgBanner_hidden", this.imgBanner); 
-			formData.append("imgBannerThumbnail_hidden", this.imgBannerThumbnail);
+			formData.append("imgBannerThumbnail_hidden", this.imgBannerThumbnail); 
 			formData.append("active", this.landmark.active);
 
 			axios.post('/admin/landmark/update', formData, {

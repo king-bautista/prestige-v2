@@ -32,6 +32,7 @@
 
 @push('scripts')
 <script>
+
     var promos = "{{ $promos }}";
 
     $(document).ready(function () {
@@ -51,6 +52,7 @@
             $('.no-promos-found').show();
             return false;
         }
+
         $('.no-promos-found').hide();
         $('.promo-list').html('');
         $('.promo-list').html('<div class="owl-carousel owl-theme owl-wrapper-promo"></div>');
@@ -133,6 +135,8 @@
             }
             
         });
+
+        $(".promo-list").find(".owl-dots").addClass('owl-dots-promo');
 
     }
 </script>

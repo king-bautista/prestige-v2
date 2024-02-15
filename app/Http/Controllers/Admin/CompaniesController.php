@@ -104,7 +104,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                 'email' => ($request->email) ? $request->email : null,
                 'contact_number' => ($request->contact_number) ? $request->contact_number : null,
                 'address' => ($request->address) ? $request->address : null,
-                'tin' => ($request->tin) ? $request->tin : null,
+                'tin' => $request->tin,//($request->tin) ? $request->tin : null,
                 'active' => 1,
             ];
 
@@ -135,7 +135,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
                 'email' => ($request->email) ? $request->email : null,
                 'contact_number' => ($request->contact_number) ? $request->contact_number : null,
                 'address' => ($request->address) ? $request->address : null,
-                'tin' => ($request->tin) ? $request->tin : null,
+                'tin' => $request->tin,//($request->tin) ? $request->tin : null,
                 'active' => $this->checkBolean($request->active),
             ];
 

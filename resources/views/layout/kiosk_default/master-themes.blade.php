@@ -57,9 +57,9 @@
             }
 
             .owl-theme .owl-dots .owl-dot span {
-                width: 18px;
-                height: 18px;
-                margin: 0 16.8px;
+                width: 17.0px;
+                height: 17.5px;
+                margin: 0 15.5px;
                 background: #d5ddff;
             }
 
