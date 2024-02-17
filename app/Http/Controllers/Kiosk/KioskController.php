@@ -146,9 +146,9 @@ class KioskController extends AppBaseController
         if($categories) {
             foreach($categories as $index => $category) {
                 $category = json_decode($category, TRUE);
-                $category['sub_categories'] = $this->getChildCategories($this->site->id, $category['category_id']);
-                $category['alphabetical'] = $this->getTenants($this->site->id, $category['category_id']);
-                $category['supplemental'] = $this->getSupplemental($this->site->id, $category['category_id']);
+                $category['sub_categories'] = $this->getChildCategories($category['category_id']);
+                $category['alphabetical'] = $this->getTenants($category['category_id']);
+                $category['supplemental'] = $this->getSupplemental($category['category_id']);
                 $new_categories[] = $category;
             }
         }
@@ -181,10 +181,10 @@ class KioskController extends AppBaseController
 
         foreach($categories as $index => $category) {
             if($category->category_type == 1) {
-                $category['tenants'] = $this->getTenants($this->site->id, $category['category_id'], $category['sub_category_id']);
+                $category['tenants'] = $this->getTenants($category['category_id'], $category['sub_category_id']);
             }
             else {
-                $category['tenants'] = $this->getTenantsBySupplementals($this->site->id, $category['sub_category_id']);
+                $category['tenants'] = $this->getTenantsBySupplementals($category['sub_category_id']);
             }
             $child_categories[] = $category;
         }
@@ -197,7 +197,7 @@ class KioskController extends AppBaseController
 
         $supplemental_category = Category::where('supplemental_category_id', $category_id)->first();
         $supplemental['name'] = $supplemental_category->name;
-        $sub_categories = $this->getChildCategories($this->site->id, $supplemental_category->id);
+        $sub_categories = $this->getChildCategories($supplemental_category->id);
         $supplemental['sub_categories'] = array_chunk($sub_categories, 15);
 
         return $supplemental;
