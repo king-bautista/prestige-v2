@@ -211,7 +211,7 @@
 
             .select2-container--default .select2-selection--single {
                 border-radius: 0;
-                border-bottom-left-radius: 15px;
+                border-bottom-left-radius: 15px !important;
                 border-top-left-radius: 15px;
             }
 
@@ -244,11 +244,88 @@
                 -webkit-transform: rotate(45deg);
             }
 
+            .select2-container--default.select2-container--open.select2-container--below .select2-selection--single, .select2-container--default.select2-container--open.select2-container--below .select2-selection--multiple {
+                border-top-left-radius: 0 !important;
+            }
+
             .select2-dropdown--above {
                 display: flex;
                 flex-direction: column-reverse;
             }
+
+            .select2-container--default .select2-results>.select2-results__options {
+                max-height: 125px;
+                overflow-y: auto;
+            }
+
+            .btn-prestige-rounded2 {
+                background-color: #ffffff; 
+                border-radius: 0px !important; 
+                border-top: 1px solid #aaa; 
+                border-right: 1px solid #aaa; 
+                border-bottom: 1px solid #aaa; 
+                border-left: 0px; 
+                color: #0030ff; 
+                width: 67px; 
+                height: 64px;
+            } 
+
+            .btn-prestige-rounded2 span{
+                font-size: 26px;
+                line-height: 2;
+            } 
+
+            .btn-prestige-last {
+                border-top-right-radius: 18px !important; 
+                border-bottom-right-radius: 18px!important; 
+            }
+
+            .btn-pwd span {
+                font-size: 26px;
+                line-height: 2;
+            }
+
+            .btn-pwd:disabled {
+                background-color: #e9ecef;
+                opacity: 1;
+            }
+
+            .btn-prestige-pwd {
+                background-color: #0030ff;
+                color: #FFF;
+            }
+
+            #btnGuide {
+                position: absolute;
+                font-family: 'Henry Sans Regular';
+                font-size: 12px;
+                text-align: center;
+                font-weight: 600;
+                top: 718px;
+                right: 13px;
+                background: #0030ff;
+                border-radius: 7px;
+                color: #fff;
+                width: 74px;
+                height: 74px;
+                border-radius: 50%;
+            }
             
+            .hideArrow {
+                display: none;
+            }
+
+            #directionDetails {
+                position: absolute;
+                top: 193px;
+                right: 0px;
+                width: 485px;
+                background-color: rgba(255,255,255,0.8);
+                border-top-left-radius: 40px;
+                border-bottom-left-radius: 40px;
+                height: 525px;
+            }
+
         </style>
     </head>
     <body>
