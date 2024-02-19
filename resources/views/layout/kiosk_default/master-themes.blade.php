@@ -326,6 +326,73 @@
                 height: 525px;
             }
 
+            .custom-modal {
+                position: fixed; 
+                top: 0; 
+                left: 0; 
+                height: 100%; 
+                width: 100%; 
+                background-color: rgba(0, 0, 0, 0.7); 
+                padding: 20px; 
+                text-align: center; 
+                display: none;
+                z-index: 1070;
+            }
+
+            .custom-modal-body {
+                position: relative;
+                top: 40%;
+                left: 32%;
+                transform: translateY(-50%);
+                width: 1182px;
+                color: rgb(0, 0, 0);
+            }
+
+            .custom-modal-position {
+                position: relative;
+                top: 48%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .set-width-schedule {
+                width: 700px;
+                top:41%;
+            }
+
+            .modal-body-schedule-days {
+                display: inline-block;
+                text-align: left;
+                width: 40%;
+            }
+
+            .modal-body-schedule-time {
+                display: inline-block;
+                color: #000000;
+                font-weight: bolder;
+            }
+
+            .p-l-490 {
+                padding-left: 490px;
+            }
+
+            .m-15-0 {
+                margin: 15px 0;
+            }
+
+            .btn-close-sched {
+                margin-right: -55px !important;
+            }
+
+            .btn-close-map {
+                position: absolute;
+                top: 15px;
+                right: 500px;
+                color:#FFF;
+                font-size:3em;
+                font-weight:bold;
+            }
+
         </style>
     </head>
     <body>

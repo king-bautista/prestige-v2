@@ -131,11 +131,28 @@
     </div>
 </div>
 
+<div class="custom-modal p-l-490" id="modal-schedule">
+    <div class="custom-modal-position set-width-schedule">                    
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="close text-white btn-close-sched">&times;</span>
+                <div class="label-1">Operating Hours</div>
+                <div class="modal-body-schedule-days">
+                </div>
+                <div class="modal-body-schedule-time">
+                </div>   
+            </div>                   
+        </div>     
+    </div>
+</div>
+
 @push('scripts')
 <script>
     var site_schedule = '{{ $site_schedule }}';
     var tenant_id = '';
     var tenant_likes = 0;
+    var tenant_schedule = '';
+    var days = {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"};
 
     $(document).ready(function () {
         var modalTenant = $("#imgPromoModalTenant");
@@ -149,6 +166,45 @@
 
         spanBanner.on("click", function () {
             modalBanner.css("display", "none");
+        });
+
+        $('.tenant-store-schedule').on('click', function() {
+            var schedules = (tenant_schedule) ? tenant_schedule : site_schedule;
+            let tempSchedule = [];
+            const currentSchedule = eval(schedules);
+                if (currentSchedule) {
+                    Object.keys(days).forEach(day => {
+                    currentSchedule.forEach(obj => {
+                        Object.keys(obj).forEach(key => {
+                            if (key == 'schedules') {
+                                if (obj['schedules'].match(day)) {
+                                    tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
+                                }                               
+                            }
+                        });
+                    });
+                });
+            }
+
+            var str_days = '';
+            $('.modal-body-schedule-days').html('');
+            $.each(days, function(index,day) {
+                str_days = '<div class="m-15-0">'+day+'</div>';
+                $('.modal-body-schedule-days').append(str_days);
+            });
+
+            var str_schedules = '';
+            $('.modal-body-schedule-time').html('');
+            $.each(tempSchedule, function(index,schedule) {
+                str_schedules = '<div class="m-15-0">'+schedule+'</div>';
+                $('.modal-body-schedule-time').append(str_schedules);
+            });
+
+            $('#modal-schedule').show();
+        });
+
+        $('.btn-close-sched').on('click', function(){
+            $('#modal-schedule').hide();
         });
 
     });
@@ -189,6 +245,8 @@
         var site_info = JSON.parse(helper.decodeEntities(site_schedule));
         tenant_id = tenant.id;
         tenant_likes = tenant.like_count;
+
+        tenant_schedule = (tenant.tenant_details) ? tenant.tenant_details.schedules : '';
 
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
