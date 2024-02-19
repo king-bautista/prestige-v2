@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PlayList extends Model
+class TemporaryPlayList extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -41,7 +42,7 @@ class PlayList extends Model
      *
      * @var string
     */
-    protected $table = 'play_lists';
+    protected $table = 'temporary_play_lists';
 
     /**
      * The primary key associated with the table.

@@ -307,7 +307,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $this->category_counter = $this->makeCounterVariables($site_id);
         
         
-        $loopCount = sizeof(array_chunk($sitePartnersAds->toArray(), $maxSitePartnerSlot));
+        // $loopCount = sizeof(array_chunk($sitePartnersAds->toArray(), $maxSitePartnerSlot));
+        $loopCount = $this->getLoopCount($totalSitePartnerAds, $maxSitePartnerSlot);
 
         if($loopCount >= 1 ){
             for($loop_index = 0; $loop_index < $loopCount; $loop_index++){
@@ -372,6 +373,19 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
 
         return $arrayStore;
+    }
+
+    protected function getLoopCount($total_site_partner, $maxSitePartnerSlot){
+        if($total_site_partner <= $maxSitePartnerSlot){
+            return 1;
+        }else{
+            if($total_site_partner %2 == 0){
+                return $total_site_partner /2;
+            }
+            else{
+                return $total_site_partner;
+            }
+        }
     }
 
     protected function makeCounterVariables($site_id){
@@ -608,10 +622,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
             // $beng = Excel::import(new PlaylistTestImport, $request->file('file'));
             $import = new PlaylistTestImport;
 
-            $beng =  Excel::import($import, $request->file('file'));
+            Excel::import($import, $request->file('file'));
             // return $this->response(true, 'Successfully Uploaded!', 200);
             return $this->response([
-                'site_id' => $import->dimension
+                'site_id' => $import->fields
             ]);
         } catch (\Exception $e) {
             return response([

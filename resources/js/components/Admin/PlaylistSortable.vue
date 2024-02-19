@@ -155,6 +155,28 @@
 			</div>
 		</div>
 
+		<!-- show play list loop -->
+		<div class="modal fade" id="loopModal" tabindex="-1" role="dialog" aria-labelledby="loopModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="loopModalLabel">show me the lists</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						
+					</div>
+					<div class="modal-footer justify-content-between">
+						<!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" @click="storeBatchTest">Save changes</button> -->
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </template>
 <script>
@@ -280,6 +302,7 @@ export default {
 				console.log(response.data);
 				$('#batchModalTest').modal('hide');
 				$('#batchInputTestLabel').html('Choose File');
+				$('#loopModal').modal('show');
 				// window.location.reload();
 			})
 		},
