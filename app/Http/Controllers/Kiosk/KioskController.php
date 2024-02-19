@@ -49,7 +49,8 @@ class KioskController extends AppBaseController
         $this->site = $site;
         
         $template_name = $this->site->details['site_theme'];
-        $site_schedule = json_encode($this->site->operational_hours);
+        $site_schedule = $this->site->details['schedules'];
+        $operational_hours = json_encode($this->site->operational_hours);
         $categories = $this->getCategories();
         $promos = $this->getPromos();
         $cinemas = $this->getCinemas();
@@ -102,7 +103,8 @@ class KioskController extends AppBaseController
         // END MAP PAGE DATA
         $data = [
             'site', 
-            'site_schedule', 
+            'site_schedule',
+            'operational_hours', 
             'categories', 
             'promos', 
             'cinemas', 
@@ -546,12 +548,20 @@ class KioskController extends AppBaseController
 
     public function putLikeCount(Request $request)
     {
-        SiteTenant::where('id', $request->id)->update(['like_count' => $request->like_count]);
+        $site_tenant = SiteTenant::find($request->id);
+        $site_tenant->like_count = ($request->action == 'minus') ? $site_tenant->like_count-1 : $site_tenant->like_count+1;
+        $site_tenant->save();
+
+        return $site_tenant;
     }
 
     public function putViewCount(Request $request)
     {
-        SiteTenant::where('id', $request->id)->update(['view_count' => $request->view_count]);
+        $site_tenant = SiteTenant::find($request->id);
+        $site_tenant->view_count = $site_tenant->view_count+1;
+        $site_tenant->save();
+
+        return $site_tenant;
     }
 
     public function getTenantCountDetails(Request $request)

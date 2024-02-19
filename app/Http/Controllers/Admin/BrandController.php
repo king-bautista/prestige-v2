@@ -397,48 +397,48 @@ class BrandController extends AppBaseController implements BrandControllerInterf
         }
     }
 
-    public function downloadCsv()
+    public function downloadCsv($ids)
     {
         try {
-            echo BrandViewModel::get()->count();
+            $between = explode("_", $ids);
+            $brand_management =  Brand::skip($between[0])->take(1000)->get();
 
-            //$brand_management =  BrandViewModel::get();
-            // $reports = [];
-            // foreach ($brand_management as $brand) {
-            //     $reports[] = [
-            //         'id' => $brand->id,
-            //         'category_id' => $brand->category_id,
-            //         'category_name' => $brand->category_name,
-            //         'name' => $brand->name,
-            //         'descriptions' => $brand->descriptions,
-            //         'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
-            //         //'thumbnail' => $brand->thumbnail,
-            //         'active' => $brand->active,
-            //         'created_at' => $brand->created_at,
-            //         'updated_at' => $brand->updated_at,
-            //         'deleted_at' => $brand->deleted_at,
-            //         'supplementals' => $brand->supplemental_names,
-            //         'tags' => $brand->tag_names,
-            //     ];
-            // }
 
-            // $directory = 'public/export/reports/';
-            // $files = Storage::files($directory);
-            // foreach ($files as $file) {
-            //     Storage::delete($file);
-            // }
+            $reports = [];
+            foreach ($brand_management as $brand) {
+                $reports[] = [
+                    'id' => $brand->id,
+                    'category_id' => $brand->category_id,
+                    'category_name' => $brand->category_name,
+                    'name' => $brand->name,
+                    'descriptions' => $brand->descriptions,
+                    'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
+                    'active' => $brand->active,
+                    'created_at' => $brand->created_at,
+                    'updated_at' => $brand->updated_at,
+                    'deleted_at' => $brand->deleted_at,
+                    'supplementals' => $brand->supplemental_names,
+                    'tags' => $brand->tag_names,
+                ];
+            }
 
-            // $filename = "brand_management.csv";
-            // // Store on default disk
-            // Excel::store(new Export($reports), $directory . $filename);
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
 
-            // $data = [
-            //     'filepath' => '/storage/export/reports/' . $filename,
-            //     'filename' => $filename
-            // ];
+            $filename = "brand_management_".substr($ids, 0, 1).".csv";
+            // Store on default disk
+            Excel::store(new Export($reports), $directory . $filename);
 
-            // if (Storage::exists($directory . $filename))
-            //     return $this->response($data, 'Successfully Retreived!', 200);
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
 
             return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -460,7 +460,6 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 'name' => '',
                 'descriptions' => '',
                 'logo' => '',
-               //'thumbnail' => '',
                 'active' => '',
                 'created_at' => '',
                 'updated_at' => '',
@@ -488,6 +487,20 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 return $this->response($data, 'Successfully Retreived!', 200);
 
             return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function countBrands()
+    {
+        try {
+            $brands = Brand::get()->count();
+            return $this->response($brands, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
