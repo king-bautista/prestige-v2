@@ -156,9 +156,9 @@
 		</div>
 
 		<!-- show play list loop -->
-		<div class="modal fade" id="loopModal" tabindex="-1" role="dialog" aria-labelledby="loopModalLabel"
+		<div class="modal fade " id="loopModal" tabindex="-1" role="dialog" aria-labelledby="loopModalLabel"
 			aria-hidden="true">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="loopModalLabel">show me the lists</h5>
@@ -167,11 +167,27 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						
+						<div class="container-fluid">
+							<table class="table table-striped table-responsive" style="width: 100%;">
+								<thead>
+									<th>content_id</th>
+									<th>parent_category</th>
+									<th>category_name</th>
+									<th>brand_name</th>
+									<th>site</th>
+									<th>screen_location</th>
+									<th>company_name</th>
+									<th>advertisement_type</th>
+								</thead>
+								<tbody id="loops">
+									
+								</tbody>
+							</table>
+						</div>
 					</div>
 					<div class="modal-footer justify-content-between">
-						<!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" @click="storeBatchTest">Save changes</button> -->
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<!-- <button type="button" class="btn btn-primary" @click="storeBatchTest">Save changes</button> -->
 					</div>
 				</div>
 			</div>
@@ -256,6 +272,7 @@ export default {
 		},
 		modalBatchUploadTest: function () {
 			$('#batchModalTest').modal('show');
+			// $('#loopModal').modal('show');
 		},
 
 		handleFileUpload: function () {
@@ -299,10 +316,24 @@ export default {
 				this.$refs.file.value = null;
 				this.$refs.dataTable.fetchData();
 				// toastr.success(response.data.message);
-				console.log(response.data);
+				console.log(response.data.data.play_lists);
 				$('#batchModalTest').modal('hide');
 				$('#batchInputTestLabel').html('Choose File');
 				$('#loopModal').modal('show');
+				$('#loops').empty();
+				$.each(response.data.data.play_lists, function(index, value){
+					$('#loops').append('<tr>\
+						<td>'+ value.content_id +'</td>\
+						<td>'+ value.parent_category_id +'</td>\
+						<td>'+ value.category_id +'</td>\
+						<td>'+ value.brand_id +'</td>\
+						<td>'+ value.site_screen_id +'</td>\
+						<td>'+ value.screen_location +'</td>\
+						<td>'+ value.company_id +'</td>\
+						<td>'+ value.dimension +'</td>\
+						<td>'+ value.loop_number +'</td>\
+						</tr>');
+				});
 				// window.location.reload();
 			})
 		},

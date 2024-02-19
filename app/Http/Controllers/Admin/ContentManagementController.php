@@ -622,10 +622,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
             // $beng = Excel::import(new PlaylistTestImport, $request->file('file'));
             $import = new PlaylistTestImport;
 
-            Excel::import($import, $request->file('file'));
+             Excel::import($import, $request->file('file'));
             // return $this->response(true, 'Successfully Uploaded!', 200);
             return $this->response([
-                'site_id' => $import->fields
+                'play_lists' => $import->fields
             ]);
         } catch (\Exception $e) {
             return response([
