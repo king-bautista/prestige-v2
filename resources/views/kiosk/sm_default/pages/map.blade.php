@@ -113,7 +113,10 @@
 
 <div style="position:absolute;top:0px;left:0px;width:100%;height:1076px;background-color: rgba(0, 0, 0, 0.7);display:none" id="mapkeyboardoverlay"></div>
 <div class="text-center" style="position:absolute;top:250px;left:0px;width:100%;height:620px;display:none" id="mapkeyboard">
-	<div style="position:relative"><span style="position:absolute;top:-70px;right:280px;color:#FFF;font-size:3em;font-weight:bold" id="mapkeyboarclose">X</span></div>
+	<div style="position:relative">
+		<span class="close text-white btn-close-map" id="mapkeyboarclose">&times;</span>
+		<!-- <span style="position:absolute;top:-70px;right:280px;color:#FFF;font-size:3em;font-weight:bold" id="mapkeyboarclose">X</span> -->
+	</div>
 	<input type="hidden" id="selectInput" name="selectInput">
 	<div class="softkeys softkeys-map-page mt-5" data-target="input[name='selectInput']"></div>
 </div>
@@ -150,7 +153,7 @@
 	var viewAngle = @php echo $site_config->view_angle; @endphp; //60 CHANGE TILT
     var site_config = @php echo $site_config; @endphp;
 
-    	//custom
+    //custom
 	var total_floors;
     var pointMarker;
     var linePathGroup = {};
@@ -1924,6 +1927,11 @@
 		//inputDirection.select2('open');
 
     });
+
+	$('.direction-from').on('click', function(){
+		// CALL WAY FINDING
+		directionTo();
+	});
     
 </script>
 @endpush
