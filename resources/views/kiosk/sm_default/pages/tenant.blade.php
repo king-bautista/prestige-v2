@@ -149,6 +149,7 @@
 @push('scripts')
 <script>
     var site_schedule = '{{ $site_schedule }}';
+    var operational_hours = '{{ $operational_hours }}';
     var tenant_id = '';
     var tenant_schedule = '';
     var days = {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"};
@@ -168,11 +169,11 @@
         });
 
         $('.tenant-store-schedule').on('click', function() {
-            var schedules = (tenant_schedule) ? tenant_schedule : site_schedule;
+            var schedules = (tenant_schedule) ? tenant_schedule : JSON.parse(helper.decodeEntities(site_schedule));
             let tempSchedule = [];
-            const currentSchedule = eval(schedules);
-                if (currentSchedule) {
-                    Object.keys(days).forEach(day => {
+            const currentSchedule = schedules;
+            if (currentSchedule) {
+                Object.keys(days).forEach(day => {
                     currentSchedule.forEach(obj => {
                         Object.keys(obj).forEach(key => {
                             if (key == 'schedules') {
@@ -241,7 +242,7 @@
     }
 
     function showTenantDetails(tenant) {
-        var site_info = JSON.parse(helper.decodeEntities(site_schedule));
+        var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
         tenant_schedule = (tenant.tenant_details) ? tenant.tenant_details.schedules : '';
 
