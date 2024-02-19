@@ -211,6 +211,12 @@
             helper.updateLikeCount(tenant_id);
         });
 
+        $('.btn-direction-shop').on('click', function() {
+            helper.mapBtnClick();
+            $('#tenant-select').val(tenant_id);
+            $('.direction-from').click();
+        });
+
     });
 
     function showProducts(products) {
