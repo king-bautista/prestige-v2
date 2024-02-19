@@ -24,7 +24,7 @@
     <!-- TENANT DETAILS -->
     <div class="bg-white p-3 shadow tenant-card-info-tab">
         <div class="my-auto p-1">
-            <img class="tenant-store-page-logo" src="#" align="left">
+            <img class="tenant-store-page-logo" src="#">
             <div class="font-weight-bold tenant-store-page-name"></div>
             <div class="tenant-store-page-floor"></div>
             <div class="tenant-store-page-views"><span class="view-count">0</span> Views</div>
@@ -210,8 +210,6 @@
     });
 
     function showProducts(products) {
-        $(".promo-row-container").html('');
-        $(".store-banner-container").html('');
         if(products.banners) {
             var banner = '<img type="button" class="promo-banner-card" src="'+products.banners[0].image_url_path+'" />';
             $(".store-banner-container").append(banner);
@@ -266,9 +264,19 @@
 
         // PRODUCT AND LOGO
         if(tenant.is_subscriber) {
-            showProducts(tenant.products);
-            $('#isSubscriber').show();
-            $('#nonSubscriber').hide();
+            $(".promo-row-container").html('');
+            $(".store-banner-container").html('');
+            
+            if(tenant.products != null) {
+                showProducts(tenant.products);
+                $('#isSubscriber').show();
+                $('#nonSubscriber').hide();
+            }
+            else {
+                $('.tenantCardImgContent').attr('src', tenant.brand_logo);
+                $('#isSubscriber').hide();
+                $('#nonSubscriber').show();            
+            }
         }
         else {
             $('.tenantCardImgContent').attr('src', tenant.brand_logo);
