@@ -10,8 +10,7 @@
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :actionButtons="actionButtons"
 									:otherButtons="otherButtons" :primaryKey="primaryKey" v-on:AddNewBrand="AddNewBrand"
 									v-on:editButton="editBrand" v-on:modalBatchUpload="modalBatchUpload"
-									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" 
-									ref="dataTable">
+									v-on:downloadCsv="downloadCsv" v-on:downloadTemplate="downloadTemplate" ref="dataTable">
 								</Table>
 							</div>
 						</div>
@@ -172,6 +171,7 @@ export default {
 				tags: [],
 				active: false,
 			},
+			brand_range: '',
 			logo: '',
 			categories: [],
 			supplementals: [],
@@ -269,7 +269,7 @@ export default {
 
 	methods: {
 		logoChange: function (e) {
-			
+
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
 				this.logo = URL.createObjectURL(file);
@@ -356,7 +356,7 @@ export default {
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
 			formData.append("logo", this.brand.logo);
-			formData.append("logo_hidden", this.brand.logo);	
+			formData.append("logo_hidden", this.brand.logo);
 			formData.append("supplementals", this.supplemental_ids);
 			formData.append("tags", this.tags_ids);
 			formData.append("active", this.brand.active);
@@ -366,11 +366,11 @@ export default {
 					'Content-Type': 'multipart/form-data'
 				},
 			})
-			.then(response => {
-				toastr.success(response.data.message);
-				this.$refs.dataTable.fetchData();
-				$('#brand-form').modal('hide');
-			})
+				.then(response => {
+					toastr.success(response.data.message);
+					this.$refs.dataTable.fetchData();
+					$('#brand-form').modal('hide');
+				})
 
 		},
 
@@ -462,16 +462,28 @@ export default {
 		},
 
 		downloadCsv: function () {
-			axios.get('/admin/brand/download-csv')
+			axios.get('/admin/brand/count')
 				.then(response => {
-					const link = document.createElement('a');
-					link.href = response.data.data.filepath;
-					link.setAttribute('download', response.data.data.filename); //or any other extension
-					document.body.appendChild(link);
-					link.click();
+					let count = response.data.data;
+					const arr = [];
+					for (let i = 0; i < count; i++) {
+						arr.push(i);
+					}
+					const res = [];
+					const chunkSize = 1000;
+					for (let ii = 0; ii < arr.length; ii += chunkSize) {
+						const chunk = arr.slice(ii, ii + chunkSize);
+						res.push(chunk[0] + '_' + chunk[chunk.length - 1]);
+						var range = chunk[0] + '_' + chunk[chunk.length - 1];
+					}
+					let i = 0;
+					while (i < res.length) {
+						this.loop(i, res[i]);
+						i++;
+					}
 				})
 		},
-		
+
 		downloadTemplate: function () {
 			axios.get('/admin/brand/download-csv-template')
 				.then(response => {
@@ -482,7 +494,19 @@ export default {
 					link.click();
 				})
 		},
+		loop: function (i, range) {
+			setTimeout(function () {
+					axios.get('/admin/brand/download-csv/' + range)
+					 .then(response => {
+					 	const link = document.createElement('a');
+					 	link.href = response.data.data.filepath;
+					 	link.setAttribute('download', response.data.data.filename); //or any other extension
+					 	document.body.appendChild(link);
+						link.click();
+					 });
 
+			}, 9000 * i)
+		}
 	},
 
 	components: {
