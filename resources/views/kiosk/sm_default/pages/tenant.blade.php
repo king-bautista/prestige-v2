@@ -60,7 +60,7 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <span class="text-danger ml-2 btn-like">
+                <span class="text-danger ml-2 btn-like" id="btn-like">
                     <i class="far fa-heart svg-inline--fa fa-heart fa-w-16 heart-icon-btn btn-heart" aria-hidden="true"></i>
                     <a class="display-likes-btn">
                         <span class="like_counts"></span> <span>likes</span>
@@ -150,7 +150,6 @@
 <script>
     var site_schedule = '{{ $site_schedule }}';
     var tenant_id = '';
-    var tenant_likes = 0;
     var tenant_schedule = '';
     var days = {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"};
 
@@ -207,6 +206,10 @@
             $('#modal-schedule').hide();
         });
 
+        $('#btn-like').on('click', function() {
+            helper.updateLikeCount(tenant_id);
+        });
+
     });
 
     function showProducts(products) {
@@ -238,12 +241,8 @@
     }
 
     function showTenantDetails(tenant) {
-        console.log(tenant);
-
         var site_info = JSON.parse(helper.decodeEntities(site_schedule));
         tenant_id = tenant.id;
-        tenant_likes = tenant.like_count;
-
         tenant_schedule = (tenant.tenant_details) ? tenant.tenant_details.schedules : '';
 
         // TENANT DETAILS
@@ -317,17 +316,14 @@
             $("#bigcontainer").addClass("my-auto");
             $(".promo-row-container").addClass("dflex justify-content-center")
         }       
-        
+
+        helper.updateViewCount(tenant.id, tenant.view_count);        
+
+        helper.setTenantCountDetails(tenant.id);
+
         if($(".btn-heart").hasClass("fas")) {
             $(".btn-heart").removeClass('fas').addClass('far');
         }
-
-        $('.btn-like').on('click', function() {
-            helper.updateLikeCount(tenant.id, tenant.view_count);
-        });
-
-        helper.updateViewCount(tenant.id, tenant.view_count);        
-        helper.setTenantCountDetails(tenant.id);
 
         current_location = 'tenant';
         page_history.push(current_location);
