@@ -24,7 +24,7 @@
     <!-- TENANT DETAILS -->
     <div class="bg-white p-3 shadow tenant-card-info-tab">
         <div class="my-auto p-1">
-            <img class="tenant-store-page-logo" src="#" align="left">
+            <img class="tenant-store-page-logo" src="#">
             <div class="font-weight-bold tenant-store-page-name"></div>
             <div class="tenant-store-page-floor"></div>
             <div class="tenant-store-page-views"><span class="view-count">0</span> Views</div>
@@ -60,7 +60,7 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <span class="text-danger ml-2 btn-like">
+                <span class="text-danger ml-2 btn-like" id="btn-like">
                     <i class="far fa-heart svg-inline--fa fa-heart fa-w-16 heart-icon-btn btn-heart" aria-hidden="true"></i>
                     <a class="display-likes-btn">
                         <span class="like_counts"></span> <span>likes</span>
@@ -131,11 +131,27 @@
     </div>
 </div>
 
+<div class="custom-modal p-l-490" id="modal-schedule">
+    <div class="custom-modal-position set-width-schedule">                    
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="close text-white btn-close-sched">&times;</span>
+                <div class="label-1">Operating Hours</div>
+                <div class="modal-body-schedule-days">
+                </div>
+                <div class="modal-body-schedule-time">
+                </div>   
+            </div>                   
+        </div>     
+    </div>
+</div>
+
 @push('scripts')
 <script>
     var site_schedule = '{{ $site_schedule }}';
     var tenant_id = '';
-    var tenant_likes = 0;
+    var tenant_schedule = '';
+    var days = {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"};
 
     $(document).ready(function () {
         var modalTenant = $("#imgPromoModalTenant");
@@ -151,11 +167,52 @@
             modalBanner.css("display", "none");
         });
 
+        $('.tenant-store-schedule').on('click', function() {
+            var schedules = (tenant_schedule) ? tenant_schedule : site_schedule;
+            let tempSchedule = [];
+            const currentSchedule = eval(schedules);
+                if (currentSchedule) {
+                    Object.keys(days).forEach(day => {
+                    currentSchedule.forEach(obj => {
+                        Object.keys(obj).forEach(key => {
+                            if (key == 'schedules') {
+                                if (obj['schedules'].match(day)) {
+                                    tempSchedule.push(obj['start_time'] + " - " + obj['end_time']);
+                                }                               
+                            }
+                        });
+                    });
+                });
+            }
+
+            var str_days = '';
+            $('.modal-body-schedule-days').html('');
+            $.each(days, function(index,day) {
+                str_days = '<div class="m-15-0">'+day+'</div>';
+                $('.modal-body-schedule-days').append(str_days);
+            });
+
+            var str_schedules = '';
+            $('.modal-body-schedule-time').html('');
+            $.each(tempSchedule, function(index,schedule) {
+                str_schedules = '<div class="m-15-0">'+schedule+'</div>';
+                $('.modal-body-schedule-time').append(str_schedules);
+            });
+
+            $('#modal-schedule').show();
+        });
+
+        $('.btn-close-sched').on('click', function(){
+            $('#modal-schedule').hide();
+        });
+
+        $('#btn-like').on('click', function() {
+            helper.updateLikeCount(tenant_id);
+        });
+
     });
 
     function showProducts(products) {
-        $(".promo-row-container").html('');
-        $(".store-banner-container").html('');
         if(products.banners) {
             var banner = '<img type="button" class="promo-banner-card" src="'+products.banners[0].image_url_path+'" />';
             $(".store-banner-container").append(banner);
@@ -184,11 +241,9 @@
     }
 
     function showTenantDetails(tenant) {
-        console.log(tenant);
-
         var site_info = JSON.parse(helper.decodeEntities(site_schedule));
         tenant_id = tenant.id;
-        tenant_likes = tenant.like_count;
+        tenant_schedule = (tenant.tenant_details) ? tenant.tenant_details.schedules : '';
 
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
@@ -208,9 +263,19 @@
 
         // PRODUCT AND LOGO
         if(tenant.is_subscriber) {
-            showProducts(tenant.products);
-            $('#isSubscriber').show();
-            $('#nonSubscriber').hide();
+            $(".promo-row-container").html('');
+            $(".store-banner-container").html('');
+            
+            if(tenant.products != null) {
+                showProducts(tenant.products);
+                $('#isSubscriber').show();
+                $('#nonSubscriber').hide();
+            }
+            else {
+                $('.tenantCardImgContent').attr('src', tenant.brand_logo);
+                $('#isSubscriber').hide();
+                $('#nonSubscriber').show();            
+            }
         }
         else {
             $('.tenantCardImgContent').attr('src', tenant.brand_logo);
@@ -251,17 +316,14 @@
             $("#bigcontainer").addClass("my-auto");
             $(".promo-row-container").addClass("dflex justify-content-center")
         }       
-        
+
+        helper.updateViewCount(tenant.id, tenant.view_count);        
+
+        helper.setTenantCountDetails(tenant.id);
+
         if($(".btn-heart").hasClass("fas")) {
             $(".btn-heart").removeClass('fas').addClass('far');
         }
-
-        $('.btn-like').on('click', function() {
-            helper.updateLikeCount(tenant.id, tenant.view_count);
-        });
-
-        helper.updateViewCount(tenant.id, tenant.view_count);        
-        helper.setTenantCountDetails(tenant.id);
 
         current_location = 'tenant';
         page_history.push(current_location);

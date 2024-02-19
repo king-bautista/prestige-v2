@@ -5,6 +5,43 @@
     <div id="canvas" class="canvas-canvas"></div>
 </div>
 
+<div id="directionDetails" class="txt-highlight-color bg-color bg-pattern" style="display:none;">
+	<div style="text-align: center;font-size: 20px;color:#32213E;">
+		<text style="color:#6051e3;"><div style="margin-top:27px;margin-right: 5px;font-weight: 600;display: inline-block;" class="translateme">Directions to:</div><span id="mapguide-destination" style="display: inline-block;"></span></text>
+		<div style="padding-left: 10px;margin-top: 19px;color:#6051e3;">
+			<img src="{{ URL::to('themes/sm_default/images/man-walk.svg') }}" style="width:20px;">
+			<span style="font-weight: bold;">
+				<span class="map-minutes">0 minutes</span>,
+				<span class="map-steps">0 steps,</span>,
+			</span>
+			<span class="map-distance my-auto" style="color:#8c8d8d;font-size: .7em;">0m distance</span>			
+		</div>
+		<div style="margin-top: 15px;padding: 0px 35px;font-weight:bold;">
+			<ul class="ml-0" id="mapguide" style="text-align:left;margin-bottom: 5px;max-height: 280px;overflow-y: auto;">
+				<li style="padding-bottom: 5px;">Follow the <span style="color:#FF0000;font-weight:bold;">red line</span>.
+			</ul>	
+		</div>
+		<div>
+			<div style="text-align: left;padding-left: 45px;margin-top: 48px;">
+				<span class="translateme">Was this helpful?</span> 
+				<a href="#" class="btn btn-sm btn-prestige-none btn-helpful" style="font-size:1rem;color:#6051e3;">
+					<span class="fa fa-thumbs-up"></span>
+				</a> 
+				<a href="#" class="btn btn-sm btn-prestige-none btn-nothelpful" style="font-size:1rem;color:#6051e3;">
+					<span class="fa fa-thumbs-down"></span>
+				</a> 
+				<span class="thankyou translateme">Thank you!</span>
+			</div>	
+		</div>		
+	</div>
+</div>
+
+<div id="btnGuide" style="display:none;">
+	<div id="toggle-up"><img src="{{ URL::to('themes/sm_default/images/up.svg') }}"></div>
+	<div id="toggle-down" class="hideArrow"><img src="{{ URL::to('themes/sm_default/images/down.svg') }}"></div>	
+	<div id="toggle-updown-text" class="translateme" style="width: 74px;text-align: center;padding-left:20px;padding: 5px 0px 0 0px;">Show Text Guide</div>
+</div>
+
 <div class="MapBtn">
     <div class="container">
         <div class="row">
@@ -24,10 +61,8 @@
 
                 <div>
                     <button class="btn-pwd" id="btnpwdchange">
-                        <svg class="svg-inline--fa fa-wheelchair fa-w-16 btn-pwd-icon" focusable="false" data-prefix="fa" data-icon="wheelchair" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" >
-                            <path fill="currentColor" d="M496.101 385.669l14.227 28.663c3.929 7.915.697 17.516-7.218 21.445l-65.465 32.886c-16.049 7.967-35.556 1.194-43.189-15.055L331.679 320H192c-15.925 0-29.426-11.71-31.679-27.475C126.433 55.308 128.38 70.044 128 64c0-36.358 30.318-65.635 67.052-63.929 33.271 1.545 60.048 28.905 60.925 62.201.868 32.933-23.152 60.423-54.608 65.039l4.67 32.69H336c8.837 0 16 7.163 16 16v32c0 8.837-7.163 16-16 16H215.182l4.572 32H352a32 32 0 0 1 28.962 18.392L438.477 396.8l36.178-18.349c7.915-3.929 17.517-.697 21.446 7.218zM311.358 352h-24.506c-7.788 54.204-54.528 96-110.852 96-61.757 0-112-50.243-112-112 0-41.505 22.694-77.809 56.324-97.156-3.712-25.965-6.844-47.86-9.488-66.333C45.956 198.464 0 261.963 0 336c0 97.047 78.953 176 176 176 71.87 0 133.806-43.308 161.11-105.192L311.358 352z"
-                            ></path>
-                        </svg>
+						<span class="fa fa-wheelchair"></span>
+						<input type="checkbox" id="ispwd" class="d-none"> 
                     </button>
                 </div>
 
@@ -48,32 +83,42 @@
                 </div>
 
                 <div>
-                    <a class="mapminus btn btn-prestige-rounded2 my-auto" style="background-color: #ffffff; border-radius: 0px !important; border-top: 1px solid #aaa; border-right: 1px solid #aaa; border-bottom: 1px solid #aaa; height: 65px; border-left: 0px; color: #0030ff; width: 67px; height: 64px;" >
-                        <svg class="svg-inline--fa fa-minus fa-w-14" style="font-size: 26px;" focusable="false" data-prefix="fa" data-icon="minus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" >
-                            <path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
-                        </svg>
+                    <a class="mapminus btn btn-prestige-rounded2 my-auto">
+						<span class="fa fa-minus"></span>
                     </a>
                 </div>
 
                 <div>
-                    <a class="mapplus btn btn-prestige-rounded2 my-auto" style="background-color: #ffffff; border-radius: 0px !important; border-top: 1px solid #aaa; border-right: 1px solid #aaa; border-bottom: 1px solid #aaa; height: 65px; border-left: 0px; color: #0030ff; width: 67px; height: 64px;" >
-                        <svg class="svg-inline--fa fa-plus fa-w-14" style="font-size: 26px;" focusable="false" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" >
-                            <path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" ></path>
-                        </svg>
+                    <a class="mapplus btn btn-prestige-rounded2 my-auto">
+						<span class="fa fa-plus"></span>
                     </a>
                 </div>
 
                 <div>
-                    <a class="mapexpand btn btn-prestige-rounded3 my-auto" style="background-color: #ffffff; border-top: 1px solid #aaa; border-right: 1px solid #aaa; border-top-right-radius: 18px; height: 65px; border-bottom-right-radius: 18px; border-bottom: 1px solid #aaa; border-left: 0px; color: #0030ff; width: 67px; height: 64px;" >
-                        <svg class="svg-inline--fa fa-expand fa-w-14" style="font-size: 26px;" focusable="false" data-prefix="fa" data-icon="expand" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" >
-                            <path fill="currentColor" d="M0 180V56c0-13.3 10.7-24 24-24h124c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H64v84c0 6.6-5.4 12-12 12H12c-6.6 0-12-5.4-12-12zM288 44v40c0 6.6 5.4 12 12 12h84v84c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12V56c0-13.3-10.7-24-24-24H300c-6.6 0-12 5.4-12 12zm148 276h-40c-6.6 0-12 5.4-12 12v84h-84c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h124c13.3 0 24-10.7 24-24V332c0-6.6-5.4-12-12-12zM160 468v-40c0-6.6-5.4-12-12-12H64v-84c0-6.6-5.4-12-12-12H12c-6.6 0-12 5.4-12 12v124c0 13.3 10.7 24 24 24h124c6.6 0 12-5.4 12-12z" ></path>
-                        </svg>
+                    <a class="mapexpand btn btn-prestige-rounded2 btn-prestige-last my-auto">
+						<span class="fa fa-expand"></span>
+                    </a>
+                </div>
+
+				<div>
+                    <a class="maprepeat btn btn-prestige-rounded2 btn-prestige-last my-auto" style="display:none;">
+						<span class="fa fa-history"></span>
                     </a>
                 </div>
 
             </div>
         </div>
     </div>
+</div>
+
+<div style="position:absolute;top:0px;left:0px;width:100%;height:1076px;background-color: rgba(0, 0, 0, 0.7);display:none" id="mapkeyboardoverlay"></div>
+<div class="text-center" style="position:absolute;top:250px;left:0px;width:100%;height:620px;display:none" id="mapkeyboard">
+	<div style="position:relative">
+		<span class="close text-white btn-close-map" id="mapkeyboarclose">&times;</span>
+		<!-- <span style="position:absolute;top:-70px;right:280px;color:#FFF;font-size:3em;font-weight:bold" id="mapkeyboarclose">X</span> -->
+	</div>
+	<input type="hidden" id="selectInput" name="selectInput">
+	<div class="softkeys softkeys-map-page mt-5" data-target="input[name='selectInput']"></div>
 </div>
 
 @push('scripts')
@@ -108,7 +153,7 @@
 	var viewAngle = @php echo $site_config->view_angle; @endphp; //60 CHANGE TILT
     var site_config = @php echo $site_config; @endphp;
 
-    	//custom
+    //custom
 	var total_floors;
     var pointMarker;
     var linePathGroup = {};
@@ -167,6 +212,8 @@
 
     var floor_width = @php echo $floor_width; @endphp;
     var floor_height = @php echo $floor_height; @endphp;
+
+	var distanation_point;
 
     function init() {
         var container = document.getElementById('canvas');
@@ -240,7 +287,7 @@
             linePathGroup[floor.id] = new THREE.Group();
             scene.add(linePathGroup[floor.id]);
 
-            default_zoom[floor.id]  = site_maps.find(sm => sm.site_building_level_id == floor.id).default_zoom;
+            default_zoom[floor.id]  = site_config.default_zoom;
         }); 
 
         theball = new THREE.Mesh(
@@ -916,6 +963,17 @@
 		render(); //ERROR		
 	}
 
+	function distanceVector(x0,y0,z0,x1,y1,z1){
+
+		var deltaX = x1 - x0;
+		var deltaY = y1 - y0;
+		var deltaZ = z1 - z0;
+
+		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+
+		return distance;
+	}
+
     function render() {
         renderer.render( scene, camera );
 		var nav_zoom_level = 1;
@@ -946,13 +1004,16 @@
 					}
                 });
 
-                fitCameraToScreen3(nav_zoom_level, move_top);                
+				console.log('test');
+                fitCameraToScreen(nav_zoom_level, move_top);                
             }
 
             if(movements[currentpos].l != $("#floor-select").val())
 			{
                 if(transitioning  == 0)
 				{
+					console.log('here 2');
+
                     transitioning = 1;
 
                     if(movements[currentpos-1] && movements[currentpos].b != movements[currentpos-1].b && @php echo $building_count; @endphp > 1)
@@ -1001,7 +1062,6 @@
 						}
                     }
                     else {
-
                         theball.visible = false;
                         if(movements[currentpos].l > $("#floor-select").val())
 						{
@@ -1219,7 +1279,7 @@
                                     }
                                 });
 	
-								fitCameraToScreen3(nav_zoom_level, move_top);
+								fitCameraToScreen(nav_zoom_level, move_top);
 								console.log(level_end_points[movements[currentpos].l].length + ' fit to end to end-- --'+cf+' condition' + ' current pos: '+movements[currentpos].l+' current pos: '+movements[currentpos].l);
 							}
 							
@@ -1311,23 +1371,15 @@
 				currentpos = 1;
 				
 				//enable dropdown
-				$('.direction-to').prop('disabled', false);
+				$('#tenant-select').prop('disabled', false);
 				$('#floor-select').prop('disabled', false);
-				$('.btn-pwd').prop('disabled', false);
-
-				if($("#ispwd").prop('checked') == false) {
-					$(".btn-pwd").addClass('btn-prestige-white');
-				}else{
-					$(".btn-pwd").addClass('btn-prestige-color');
-				};
+				$('#btnpwdchange').prop('disabled', false);
+				$('.mapexpand').removeClass('btn-prestige-last');
+				$(".maprepeat").show();
 				
 				//show map pointer
-				spritePinTo.visible = true;
-				
-				$(".maprepeat").show();
-				//change class of mapexpand
-				$('.mapexpand').addClass('btn-prestige-rounded2').removeClass('btn-prestige-rounded3');
-				
+				spritePinTo.visible = true;		
+		
 			}
 		}
 
@@ -1386,7 +1438,7 @@
 		// $(".building-select").val(building_id).change();
 		// building_change_user = 1;
 
-        // if(spritePinTo.userData.floor == value && $(".direction-to").val() > 0){
+        // if(spritePinTo.userData.floor == value && $(".#tenant-select").val() > 0){
 		// 	// spritePinTo.visible = true;
 		// }else{
 		// 	spritePinTo.visible = false;
@@ -1405,30 +1457,8 @@
         fitCameraToScreen(zoom_level);
     }
 
-    function diffTwoRealNum(num1, num2){
-		if(num1 > num2){
-			if(num1 > 0 && num2 > 0){
-				return num1 - num2;
-			}else if(num1 < 0 && num2 < 0){
-				return (num2*(-1)) - (num1*(-1));
-			}else if(num1 > 0 && num2 < 0){
-				return num1 + (num2*(-1));
-			}
-
-		} else {
-			if(num1 > 0 && num2 > 0){
-				return (num2 - num1) * (-1);
-			}else if(num1 < 0 && num2 < 0){
-				return ((num2*(-1)) - (num1*(-1))) * (-1);
-			}else if(num1 < 0 && num2 > 0){
-				return ((num1*(-1)) + (num2*(-1))) * (-1);
-			}
-		}
-	}
-
     //SET ZOOM when switching floors
-	function fitCameraToScreen(fitOffset = 1)
-	{
+	function fitCameraToScreen(fitOffset = 1, moveTop = 0) {
         if(boundaries.hasOwnProperty($("#floor-select").val()))
 		{  
             const box = new THREE.Box3();
@@ -1456,12 +1486,26 @@
 				distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );
 			}
 
+			if(moveTop != 0){
+				if(KIOSK_VIEW_ANGLE == 0){
+					center.z = diffTwoRealNum(center.z, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 180){
+					center.z = diffTwoRealNum(center.z, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 90){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 270){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}else if(KIOSK_VIEW_ANGLE == 45){
+					center.x = diffTwoRealNum(center.x, moveTop);
+				}
+			}
+
             //MOVE MAP UP AND DOWN ON SELECTOR
             // CREATE THIS ON DATABASE
             var kiosk_center = @php echo $kiosk_center; @endphp;
-            center.y = center.y+parseFloat(kiosk_center[floor].center_y); //UP DOWN
-            center.x = center.x+parseFloat(kiosk_center[floor].center_x); //LEFT RIGHT
-            center.z = center.z+parseFloat(kiosk_center[floor].center_z); //LEFT RIGHT
+            center.y = (center.y+parseFloat(kiosk_center[floor].center_y)); //UP DOWN
+            center.x = (center.x+parseFloat(kiosk_center[floor].center_x)); //LEFT RIGHT
+            center.z = (center.z+parseFloat(kiosk_center[floor].center_z)); //LEFT RIGHT
             
             const direction = controls.target.clone()
             .sub( camera.position )
@@ -1491,13 +1535,146 @@
 		controls.update();	
     }
 
-	function mapReset(){
-		alert(default_floor);
-		if(default_floor) {
-			$("#floor-select").val(default_floor);
+	function diffTwoRealNum(num1, num2){
+		if(num1 > num2){
+			if(num1 > 0 && num2 > 0){
+				return num1 - num2;
+			}else if(num1 < 0 && num2 < 0){
+				return (num2*(-1)) - (num1*(-1));
+			}else if(num1 > 0 && num2 < 0){
+				return num1 + (num2*(-1));
+			}
 
+		} else {
+			if(num1 > 0 && num2 > 0){
+				return (num2 - num1) * (-1);
+			}else if(num1 < 0 && num2 < 0){
+				return ((num2*(-1)) - (num1*(-1))) * (-1);
+			}else if(num1 < 0 && num2 > 0){
+				return ((num1*(-1)) + (num2*(-1))) * (-1);
+			}
+		}
+	}
+
+	function directionTo() {
+		runner.visible = false;
+		runner2.visible = false;
+		runner3.visible = false;
+		$.each(floors_label,function(){
+			this.visible = false;
+		});
+		$.each(bldg_label,function(){
+			this.visible = false;
+		});
+
+		spritePinTo.visible = false;
+		theball.visible = false;
+
+		var selected_text = $('#tenant-select').find("option:selected").text();
+		$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Directions to '+selected_text);
+
+		$.each(floors,function(index){
+			linePathGroup[index].remove(...linePathGroup[index].children);
+		});
+
+		// TERMINATE ACTION IF VALUE IS 0
+		if(KIOSK_ID == 0 || $('#tenant-select').val() == 0)
+		{
+			return false;
 		}
 
+		$.post( "/api/v1/get-routes", { from: KIOSK_ID, to: $('#tenant-select').val(), pwd: ($("#ispwd").is(':checked') ? 1: 0), type: 'kiosk', site_id:@php echo $site->id; @endphp} )
+		.done(function(data) {
+			$('#tenant-select').prop('disabled', true);
+			$('#floor-select').prop('disabled', true);
+			$('#btnpwdchange').prop('disabled', true);
+			$('#btnGuide').show();
+
+			// ADD DISABLED COLOR FOR PWD HERE
+			var steps = (data['distance'] * 1.3).toFixed(0);
+			var mins = (steps / 100).toFixed(0);
+			$(".map-distance").html(data['distance'].toFixed(0)  + 'm distance');
+			$(".map-steps").html( steps + ' steps');
+			$(".map-minutes").html( mins + ' minute' + (mins > 1 ? 's' : ''));
+			$("#mapguide li").remove();
+
+			$.each(data['guide'],function(){
+				if (this == "Turn Left" || this == "Turn Right" 
+				|| this == "Turn Left on Escalator" || this == "Turn Right on Escalator" 
+				|| this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
+				}
+				else {
+					$("#mapguide").append('<li>' + this + '</li>');
+				}
+			});
+
+			level_end_points = data['level_end_points'];
+			var destination_wayfind = data['destination'];
+			distanation_point = destination_wayfind[0].id;
+			var tenant_guide = data['tenant_guide'];
+			total_floors = data['total_levels'];
+			var start_point = level_end_points[Object.keys(level_end_points)[0]];
+			var initial_level = start_point[0]['building_level_id'];
+
+			// $("#mapguide-destination").html(tenant_guide);
+
+			movements = [];
+			var line_points = {};
+			var current_level = 0;
+			var current_building = 0;
+			
+			$.each(data['coords'],function(index) {
+				if(index == 0) {
+					theball.position.set(parseFloat(this.point_x),(parseFloat(this.point_y) - 1),parseFloat(this.point_z));
+
+					spritePinFrom.position.x = parseFloat(this.point_x);
+					spritePinFrom.position.z = parseFloat(this.point_z);
+					spritePinFrom.visible = true;
+					spritePinFrom.userData = {'floor':this.building_level_id};
+				}
+				
+				if( index == data['coords'].length-1) {						
+					spritePinTo.position.x = parseFloat(destination_wayfind[0].point_x);
+					spritePinTo.position.z = parseFloat(destination_wayfind[0].point_z);						
+					spritePinTo.userData = {'floor':destination_wayfind[0].building_level_id};
+				}
+				
+				if(!line_points.hasOwnProperty(this.building_level_id)) { 
+					line_points[this.building_level_id] = [];
+					line_points[this.building_level_id].push([]);
+				}
+
+				if(current_level > 0 && this.building_level_id != current_level) {
+					spritePinTo.visible = false;
+					line_points[this.building_level_id].push([]);
+				}
+				
+				let current_line_index = line_points[this.building_level_id].length - 1;
+
+				if(current_building == 0 || current_building == this.building_id) {
+					line_points[this.building_level_id][current_line_index].push(new THREE.Vector3(parseFloat(this.point_x),(parseFloat(this.point_y) + 1),parseFloat(this.point_z)));
+					movements.push({x:parseFloat(this.point_x),y:(parseFloat(this.point_y) + 1),z:parseFloat(this.point_z),l:this.building_level_id,b:this.building_id});
+				}
+
+				current_level = this.building_level_id;
+				current_building = this.building_id;
+			});
+
+			$.each(line_points,function(index){
+				var line_points_group = this;
+				$.each(line_points_group,function(){
+					var geometry = new THREE.BufferGeometry().setFromPoints(this);
+					var line = new THREE.Line( geometry, lineMaterial );
+					linePathGroup[index].add( line );
+				})
+			});
+
+		}).fail(function(xhr, textStatus, errorThrown) {
+			$('#tenant-select').prop('disabled', false);
+			$('#floor-select').prop('disabled', false);
+			$('#btnpwdchange').prop('disabled', false);
+			$('#btnpwdchange').removeClass('btn-prestige-pwd');
+		});
 	}
 
     $(document).ready(function() {
@@ -1509,50 +1686,65 @@
         $('#tenant-select').select2();
         $('#floor-select').select2();
 
-        $("#floor-select").on('change',function(){
-            switchFloor($(this).val());
-        });
-
 		$('#btnresetmap').on('click', function() {
-
-			$("#floor-select").val(default_floor).change();
 			onWindowResize();
 
 			movements = [];
 			currentpos = 1;
 
-			// CLEAR TEXT GUIDE
-			// HIDE TEXT GUIDE
-			// BUTTON DISABLED FALSE
-			// CLEAR TENANT DROPDOWN
+			$('#tenant-select').val('');
+			$("#floor-select").val(default_floor).change();
+			$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Input Destination');
+			$('.mapexpand').addClass('btn-prestige-last');
+			$(".maprepeat").hide();
+			$('#btnGuide').hide();
 
 			$.each(floors,function(index){
-				linePathGroup[index].visible = false;
+				linePathGroup[index].remove(...linePathGroup[index].children);
+				linePathGroup[index].visible = (index == default_floor);
 			});
 
 			spritePinTo.visible = false;
+			theball.visible = false;
 
 			//zoom to default zoom
-			var zoom_level =  0.4;
+			var zoom_level =  0.8;
 
 			fitCameraToScreen(zoom_level);					
 			var kiosk = map_points[KIOSK_ID];
 			var coords = new THREE.Vector3(kiosk.point_x, 6,kiosk.point_z);
-			
+
 			//backup code
 			coords.x = kiosk.point_x;
 			coords.z = kiosk.point_z;
 			coords.y = kiosk.point_y;
 
+			//overwrite coords
+			coords.z = (Math.abs(site_config.default_z) > 0) ? parseFloat(coords.z)+parseFloat(site_config.default_z) : coords.z;
+			coords.x = (Math.abs(site_config.default_x) > 0) ? parseFloat(coords.x)+parseFloat(site_config.default_x) : coords.x;
+
 			scene.worldToLocal(coords);
 			controls.target = coords;
-			
+
 			//camera.position.y = 100;
-			camera.position.y = default_zoom[default_floor];
+			camera.position.y = site_config.default_y;
 			camera.position.x = coords.x;
 			camera.position.z = coords.z;
 			controls.update();
 
+		});
+
+        $("#floor-select").on('change',function(){
+            switchFloor($(this).val());
+        });
+
+		$("#btnpwdchange").on('click',function(){
+			$(this).addClass('btn-prestige-pwd');
+			$("#ispwd").prop('checked',!$("#ispwd").is(':checked'));
+			
+			if($('#tenant-select').val() > 0){				
+				directionTo();
+			}
 		});
 
 		$(".mapminus").on('click',function(){
@@ -1585,11 +1777,154 @@
 					}
 				});
 
-				console.log(zoom_level);
-
 				fitCameraToScreen(zoom_level);				
 			}
 		});
+
+		$('#tenant-select').on('change', function() {
+			// KEYBOARD INPUT CLEAR
+			$('#selectInput').val('').change();
+
+			// HIDE OVERLAY AND KEYBOARD
+			$("#mapkeyboardoverlay").hide();
+			$("#mapkeyboard").hide();
+
+			// HIDE DIRECTION DETAILS
+			$("#toggle-down").addClass('hideArrow');
+			$("#toggle-up").removeClass('hideArrow');
+			$("#toggle-updown-text").html('Show Text Guide');
+
+			// CALL WAY FINDING
+			directionTo();
+		});
+
+		$("#tenant-select").on('select2:open',function(){
+			inputDirection = $(this);
+			
+			//force dropup
+			$('.select2-dropdown--below').attr('id','fix');
+            $('#fix').removeClass('select2-dropdown--below');
+            $('#fix').addClass('select2-dropdown--above');
+			$("#mapkeyboardoverlay").show();
+			$("#mapkeyboard").show();
+		});
+
+		$('#selectInput').on("change", function() {
+			inputDirection.select2('open');
+
+			var term = $(this).val();
+			var $search = inputDirection.data('select2').dropdown.$search || $inputDirection.data('select2').selection.$search;
+
+			$search.val(term);
+			$search.trigger('keyup');
+		});
+
+		$("#mapkeyboarclose").on('click',function(){
+			$("#mapkeyboardoverlay").hide();
+			$("#mapkeyboard").hide();
+			$("#selectInput").val('');
+		});
+
+		$(".maprepeat").on('click',function(){
+			if(movementstmp.length) {
+				$('#tenant-select').prop('disabled', true);
+				$('#floor-select').prop('disabled', true);
+				$('#btnpwdchange').prop('disabled', true);
+				$('.mapexpand').addClass('btn-prestige-last');
+				$(".maprepeat").hide();
+				$("#floor-select").val(spritePinFrom.userData['floor']).change();
+
+				controls.minAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180 ;
+				controls.maxAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180;
+				
+				controls.update();
+
+				theball.position.x = movementstmp[0].x;
+				theball.position.y = movementstmp[0].y;
+				theball.position.z = movementstmp[0].z;
+				movements = movementstmp;
+			}
+			// KEYBOARD CLOSE
+			// $("#mapkeyboarclose").click();
+		});
+
+		$('#btnGuide').on('click', function(){
+
+			if($("#toggle-up").hasClass("hideArrow")){
+				$("#toggle-down").addClass('hideArrow');
+				$("#toggle-up").removeClass('hideArrow');
+				$("#toggle-updown-text").html('Show Text Guide');
+				$("#directionDetails").hide();
+
+			}else if($("#toggle-down").hasClass("hideArrow")){
+				$("#toggle-up").addClass('hideArrow');
+				$("#toggle-down").removeClass('hideArrow');
+				$("#toggle-updown-text").html('Hide Text Guide');
+				$("#directionDetails").show();
+			}
+
+		});
+
+		$('.softkeys-map-page').softkeys({
+            target : $('.softkeys-map-page').data('target'),
+            layout : [
+                [
+                    '1','2','3','4','5','6','7','8','9','0',
+                ],
+                [
+                    ['Q','~'],
+                    ['W','!'],
+                    ['E','@'],
+                    ['R','#'],
+                    ['T','$'],
+                    ['Y','%'],
+                    ['U','^'],
+                    ['I','&'],
+                    ['O','*'],
+                    ['P','('],
+                    ['-',')'],
+                ],
+                [
+                    ['A','['],
+                    ['S',']'],
+                    ['D','-'],
+                    ['F','+'],
+                    ['G','='],
+                    ['H',':'],
+                    ['J',';'],
+                    ['K','\''],
+                    ['L','&#34;'],
+                    ['&bsol;'],
+                ],
+                [
+                    'shift',
+                    ['Z','{'],
+                    ['X','}'],
+                    ['C','<'],
+                    ['V','>'],
+                    ['B','_'],
+                    ['N','?'],
+                    ['M','/'],
+                    'delete',
+                ],
+                [
+                    [','],
+                    'space',
+                    ['.'],
+                    'Search',
+                ]
+            ]
+        });
+
+		$(".softkeys__btn").on('mousedown',function(){                
+        }).on('click',function(){
+            $('#selectInput').trigger('change');
+        }).on('touchend',function(){
+            $('#selectInput').trigger('change');
+        });
+
+
+		//inputDirection.select2('open');
 
     });
     

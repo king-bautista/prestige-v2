@@ -42,6 +42,7 @@ Route::group(['prefix' => 'v1'], function ()
     Route::post('/like-count', 'Kiosk\KioskController@putLikeCount')->name('kiosk.like-count');
     Route::post('/view-count', 'Kiosk\KioskController@putViewCount')->name('kiosk.view-count');
     Route::post('/tenant-count-details', 'Kiosk\KioskController@getTenantCountDetails')->name('kiosk.tenant-count-details');
+    Route::post('/get-routes', 'Kiosk\KioskController@getPath')->name('kiosk.get-routes');
 
 
     // Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');

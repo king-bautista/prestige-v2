@@ -55,39 +55,33 @@ Helpers.prototype = {
         });
     },
 
-    updateLikeCount: function(id, count) {
-        var tenant_count = 0;
+    updateLikeCount: function(id) {
+        var action;
         if($(".btn-heart").hasClass("fas")) {
-            tenant_count = parseInt(count) - 1;
+            action = 'minus';
             $(".btn-heart").removeClass('fas').addClass('far');
         }
         else {
-            tenant_count = parseInt(count) + 1;
+            action = 'add';
             $(".btn-heart").removeClass('far').addClass('fas');
         }
 
         let params = {
             id: id,
-            like_count: tenant_count
+            action: action
         }
 
         $.post( "/api/v1/like-count", params ,function(response) {
-            $('.like_counts').html(tenant_count);
-            tenant_likes = tenant_count;
+            $('.like_counts').html(response.like_count);
         });
     },
 
     updateViewCount: function(id, count) {
 
-        var view_count = parseInt(count) + 1;
-        let params = {
-            id: id,
-            view_count: view_count
-        }
-
-        $.post( "/api/v1/view-count", params ,function(response) {
-            $('.view-count').html(view_count);
+        $.post( "/api/v1/view-count", {id: id} ,function(response) {
+            $('.view-count').html(response.view_count);
         });
+
     },
 
     setTenantCountDetails: function(id) {
@@ -96,7 +90,6 @@ Helpers.prototype = {
         }
 
         $.post( "/api/v1/tenant-count-details", params ,function(response) {
-            $('.view-count').html(response.view_count);
             $('.like_counts').html(response.like_count);
         });
     },
