@@ -419,6 +419,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/play-list/list', 'Admin\ContentManagementController@getPLayList')->name('admin.play-list.list');
     Route::post('/admin/play-list/update-sequence', 'Admin\ContentManagementController@updateSequence')->name('admin.play-list.update-sequence');
     Route::post('/admin/play-list/batch-upload', 'Admin\ContentManagementController@batchUpload')->name('admin.play-list.batch-upload');
+    Route::post('/admin/play-list/batch-upload-test', 'Admin\ContentManagementController@batchUploadTest')->name('admin.play-list.batch-upload-test');
     Route::get('/admin/play-list/download-csv', 'Admin\ContentManagementController@downloadCsvPlaylist')->name('admin.play-list.download-csv');
     Route::get('/admin/play-list/download-csv-template', 'Admin\ContentManagementController@downloadCsvPlaylistTemplate')->name('admin.play-list.download-csv-template');
     Route::get('/admin/upload-ad/download-csv', 'Admin\ContentManagementController@downloadCsvUploadAd')->name('admin.upload-ad.download-csv');

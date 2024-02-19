@@ -22,6 +22,7 @@ class PlayList extends Model
         'advertisement_id',
         'sequence',
         'dimension',
+        'loop_number',
     ];
 
     /**
