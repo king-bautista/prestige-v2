@@ -32,7 +32,7 @@ class LogsController extends AppBaseController implements LogsControllerInterfac
     public function getLogDetails($request)
     {
         $log_data = [];
-        $site_id = $request->tenant_details['site_id'];
+        $site_id = ($request->site_id) ? $request->site_id : $request->tenant_details['site_id'];
         $site_screen = SiteScreenViewModel::where('is_default', 1)->where('active', 1)->where('site_id', $site_id)->first();  
 
         $log_data['site_id'] = $site_id;
@@ -42,7 +42,7 @@ class LogsController extends AppBaseController implements LogsControllerInterfac
         $log_data['main_category_id'] = $request->main_category_id;
         $log_data['brand_id'] = $request->brand_id;
         $log_data['company_id'] = $request->company_id;
-        $log_data['site_tenant_id'] = $request->site_tenant_id;
+        $log_data['site_tenant_id'] = ($request->site_tenant_id) ? $request->site_tenant_id : $request->tenant_details['id'];
         $log_data['advertisement_id'] = $request->advertisement_id;
         $log_data['action'] = 'click';
         $log_data['page'] = $request->page;
