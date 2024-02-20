@@ -13,6 +13,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
 use App\Http\Requests\BrandRequest;
 
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Supplemental;
 use App\Models\BrandProductPromos;
@@ -403,7 +404,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     {
         try {
             $between = explode("_", $ids);
-            $brand_management =  Brand::skip($between[0])->take(1000)->get();
+            $brand_management =  BrandViewModel::skip($between[0])->take(1000)->get();
 
 
             $reports = [];
