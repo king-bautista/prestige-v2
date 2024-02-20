@@ -324,13 +324,14 @@
             $(".promo-row-container").addClass("dflex justify-content-center")
         }       
 
-        helper.updateViewCount(tenant.id, tenant.view_count);        
-
-        helper.setTenantCountDetails(tenant.id);
-
         if($(".btn-heart").hasClass("fas")) {
             $(".btn-heart").removeClass('fas').addClass('far');
         }
+
+        helper.updateViewCount(tenant.id, tenant.view_count);        
+        helper.setTenantCountDetails(tenant.id);
+        // SAVE LOGS
+        helper.saveLogs(tenant, 'Categories');
 
         current_location = 'tenant';
         page_history.push(current_location);
