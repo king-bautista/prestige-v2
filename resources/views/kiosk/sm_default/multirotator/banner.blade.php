@@ -39,6 +39,7 @@
             $('.banner-add-'+key).on('click', function() {
                 if(banner_ad.tenant_details) {
                     helper.saveLogs(banner_ad, 'Banner Ad');
+                    helper.homeBtnClick();
                     //helper.saveBannerCount(banner_ad.content_id);
                     showTenantDetails(banner_ad.tenant_details);
                 }
