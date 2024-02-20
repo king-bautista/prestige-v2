@@ -1927,6 +1927,11 @@
 		//inputDirection.select2('open');
 
     });
+
+	$('.direction-from').on('click', function(){
+		// CALL WAY FINDING
+		directionTo();
+	});
     
 </script>
 @endpush

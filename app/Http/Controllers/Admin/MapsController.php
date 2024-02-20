@@ -422,10 +422,13 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     {
         try
     	{
+            //return $request->all();
+
             $site_point = SitePoint::find($request->pid);
             $data = [
                 'point_x' => ($request->position_x) ? $request->position_x : 0,
                 'point_y' => ($request->position_y) ? $request->position_y : 0,
+                'point_z' => ($request->position_z) ? $request->position_z : 0,
                 'rotation_z' => ($request->text_y_position) ? $request->text_y_position : 0,
                 'text_size' => ($request->text_size) ? $request->text_size : 0,
                 'text_width' => ($request->text_width) ? $request->text_width : 0,

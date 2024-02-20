@@ -49,7 +49,8 @@ class KioskController extends AppBaseController
         $this->site = $site;
         
         $template_name = $this->site->details['site_theme'];
-        $site_schedule = json_encode($this->site->operational_hours);
+        $site_schedule = $this->site->details['schedules'];
+        $operational_hours = json_encode($this->site->operational_hours);
         $categories = $this->getCategories();
         $promos = $this->getPromos();
         $cinemas = $this->getCinemas();
@@ -102,7 +103,8 @@ class KioskController extends AppBaseController
         // END MAP PAGE DATA
         $data = [
             'site', 
-            'site_schedule', 
+            'site_schedule',
+            'operational_hours', 
             'categories', 
             'promos', 
             'cinemas', 

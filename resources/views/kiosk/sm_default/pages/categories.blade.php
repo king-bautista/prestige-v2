@@ -89,6 +89,7 @@
 <script>
     var categories = "{{ $categories }}";
     var sub_categories = '';
+    var main_category_id = '';
     var main_category = '';
     var supplementals = '';
     var alphabetical = '';
@@ -120,6 +121,7 @@
             category_element += '</div>';
             $( "#categories-container" ).append(category_element);
             $('.main-'+category.id).on('click', function() {
+                main_category_id = category.category_id;
                 main_category = category.category_name;
                 sub_categories = category.sub_categories;
                 alphabetical = category.alphabetical;
@@ -163,7 +165,8 @@
         $('#home-container').hide();
         $('.TenantPage').hide();
         $('.back-img-btn').show();
-        helper.setTranslation();
+        
+        helper.setTranslation();        
         
         current_location = 'subcategory';
         page_history.push(current_location);
