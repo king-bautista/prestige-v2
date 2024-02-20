@@ -282,7 +282,7 @@ export default {
 					name: "Status",
 					type: "Boolean",
 					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
+						0: '<span class="badge badge-danger">Inactive</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
@@ -312,8 +312,16 @@ export default {
 					name: 'Delete',
 					apiUrl: '/admin/site/screen/delete',
 					routeName: '',
+					button: '<i class="fas fa-trash-alt"></i> Delete',
+					method: 'delete'
+				},
+				View: {
+					title: 'Inactive this Screen',
+					name: 'Inactive',
+					apiUrl: '/admin/site/screen/inactive',
+					routeName: '',
 					button: '<i class="fas fa-toggle-off"></i> Inactive',
-					method: 'custom_delete',
+					method: 'View',
 					v_on: 'DeleteScreen',
 				},
 				view: {
