@@ -1002,7 +1002,7 @@
 					texts[dragItem.userData.id].text.position.z = locationZ;
 				}
 
-				showPointInfo(dragItem);
+				showPointInfo(dragItem.userData);
 				render();
 			}
 		}
@@ -1017,7 +1017,7 @@
 				point_y: dragItem.position.y, 
 				point_z: dragItem.position.z 
 			}).done(function( data ) {				
-				showPointInfo(data.data);
+				showPointInfo(dragItem.userData);
 				toastr.success(data.message);
 			});
 		}
@@ -1276,35 +1276,38 @@
 
 	function showPointInfo(objectHit)
 	{
-		$("#pid").val(objectHit.id);
-		$("#point_id").html("Point ID: " + objectHit.id);
-		$("#position_x").val(objectHit.point_x);
-		$("#position_y").val(objectHit.point_y);
-		$("#position_z").val(objectHit.point_z);
-		$("#text_y_position").val(objectHit.rotation_z);
-		$("#text_size").val(objectHit.text_size);
-		$("#text_width").val(objectHit.text_width);
-		if(objectHit.is_pwd > 0) {
-          $('#is_pwd').prop( "checked", true);
-        }
-        else {
-          $('#is_pwd').prop( "checked", false);
-        }
+		$.get("/admin/site/map/point-info/"+objectHit.id, function(data) { 
+			var point = data.data;
+			$("#pid").val(point.id);
+			$("#point_id").html("Point ID: " + point.id);
+			$("#position_x").val(point.point_x);
+			$("#position_y").val(point.point_y);
+			$("#position_z").val(point.point_z);
+			$("#text_y_position").val(point.rotation_z);
+			$("#text_size").val(point.text_size);
+			$("#text_width").val(point.text_width);
+			if(point.is_pwd > 0) {
+			$('#is_pwd').prop( "checked", true);
+			}
+			else {
+			$('#is_pwd').prop( "checked", false);
+			}
 
-		if(objectHit.wrap_at > 0) {
-          $('#wrap_at').prop( "checked", true);
-        }
-        else {
-          $('#wrap_at').prop( "checked", false);
-        }
+			if(point.wrap_at > 0) {
+			$('#wrap_at').prop( "checked", true);
+			}
+			else {
+			$('#wrap_at').prop( "checked", false);
+			}
 
-		$('#tenant_id').val(objectHit.tenant_id);
-        $('#point_type').val(objectHit.point_type);
-        $('#point_label').val(objectHit.point_label);    
+			$('#tenant_id').val(point.tenant_id);
+			$('#point_type').val(point.point_type);
+			$('#point_label').val(point.point_label);    
 
-		pointMarkerHighlight.position.x = objectHit.point_x;
-		pointMarkerHighlight.position.y = objectHit.point_y-1;
-		pointMarkerHighlight.position.z = objectHit.point_z;
+			pointMarkerHighlight.position.x = point.point_x;
+			pointMarkerHighlight.position.y = point.point_y-1;
+			pointMarkerHighlight.position.z = point.point_z;
+		});		
 	}
 	
 	setUpMouseHandler(container,doMouseDown,doMouseMove,doMouseUp);
