@@ -46,7 +46,8 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try {
             $site_tenants = SiteTenantViewModel::when(request('search'), function ($query) {
-                return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                return $query->where('site_tenants.serial_number', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
@@ -65,7 +66,7 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 ->select('site_tenants.*', 'brands.logo as brand_logo', 'brands.name as brand_name', 'sites.name as site_name')
                 ->selectRaw("CONCAT(site_buildings.name,', ',site_building_levels.name) AS store_address")
                 ->when(is_null(request('order')), function ($query) {
-                    return $query->orderBy('sites.name', 'ASC');
+                    return $query->orderBy('brands.name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
