@@ -274,15 +274,14 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     $join->on('temporary_play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                         ->whereRaw('temporary_play_lists.dimension = site_screen_products.dimension');
                 }) 
-        ->when($is_sitePartner, function($query) use ($company_id){
-            return $query->where('company_id', '=' , $company_id);
-        })
-        ->when(!$is_sitePartner, function($query) use ($company_id){
-            return $query->where('company_id', '!=' ,$company_id);
-        })
         ->where('temporary_play_lists.site_screen_id', $screen_id)  
         ->where('site_screen_products.ad_type', $ad_type)
-        ->groupBy('temporary_play_lists.content_id')
+        ->when($is_sitePartner, function($query) use ($company_id){
+            return $query->where('company_id', '=' , $company_id)->groupBy('temporary_play_lists.content_id');
+        })
+        ->when(!$is_sitePartner, function($query) use ($company_id){
+            return $query->where('company_id', '!=' ,$company_id)->where('loop_number', 1);
+        })
         ->get();
 
         return $ads;
