@@ -277,7 +277,7 @@ export default {
 						$('#img_banner').val('');
 						obj.image_url = '';
 						obj.event.image_url = '';
-						toastr.error("Invalid Image Size! Must be max width: 700 and max height: 700. Current width: " + this.image_width + " and height: " + this.image_height);
+						toastr.error("Invalid Image Size! Must be maximum width: 700 and maximum height: 700. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
