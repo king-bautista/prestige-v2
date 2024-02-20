@@ -46,7 +46,8 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     {
         try {
             $site_tenants = SiteTenantViewModel::when(request('search'), function ($query) {
-                return $query->where('site_buildings.name', 'LIKE', '%' . request('search') . '%')
+                return $query->where('site_tenants.serial_number', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('site_buildings.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('site_building_levels.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
