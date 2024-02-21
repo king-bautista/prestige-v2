@@ -58,6 +58,14 @@
 			</div>
 		</div>
 
+        <!-- <div class="nav-btn-event" id="events_btn">
+			<div class="nav-btn-container">
+				<img id="events_v4s" class="" src="{{ URL::to('themes/sm_default/images/Eventv4s.png') }}">
+				<img id="events_v4" class="" src="{{ URL::to('themes/sm_default/images/Eventv4.png') }}">
+				<div id="events_txt" class="nav-event-button-align translateme resize" data-en="Events">Events</div>
+			</div>
+		</div> -->
+
 		<div class="nav-btn-cinema" id="cinema_btn">
 			<div class="nav-btn-container">
 				<img id="cinema_v4s" class="" src="{{ URL::to('themes/sm_default/images/Cinemav4s.png') }}">
@@ -239,6 +247,13 @@
         helper.promosBtnClick();
         helper.filterAssist();
         showPromos();
+        page_history.push(current_location);
+    });
+
+    $("#events_btn").on('click', function(){        
+        helper.eventsBtnClick();
+        helper.filterAssist();
+        showEvents();
         page_history.push(current_location);
     });
 

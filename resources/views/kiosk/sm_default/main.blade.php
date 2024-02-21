@@ -43,6 +43,10 @@
                 @include('kiosk.sm_default.pages.promos')
             </div>
 
+            <div id="events-container">
+                @include('kiosk.sm_default.pages.events')
+            </div>
+
             <div id="tenant-store-content">
                 @include('kiosk.sm_default.pages.tenant')
             </div>

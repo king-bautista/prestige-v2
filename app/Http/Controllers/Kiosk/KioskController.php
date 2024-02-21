@@ -34,112 +34,119 @@ class KioskController extends AppBaseController
 
     public function index($site_name = null)
     {
-        $site = SiteViewModel::when(!$site_name, function($query) {
-            $query->where('is_default', 1);
-        })
-        ->when($site_name, function($query) use($site_name) {
-            $query->whereRaw('REPLACE(LOWER(name), " ", "-") = ?', [$site_name]);
-        })
-        ->where('active', 1)
-        ->first(); 
+        try
+        {
+            $site = SiteViewModel::when(!$site_name, function($query) {
+                $query->where('is_default', 1);
+            })
+            ->when($site_name, function($query) use($site_name) {
+                $query->whereRaw('REPLACE(LOWER(name), " ", "-") = ?', [$site_name]);
+            })
+            ->where('active', 1)
+            ->first(); 
 
-        if(!$site)
+            if(!$site)
+                return view('kiosk.page-not-found');
+
+            $this->site = $site;
+            
+            $template_name = $this->site->details['site_theme'];
+            $site_schedule = $this->site->details['schedules'];
+            $operational_hours = json_encode($this->site->operational_hours);
+            $categories = $this->getCategories();
+            $promos = $this->getPromos();
+            $cinemas = $this->getCinemas();
+            $now_showing = $this->getShowing();
+            $suggestions = $this->getSuggestionList();
+            $banner_ads = $this->getBannerAds();
+            $fullscreen_ads = $this->getFullScreenAds();
+            $assistant_message = $this->getAssistantMessage();
+            $translations = $this->getTranslation();
+            $all_tenants = $this->getTenants();
+
+            // MAP PAGE DATA
+            $site_config = $this->getSiteConfig();
+            $site_buildings = $this->getBuildingFloors();
+
+            $building_count = $site_buildings['building'];
+            $site_floors = $site_buildings['floors'];
+
+            $site_maps = $this->getSiteMaps();
+
+            $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
+            $map_points = json_encode($map_points_tenants_links['map_points']);
+            $map_tenants = json_encode($map_points_tenants_links['map_tenants']);
+            $kiosk_zoom = $this->getMapZoom($site_maps, $site_config->view_angle);
+            $kiosk_center = $this->getMapCenter($site_maps, $site_config->view_angle, $site_config->origin_point);
+            if(count($kiosk_center) == 0)
+                $kiosk_center = $this->getMapCenter($site_maps, $site_config->view_angle);
+
+            $kiosk_center = json_encode($kiosk_center);
+            $amenities = $this->getAmenities();
+
+            // Sprite configuration
+            $icon_version = '4x'; //no names
+            $pin_scale_x = 6.0;
+            $pin_scale_y = 6.0;
+            $pin_scale_z = 0;
+            $icon_scale_x = 3.5;
+            $icon_scale_y = 3.5;
+            $icon_scale_z = 0;
+
+            $floor_font_scale_x = 2;
+            $floor_font_scale_y = 2;
+            $floor_font_scale_z = 2;
+
+            $floor_width = 24;
+            $floor_height = 7;
+
+            $spritepinto_height = 10;
+
+            // END MAP PAGE DATA
+            $data = [
+                'site', 
+                'site_schedule',
+                'operational_hours', 
+                'categories', 
+                'promos', 
+                'cinemas', 
+                'now_showing', 
+                'suggestions', 
+                'banner_ads', 
+                'fullscreen_ads', 
+                'assistant_message', 
+                'translations', 
+                'all_tenants', 
+                'site_config', 
+                'building_count',
+                'site_floors',
+                'site_maps', 
+                'map_points', 
+                'map_tenants',
+                'kiosk_zoom',
+                'kiosk_center',
+                'amenities',
+                'icon_version',
+                'pin_scale_x',
+                'pin_scale_y',
+                'pin_scale_z',
+                'icon_scale_x',
+                'icon_scale_y',
+                'icon_scale_z',
+                'floor_font_scale_x',
+                'floor_font_scale_y',
+                'floor_font_scale_z',
+                'floor_width',
+                'floor_height',
+                'spritepinto_height',
+            ];
+
+            return view('kiosk.'.$template_name.'.main', compact($data));
+        }
+        catch (\Exception $e)
+        {
             return view('kiosk.page-not-found');
-
-        $this->site = $site;
-        
-        $template_name = $this->site->details['site_theme'];
-        $site_schedule = $this->site->details['schedules'];
-        $operational_hours = json_encode($this->site->operational_hours);
-        $categories = $this->getCategories();
-        $promos = $this->getPromos();
-        $cinemas = $this->getCinemas();
-        $now_showing = $this->getShowing();
-        $suggestions = $this->getSuggestionList();
-        $banner_ads = $this->getBannerAds();
-        $fullscreen_ads = $this->getFullScreenAds();
-        $assistant_message = $this->getAssistantMessage();
-        $translations = $this->getTranslation();
-        $all_tenants = $this->getTenants();
-
-        // MAP PAGE DATA
-        $site_config = $this->getSiteConfig();
-        $site_buildings = $this->getBuildingFloors();
-
-        $building_count = $site_buildings['building'];
-        $site_floors = $site_buildings['floors'];
-
-        $site_maps = $this->getSiteMaps();
-
-        $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
-        $map_points = json_encode($map_points_tenants_links['map_points']);
-        $map_tenants = json_encode($map_points_tenants_links['map_tenants']);
-        $kiosk_zoom = $this->getMapZoom($site_maps, $site_config->view_angle);
-        $kiosk_center = $this->getMapCenter($site_maps, $site_config->view_angle, $site_config->origin_point);
-        if(count($kiosk_center) == 0)
-            $kiosk_center = $this->getMapCenter($site_maps, $site_config->view_angle);
-
-        $kiosk_center = json_encode($kiosk_center);
-        $amenities = $this->getAmenities();
-
-        // Sprite configuration
-        $icon_version = '4x'; //no names
-        $pin_scale_x = 6.0;
-        $pin_scale_y = 6.0;
-        $pin_scale_z = 0;
-        $icon_scale_x = 3.5;
-        $icon_scale_y = 3.5;
-        $icon_scale_z = 0;
-
-        $floor_font_scale_x = 2;
-        $floor_font_scale_y = 2;
-        $floor_font_scale_z = 2;
-
-        $floor_width = 24;
-        $floor_height = 7;
-
-        $spritepinto_height = 10;
-
-        // END MAP PAGE DATA
-        $data = [
-            'site', 
-            'site_schedule',
-            'operational_hours', 
-            'categories', 
-            'promos', 
-            'cinemas', 
-            'now_showing', 
-            'suggestions', 
-            'banner_ads', 
-            'fullscreen_ads', 
-            'assistant_message', 
-            'translations', 
-            'all_tenants', 
-            'site_config', 
-            'building_count',
-            'site_floors',
-            'site_maps', 
-            'map_points', 
-            'map_tenants',
-            'kiosk_zoom',
-            'kiosk_center',
-            'amenities',
-            'icon_version',
-            'pin_scale_x',
-            'pin_scale_y',
-            'pin_scale_z',
-            'icon_scale_x',
-            'icon_scale_y',
-            'icon_scale_z',
-            'floor_font_scale_x',
-            'floor_font_scale_y',
-            'floor_font_scale_z',
-            'floor_width',
-            'floor_height',
-            'spritepinto_height',
-        ];
-
-        return view('kiosk.'.$template_name.'.main', compact($data));
+        } 
     }
 
     public function getCategories() {

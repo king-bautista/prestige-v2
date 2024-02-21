@@ -1677,6 +1677,47 @@
 		});
 	}
 
+	function resetMap() {
+		$("#floor-select").val(default_floor).change();
+		$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Input Destination');
+		$('.mapexpand').addClass('btn-prestige-last');
+		$(".maprepeat").hide();
+		$('#btnGuide').hide();
+
+		$.each(floors,function(index){
+			linePathGroup[index].remove(...linePathGroup[index].children);
+			linePathGroup[index].visible = (index == default_floor);
+		});
+
+		spritePinTo.visible = false;
+		theball.visible = false;
+
+		//zoom to default zoom
+		var zoom_level =  0.8;
+
+		fitCameraToScreen(zoom_level);					
+		var kiosk = map_points[KIOSK_ID];
+		var coords = new THREE.Vector3(kiosk.point_x, 6,kiosk.point_z);
+
+		//backup code
+		coords.x = kiosk.point_x;
+		coords.z = kiosk.point_z;
+		coords.y = kiosk.point_y;
+
+		//overwrite coords
+		coords.z = (Math.abs(site_config.default_z) > 0) ? parseFloat(coords.z)+parseFloat(site_config.default_z) : coords.z;
+		coords.x = (Math.abs(site_config.default_x) > 0) ? parseFloat(coords.x)+parseFloat(site_config.default_x) : coords.x;
+
+		scene.worldToLocal(coords);
+		controls.target = coords;
+
+		//camera.position.y = 100;
+		camera.position.y = site_config.default_y;
+		camera.position.x = coords.x;
+		camera.position.z = coords.z;
+		controls.update();
+	}
+
     $(document).ready(function() {
         init();
         loadFont();
@@ -1688,50 +1729,17 @@
 
 		$('#btnresetmap').on('click', function() {
 			onWindowResize();
-
+			
 			movements = [];
 			currentpos = 1;
 
+			$('#tenant-select').prop('disabled', false);
+			$('#floor-select').prop('disabled', false);
+			$('#btnpwdchange').prop('disabled', false);
 			$('#tenant-select').val('');
-			$("#floor-select").val(default_floor).change();
-			$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Input Destination');
-			$('.mapexpand').addClass('btn-prestige-last');
-			$(".maprepeat").hide();
-			$('#btnGuide').hide();
 
-			$.each(floors,function(index){
-				linePathGroup[index].remove(...linePathGroup[index].children);
-				linePathGroup[index].visible = (index == default_floor);
-			});
-
-			spritePinTo.visible = false;
-			theball.visible = false;
-
-			//zoom to default zoom
-			var zoom_level =  0.8;
-
-			fitCameraToScreen(zoom_level);					
-			var kiosk = map_points[KIOSK_ID];
-			var coords = new THREE.Vector3(kiosk.point_x, 6,kiosk.point_z);
-
-			//backup code
-			coords.x = kiosk.point_x;
-			coords.z = kiosk.point_z;
-			coords.y = kiosk.point_y;
-
-			//overwrite coords
-			coords.z = (Math.abs(site_config.default_z) > 0) ? parseFloat(coords.z)+parseFloat(site_config.default_z) : coords.z;
-			coords.x = (Math.abs(site_config.default_x) > 0) ? parseFloat(coords.x)+parseFloat(site_config.default_x) : coords.x;
-
-			scene.worldToLocal(coords);
-			controls.target = coords;
-
-			//camera.position.y = 100;
-			camera.position.y = site_config.default_y;
-			camera.position.x = coords.x;
-			camera.position.z = coords.z;
-			controls.update();
-
+			// RESET MAP
+			resetMap();
 		});
 
         $("#floor-select").on('change',function(){
@@ -1782,6 +1790,8 @@
 		});
 
 		$('#tenant-select').on('change', function() {
+			// RESET MAP
+			resetMap();
 			// KEYBOARD INPUT CLEAR
 			$('#selectInput').val('').change();
 
