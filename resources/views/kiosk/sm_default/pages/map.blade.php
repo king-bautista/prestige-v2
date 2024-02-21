@@ -1684,6 +1684,9 @@
 		$(".maprepeat").hide();
 		$('#btnGuide').hide();
 
+		movements = [];
+		currentpos = 1;
+
 		$.each(floors,function(index){
 			linePathGroup[index].remove(...linePathGroup[index].children);
 			linePathGroup[index].visible = (index == default_floor);
@@ -1728,16 +1731,12 @@
         $('#floor-select').select2();
 
 		$('#btnresetmap').on('click', function() {
-			onWindowResize();
-			
-			movements = [];
-			currentpos = 1;
-
 			$('#tenant-select').prop('disabled', false);
 			$('#floor-select').prop('disabled', false);
 			$('#btnpwdchange').prop('disabled', false);
 			$('#tenant-select').val('');
 
+			onWindowResize();
 			// RESET MAP
 			resetMap();
 		});
