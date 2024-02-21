@@ -128,6 +128,9 @@
                 case 'promo':
                     helper.promosBtnClick();
                     break;
+                case 'event':
+                    helper.eventsBtnClick();
+                    break;
                 case 'cinema':
                     helper.cinemaBtnClick();
                     break;

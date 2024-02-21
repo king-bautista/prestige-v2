@@ -138,6 +138,7 @@
         $('.cat-row-card').html('');
         $('.category-title').html(main_category);
         $('.category-title').attr('data-en', main_category);
+        $('.nav-btn-container').removeClass('active');
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
             subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
