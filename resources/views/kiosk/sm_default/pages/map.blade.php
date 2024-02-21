@@ -1004,7 +1004,6 @@
 					}
                 });
 
-				console.log('test');
                 fitCameraToScreen(nav_zoom_level, move_top);                
             }
 
@@ -1012,8 +1011,6 @@
 			{
                 if(transitioning  == 0)
 				{
-					console.log('here 2');
-
                     transitioning = 1;
 
                     if(movements[currentpos-1] && movements[currentpos].b != movements[currentpos-1].b && @php echo $building_count; @endphp > 1)
