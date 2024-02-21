@@ -17,7 +17,7 @@
             @include('kiosk.sm_default.header')
 
             <!--Start of the directory about page-->
-            <div id="DirectoryAboutPage">
+            <div class="content-holder" id="DirectoryAboutPage">
                 @include('kiosk.sm_default.pages.about')
             </div>
             <!--End of the directory about page-->
@@ -27,33 +27,33 @@
             <!--End of the directory home content categories-->
 
             <!--Start of the directory search content categories-->
-            <div id="search-container">
+            <div class="content-holder" id="search-container">
                 @include('kiosk.sm_default.pages.search')
             </div>
             <!--End of the directory search content categories-->
 
             <!--Start of the directory map content categories-->
-            <div id="map-container">
+            <div class="content-holder" id="map-container">
                 @include('kiosk.sm_default.pages.map')
             </div>
             <!--End of the directory map content categories-->
 
             <!--Start of the directory promos content categories-->
-            <div id="promos-container">
+            <div class="content-holder" id="promos-container">
                 @include('kiosk.sm_default.pages.promos')
             </div>
 
-            <div id="events-container">
+            <div class="content-holder" id="events-container">
                 @include('kiosk.sm_default.pages.events')
             </div>
 
-            <div id="tenant-store-content">
+            <div class="content-holder" id="tenant-store-content">
                 @include('kiosk.sm_default.pages.tenant')
             </div>
             <!--End of the directory promo content categories-->
 
             <!--Start of the directory cinema content categories-->
-            <div id="cinema-container">
+            <div class="content-holder" id="cinema-container">
                 @include('kiosk.sm_default.pages.cinema')
             </div>
             <!--End of the directory cinema content categories-->

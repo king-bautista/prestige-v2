@@ -33,7 +33,7 @@
 @push('scripts')
 <script>
 
-    var events = "{{ $promos }}";
+    var events = "{{ $events }}";
 
     $(document).ready(function () {
         var promomodal = $("#imgEventModal");
@@ -70,23 +70,19 @@
                 var event_item = '';
                 event_item += '<div class="col-sm-4">';
                 event_item += '<div class="card border-0 bg-transparent img-promo-card">';
-                event_item += '<img type="button" class="promo-img promo_img_'+ event.promo_id +'" src="'+ event.image_url +'">';
+                event_item += '<img type="button" class="promo-img promo_img_'+ event.id +'" src="'+ event.image_url_path +'">';
                 event_item += '<div class="d-block">';
-                event_item += '<p class="promo-store tenants_tenant_store_'+ event.promo_id +'">'+ event.brand_name +'</p>';
-                event_item += '<p class="promo-floor">'+ event.location +'</p>';
+                event_item += '<p class="promo-store tenants_tenant_store_'+ event.id +'">'+ event.event_name +'</p>';
+                event_item += '<p class="promo-floor">'+ event.event_date +'</p>';
                 event_item += '</div>';
                 event_item += '</div>';
                 event_item += '</div>';
 
                 $( ".item-row-"+key ).append(event_item);
-                $('.promo_img_'+event.promo_id).on('click', function() {
-                    $('.promo-modal-img').attr("src", event.image_url);
+                $('.promo_img_'+event.id).on('click', function() {
+                    $('.promo-modal-img').attr("src", event.image_url_path);
                     $("#imgEventModal").css("display", "block");
                 });
-
-                // $('.tenants_tenant_store_'+event.promo_id).on('click', function() {
-                //     showTenantDetails(event);
-                // });
             });
         });
 

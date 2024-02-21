@@ -15,6 +15,7 @@ use App\Models\SiteMeta;
 use App\Models\Amenity;
 use App\Models\SiteBuilding;
 use App\Models\SiteMapZoom;
+use App\Models\Event;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\AdminViewModels\CinemaScheduleViewModel;
 use App\Models\AdminViewModels\PlayListViewModel;
@@ -55,6 +56,7 @@ class KioskController extends AppBaseController
             $operational_hours = json_encode($this->site->operational_hours);
             $categories = $this->getCategories();
             $promos = $this->getPromos();
+            $events = $this->getEvents();
             $cinemas = $this->getCinemas();
             $now_showing = $this->getShowing();
             $suggestions = $this->getSuggestionList();
@@ -109,6 +111,7 @@ class KioskController extends AppBaseController
                 'operational_hours', 
                 'categories', 
                 'promos', 
+                'events',
                 'cinemas', 
                 'now_showing', 
                 'suggestions', 
@@ -297,6 +300,18 @@ class KioskController extends AppBaseController
         $promos = array_chunk($promos, 6);
         return json_encode($promos);
 
+    }
+
+    public function getEvents() {
+        $current_date = date('Y-m-d');
+
+        $events = Event::where('site_id', $this->site->id)
+        ->whereDate('start_date', '<=', $current_date)
+        ->whereDate('end_date', '>=', $current_date)
+        ->where('active', 1)
+        ->get()->toArray();
+        $events = array_chunk($events, 6);
+        return json_encode($events);
     }
 
     public function getCinemas() {

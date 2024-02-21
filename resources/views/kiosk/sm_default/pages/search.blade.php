@@ -228,12 +228,12 @@
         var navigation_button = '';
         navigation_button += '<a class="promo-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
         navigation_button += '<a class="promo-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
 
@@ -300,19 +300,27 @@
             want_to_try += '<div class="row">';
             want_to_try += '<div class="col-12 pl-170">';
             want_to_try += '<div class="owl-carousel subscriber-holder">';
-
-            $.each(subscriber, function(index,tenant) {        
-                want_to_try += '<div class="item">';            
-                want_to_try += '<img class="shop-logo tenant-store" src="'+tenant.tenant_details.subscriber_logo+'">';
-                want_to_try += '</div>';
-                // show tenant
-            });
-
             want_to_try += '</div>';
             want_to_try += '</div>';
             want_to_try += '</div>';
 
             $('.search-results').append(want_to_try);
+
+            $.each(subscriber, function(index,tenant) {     
+                want_to_item = '';   
+                want_to_item += '<div class="item">';            
+                want_to_item += '<img class="shop-logo tenant-store tenant-try-'+tenant.id+'" src="'+tenant.tenant_details.subscriber_logo+'">';
+                want_to_item += '</div>';
+
+                $('.subscriber-holder').append(want_to_item);
+                // show tenant
+                $('.tenant-try-'+tenant.id).on('click', function() {
+                    showTenantDetails(tenant);
+                });
+            });
+
+
+
 
             owl_subscriber = $('.subscriber-holder');
             owl_subscriber.owlCarousel({

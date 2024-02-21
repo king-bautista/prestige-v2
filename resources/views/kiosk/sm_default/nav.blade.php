@@ -24,52 +24,40 @@
 		<div class="language-title">LANGUAGE SELECT</div>
 	</div>
 
-	<div class="d-flex nav-content-container" id = "NavContentContainer"> 
+	<div class="d-flex nav-content-container" id="NavContentContainer"> 
 
-		<div class="nav-btn-home" id="home_btn">
-			<div class="nav-btn-container">
-				<img id="home_v4s" class="" src="{{ URL::to('themes/sm_default/images/Homev4s.png') }}">
-				<img id="home_v4" class="" src="{{ URL::to('themes/sm_default/images/Homev4.png') }}">
-				<div id="home_txt" class="nav-home-button-align nav-btn-active translateme" data-en="Home">Home</div>
+		<div id="home_btn">
+			<div class="nav-btn-container nav-btn-home active">
+				<div id="home_txt" class="nav-home-button-align translateme" data-en="Home">Home</div>
 			</div>
 		</div>
 
-		<div class="nav-btn-search" id="search_btn">
-			<div class="nav-btn-container">
-				<img id="search_v4s" class="" src="{{ URL::to('themes/sm_default/images/Searchv4s.png') }}">
-				<img id="search_v4" class="" src="{{ URL::to('themes/sm_default/images/Searchv4.png') }}">
+		<div id="search_btn">
+			<div class="nav-btn-container nav-btn-search">
 				<div id="search_txt" class="nav-search-button-align translateme" data-en="Search">Search</div>
 			</div>
 		</div>
 
-		<div class="nav-btn-map" id="map_btn">
-			<div class="nav-btn-container">
-				<img id="map_v4s" class="" src="{{ URL::to('themes/sm_default/images/Mapv4s.png') }}">
-				<img id="map_v4" class="" src="{{ URL::to('themes/sm_default/images/Mapv4.png') }}">
+		<div id="map_btn">
+			<div class="nav-btn-container nav-btn-map">
 				<div id="map_txt" class="nav-map-button-align translateme" data-en="Map">Map</div>
 			</div>
 		</div>
 
-		<div class="nav-btn-promo" id="promos_btn">
-			<div class="nav-btn-container">
-				<img id="promos_v4s" class="" src="{{ URL::to('themes/sm_default/images/Promosv4s.png') }}">
-				<img id="promos_v4" class="" src="{{ URL::to('themes/sm_default/images/Promosv4.png') }}">
+		<div id="promos_btn">
+			<div class="nav-btn-container nav-btn-promo">
 				<div id="promos_txt" class="nav-promo-button-align translateme resize" data-en="Promos">Promos</div>
 			</div>
 		</div>
 
-        <!-- <div class="nav-btn-event" id="events_btn">
-			<div class="nav-btn-container">
-				<img id="events_v4s" class="" src="{{ URL::to('themes/sm_default/images/Eventv4s.png') }}">
-				<img id="events_v4" class="" src="{{ URL::to('themes/sm_default/images/Eventv4.png') }}">
+        <div id="events_btn">
+			<div class="nav-btn-container nav-btn-event">
 				<div id="events_txt" class="nav-event-button-align translateme resize" data-en="Events">Events</div>
 			</div>
-		</div> -->
+		</div>
 
-		<div class="nav-btn-cinema" id="cinema_btn">
-			<div class="nav-btn-container">
-				<img id="cinema_v4s" class="" src="{{ URL::to('themes/sm_default/images/Cinemav4s.png') }}">
-				<img id="cinema_v4" class="" src="{{ URL::to('themes/sm_default/images/Cinemav4.png') }}">
+		<div id="cinema_btn">
+			<div class="nav-btn-container nav-btn-cinema">
 				<div id="cinema_txt" class="nav-cinema-button-align translateme" data-en="Cinema">Cinema</div>
 			</div>
 		</div>
