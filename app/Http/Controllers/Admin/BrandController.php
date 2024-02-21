@@ -412,6 +412,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 $reports[] = [
                     'id' => $brand->id,
                     'category_id' => $brand->category_id,
+                    'parent_category_id' => '',
+                    'supplemental_category_id' => '',
                     'category_name' => $brand->category_name,
                     'name' => $brand->name,
                     'descriptions' => $brand->descriptions,
