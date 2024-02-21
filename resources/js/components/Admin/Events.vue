@@ -43,7 +43,7 @@
 								<div class="col-sm-5">
 									<input type="file" id="img_banner" accept="image/*" ref="image_url"
 										@change="bannerChange">
-									<footer class="blockquote-footer">image max size is 355 x 660 pixels</footer>
+									<footer class="blockquote-footer">image max size is 700 x 700 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="image_url" :src="image_url" class="img-thumbnail" />
@@ -271,13 +271,13 @@ export default {
 				img.onload = function () {
 					this.image_width = this.width;
 					this.image_height = this.height;
-					if (this.image_width == 355 && this.image_height == 660) {
+					if (this.image_width <= 700 && this.image_height <= 700) {
 						obj.event.image_url = this.file;
 					} else {
 						$('#img_banner').val('');
 						obj.image_url = '';
 						obj.event.image_url = '';
-						toastr.error("Invalid Image Size! Must be width: 355 and height: 660. Current width: " + this.image_width + " and height: " + this.image_height);
+						toastr.error("Invalid Image Size! Must be maximum width: 700 and maximum height: 700. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {

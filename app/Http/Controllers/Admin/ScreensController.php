@@ -187,6 +187,22 @@ class ScreensController extends AppBaseController implements ScreensControllerIn
     {
         try {
             $site_screen = SiteScreen::find($id);
+            $site_screen->delete();
+            return $this->response($site_screen, 'Successfully Deleted!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+
+    public function inactive($id)
+    {
+        try {
+            $site_screen = SiteScreen::find($id);
             if ($site_screen->active) {
                 $site_screen->active = 0;
             } else {

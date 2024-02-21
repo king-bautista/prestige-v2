@@ -45,6 +45,9 @@ class PiProductController extends AppBaseController implements PiProductControll
                     ->orWhere('slots', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('serial_number', 'LIKE', '%' . request('search') . '%');
             })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('serial_number', 'ASC');
+                })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
 
