@@ -5,12 +5,12 @@
 
 <a class="promo-prev">
     <div class="left-btn-carousel">
-        <img src="resources/uploads/imagebutton/Left.png">
+        <img src="{{ URL::to('themes/sm_default/images/Left.png') }}">
     </div>
 </a>
 <a class="promo-next">
     <div class="right-btn-carousel">
-        <img src="resources/uploads/imagebutton/Right.png">
+        <img src="{{ URL::to('themes/sm_default/images/Right.png') }}">
     </div>
 </a>
 

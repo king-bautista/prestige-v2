@@ -10,6 +10,11 @@
     var banner_ads = "{{ $banner_ads }}";
 
     setTimeout(helper.removeLoader, 20000);
+    setInterval(screenUpTime, 2000*60);
+
+    function screenUpTime() {
+        helper.screenUpTime('{{ $site_config->site_screen_id }}');
+    }
 
     function showBannerAds() {
 
@@ -39,6 +44,7 @@
             $('.banner-add-'+key).on('click', function() {
                 if(banner_ad.tenant_details) {
                     helper.saveLogs(banner_ad, 'Banner Ad');
+                    helper.homeBtnClick();
                     //helper.saveBannerCount(banner_ad.content_id);
                     showTenantDetails(banner_ad.tenant_details);
                 }

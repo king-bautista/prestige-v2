@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\BrandControllerInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
 
 use App\Http\Requests\BrandRequest;
 
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Supplemental;
 use App\Models\BrandProductPromos;
@@ -62,24 +64,24 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $brands = BrandViewModel::when(request('search'), function ($query) {
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('supplementals.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('categories.name', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
+                    
             })
                 ->when(count($brand_ids) > 0, function ($query) use ($brand_ids) {
                     return $query->whereIn('brands.id', $brand_ids);
                 })
-                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-                ->leftJoin('supplementals', 'brands.category_id', '=', 'supplementals.id')
-                ->select('brands.*', 'categories.name', 'supplementals.name', 'brands.name')
+                ->leftJoin('brand_supplementals as bs', 'brands.id', '=', 'bs.brand_id')
+                ->leftJoin('categories as c', 'bs.supplemental_id','=', 'c.id')
+                ->select('brands.*', 'c.name as c_name', 'brands.name as b_name', DB::raw('group_concat(c.name) as supplementals'))
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('brands.name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
                     if ($column == 'category_name') {
-                        $field = 'categories.name';
+                        $field = 'c.name';
                     } else if ($column == 'supplemental_names') {
-                        $field = 'supplementals.name';
+                        $field = 'supplementals';
                     } else if ($column == 'name') {
                         $field = 'brands.name';
                     } else {
@@ -87,6 +89,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                     }
                     return $query->orderBy($field, request('sort'));
                 })
+                ->groupBy('brands.id')
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
@@ -401,7 +404,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     {
         try {
             $between = explode("_", $ids);
-            $brand_management =  Brand::skip($between[0])->take(1000)->get();
+            $brand_management =  BrandViewModel::skip($between[0])->take(1000)->get();
 
 
             $reports = [];
@@ -428,7 +431,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 Storage::delete($file);
             }
 
-            $filename = "brand_management_".substr($ids, 0, 1).".csv";
+            $filename = "brand_management_".(substr($ids, 0, 1)+1).".csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

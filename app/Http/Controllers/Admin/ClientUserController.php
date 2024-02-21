@@ -40,6 +40,9 @@ class ClientUserController extends AppBaseController implements ClientUserContro
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('email', 'LIKE', '%' . request('search') . '%');
             })
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('full_name', 'ASC');
+            })
             ->when(request('order'), function ($query) {
                 $column = $this->checkcolumn(request('order'));
                 return $query->orderBy($column, request('sort'));

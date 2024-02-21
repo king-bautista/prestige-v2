@@ -44,6 +44,12 @@ Route::group(['prefix' => 'v1'], function ()
     Route::post('/tenant-count-details', 'Kiosk\KioskController@getTenantCountDetails')->name('kiosk.tenant-count-details');
     Route::post('/get-routes', 'Kiosk\KioskController@getPath')->name('kiosk.get-routes');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Get Update 
+    |--------------------------------------------------------------------------
+    */
+    Route::post('/screen-uptime', 'Api\UpTimeController@storeUpTime')->name('api.screen-uptime');
 
     // Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');
     // Route::get('/site', 'Kiosk\MainController@getSite')->name('kiosk.site');
@@ -73,13 +79,7 @@ Route::group(['prefix' => 'v1'], function ()
     // Route::get('/landmark', 'Kiosk\MainController@getLandmark')->name('kiosk.landmark');
     // Route::get('/events', 'Kiosk\MainController@getEvents')->name('kiosk.events');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Get Update 
-    |--------------------------------------------------------------------------
-    */
-    // Route::get('/get-update', 'Api\GetUpdateController@updateContent')->name('api.get-update');
-    // Route::post('/screen-uptime', 'Api\UpTimeController@storeUpTime')->name('api.screen-uptime');
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

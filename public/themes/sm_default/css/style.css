@@ -449,7 +449,7 @@ body {
     margin-right: -10px !important;
 }
 
-.owl-dots-promo {
+.owl-dots-promo, .owl-dots-event {
     margin-top: -5.0px !important;
     margin-left: 10.0px !important;
     margin-right: -10.5px !important;
@@ -1279,7 +1279,9 @@ body {
 }
 
 .promo-prev,
-.promo-next {
+.promo-next,
+.event-prev,
+.event-next {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -1292,12 +1294,12 @@ body {
     z-index: 2;
 }
 
-.promo-prev {
+.promo-prev, .event-prev {
     left: 0;
     border-radius: 3px 0 0 3px;
 }
 
-.promo-next {
+.promo-next, .event-next {
     right: 0;
     border-radius: 3px 0 0 3px;
 }
@@ -1666,6 +1668,12 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     top: 982px;
 }
 
+.nav-btn-event {
+    position: absolute;
+    left: 767px;
+    top: 982px;
+}
+
 .nav-btn-cinema {
     position: absolute;
     left: 980px;
@@ -1712,6 +1720,17 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 .nav-promo-button-align {
     color: #e89b12;
+    width: 94px;
+    position: absolute;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
+    font-family: "Henry Sans Regular";
+    text-align: center;
+}
+
+.nav-event-button-align {
+    color: #246c63;
     width: 94px;
     position: absolute;
     top: 23px;
@@ -1871,6 +1890,10 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     display: none;
 }
 
+#events-container {
+    display: none;
+}
+
 #promos-default {
     display: none;
 }
@@ -1922,6 +1945,14 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 #promos_v4 {
+    display: block;
+}
+
+#events_v4s {
+    display: none;
+}
+
+#events_v4 {
     display: block;
 }
 

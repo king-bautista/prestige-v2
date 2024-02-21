@@ -38,6 +38,14 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Ticket ID <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control readonly" v-model="customer_care.ticket_id"
+										placeholder="Ticket ID" required>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="Status" class="col-sm-3 col-form-label">Status<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -106,6 +114,14 @@
 										v-model="customer_care.ticket_description"
 										placeholder="Ticket Description"></textarea>
 
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Created At <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control readonly" v-model="customer_care.created_at"
+										placeholder="Created At" required>
 								</div>
 							</div>
 
@@ -232,6 +248,7 @@ export default {
 				assigned_to_id: '',
 				image: '/images/no-image-available.png',
 				active: true,
+				created_at:'',
 			},
 			image: '',			
 			transaction_statuses: [],
@@ -424,6 +441,7 @@ export default {
 					this.customer_care.external_remark = customer_care.external_remark;
 					this.customer_care.assigned_to_id = (customer_care.admin_details) ? customer_care.admin_details : '';
 					this.customer_care.active = customer_care.active;
+					this.customer_care.created_at = customer_care.created_ad;
 					this.add_record = false;
 					this.edit_record = true;
 					this.select_user_full_name = false;
