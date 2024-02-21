@@ -14,7 +14,7 @@
     </div>
 </a>
 
-<div class="justify-content-center no-events-found">
+<div class="justify-content-center no-events-found text-center">
     <img class="ImgPromoDefault" src="{{ URL::to('themes/sm_default/images/stick-around.png') }}">
 </div>
 
