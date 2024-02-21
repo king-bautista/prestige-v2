@@ -60,7 +60,7 @@
             var event_element = '';
             event_element += '<div class="item">';
             event_element += '<div class="carousel-content-container">';
-            event_element += '<div class="row item-row-'+key+'">';
+            event_element += '<div class="row event-item-row-'+key+'">';
             event_element += '</div>';
             event_element += '</div>';
             event_element += '</div>';
@@ -78,7 +78,7 @@
                 event_item += '</div>';
                 event_item += '</div>';
 
-                $( ".item-row-"+key ).append(event_item);
+                $( ".event-item-row-"+key ).append(event_item);
                 $('.promo_img_'+event.id).on('click', function() {
                     $('.promo-modal-img').attr("src", event.image_url_path);
                     $("#imgEventModal").css("display", "block");
