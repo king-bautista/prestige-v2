@@ -37,7 +37,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="card-body">
-							<div class="form-group row">
+							<div class="form-group row" v-show="input_user_full_name">
 								<label for="firstName" class="col-sm-3 col-form-label">Ticket ID <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -116,7 +116,7 @@
 
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row" v-show="input_user_full_name">
 								<label for="firstName" class="col-sm-3 col-form-label">Created At <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
@@ -430,6 +430,7 @@ export default {
 					var customer_care = response.data.data;
 					this.customer_care.id = customer_care.id;
 					this.getStatuses(customer_care.id);
+					this.customer_care.ticket_id = customer_care.ticket_id;
 					this.customer_care.status_id = customer_care.status_details;
 					this.customer_care.user_id = customer_care.user_details;
 					this.customer_care.concern_id = customer_care.concern_details;
@@ -441,7 +442,7 @@ export default {
 					this.customer_care.external_remark = customer_care.external_remark;
 					this.customer_care.assigned_to_id = (customer_care.admin_details) ? customer_care.admin_details : '';
 					this.customer_care.active = customer_care.active;
-					this.customer_care.created_at = customer_care.created_ad;
+					this.customer_care.created_at = customer_care.created_at;
 					this.add_record = false;
 					this.edit_record = true;
 					this.select_user_full_name = false;

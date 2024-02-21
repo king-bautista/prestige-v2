@@ -107,7 +107,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
     }
 
     public function store(CompanyCategoryRequest $request)
-    {
+    { 
         try {
             $kiosk_image_primary_path = null;
             $kiosk_image_top_path = null;
