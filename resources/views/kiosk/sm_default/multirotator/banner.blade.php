@@ -10,6 +10,11 @@
     var banner_ads = "{{ $banner_ads }}";
 
     setTimeout(helper.removeLoader, 20000);
+    setInterval(screenUpTime, 2000*60);
+
+    function screenUpTime() {
+        helper.screenUpTime('{{ $site_config->site_screen_id }}');
+    }
 
     function showBannerAds() {
 

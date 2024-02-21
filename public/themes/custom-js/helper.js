@@ -141,62 +141,71 @@ Helpers.prototype = {
         current_assistant_messages = my_assistant_message.filter(option => option.location == current_location && option.content_language == content_language);
     },
 
+    screenUpTime: function(screen_id) {
+        $.post( "/api/v1/screen-uptime", { site_screen_id: screen_id } , function( data ) {
+            console.log(data);
+        }); 
+    },
+
     homeBtnClick: function() {
-        $('#search_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section').show();
-        $('#search-container, #map-container, #promos-container, #cinema-container, #search_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
-        $('#search_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
-        $('#home_txt').addClass("nav-btn-active");
+        $('.content-holder, .back-img-btn, .modal').hide();
+        $('#home-container, #ImgMallLogo').show();
+        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-home').addClass("active");
+        $('#videocontainer').html('');
 
         sub_categories = '';
         main_category = '';
         supplementals = '';
         alphabetical = '';
         tenant_list = '';
-        $('#videocontainer').html('');
-        $('#Tab-Category-Tab').click();        
-		$('#home-cat-contents').hide();
-        $('#home-container').show();
-        $('#home_v4s').show();
-        $('#home_v4').hide();
         current_location = 'home';
-        $('.back-img-btn').hide();
         page_history = [];
     },
 
     searchBtnClick: function() {
-        $('#search-container, #search_v4s, #home_v4, #map_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
-        $('#home-container, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
-        $('#home_txt, #map_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
-        $('#search_txt').addClass("nav-btn-active");
+        $('.content-holder, .back-img-btn, .modal, .search-for, #searchNone, #searchList').hide();
+        $('#search-container, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
+        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-search').addClass("active");
         $('#code').val('');
         $('#videocontainer').html('');
         current_location = 'searchbox';
     },
 
     mapBtnClick: function() {
-        $('#map-container, #map_v4s, #home_v4, #search_v4, #promos_v4, #cinema_v4, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
-        $('#home-container, #home-cat-contents, #search-container, #promos-container, #cinema-container, #map_v4, #home_v4s, #search_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
-        $('#search_txt, #home_txt, #promos_txt, #cinema_txt').removeClass("nav-btn-active");
-        $('#map_txt').addClass("nav-btn-active");
+        $('.content-holder, .modal').hide();
+        $('#map-container, #ImgMallLogo, .back-img-btn').show();
+        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-map').addClass("active");
         $('#videocontainer').html('');
         $('#btnresetmap').click();
         current_location = 'map';
     },
 
     promosBtnClick: function() {
-        $('#promos-container, #promos_v4s, #home_v4, #search_v4, #map_v4, #cinema_v4, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
-        $('#home-container, #home-cat-contents, #search-container, #map-container, #cinema-container, #promos_v4, #home_v4s, #search_v4s, #cinema_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
-        $('#home_txt, #map_txt, #search_txt, #cinema_txt').removeClass("nav-btn-active");
-        $('#promos_txt').addClass("nav-btn-active");
+        $('.content-holder, .modal').hide();
+        $('#promos-container, #ImgMallLogo, .back-img-btn').show();
+        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-promo').addClass("active");
         $('#videocontainer').html('');
         current_location = 'promo';
     },
+
+    eventsBtnClick: function() {
+        $('.content-holder, .modal').hide();
+        $('#events-container, #ImgMallLogo, .back-img-btn').show();
+        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-event').addClass("active");
+        $('#videocontainer').html('');
+        current_location = 'events';
+    },
     
     cinemaBtnClick: function() {
-        $('#cinema-container, #cinema_v4s, #home_v4, #search_v4, #promos_v4, #map_v4, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
-        $('#home-container, #home-cat-contents, #search-container, #map-container, #promos-container, #cinema_v4, #home_v4s, #search_v4s, #promos_v4s, #map_v4s, #tenant-store-content, #TenantPage, #DirectoryAboutPage, .modal, .search-for, #searchNone, #searchList').hide();
-        $('#home_txt, #map_txt, #promos_txt, #search_txt').removeClass("nav-btn-active");
-        $('#cinema_txt').addClass("nav-btn-active");
+        $('.content-holder, .modal').hide();
+        $('#cinema-container, #ImgMallLogo, .back-img-btn').show();
+        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
         $('#Tab-Cinema-Tab').click();
         current_location = 'cinema';

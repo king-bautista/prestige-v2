@@ -449,7 +449,7 @@ body {
     margin-right: -10px !important;
 }
 
-.owl-dots-promo {
+.owl-dots-promo, .owl-dots-event {
     margin-top: -5.0px !important;
     margin-left: 10.0px !important;
     margin-right: -10.5px !important;
@@ -1279,7 +1279,9 @@ body {
 }
 
 .promo-prev,
-.promo-next {
+.promo-next,
+.event-prev,
+.event-next {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -1292,12 +1294,12 @@ body {
     z-index: 2;
 }
 
-.promo-prev {
+.promo-prev, .event-prev {
     left: 0;
     border-radius: 3px 0 0 3px;
 }
 
-.promo-next {
+.promo-next, .event-next {
     right: 0;
     border-radius: 3px 0 0 3px;
 }
@@ -1609,8 +1611,8 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 .nav-content-container {
     position: absolute;
-    top: 0px;
-    left: 0%;
+    bottom: 18px;
+    left: 0;
 }
 
 .nav-content-container-1 {
@@ -1639,37 +1641,81 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 .nav-btn-container {
     position: relative;
+    width: 225px;
+    height: 80px;
     z-index: 9999;
 }
 
 .nav-btn-home {
-    position: absolute;
-    left: 135px;
-    top: 982px;
+    background-image: url('../images/Homev4.png'); 
+    background-size: cover;
+}
+
+.nav-btn-home.active {
+    background-image: url('../images/Homev4s.png') !important; 
+    text-transform: uppercase;
+    font-family: "Henry Sans Medium" !important;
+    font-weight: 600;
 }
 
 .nav-btn-search {
-    position: absolute;
-    left: 349px;
-    top: 982px;
+    background-image: url('../images/Searchv4.png'); 
+    background-size: cover;
+}
+
+.nav-btn-search.active {
+    background-image: url('../images/Searchv4s.png'); 
+    text-transform: uppercase;
+    font-family: "Henry Sans Medium" !important;
+    font-weight: 600;
 }
 
 .nav-btn-map {
-    position: absolute;
-    left: 559px;
-    top: 982px;
+    background-image: url('../images/Mapv4.png'); 
+    background-size: cover;
+}
+
+.nav-btn-map.active {
+    background-image: url('../images/Mapv4s.png'); 
+    text-transform: uppercase;
+    font-family: "Henry Sans Medium" !important;
+    font-weight: 600;
 }
 
 .nav-btn-promo {
-    position: absolute;
-    left: 767px;
-    top: 982px;
+    background-image: url('../images/Promosv4.png'); 
+    background-size: cover;
+}
+
+.nav-btn-promo.active {
+    background-image: url('../images/Promosv4s.png'); 
+    text-transform: uppercase;
+    font-family: "Henry Sans Medium" !important;
+    font-weight: 600;
+}
+
+.nav-btn-event {
+    background-image: url('../images/Eventv4.png'); 
+    background-size: cover;
+}
+
+.nav-btn-event.active {
+    background-image: url('../images/Eventv4.png'); 
+    text-transform: uppercase;
+    font-family: "Henry Sans Medium" !important;
+    font-weight: 600;
 }
 
 .nav-btn-cinema {
-    position: absolute;
-    left: 980px;
-    top: 982px;
+    background-image: url('../images/Cinemav4.png'); 
+    background-size: cover;
+}
+
+.nav-btn-cinema.active {
+    background-image: url('../images/Cinemav4.png'); 
+    text-transform: uppercase;
+    font-family: "Henry Sans Medium" !important;
+    font-weight: 600;
 }
 
 .nav-btn-active {
@@ -1712,6 +1758,17 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 .nav-promo-button-align {
     color: #e89b12;
+    width: 94px;
+    position: absolute;
+    top: 23px;
+    left: 92px;
+    font-size: 24px;
+    font-family: "Henry Sans Regular";
+    text-align: center;
+}
+
+.nav-event-button-align {
+    color: #246c63;
     width: 94px;
     position: absolute;
     top: 23px;
@@ -1871,6 +1928,10 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     display: none;
 }
 
+#events-container {
+    display: none;
+}
+
 #promos-default {
     display: none;
 }
@@ -1922,6 +1983,14 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 #promos_v4 {
+    display: block;
+}
+
+#events_v4s {
+    display: none;
+}
+
+#events_v4 {
     display: block;
 }
 

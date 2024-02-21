@@ -818,7 +818,8 @@
                         floors[info.building_level_id].add(sm_icon[10]); 
                     }
                     else{ 
-                        let label = map_tenants[info.tenant_id].brand_name ? map_tenants[info.tenant_id].brand_name :  (info.point_label ? info.point_label : map_tenants[info.tenant_id].brand_name);
+                        //let label = map_tenants[info.tenant_id].brand_name ? map_tenants[info.tenant_id].brand_name :  (info.point_label ? info.point_label : map_tenants[info.tenant_id].brand_name);
+                        let label = (info.point_label) ? info.point_label : map_tenants[info.tenant_id].brand_name;
                         if(info.wrap_at > 0 && label.length > info.wrap_at)
 						{
 							var cutText = label;
@@ -862,6 +863,8 @@
 
 							var text = new THREE.Mesh( text3d, textMaterial );
 							text.rotation.x = -90 * Math.PI / 180;
+							//rotate text based on settings
+							text.rotation.z = info.rotation_z * Math.PI / 180;
 
                             if(KIOSK_VIEW_ANGLE >= 180) {
                                 text.rotation.z = ((360 - KIOSK_VIEW_ANGLE) * Math.PI / 180);
@@ -891,6 +894,8 @@
 	
 							var text = new THREE.Mesh( text3d, textMaterial );
 							text.rotation.x = -90 * Math.PI / 180;
+							//rotate text based on settings
+							text.rotation.z = info.rotation_z * Math.PI / 180;
 								
 							if(KIOSK_VIEW_ANGLE >= 180) {
                                 text.rotation.z = ((360 - KIOSK_VIEW_ANGLE) * Math.PI / 180);
@@ -1004,7 +1009,6 @@
 					}
                 });
 
-				console.log('test');
                 fitCameraToScreen(nav_zoom_level, move_top);                
             }
 
@@ -1012,8 +1016,6 @@
 			{
                 if(transitioning  == 0)
 				{
-					console.log('here 2');
-
                     transitioning = 1;
 
                     if(movements[currentpos-1] && movements[currentpos].b != movements[currentpos-1].b && @php echo $building_count; @endphp > 1)
@@ -1677,6 +1679,50 @@
 		});
 	}
 
+	function resetMap() {
+		$("#floor-select").val(default_floor).change();
+		$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Input Destination');
+		$('.mapexpand').addClass('btn-prestige-last');
+		$(".maprepeat").hide();
+		$('#btnGuide').hide();
+
+		movements = [];
+		currentpos = 1;
+
+		$.each(floors,function(index){
+			linePathGroup[index].remove(...linePathGroup[index].children);
+			linePathGroup[index].visible = (index == default_floor);
+		});
+
+		spritePinTo.visible = false;
+		theball.visible = false;
+
+		//zoom to default zoom
+		var zoom_level =  0.8;
+
+		fitCameraToScreen(zoom_level);					
+		var kiosk = map_points[KIOSK_ID];
+		var coords = new THREE.Vector3(kiosk.point_x, 6,kiosk.point_z);
+
+		//backup code
+		coords.x = kiosk.point_x;
+		coords.z = kiosk.point_z;
+		coords.y = kiosk.point_y;
+
+		//overwrite coords
+		coords.z = (Math.abs(site_config.default_z) > 0) ? parseFloat(coords.z)+parseFloat(site_config.default_z) : coords.z;
+		coords.x = (Math.abs(site_config.default_x) > 0) ? parseFloat(coords.x)+parseFloat(site_config.default_x) : coords.x;
+
+		scene.worldToLocal(coords);
+		controls.target = coords;
+
+		//camera.position.y = 100;
+		camera.position.y = site_config.default_y;
+		camera.position.x = coords.x;
+		camera.position.z = coords.z;
+		controls.update();
+	}
+
     $(document).ready(function() {
         init();
         loadFont();
@@ -1687,51 +1733,14 @@
         $('#floor-select').select2();
 
 		$('#btnresetmap').on('click', function() {
-			onWindowResize();
-
-			movements = [];
-			currentpos = 1;
-
+			$('#tenant-select').prop('disabled', false);
+			$('#floor-select').prop('disabled', false);
+			$('#btnpwdchange').prop('disabled', false);
 			$('#tenant-select').val('');
-			$("#floor-select").val(default_floor).change();
-			$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Input Destination');
-			$('.mapexpand').addClass('btn-prestige-last');
-			$(".maprepeat").hide();
-			$('#btnGuide').hide();
 
-			$.each(floors,function(index){
-				linePathGroup[index].remove(...linePathGroup[index].children);
-				linePathGroup[index].visible = (index == default_floor);
-			});
-
-			spritePinTo.visible = false;
-			theball.visible = false;
-
-			//zoom to default zoom
-			var zoom_level =  0.8;
-
-			fitCameraToScreen(zoom_level);					
-			var kiosk = map_points[KIOSK_ID];
-			var coords = new THREE.Vector3(kiosk.point_x, 6,kiosk.point_z);
-
-			//backup code
-			coords.x = kiosk.point_x;
-			coords.z = kiosk.point_z;
-			coords.y = kiosk.point_y;
-
-			//overwrite coords
-			coords.z = (Math.abs(site_config.default_z) > 0) ? parseFloat(coords.z)+parseFloat(site_config.default_z) : coords.z;
-			coords.x = (Math.abs(site_config.default_x) > 0) ? parseFloat(coords.x)+parseFloat(site_config.default_x) : coords.x;
-
-			scene.worldToLocal(coords);
-			controls.target = coords;
-
-			//camera.position.y = 100;
-			camera.position.y = site_config.default_y;
-			camera.position.x = coords.x;
-			camera.position.z = coords.z;
-			controls.update();
-
+			onWindowResize();
+			// RESET MAP
+			resetMap();
 		});
 
         $("#floor-select").on('change',function(){
@@ -1782,6 +1791,8 @@
 		});
 
 		$('#tenant-select').on('change', function() {
+			// RESET MAP
+			resetMap();
 			// KEYBOARD INPUT CLEAR
 			$('#selectInput').val('').change();
 
