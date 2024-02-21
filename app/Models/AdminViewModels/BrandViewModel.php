@@ -93,6 +93,7 @@ class BrandViewModel extends Model
 
         return [
             'category_name' => ($category) ? $category->name : null,
+            'parent_category_id' => ($parent_category) ? $parent_category->parent_id : null,
             'parent_category_name' => ($parent_category) ? $parent_category->name : null,
             'supplementals' => ($supplementals) ? $supplementals : null,
             'tags' => ($tags) ? $tags : null

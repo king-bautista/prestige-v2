@@ -818,7 +818,8 @@
                         floors[info.building_level_id].add(sm_icon[10]); 
                     }
                     else{ 
-                        let label = map_tenants[info.tenant_id].brand_name ? map_tenants[info.tenant_id].brand_name :  (info.point_label ? info.point_label : map_tenants[info.tenant_id].brand_name);
+                        //let label = map_tenants[info.tenant_id].brand_name ? map_tenants[info.tenant_id].brand_name :  (info.point_label ? info.point_label : map_tenants[info.tenant_id].brand_name);
+                        let label = (info.point_label) ? info.point_label : map_tenants[info.tenant_id].brand_name;
                         if(info.wrap_at > 0 && label.length > info.wrap_at)
 						{
 							var cutText = label;
@@ -862,6 +863,8 @@
 
 							var text = new THREE.Mesh( text3d, textMaterial );
 							text.rotation.x = -90 * Math.PI / 180;
+							//rotate text based on settings
+							text.rotation.z = info.rotation_z * Math.PI / 180;
 
                             if(KIOSK_VIEW_ANGLE >= 180) {
                                 text.rotation.z = ((360 - KIOSK_VIEW_ANGLE) * Math.PI / 180);
@@ -891,6 +894,8 @@
 	
 							var text = new THREE.Mesh( text3d, textMaterial );
 							text.rotation.x = -90 * Math.PI / 180;
+							//rotate text based on settings
+							text.rotation.z = info.rotation_z * Math.PI / 180;
 								
 							if(KIOSK_VIEW_ANGLE >= 180) {
                                 text.rotation.z = ((360 - KIOSK_VIEW_ANGLE) * Math.PI / 180);

@@ -1,4 +1,4 @@
-<div id="home-container">
+<div class="content-holder" id="home-container">
     <div class="text-center">
         <div class="title-page title-page-portrait translateme" data-en="Search your favorite stores">Search your favorite stores</div>
     </div>
@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<div id="home-cat-contents">
+<div class="content-holder" id="home-cat-contents">
     <!-- TITLE -->
     <div class="p-3 font-weight-bold nav-titles translateme" data-en="Store List">Store List</div>
 
@@ -138,6 +138,7 @@
         $('.cat-row-card').html('');
         $('.category-title').html(main_category);
         $('.category-title').attr('data-en', main_category);
+        $('.nav-btn-container').removeClass('active');
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
             subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
@@ -218,12 +219,12 @@
         var navigation_button = '';
         navigation_button += '<a class="promo-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
         navigation_button += '<a class="promo-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
 
@@ -331,12 +332,12 @@
         var navigation_button = '';
         navigation_button += '<a class="promo-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
         navigation_button += '<a class="promo-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
 
@@ -435,12 +436,12 @@
         var navigation_button = '';
         navigation_button += '<a class="promo-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
         navigation_button += '<a class="promo-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
 
