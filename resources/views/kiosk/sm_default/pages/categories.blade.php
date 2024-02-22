@@ -128,6 +128,7 @@
                 supplementals = category.supplemental.sub_categories;
                 $('#Tab-Supplemental-tab').html(category.supplemental.name);
                 $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
+                $('#Tab-Category-Tab').click();
                 showSubCategories();
             });
         });
