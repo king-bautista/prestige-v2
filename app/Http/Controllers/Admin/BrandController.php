@@ -412,17 +412,18 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 $reports[] = [
                     'id' => $brand->id,
                     'category_id' => $brand->category_id,
-                    'parent_category_id' => '',
-                    'supplemental_category_id' => '',
                     'category_name' => $brand->category_name,
+                    //'category_parent_id' => $brand->brand_details['parent_category_id'],
+                    //'category_parent_name' => $brand->brand_details['parent_category_name'],
+                   // 'supplemental_category_id' => $brand->supplemental_ids,
+                    'supplemental_category_name' => $brand->supplemental_names,
                     'name' => $brand->name,
                     'descriptions' => $brand->descriptions,
                     'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
                     'active' => $brand->active,
-                    'created_at' => $brand->created_at,
+                    'created_at' => $brand->created_at, 
                     'updated_at' => $brand->updated_at,
                     'deleted_at' => $brand->deleted_at,
-                    'supplementals' => $brand->supplemental_names,
                     'tags' => $brand->tag_names,
                 ];
             }

@@ -35,7 +35,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
     }
 
     public function list(Request $request)
-    { 
+    {
         try {
             $filters = json_decode($request->filters);
             $site_ids = [];
@@ -68,7 +68,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                         ->where('sites_meta.meta_key', '=', 'site_code');
                 })
                 ->select('site_screen_products.*')
-            //    ->selectRaw('CONCAT(JSON_OBJECT("meta_value", sites_meta.meta_key),',',site_screens.name,',',site_buildings.name,',',site_building_levels.name,',',site_screen_products.ad_type) AS screen_location')
+                //    ->selectRaw('CONCAT(JSON_OBJECT("meta_value", sites_meta.meta_key),',',site_screens.name,',',site_buildings.name,',',site_building_levels.name,',',site_screen_products.ad_type) AS screen_location')
                 //->selectRaw('CONCAT(site_screens.name,',',site_buildings.name,',',site_building_levels.name,',',site_screen_products.ad_type) AS screen_location')
                 ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name) AS site_screen_location")
                 ->when(request('order'), function ($query) {
@@ -80,7 +80,7 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                         default:
                             $field = $column;
                     }
-                    
+
                     return $query->orderBy($field, request('sort'));
                 })
                 ->latest()
@@ -294,14 +294,22 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
                     'id' => $ssp->serial_number,
                     'site_screen_id' => $ssp->site_screen_id,
                     'site_screen_name' => $ssp->site_screen_details['name'],
+                    'screen_type' => $ssp->site_screen_details['screen_type'],
+                    'physical_size_width_height' => ($ssp->site_screen_details['physical_size_width'])? $ssp->site_screen_details['physical_size_width'] . 'X' . $ssp->site_screen_details['physical_size_height']: '',
+                    'physical_size_diagonal' => $ssp->site_screen_details['physical_size_diagonal'],
+                    'orientation' => $ssp->site_screen_details['orientation'],
+                    'product_application' => $ssp->site_screen_details['product_application'],
                     'ad_type' => $ssp->ad_type,
-                    'description' => $ssp->description,
-                    'dimension' => $ssp->dimension,
+                    'site_id' => $ssp->site_screen_details['site_id'],
+                    'site_name' => $ssp->site_screen_details['site_name'],
+                    'site_screen_location' => $ssp->site_screen_details['site_screen_location'],
+                    'is_exclusive' => $ssp->is_exclusive,
+                    //'description' => $ssp->description,
+                    //'dimension' => $ssp->dimension,
                     'width' => $ssp->width,
                     'height' => $ssp->height,
                     'sec_slot' => $ssp->sec_slot,
                     'slots' => $ssp->slots,
-                    'is_exclusive' => $ssp->is_exclusive,
                     'active' => $ssp->active,
                     'created_at' => $ssp->created_at,
                     'updated_at' => $ssp->updated_at,
@@ -342,20 +350,28 @@ class SiteScreenProductController extends AppBaseController implements SiteScree
         try {
             $reports[] = [
                 'id' => '',
-                'site_screen_id' => '',
-                'site_screen_name' => '',
-                'ad_type' => '',
-                'description' => '',
-                'dimension' => '',
-                'width' => '',
-                'height' => '',
-                'sec_slot' => '',
-                'slots' => '',
-                'is_exclusive' => '',
-                'active' => '',
-                'created_at' => '',
-                'updated_at' => '',
-                'deleted_at' => '',
+                    'site_screen_id' => '',
+                    'site_screen_name' => '',
+                    'screen_type' => '',
+                    'physical_size_width_height' => '',
+                    'physical_size_diagonal' => '',
+                    'orientation' => '',
+                    'product_application' => '',
+                    'ad_type' => '',
+                    'site_id' => '',
+                    'site_name' => '',
+                    'site_screen_location' => '',
+                    'is_exclusive' => '',
+                    //'description' =>' $ssp->description,
+                    //'dimension' => $ssp->dimension,
+                    'width' => '',
+                    'height' => '',
+                    'sec_slot' => '',
+                    'slots' => '',
+                    'active' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';

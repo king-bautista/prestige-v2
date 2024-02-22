@@ -17,6 +17,7 @@ use VideoThumbnail;
 
 use App\Models\BrandProductPromos;
 use App\Models\Brand;
+use App\Models\CompanyBrands;
 use App\Models\AdminViewModels\BrandProductViewModel;
 
 class ProductsController extends AppBaseController implements ProductsControllerInterface
@@ -274,8 +275,12 @@ class ProductsController extends AppBaseController implements ProductsController
                     'brand_name' => $brand->brand_name,
                     'name' => $brand->name,
                     'descriptions' => $brand->descriptions,
+                    'type' => $brand->type,
                     'thumbnail' => $brand->thumbnail,
                     'image_url' => $brand->image_url,
+                    'date_from' => $brand->date_from,
+                    'date_to' => $brand->date_to,
+                    'sequence' => $brand->sequence,
                     'active' => $brand->active,
                     'created_at' => $brand->created_at,
                     'updated_at' => $brand->updated_at,
@@ -317,16 +322,20 @@ class ProductsController extends AppBaseController implements ProductsController
             $brand_id = session()->get('brand_id');
             $reports[] = [
                 'id' => '',
-                'brand_id' => '',
-                'brand_name' => '',
-                'name' => '',
-                'descriptions' => '',
-                'thumbnail' => '',
-                'image_url' => '',
-                'active' => '',
-                'created_at' => '',
-                'updated_at' => '',
-                'deleted_at' => '',
+                    'brand_id' => '',
+                    'brand_name' => '',
+                    'name' => '',
+                    'descriptions' => '',
+                    'type' => '',
+                    'thumbnail' => '',
+                    'image_url' => '',
+                    'date_from' => '',
+                    'date_to' => '',
+                    'sequence' => '',
+                    'active' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
