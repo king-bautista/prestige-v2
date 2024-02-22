@@ -281,4 +281,10 @@ Helpers.prototype = {
         page_history.splice(-1);
     },
 
+    showAmenity: function(site_point) {
+        this.mapBtnClick();
+        $('.amenity-point').val(site_point);
+        $('.amenity-show-location').click();
+    }
+
 };
