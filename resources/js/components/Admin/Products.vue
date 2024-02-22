@@ -64,16 +64,14 @@
 								</div>
 							</div>
 							<div class="form-group row" v-if="product.type == 'promo'">
-								<label for="userName" class="col-sm-4 col-form-label">Date From <span
-										class="font-italic text-danger">*</span></label>
+								<label for="userName" class="col-sm-4 col-form-label">Date From</label>
 								<div class="col-sm-8">
 									<date-picker v-model="product.date_from" placeholder="YYYY-MM-DD" :config="options"
 										id="date_from" autocomplete="off"></date-picker>
 								</div>
 							</div>
 							<div class="form-group row" v-if="product.type == 'promo'">
-								<label for="userName" class="col-sm-4 col-form-label">Date To <span
-										class="font-italic text-danger">*</span></label>
+								<label for="userName" class="col-sm-4 col-form-label">Date To </label>
 								<div class="col-sm-8">
 									<date-picker v-model="product.date_to" placeholder="YYYY-MM-DD" :config="options"
 										id="date_to" autocomplete="off"></date-picker>
