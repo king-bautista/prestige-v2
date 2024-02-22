@@ -322,16 +322,20 @@ class ProductsController extends AppBaseController implements ProductsController
             $brand_id = session()->get('brand_id');
             $reports[] = [
                 'id' => '',
-                'brand_id' => '',
-                'brand_name' => '',
-                'name' => '',
-                'descriptions' => '',
-                'thumbnail' => '',
-                'image_url' => '',
-                'active' => '',
-                'created_at' => '',
-                'updated_at' => '',
-                'deleted_at' => '',
+                    'brand_id' => '',
+                    'brand_name' => '',
+                    'name' => '',
+                    'descriptions' => '',
+                    'type' => '',
+                    'thumbnail' => '',
+                    'image_url' => '',
+                    'date_from' => '',
+                    'date_to' => '',
+                    'sequence' => '',
+                    'active' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
