@@ -47,6 +47,8 @@
         <div class="row">
             <!-- Add Hidden Value -->
             <input type="hidden" class="direction-from" />
+            <input type="hidden" class="amenity-point" />
+            <input type="hidden" class="amenity-show-location" />
 			<button type="button" id="btnresetmap" style="z-index:1000;display:none">Reset</button>
             <div class="d-flex justify-content-start" style="border-radius: 18px; box-shadow: 0 3px 6px rgb(0 0 0 / 0.16);">
                 <div style="width: 423px; height: 62px !important;">
@@ -1723,6 +1725,7 @@
 		controls.update();
 	}
 
+
     $(document).ready(function() {
         init();
         loadFont();
@@ -1942,6 +1945,33 @@
 	$('.direction-from').on('click', function(){
 		// CALL WAY FINDING
 		directionTo();
+	});
+
+	$('.amenity-show-location').on('click', function() {
+		var amenity_point = $('.amenity-point').val();
+		var point = map_points[amenity_point];
+		console.log(point);
+		$("#floor-select").val(point.building_level_id).change();
+
+		spritePinTo.position.x = point.point_x;
+		spritePinTo.position.z = point.point_z;
+		spritePinTo.visible = true;
+		spritePinTo.userData = {'floor':point.building_level_id};
+
+		var coords = new THREE.Vector3(point.point_x, 6,point.point_z);
+		coords.x = point.point_x;
+		coords.y = point.point_y;
+		coords.z = point.point_z
+		scene.worldToLocal(coords);
+		controls.target = coords;
+		controls.update();
+
+		camera.position.y = 100;
+		camera.position.x = coords.x;
+		camera.position.z = coords.z;
+		camera.lookAt(spritePinTo.position);
+
+		$(".mapplus").click();
 	});
     
 </script>
