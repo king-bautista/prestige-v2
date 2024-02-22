@@ -47,6 +47,7 @@ class BrandViewModel extends Model
         'brand_details',
         'category_name',
         'main_category_name',
+        'supplemental_ids',
         'supplemental_names',
         'tag_names',
     ]; 
@@ -93,8 +94,9 @@ class BrandViewModel extends Model
 
         return [
             'category_name' => ($category) ? $category->name : null,
-            'parent_category_id' => ($parent_category) ? $parent_category->parent_id : null,
+            'parent_category_id' => ($parent_category) ? $category->parent_id : null,
             'parent_category_name' => ($parent_category) ? $parent_category->name : null,
+            'supplemental_ids' => ($supplementals) ? $ids : null,
             'supplementals' => ($supplementals) ? $supplementals : null,
             'tags' => ($tags) ? $tags : null
         ];
@@ -109,6 +111,15 @@ class BrandViewModel extends Model
     {
         return $this->brand_details['parent_category_name'];
     } 
+
+    public function getSupplementalIdsAttribute()
+    {
+        if($this->brand_details['supplementals']) {
+            $supplementals = $this->brand_details['supplementals']->pluck('id')->toArray();
+            return implode(', ', $supplementals);
+        }
+        return null;
+    }
 
     public function getSupplementalNamesAttribute()
     {
