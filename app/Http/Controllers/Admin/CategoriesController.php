@@ -39,14 +39,14 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             $categories = CategoryViewModel::when(request('search'), function ($query) {
                 return $query->where('categories.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('categories.descriptions', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('c.name', 'LIKE', '%' . request('search') . '%')
-                    ->where('categories.category_type', 1);
+                    ->orWhere('c.name', 'LIKE', '%' . request('search') . '%');
             })
                 ->leftJoin('categories as c', function ($join) {
                     $join->on('categories.parent_id', '=', 'c.id');
                 })
                 ->select('categories.*', 'categories.name')
                 ->selectRaw('(select cb.name from categories cb where categories.parent_id = cb.id) as parent_name')
+                ->where('categories.category_type', 1)
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('name', 'ASC');
                 })
@@ -259,19 +259,21 @@ class CategoriesController extends AppBaseController implements CategoriesContro
     {
         try {
 
-            $category_management = CategoryViewModel::where('category_type', 1)->get();
+            $category_management = CategoryViewModel::where('category_type', 1)
+                ->get();
             $reports = [];
             foreach ($category_management as $category) {
                 $reports[] = [
                     'id' => $category->id,
                     'parent_id' => $category->parent_id,
-                    //'supplemental_category_id' => $category->supplemental_category_id,
+                    'regular_category_id' => $category->supplemental_category_id,
+                    'sequence' =>  $category->sequence,
                     'name' => $category->name,
                     'descriptions' => $category->descriptions,
+                    'sub_category_class' => ($category->supplemental_category_id) ? '2' : '1',
                     'class_name' => $category->class_name,
                     'category_type' => $category->category_type,
                     'active' => $category->active,
-                    'sequence' =>  $category->sequence,
                     'created_at' => $category->created_at,
                     'updated_at' => $category->updated_at,
                     'deleted_at' => $category->deleted_at,
@@ -312,13 +314,14 @@ class CategoriesController extends AppBaseController implements CategoriesContro
             $reports[] = [
                 'id' => '',
                 'parent_id' => '',
-                //'supplemental_category_id' => '',
+                'regular_category_id' => '',
+                'sequence' =>  '',
                 'name' => '',
                 'descriptions' => '',
+                'sub_category_class' => '',
                 'class_name' => '',
                 'category_type' => '',
                 'active' => '',
-                'sequence' =>  '',
                 'created_at' => '',
                 'updated_at' => '',
                 'deleted_at' => '',
