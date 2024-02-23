@@ -48,6 +48,10 @@ Helpers.prototype = {
         return textArea.value;
     },
 
+    encodeEntities: function(string) {
+        return $('<div>').text(string).html();
+    },
+
     saveLogs: function(params, page = '') {
         params['page'] = page;
         $.post( "/api/v1/save-logs", params ,function(response) {
@@ -109,8 +113,10 @@ Helpers.prototype = {
             translations_by_language = my_translations;
         }
 
+        var obj = this;
+
         $(".translateme").each(function(){
-            let data_en = $(this).attr('data-en');
+            let data_en = obj.encodeEntities($(this).attr('data-en'));
             var translated = translations_by_language.find(option => option.english == data_en);
 
             if (translated != null) {                         
