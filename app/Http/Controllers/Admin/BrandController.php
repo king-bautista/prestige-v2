@@ -63,8 +63,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
             $brands = BrandViewModel::when(request('search'), function ($query) {
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%');
+                   // ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
                     
             })
                 ->when(count($brand_ids) > 0, function ($query) use ($brand_ids) {

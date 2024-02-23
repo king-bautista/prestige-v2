@@ -55,26 +55,26 @@ class ContentManagementController extends AppBaseController implements ContentMa
     }
 
     public function list(Request $request)
-    {   
+    {
         try {
             $host = $request->getSchemeAndHttpHost();
             $contents = ContentManagement::when(request('search'), function ($query) {
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('advertisements.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('companies.names', 'LIKE', '%' . request('search') . '%');
-                
             })
                 ->leftJoin('advertisements', 'content_management.advertisement_id', '=', 'advertisements.id')
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
                 ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
-                ->leftJoin('advertisement_materials', function($query){
-                    $query->on('advertisement_materials.advertisement_id','=','advertisements.id')
-                    ->whereRaw('advertisement_materials.id IN (select MAX(a2.id) from advertisement_materials as a2 join advertisements as u2 on u2.id = a2.advertisement_id group by u2.id)');
+                ->leftJoin('advertisement_materials', function ($query) {
+                    $query->on('advertisement_materials.advertisement_id', '=', 'advertisements.id')
+                        ->whereRaw('advertisement_materials.id IN (select MAX(a2.id) from advertisement_materials as a2 join advertisements as u2 on u2.id = a2.advertisement_id group by u2.id)');
                 })
-                 
+
                 ->select('content_management.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name')
                 ->selectRaw('CONCAT(`content_management`.`start_date`,"-",`content_management`.`end_date`) AS air_dates')
-                ->selectRaw('CONCAT("'.$host.'/",`advertisement_materials`.`thumbnail_path`) as material_thumbnails_path')
+                ->selectRaw('CONCAT("' . $host . '/",`advertisement_materials`.`thumbnail_path`) AS material_thumbnails_path')
+                //->selectRaw()
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('advertisement_name', 'ASC');
                 })
@@ -93,7 +93,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
                         case 'air_dates':
                             $field = 'air_dates';
                             break;
-
+                        case 'material_thumbnails_path':
+                            $field = 'material_thumbnails_path';
+                            break;
                         default:
                             $field = $column;
                     }
@@ -578,9 +580,40 @@ class ContentManagementController extends AppBaseController implements ContentMa
     public function getPLayList(Request $request)
     {
         try {
-            $play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            //$play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
+            $play_list = SiteScreen::when(request('search'), function ($query) {
+                return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                //->orWhereRaw()
+                ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
             })
+                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->leftJoin('sites_meta', function ($join) {
+                    $join->on('sites.id', '=', 'sites_meta.site_id')
+                        ->where('sites_meta.meta_key', '=', 'site_code');
+                })
+                ->select('site_screens.*', 'sites.name as site_name')
+                ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name,' (',site_screens.product_application,'/',site_screens.orientation,')') AS site_screen_location")
+                
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('site_screens.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+
+                    switch ($column) {
+                        case 'site_screen_location':
+                            $field = 'site_screen_location';
+                            break;
+                        case 'site_name':
+                            $field = 'site_name';
+                            break;
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
