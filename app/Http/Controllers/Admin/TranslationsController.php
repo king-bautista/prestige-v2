@@ -38,8 +38,8 @@ class TranslationsController extends AppBaseController implements TranslationsCo
         {
             //$this->permissions = AdminViewModel::find(Auth::user()->id)->getPermissions()->where('modules.id', $this->module_id)->first();
             $translations = TranslationViewModel::when(request('search'), function($query){
-                
-                return $query->where('translations.translated', 'LIKE', '%' . request('search') . '%');
+                return $query->where('translations.english', 'LIKE', '%' . request('search') . '%');
+                            //  ->orWhere('translations.translated', 'LIKE', '%' . request('search') . '%');
             }) 
             ->latest()
             ->paginate(request('perPage')); 

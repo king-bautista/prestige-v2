@@ -21,7 +21,7 @@
 		        <a class="dropdown-item dropdown-item-language" data-language="english">ENGLISH</a>
 		    </div>
 		</div>
-		<div class="language-title">LANGUAGE SELECT</div>
+		<div class="language-title translateme" data-en="LANGUAGE SELECT">LANGUAGE SELECT</div>
 	</div>
 
 	<div class="d-flex nav-content-container" id="NavContentContainer"> 
