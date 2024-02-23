@@ -23,14 +23,14 @@
 		</div>
 		<div>
 			<div style="text-align: left;padding-left: 45px;margin-top: 48px;">
-				<span class="translateme">Was this helpful?</span> 
+				<span class="translateme" data-en="Was this helpful?">Was this helpful?</span> 
 				<a href="#" class="btn btn-sm btn-prestige-none btn-helpful" style="font-size:1rem;color:#6051e3;">
 					<span class="fa fa-thumbs-up"></span>
 				</a> 
 				<a href="#" class="btn btn-sm btn-prestige-none btn-nothelpful" style="font-size:1rem;color:#6051e3;">
 					<span class="fa fa-thumbs-down"></span>
 				</a> 
-				<span class="thankyou translateme">Thank you!</span>
+				<span class="thankyou translateme" data-en="Thank you!">Thank you!</span>
 			</div>	
 		</div>		
 	</div>
@@ -39,7 +39,7 @@
 <div id="btnGuide" style="display:none;">
 	<div id="toggle-up"><img src="{{ URL::to('themes/sm_default/images/up.svg') }}"></div>
 	<div id="toggle-down" class="hideArrow"><img src="{{ URL::to('themes/sm_default/images/down.svg') }}"></div>	
-	<div id="toggle-updown-text" class="translateme" style="width: 74px;text-align: center;padding-left:20px;padding: 5px 0px 0 0px;">Show Text Guide</div>
+	<div id="toggle-updown-text" class="translateme" style="width: 74px;text-align: center;padding-left:20px;padding: 5px 0px 0 0px;" data-en="Show Text Guide">Show Text Guide</div>
 </div>
 
 <div class="MapBtn">
@@ -54,7 +54,7 @@
                 <div style="width: 423px; height: 62px !important;">
                     
                     <select id="tenant-select" class="form-control" style="width: 423px;">
-                        <option value="0">Input Destination</option>
+                        <option value="0" class="translateme" data-en="Input Destination">Input Destination</option>
                         @foreach ($all_tenants as $tenant)
                             <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}</option>
                         @endforeach
@@ -1867,16 +1867,18 @@
 			if($("#toggle-up").hasClass("hideArrow")){
 				$("#toggle-down").addClass('hideArrow');
 				$("#toggle-up").removeClass('hideArrow');
+				$("#toggle-updown-text").attr('data-en', 'Show Text Guide');
 				$("#toggle-updown-text").html('Show Text Guide');
 				$("#directionDetails").hide();
 
 			}else if($("#toggle-down").hasClass("hideArrow")){
 				$("#toggle-up").addClass('hideArrow');
 				$("#toggle-down").removeClass('hideArrow');
+				$("#toggle-updown-text").attr('data-en', 'Hide Text Guide');
 				$("#toggle-updown-text").html('Hide Text Guide');
 				$("#directionDetails").show();
 			}
-
+			helper.setTranslation();
 		});
 
 		$('.softkeys-map-page').softkeys({

@@ -1,5 +1,5 @@
 <!-- title -->
-<div class="p-3 font-weight-bold nav-titles">Store Page</div>
+<div class="p-3 font-weight-bold nav-titles translateme" data-en="Store Page">Store Page</div>
 
 <div class="row">
     <div class="promo-featured-container" id="isSubscriber">
@@ -27,7 +27,7 @@
             <img class="tenant-store-page-logo" src="#">
             <div class="font-weight-bold tenant-store-page-name"></div>
             <div class="tenant-store-page-floor"></div>
-            <div class="tenant-store-page-views"><span class="view-count">0</span> Views</div>
+            <div class="tenant-store-page-views"><span class="view-count">0</span> <span class="translateme" data-en="Views">Views</span></div>
         </div>
         <div class="tenant-store-schedule">
             <span>
@@ -56,7 +56,7 @@
                         ></path>
                     </svg>
                     
-                    <span class="ShareText">Share</span>
+                    <span class="ShareText translateme" data-en="Share" >Share</span>
                 </a>
             </div>
             <div class="col-sm-6">
@@ -136,7 +136,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <span class="close text-white btn-close-sched">&times;</span>
-                <div class="label-1">Operating Hours</div>
+                <div class="label-1 translateme" data-en="Operating Hours">Operating Hours</div>
                 <div class="modal-body-schedule-days">
                 </div>
                 <div class="modal-body-schedule-time">
@@ -189,7 +189,7 @@
             var str_days = '';
             $('.modal-body-schedule-days').html('');
             $.each(days, function(index,day) {
-                str_days = '<div class="m-15-0">'+day+'</div>';
+                str_days = '<div class="m-15-0 translateme" data-en="'+day+'" >'+day+'</div>';
                 $('.modal-body-schedule-days').append(str_days);
             });
 
