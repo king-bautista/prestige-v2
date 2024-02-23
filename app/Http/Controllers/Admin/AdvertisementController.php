@@ -17,6 +17,7 @@ use App\Models\Advertisement;
 use App\Models\AdvertisementMaterial;
 use App\Models\AdvertisementScreen;
 use App\Models\AdminViewModels\AdvertisementViewModel;
+use App\Models\AdminViewModels\AdvertisementViewModelList;
 use App\Models\AdminViewModels\AdvertisementMaterialViewModel;
 //use App\Models\AdminViewModels\ContentMaterialViewModel;
 
@@ -42,7 +43,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
     public function list(Request $request)
     {
         try {
-            $advertisements = AdvertisementViewModel::when(request('search'), function ($query) {
+            $advertisements = AdvertisementViewModelList::when(request('search'), function ($query) {
                 return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
