@@ -210,12 +210,15 @@ class KioskController extends AppBaseController
     public function getSupplemental($category_id) {
 
         $supplemental_category = Category::where('supplemental_category_id', $category_id)->first();
-        $supplemental['name'] = $supplemental_category->name;
-        $sub_categories = $this->getChildCategories($supplemental_category->id);
-        $supplemental['sub_categories'] = array_chunk($sub_categories, 15);
+        if($supplemental_category) {
+            $supplemental['name'] = $supplemental_category->name;
+            $sub_categories = $this->getChildCategories($supplemental_category->id);
+            $supplemental['sub_categories'] = array_chunk($sub_categories, 15);
+    
+            return $supplemental;
+        }
 
-        return $supplemental;
-
+        return null;
     }
 
     public function getTenants($parent_category_id = null, $category_id = null) {
