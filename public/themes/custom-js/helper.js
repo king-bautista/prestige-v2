@@ -167,6 +167,7 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-home').addClass("active");
         $('#videocontainer').html('');
+        $('.category-img-banner').attr('src', '');
 
         sub_categories = '';
         main_category = '';

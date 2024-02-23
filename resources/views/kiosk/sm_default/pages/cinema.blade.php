@@ -341,6 +341,7 @@
     }
 
     function generateSchedules(cinemas) {
+        console.log(cinemas);
         $.each(cinemas, function(key,schedules) {
             var schedule_str = '';
             schedule_str += '<div class="mt-3 mb-1 mx-4 SmCinemaSched">';

@@ -135,6 +135,7 @@
     }
 
     function showSubCategories() {
+        $('.category-img-banner').attr('src', '');
         $('.sub-category-tenants').html('');
         $('.cat-row-card').html('');
         $('.category-title').html(main_category);
