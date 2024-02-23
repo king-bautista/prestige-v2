@@ -209,23 +209,23 @@ export default {
 			edit_record: false,
 			dataFields: {
 				serial_number: "ID",
-				// material_thumbnails_path: {
-				// 	name: "Preview",
-				// 	type: "logo",
-				// },
-				// name: "Name",
-				// company_name: "Company Name",
-				// brand_name: "Brand Name",
-				// display_duration: "Duration (in sec)",
-				// active: {
-				// 	name: "Status",
-				// 	type: "Boolean",
-				// 	status: {
-				// 		0: '<span class="badge badge-danger">Deactivated</span>',
-				// 		1: '<span class="badge badge-info">Active</span>'
-				// 	}
-				// },
-				// updated_at: "Last Updated"
+				material_thumbnails_path: {
+					name: "Preview",
+					type: "logo",
+				},
+				name: "Name",
+				company_name: "Company Name",
+				brand_name: "Brand Name",
+				display_duration: "Duration (in sec)",
+				active: {
+					name: "Status",
+					type: "Boolean",
+					status: {
+						0: '<span class="badge badge-danger">Deactivated</span>',
+						1: '<span class="badge badge-info">Active</span>'
+					}
+				},
+				updated_at: "Last Updated"
 			},
 			primaryKey: "id",
 			dataUrl: "/admin/manage-ads/list",
