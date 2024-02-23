@@ -99,6 +99,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
+						<!-- start setting up tabs for full screen and banner ad -->
 						<ul class="nav nav-tabs" id="myTab" role="tablist">
 							<li class="nav-item" role="presentation" v-for="(dimension, index) in dimensions">
 								<button v-bind:class="(index == 0) ? 'active' : ''" class="nav-link"
@@ -111,7 +112,8 @@
 							<div v-for="(dimension, index) in dimensions" v-bind:class="(index == 0) ? 'show active' : ''"
 								class="tab-pane fade" :id="dimension" role="tabpanel">&nbsp;</div>
 						</div>
-
+						<!-- end setting up tabs for full screen and banner ad -->
+						
 						<table class="table table-hover table-striped">
 							<thead class="thead-dark">
 								<tr>
@@ -344,6 +346,8 @@ export default {
 			this.dimensions = data.dimensions;
 			this.dimension_value = data.dimensions[0].dimension;
 			this.playlist = data.playlist;
+
+			// console.log(this.playlist);
 
 			$("#sortableContent").modal('show');
 		},
