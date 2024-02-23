@@ -924,7 +924,7 @@ body {
 }
 
 .cinema-details-sched-content {
-    display: inline-block !important;
+    /* display: inline-block !important; */
     text-align: center !important;
     padding: 14px;
 }

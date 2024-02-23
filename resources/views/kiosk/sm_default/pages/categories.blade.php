@@ -126,8 +126,13 @@
                 sub_categories = category.sub_categories;
                 alphabetical = category.alphabetical;
                 supplementals = category.supplemental.sub_categories;
-                $('#Tab-Supplemental-tab').html(category.supplemental.name);
-                $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
+                if(category.supplemental) {
+                    $('#Tab-Supplemental-tab').html(category.supplemental.name);
+                    $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
+                }
+                else {
+                    $('#Tab-Supplemental-tab').hide();
+                }
                 $('#Tab-Category-Tab').click();
                 showSubCategories();
             });
