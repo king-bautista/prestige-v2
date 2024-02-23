@@ -1,5 +1,5 @@
 <!-- title -->
-<div class="p-3 font-weight-bold nav-titles">Map</div>
+<div class="p-3 font-weight-bold nav-titles translateme" data-en="Map" >Map</div>
 
 <div class="map-canvas">
     <div id="canvas" class="canvas-canvas"></div>

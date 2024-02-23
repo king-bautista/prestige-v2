@@ -136,11 +136,19 @@ Helpers.prototype = {
         else if(content_language == 'korean') {
             $('.resize').css({'font-size':'23px'});
             $('.resize').css({'line-height':''});
-        }        
+        }         
         else {
             $('.resize').css({'font-size':''});
             $('.resize').css({'line-height':''});
         }
+
+        if(content_language == 'filipino') {
+            $('#events_txt').addClass('nav-event-button-align-custom');
+        }
+        else {
+            $('#events_txt').removeClass('nav-event-button-align-custom');
+        }
+        
     },
 
     filterAssist: function() {
