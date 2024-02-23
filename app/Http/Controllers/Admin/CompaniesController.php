@@ -755,7 +755,7 @@ class CompaniesController extends AppBaseController implements CompaniesControll
     {
         try {
             $reports[] = [
-                'id' => $contract->serial_number,
+                'id' => '',
                         'company_id' =>'',
                         'company_name' => '',
                         'brand_IDs' => '',
