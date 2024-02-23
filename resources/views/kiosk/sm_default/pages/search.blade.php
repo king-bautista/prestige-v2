@@ -197,19 +197,26 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
-                var store_status = 'Close';
-                if(tenant.operational_hours.is_open) {
-                    store_status = 'Open';
+                var store_status = 'Closed';
+                if(tenant.operational_hours) {
+                    store_status = (tenant.operational_hours.is_open) ? 'Open' : 'Closed';
                 }
 
+                store_status = (tenant.amenity_name) ? '' : store_status;
+
+                var store_logo = (tenant.icon_path) ? tenant.icon_path : tenant.brand_logo;
+                var store_name = (tenant.amenity_name) ? tenant.amenity_name : tenant.brand_name;
+                var store_location = (tenant.amenity_location) ? tenant.amenity_location : tenant.location;
+                var item_id = (tenant.id) ? tenant.id : tenant.site_point;
+
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
-                tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
+                tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+item_id+'">';
                 tenant_item += '<div class="tenant-store-contents">';
-                tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
+                tenant_item += '<img class="img-shop-logo y-auto" src="'+store_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
-                tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
+                tenant_item += '<div class="tenant-store-name">'+store_name+'</div>';
+                tenant_item += '<div class="tenant-store-floor">'+store_location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
                 tenant_item += '<span class="text-success">'+store_status+'</span>';
                 if(tenant.is_subscriber)
@@ -219,8 +226,13 @@
                 tenant_item += '</div>';
                 tenant_item += '</div>';
                 $( ".tenants-"+key ).append(tenant_item);                
-                $('.tenant-item-'+tenant.id).on('click', function() {
-                    showTenantDetails(tenant);
+                $('.tenant-item-'+item_id).on('click', function() {
+                    if(tenant.amenity_name) {
+                        helper.showAmenity(tenant.site_point);
+                    }
+                    else {
+                        showTenantDetails(tenant);
+                    }
                 });
             });
         }); 

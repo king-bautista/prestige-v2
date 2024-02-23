@@ -63,8 +63,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
             $brands = BrandViewModel::when(request('search'), function ($query) {
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%');
+                   // ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
                     
             })
                 ->when(count($brand_ids) > 0, function ($query) use ($brand_ids) {
@@ -412,11 +412,11 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 $reports[] = [
                     'id' => $brand->id,
                     'category_id' => $brand->category_id,
-                    'category_name' => $brand->category_name,
+                    'category_name' => $brand->brand_details['category_name'],
                     //'category_parent_id' => $brand->brand_details['parent_category_id'],
-                    //'category_parent_name' => $brand->brand_details['parent_category_name'],
+                    'category_parent_name' => 'test cpn',//$brand->brand_details['parent_category_name'],
                    // 'supplemental_category_id' => $brand->supplemental_ids,
-                    'supplemental_category_name' => $brand->supplemental_names,
+                    //'supplemental_category_name' => $brand->supplemental_names,
                     'name' => $brand->name,
                     'descriptions' => $brand->descriptions,
                     'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",

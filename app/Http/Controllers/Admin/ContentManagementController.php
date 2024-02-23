@@ -57,25 +57,31 @@ class ContentManagementController extends AppBaseController implements ContentMa
     public function list(Request $request)
     {
         try {
-            $contents = ContentManagementViewModel::when(request('search'), function ($query) {
-                return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
+            $host = $request->getSchemeAndHttpHost();
+            $contents = ContentManagement::when(request('search'), function ($query) {
+                return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('advertisements.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('companies.names', 'LIKE', '%' . request('search') . '%');
-                    //->orWhereRaw('CONCAT(`content_management`.`start_date`,"-",`content_management`.`end_date`)', 'LIKE', '%' . request('search') . '%');
             })
-                ->leftJoin('advertisement_materials', 'content_management.advertisement_id', '=', 'advertisement_materials.id')
-                ->leftJoin('advertisements', 'advertisement_materials.advertisement_id', '=', 'advertisements.id')
+                ->leftJoin('advertisements', 'content_management.advertisement_id', '=', 'advertisements.id')
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
                 ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+                ->leftJoin('advertisement_materials', function ($query) {
+                    $query->on('advertisement_materials.advertisement_id', '=', 'advertisements.id')
+                        ->whereRaw('advertisement_materials.id IN (select MAX(a2.id) from advertisement_materials as a2 join advertisements as u2 on u2.id = a2.advertisement_id group by u2.id)');
+                })
+
                 ->select('content_management.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name')
                 ->selectRaw('CONCAT(`content_management`.`start_date`,"-",`content_management`.`end_date`) AS air_dates')
+                ->selectRaw('CONCAT("' . $host . '/",`advertisement_materials`.`thumbnail_path`) AS material_thumbnails_path')
+                //->selectRaw()
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('advertisement_name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
                     switch ($column) {
-                        case 'ad_name':
+                        case 'advertisement_name':
                             $field = 'advertisement_name';
                             break;
                         case 'company_name':
@@ -87,7 +93,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
                         case 'air_dates':
                             $field = 'air_dates';
                             break;
-
+                        case 'material_thumbnails_path':
+                            $field = 'material_thumbnails_path';
+                            break;
                         default:
                             $field = $column;
                     }
@@ -273,7 +281,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
     }
 
     // public function setPlayListSequence($screen_id, $site_id, $ad_type = "Banner Ad"){
-    public function setPlayListSequence(){
+    public function setPlayListSequence()
+    {
 
         $screen_id = 9;
         $site_id = 3;
@@ -299,8 +308,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
         // computation of total number of ads
         $totalNumberOfAds = $totalSitePartnerAds + $totalParentCategoryAds;
         // getting the denominator for modulo
-        $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
-        $moduloValue = round($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
+        $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds);
+        $moduloValue = round($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
 
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
@@ -308,43 +317,40 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $sitePartnerCounter = 0;
         $sequenceCounter = 1;
         $this->category_counter = $this->makeCounterVariables($site_id);
-        
-        
+
+
         // $loopCount = sizeof(array_chunk($sitePartnersAds->toArray(), $maxSitePartnerSlot));
         $loopCount = $this->getLoopCount($totalSitePartnerAds, $maxSitePartnerSlot);
 
-        if($loopCount >= 1 ){
-            for($loop_index = 0; $loop_index < $loopCount; $loop_index++){
-                for ($index = 0; $index < $totalNumberOfAds; $index++){
+        if ($loopCount >= 1) {
+            for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {
+                for ($index = 0; $index < $totalNumberOfAds; $index++) {
                     $loop_number = $loop_index + 1;
-                    if(fmod($index, $moduloValue) == 0){
-                        if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
-                            if($sitePartnerCounter > $maxSitePartnerSlot){
+                    if (fmod($index, $moduloValue) == 0) {
+                        if ($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
+                            if ($sitePartnerCounter > $maxSitePartnerSlot) {
                                 $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
-                                $sitePartnerCounter == $totalSitePartnerAds - 1 ? $sitePartnerCounter = -1 : ""; 
-                            }
-                            else{
+                                $sitePartnerCounter == $totalSitePartnerAds - 1 ? $sitePartnerCounter = -1 : "";
+                            } else {
                                 $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
                             }
                             array_push($arrayStore, $addSitePartner);
                             $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : $maxSitePartnerCounter = 0;
-                        }
-                        else{
-                            if($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds){
+                        } else {
+                            if ($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds) {
                                 $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                                 array_push($arrayStore, $addParentCategory);
                                 $maxParentCategoryCounter++;
                             }
                         }
                         $sitePartnerCounter++;
-                    }else{
-                        if($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds){
+                    } else {
+                        if ($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds) {
                             $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                             array_push($arrayStore, $addParentCategory);
                             $maxParentCategoryCounter++;
-                        }
-                        else{
-                            if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
+                        } else {
+                            if ($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
                                 $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
                                 array_push($arrayStore, $addSitePartner);
                                 $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : '';
@@ -358,17 +364,16 @@ class ContentManagementController extends AppBaseController implements ContentMa
             }
         }
 
-        $deletePlayLists = PlayList::leftJoin('site_screen_products', function($join)
-        {
+        $deletePlayLists = PlayList::leftJoin('site_screen_products', function ($join) {
             $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                 ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-        }) 
-        ->where('play_lists.site_screen_id', '=', $screen_id)
-        ->where('site_screen_products.ad_type', $ad_type)
-        ->delete();
+        })
+            ->where('play_lists.site_screen_id', '=', $screen_id)
+            ->where('site_screen_products.ad_type', $ad_type)
+            ->delete();
 
-        foreach($arrayStore as $items){
-            foreach($items as $item){
+        foreach ($arrayStore as $items) {
+            foreach ($items as $item) {
                 $fields = $item->toArray();
                 $newplay_list_data = PlayList::create($fields);
                 PlayList::where('id', $newplay_list_data->id)->update(['sequence' => $sequenceCounter]);
@@ -379,58 +384,61 @@ class ContentManagementController extends AppBaseController implements ContentMa
         return $arrayStore;
     }
 
-    protected function getLoopCount($total_site_partner, $maxSitePartnerSlot){
-        if(fmod($total_site_partner,$maxSitePartnerSlot) == 0){
+    protected function getLoopCount($total_site_partner, $maxSitePartnerSlot)
+    {
+        if (fmod($total_site_partner, $maxSitePartnerSlot) == 0) {
             return $total_site_partner / $maxSitePartnerSlot;
-        }else{
-            if($total_site_partner %2 == 0){
-                return $total_site_partner /2;
-            }
-            else{
+        } else {
+            if ($total_site_partner % 2 == 0) {
+                return $total_site_partner / 2;
+            } else {
                 return $total_site_partner;
             }
         }
     }
 
-    protected function makeCounterVariables($site_id){
+    protected function makeCounterVariables($site_id)
+    {
         $categories = $this->getMainCategories($site_id);
         $category_counter = $this->convertToArray($categories);
 
-        foreach($category_counter as $index => $counter){
+        foreach ($category_counter as $index => $counter) {
             $category_counter[$index] = 0;
         }
 
         return $category_counter;
     }
 
-    protected function convertToArray($object){
+    protected function convertToArray($object)
+    {
         $category_array = [];
-        foreach($object as $item){
+        foreach ($object as $item) {
             array_push($category_array, $item['name']);
         }
         return $category_array;
     }
 
-    protected function getPlaylistAds($company_id, $screen_id, $ad_type, $is_sitePartner){
-        $ads = PlayList::leftJoin('site_screen_products', function($join)
-                {
-                    $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-                        ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-                }) 
-        ->where('play_lists.site_screen_id', $screen_id)  
-        ->where('site_screen_products.ad_type', $ad_type)
-        ->when($is_sitePartner, function($query) use ($company_id){
-            return $query->where('company_id', '=' , $company_id)->groupBy('play_lists.content_id');
+    protected function getPlaylistAds($company_id, $screen_id, $ad_type, $is_sitePartner)
+    {
+        $ads = PlayList::leftJoin('site_screen_products', function ($join) {
+            $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                ->whereRaw('play_lists.dimension = site_screen_products.dimension');
         })
-        ->when(!$is_sitePartner, function($query) use ($company_id){
-            return $query->where('company_id', '!=' ,$company_id)->where('loop_number',1);
-        })
-        ->get();
+            ->where('play_lists.site_screen_id', $screen_id)
+            ->where('site_screen_products.ad_type', $ad_type)
+            ->when($is_sitePartner, function ($query) use ($company_id) {
+                return $query->where('company_id', '=', $company_id)->groupBy('play_lists.content_id');
+            })
+            ->when(!$is_sitePartner, function ($query) use ($company_id) {
+                return $query->where('company_id', '!=', $company_id)->where('loop_number', 1);
+            })
+            ->get();
 
         return $ads;
     }
 
-    protected function insertAd($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $site_id, $loop_number){
+    protected function insertAd($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $site_id, $loop_number)
+    {
         $category_ids = $this->getMainCategories($site_id);
         $index = fmod($offset, $category_ids->count());
         $category_id = $category_ids[$index]->id;
@@ -438,18 +446,17 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $category_id);
 
-        if($is_sitePartner){
+        if ($is_sitePartner) {
             $addData = $query->limit($limit)->offset($offset)->get();
             $addData[0]->loop_number = $loop_number;
-        }
-        else{
+        } else {
             $category_offset = $this->category_counter[$index];
             $addData = $query->limit($limit)->offset($category_offset)->get();
             $this->category_counter[$index]++;
 
             $data_count = count($addData);
 
-            while($data_count == 0){
+            while ($data_count == 0) {
                 $offset++;
                 $index = fmod($offset, $category_ids->count());
                 $new_category_id = $category_ids[$index]->id;
@@ -457,7 +464,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
                 $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $new_category_id);
                 $addData_count = count($query->limit($limit)->offset($category_offset)->get());
-                if($addData_count == 1){
+                if ($addData_count == 1) {
                     $addData = $query->limit($limit)->offset($category_offset)->get();
                     $addData[0]->loop_number = $loop_number;
                     $this->category_counter[$index]++;
@@ -469,7 +476,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
         return $addData;
     }
 
-    protected function getMainCategories($site_id){
+    protected function getMainCategories($site_id)
+    {
         $catgory_ids = Category::select('categories.id', 'categories.name')
             ->leftjoin('company_categories', 'company_categories.category_id', 'categories.id')
             ->where('company_categories.site_id', $site_id)
@@ -477,35 +485,35 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ->whereNull('categories.supplemental_category_id')
             ->groupBy('company_categories.category_id')
             ->get();
-        
+
         return $catgory_ids;
     }
 
-    protected function getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $category_id){
-        $ad_per_category = PlayList::select('play_lists.company_id', 'play_lists.main_category_id','play_lists.content_id', 'play_lists.site_screen_id', 'play_lists.brand_id','play_lists.category_id','play_lists.parent_category_id','play_lists.advertisement_id','play_lists.sequence','play_lists.dimension', 'play_lists.loop_number')
-            ->leftJoin('site_screen_products', function($join)
-                    {
-                        $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-                            ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-                    }) 
-            ->when($is_sitePartner, function($query) use ($company_id){
+    protected function getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $category_id)
+    {
+        $ad_per_category = PlayList::select('play_lists.company_id', 'play_lists.main_category_id', 'play_lists.content_id', 'play_lists.site_screen_id', 'play_lists.brand_id', 'play_lists.category_id', 'play_lists.parent_category_id', 'play_lists.advertisement_id', 'play_lists.sequence', 'play_lists.dimension', 'play_lists.loop_number')
+            ->leftJoin('site_screen_products', function ($join) {
+                $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                    ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+            })
+            ->when($is_sitePartner, function ($query) use ($company_id) {
                 return $query->where('company_id', '=', $company_id);
             })
-            ->when(!$is_sitePartner, function($query) use ($company_id, $category_id){
-                return $query->where('company_id', '!=',$company_id)->where('main_category_id', $category_id);
+            ->when(!$is_sitePartner, function ($query) use ($company_id, $category_id) {
+                return $query->where('company_id', '!=', $company_id)->where('main_category_id', $category_id);
             })
-            ->where('play_lists.site_screen_id', $site_screen_id)  
+            ->where('play_lists.site_screen_id', $site_screen_id)
             ->where('site_screen_products.ad_type', $ad_type);
 
-            return $ad_per_category;
+        return $ad_per_category;
     }
 
-    protected function getLargerNumber($tspa, $tpca){
-        if($tspa !== 0 && $tpca !== 0){
+    protected function getLargerNumber($tspa, $tpca)
+    {
+        if ($tspa !== 0 && $tpca !== 0) {
             $deno = ($tspa > $tpca) ? $tpca : $tspa;
             return $deno;
-        }
-        else{
+        } else {
             $deno = ($tspa == 0) ? $tpca : $tspa;
             return $deno;
         }
@@ -572,9 +580,40 @@ class ContentManagementController extends AppBaseController implements ContentMa
     public function getPLayList(Request $request)
     {
         try {
-            $play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
-                return $query->where('name', 'LIKE', '%' . request('search') . '%');
+            //$play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
+            $play_list = SiteScreen::when(request('search'), function ($query) {
+                return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                //->orWhereRaw()
+                ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
             })
+                ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
+                ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
+                ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->leftJoin('sites_meta', function ($join) {
+                    $join->on('sites.id', '=', 'sites_meta.site_id')
+                        ->where('sites_meta.meta_key', '=', 'site_code');
+                })
+                ->select('site_screens.*', 'sites.name as site_name')
+                ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name,' (',site_screens.product_application,'/',site_screens.orientation,')') AS site_screen_location")
+                
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('site_screens.name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+
+                    switch ($column) {
+                        case 'site_screen_location':
+                            $field = 'site_screen_location';
+                            break;
+                        case 'site_name':
+                            $field = 'site_name';
+                            break;
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
+                })
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($play_list, 'Successfully Retreived!', 200);
@@ -628,7 +667,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             // $beng = Excel::import(new PlaylistTestImport, $request->file('file'));
             $import = new PlaylistTestImport;
 
-             Excel::import($import, $request->file('file'));
+            Excel::import($import, $request->file('file'));
             // return $this->response(true, 'Successfully Uploaded!', 200);
             return $this->response([
                 'play_lists' => $import->fields
