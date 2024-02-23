@@ -1950,7 +1950,7 @@
 	$('.amenity-show-location').on('click', function() {
 		var amenity_point = $('.amenity-point').val();
 		var point = map_points[amenity_point];
-		console.log(point);
+
 		$("#floor-select").val(point.building_level_id).change();
 
 		spritePinTo.position.x = point.point_x;
