@@ -189,7 +189,7 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge text-bg-danger">Deactivated</span>', 
+            				0: '<span class="badge text-bg-danger">Inactive</span>', 
             				1: '<span class="badge text-bg-info">Active</span>'
             			}
             		},

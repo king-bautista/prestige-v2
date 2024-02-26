@@ -114,7 +114,7 @@
             			name: "Status", 
             			type:"Boolean", 
             			status: { 
-            				0: '<span class="badge bg-danger">Deactivated</span>', 
+            				0: '<span class="badge bg-danger">Inactive</span>',
             				1: '<span class="badge bg-info text-dark">Active</span>'
             			}
             		},

@@ -174,7 +174,7 @@
 												</td>
 												<td class="align-middle">
 													<span v-if="data.active" class="badge badge-info">Active</span>
-													<span v-else class="badge badge-danger">Deactivated</span>
+													<span v-else class="badge badge-danger">Inactive</span>
 												</td>
 												<td class="align-middle text-nowrap">
 													<button type="button" class="btn btn-outline-danger"
