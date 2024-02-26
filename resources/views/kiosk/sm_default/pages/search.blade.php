@@ -46,7 +46,7 @@
         });
 
         $('#code').autocomplete({
-            minLength: 2,
+            minLength: 1,
             source: suggestion_list,
             select: function(event, ui) {
                 if(ui.item.id)
