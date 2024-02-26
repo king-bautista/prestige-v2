@@ -594,7 +594,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                         ->where('sites_meta.meta_key', '=', 'site_code');
                 })
                 ->select('site_screens.*', 'sites.name as site_name')
-                ->selectRaw("CONCAT(site_screens.name,site_buildings.name,site_building_levels.name,' (',site_screens.product_application,'/',site_screens.orientation,')') AS site_screen_location")
+                ->selectRaw("CONCAT(sites_meta.meta_value,' - ',sites.name,site_buildings.name,site_building_levels.name,' (',site_screens.product_application,'/',site_screens.orientation,')') AS site_screen_location")
                 
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('site_screens.name', 'ASC');
