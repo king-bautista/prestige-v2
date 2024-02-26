@@ -111,6 +111,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
         try {
             $materials = json_decode($request->materials);
             $count = 0;
+            
             foreach ($materials as $index => $material) {
                 if ($material->src)
                     $count++;

@@ -349,9 +349,10 @@ export default {
 		//setfilter: function (index, height, width, file_type) {
 		setfilter: function (index, height, width) {
 			var up_dimension = width + 'x' + height;
+			var material = this.advertisement.materials[index].dimension.split("x");
 			//if (this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
 			if (this.advertisement.materials[index].dimension != up_dimension) {
-				toastr.error('Invalid file dimension.');
+				toastr.error("Invalid Image Size! Must be width: "+material[0]+" and height:  "+material[1]+". Current width: " + width + " and height: " + height);
 				this.$refs.materials[index].value = null;
 				this.advertisement.materials[index].src = '';
 				return false;
