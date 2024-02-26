@@ -59,9 +59,11 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
             $host = $request->getSchemeAndHttpHost();
             $contents = ContentManagement::when(request('search'), function ($query) {
-                return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
+                return $query->where('content_management.serial_number', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('advertisements.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('companies.names', 'LIKE', '%' . request('search') . '%');
+                    ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhereRaw('CONCAT(content_management.start_date,\'-\',content_management.end_date) LIKE \'%' . request('search') . '%\'');
             })
                 ->leftJoin('advertisements', 'content_management.advertisement_id', '=', 'advertisements.id')
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
@@ -161,7 +163,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         // try
         // {
         $content = ContentManagement::find($request->id);
-
+//echo '<pre>'; print_r($request->site_screen_ids); echo '</pre>';
         $data = [
             'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-' . Str::padLeft($content->id, 5, '0'),
             'advertisement_id' => $request->advertisement_id,
@@ -583,9 +585,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
             //$play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
             $play_list = SiteScreen::when(request('search'), function ($query) {
                 return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
-                //->orWhereRaw()
-                ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
+                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
+                    //->orWhereRaw()
+                    ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
             })
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
                 ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
@@ -597,7 +599,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 })
                 ->select('site_screens.*', 'sites.name as site_name')
                 ->selectRaw("CONCAT(sites_meta.meta_value,' - ',sites.name,site_buildings.name,site_building_levels.name,' (',site_screens.product_application,'/',site_screens.orientation,')') AS site_screen_location")
-                
+
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('site_screens.name', 'ASC');
                 })
