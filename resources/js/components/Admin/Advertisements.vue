@@ -221,7 +221,7 @@ export default {
 					name: "Status",
 					type: "Boolean",
 					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
+						0: '<span class="badge badge-danger">Inactive</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
@@ -330,13 +330,26 @@ export default {
 					material.src = file_path;
 				} //https://stackoverflow.com/questions/51665617/how-can-i-get-width-and-height-of-a-video-from-an-input-in-javascript
 				else if (file_type[0] == 'video') {
-					material = document.createElement("video");
-					material.src = file_path;
-					material.addEventListener("loadedmetadata", function () {
-						obj.advertisement.display_duration = this.duration; console.log(material.videoWidth, material.videoHeight);
-						//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
-						obj.setfilter(index, this.videoHeight, this.videoWidth);
-					});
+					// material = document.createElement("video");
+					// material.src = file_path;
+					// material.addEventListener("loadedmetadata", function () {
+					// 	obj.advertisement.display_duration = this.duration; console.log(material.videoWidth, material.videoHeight);
+					// 	//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
+					// 	obj.setfilter(index, this.videoHeight, this.videoWidth);
+					// });
+					fileButton.addEventListener('change', evt => {
+						const file = evt.target.files[0]
+						const url = URL.createObjectURL(file)
+						const video = document.createElement('video')
+						video.onloadedmetadata = evt => {
+							// Revoke when you don't need the url any more to release any reference
+							URL.revokeObjectURL(url)
+							console.log(video.videoWidth, video.videoHeight)
+						}
+						video.src = url
+						video.load() // fetches metadata
+					})
+
 				}
 			}
 			else {
@@ -352,7 +365,7 @@ export default {
 			var material = this.advertisement.materials[index].dimension.split("x");
 			//if (this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
 			if (this.advertisement.materials[index].dimension != up_dimension) {
-				toastr.error("Invalid Image Size! Must be width: "+material[0]+" and height:  "+material[1]+". Current width: " + width + " and height: " + height);
+				toastr.error("Invalid Image Size! Must be width: " + material[0] + " and height:  " + material[1] + ". Current width: " + width + " and height: " + height);
 				this.$refs.materials[index].value = null;
 				this.advertisement.materials[index].src = '';
 				return false;
