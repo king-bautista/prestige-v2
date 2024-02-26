@@ -90,7 +90,7 @@ class BuildingsController extends AppBaseController implements BuildingsControll
                 'descriptions' => $request->descriptions,
                 'active' => 1
             ];
-
+echo '<pre>'; print_r($data); echo  '</pre>';
             $building = SiteBuilding::create($data);
 
             return $this->response($building, 'Successfully Created!', 200);
