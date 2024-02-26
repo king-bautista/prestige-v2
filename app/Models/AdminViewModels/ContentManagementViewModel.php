@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\TransactionStatus;
 
-class ContentManagementViewModelList extends Model
+class ContentManagementViewModel extends Model
 {
     use SoftDeletes;
 

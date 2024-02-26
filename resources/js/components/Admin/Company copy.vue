@@ -174,7 +174,7 @@
 												</td>
 												<td class="align-middle">
 													<span v-if="data.active" class="badge badge-info">Active</span>
-													<span v-else class="badge badge-danger">Deactivated</span>
+													<span v-else class="badge badge-danger">Inactive</span>
 												</td>
 												<td class="align-middle text-nowrap">
 													<button type="button" class="btn btn-outline-danger"
@@ -610,7 +610,7 @@ export default {
 					name: "Status",
 					type: "Boolean",
 					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
+						0: '<span class="badge badge-danger">Inactive</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
@@ -676,7 +676,7 @@ export default {
 					name: "Status",
 					type: "Boolean",
 					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
+						0: '<span class="badge badge-danger">Inactive</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
