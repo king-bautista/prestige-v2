@@ -583,12 +583,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
             //$play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
             $play_list = SiteScreen::when(request('search'), function ($query) {
                 return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
                 //->orWhereRaw()
                 ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
             })
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
                 ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
                 ->leftJoin('site_building_levels', 'site_screens.site_building_level_id', '=', 'site_building_levels.id')
+                ->leftJoin('site_screen_products', 'site_screens.id', '=', 'site_screen_products.site_screen_id')
                 ->leftJoin('sites_meta', function ($join) {
                     $join->on('sites.id', '=', 'sites_meta.site_id')
                         ->where('sites_meta.meta_key', '=', 'site_code');
