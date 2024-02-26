@@ -868,7 +868,7 @@ class KioskController extends AppBaseController
                 }
             }
         }
-    
+   
         // GET MAP POINT LINKS
         $point_links_tmp = SitePointLinkViewModel::whereIn('site_map_id', $maps_final_ids)->get()->toArray();
 		$point_links = [];
@@ -987,8 +987,8 @@ class KioskController extends AppBaseController
 		{
 			$distances[$node] = $distance;
 		}
-		
-		// track paths
+
+        // track paths
 		$parents = [ $endNode => null ];
 		foreach (array_keys($graph[$startNode]) as $child) {
 			$parents[$child] = $startNode;
@@ -996,6 +996,7 @@ class KioskController extends AppBaseController
 
 		// track nodes that have already been visited
 		$visited = [];
+
 
 		// find the nearest node
 		$node = $this->shortestDistanceNode($distances, $visited);
