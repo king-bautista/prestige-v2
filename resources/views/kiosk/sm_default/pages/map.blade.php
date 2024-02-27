@@ -1797,7 +1797,15 @@
 					}
 				});
 
-				fitCameraToScreen(zoom_level);				
+				fitCameraToScreen(zoom_level);		
+				
+				controls.maxPolarAngle = 0 * Math.PI / 180;
+				controls.minPolarAngle = 0 * Math.PI / 180;
+
+				controls.minAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180 ;
+				controls.maxAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180;
+
+				controls.update();	
 			}
 		});
 
