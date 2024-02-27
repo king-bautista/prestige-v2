@@ -152,7 +152,7 @@
 	var bldg_label = {};
 	var boundaries = {};
 	var spritePinFrom, spritePinTo, spriteUp;
-	var viewAngle = @php echo $site_config->view_angle; @endphp; //60 CHANGE TILT
+	var viewAngle = @php echo $site_config->tilt_angle; @endphp; //60 CHANGE TILT
     var site_config = @php echo $site_config; @endphp;
 
     //custom
@@ -252,7 +252,7 @@
 			})
 		);
 
-        spritePinFrom.position.set(0, @php echo $spritepinto_height; @endphp,0);
+		spritePinFrom.position.set(0, @php echo $spritepinto_height; @endphp,0);
 		spritePinFrom.scale.set(@php echo $pin_scale_x; @endphp, @php echo $pin_scale_y; @endphp, @php echo $pin_scale_z; @endphp); //ADD SCALE ON REMOVE ANIMATION
         scene.add(spritePinFrom);
 		spritePinFrom.visible = false;
@@ -1687,6 +1687,7 @@
 		$('.mapexpand').addClass('btn-prestige-last');
 		$(".maprepeat").hide();
 		$('#btnGuide').hide();
+		$('#directionDetails').hide();
 
 		movements = [];
 		currentpos = 1;
@@ -1700,7 +1701,7 @@
 		theball.visible = false;
 
 		//zoom to default zoom
-		var zoom_level =  0.8;
+		var zoom_level =  0.4;
 
 		fitCameraToScreen(zoom_level);					
 		var kiosk = map_points[KIOSK_ID];

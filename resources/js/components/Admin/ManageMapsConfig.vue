@@ -135,7 +135,7 @@
 								<div class="form-group row" v-if="map_form.map_details.map_type == '3D'">
 									<label for="firstName" class="col-sm-4 col-form-label">Name Angle</label>
 									<div class="col-sm-8">
-										<input type="text" class="form-control" v-model="map_form.name_angle" placeholder="0.00" required>
+										<input type="text" class="form-control" v-model="map_form.tilt_angle" placeholder="0.00" required>
 									</div>
 								</div>
 								<div class="form-group row" v-if="map_form.map_details.map_type == '3D'">
@@ -263,7 +263,7 @@
 					default_zoom: '',
 					default_x: '',
 					default_y: '',
-					name_angle: '',
+					tilt_angle: '',
 					view_angle: '',
 					building_label_height: '',
 					building_label_space: '',
@@ -400,7 +400,7 @@
 				this.map_form.default_zoom = '';
 				this.map_form.default_x = '';
 				this.map_form.default_y = '';
-				this.map_form.name_angle = '';
+				this.map_form.tilt_angle = '';
 				this.map_form.view_angle = '';
 				this.map_form.building_label_height = '';
 				this.map_form.building_label_space = '';
@@ -425,7 +425,7 @@
 				formData.append("default_zoom", this.map_form.default_zoom);
 				formData.append("default_x", this.map_form.default_x);
 				formData.append("default_y", this.map_form.default_y);
-				formData.append("name_angle", this.map_form.name_angle);
+				formData.append("tilt_angle", this.map_form.tilt_angle);
 				formData.append("view_angle", this.map_form.view_angle);
 				formData.append("building_label_height", this.map_form.building_label_height);
 				formData.append("building_label_space", this.map_form.building_label_space);
@@ -464,7 +464,7 @@
 					this.map_form.default_zoom = site_config.default_zoom;
 					this.map_form.default_x = site_config.default_x;
 					this.map_form.default_y = site_config.default_y;
-					this.map_form.name_angle = site_config.name_angle;
+					this.map_form.tilt_angle = site_config.tilt_angle;
 					this.map_form.view_angle = site_config.view_angle;
 					this.map_form.building_label_height = site_config.building_label_height;
 					this.map_form.building_label_space = site_config.building_label_space;
@@ -493,7 +493,7 @@
 				formData.append("default_zoom", this.map_form.default_zoom);
 				formData.append("default_x", this.map_form.default_x);
 				formData.append("default_y", this.map_form.default_y);
-				formData.append("name_angle", this.map_form.name_angle);
+				formData.append("tilt_angle", this.map_form.tilt_angle);
 				formData.append("view_angle", this.map_form.view_angle);
 				formData.append("building_label_height", this.map_form.building_label_height);
 				formData.append("building_label_space", this.map_form.building_label_space);
