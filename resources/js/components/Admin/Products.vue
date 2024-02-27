@@ -55,7 +55,7 @@
 								<label for="lastName" class="col-sm-4 col-form-label">Type <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<select class="form-control" aria-label="Default select example" v-model="product.type">
+									<select class="form-control" @change ="typeChange" aria-label="Default select example" v-model="product.type">
 										<option value="">Select Type</option>
 										<option value="product">Product</option>
 										<option value="promo">Promo</option>
@@ -81,8 +81,9 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Banner Image<span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
-									<input type="file" accept="image/*" id="img_url" ref="image_url" @change="image_urlChange">
-									<footer class="blockquote-footer">image max size is 700 x 700 pixels</footer>
+									<input type="file" accept="image/*" id="img_url" ref="image_url"
+										@change="image_urlChange">
+									<footer class="blockquote-footer">image max size is {{ this.type_width }} x {{ this.type_height }} pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="image_url" :src="image_url" class="img-thumbnail" />
@@ -174,6 +175,8 @@ export default {
 			edit_record: false,
 			image_width: 0,
 			image_height: 0,
+			type_width: '700',
+			type_height: '700',
 			dataFields: {
 				thumbnail_path: {
 					name: "Thumbnail",
@@ -250,6 +253,21 @@ export default {
 	},
 
 	methods: {
+		clearImage: function(){
+			$('#img_url').val('');
+			this.image_url = '';
+			this.product.image_url = '';
+		},
+		typeChange: function () {
+			this.clearImage();
+			if(this.product.type == 'banner'){
+				this.type_width = '900';
+				this.type_height = '246';
+			}else{
+				this.type_width = '700';
+				this.type_height = '700';
+			}
+		},
 		image_urlChange: function (e) {
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
@@ -262,19 +280,18 @@ export default {
 				img.onload = function () {
 					this.image_width = this.width;
 					this.image_height = this.height;
-					if (this.image_width == 700 && this.image_height == 700) {
+					
+					if (this.image_width == obj.type_width && this.image_height == obj.type_height) {
 						obj.product.image_url = this.file;
 					} else {
 						$('#img_url').val('');
 						obj.image_url = '';
 						obj.product.image_url = '';
-						toastr.error("Invalid Image Size! Must be width: 700 and height: 700. Current width: " + this.image_width + " and height: " + this.image_height);
+						toastr.error("Invalid Image Size! Must be width: " + obj.type_width + " and height: " + obj.type_height + ". Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
-				$('#img_url').val('');
-				this.image_url = '';
-				this.product.image_url = '';
+				this.clearImage();
 				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},

@@ -42,7 +42,7 @@
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
 									<input type="file" id="img_logo" accept="image/*" ref="logo" @change="logoChange">
-									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
+									<footer class="blockquote-footer">image max size is 550 x 500 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="logo" :src="logo" class="img-thumbnail" />
@@ -281,13 +281,13 @@ export default {
 				img.onload = function () {
 					this.image_width = this.width;
 					this.image_height = this.height;
-					if (this.image_width == 120 && this.image_height == 120) {
+					if (this.image_width == 550 && this.image_height == 550) {
 						obj.brand.logo = this.file;
 					} else {
 						$('#img_logo').val('');
 						obj.logo = '';
 						obj.brand.logo = '';
-						toastr.error("Invalid Image Size! Must be width: 120 and height: 120. Current width: " + this.image_width + " and height: " + this.image_height);
+						toastr.error("Invalid Image Size! Must be width: 550 and height: 550. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
