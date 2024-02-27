@@ -82,7 +82,7 @@
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
 									<input type="file" accept="image/*" id="img_url" ref="image_url" @change="image_urlChange">
-									<footer class="blockquote-footer">image max size is 120 x 120 pixels</footer>
+									<footer class="blockquote-footer">image max size is 700 x 700 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="image_url" :src="image_url" class="img-thumbnail" />
@@ -186,7 +186,7 @@ export default {
 					name: "Status",
 					type: "Boolean",
 					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
+						0: '<span class="badge badge-danger">Inactive</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
@@ -262,13 +262,13 @@ export default {
 				img.onload = function () {
 					this.image_width = this.width;
 					this.image_height = this.height;
-					if (this.image_width == 120 && this.image_height == 120) {
+					if (this.image_width == 700 && this.image_height == 700) {
 						obj.product.image_url = this.file;
 					} else {
 						$('#img_url').val('');
 						obj.image_url = '';
 						obj.product.image_url = '';
-						toastr.error("Invalid Image Size! Must be width: 120 and height: 120. Current width: " + this.image_width + " and height: " + this.image_height);
+						toastr.error("Invalid Image Size! Must be width: 700 and height: 700. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {

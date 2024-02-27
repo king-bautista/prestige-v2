@@ -23,7 +23,7 @@ body {
 } */
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
     height: 10px;
 }
 
@@ -924,7 +924,7 @@ body {
 }
 
 .cinema-details-sched-content {
-    display: inline-block !important;
+    /* display: inline-block !important; */
     text-align: center !important;
     padding: 14px;
 }
@@ -2548,7 +2548,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
-    background: #2f3b87;
+    background: #2E35A1;
 }
 
 .owl-theme .owl-dots .owl-dot span {
@@ -2886,4 +2886,13 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     color:#FFF;
     font-size:3em;
     font-weight:bold;
+}
+
+.ui-autocomplete.ui-front
+{
+    max-height: 80px;
+    overflow-y: auto !important; 
+    overflow-x: hidden !important;
+    border-radius: 10px;
+    z-index:1000 !important;
 }

@@ -586,7 +586,7 @@
 		var coords = new THREE.Vector3(0,0,0);
 
         @foreach ($site_floors as $floor)
-            var text3d@php echo $floor->id; @endphp = new THREE.TextGeometry('@php echo "Proceed to ".$floor->name; @endphp', {
+            var text3d@php echo $floor->id; @endphp = new THREE.TextGeometry('Proceed to @php echo $floor->name; @endphp', {
                 font: font,
                 size: 0.9,
                 height: 0.001,
@@ -1751,10 +1751,17 @@
         });
 
 		$("#btnpwdchange").on('click',function(){
-			$(this).addClass('btn-prestige-pwd');
-			$("#ispwd").prop('checked',!$("#ispwd").is(':checked'));
+
+			if($("#ispwd").prop('checked') == false) {
+				$("#ispwd").prop('checked', true);
+				$(this).addClass('btn-prestige-pwd');
+			}else{
+				$("#ispwd").prop('checked', false);
+				$(this).removeClass('btn-prestige-pwd');
+			}
 			
 			if($('#tenant-select').val() > 0){				
+				resetMap();
 				directionTo();
 			}
 		});
