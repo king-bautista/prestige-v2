@@ -840,7 +840,9 @@ class KioskController extends AppBaseController
         // GET MAP POINTS
         $points_tmp = SitePointViewModel::whereIn('site_map_id', $maps_final_ids)
         ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id', 'site_maps.site_building_id as building_id')
+        ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
+        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id', 'site_maps.site_building_id as building_id',
+        'site_building_levels.name as level_name')
         ->get();
 
         $points = [];
@@ -1081,7 +1083,7 @@ class KioskController extends AppBaseController
 				$PathList[] = "Take {$ThreePoints[2]['point_label']} to " . $ThreePoints[2]['building_name'];
 
 			}else{
-				if($ThreePoints[1]['level_order'] != $ThreePoints[2]['level_order'])
+				if($ThreePoints[1]['building_level_id'] != $ThreePoints[2]['building_level_id'])
 				{
 					$PathList[] = "Take {$ThreePoints[2]['point_label']} to " . $ThreePoints[2]['level_name'];
 					// note: comment this one if used in Podium

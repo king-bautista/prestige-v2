@@ -1620,7 +1620,7 @@
 			var start_point = level_end_points[Object.keys(level_end_points)[0]];
 			var initial_level = start_point[0]['building_level_id'];
 
-			// $("#mapguide-destination").html(tenant_guide);
+			$("#mapguide-destination").html(tenant_guide);
 
 			movements = [];
 			var line_points = {};
