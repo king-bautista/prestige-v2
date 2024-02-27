@@ -680,7 +680,7 @@
                         );
                         sm_icon[0].visible = true;
                         sm_icon[0].position.set(coords.x, coords.y+10, coords.z);
-                        sm_icon[0].scale.set(35,35,1);
+                        sm_icon[0].scale.set(40,40,1);
 
                         // MALL ID CONDITION HERE
                         // OR MAKE ICON SIZE IN DATABASE
@@ -695,7 +695,7 @@
                         );
                         sm_icon[1].visible = true;
                         sm_icon[1].position.set(coords.x, coords.y+6, coords.z);
-                        sm_icon[1].scale.set(50,50,1);
+                        sm_icon[1].scale.set(65,65,1);
 
                         // MALL ID CONDITION HERE
                         // OR MAKE ICON SIZE IN DATABASE
@@ -741,7 +741,7 @@
                         );
                         sm_icon[4].visible = true;
                         sm_icon[4].position.set(coords.x, coords.y+6, coords.z);
-                        sm_icon[4].scale.set(18,18,1);
+                        sm_icon[4].scale.set(40,40,1);
 
                         // MALL ID CONDITION HERE
                         // OR MAKE ICON SIZE IN DATABASE
