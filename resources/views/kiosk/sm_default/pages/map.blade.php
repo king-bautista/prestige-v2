@@ -821,7 +821,7 @@
                     }
                     else{ 
                         //let label = map_tenants[info.tenant_id].brand_name ? map_tenants[info.tenant_id].brand_name :  (info.point_label ? info.point_label : map_tenants[info.tenant_id].brand_name);
-                        let label = (info.point_label) ? info.point_label : map_tenants[info.tenant_id].brand_name;
+                        let label = (info.point_label) ? info.point_label.toUpperCase() : map_tenants[info.tenant_id].brand_name.toUpperCase();
                         if(info.wrap_at > 0 && label.length > info.wrap_at)
 						{
 							var cutText = label;
@@ -1620,7 +1620,7 @@
 			var start_point = level_end_points[Object.keys(level_end_points)[0]];
 			var initial_level = start_point[0]['building_level_id'];
 
-			// $("#mapguide-destination").html(tenant_guide);
+			$("#mapguide-destination").html(tenant_guide);
 
 			movements = [];
 			var line_points = {};
