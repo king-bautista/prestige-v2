@@ -90,8 +90,8 @@ class KioskController extends AppBaseController
 
             // Sprite configuration
             $icon_version = '4x'; //no names
-            $pin_scale_x = 6.0;
-            $pin_scale_y = 6.0;
+            $pin_scale_x = 10;
+            $pin_scale_y = 10;
             $pin_scale_z = 0;
             $icon_scale_x = 3.5;
             $icon_scale_y = 3.5;
