@@ -322,7 +322,6 @@ export default {
 				this.advertisement.materials[index].file_type = file_type[0];
 
 				if (file_type[0] == 'image') {
-					alert('dddd');
 					material = new Image;
 					material.onload = function () {
 						obj.setfilter(index, material.height, material.width);
@@ -331,14 +330,14 @@ export default {
 					material.src = file_path;
 				} //https://stackoverflow.com/questions/51665617/how-can-i-get-width-and-height-of-a-video-from-an-input-in-javascript
 				else if (file_type[0] == 'video') {
-					alert('vvvvvv');
-					// material = document.createElement("video");
-					// material.src = file_path;
-					// material.addEventListener("loadedmetadata", function () {
-					// 	obj.advertisement.display_duration = this.duration; console.log(material.videoWidth, material.videoHeight);
-					// 	//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
-					// 	obj.setfilter(index, this.videoHeight, this.videoWidth);
-					// });
+				
+					material = document.createElement("video");
+					material.src = file_path;
+					material.addEventListener("loadedmetadata", function () {
+						obj.advertisement.display_duration = this.duration; //console.log(material.videoWidth, material.videoHeight);
+						//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
+						obj.setfilter(index, this.videoHeight, this.videoWidth);
+					});
 
 					// var video = document.getElementById('material_0'); 
 					// video.addEventListener('loadedmetadata', function (e) {
@@ -346,11 +345,11 @@ export default {
 					// 	//var dimensions = [video.videoWidth, video.videoHeight];
 					// 	alert(dimensions);
 					// });
-					var v = document.getElementById("material_0");
-v.addEventListener( "loadedmetadata", function (e) {
-    console.log("width:", this.videoWidth);
-					 	console.log("height:", this.videoHeight);
-}, false );
+// 					var v = document.getElementById("material_0");
+// v.addEventListener( "loadedmetadata", function (e) {
+//     console.log("width:", this.videoWidth);
+// 					 	console.log("height:", this.videoHeight);
+// }, false );
 					// const url = URL.createObjectURL(file);
 					// const $video = document.createElement("video");
 					// $video.src = url;
@@ -387,12 +386,12 @@ v.addEventListener( "loadedmetadata", function (e) {
 			var up_dimension = width + 'x' + height;
 			var material = this.advertisement.materials[index].dimension.split("x");
 			//if (this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
-			if (this.advertisement.materials[index].dimension != up_dimension) {
-				toastr.error("Invalid Image Size! Must be width: " + material[0] + " and height:  " + material[1] + ". Current width: " + width + " and height: " + height);
-				this.$refs.materials[index].value = null;
-				this.advertisement.materials[index].src = '';
-				return false;
-			}
+			// if (this.advertisement.materials[index].dimension != up_dimension) {
+			// 	toastr.error("Invalid Image Size! Must be width: " + material[0] + " and height:  " + material[1] + ". Current width: " + width + " and height: " + height);
+			// 	this.$refs.materials[index].value = null;
+			// 	this.advertisement.materials[index].src = '';
+			// 	return false;
+			// }
 
 			this.advertisement.materials[index].height = height;
 			this.advertisement.materials[index].width = width;
