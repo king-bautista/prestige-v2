@@ -7,6 +7,7 @@
 	  	<img class="" src="{{ URL::to('themes/sm_default/images/Help.png') }}">
 	</div>
 
+    @if($site->details['multilanguage'] > 0)
 	<div class="language-btn-container">
 		<div class="btn-group dropup">
 		    <button type="button" class="bg-transparent border-0 p-0 language-btn-font font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -23,6 +24,7 @@
 		</div>
 		<div class="language-title translateme" data-en="LANGUAGE SELECT">LANGUAGE SELECT</div>
 	</div>
+    @endif
 
 	<div class="d-flex nav-content-container" id="NavContentContainer"> 
 

@@ -115,7 +115,7 @@
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-3 col-form-label">{{ material.dimension }}</label>
 									<div class="col-sm-5">
-										<input type="file" accept="image/*" ref="materials"
+										<input type="file" :id="'material_' + index" accept="image/*" ref="materials"
 											@change="fileUpload($event, index)" multiple>
 										<footer class="blockquote-footer">Max file size is 15MB</footer>
 										<footer class="blockquote-footer">Compatible file types: .jpg, .png, .ogv</footer>
@@ -322,6 +322,7 @@ export default {
 				this.advertisement.materials[index].file_type = file_type[0];
 
 				if (file_type[0] == 'image') {
+					alert('dddd');
 					material = new Image;
 					material.onload = function () {
 						obj.setfilter(index, material.height, material.width);
@@ -330,6 +331,7 @@ export default {
 					material.src = file_path;
 				} //https://stackoverflow.com/questions/51665617/how-can-i-get-width-and-height-of-a-video-from-an-input-in-javascript
 				else if (file_type[0] == 'video') {
+					alert('vvvvvv');
 					// material = document.createElement("video");
 					// material.src = file_path;
 					// material.addEventListener("loadedmetadata", function () {
@@ -337,18 +339,39 @@ export default {
 					// 	//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
 					// 	obj.setfilter(index, this.videoHeight, this.videoWidth);
 					// });
-					fileButton.addEventListener('change', evt => {
-						const file = evt.target.files[0]
-						const url = URL.createObjectURL(file)
-						const video = document.createElement('video')
-						video.onloadedmetadata = evt => {
-							// Revoke when you don't need the url any more to release any reference
-							URL.revokeObjectURL(url)
-							console.log(video.videoWidth, video.videoHeight)
-						}
-						video.src = url
-						video.load() // fetches metadata
-					})
+
+					// var video = document.getElementById('material_0'); 
+					// video.addEventListener('loadedmetadata', function (e) {
+					// 	console.log('>>>>>>>'); console.log(video);
+					// 	//var dimensions = [video.videoWidth, video.videoHeight];
+					// 	alert(dimensions);
+					// });
+					var v = document.getElementById("material_0");
+v.addEventListener( "loadedmetadata", function (e) {
+    console.log("width:", this.videoWidth);
+					 	console.log("height:", this.videoHeight);
+}, false );
+					// const url = URL.createObjectURL(file);
+					// const $video = document.createElement("video");
+					// $video.src = url;
+					// $video.addEventListener("loadedmetadata", function () {
+					// 	console.log("width:", this.videoWidth);
+					// 	console.log("height:", this.videoHeight);
+					// });
+					//https://stackoverflow.com/questions/8983714/video-and-onloadedmetadata-event
+					// material_0.addEventListener('change', evt => {
+					// 	const file = evt.target.files[0]
+					// 	const url = URL.createObjectURL(file)
+					// 	const video = document.createElement('video')
+					// 	video.onloadedmetadata = evt => {
+					// 		// Revoke when you don't need the url any more to release any reference
+					// 		URL.revokeObjectURL(url)
+					// 		//console.log(video.videoWidth, video.videoHeight)
+					// 		alert(video.videoWidth + "--" + video.videoHeight);
+					// 	}
+					// 	video.src = url
+					// 	video.load() // fetches metadata
+					// })
 
 				}
 			}
