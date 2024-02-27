@@ -1,5 +1,5 @@
 <!-- title -->
-<div class="p-3 font-weight-bold nav-titles">Map</div>
+<div class="p-3 font-weight-bold nav-titles translateme" data-en="Map" >Map</div>
 
 <div class="map-canvas">
     <div id="canvas" class="canvas-canvas"></div>
@@ -23,14 +23,14 @@
 		</div>
 		<div>
 			<div style="text-align: left;padding-left: 45px;margin-top: 48px;">
-				<span class="translateme">Was this helpful?</span> 
+				<span class="translateme" data-en="Was this helpful?">Was this helpful?</span> 
 				<a href="#" class="btn btn-sm btn-prestige-none btn-helpful" style="font-size:1rem;color:#6051e3;">
 					<span class="fa fa-thumbs-up"></span>
 				</a> 
 				<a href="#" class="btn btn-sm btn-prestige-none btn-nothelpful" style="font-size:1rem;color:#6051e3;">
 					<span class="fa fa-thumbs-down"></span>
 				</a> 
-				<span class="thankyou translateme">Thank you!</span>
+				<span class="thankyou translateme" data-en="Thank you!">Thank you!</span>
 			</div>	
 		</div>		
 	</div>
@@ -39,7 +39,7 @@
 <div id="btnGuide" style="display:none;">
 	<div id="toggle-up"><img src="{{ URL::to('themes/sm_default/images/up.svg') }}"></div>
 	<div id="toggle-down" class="hideArrow"><img src="{{ URL::to('themes/sm_default/images/down.svg') }}"></div>	
-	<div id="toggle-updown-text" class="translateme" style="width: 74px;text-align: center;padding-left:20px;padding: 5px 0px 0 0px;">Show Text Guide</div>
+	<div id="toggle-updown-text" class="translateme" style="width: 74px;text-align: center;padding-left:20px;padding: 5px 0px 0 0px;" data-en="Show Text Guide">Show Text Guide</div>
 </div>
 
 <div class="MapBtn">
@@ -47,12 +47,14 @@
         <div class="row">
             <!-- Add Hidden Value -->
             <input type="hidden" class="direction-from" />
+            <input type="hidden" class="amenity-point" />
+            <input type="hidden" class="amenity-show-location" />
 			<button type="button" id="btnresetmap" style="z-index:1000;display:none">Reset</button>
             <div class="d-flex justify-content-start" style="border-radius: 18px; box-shadow: 0 3px 6px rgb(0 0 0 / 0.16);">
                 <div style="width: 423px; height: 62px !important;">
                     
                     <select id="tenant-select" class="form-control" style="width: 423px;">
-                        <option value="0">Input Destination</option>
+                        <option value="0" class="translateme" data-en="Input Destination">Input Destination</option>
                         @foreach ($all_tenants as $tenant)
                             <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}</option>
                         @endforeach
@@ -584,7 +586,7 @@
 		var coords = new THREE.Vector3(0,0,0);
 
         @foreach ($site_floors as $floor)
-            var text3d@php echo $floor->id; @endphp = new THREE.TextGeometry('@php echo "Proceed to ".$floor->name; @endphp', {
+            var text3d@php echo $floor->id; @endphp = new THREE.TextGeometry('Proceed to @php echo $floor->name; @endphp', {
                 font: font,
                 size: 0.9,
                 height: 0.001,
@@ -1723,6 +1725,7 @@
 		controls.update();
 	}
 
+
     $(document).ready(function() {
         init();
         loadFont();
@@ -1748,10 +1751,17 @@
         });
 
 		$("#btnpwdchange").on('click',function(){
-			$(this).addClass('btn-prestige-pwd');
-			$("#ispwd").prop('checked',!$("#ispwd").is(':checked'));
+
+			if($("#ispwd").prop('checked') == false) {
+				$("#ispwd").prop('checked', true);
+				$(this).addClass('btn-prestige-pwd');
+			}else{
+				$("#ispwd").prop('checked', false);
+				$(this).removeClass('btn-prestige-pwd');
+			}
 			
 			if($('#tenant-select').val() > 0){				
+				resetMap();
 				directionTo();
 			}
 		});
@@ -1864,16 +1874,18 @@
 			if($("#toggle-up").hasClass("hideArrow")){
 				$("#toggle-down").addClass('hideArrow');
 				$("#toggle-up").removeClass('hideArrow');
+				$("#toggle-updown-text").attr('data-en', 'Show Text Guide');
 				$("#toggle-updown-text").html('Show Text Guide');
 				$("#directionDetails").hide();
 
 			}else if($("#toggle-down").hasClass("hideArrow")){
 				$("#toggle-up").addClass('hideArrow');
 				$("#toggle-down").removeClass('hideArrow');
+				$("#toggle-updown-text").attr('data-en', 'Hide Text Guide');
 				$("#toggle-updown-text").html('Hide Text Guide');
 				$("#directionDetails").show();
 			}
-
+			helper.setTranslation();
 		});
 
 		$('.softkeys-map-page').softkeys({
@@ -1942,6 +1954,33 @@
 	$('.direction-from').on('click', function(){
 		// CALL WAY FINDING
 		directionTo();
+	});
+
+	$('.amenity-show-location').on('click', function() {
+		var amenity_point = $('.amenity-point').val();
+		var point = map_points[amenity_point];
+
+		$("#floor-select").val(point.building_level_id).change();
+
+		spritePinTo.position.x = point.point_x;
+		spritePinTo.position.z = point.point_z;
+		spritePinTo.visible = true;
+		spritePinTo.userData = {'floor':point.building_level_id};
+
+		var coords = new THREE.Vector3(point.point_x, 6,point.point_z);
+		coords.x = point.point_x;
+		coords.y = point.point_y;
+		coords.z = point.point_z
+		scene.worldToLocal(coords);
+		controls.target = coords;
+		controls.update();
+
+		camera.position.y = 100;
+		camera.position.x = coords.x;
+		camera.position.z = coords.z;
+		camera.lookAt(spritePinTo.position);
+
+		$(".mapplus").click();
 	});
     
 </script>

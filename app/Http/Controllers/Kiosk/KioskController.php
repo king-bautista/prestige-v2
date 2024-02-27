@@ -16,6 +16,7 @@ use App\Models\Amenity;
 use App\Models\SiteBuilding;
 use App\Models\SiteMapZoom;
 use App\Models\Event;
+use App\Models\SiteMap;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\AdminViewModels\CinemaScheduleViewModel;
 use App\Models\AdminViewModels\PlayListViewModel;
@@ -28,6 +29,7 @@ use App\Models\ViewModels\AssistantMessageViewModel;
 use App\Models\ViewModels\TranslationViewModel;
 use App\Models\ViewModels\SitePointViewModel;
 use App\Models\ViewModels\SitePointLinkViewModel;
+use App\Models\ViewModels\SitePointTenantViewModel;
 
 class KioskController extends AppBaseController
 {
@@ -208,12 +210,15 @@ class KioskController extends AppBaseController
     public function getSupplemental($category_id) {
 
         $supplemental_category = Category::where('supplemental_category_id', $category_id)->first();
-        $supplemental['name'] = $supplemental_category->name;
-        $sub_categories = $this->getChildCategories($supplemental_category->id);
-        $supplemental['sub_categories'] = array_chunk($sub_categories, 15);
+        if($supplemental_category) {
+            $supplemental['name'] = $supplemental_category->name;
+            $sub_categories = $this->getChildCategories($supplemental_category->id);
+            $supplemental['sub_categories'] = array_chunk($sub_categories, 15);
+    
+            return $supplemental;
+        }
 
-        return $supplemental;
-
+        return null;
     }
 
     public function getTenants($parent_category_id = null, $category_id = null) {
@@ -429,19 +434,40 @@ class KioskController extends AppBaseController
             ]);
         }
 
+        $amenities = Amenity::orderBy('name', 'ASC')
+            ->get()
+            ->pluck('name');
+
+        foreach ($amenities as $key => $value) {
+            $collection->push([
+                'id' => null,
+                'value' => addslashes($value),
+                'floor_name' => null,
+                'building_name' => null,
+                'orderby' => addslashes($value),
+            ]);
+        }
+
         return json_encode($collection->values()->all());
     }
 
     public function search(Request $request) {
         // try
         // {
-            SiteTenantViewModel::setSiteId($request->site_id);
+            $site = SiteViewModel::find($request->site_id);
+            $site_map_ids = SiteMap::where('site_id', $request->site_id)
+            ->where('map_type', $site->details['map_type'])
+            ->get()
+            ->pluck('id');
 
             if (!$request->id) {
                 $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
 
-                $tenants = SiteTenantViewModel::where('site_tenants.site_id', $request->site_id)
-                ->where('site_tenants.active', 1)
+                $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
+                ->where(function ($query) {
+                    $query->where('site_points.tenant_id', '>', 0)
+                          ->orWhere('site_points.point_type', '>', 0);
+                })
                 ->where(function ($query) use($keyword) {
                     $query->orWhere('brands.name', 'like', '%'.$keyword.'%')
                     ->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
@@ -451,20 +477,26 @@ class KioskController extends AppBaseController
                     ->orWhere('supp.name', 'like', $keyword.'%')
                     ->orWhere('supp.name', 'like', '%'.$keyword)
                     ->orWhere('tags.name', 'like', $keyword.'%')
-                    ->orWhere('tags.name', 'like', '%'.$keyword);
+                    ->orWhere('tags.name', 'like', '%'.$keyword)
+                    ->orWhere('amenities.name', 'like', $keyword.'%')
+                    ->orWhere('amenities.name', 'like', '%'.$keyword);
                 })
-                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+                ->leftJoin('site_tenants', 'site_points.tenant_id', '=', 'site_tenants.id')
                 ->leftJoin('site_tenant_metas', function($join) {
                     $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
                     ->where('site_tenant_metas.meta_key', 'address');
                 })
+                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
                 ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
                 ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
                 ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
                 ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
-                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
-                ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address')
+                ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
+                ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+                ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
+                ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address', 
+                'site_points.id as site_point', 'amenities.name as amenity_name', 'amenities.icon', 'site_building_levels.name as amenity_location')
                 ->distinct()
                 ->orderBy('brands.name', 'ASC')
                 ->orderBy('site_tenants.site_building_level_id', 'ASC')
@@ -836,7 +868,7 @@ class KioskController extends AppBaseController
                 }
             }
         }
-    
+   
         // GET MAP POINT LINKS
         $point_links_tmp = SitePointLinkViewModel::whereIn('site_map_id', $maps_final_ids)->get()->toArray();
 		$point_links = [];
@@ -955,8 +987,8 @@ class KioskController extends AppBaseController
 		{
 			$distances[$node] = $distance;
 		}
-		
-		// track paths
+
+        // track paths
 		$parents = [ $endNode => null ];
 		foreach (array_keys($graph[$startNode]) as $child) {
 			$parents[$child] = $startNode;
@@ -964,6 +996,7 @@ class KioskController extends AppBaseController
 
 		// track nodes that have already been visited
 		$visited = [];
+
 
 		// find the nearest node
 		$node = $this->shortestDistanceNode($distances, $visited);

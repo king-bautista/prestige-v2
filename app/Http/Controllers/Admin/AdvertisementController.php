@@ -17,6 +17,7 @@ use App\Models\Advertisement;
 use App\Models\AdvertisementMaterial;
 use App\Models\AdvertisementScreen;
 use App\Models\AdminViewModels\AdvertisementViewModel;
+use App\Models\AdminViewModels\AdvertisementViewModelList;
 use App\Models\AdminViewModels\AdvertisementMaterialViewModel;
 //use App\Models\AdminViewModels\ContentMaterialViewModel;
 
@@ -42,15 +43,22 @@ class AdvertisementController extends AppBaseController implements Advertisement
     public function list(Request $request)
     {
         try {
-            $advertisements = AdvertisementViewModel::when(request('search'), function ($query) {
+            $host = $request->getSchemeAndHttpHost();
+            $advertisements = Advertisement::when(request('search'), function ($query) {
                 return $query->where('advertisements.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('companies.name', 'LIKE', '%' . request('search') . '%');
             })
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
                 ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
-                ->select('advertisements.*', 'advertisements.name as advertisement_name','brands.name as brand_name', 'companies.name as company_name')
-                ->when(is_null(request('order')), function ($query) { 
+                ->leftJoin('advertisement_materials', function ($query) {
+                    $query->on('advertisement_materials.advertisement_id', '=', 'advertisements.id')
+                        ->whereRaw('advertisement_materials.id IN (select MAX(a2.id) from advertisement_materials as a2 join advertisements as u2 on u2.id = a2.advertisement_id group by u2.id)');
+                })
+
+                ->select('advertisements.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name')
+                ->selectRaw('CONCAT("' . $host . '/",`advertisement_materials`.`thumbnail_path`) AS material_thumbnails_path')
+                ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('advertisements.name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
@@ -64,6 +72,9 @@ class AdvertisementController extends AppBaseController implements Advertisement
                             break;
                         case 'brand_name':
                             $field = 'brand_name';
+                            break;
+                        case 'material_thumbnails_path':
+                            $field = 'material_thumbnails_path';
                             break;
                         default:
                             $field = $column;
@@ -100,6 +111,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
         try {
             $materials = json_decode($request->materials);
             $count = 0;
+            
             foreach ($materials as $index => $material) {
                 if ($material->src)
                     $count++;
@@ -283,19 +295,17 @@ class AdvertisementController extends AppBaseController implements Advertisement
 
             $create_contents = AdvertisementViewModel::get();
             $reports = [];
-            foreach ($create_contents as $create_content) { echo '>>>';
-                echo '???'; print_r($create_content->dimensions);
+            foreach ($create_contents as $create_content) {
                 $reports[] = [
-                    'id' => $create_content->id,
-                    'material_thumbnails_path' => $create_content->material_thumbnails_path,
-                    'name' => $create_content->name,
-                    'serial_number' => $create_content->serial_number,
+                    'id' => $create_content->serial_number,
+                    //'material_thumbnails_path' => $create_content->material_thumbnails_path,
                     'company_id' => $create_content->company_id,
                     'company_name' => $create_content->company_name,
                     'contract_id' => $create_content->contract_id,
                     'contract_name' => $create_content->contract_details['name'],
                     'brand_id' => $create_content->brand_id,
                     'brand_name' => $create_content->brand_name,
+                    'name' => $create_content->name,
                     'display_duration' => $create_content->display_duration,
                     'width' => '',
                     'height' => '',

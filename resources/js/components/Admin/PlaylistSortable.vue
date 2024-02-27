@@ -219,7 +219,7 @@ export default {
 					name: "Status",
 					type: "Boolean",
 					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
+						0: '<span class="badge badge-danger">Inactive</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},
@@ -236,13 +236,13 @@ export default {
 				},
 			},
 			otherButtons: {
-				batchUpload: {
-					title: 'Batch Upload',
-					v_on: 'modalBatchUpload',
-					icon: '<i class="fas fa-upload"></i> Batch Upload',
-					class: 'btn btn-primary btn-sm',
-					method: 'add'
-				},
+				// batchUpload: {
+				// 	title: 'Batch Upload',
+				// 	v_on: 'modalBatchUpload',
+				// 	icon: '<i class="fas fa-upload"></i> Batch Upload',
+				// 	class: 'btn btn-primary btn-sm',
+				// 	method: 'add'
+				// },
 				download: {
 					title: 'Download',
 					v_on: 'downloadCsv',
@@ -257,13 +257,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
-				batchUploadTest: {
-					title: 'Batch Upload Test',
-					v_on: 'modalBatchUploadTest',
-					icon: '<i class="fas fa-upload"></i> Batch Upload Test',
-					class: 'btn btn-primary btn-sm',
-					method: 'add'
-				},
+				// batchUploadTest: {
+				// 	title: 'Batch Upload Test',
+				// 	v_on: 'modalBatchUploadTest',
+				// 	icon: '<i class="fas fa-upload"></i> Batch Upload Test',
+				// 	class: 'btn btn-primary btn-sm',
+				// 	method: 'add'
+				// },
 			},
 		};
 	},

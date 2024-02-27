@@ -220,10 +220,10 @@ export default {
 					name: "Preview",
 					type: "logo",
 				},
-				ad_name: "Ad Name",
-				company_name: "Company Name",
-				brand_name: "Brand Name",
-				air_dates: "Airdates",
+				advertisement_name: "Ad Name",
+				 company_name: "Company Name",
+				 brand_name: "Brand Name",
+				 air_dates: "Airdates",
 				status_id: {
 					name: "Transaction Status",
 					type: "Boolean",
@@ -242,7 +242,7 @@ export default {
 					name: "Status",
 					type: "Boolean",
 					status: {
-						0: '<span class="badge badge-danger">Deactivated</span>',
+						0: '<span class="badge badge-danger">Inactive</span>',
 						1: '<span class="badge badge-info">Active</span>'
 					}
 				},

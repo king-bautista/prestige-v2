@@ -126,8 +126,13 @@
                 sub_categories = category.sub_categories;
                 alphabetical = category.alphabetical;
                 supplementals = category.supplemental.sub_categories;
-                $('#Tab-Supplemental-tab').html(category.supplemental.name);
-                $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
+                if(category.supplemental) {
+                    $('#Tab-Supplemental-tab').html(category.supplemental.name);
+                    $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
+                }
+                else {
+                    $('#Tab-Supplemental-tab').hide();
+                }
                 $('#Tab-Category-Tab').click();
                 showSubCategories();
             });
@@ -135,6 +140,7 @@
     }
 
     function showSubCategories() {
+        $('.category-img-banner').attr('src', '');
         $('.sub-category-tenants').html('');
         $('.cat-row-card').html('');
         $('.category-title').html(main_category);
@@ -302,7 +308,7 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
-                var store_status = 'Close';
+                var store_status = 'Closed';
                 if(tenant.operational_hours.is_open) {
                     store_status = 'Open';
                 }
@@ -316,7 +322,7 @@
                 tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+tenant.brand_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success">'+store_status+'</span>';
+                tenant_item += '<span class="text-success translateme" data-en="'+store_status+'">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';

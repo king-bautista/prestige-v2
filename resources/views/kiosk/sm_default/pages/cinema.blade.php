@@ -27,7 +27,7 @@
 
 <!-- Cinema navigation -->
 <div class="cinema-nav-tabs"> 
-    <span class="mr-4 nav-tab-title translateme" data-en="Select to view">Select to view: </span>
+    <span class="mr-4 nav-tab-title translateme" data-en="Select to view:">Select to view: </span>
     <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Cinema-nav-tab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Cinema-Tab" data-toggle="pill" data-target="#Tab-Cinema" type="button" role="tab" aria-controls="Tab-Cinema" aria-selected="true" data-en="Cinema">Cinema</button>
@@ -59,17 +59,17 @@
                             <!-- Object Fit Images -->
                             <img class="movieImgView" src="#" data-filmid="#" />
                         
-                            <div class="mt-2"><button class="btn btn-prestige-color watch-trailer" data-src="">Watch Trailer</button>
+                            <div class="mt-2"><button class="btn btn-prestige-color watch-trailer translateme" data-en="Watch Trailer" data-src="">Watch Trailer</button>
                             </div>
 
                             <div class="mt-2">
-                                <button class="btn btn-prestige" disabled="disabled">Buy Tickets</button>
+                                <button class="btn btn-prestige translateme" data-en="Buy Tickets" disabled="disabled">Buy Tickets</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="text-center mt-2">
-                        <span class="cinema-sched-title"><span>Cinema Schedule</span>:</span>
+                        <span class="cinema-sched-title"><span class="translateme" data-en="Cinema Schedule">Cinema Schedule</span>:</span>
                         <div class="cinema-details-sched-container">
                             <div class="d-flex cinema-details-sched-content">
                             </div>
@@ -248,7 +248,7 @@
                 showing_item += '</div>';
                 showing_item += '<div class="text-center MovieTitle">'+showing.title+'</div>';
                 showing_item += '<div class="text-center ViewDetails">';
-                showing_item += '<button class="btn btn-lg BtnCinemaDetails">See Details</button>';
+                showing_item += '<button class="btn btn-lg BtnCinemaDetails translateme" data-en="See Details">See Details</button>';
                 showing_item += '</div>';
                 showing_item += '</div>';
                 $( ".now-showing-"+key ).append(showing_item);
@@ -270,17 +270,18 @@
 
             });
 
+            helper.setTranslation();
         });
 
         var navigation_button = '';
         navigation_button += '<a class="promo-prev">';
         navigation_button += '<div class="left-btn-carousel">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Left.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
         navigation_button += '<a class="promo-next">';
         navigation_button += '<div class="right-btn-carousel">';
-        navigation_button += '<img src="resources/uploads/imagebutton/Right.png">';
+        navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
 
@@ -340,6 +341,7 @@
     }
 
     function generateSchedules(cinemas) {
+        console.log(cinemas);
         $.each(cinemas, function(key,schedules) {
             var schedule_str = '';
             schedule_str += '<div class="mt-3 mb-1 mx-4 SmCinemaSched">';
