@@ -330,7 +330,7 @@ export default {
 					material.src = file_path;
 				} //https://stackoverflow.com/questions/51665617/how-can-i-get-width-and-height-of-a-video-from-an-input-in-javascript
 				else if (file_type[0] == 'video') {
-				
+				alert('ddddddddddddddddddd');
 					material = document.createElement("video");
 					material.src = file_path;
 					material.addEventListener("loadedmetadata", function () {
