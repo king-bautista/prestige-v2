@@ -386,12 +386,12 @@ export default {
 			var up_dimension = width + 'x' + height;
 			var material = this.advertisement.materials[index].dimension.split("x");
 			//if (this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
-			if (this.advertisement.materials[index].dimension != up_dimension) {
-				toastr.error("Invalid Image Size! Must be width: " + material[0] + " and height:  " + material[1] + ". Current width: " + width + " and height: " + height);
-				this.$refs.materials[index].value = null;
-				this.advertisement.materials[index].src = '';
-				return false;
-			}
+			// if (this.advertisement.materials[index].dimension != up_dimension) {
+			// 	toastr.error("Invalid Image Size! Must be width: " + material[0] + " and height:  " + material[1] + ". Current width: " + width + " and height: " + height);
+			// 	this.$refs.materials[index].value = null;
+			// 	this.advertisement.materials[index].src = '';
+			// 	return false;
+			// }
 
 			this.advertisement.materials[index].height = height;
 			this.advertisement.materials[index].width = width;
