@@ -300,7 +300,7 @@ export default {
 			},
 
 			adsDataFields: {
-				// serial_number: "ID",
+				serial_number: "ID",
 				material_thumbnails_path: {
 					name: "Preview",
 					type: "logo",

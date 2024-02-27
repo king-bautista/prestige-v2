@@ -270,7 +270,7 @@
 									<input type="file" id="img_subscriber_logo" accept="image/*" ref="subscriber_logo"
 										@change="subscriberLogoChange">
 									<footer class="blockquote-footer">Max file size is 15MB</footer>
-									<footer class="blockquote-footer">image max size is 550 x 550 pixels</footer>
+									<footer class="blockquote-footer">image max size is 172 x 73 pixels</footer>
 								</div>
 								<div class="col-sm-3 offset-sm-1 text-center">
 									<img v-if="subscriber_logo" :src="subscriber_logo" class="img-thumbnail" />
@@ -336,20 +336,6 @@
 					<div class="modal-footer justify-content-between">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" @click="storeBatch">Save changes</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal" id="errorModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="alert alert-block alert-danger">
-							<p>{{ error_message }}</p>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-between">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
@@ -516,22 +502,20 @@ export default {
 				img.onload = function () {
 					this.image_width = this.width;
 					this.image_height = this.height;
-					if (this.image_width == 550 && this.image_height == 550) {
+					if (this.image_width == 172 && this.image_height == 73) {
 						obj.tenant.subscriber_logo = this.file;
 					} else {
 						$('#img_icon').val('');
 						obj.subscriber_logo = null;
 						obj.tenant.subscriber_logo = '';
-						obj.error_message = "Invalid Image Size! Must be width: 550 and height: 550 Current width: " + this.image_width + " and height: " + this.image_height;
-						$('#errorModal').modal('show');
+						toastr.error("Invalid Image Size! Must be width: 172 and height: 73. Current width: " + this.image_width + " and height: " + this.image_height);
 					};
 				}
 			} else {
 				$('#img_icon').val('');
 				this.subscriber_logo = null;
 				this.tenant.subscriber_logo = '';
-				this.error_message = "The image must be a file type: bmp,jpeg,png.";
-				$('#errorModal').modal('show');
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
 			}
 		},
 
