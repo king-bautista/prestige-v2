@@ -90,8 +90,8 @@ class KioskController extends AppBaseController
 
             // Sprite configuration
             $icon_version = '4x'; //no names
-            $pin_scale_x = 6.0;
-            $pin_scale_y = 6.0;
+            $pin_scale_x = 10;
+            $pin_scale_y = 10;
             $pin_scale_z = 0;
             $icon_scale_x = 3.5;
             $icon_scale_y = 3.5;
@@ -156,7 +156,11 @@ class KioskController extends AppBaseController
 
     public function getCategories() {
         $new_categories = [];
-        $categories = SiteCategoryViewModel::where('site_id', $this->site->id)->whereNull('sub_category_id')->get();
+        $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
+        ->where('active', 1)
+        ->whereNull('sub_category_id')
+        ->get();
+        
         if($categories) {
             foreach($categories as $index => $category) {
                 $category = json_decode($category, TRUE);
@@ -176,6 +180,7 @@ class KioskController extends AppBaseController
         $child_categories = [];
         if (config('app.env') == 'local') { 
             $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
+            ->where('active', 1)
             ->where('category_id', $category_id)
             ->whereNotNull('sub_category_id')
             ->get();
@@ -294,6 +299,8 @@ class KioskController extends AppBaseController
         $current_date = date('Y-m-d');
 
         $promos = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)
+        ->where('site_tenants.active', 1)        
+        ->where('brand_products_promos.active', 1)        
         ->where('brand_products_promos.type', 'promo')
         ->whereDate('brand_products_promos.date_from', '<=', $current_date)
         ->whereDate('brand_products_promos.date_to', '>=', $current_date)
@@ -434,9 +441,9 @@ class KioskController extends AppBaseController
             ]);
         }
 
-        $amenities = Amenity::orderBy('name', 'ASC')
-            ->get()
-            ->pluck('name');
+        $amenities = Amenity::where('active', 1)
+            ->orderBy('name', 'ASC')
+            ->get()->pluck('name');
 
         foreach ($amenities as $key => $value) {
             $collection->push([
@@ -510,9 +517,10 @@ class KioskController extends AppBaseController
                 $suggest_cat = (array_unique($suggest_cat));
 
                 $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
+                ->where('site_tenants.active',  1)
+                ->whereIn('brands.category_id',  $suggest_cat)
                 ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->whereIn('brands.category_id',  $suggest_cat)
                 ->select('site_tenants.*')
                 ->distinct()
                 ->get()->toArray();
@@ -660,7 +668,10 @@ class KioskController extends AppBaseController
     }
 
     public function getSiteMaps() {
-        $site_maps = SiteMapViewModel::where('site_id', $this->site->id)->where('map_type', $this->site->details['map_type'])->get();
+        $site_maps = SiteMapViewModel::where('site_id', $this->site->id)
+        ->where('map_type', $this->site->details['map_type'])
+        ->where('active', 1)
+        ->get();
         return $site_maps;        
     }
 
@@ -709,7 +720,7 @@ class KioskController extends AppBaseController
         $amenities = [];
 
         // GET AMENITIES WITH SITE ID
-        $site_amenities = Amenity::where('site_id', $this->site->id)->get();
+        $site_amenities = Amenity::where('site_id', $this->site->id)->where('active', 1)->get();
         if($site_amenities) {
             foreach($site_amenities as $amenity) {
                 if($amenity->icon != null || $amenity->icon != '')
@@ -718,7 +729,7 @@ class KioskController extends AppBaseController
         }
 
         // GET DEFAULT AMENITIES
-        $default_amenities = Amenity::where('site_id', 0)->get();
+        $default_amenities = Amenity::where('site_id', 0)->where('active', 1)->get();
         if($default_amenities) {
             foreach($default_amenities as $amenity) {
                 if($amenity->icon != null || $amenity->icon != '')
@@ -731,8 +742,12 @@ class KioskController extends AppBaseController
 
     public function getBuildingFloors() {
 
-        $building = SiteBuilding::where('site_id', $this->site->id)->get()->count();
-        $floors = SiteBuildingLevelViewModel::where('site_id', $this->site->id)->get();
+        $building = SiteBuilding::where('site_id', $this->site->id)
+        ->where('active', 1)
+        ->get()->count();
+
+        $floors = SiteBuildingLevelViewModel::where('site_id', $this->site->id)
+        ->where('active', 1)->get();
 
         return [
             'building' => $building,
@@ -840,7 +855,9 @@ class KioskController extends AppBaseController
         // GET MAP POINTS
         $points_tmp = SitePointViewModel::whereIn('site_map_id', $maps_final_ids)
         ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id', 'site_maps.site_building_id as building_id')
+        ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
+        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id', 'site_maps.site_building_id as building_id',
+        'site_building_levels.name as level_name')
         ->get();
 
         $points = [];
@@ -1081,7 +1098,7 @@ class KioskController extends AppBaseController
 				$PathList[] = "Take {$ThreePoints[2]['point_label']} to " . $ThreePoints[2]['building_name'];
 
 			}else{
-				if($ThreePoints[1]['level_order'] != $ThreePoints[2]['level_order'])
+				if($ThreePoints[1]['building_level_id'] != $ThreePoints[2]['building_level_id'])
 				{
 					$PathList[] = "Take {$ThreePoints[2]['point_label']} to " . $ThreePoints[2]['level_name'];
 					// note: comment this one if used in Podium

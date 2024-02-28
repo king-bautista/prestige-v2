@@ -130,8 +130,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function store(ContentRequest $request)
     {
-        // try
-        // {
+        try
+        {
         $data = [
             'advertisement_id' => $request->advertisement_id,
             'status_id' => $request->status_id,
@@ -147,15 +147,15 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $this->generatePlayList($request->site_screen_ids);
 
         return $this->response($content, 'Successfully Created!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function update(ContentRequest $request)
@@ -249,9 +249,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $playlist = $this->getAdvertisementMaterial($content_ids, $screen_id->id);
 
             if (PlayList::insert($playlist)) {
-                // $this->setSequence($screen_id->id, $screen_id->site_id, count($playlist));
-                $this->setPlayListSequence($screen_id, $site_id, "Full Screen Ad");
-                $this->setPlayListSequence($screen_id, $site_id, "Banner Ad");
+                 $this->setSequence($screen_id->id, $screen_id->site_id, count($playlist));
+                //$this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Full Screen Ad");
+                //$this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Banner Ad");
             }
         }
 
@@ -282,13 +282,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
         return null;
     }
 
-    // public function setPlayListSequence($screen_id, $site_id, $ad_type = "Banner Ad"){
-    public function setPlayListSequence()
-    {
+    public function setPlayListSequence($screen_id, $site_id, $ad_type = "Banner Ad"){
+    // public function setPlayListSequence()
+    // {
 
-        $screen_id = 9;
-        $site_id = 3;
-        $ad_type = 'Full Screen Ad';
+    //     $screen_id = 9;
+    //     $site_id = 3;
+    //     $ad_type = 'Full Screen Ad';
 
         if (!$site_id) {
             $site_id = SiteScreen::find($screen_id)->site_id;

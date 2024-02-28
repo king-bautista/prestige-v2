@@ -26,7 +26,7 @@ class SiteMapConfig extends Model
         'default_zoom',
         'default_x',
         'default_y',
-        'name_angle',
+        'tilt_angle',
         'view_angle',
         'building_label_height',
         'building_label_space',

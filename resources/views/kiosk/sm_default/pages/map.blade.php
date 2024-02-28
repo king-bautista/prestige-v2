@@ -152,7 +152,7 @@
 	var bldg_label = {};
 	var boundaries = {};
 	var spritePinFrom, spritePinTo, spriteUp;
-	var viewAngle = @php echo $site_config->view_angle; @endphp; //60 CHANGE TILT
+	var viewAngle = @php echo $site_config->tilt_angle; @endphp; //60 CHANGE TILT
     var site_config = @php echo $site_config; @endphp;
 
     //custom
@@ -252,7 +252,7 @@
 			})
 		);
 
-        spritePinFrom.position.set(0, @php echo $spritepinto_height; @endphp,0);
+		spritePinFrom.position.set(0, @php echo $spritepinto_height; @endphp,0);
 		spritePinFrom.scale.set(@php echo $pin_scale_x; @endphp, @php echo $pin_scale_y; @endphp, @php echo $pin_scale_z; @endphp); //ADD SCALE ON REMOVE ANIMATION
         scene.add(spritePinFrom);
 		spritePinFrom.visible = false;
@@ -679,8 +679,8 @@
                             })
                         );
                         sm_icon[0].visible = true;
-                        sm_icon[0].position.set(coords.x, coords.y+12, coords.z);
-                        sm_icon[0].scale.set(30,30,1);
+                        sm_icon[0].position.set(coords.x, coords.y+10, coords.z);
+                        sm_icon[0].scale.set(40,40,1);
 
                         // MALL ID CONDITION HERE
                         // OR MAKE ICON SIZE IN DATABASE
@@ -695,7 +695,7 @@
                         );
                         sm_icon[1].visible = true;
                         sm_icon[1].position.set(coords.x, coords.y+6, coords.z);
-                        sm_icon[1].scale.set(40,40,1);
+                        sm_icon[1].scale.set(65,65,1);
 
                         // MALL ID CONDITION HERE
                         // OR MAKE ICON SIZE IN DATABASE
@@ -741,7 +741,7 @@
                         );
                         sm_icon[4].visible = true;
                         sm_icon[4].position.set(coords.x, coords.y+6, coords.z);
-                        sm_icon[4].scale.set(18,18,1);
+                        sm_icon[4].scale.set(40,40,1);
 
                         // MALL ID CONDITION HERE
                         // OR MAKE ICON SIZE IN DATABASE
@@ -1620,7 +1620,7 @@
 			var start_point = level_end_points[Object.keys(level_end_points)[0]];
 			var initial_level = start_point[0]['building_level_id'];
 
-			// $("#mapguide-destination").html(tenant_guide);
+			$("#mapguide-destination").html(tenant_guide);
 
 			movements = [];
 			var line_points = {};
@@ -1687,6 +1687,7 @@
 		$('.mapexpand').addClass('btn-prestige-last');
 		$(".maprepeat").hide();
 		$('#btnGuide').hide();
+		$('#directionDetails').hide();
 
 		movements = [];
 		currentpos = 1;
@@ -1700,7 +1701,7 @@
 		theball.visible = false;
 
 		//zoom to default zoom
-		var zoom_level =  0.8;
+		var zoom_level =  0.4;
 
 		fitCameraToScreen(zoom_level);					
 		var kiosk = map_points[KIOSK_ID];
@@ -1796,7 +1797,15 @@
 					}
 				});
 
-				fitCameraToScreen(zoom_level);				
+				fitCameraToScreen(zoom_level);		
+				
+				controls.maxPolarAngle = 0 * Math.PI / 180;
+				controls.minPolarAngle = 0 * Math.PI / 180;
+
+				controls.minAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180 ;
+				controls.maxAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180;
+
+				controls.update();	
 			}
 		});
 

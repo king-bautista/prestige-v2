@@ -259,7 +259,7 @@ export default {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
 		},
-		bannerChange: function (e) {
+		bannerChange: function (e) { 
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
 				this.image_url = URL.createObjectURL(file);
@@ -271,7 +271,7 @@ export default {
 				img.onload = function () {
 					this.image_width = this.width;
 					this.image_height = this.height;
-					if (this.image_width <= 700 && this.image_height <= 700) {
+					if (this.image_width == 700 && this.image_height == 700) { 
 						obj.event.image_url = this.file;
 					} else {
 						$('#img_banner').val('');
