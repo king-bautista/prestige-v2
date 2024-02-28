@@ -54,6 +54,32 @@ class Advertisement extends Model
      */
     protected $primaryKey = 'id';
 
+    public $appends = [
+        'contract_details',
+    ]; 
+
+    public function getContractDetails()
+    {
+        $contract = Contract::find($this->contract_id);
+        if($contract)
+            return $contract;
+        return null;
+    }
+    
+     /****************************************
+    *           ATTRIBUTES PARTS            *
+    ****************************************/
+
+
+    public function getContractDetailsAttribute() 
+    {
+        $contract = $this->getContractDetails();
+        if($contract)
+            return $contract;
+        return null;
+    }   
+
+
     public function saveMaterials($materials, $files)
     {
         if($files) {
