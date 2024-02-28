@@ -1,5 +1,5 @@
 <!-- title -->
-<div class="p-3 font-weight-bold nav-titles translateme" data-en="Search">Search</div>
+<div class="p-3 font-weight-bold nav-titles translateme" id="search-title" data-en="Search">Search</div>
 
 <div id="keyboard-section" class="row">
     <div class="col-md-10 offset-md-1 mt-5 pt-5">
@@ -158,15 +158,18 @@
 
                         showTenantSearch(responce.tenants);
                         showSubscriber(responce.suggest_subscribers)
+                        $('#search-title').html('Search Results');
                         $('#search_str').html(search_key);
                         $('.search-for').show();
                         $('#keyboard-section').hide();
                         $('#searchList').show();
                         current_location = 'searchresult';
                         page_history.push(current_location);
+
                     }
                     else {
                         $('#search_str').html(search_key);
+                        $('#search-title').html('Search Results');
                         $('.search-for').show();
                         $('#searchNone').show();
                         $('#keyboard-section').hide();

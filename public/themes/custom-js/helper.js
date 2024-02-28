@@ -185,6 +185,7 @@ Helpers.prototype = {
         $('.nav-btn-search').addClass("active");
         $('#code').val('');
         $('#videocontainer').html('');
+        $('#search-title').html('Search');
         current_location = 'searchbox';
     },
 
