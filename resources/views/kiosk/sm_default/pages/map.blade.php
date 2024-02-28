@@ -1948,7 +1948,7 @@
             ]
         });
 
-		$(".softkeys__btn").on('mousedown',function(){                
+		$(".softkeys-map-page > .softkeys__btn").on('mousedown',function(){                
         }).on('click',function(){
             $('#selectInput').trigger('change');
         }).on('touchend',function(){

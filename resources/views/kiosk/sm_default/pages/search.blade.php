@@ -138,7 +138,7 @@
             ]
         });
 
-        $(".softkeys__btn").on('mousedown',function(){                
+        $(".softkeys-search-page > .softkeys__btn").on('mousedown',function(){                
         }).on('mouseup',function(){
             $('#code').trigger('keydown');
             $('.notification').hide();
