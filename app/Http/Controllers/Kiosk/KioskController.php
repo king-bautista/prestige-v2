@@ -668,7 +668,10 @@ class KioskController extends AppBaseController
     }
 
     public function getSiteMaps() {
-        $site_maps = SiteMapViewModel::where('site_id', $this->site->id)->where('map_type', $this->site->details['map_type'])->get();
+        $site_maps = SiteMapViewModel::where('site_id', $this->site->id)
+        ->where('map_type', $this->site->details['map_type'])
+        ->where('active', 1)
+        ->get();
         return $site_maps;        
     }
 
@@ -717,7 +720,7 @@ class KioskController extends AppBaseController
         $amenities = [];
 
         // GET AMENITIES WITH SITE ID
-        $site_amenities = Amenity::where('site_id', $this->site->id)->get();
+        $site_amenities = Amenity::where('site_id', $this->site->id)->where('active', 1)->get();
         if($site_amenities) {
             foreach($site_amenities as $amenity) {
                 if($amenity->icon != null || $amenity->icon != '')
@@ -726,7 +729,7 @@ class KioskController extends AppBaseController
         }
 
         // GET DEFAULT AMENITIES
-        $default_amenities = Amenity::where('site_id', 0)->get();
+        $default_amenities = Amenity::where('site_id', 0)->where('active', 1)->get();
         if($default_amenities) {
             foreach($default_amenities as $amenity) {
                 if($amenity->icon != null || $amenity->icon != '')
@@ -739,8 +742,12 @@ class KioskController extends AppBaseController
 
     public function getBuildingFloors() {
 
-        $building = SiteBuilding::where('site_id', $this->site->id)->get()->count();
-        $floors = SiteBuildingLevelViewModel::where('site_id', $this->site->id)->get();
+        $building = SiteBuilding::where('site_id', $this->site->id)
+        ->where('active', 1)
+        ->get()->count();
+
+        $floors = SiteBuildingLevelViewModel::where('site_id', $this->site->id)
+        ->where('active', 1)->get();
 
         return [
             'building' => $building,
