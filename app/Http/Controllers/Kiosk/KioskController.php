@@ -404,6 +404,7 @@ class KioskController extends AppBaseController
                     'building_name' => $value->building_name,
                     'address' => $value->address,
                     'orderby' => $value->brand_name. ", " . $value->floor_name . ", " . $value->address,
+                    'tenant' => $value,
                 ]);
             }
             else {
@@ -459,92 +460,85 @@ class KioskController extends AppBaseController
     }
 
     public function search(Request $request) {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::find($request->site_id);
             $site_map_ids = SiteMap::where('site_id', $request->site_id)
             ->where('map_type', $site->details['map_type'])
             ->get()
             ->pluck('id');
 
-            if (!$request->id) {
-                $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
+            $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
 
-                $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
-                ->where(function ($query) {
-                    $query->where('site_points.tenant_id', '>', 0)
-                          ->orWhere('site_points.point_type', '>', 0);
-                })
-                ->where(function ($query) use($keyword) {
-                    $query->orWhere('brands.name', 'like', '%'.$keyword.'%')
-                    ->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
-                    ->orWhere('brands.name', 'like', '%'.$keyword) #FIRST WORD but start on first letter
-                    ->orWhere('categories.name', 'like', '%'.$keyword)
-                    ->orWhere('categories.name', 'like', $keyword.'%')
-                    ->orWhere('supp.name', 'like', $keyword.'%')
-                    ->orWhere('supp.name', 'like', '%'.$keyword)
-                    ->orWhere('tags.name', 'like', $keyword.'%')
-                    ->orWhere('tags.name', 'like', '%'.$keyword)
-                    ->orWhere('amenities.name', 'like', $keyword.'%')
-                    ->orWhere('amenities.name', 'like', '%'.$keyword);
-                })
-                ->leftJoin('site_tenants', 'site_points.tenant_id', '=', 'site_tenants.id')
-                ->leftJoin('site_tenant_metas', function($join) {
-                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
-                    ->where('site_tenant_metas.meta_key', 'address');
-                })
-                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-                ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
-                ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
-                ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
-                ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
-                ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
-                ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-                ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address', 
-                'site_points.id as site_point', 'amenities.name as amenity_name', 'amenities.icon', 'site_building_levels.name as amenity_location')
-                ->distinct()
-                ->orderBy('brands.name', 'ASC')
-                ->orderBy('site_tenants.site_building_level_id', 'ASC')
-                ->orderBy('address', 'ASC')
-                ->get();
+            $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
+            ->where(function ($query) {
+                $query->where('site_points.tenant_id', '>', 0)
+                        ->orWhere('site_points.point_type', '>', 0);
+            })
+            ->where(function ($query) use($keyword) {
+                $query->orWhere('brands.name', 'like', '%'.$keyword.'%')
+                ->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
+                ->orWhere('brands.name', 'like', '%'.$keyword) #FIRST WORD but start on first letter
+                ->orWhere('categories.name', 'like', '%'.$keyword)
+                ->orWhere('categories.name', 'like', $keyword.'%')
+                ->orWhere('supp.name', 'like', $keyword.'%')
+                ->orWhere('supp.name', 'like', '%'.$keyword)
+                ->orWhere('tags.name', 'like', $keyword.'%')
+                ->orWhere('tags.name', 'like', '%'.$keyword)
+                ->orWhere('amenities.name', 'like', $keyword.'%')
+                ->orWhere('amenities.name', 'like', '%'.$keyword);
+            })
+            ->leftJoin('site_tenants', 'site_points.tenant_id', '=', 'site_tenants.id')
+            ->leftJoin('site_tenant_metas', function($join) {
+                $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                ->where('site_tenant_metas.meta_key', 'address');
+            })
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
+            ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
+            ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
+            ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
+            ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
+            ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
+            ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address', 
+            'site_points.id as site_point', 'amenities.name as amenity_name', 'amenities.icon', 'site_building_levels.name as amenity_location')
+            ->distinct()
+            ->orderBy('brands.name', 'ASC')
+            ->orderBy('site_tenants.site_building_level_id', 'ASC')
+            ->orderBy('address', 'ASC')
+            ->get();
 
-                $suggest_cat = [];
-                foreach ($tenants as $key => $value) {
-                    array_push( $suggest_cat, $value->brand_category_id);           
-                }
-                $suggest_cat = (array_unique($suggest_cat));
-
-                $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
-                ->where('site_tenants.active',  1)
-                ->whereIn('brands.category_id',  $suggest_cat)
-                ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
-                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->select('site_tenants.*')
-                ->distinct()
-                ->get()->toArray();
-
-                $tenants = array_chunk($tenants->toArray(), 15);                
-
-                return [
-                    'tenants' => $tenants,
-                    'suggest_subscribers' => $suggest_subscribers,
-                ];
-
+            $suggest_cat = [];
+            foreach ($tenants as $key => $value) {
+                array_push( $suggest_cat, $value->brand_category_id);           
             }
-            else {
+            $suggest_cat = (array_unique($suggest_cat));
 
-            }
+            $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
+            ->where('site_tenants.active',  1)
+            ->whereIn('brands.category_id',  $suggest_cat)
+            ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->select('site_tenants.*')
+            ->distinct()
+            ->get()->toArray();
 
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // } 
+            $tenants = array_chunk($tenants->toArray(), 15);                
+
+            return [
+                'tenants' => $tenants,
+                'suggest_subscribers' => $suggest_subscribers,
+            ];
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        } 
     }
 
     public function getBannerAds() {
