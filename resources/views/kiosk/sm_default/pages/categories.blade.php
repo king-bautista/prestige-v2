@@ -195,7 +195,7 @@
 
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
-                var store_status = 'Close';
+                var store_status = 'Closed';
                 if(tenant.operational_hours.is_open) {
                     store_status = 'Open';
                 }
