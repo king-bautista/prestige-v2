@@ -23,7 +23,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 promo-modal-container">
             <div class="modal-body m-0 p-0">
-                <span class="close text-white">&times;</span>
+                <span class="close text-white">X</span>
                 <img class="promo-img promo-modal-img" src ="">
             </div>
         </div>
