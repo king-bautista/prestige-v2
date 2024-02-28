@@ -598,7 +598,7 @@ body {
     position: absolute;
     top: 880px;
     right: -15px;
-    z-index: 9;
+    z-index: 1051;
 }
 
 .popover {
@@ -2966,4 +2966,8 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 .close_btn {
     font-family: Henry Sans Regular !important;
     color: #FFFFFF !important;
+}
+
+.watch-trailer-btn{
+    width: 76%;
 }

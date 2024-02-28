@@ -42,7 +42,7 @@
 <div id="CinemaDetailsModal" class="modal CinemaDetailsModalContent">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 CinemaDeatilsModalContainer">
-            <span class="close closeCinemaDetails text-white">&times;</span>
+            <span class="close closeCinemaDetails text-white">X</span>
             <div class="modal-body px-5 pt-5 card card-body movie-Details-Content-Container">
                 <div class="now-showing-details">
                     <div class="row">
@@ -59,7 +59,7 @@
                             <!-- Object Fit Images -->
                             <img class="movieImgView" src="#" data-filmid="#" />
                         
-                            <div class="mt-2"><button class="btn btn-prestige-color watch-trailer translateme" data-en="Watch Trailer" data-src="">Watch Trailer</button>
+                            <div class="mt-2"><button class="btn btn-prestige-color watch-trailer translateme watch-trailer-btn" data-en="Watch Trailer" data-src="">Watch Trailer</button>
                             </div>
 
                             <div class="mt-2">
@@ -242,15 +242,30 @@
 
             $.each(showings, function(index,showing) {
                 var showing_item = '';
-                showing_item += '<div class="col-sm-4 showing-details-'+showing.film_id+'">';
-                showing_item += '<div class="card img-cinema-card">';
-                showing_item += '<img type="button" class="movie-img" src="/uploads/media/cinema/'+showing.film_id+'.jpg">';
-                showing_item += '</div>';
-                showing_item += '<div class="text-center MovieTitle">'+showing.title+'</div>';
-                showing_item += '<div class="text-center ViewDetails">';
-                showing_item += '<button class="btn btn-lg BtnCinemaDetails translateme" data-en="See Details">See Details</button>';
-                showing_item += '</div>';
-                showing_item += '</div>';
+                var carousel_count = parseInt(my_showing.length), last_carousel;
+                last_carousel = carousel_count - 1;
+                if(key == last_carousel){
+                    showing_item += '<div class="col-sm-12 showing-details-'+showing.film_id+'">';
+                    showing_item += '<div class="card img-cinema-card">';
+                    showing_item += '<img type="button" class="movie-img" src="/uploads/media/cinema/'+showing.film_id+'.jpg">';
+                    showing_item += '</div>';
+                    showing_item += '<div class="text-center MovieTitle">'+showing.title+'</div>';
+                    showing_item += '<div class="text-center ViewDetails">';
+                    showing_item += '<button class="btn btn-lg BtnCinemaDetails translateme" data-en="See Details">See Details</button>';
+                    showing_item += '</div>';
+                    showing_item += '</div>';
+                }else{
+                    showing_item += '<div class="col-sm-4 showing-details-'+showing.film_id+'">';
+                    showing_item += '<div class="card img-cinema-card">';
+                    showing_item += '<img type="button" class="movie-img" src="/uploads/media/cinema/'+showing.film_id+'.jpg">';
+                    showing_item += '</div>';
+                    showing_item += '<div class="text-center MovieTitle">'+showing.title+'</div>';
+                    showing_item += '<div class="text-center ViewDetails">';
+                    showing_item += '<button class="btn btn-lg BtnCinemaDetails translateme" data-en="See Details">See Details</button>';
+                    showing_item += '</div>';
+                    showing_item += '</div>';
+                }
+
                 $( ".now-showing-"+key ).append(showing_item);
                 $('.showing-details-'+showing.film_id).on('click', function() {
                     $('.now-showing-trailer').hide();
@@ -267,7 +282,6 @@
                     generateSchedules(showing.cinema_schedules);
                     $("#CinemaDetailsModal").css("display", "block");
                 });
-
             });
 
             helper.setTranslation();
