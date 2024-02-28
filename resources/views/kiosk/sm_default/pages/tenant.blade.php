@@ -173,8 +173,8 @@
             modalBanner.css("display", "none");
         });
 
-        $('.tenant-store-schedule').on('click', function() {
-            var schedules = (tenant_schedule) ? tenant_schedule : JSON.parse(helper.decodeEntities(site_schedule));
+        $('.tenant-store-schedule').on('click', function() {            
+            var schedules = (tenant_schedule != '') ? tenant_schedule : JSON.parse(helper.decodeEntities(site_schedule));
             let tempSchedule = [];
             const currentSchedule = schedules;
             if (currentSchedule) {
@@ -255,8 +255,7 @@
     function showTenantDetails(tenant) {
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
-        tenant_schedule = (tenant.tenant_details) ? tenant.tenant_details.schedules : '';
-
+        tenant_schedule = (tenant.tenant_details.schedules[0].schedules != undefined && tenant.tenant_details.schedules[0].schedules != '') ? tenant.tenant_details.schedules : '';
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
         $('.tenant-store-page-name').html(tenant.brand_name);
