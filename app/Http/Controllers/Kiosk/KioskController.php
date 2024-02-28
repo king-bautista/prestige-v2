@@ -156,7 +156,11 @@ class KioskController extends AppBaseController
 
     public function getCategories() {
         $new_categories = [];
-        $categories = SiteCategoryViewModel::where('site_id', $this->site->id)->whereNull('sub_category_id')->get();
+        $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
+        ->where('active', 1)
+        ->whereNull('sub_category_id')
+        ->get();
+        
         if($categories) {
             foreach($categories as $index => $category) {
                 $category = json_decode($category, TRUE);
@@ -176,6 +180,7 @@ class KioskController extends AppBaseController
         $child_categories = [];
         if (config('app.env') == 'local') { 
             $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
+            ->where('active', 1)
             ->where('category_id', $category_id)
             ->whereNotNull('sub_category_id')
             ->get();
@@ -294,6 +299,8 @@ class KioskController extends AppBaseController
         $current_date = date('Y-m-d');
 
         $promos = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)
+        ->where('site_tenants.active', 1)        
+        ->where('brand_products_promos.active', 1)        
         ->where('brand_products_promos.type', 'promo')
         ->whereDate('brand_products_promos.date_from', '<=', $current_date)
         ->whereDate('brand_products_promos.date_to', '>=', $current_date)
@@ -434,9 +441,9 @@ class KioskController extends AppBaseController
             ]);
         }
 
-        $amenities = Amenity::orderBy('name', 'ASC')
-            ->get()
-            ->pluck('name');
+        $amenities = Amenity::where('active', 1)
+            ->orderBy('name', 'ASC')
+            ->get()->pluck('name');
 
         foreach ($amenities as $key => $value) {
             $collection->push([
@@ -510,9 +517,10 @@ class KioskController extends AppBaseController
                 $suggest_cat = (array_unique($suggest_cat));
 
                 $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
+                ->where('site_tenants.active',  1)
+                ->whereIn('brands.category_id',  $suggest_cat)
                 ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
                 ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->whereIn('brands.category_id',  $suggest_cat)
                 ->select('site_tenants.*')
                 ->distinct()
                 ->get()->toArray();
