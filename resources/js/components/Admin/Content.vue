@@ -365,7 +365,7 @@ export default {
 			this.screens = [];
 			this.content.site_screen_ids = [];
 			this.content.advertisement_id = data.id
-			this.content.advertisement_details = data;
+			this.content.advertisement_details = data; console.log(data);
 			this.getScreens(data.contract_id);
 		},
 
@@ -378,7 +378,7 @@ export default {
 				});
 		},
 
-		editContent: function (id) {
+		editContent: function (id) { 
 			axios.get('/admin/content-management/' + id)
 				.then(response => {
 					var content = response.data.data;

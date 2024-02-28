@@ -51,12 +51,13 @@ class AdvertisementController extends AppBaseController implements Advertisement
             })
                 ->leftJoin('brands', 'advertisements.brand_id', '=', 'brands.id')
                 ->leftJoin('companies', 'advertisements.company_id', '=', 'companies.id')
+                ->leftJoin('contracts as cnt', 'advertisements.contract_id', '=', 'cnt.id')
                 ->leftJoin('advertisement_materials', function ($query) {
                     $query->on('advertisement_materials.advertisement_id', '=', 'advertisements.id')
                         ->whereRaw('advertisement_materials.id IN (select MAX(a2.id) from advertisement_materials as a2 join advertisements as u2 on u2.id = a2.advertisement_id group by u2.id)');
                 })
 
-                ->select('advertisements.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name')
+                ->select('advertisements.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name', 'cnt.serial_number as contract_serial_number', 'cnt.name as contract_name', 'cnt.remarks as contract_remark' )
                 ->selectRaw('CONCAT("' . $host . '/",`advertisement_materials`.`thumbnail_path`) AS material_thumbnails_path')
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('advertisements.name', 'ASC');
