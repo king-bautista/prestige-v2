@@ -51,7 +51,7 @@
             select: function(event, ui) {
                 if(ui.item.id)
                 {
-                    onClickSuggest(ui.item.id);
+                    onClickSuggest(ui.item.tenant);
                 }else{
                     event.preventDefault();
                     this.value = $('<div />').html(ui.item.label).text();
@@ -334,9 +334,6 @@
                 });
             });
 
-
-
-
             owl_subscriber = $('.subscriber-holder');
             owl_subscriber.owlCarousel({
                 margin: 0,
@@ -348,13 +345,9 @@
         }
     }
 
-    function onClickSuggest(id) {
-        var search_id = id;
-        var search_key = $('#code').val();
-
+    function onClickSuggest(tenant) {
         // SHOW TENANT
         showTenantDetails(tenant);
-
     }
 
 </script>
