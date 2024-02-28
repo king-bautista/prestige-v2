@@ -71,6 +71,7 @@
                             case 'delete' :
                                 character = '<span>delete</span>';
                                 type = 'delete';
+                                styleClass = 'softkeys__btn--delete';
                                 break;
 
                             default :
