@@ -66,15 +66,15 @@ class CinemaScheduleViewModel extends Model
         $end_date =  date('Y-m-d 23:59:59');
         $new_cinema_schedules = [];
 
-        $cinema_schedules = CinemaSchedule::where('film_id', $this->film_id)
-        ->where('site_id', $this->site_id)
-        ->get();
-
         // $cinema_schedules = CinemaSchedule::where('film_id', $this->film_id)
         // ->where('site_id', $this->site_id)
-        // ->where('show_time', '>=', $start_date)
-        // ->where('show_time', '<=', $end_date)
         // ->get();
+
+        $cinema_schedules = CinemaSchedule::where('film_id', $this->film_id)
+        ->where('site_id', $this->site_id)
+        ->where('show_time', '>=', $start_date)
+        ->where('show_time', '<=', $end_date)
+        ->get();
 
         foreach($cinema_schedules as $index => $schedule) {
             $new_cinema_schedules[$schedule->screen_name][] = Carbon::parse($schedule->show_time)->format('M d, Y h:i A');
