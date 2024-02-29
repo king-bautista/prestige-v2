@@ -40,7 +40,7 @@ class UserInformationRequest extends FormRequest
                 'required',
                 'string',
                 'min:6',
-                'max:12',// must be at least 8 characters in length
+                'max:15',// must be at least 8 characters in length
             ],
             'password_confirmation' => 'required|same:password'
         ];
