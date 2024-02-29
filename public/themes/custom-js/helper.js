@@ -231,7 +231,7 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
-        $('#Tab-Cinema-Tab').click();
+        // $('#Tab-Cinema-Tab').click();
         current_location = 'cinema';
     },
 
@@ -301,7 +301,7 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
-        $('#Tab-Schedule-tab').click();
+        // $('#Tab-Schedule-tab').click();
         page_history.splice(-1);
     },
 

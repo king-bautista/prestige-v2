@@ -71,7 +71,7 @@
                     <div class="text-center mt-2">
                         <span class="cinema-sched-title"><span class="translateme" data-en="Cinema Schedule">Cinema Schedule</span>:</span>
                         <div class="cinema-details-sched-container">
-                            <div class="d-flex cinema-details-sched-content">
+                            <div class="d-flex cinema-details-sched-content justify-content-center">
                             </div>
                         </div>
                     </div>
@@ -96,12 +96,15 @@
     var now_showing = "{{ $now_showing }}";
 
     $(document).ready(function() {
+
         $('#Tab-Cinema-Tab').on('click', function() {
             showCinemas();
         });
 
         $('#Tab-Schedule-tab').on('click', function() {
             showNowShowing();
+            $('.owl-dots').hide();
+            $('.promo-next').show();
         });
 
         var modalCinema = $("#CinemaDetailsModal");
@@ -121,6 +124,17 @@
             $('.now-showing-trailer').show();
             $('.now-showing-details').hide();
         })
+
+        var showing = JSON.parse(helper.decodeEntities(now_showing));
+        $("#cinema_btn").on('click',function(){
+            if(showing.length > 0){
+                $("#Tab-Schedule-tab").click();
+            }
+            else{
+                $("#Tab-Cinema-Tab").click();
+            }
+            // alert("beng");
+        });
     });
 
     function showCinemas() {
@@ -221,7 +235,6 @@
 
     function showNowShowing() {
         var my_showing = JSON.parse(helper.decodeEntities(now_showing));
-        console.log(my_showing.length);
         if(my_showing.length == 0) {
             $('#CinemaTabSchedule').hide();
             $('#CinemaTabDefault').show();
@@ -247,7 +260,13 @@
                 var col_class = 'col-sm-4';
 
                 if(key == last_carousel){
-                    col_class = 'col-sm-12';
+                    if(showings.length == 1){
+                        col_class = 'col-sm-12';
+                    }else if(showings.length == 2){
+                        col_class = 'col-sm-6';
+                    }else{
+                        col_class = 'col-sm-4';
+                    }
                 }
                 
                 showing_item += '<div class="'+col_class+' showing-details-'+showing.film_id+'">';
@@ -349,10 +368,9 @@
     }
 
     function generateSchedules(cinemas) {
-        console.log(cinemas);
         $.each(cinemas, function(key,schedules) {
             var schedule_str = '';
-            schedule_str += '<div class="mt-3 mb-1 mx-4 SmCinemaSched">';
+            schedule_str += '<div class="mt-08 mb-1 mx-4 SmCinemaSched">';
             schedule_str += ''+key+'';
             $.each(schedules, function(index,schedule) {
                 schedule_str += '<div class="text-center">'+schedule+'</div>';
