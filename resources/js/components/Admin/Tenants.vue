@@ -50,7 +50,7 @@
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-9">
 									<multiselect v-model="tenant.brand_id" track-by="name" label="name"
-										placeholder="Select Brand" :options="brands" :searchable="true"
+										placeholder="Type to search brand" :options="brands" :searchable="true"
 										:allow-empty="false" :loading="isLoading" @search-change="getBrands">
 									</multiselect>
 								</div>
