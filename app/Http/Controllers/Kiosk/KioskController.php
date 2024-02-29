@@ -37,8 +37,8 @@ class KioskController extends AppBaseController
 
     public function index($site_name = null)
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::when(!$site_name, function($query) {
                 $query->where('is_default', 1);
             })
@@ -147,11 +147,11 @@ class KioskController extends AppBaseController
             ];
 
             return view('kiosk.'.$template_name.'.main', compact($data));
-        }
-        catch (\Exception $e)
-        {
-            return view('kiosk.page-not-found');
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return view('kiosk.page-not-found');
+        // } 
     }
 
     public function getCategories() {
@@ -180,9 +180,11 @@ class KioskController extends AppBaseController
         $child_categories = [];
         if (config('app.env') == 'local') { 
             $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
-            ->where('active', 1)
-            ->where('category_id', $category_id)
-            ->whereNotNull('sub_category_id')
+            ->where('company_categories.active', 1)
+            ->where('company_categories.category_id', $category_id)
+            ->whereNotNull('company_categories.sub_category_id')
+            ->leftJoin('categories', 'company_categories.sub_category_id', '=', 'categories.id')
+            ->orderBy('categories.name')
             ->get();
         }
         else {
@@ -193,8 +195,10 @@ class KioskController extends AppBaseController
             ->join('brands', 'company_categories.sub_category_id', '=', 'brands.category_id')
             ->join('site_tenants', 'brands.id', '=', 'site_tenants.brand_id')
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+            ->leftJoin('categories', 'company_categories.sub_category_id', '=', 'categories.id')
             ->select('company_categories.*')
             ->distinct()
+            ->orderBy('categories.name')
             ->get();
         }
 
