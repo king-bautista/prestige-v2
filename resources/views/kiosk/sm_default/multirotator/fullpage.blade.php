@@ -24,6 +24,8 @@
                     $("#screensaverwidget").height('100%').width('100%');
                     showFullscreenAds();
                 }, 5000); // 5 sec delay before showing screensaver
+                helper.revertToEnglish();
+                helper.homeBtnClick();
             }, 1000 * 60 * 2); // 2 min idle time, return to screensaver mode
         });
 
@@ -32,6 +34,8 @@
                 $("#screensaverwidget").height('100%').width('100%');
                 showFullscreenAds();
             }, 5000); // 5 sec delay before showing screensaver
+            helper.revertToEnglish();
+            helper.homeBtnClick();
         }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
     });
 

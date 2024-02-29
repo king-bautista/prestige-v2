@@ -244,27 +244,21 @@
                 var showing_item = '';
                 var carousel_count = parseInt(my_showing.length), last_carousel;
                 last_carousel = carousel_count - 1;
+                var col_class = 'col-sm-4';
+
                 if(key == last_carousel){
-                    showing_item += '<div class="col-sm-12 showing-details-'+showing.film_id+'">';
-                    showing_item += '<div class="card img-cinema-card">';
-                    showing_item += '<img type="button" class="movie-img" src="/uploads/media/cinema/'+showing.film_id+'.jpg">';
-                    showing_item += '</div>';
-                    showing_item += '<div class="text-center MovieTitle">'+showing.title+'</div>';
-                    showing_item += '<div class="text-center ViewDetails">';
-                    showing_item += '<button class="btn btn-lg BtnCinemaDetails translateme" data-en="See Details">See Details</button>';
-                    showing_item += '</div>';
-                    showing_item += '</div>';
-                }else{
-                    showing_item += '<div class="col-sm-4 showing-details-'+showing.film_id+'">';
-                    showing_item += '<div class="card img-cinema-card">';
-                    showing_item += '<img type="button" class="movie-img" src="/uploads/media/cinema/'+showing.film_id+'.jpg">';
-                    showing_item += '</div>';
-                    showing_item += '<div class="text-center MovieTitle">'+showing.title+'</div>';
-                    showing_item += '<div class="text-center ViewDetails">';
-                    showing_item += '<button class="btn btn-lg BtnCinemaDetails translateme" data-en="See Details">See Details</button>';
-                    showing_item += '</div>';
-                    showing_item += '</div>';
+                    col_class = 'col-sm-12';
                 }
+                
+                showing_item += '<div class="'+col_class+' showing-details-'+showing.film_id+'">';
+                showing_item += '<div class="card img-cinema-card">';
+                showing_item += '<img type="button" class="movie-img" src="/uploads/media/cinema/'+showing.film_id+'.jpg">';
+                showing_item += '</div>';
+                showing_item += '<div class="text-center MovieTitle">'+showing.title+'</div>';
+                showing_item += '<div class="text-center ViewDetails">';
+                showing_item += '<button class="btn btn-lg BtnCinemaDetails translateme" data-en="See Details">See Details</button>';
+                showing_item += '</div>';
+                showing_item += '</div>';
 
                 $( ".now-showing-"+key ).append(showing_item);
                 $('.showing-details-'+showing.film_id).on('click', function() {
