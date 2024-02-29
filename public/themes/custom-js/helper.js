@@ -161,6 +161,14 @@ Helpers.prototype = {
         }); 
     },
 
+    revertToEnglish: function() {
+        var txt= 'ENGLISH';
+        content_language = 'english';
+        this.filterAssist();
+        this.setTranslation();
+        $('.dropup button').html(txt);
+    },
+
     homeBtnClick: function() {
         $('.content-holder, .back-img-btn, .modal').hide();
         $('#home-container, #ImgMallLogo').show();
@@ -185,11 +193,12 @@ Helpers.prototype = {
         $('.nav-btn-search').addClass("active");
         $('#code').val('');
         $('#videocontainer').html('');
+        $('#search-title').html('Search');
         current_location = 'searchbox';
     },
 
     mapBtnClick: function() {
-        $('.content-holder, .modal').hide();
+        $('.content-holder, .modal, #mapkeyboardoverlay, #mapkeyboard').hide();
         $('#map-container, #ImgMallLogo, .back-img-btn').show();
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-map').addClass("active");

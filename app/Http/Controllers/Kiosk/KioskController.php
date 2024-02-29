@@ -37,8 +37,8 @@ class KioskController extends AppBaseController
 
     public function index($site_name = null)
     {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::when(!$site_name, function($query) {
                 $query->where('is_default', 1);
             })
@@ -147,16 +147,20 @@ class KioskController extends AppBaseController
             ];
 
             return view('kiosk.'.$template_name.'.main', compact($data));
-        }
-        catch (\Exception $e)
-        {
-            return view('kiosk.page-not-found');
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return view('kiosk.page-not-found');
+        // } 
     }
 
     public function getCategories() {
         $new_categories = [];
-        $categories = SiteCategoryViewModel::where('site_id', $this->site->id)->whereNull('sub_category_id')->get();
+        $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
+        ->where('active', 1)
+        ->whereNull('sub_category_id')
+        ->get();
+        
         if($categories) {
             foreach($categories as $index => $category) {
                 $category = json_decode($category, TRUE);
@@ -176,8 +180,11 @@ class KioskController extends AppBaseController
         $child_categories = [];
         if (config('app.env') == 'local') { 
             $categories = SiteCategoryViewModel::where('site_id', $this->site->id)
-            ->where('category_id', $category_id)
-            ->whereNotNull('sub_category_id')
+            ->where('company_categories.active', 1)
+            ->where('company_categories.category_id', $category_id)
+            ->whereNotNull('company_categories.sub_category_id')
+            ->leftJoin('categories', 'company_categories.sub_category_id', '=', 'categories.id')
+            ->orderBy('categories.name')
             ->get();
         }
         else {
@@ -188,8 +195,10 @@ class KioskController extends AppBaseController
             ->join('brands', 'company_categories.sub_category_id', '=', 'brands.category_id')
             ->join('site_tenants', 'brands.id', '=', 'site_tenants.brand_id')
             ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+            ->leftJoin('categories', 'company_categories.sub_category_id', '=', 'categories.id')
             ->select('company_categories.*')
             ->distinct()
+            ->orderBy('categories.name')
             ->get();
         }
 
@@ -294,6 +303,8 @@ class KioskController extends AppBaseController
         $current_date = date('Y-m-d');
 
         $promos = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)
+        ->where('site_tenants.active', 1)        
+        ->where('brand_products_promos.active', 1)        
         ->where('brand_products_promos.type', 'promo')
         ->whereDate('brand_products_promos.date_from', '<=', $current_date)
         ->whereDate('brand_products_promos.date_to', '>=', $current_date)
@@ -397,6 +408,7 @@ class KioskController extends AppBaseController
                     'building_name' => $value->building_name,
                     'address' => $value->address,
                     'orderby' => $value->brand_name. ", " . $value->floor_name . ", " . $value->address,
+                    'tenant' => $value,
                 ]);
             }
             else {
@@ -434,9 +446,9 @@ class KioskController extends AppBaseController
             ]);
         }
 
-        $amenities = Amenity::orderBy('name', 'ASC')
-            ->get()
-            ->pluck('name');
+        $amenities = Amenity::where('active', 1)
+            ->orderBy('name', 'ASC')
+            ->get()->pluck('name');
 
         foreach ($amenities as $key => $value) {
             $collection->push([
@@ -452,91 +464,85 @@ class KioskController extends AppBaseController
     }
 
     public function search(Request $request) {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::find($request->site_id);
             $site_map_ids = SiteMap::where('site_id', $request->site_id)
             ->where('map_type', $site->details['map_type'])
             ->get()
             ->pluck('id');
 
-            if (!$request->id) {
-                $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
+            $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
 
-                $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
-                ->where(function ($query) {
-                    $query->where('site_points.tenant_id', '>', 0)
-                          ->orWhere('site_points.point_type', '>', 0);
-                })
-                ->where(function ($query) use($keyword) {
-                    $query->orWhere('brands.name', 'like', '%'.$keyword.'%')
-                    ->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
-                    ->orWhere('brands.name', 'like', '%'.$keyword) #FIRST WORD but start on first letter
-                    ->orWhere('categories.name', 'like', '%'.$keyword)
-                    ->orWhere('categories.name', 'like', $keyword.'%')
-                    ->orWhere('supp.name', 'like', $keyword.'%')
-                    ->orWhere('supp.name', 'like', '%'.$keyword)
-                    ->orWhere('tags.name', 'like', $keyword.'%')
-                    ->orWhere('tags.name', 'like', '%'.$keyword)
-                    ->orWhere('amenities.name', 'like', $keyword.'%')
-                    ->orWhere('amenities.name', 'like', '%'.$keyword);
-                })
-                ->leftJoin('site_tenants', 'site_points.tenant_id', '=', 'site_tenants.id')
-                ->leftJoin('site_tenant_metas', function($join) {
-                    $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
-                    ->where('site_tenant_metas.meta_key', 'address');
-                })
-                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
-                ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
-                ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
-                ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
-                ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
-                ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
-                ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-                ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
-                ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address', 
-                'site_points.id as site_point', 'amenities.name as amenity_name', 'amenities.icon', 'site_building_levels.name as amenity_location')
-                ->distinct()
-                ->orderBy('brands.name', 'ASC')
-                ->orderBy('site_tenants.site_building_level_id', 'ASC')
-                ->orderBy('address', 'ASC')
-                ->get();
+            $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
+            ->where(function ($query) {
+                $query->where('site_points.tenant_id', '>', 0)
+                        ->orWhere('site_points.point_type', '>', 0);
+            })
+            ->where(function ($query) use($keyword) {
+                $query->orWhere('brands.name', 'like', '%'.$keyword.'%')
+                ->orWhere('brands.name', 'like', $keyword.'%') #LAST WORD but start on first letter | #BETWEEN WORDS
+                ->orWhere('brands.name', 'like', '%'.$keyword) #FIRST WORD but start on first letter
+                ->orWhere('categories.name', 'like', '%'.$keyword)
+                ->orWhere('categories.name', 'like', $keyword.'%')
+                ->orWhere('supp.name', 'like', $keyword.'%')
+                ->orWhere('supp.name', 'like', '%'.$keyword)
+                ->orWhere('tags.name', 'like', $keyword.'%')
+                ->orWhere('tags.name', 'like', '%'.$keyword)
+                ->orWhere('amenities.name', 'like', $keyword.'%')
+                ->orWhere('amenities.name', 'like', '%'.$keyword);
+            })
+            ->leftJoin('site_tenants', 'site_points.tenant_id', '=', 'site_tenants.id')
+            ->leftJoin('site_tenant_metas', function($join) {
+                $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+                ->where('site_tenant_metas.meta_key', 'address');
+            })
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->leftJoin('categories', 'brands.category_id', '=', 'categories.id')
+            ->leftJoin('brand_supplementals', 'site_tenants.brand_id', '=', 'brand_supplementals.brand_id')
+            ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
+            ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
+            ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
+            ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
+            ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
+            ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
+            ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address', 
+            'site_points.id as site_point', 'amenities.name as amenity_name', 'amenities.icon', 'site_building_levels.name as amenity_location')
+            ->distinct()
+            ->orderBy('brands.name', 'ASC')
+            ->orderBy('site_tenants.site_building_level_id', 'ASC')
+            ->orderBy('address', 'ASC')
+            ->get();
 
-                $suggest_cat = [];
-                foreach ($tenants as $key => $value) {
-                    array_push( $suggest_cat, $value->brand_category_id);           
-                }
-                $suggest_cat = (array_unique($suggest_cat));
-
-                $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
-                ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
-                ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
-                ->whereIn('brands.category_id',  $suggest_cat)
-                ->select('site_tenants.*')
-                ->distinct()
-                ->get()->toArray();
-
-                $tenants = array_chunk($tenants->toArray(), 15);                
-
-                return [
-                    'tenants' => $tenants,
-                    'suggest_subscribers' => $suggest_subscribers,
-                ];
-
+            $suggest_cat = [];
+            foreach ($tenants as $key => $value) {
+                array_push( $suggest_cat, $value->brand_category_id);           
             }
-            else {
+            $suggest_cat = (array_unique($suggest_cat));
 
-            }
+            $suggest_subscribers = SiteTenantViewModel::where('site_tenants.is_subscriber',  1)
+            ->where('site_tenants.active',  1)
+            ->whereIn('brands.category_id',  $suggest_cat)
+            ->join('site_tenant_metas', 'site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->select('site_tenants.*')
+            ->distinct()
+            ->get()->toArray();
 
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // } 
+            $tenants = array_chunk($tenants->toArray(), 15);                
+
+            return [
+                'tenants' => $tenants,
+                'suggest_subscribers' => $suggest_subscribers,
+            ];
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        } 
     }
 
     public function getBannerAds() {
@@ -660,7 +666,10 @@ class KioskController extends AppBaseController
     }
 
     public function getSiteMaps() {
-        $site_maps = SiteMapViewModel::where('site_id', $this->site->id)->where('map_type', $this->site->details['map_type'])->get();
+        $site_maps = SiteMapViewModel::where('site_id', $this->site->id)
+        ->where('map_type', $this->site->details['map_type'])
+        ->where('active', 1)
+        ->get();
         return $site_maps;        
     }
 
@@ -709,7 +718,7 @@ class KioskController extends AppBaseController
         $amenities = [];
 
         // GET AMENITIES WITH SITE ID
-        $site_amenities = Amenity::where('site_id', $this->site->id)->get();
+        $site_amenities = Amenity::where('site_id', $this->site->id)->where('active', 1)->get();
         if($site_amenities) {
             foreach($site_amenities as $amenity) {
                 if($amenity->icon != null || $amenity->icon != '')
@@ -718,7 +727,7 @@ class KioskController extends AppBaseController
         }
 
         // GET DEFAULT AMENITIES
-        $default_amenities = Amenity::where('site_id', 0)->get();
+        $default_amenities = Amenity::where('site_id', 0)->where('active', 1)->get();
         if($default_amenities) {
             foreach($default_amenities as $amenity) {
                 if($amenity->icon != null || $amenity->icon != '')
@@ -731,8 +740,12 @@ class KioskController extends AppBaseController
 
     public function getBuildingFloors() {
 
-        $building = SiteBuilding::where('site_id', $this->site->id)->get()->count();
-        $floors = SiteBuildingLevelViewModel::where('site_id', $this->site->id)->get();
+        $building = SiteBuilding::where('site_id', $this->site->id)
+        ->where('active', 1)
+        ->get()->count();
+
+        $floors = SiteBuildingLevelViewModel::where('site_id', $this->site->id)
+        ->where('active', 1)->get();
 
         return [
             'building' => $building,

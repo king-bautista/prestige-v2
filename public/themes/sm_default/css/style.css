@@ -5,7 +5,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    font-family: Henry Sans Medium !important;
+    font-family: Henry Sans Regular !important;
     user-select: none !important;
 }
 
@@ -598,7 +598,7 @@ body {
     position: absolute;
     top: 880px;
     right: -15px;
-    z-index: 9;
+    z-index: 1051;
 }
 
 .popover {
@@ -1014,7 +1014,19 @@ body {
 
 .social-media-container {
     width: auto;
-    height: 164px !important;
+    height: 120px;
+    max-height: 200px !important;
+    overflow-y: auto;
+    margin-top: 7px;
+    /* margin: 34px 0 150px 20px; */
+}
+
+.social-media-container-auto {
+    width: auto;
+    height: auto !important;
+    max-height: 200px !important;
+    overflow-y: auto;
+    margin-top: 5px;
     /* margin: 34px 0 150px 20px; */
 }
 
@@ -1121,6 +1133,7 @@ body {
     font-size: 1.3em;
     margin-top: 37.5px;
     margin-left: 6px;
+    position:relative;
 }
 
 .promo-featured-container {
@@ -1247,8 +1260,12 @@ body {
 
 .close {
     margin-right: -230px;
-    margin-top: -50px;
-    font-size: 3rem !important;
+    margin-top: -49px;
+    font-size: 2em !important;
+    color: #ffffff;
+    text-shadow: none;
+    opacity: 1;
+    font-family: Henry Sans Regular !important;
 }
 
 .closeBanner {
@@ -2609,6 +2626,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     line-height: 2.8em !important;
     padding: 0 !important;
     margin-bottom: 16px !important;
+    font-family: Henry Sans Regular !important;
 }
 
 .softkeys__btn--space {
@@ -2797,7 +2815,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     text-align: center;
     font-weight: 600;
     top: 718px;
-    right: 13px;
+    right: 0;
     background: #0030ff;
     border-radius: 7px;
     color: #fff;
@@ -2851,20 +2869,24 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .set-width-schedule {
-    width: 700px;
-    top:41%;
+    width: 400px;
+    top:42.3%;
 }
 
 .modal-body-schedule-days {
     display: inline-block;
     text-align: left;
     width: 40%;
+    font-family: Henry Sans Regular !important;
+    margin-top: 22.5px;
+    padding-left: 23px;
 }
 
 .modal-body-schedule-time {
     display: inline-block;
     color: #000000;
-    font-weight: bolder;
+    /* font-weight: bolder; */
+    font-family: Henry Sans Regular !important;
 }
 
 .p-l-490 {
@@ -2876,7 +2898,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .btn-close-sched {
-    margin-right: -55px !important;
+    margin-right: -36px !important;
 }
 
 .btn-close-map {
@@ -2895,4 +2917,85 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     overflow-x: hidden !important;
     border-radius: 10px;
     z-index:1000 !important;
+}
+
+.softkeys__btn--delete {
+    background-image: url(../images/DELETE.png);
+    color: transparent;
+    background-position: center;
+    /* background-size: contain; */
+}
+
+.softkeys__btn--delete:hover, .softkeys__btn--delete:focus {
+    background-image: url(../images/DELETE.png);
+    color: transparent;
+}
+.empty-category{
+    width: 735px !important;
+    position: relative;
+    top: 82px;
+    left: 348px;
+}
+
+.call-to-action{
+    position: absolute;
+    width: 390px;
+    bottom: 15px;
+}
+.set-height-schedule{
+    height: 328px;
+}
+
+.operational_hours{
+    font-family: Henry Sans Regular !important;
+    font-weight: bold;
+    margin-top: -1px;
+}
+
+.operational_days {
+    margin-top:5px;
+    margin-bottom: 8px;
+    color: #888888;
+}
+
+.m-5-0 {
+    margin-top: 5px;
+    margin-bottom: 8px;
+    margin-right: 20px;
+}
+
+.close_btn {
+    font-family: Henry Sans Regular !important;
+    color: #FFFFFF !important;
+}
+
+.watch-trailer-btn{
+    width: 76%;
+}
+
+ul#mapguide li:first-child:before {
+    top: 14px;
+}
+
+ul#mapguide li:before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    border-left: 1px dashed #2b3b88;
+    height: 100%;
+    width: 3px;
+}
+
+ul#mapguide li:first-child:after {
+    content: "\2022";
+    color: #6051e3;
+}
+
+ul#mapguide li:after {
+    content: "\2022";
+    position: absolute;
+    color: #dee2e6;
+    left: -5px;
+    top: -38px;
+    font-size: 3.3em;
 }

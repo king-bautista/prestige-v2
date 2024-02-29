@@ -1,5 +1,5 @@
 <!-- title -->
-<div class="p-3 font-weight-bold nav-titles translateme" data-en="Search">Search</div>
+<div class="p-3 font-weight-bold nav-titles translateme" id="search-title" data-en="Search">Search</div>
 
 <div id="keyboard-section" class="row">
     <div class="col-md-10 offset-md-1 mt-5 pt-5">
@@ -51,7 +51,7 @@
             select: function(event, ui) {
                 if(ui.item.id)
                 {
-                    onClickSuggest(ui.item.id);
+                    onClickSuggest(ui.item.tenant);
                 }else{
                     event.preventDefault();
                     this.value = $('<div />').html(ui.item.label).text();
@@ -138,7 +138,7 @@
             ]
         });
 
-        $(".softkeys__btn").on('mousedown',function(){                
+        $(".softkeys-search-page > .softkeys__btn").on('mousedown',function(){                
         }).on('mouseup',function(){
             $('#code').trigger('keydown');
             $('.notification').hide();
@@ -158,15 +158,18 @@
 
                         showTenantSearch(responce.tenants);
                         showSubscriber(responce.suggest_subscribers)
+                        $('#search-title').html('Search Results');
                         $('#search_str').html(search_key);
                         $('.search-for').show();
                         $('#keyboard-section').hide();
                         $('#searchList').show();
                         current_location = 'searchresult';
                         page_history.push(current_location);
+
                     }
                     else {
                         $('#search_str').html(search_key);
+                        $('#search-title').html('Search Results');
                         $('.search-for').show();
                         $('#searchNone').show();
                         $('#keyboard-section').hide();
@@ -331,9 +334,6 @@
                 });
             });
 
-
-
-
             owl_subscriber = $('.subscriber-holder');
             owl_subscriber.owlCarousel({
                 margin: 0,
@@ -345,13 +345,9 @@
         }
     }
 
-    function onClickSuggest(id) {
-        var search_id = id;
-        var search_key = $('#code').val();
-
+    function onClickSuggest(tenant) {
         // SHOW TENANT
         showTenantDetails(tenant);
-
     }
 
 </script>
