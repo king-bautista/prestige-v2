@@ -1717,7 +1717,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .nav-btn-event.active {
-    background-image: url('../images/Eventv4.png'); 
+    background-image: url('../images/Eventv4s.png'); 
     text-transform: uppercase;
     font-family: "Henry Sans Medium" !important;
     font-weight: 600;
@@ -1729,7 +1729,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .nav-btn-cinema.active {
-    background-image: url('../images/Cinemav4.png'); 
+    background-image: url('../images/Cinemav4s.png'); 
     text-transform: uppercase;
     font-family: "Henry Sans Medium" !important;
     font-weight: 600;
@@ -2700,8 +2700,10 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .alphabet-box a.active {
-    text-decoration: underline;
-    color: #005aff !important;
+    /* text-decoration: underline;
+    color: #005aff !important; */
+    color: #000000;
+    font-weight: 700;
 }
 
 #loadingDiv {

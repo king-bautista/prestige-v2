@@ -231,7 +231,7 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
-        $('#Tab-Cinema-Tab').click();
+        //$('#Tab-Cinema-Tab').click();
         current_location = 'cinema';
     },
 
@@ -245,6 +245,8 @@ Helpers.prototype = {
         $('.content-holder, .CatTabCategories, .modal').hide();
         $('#home-cat-contents, #ImgMallLogo, .TenantPage').show();
         $('.nav-btn-container').removeClass('active');
+        $('#Tab-Category-Tab').click();
+        page_history.splice(-1);
     },
 
     backToSupplemental: function() {
@@ -265,12 +267,11 @@ Helpers.prototype = {
             $('.CatTabCategories').hide();
             $('.TenantPage').show();
             $('#Tab-Alphabetical-tab').click();
-            page_history.splice(-1);    
         }
         else {
             $('#Tab-Alphabetical-tab').click();
-            page_history.splice(-1);
         }        
+        page_history.splice(-1);    
     },
 
     backToSubcategory: function() {

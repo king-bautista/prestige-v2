@@ -1679,6 +1679,9 @@
 			$('#btnpwdchange').prop('disabled', false);
 			$('#btnpwdchange').removeClass('btn-prestige-pwd');
 		});
+
+		current_location = 'map';
+		page_history.push(current_location);
 	}
 
 	function resetMap() {
@@ -1723,7 +1726,7 @@
 		camera.position.y = site_config.default_y;
 		camera.position.x = coords.x;
 		camera.position.z = coords.z;
-		controls.update();
+		controls.update();		
 	}
 
 

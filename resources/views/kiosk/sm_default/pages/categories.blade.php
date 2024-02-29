@@ -134,7 +134,7 @@
                     $('#Tab-Supplemental-tab').hide();
                 }
                 $('#Tab-Category-Tab').click();
-                showSubCategories();
+                //showSubCategories();
             });
         });
     }
@@ -525,7 +525,7 @@
         filterLetterNavigator();
 
         $('.alphabet-box').html('');
-        $('.alphabet-box').append('<a class="link-alpha selected">#</a>');
+        $('.alphabet-box').append('<a class="link-alpha">#</a>');
         for (let i = 65; i <= 90; i++) {
 
             var class_name = (available_letters.includes(String.fromCharCode(i))) ? 'link-alpha' : 'link-alpha-disabled';

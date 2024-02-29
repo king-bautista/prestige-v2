@@ -162,6 +162,9 @@
                     break;
             }
         }
+
+        console.log(page_history);
+
     });
     
 
