@@ -115,21 +115,26 @@
 								<div class="form-group row">
 									<label for="firstName" class="col-sm-3 col-form-label">{{ material.dimension }}</label>
 									<div class="col-sm-5">
+										<input type="hidden" :id="'dimension_' + index" name="dimension"
+											class="form-control" :value="material.dimension">
 										<input type="file" :id="'material_' + index" accept="image/*" ref="materials"
 											@change="fileUpload($event, index)" multiple>
 										<footer class="blockquote-footer">Max file size is 15MB</footer>
 										<footer class="blockquote-footer">Compatible file types: .jpg, .png, .ogv</footer>
 									</div>
 									<div class="col-sm-3 text-center">
-										<span v-if="material.src && material.file_type == 'image'">
-											<img v-if="material.src" :src="material.src" class="img-thumbnail" />
-										</span>
-										<span v-else-if="material.src && material.file_type == 'video'">
-											<video muted="muted" class="img-thumbnail" @load="onImgLoad(index)" controls>
-												<source :src="material.src" type="video/ogg">
-												Your browser does not support the video tag.
-											</video>
-										</span>
+										<div :id="'div_' + index">
+											<span v-if="material.src && material.file_type == 'image'">
+												<img v-if="material.src" :src="material.src" class="img-thumbnail" />
+											</span>
+											<span v-else-if="material.src && material.file_type == 'video'">
+												<video muted="muted" class="img-thumbnail" @load="onImgLoad(index)"
+													controls>
+													<source :src="material.src" type="video/ogg">
+													Your browser does not support the video tag.
+												</video>
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -307,95 +312,6 @@ export default {
 			this.getScreens(contract.id);
 		},
 
-		// 		fileUpload: function (e, index) {
-		// 			var file = e.target.files[0];
-		// 			if (e.target.files[0].type == 'image/jpeg' || e.target.files[0].type == 'image/jpg' || e.target.files[0].type == 'image/png' || e.target.files[0].type == 'video/ogg') {
-		// 				var file_type = e.target.files[0].type.split("/");
-		// 				var file_path = URL.createObjectURL(file);
-		// 				var obj = this;
-		// 				var material;
-
-		// 				this.advertisement.materials[index].file = file;
-		// 				this.advertisement.materials[index].name = file.name.replace(/\s+/g, '-');
-		// 				this.advertisement.materials[index].size = file.size;
-		// 				this.advertisement.materials[index].src = file_path;
-		// 				this.advertisement.materials[index].file_type = file_type[0];
-
-		// 				if (file_type[0] == 'image') {
-		// 					material = new Image;
-		// 					material.onload = function () {
-		// 						obj.setfilter(index, material.height, material.width);
-		// 					};
-
-		// 					material.src = file_path;
-		// 				} //https://stackoverflow.com/questions/51665617/how-can-i-get-width-and-height-of-a-video-from-an-input-in-javascript
-		// 				else if (file_type[0] == 'video') {
-
-		// 					material = document.createElement("video");
-		// 					material.src = file_path;
-		// 					material.addEventListener("loadedmetadata", function () {
-		// 						obj.advertisement.display_duration = this.duration; //console.log(material.videoWidth, material.videoHeight);
-		// 						//obj.setfilter(index, this.videoHeight, this.videoWidth, file_type[0]);
-		// 						obj.setfilter(index, this.videoHeight, this.videoWidth);
-		// 					});
-
-		// 					// var video = document.getElementById('material_0'); 
-		// 					// video.addEventListener('loadedmetadata', function (e) {
-		// 					// 	console.log('>>>>>>>'); console.log(video);
-		// 					// 	//var dimensions = [video.videoWidth, video.videoHeight];
-		// 					// 	alert(dimensions);
-		// 					// });
-		// // 					var v = document.getElementById("material_0");
-		// // v.addEventListener( "loadedmetadata", function (e) {
-		// //     console.log("width:", this.videoWidth);
-		// // 					 	console.log("height:", this.videoHeight);
-		// // }, false );
-		// 					// const url = URL.createObjectURL(file);
-		// 					// const $video = document.createElement("video");
-		// 					// $video.src = url;
-		// 					// $video.addEventListener("loadedmetadata", function () {
-		// 					// 	console.log("width:", this.videoWidth);
-		// 					// 	console.log("height:", this.videoHeight);
-		// 					// });
-		// 					//https://stackoverflow.com/questions/8983714/video-and-onloadedmetadata-event
-		// 					// material_0.addEventListener('change', evt => {
-		// 					// 	const file = evt.target.files[0]
-		// 					// 	const url = URL.createObjectURL(file)
-		// 					// 	const video = document.createElement('video')
-		// 					// 	video.onloadedmetadata = evt => {
-		// 					// 		// Revoke when you don't need the url any more to release any reference
-		// 					// 		URL.revokeObjectURL(url)
-		// 					// 		//console.log(video.videoWidth, video.videoHeight)
-		// 					// 		alert(video.videoWidth + "--" + video.videoHeight);
-		// 					// 	}
-		// 					// 	video.src = url
-		// 					// 	video.load() // fetches metadata
-		// 					// })
-
-		// 				}
-		// 			}
-		// 			else {
-		// 				toastr.error('Invalid file type. ');
-		// 				this.$refs.materials[index].value = null;
-		// 				return false;
-		// 			}
-		// 		},
-
-		// 		//setfilter: function (index, height, width, file_type) {
-		// 		setfilter: function (index, height, width) {
-		// 			var up_dimension = width + 'x' + height;
-		// 			var material = this.advertisement.materials[index].dimension.split("x");
-		// 			//if (this.advertisement.materials[index].dimension != up_dimension && file_type == 'image') {
-		// 			// if (this.advertisement.materials[index].dimension != up_dimension) {
-		// 			// 	toastr.error("Invalid Image Size! Must be width: " + material[0] + " and height:  " + material[1] + ". Current width: " + width + " and height: " + height);
-		// 			// 	this.$refs.materials[index].value = null;
-		// 			// 	this.advertisement.materials[index].src = '';
-		// 			// 	return false;
-		// 			// }
-
-		// 			this.advertisement.materials[index].height = height;
-		// 			this.advertisement.materials[index].width = width;
-		// 		},
 		fileUpload: function (e, index) {
 			var file = e.target.files[0];
 			if (e.target.files[0].type == 'image/jpeg' || e.target.files[0].type == 'image/jpg' || e.target.files[0].type == 'image/png' || e.target.files[0].type == 'video/ogg') {
@@ -437,9 +353,27 @@ export default {
 		},
 
 		setfilter: function (index, height, width) {
-			this.advertisement.materials[index].height = height;
-			this.advertisement.materials[index].width = width;
-			this.advertisement.materials[index].contract_id = this.advertisement.contract_id.id;
+			var width_height = $('#dimension_' + index).val().split("x");
+			var dimension = width_height[0] + 'x' + width_height[1];
+			var material = width + 'x' + height;
+			if (dimension != material) {
+				$('#material_' + index).val('');
+				//$('#div_' + index).find('img').remove();
+				this.advertisement.materials[index].file = '';
+				this.advertisement.materials[index].file_type = '';
+				this.advertisement.materials[index].height = '';
+				this.advertisement.materials[index].id = '';
+				this.advertisement.materials[index].name = '';
+				this.advertisement.materials[index].size = '';
+				this.advertisement.materials[index].src = '';
+				this.advertisement.materials[index].width = '';
+				toastr.error("Invalid Image Size! Must be width: " + width_height[0] + " and height: " + width_height[1] + " . Current width: " + width + " and height: " + height);
+			} else {
+				this.advertisement.materials[index].height = height;
+				this.advertisement.materials[index].width = width;
+				this.advertisement.materials[index].contract_id = this.advertisement.contract_id.id;
+			}
+
 		},
 
 		getMaterialSize: function () {
@@ -479,7 +413,7 @@ export default {
 			$('#site_ad-form').modal('show');
 		},
 
-		storeAdvertisements: function () {
+		storeAdvertisements: function () { //console.log(this.advertisement.materials);
 			let formData = new FormData();
 			formData.append("name", this.advertisement.name);
 			formData.append("company_id", (this.advertisement.company_id) ? JSON.stringify(this.advertisement.company_id) : '');
@@ -506,7 +440,7 @@ export default {
 				});
 		},
 
-		editAdvertisements: function (id) {
+		editAdvertisements: function (id) { 
 			axios.get('/admin/manage-ads/' + id)
 				.then(response => {
 					this.add_record = false;

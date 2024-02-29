@@ -57,8 +57,14 @@ class ProductsController extends AppBaseController implements ProductsController
                 })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
-
-                    return $query->orderBy($column, request('sort'));
+                    switch ($column) {
+                        case 'thumbnail_path':
+                            $field = 'thumbnail';
+                            break;
+                        default:
+                            $field = $column;
+                    }
+                    return $query->orderBy($field, request('sort'));
                 })
                 ->latest()
                 ->paginate(request('perPage'));
