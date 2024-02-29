@@ -42,7 +42,7 @@
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
 									<input type="file" id="img_logo" accept="image/*" ref="logo" @change="logoChange">
-									<footer class="blockquote-footer">image max size is 550 x 500 pixels</footer>
+									<footer class="blockquote-footer">image max size is 550 x 550 pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="logo" :src="logo" class="img-thumbnail" />
