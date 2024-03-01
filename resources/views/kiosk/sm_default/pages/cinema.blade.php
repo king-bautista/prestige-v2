@@ -154,7 +154,7 @@
             $.each(cinemas, function(index,cinema) {
                 var cinema_item = '';
                 cinema_item += '<div class="col-md-12 mt-3 mx-auto cinemaCards">';
-                cinema_item += '<div class="card cinema-cards border-0">';
+                cinema_item += '<div class="card cinema-cards border-0 cinema-id-'+cinema.id+'">';
                 cinema_item += '<div class="d-flex flex-row pb-1 my-auto">';
                 cinema_item += '<div class="my-auto">';
                 cinema_item += '<img class="cinema-img" src="{{ URL::to('themes/sm_default/images/sm-cinema-logo.png') }}" alt="...">';
@@ -166,9 +166,14 @@
                 cinema_item += '</div>';                         
                 cinema_item += '</div>';
                 cinema_item += '</div>';
-                $( ".cinema-"+key ).append(cinema_item);
-                // MAP FUNCTION HERE
 
+                $('.cinema-'+key).append(cinema_item);
+                $('.cinema-id-'+cinema.id).on('click', function() {
+                    // MAP FUNCTION HERE
+                    helper.mapBtnClick();
+                    $('#tenant-select').val(cinema.id);
+                    $('.direction-from').click();
+                });
             });
         });
 
@@ -227,8 +232,7 @@
             }
             else {
                 $('.promo-next').show();
-            }
-            
+            }            
         });
 
     }
