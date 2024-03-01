@@ -264,8 +264,26 @@
         }
     }
 
+    function dynamicHeight(){
+        var tenant_name_height = $(".name-div").height(), max_height = parseInt("288.5"), excess_height, new_height;
+
+        if(tenant_name_height >= max_height){
+            $(".is_subscriber").addClass('social-media-container');
+            $(".is_subscriber").removeClass('social-media-container-auto');
+            excess_height = tenant_name_height - max_height;
+            new_height = 120 - excess_height;
+            alert(new_height);
+            
+            $(".social-media-container").css("height", new_height + "px");
+
+        }
+        else{
+            $(".is_subscriber").removeClass('social-media-container');
+            $(".is_subscriber").addClass('social-media-container-auto');
+        }
+    }
+
     function showTenantDetails(tenant) {
-        console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
         if(tenant.tenant_details) {
@@ -279,12 +297,14 @@
 
         // STORE OR SITE HOURS
         $('.mall-hours-title').removeClass('text-success').removeClass('text-error')
-        var is_open = (tenant.operational_hours.is_open) ? 'text-success' : 'text-error';
-        $('.is-open').addClass(is_open).html((tenant.operational_hours.is_open) ? 'Open' : 'Close');
+        var is_open = (tenant.operational_hours.is_open) ? 'text-success' : 'text-danger';
+        $('.is-open').removeClass('text-success text-danger');
         if(tenant.operational_hours.start_time) {
             $('.tenant-hours').html(tenant.operational_hours.start_time +'-'+tenant.operational_hours.end_time);
+            $('.is-open').addClass(is_open).html((tenant.operational_hours.is_open) ? 'Open' : 'Closed');
         }
         else {
+            $('.is-open').addClass(is_open).html((site_info.operational_hours.is_open) ? 'Open' : 'Closed');
             $('.tenant-hours').html(site_info.start_time +'-'+site_info.end_time);
         }
 
@@ -355,26 +375,6 @@
 
         current_location = 'tenant';
         page_history.push(current_location);
-
-        // alert($(".name-div").height());
-        function dynamicHeight(){
-            var tenant_name_height = $(".name-div").height(), max_height = parseInt("288.5"), excess_height, new_height;
-
-            if(tenant_name_height >= max_height){
-                $(".is_subscriber").addClass('social-media-container');
-                $(".is_subscriber").removeClass('social-media-container-auto');
-                excess_height = tenant_name_height - max_height;
-                new_height = 120 - excess_height;
-                alert(new_height);
-                
-                $(".social-media-container").css("height", new_height + "px");
-
-            }
-            else{
-                $(".is_subscriber").removeClass('social-media-container');
-                $(".is_subscriber").addClass('social-media-container-auto');
-            }
-        }
 
         dynamicHeight();
     }

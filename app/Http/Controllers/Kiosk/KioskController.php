@@ -314,15 +314,15 @@ class KioskController extends AppBaseController
         ->select('site_tenants.*', 'brand_products_promos.image_url', 'brand_products_promos.id as promo_id')
         ->get()->toArray();
 
-        $products = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)        
-        ->where('site_tenants.active', 1)        
-        ->where('site_tenants.is_subscriber', 1)        
-        ->where('brand_products_promos.active', 1)        
-        ->where('brand_products_promos.type', 'product')
-        ->join('site_tenant_products', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
-        ->join('brand_products_promos', 'site_tenant_products.brand_product_promo_id', '=', 'brand_products_promos.id')
-        ->select('site_tenants.*', 'brand_products_promos.image_url', 'brand_products_promos.id as promo_id')
-        ->get()->toArray();
+        // $products = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)        
+        // ->where('site_tenants.active', 1)        
+        // ->where('site_tenants.is_subscriber', 1)        
+        // ->where('brand_products_promos.active', 1)        
+        // ->where('brand_products_promos.type', 'product')
+        // ->join('site_tenant_products', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
+        // ->join('brand_products_promos', 'site_tenant_products.brand_product_promo_id', '=', 'brand_products_promos.id')
+        // ->select('site_tenants.*', 'brand_products_promos.image_url', 'brand_products_promos.id as promo_id')
+        // ->get()->toArray();
 
         if($promos) {
             foreach($promos as $promo) {
@@ -330,11 +330,11 @@ class KioskController extends AppBaseController
             }
         }
 
-        if($products) {
-            foreach($products as $product) {
-                $promos_products[] = $product;
-            }
-        }
+        // if($products) {
+        //     foreach($products as $product) {
+        //         $promos_products[] = $product;
+        //     }
+        // }
 
         $promos_products = array_chunk($promos_products, 6);
         return json_encode($promos_products);

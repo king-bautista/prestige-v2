@@ -3030,3 +3030,7 @@ ul#mapguide li:last-child:before {
 .mt-08 {
     margin-top: .8rem !important;
 }
+
+.text-error {
+    color: red;
+}
