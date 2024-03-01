@@ -105,7 +105,7 @@ class CinemasScheduleController extends AppBaseController implements CinemasCont
     public function saveSchedule($movie, $sessions, $casting, $site_id)
     {
         foreach ($sessions as $time_slot) {
-            $synopsis = filter_var(htmlentities(preg_replace("/\r\n|\r|\n/", '<br/>', $movie->Synopsis)), FILTER_SANITIZE_STRING);
+            $synopsis = filter_var(htmlentities(preg_replace("/\r\n|\r|\n/", '<br>', $movie->Synopsis)), FILTER_SANITIZE_STRING);
 
             $data = [
                 'site_id' => $site_id,
