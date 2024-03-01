@@ -149,6 +149,9 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 "facebook" => ($request->facebook) ? $request->facebook : null,
                 "twitter" => ($request->twitter) ? $request->twitter : null,
                 "instagram" => ($request->instagram) ? $request->instagram : null,
+                "tiktok" => ($request->tiktok) ? $request->tiktok : null,
+                "youtube" => ($request->youtube) ? $request->youtube : null,
+                "viber" => ($request->viber) ? $request->viber : null,
                 "website" => ($request->website) ? $request->website : null,
                 "schedules" => ($request->operational_hours) ? $request->operational_hours : null,
                 "subscriber_logo" => ($subscriber_logo_path) ? str_replace('\\', '/', $subscriber_logo_path) : null
@@ -201,6 +204,9 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
                 "facebook" => ($request->facebook) ? $request->facebook : null,
                 "twitter" => ($request->twitter) ? $request->twitter : null,
                 "instagram" => ($request->instagram) ? $request->instagram : null,
+                "tiktok" => ($request->tiktok) ? $request->tiktok : null,
+                "youtube" => ($request->youtube) ? $request->youtube : null,
+                "viber" => ($request->viber) ? $request->viber : null,
                 "website" => ($request->website) ? $request->website : null,
                 "schedules" => ($request->operational_hours) ? $request->operational_hours : null,
                 "subscriber_logo" => ($subscriber_logo_path) ? str_replace('\\', '/', $subscriber_logo_path) : null

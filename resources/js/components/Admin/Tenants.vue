@@ -243,6 +243,27 @@
 								</div>
 							</div>
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store TikTok</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.tiktok"
+										placeholder="Store TikTok">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store YouTube</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.youtube"
+										placeholder="Store YouTube">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Store Viber</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="tenant.viber"
+										placeholder="Store Viber">
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Store Website</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.website"
@@ -380,6 +401,9 @@ export default {
 				facebook: '',
 				twitter: '',
 				instagram: '',
+				tiktok: '',
+				youtube:'',
+				viber:'',
 				website: '',
 				subscriber_logo: '/images/no-image-available.png',
 			},
@@ -611,6 +635,9 @@ export default {
 			this.tenant.facebook = '';
 			this.tenant.twitter = '';
 			this.tenant.instagram = '';
+			this.tenant.tiktok = '';
+			this.tenant.youtube = '';
+			this.tenant.viber = '';
 			this.tenant.website = '';
 			this.addOperationalHours();
 			$('#tenant-form').modal('show');
@@ -636,6 +663,9 @@ export default {
 			formData.append("facebook", (this.tenant.facebook) ? this.tenant.facebook : '');
 			formData.append("twitter", (this.tenant.twitter) ? this.tenant.twitter : '');
 			formData.append("instagram", (this.tenant.instagram) ? this.tenant.instagram : '');
+			formData.append("tiktok", (this.tenant.tiktok) ? this.tenant.tiktok : '');
+			formData.append("youtube", (this.tenant.youtube) ? this.tenant.youtube : '');
+			formData.append("viber", (this.tenant.viber) ? this.tenant.viber : '');
 			formData.append("website", (this.tenant.website) ? this.tenant.website : '');
 
 			
@@ -680,6 +710,9 @@ export default {
 					this.tenant.facebook = (tenant.tenant_details.facebook != 'null') ? tenant.tenant_details.facebook : '';
 					this.tenant.twitter = (tenant.tenant_details.twitter != 'null') ? tenant.tenant_details.twitter : '';
 					this.tenant.instagram = (tenant.tenant_details.instagram != 'null') ? tenant.tenant_details.instagram : '';
+					this.tenant.tiktok = (tenant.tenant_details.tiktok != 'null') ? tenant.tenant_details.tiktok : '';
+					this.tenant.youtube = (tenant.tenant_details.youtube != 'null') ? tenant.tenant_details.youtube : '';
+					this.tenant.viber = (tenant.tenant_details.viber != 'null') ? tenant.tenant_details.viber : '';
 					this.tenant.website = (tenant.tenant_details.website != 'null') ? tenant.tenant_details.website : '';
 
 					if (tenant.tenant_details.length == 0 || tenant.tenant_details.schedules === 'null') {
@@ -720,6 +753,9 @@ export default {
 			formData.append("facebook", (this.tenant.facebook) ? this.tenant.facebook : '');
 			formData.append("twitter", (this.tenant.twitter) ? this.tenant.twitter : '');
 			formData.append("instagram", (this.tenant.instagram) ? this.tenant.instagram : '');
+			formData.append("tiktok", (this.tenant.tiktok) ? this.tenant.tiktok : '');
+			formData.append("youtube", (this.tenant.youtube) ? this.tenant.youtube : '');
+			formData.append("viber", (this.tenant.viber) ? this.tenant.viber : '');
 			formData.append("website", (this.tenant.website) ? this.tenant.website : '');
 			axios.post('/admin/site/tenant/update', formData, {
 				headers: {
