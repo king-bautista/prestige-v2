@@ -48,7 +48,7 @@
         var my_events = JSON.parse(helper.decodeEntities(events));
 
         if(my_events.length == 0) {
-            $('.event-list').hide();
+            $('.event-list, .event-prev, .event-next').hide();
             $('.no-events-found').show();
             return false;
         }

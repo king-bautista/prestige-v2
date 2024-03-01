@@ -1621,6 +1621,7 @@
 			var initial_level = start_point[0]['building_level_id'];
 
 			$("#mapguide-destination").html(tenant_guide);
+			$("#directionDetails").show();
 
 			movements = [];
 			var line_points = {};
@@ -1731,10 +1732,10 @@
 
 
     $(document).ready(function() {
-        init();
-        loadFont();
-        animate();
-        loop();
+		init();
+		loadFont();
+		animate();
+		loop();
 
         $('#tenant-select').select2();
         $('#floor-select').select2();
@@ -1746,7 +1747,6 @@
 			$('#tenant-select').val('');
 
 			onWindowResize();
-			// RESET MAP
 			resetMap();
 		});
 

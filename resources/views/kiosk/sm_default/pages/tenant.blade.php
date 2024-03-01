@@ -183,7 +183,7 @@
                         Object.keys(obj).forEach(key => {
                             if (key == 'schedules') {
                                 if (obj['schedules'].match(day)) {
-                                    tempSchedule.push(obj['start_time'] + " am - " + obj['end_time'] + " pm");
+                                    tempSchedule.push(obj['start_time'] + " AM - " + timeConvert(obj['end_time']));
                                 }                               
                             }
                         });
@@ -224,6 +224,18 @@
 
     });
 
+    function timeConvert(time) {
+        // Check correct time format and split into components
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1); // Remove full string match value
+            time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join(''); // return adjusted time or original string
+    }
+
     function showProducts(products) {
         if(products.banners) {
             var banner = '<img type="button" class="promo-banner-card" src="'+products.banners[0].image_url_path+'" />';
@@ -253,9 +265,13 @@
     }
 
     function showTenantDetails(tenant) {
+        console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
-        tenant_schedule = (tenant.tenant_details.schedules[0].schedules != undefined && tenant.tenant_details.schedules[0].schedules != '') ? tenant.tenant_details.schedules : '';
+        if(tenant.tenant_details) {
+            tenant_schedule = (tenant.tenant_details.schedules[0].schedules != undefined && tenant.tenant_details.schedules[0].schedules != '') ? tenant.tenant_details.schedules : '';
+        }
+
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
         $('.tenant-store-page-name').html(tenant.brand_name);
