@@ -1,7 +1,7 @@
 <!-- title -->
 <div class="p-3 font-weight-bold nav-titles translateme" id="search-title" data-en="Search">Search</div>
 
-<div id="keyboard-section" class="row">
+<div id="keyboard-section" class="row minus-30">
     <div class="col-md-10 offset-md-1 mt-5 pt-5">
        <form class="row form text-center" id="form_search">
             <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 

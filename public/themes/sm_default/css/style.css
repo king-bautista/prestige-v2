@@ -73,7 +73,7 @@ body {
 
 .nav-titles {
     font-size: 30px;
-    margin-top: 0px;
+    margin-top: 30px;
     margin-left: -10px;
 }
 
@@ -406,7 +406,7 @@ body {
 }
 
 .carousel-content-container-per-food-category {
-    padding: 169.5px 133px 0px 153px;
+    padding: 104.5px 133px 0px 153px;
     margin-left: 0px;
 }
 
@@ -438,7 +438,7 @@ body {
 }
 
 .owl-dots-alphabetical {
-    margin-top: 56px !important;
+    margin-top: 10px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
@@ -650,6 +650,7 @@ body {
 .canvas-canvas {
     width: 1450px;
     height: 800px;
+    margin-top: -30px;
 }
 
 .btn-pwd {
@@ -796,7 +797,7 @@ body {
 }
 
 .carousel-content-container-cinema-adjustment {
-    padding: 204.6px 133px 0px 296px;
+    padding: 174.6px 133px 0px 296px;
 }
 
 .movie-img {
@@ -808,7 +809,7 @@ body {
 
 .carousel-content-container-cinema {
     vertical-align: middle;
-    padding: 204.6px 283px 0px 303px;
+    padding: 174.6px 283px 0px 303px;
     margin-left: 0px;
 }
 
@@ -1449,12 +1450,13 @@ body {
 }
 
 .left-btn-carousel-per-food-alphabetical {
-    left: 50px;
-    top: -136px;
+    margin-top: -37px;
+    margin-left: 34.5px;
 }
 
 .right-btn-carousel-per-food-alphabetical {
-    right: 30px;
+    margin-top: -37px;
+    margin-right: 14px;
 }
 
 .left-btn-carousel-per-food-cravings {
@@ -2365,7 +2367,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     }
 
     .carousel-content-container-cinema {
-        padding: 340.6px 133px 0px 153px;
+        padding: 310.6px 133px 0px 153px;
     }
 
     .left-btn-carousel-cinema {
@@ -2578,9 +2580,9 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .owl-theme .owl-dots .owl-dot span {
-    width: 17.0px;
-    height: 17.5px;
-    margin: 0 15.5px;
+    width: 19px;
+    height: 19px;
+    margin: 17px;
     background: #d5ddff;
 }
 
@@ -3033,4 +3035,25 @@ ul#mapguide li:last-child:before {
 
 .text-error {
     color: red;
+}
+
+.Fashion_color{
+    color: #823D3B;
+}
+.Electronics_color{
+    color: #C18C2F;
+}
+.Services_color{
+    color: #6051E3;
+}
+.Novelties_color{
+    color: #6051E3;
+}
+
+.nav-headers{
+    margin-top: 30px;
+}
+
+.minus-30{
+    margin-top: -30px !important;
 }

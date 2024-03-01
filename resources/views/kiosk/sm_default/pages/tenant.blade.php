@@ -344,21 +344,21 @@
         $('.social-media-fb-container').show();    
         $('.social-media-ig-container').show();    
         $('.social-media-twitter-container').show();    
-        $('.social-media-twitter-tiktok').show();
-        $('.social-media-twitter-youtube').show();
+        $('.social-media-tiktok-container').show();
+            $('.social-media-youtube-container').show();
         if(!tenant.tenant_details) {
             $('.social-media-fb-container').hide();    
             $('.social-media-ig-container').hide();    
             $('.social-media-twitter-container').hide();
-            $('.social-media-twitter-tiktok').hide();
-            $('.social-media-twitter-youtube').hide();
+            $('.social-media-tiktok-container').hide();
+            $('.social-media-youtube-container').hide();
         }
         else {
             $('.social-media-fb').html(tenant.tenant_details.facebook);
             $('.social-media-ig').html(tenant.tenant_details.instagram);
             $('.social-media-twitter').html(tenant.tenant_details.twitter);
-            $('.social-media-twitter').html(tenant.tenant_details.tiktok);
-            $('.social-media-twitter').html(tenant.tenant_details.youtube);
+            $('.social-media-tiktok').html(tenant.tenant_details.tiktok);
+            $('.social-media-youtube').html(tenant.tenant_details.youtube);
             
             if(!tenant.tenant_details.facebook) 
                 $('.social-media-fb-container').hide();    

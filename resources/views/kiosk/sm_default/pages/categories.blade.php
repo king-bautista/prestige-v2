@@ -13,7 +13,7 @@
 
 <div class="content-holder" id="home-cat-contents">
     <!-- TITLE -->
-    <div class="p-3 font-weight-bold nav-titles translateme" data-en="Store List">Store List</div>
+    <div class="p-3 font-weight-bold nav-titles translateme nav-headers" data-en="Store List">Store List</div>
 
     <div class="tab-content" id="Categories-nav-tab-content">
         <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
@@ -152,7 +152,7 @@
             subcategory_element += '<div class="cat-btn">';
             subcategory_element += '<img class="cat-btn-img" src="'+ category.kiosk_image_primary_path +'" />';
             subcategory_element += '<div class="cat-btn-align">';
-            subcategory_element += '<p class="cat-text translateme" data-en="'+ category.category_name +'">'+ category.category_name +'</p>';
+            subcategory_element += '<p class="cat-text translateme '+main_category+'_color" data-en="'+ category.category_name +'">'+ category.category_name +'</p>';
             subcategory_element += '</div>';
             subcategory_element += '</div>';
             subcategory_element += '</div>';
@@ -162,6 +162,7 @@
                 $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                 $('.category-banner-title').html(category.category_name);
                 $('.category-banner-title').attr('data-en', category.category_name);
+                $('.category-banner-title').addClass(main_category + "_color");
                 tenant_list = category.tenants;
                 // alert("i am here");
                 showTenantList();
