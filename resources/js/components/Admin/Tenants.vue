@@ -229,10 +229,10 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Store Twitter</label>
+								<label for="firstName" class="col-sm-3 col-form-label">Store X</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="tenant.twitter"
-										placeholder="Store Twitter">
+										placeholder="Store X">
 								</div>
 							</div>
 							<div class="form-group row">
