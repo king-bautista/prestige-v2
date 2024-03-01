@@ -304,19 +304,17 @@ class ContentManagementController extends AppBaseController implements ContentMa
         
         // counting number of site partner ads
         $totalSitePartnerAds = sizeof($sitePartnersAds);
-        // $this->check_variable = $totalSitePartnerAds;
         // counting number of parent category ads
         $totalParentCategoryAds = sizeof($parentCategoryAds);
-        $this->check_variable = $sitePartnersAds;
         $maxSitePartnerSlot = 4;
 
         $maxSitePartnerAds = $totalSitePartnerAds > $maxSitePartnerSlot ? $maxSitePartnerSlot : $totalSitePartnerAds;
         // computation of total number of ads
-        $totalNumberOfAds = $totalSitePartnerAds + $totalParentCategoryAds;
+        $totalNumberOfAds = $maxSitePartnerAds + $totalParentCategoryAds;
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds);
         $moduloValue = round($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
-
+        $this->check_variable = $moduloValue;
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
         $maxParentCategoryCounter = 0;
@@ -331,7 +329,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         if ($loopCount >= 1) {
             for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {
                 for ($index = 0; $index < $totalNumberOfAds; $index++) {
-                    $loop_number = $loop_index + 1;
+                    $loop_number = $loop_index;
                     if (fmod($index, $moduloValue) == 0) {
                         if ($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
                             if ($sitePartnerCounter > $maxSitePartnerSlot) {
@@ -456,33 +454,42 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         if($is_sitePartner){
             $addData = $query->limit($limit)->offset($offset)->get();
-            $this->check_variable = $addData;
-            // $addData[0]->loop_number = $loop_number;
+            // $this->check_variable = $addData;
+            $addData[0]->loop_number = $loop_number;
         }
         else{
             $category_offset = $this->category_counter[$index];
             $addData = $query->limit($limit)->offset($category_offset)->get();
             $this->category_counter[$index]++;
+            $data_count = count($addData);
+            // $this->check_variable = $data_count;
 
-            // $data_count = count($addData);
+            if($data_count == 0){
+                $offset++;
+                $index = fmod($offset, $category_ids->count());
+                $new_category_id = $category_ids[$index]->id;
+                $category_offset = $this->category_counter[$index];
 
-            // while($data_count == 0){
-            //     $offset++;
-            //     $index = fmod($offset, $category_ids->count());
-            //     $new_category_id = $category_ids[$index]->id;
-            //     $category_offset = $this->category_counter[$index];
+                $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $new_category_id);
+                $new_add = $query->limit($limit)->offset($category_offset)->get();
+                $addData_count = count($new_add);
+                if($addData_count == 1){
+                    $addData = $new_add;
+                    // $addData->loop_number = $loop_number;
+                    foreach ($addData as $item){
+                        $item["loop_number"] = $loop_number;
+                    }
+                    $this->category_counter[$index]++;
+                }
+                $data_count = $addData_count;
+                // $this->check_variable = $data_count;
+            }
+            // $addData[0]->loop_number = $loop_number;
+            foreach ($addData as $item){
+                $item["loop_number"] = $loop_number;
+            }
 
-            //     $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $new_category_id);
-            //     $addData_count = count($query->limit($limit)->offset($category_offset)->get());
-            //     if($addData_count == 1){
-            //         $addData = $query->limit($limit)->offset($category_offset)->get();
-            //         $addData->loop_number = $loop_number;
-            //         $this->category_counter[$index]++;
-            //     }
-            //     $data_count = $addData_count;
-            // }
-            $addData->loop_number = $loop_number;
-            // $this->check_variable = $addData[0]->loop_number;
+            // $this->check_variable = $addData["loop_number"];
         }
         return $addData;
     }
