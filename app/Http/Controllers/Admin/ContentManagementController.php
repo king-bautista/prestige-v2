@@ -130,8 +130,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function store(ContentRequest $request)
     {
-        // try
-        // {
+        try
+        {
         $data = [
             'advertisement_id' => $request->advertisement_id,
             'status_id' => $request->status_id,
@@ -146,17 +146,17 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $content->saveScreens($request->site_screen_ids);
         $this->generatePlayList($request->site_screen_ids);
 
-        // return $this->response($content, 'Successfully Created!', 200);
-        return $this->response($this->check_variable, 'Successfully Created!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        return $this->response($content, 'Successfully Created!', 200);
+        // return $this->response($this->check_variable, 'Successfully Created!', 200);
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function update(ContentRequest $request)
@@ -252,7 +252,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             if (PlayList::insert($playlist)) {
                 //  $this->setSequence($screen_id->id, $screen_id->site_id, count($playlist));
                 $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Full Screen Ad");
-                // $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Banner Ad");
+                $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Banner Ad");
             }
         }
 
@@ -314,7 +314,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds);
         $moduloValue = round($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
-        $this->check_variable = $moduloValue;
+        // $this->check_variable = $moduloValue;
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
         $maxParentCategoryCounter = 0;
