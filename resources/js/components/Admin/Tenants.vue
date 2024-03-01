@@ -52,6 +52,12 @@
 									<multiselect v-model="tenant.brand_id" track-by="name" label="name"
 										placeholder="Type to search brand" :options="brands" :searchable="true"
 										:allow-empty="false" :loading="isLoading" @search-change="getBrands">
+										<span slot="noOptions">
+											Loading.. Please wait
+										</span>
+										<span slot="noResult">
+											List is empty
+										</span>
 									</multiselect>
 								</div>
 							</div>
