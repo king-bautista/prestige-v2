@@ -301,6 +301,7 @@ class KioskController extends AppBaseController
     public function getPromos() {
 
         $current_date = date('Y-m-d');
+        $promos_products = [];
 
         $promos = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)
         ->where('site_tenants.active', 1)        
@@ -313,8 +314,30 @@ class KioskController extends AppBaseController
         ->select('site_tenants.*', 'brand_products_promos.image_url', 'brand_products_promos.id as promo_id')
         ->get()->toArray();
 
-        $promos = array_chunk($promos, 6);
-        return json_encode($promos);
+        $products = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)        
+        ->where('site_tenants.active', 1)        
+        ->where('site_tenants.is_subscriber', 1)        
+        ->where('brand_products_promos.active', 1)        
+        ->where('brand_products_promos.type', 'product')
+        ->join('site_tenant_products', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
+        ->join('brand_products_promos', 'site_tenant_products.brand_product_promo_id', '=', 'brand_products_promos.id')
+        ->select('site_tenants.*', 'brand_products_promos.image_url', 'brand_products_promos.id as promo_id')
+        ->get()->toArray();
+
+        if($promos) {
+            foreach($promos as $promo) {
+                $promos_products[] = $promo;
+            }
+        }
+
+        if($products) {
+            foreach($products as $product) {
+                $promos_products[] = $product;
+            }
+        }
+
+        $promos_products = array_chunk($promos_products, 6);
+        return json_encode($promos_products);
 
     }
 
@@ -393,6 +416,7 @@ class KioskController extends AppBaseController
         ->orderBy('address', 'ASC');
 
         $brand_ids = $tenants;
+        $brand_names = [];
         $brand_ids = $brand_ids->groupBy('site_tenants.brand_id')->get()->pluck('brand_id');
 
         $site_tenants = $tenants->get();
@@ -410,6 +434,8 @@ class KioskController extends AppBaseController
                     'orderby' => $value->brand_name. ", " . $value->floor_name . ", " . $value->address,
                     'tenant' => $value,
                 ]);
+
+                $brand_names[] = ucfirst(strtolower($value->brand_name));
             }
             else {
                 $collection->push([
@@ -429,6 +455,7 @@ class KioskController extends AppBaseController
             ->pluck('tag_id');
 
         $tags = Tag::whereIn('tags.id',  $brand_tags)
+            ->whereNotIn('name',  $brand_names)
             ->select('tags.name')
             ->orderBy('tags.name', 'ASC')
             ->get()
@@ -460,7 +487,7 @@ class KioskController extends AppBaseController
             ]);
         }
 
-        return json_encode($collection->values()->all());
+        return json_encode($collection->sortBy('value')->values()->all());
     }
 
     public function search(Request $request) {

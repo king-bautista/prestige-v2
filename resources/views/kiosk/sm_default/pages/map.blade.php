@@ -1731,10 +1731,10 @@
 
 
     $(document).ready(function() {
-        init();
-        loadFont();
-        animate();
-        loop();
+		init();
+		loadFont();
+		animate();
+		loop();
 
         $('#tenant-select').select2();
         $('#floor-select').select2();
@@ -1746,7 +1746,6 @@
 			$('#tenant-select').val('');
 
 			onWindowResize();
-			// RESET MAP
 			resetMap();
 		});
 
