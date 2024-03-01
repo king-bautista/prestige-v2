@@ -68,7 +68,7 @@ body {
     height: 100px;
     padding: 0px;
     display: block;
-    z-index: 9999;
+    z-index: 1049;
 }
 
 .nav-titles {
@@ -872,8 +872,9 @@ body {
 
 .closeCinemaDetails {
     position: absolute;
-    top: 0px !important;
-    right: -480px !important;
+    font-size: 1.5em !important;
+    top: 17px !important;
+    right: -464px !important;
 }
 
 .movie-rating {
@@ -926,7 +927,7 @@ body {
 .cinema-details-sched-content {
     /* display: inline-block !important; */
     text-align: center !important;
-    padding: 14px;
+    padding: 0px 14px;
 }
 
 .cinema-details-sched-content-adjustment {
@@ -939,9 +940,8 @@ body {
 
 .movieImgView {
     border-radius: 18px;
-    width: 200px;
-    height: 300px;
-    object-fit: cover;
+    width: auto;
+    height: auto;
 }
 
 .MovieMainTitle {
@@ -951,9 +951,9 @@ body {
 
 .movie-Details-Content-Container {
     width: 1180px;
-    height: auto;
+    height: 608px;
     border-radius: 20px !important;
-    margin-top: 0px;
+    margin-top: 1px;
     font-family: "Henry Sans Regular" !important;
 }
 
@@ -1261,7 +1261,7 @@ body {
 .close {
     margin-right: -230px;
     margin-top: -49px;
-    font-size: 2em !important;
+    font-size: 2em;
     color: #ffffff;
     text-shadow: none;
     opacity: 1;
@@ -1717,7 +1717,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .nav-btn-event.active {
-    background-image: url('../images/Eventv4.png'); 
+    background-image: url('../images/Eventv4s.png'); 
     text-transform: uppercase;
     font-family: "Henry Sans Medium" !important;
     font-weight: 600;
@@ -1729,7 +1729,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .nav-btn-cinema.active {
-    background-image: url('../images/Cinemav4.png'); 
+    background-image: url('../images/Cinemav4s.png'); 
     text-transform: uppercase;
     font-family: "Henry Sans Medium" !important;
     font-weight: 600;
@@ -2700,8 +2700,10 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .alphabet-box a.active {
-    text-decoration: underline;
-    color: #005aff !important;
+    /* text-decoration: underline;
+    color: #005aff !important; */
+    color: #000000;
+    font-weight: 700;
 }
 
 #loadingDiv {
@@ -2998,4 +3000,7 @@ ul#mapguide li:after {
     left: -5px;
     top: -38px;
     font-size: 3.3em;
+}
+.mt-08 {
+    margin-top: .8rem !important;
 }
