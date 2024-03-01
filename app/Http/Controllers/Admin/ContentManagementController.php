@@ -690,7 +690,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
             Excel::import($import, $request->file('file'));
             // return $this->response(true, 'Successfully Uploaded!', 200);
             return $this->response([
-                'play_lists' => $import->fields
+                'play_lists' => $import->fields,
+                true, 
+                'Successfully Uploaded!', 
+                200
             ]);
         } catch (\Exception $e) {
             return response([

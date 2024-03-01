@@ -342,12 +342,12 @@ export default {
 
 		modalPlaylist: function (data) {
 			this.playlist = [];
-			// this.screen_location = data.site_screen_location;
-			// this.dimensions = data.dimensions;
-			// this.dimension_value = data.dimensions[0].dimension;
-			// this.playlist = data.playlist;
+			this.screen_location = data.site_screen_location;
+			this.dimensions = data.dimensions;
+			this.dimension_value = data.dimensions[0].dimension;
+			this.playlist = data.playlist;
 
-			console.log(this.playlist);
+			// console.log(this.playlist);
 
 			$("#sortableContent").modal('show');
 		},
