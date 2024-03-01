@@ -257,13 +257,13 @@ export default {
 					class: 'btn btn-primary btn-sm',
 					method: 'add'
 				},
-				// batchUploadTest: {
-				// 	title: 'Batch Upload Test',
-				// 	v_on: 'modalBatchUploadTest',
-				// 	icon: '<i class="fas fa-upload"></i> Batch Upload Test',
-				// 	class: 'btn btn-primary btn-sm',
-				// 	method: 'add'
-				// },
+				batchUploadTest: {
+					title: 'Batch Upload Test',
+					v_on: 'modalBatchUploadTest',
+					icon: '<i class="fas fa-upload"></i> Batch Upload Test',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+				},
 			},
 		};
 	},
