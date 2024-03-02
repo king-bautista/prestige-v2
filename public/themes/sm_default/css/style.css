@@ -23,7 +23,7 @@ body {
 } */
 
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 10px;
     height: 10px;
 }
 
@@ -1204,6 +1204,10 @@ body {
     padding: 9px 37px;
 }
 
+.share-btn-transalate {
+    padding: 9px 0 !important;
+}
+
 .ShareBtn-2 {
     opacity: 30% !important;
     background-color: #e2e2e2 !important;
@@ -1236,6 +1240,20 @@ body {
     margin: 3.5px 0px 0px 5px;
     font-size: 1em;
     line-height: normal;
+}
+
+.share-text-tanslate-jap {
+    font-size: 24px !important;
+    line-height: 23px;
+    width: 138px !important;
+    margin-top: -5px;
+}
+
+.share-text-tanslate {
+    font-size: 24px !important;
+    line-height: 23px;
+    width: 138px !important;
+    margin-top: 7px;
 }
 
 .BtnOrderNow {
@@ -2617,7 +2635,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     font-weight: bold;
     font-size: 18px;
     float: left;
-    margin: 0 510px 0 15px;
+    margin-left: 15px;
     border-width: 2px;
     color: #bc5b68;
     position: absolute;
@@ -2925,7 +2943,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 .ui-autocomplete.ui-front
 {
-    max-height: 80px;
+    max-height: 120px;
     overflow-y: auto !important; 
     overflow-x: hidden !important;
     border-radius: 10px;
@@ -2936,13 +2954,14 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     background-image: url(../images/DELETE.png);
     color: transparent;
     background-position: center;
-    /* background-size: contain; */
+    background-size: 80px 80px;
 }
 
 .softkeys__btn--delete:hover, .softkeys__btn--delete:focus {
-    background-image: url(../images/DELETE.png);
+    background-image: url(../images/DELETE-HOVER.png);
     color: transparent;
 }
+
 .empty-category{
     width: 735px !important;
     position: relative;

@@ -106,6 +106,7 @@ Helpers.prototype = {
     },
 
     setTranslation: function() {
+        console.log(my_translations);
         var translations_by_language;
         if (content_language != 'english') {
             translations_by_language = my_translations.filter(option => option.language == content_language);
@@ -231,8 +232,15 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
-        //// $('#Tab-Cinema-Tab').click();
         current_location = 'cinema';
+    },
+
+    aboutBtnClick: function() {
+        $('.content-holder, #ImgMallLogo, .modal').hide();
+        $('#DirectoryAboutPage, .back-img-btn').show();
+        $('.nav-btn-container').removeClass('active');
+        $('#videocontainer').html('');
+        current_location = 'about';
     },
 
     backToTenant: function() {

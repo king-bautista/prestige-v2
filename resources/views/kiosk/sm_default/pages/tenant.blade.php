@@ -193,7 +193,7 @@
                         Object.keys(obj).forEach(key => {
                             if (key == 'schedules') {
                                 if (obj['schedules'].match(day)) {
-                                    tempSchedule.push(obj['start_time'] + " AM - " + timeConvert(obj['end_time']));
+                                    tempSchedule.push(obj['start_time'] + " am - " + timeConvert(obj['end_time']));
                                 }                               
                             }
                         });
@@ -240,7 +240,7 @@
 
         if (time.length > 1) { // If time format correct
             time = time.slice(1); // Remove full string match value
-            time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+            time[5] = +time[0] < 12 ? ' am' : ' pm'; // Set AM/PM
             time[0] = +time[0] % 12 || 12; // Adjust hours
         }
         return time.join(''); // return adjusted time or original string
@@ -294,6 +294,7 @@
     }
 
     function showTenantDetails(tenant) {
+        console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
         if(tenant.tenant_details) {

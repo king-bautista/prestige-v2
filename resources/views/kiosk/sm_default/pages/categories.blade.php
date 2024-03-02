@@ -199,12 +199,14 @@
                 tenant_list_element += '</div>';
                 $( ".owl-wrapper-tenant-list" ).append(tenant_list_element);
 
-            $.each(tenants, function(index,tenant) {
-                var tenant_item = '';
-                var store_status = 'Closed';
-                if(tenant.operational_hours.is_open) {
-                    store_status = 'Open';
-                }
+                $.each(tenants, function(index,tenant) {
+                    var tenant_item = '';
+                    var store_status = 'Closed';
+                    var store_status_class = 'text-danger';
+                    if(tenant.operational_hours.is_open) {
+                        store_status = 'Open';
+                        store_status_class = 'text-success';
+                    }
 
                     tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
                     tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
@@ -215,7 +217,7 @@
                     tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
                     tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                     tenant_item += '<div class="tenant-store-status">';
-                    tenant_item += '<span class="text-success">'+store_status+'</span>';
+                    tenant_item += '<span class="'+store_status_class+'">'+store_status+'</span>';
                     if(tenant.is_subscriber)
                         tenant_item += '<span class="featured_shop">Featured</span>';
                     tenant_item += '</div>';
@@ -226,6 +228,7 @@
                     $('.tenant-item-'+tenant.id).on('click', function() {
                         showTenantDetails(tenant);
                     });
+
                 });
             }); 
         }

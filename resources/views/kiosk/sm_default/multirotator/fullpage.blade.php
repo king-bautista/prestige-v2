@@ -17,6 +17,7 @@
 
         $(document).on('click',function(){
             $("#screensaverwidget").height('0').width('0');
+            $('.mySlides').hide();
             if(screensaver_handle) {
                 clearTimeout(screensaver_handle);	
                 screensaver_handle = null;
