@@ -234,7 +234,7 @@
                 tenant_item += '<img class="img-shop-logo y-auto" src="'+store_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name">'+store_name+'</div>';
+                tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(store_name)+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+store_location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
                 tenant_item += '<span class="text-success">'+store_status+'</span>';

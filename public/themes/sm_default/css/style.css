@@ -921,7 +921,7 @@ body {
     overflow: auto;
     white-space: nowrap;
     height: auto;
-    max-height: 200px;
+    max-height: 120px;
     width: 1081px;
 }
 

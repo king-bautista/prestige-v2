@@ -323,7 +323,7 @@ Helpers.prototype = {
     },
 
     convertToProperCase: function(text) {
-        text = text.replace(/\w+/g, function(txt){
+        text = text.replace(/(\w+)(?:'(\w+))?/g, function(txt){
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
 
