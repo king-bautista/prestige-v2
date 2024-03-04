@@ -6,7 +6,7 @@
 <!-- <div id='loadingDiv'><video muted='muted' autoplay loop><source src="{{ URL::to('themes/sm_default/images/loading_page_portrait.ogv') }}">Your browser does not support the video tag.</video></div> -->
 
 <div class="bg-kiosk tenant-main-content" style="background-image: url('{{ $site->site_background_path}}');">
-    <div class="row w-100 m-0">
+    <div class="row m-0" style="margin-right: -15px !important;">
         <div class="col-xl-3 col-lg-12 dca-1">
             <!--Start of the directory banner-->
             @include('kiosk.sm_default.multirotator.banner')

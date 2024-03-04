@@ -243,19 +243,19 @@ class SiteTenantViewModel extends Model
     {
         $new_schedule = [];
         $schedules = $this->getTenantDetails()->where('meta_key', 'schedules')->first();
-        
-        if($schedules) {
-            $json_data = json_decode($schedules->meta_value);
-            
-            if(count($json_data) > 1) {
-                foreach($json_data as $data) {
+        $schedules_json = ($schedules) ? json_decode($schedules->meta_value) : null;
+        $with_schedule = (isset($schedules_json[0]->schedules)) ? (($schedules_json[0]->schedules != '') ? true : false) : false;
+
+        if($with_schedule) {            
+            if(count($schedules_json) > 1) {
+                foreach($schedules_json as $data) {
                     $today_schedule = $this->getTodaySchedule($data);
                     if($today_schedule['is_open'] == 1)
                         return $today_schedule;
                 }
             }
             else {
-                return $this->getTodaySchedule($json_data);
+                return $this->getTodaySchedule($schedules_json);
             }            
         }
 
