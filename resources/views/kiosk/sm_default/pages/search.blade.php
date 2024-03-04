@@ -21,7 +21,10 @@
 </div>
 
 <div id="searchList">
-    <div class="slideshow-content-container search-results">
+    <div class="slideshow-content-container search-results search-result-container">
+    </div>
+    <div class="you-might-want-to-try">
+
     </div>
 </div>
 
@@ -116,7 +119,7 @@
                     ['J',';'],
                     ['K','\''],
                     ['L','&#34;'],
-                    ['&bsol;'],
+                    '&apos;',
                 ],
                 [
                     'shift',
@@ -130,9 +133,9 @@
                     'delete',
                 ],
                 [
-                    [','],
+                    [',',','],
                     'space',
-                    ['.'],
+                    ['.','.'],
                     'Search',
                 ]
             ]
@@ -183,15 +186,27 @@
                 $('.notification').show();
             }
         });
+
+        $('.softkeys-search-page > .softkeys__btn--shift').on('click', function(){
+            if($(this).find('span').text() === '#+=') {
+                $(this).find('span').html('ABC');
+                $('.softkeys-search-page > .softkeys__btn--hidden').hide();
+            }
+            else {
+                $(this).find('span').html('#+=');
+                $('.softkeys-search-page > .softkeys__btn--hidden').show();
+            }
+        });
     });
 
     function showTenantSearch(search_results) {
         $('.search-results').html('');
+        $('.you-might-want-to-try').html('');
         $('.search-results').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-search-list"></div>');
         $.each(search_results, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
-            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4 search-result-height">';
             tenant_list_element += '<div class="row tenants-'+key+'">';
             tenant_list_element += '</div>';
             tenant_list_element += '</div>';
@@ -319,7 +334,7 @@
             want_to_try += '</div>';
             want_to_try += '</div>';
 
-            $('.search-results').append(want_to_try);
+            $('.you-might-want-to-try').append(want_to_try);
 
             $.each(subscriber, function(index,tenant) {     
                 want_to_item = '';   

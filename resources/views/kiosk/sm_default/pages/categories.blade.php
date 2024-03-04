@@ -237,12 +237,12 @@
         }
 
         var navigation_button = '';
-            navigation_button += '<a class="promo-prev">';
+            navigation_button += '<a class="promo-prev supplemental-prev">';
             navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
             navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
             navigation_button += '</div>';
             navigation_button += '</a>';
-            navigation_button += '<a class="promo-next">';
+            navigation_button += '<a class="promo-next supplemental-next">';
             navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
             navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
             navigation_button += '</div>';
@@ -350,12 +350,12 @@
         }); 
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev alpha-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next alpha-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
@@ -454,12 +454,12 @@
         }); 
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev supplemental-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next supplemental-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';

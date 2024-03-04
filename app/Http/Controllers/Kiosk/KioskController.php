@@ -556,7 +556,7 @@ class KioskController extends AppBaseController
             ->distinct()
             ->get()->toArray();
 
-            $tenants = array_chunk($tenants->toArray(), 15);                
+            $tenants = array_chunk($tenants->toArray(), 12);                
 
             return [
                 'tenants' => $tenants,
