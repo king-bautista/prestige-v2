@@ -1935,7 +1935,7 @@
                     ['J',';'],
                     ['K','\''],
                     ['L','&#34;'],
-                    ['&bsol;'],
+                    '&apos;',
                 ],
                 [
                     'shift',
@@ -1949,9 +1949,9 @@
                     'delete',
                 ],
                 [
-                    [','],
+                    '&comma;',
                     'space',
-                    ['.'],
+                    '&period;',
                     'Search',
                 ]
             ]
@@ -1964,8 +1964,16 @@
             $('#selectInput').trigger('change');
         });
 
-
-		//inputDirection.select2('open');
+		$('.softkeys-map-page > .softkeys__btn--shift').on('click', function(){
+            if($(this).find('span').text() === '#+=') {
+                $(this).find('span').html('ABC');
+                $('.softkeys-map-page > .softkeys__btn--hidden').hide();
+            }
+            else {
+                $(this).find('span').html('#+=');
+                $('.softkeys-map-page > .softkeys__btn--hidden').show();
+            }
+        });
 
     });
 

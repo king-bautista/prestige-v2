@@ -176,7 +176,7 @@ Helpers.prototype = {
         $('.nav-btn-container, #btnpwdchange').removeClass('active btn-prestige-pwd');
         $('.nav-btn-home').addClass("active");
         $('#videocontainer').html('');
-        $('.category-img-banner').attr('src', '');
+        $('.category-img-banner').attr('src', '');        
 
         sub_categories = '';
         main_category = '';
@@ -195,6 +195,7 @@ Helpers.prototype = {
         $('#code').val('');
         $('#videocontainer').html('');
         $('#search-title').html('Search');
+        this.resetKeyBoard();
         current_location = 'searchbox';
     },
 
@@ -205,6 +206,7 @@ Helpers.prototype = {
         $('.nav-btn-map').addClass("active");
         $('#videocontainer').html('');
         $('#btnresetmap').click();
+        this.resetKeyBoard();
         current_location = 'map';
     },
 
@@ -326,6 +328,16 @@ Helpers.prototype = {
         });
 
         return text;
+    },
+
+    resetKeyBoard: function() {
+        if($('.softkeys-search-page > .softkeys__btn--shift').find('span').text() === 'ABC') {
+            $('.softkeys-search-page > .softkeys__btn--shift').click();
+        }
+
+        if($('.softkeys-map-page > .softkeys__btn--shift').find('span').text() === 'ABC') {
+            $('.softkeys-map-page > .softkeys__btn--shift').click();
+        }
     }
 
 };

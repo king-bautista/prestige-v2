@@ -29,6 +29,7 @@
                     showFullscreenAds();
                 }, 5000); // 5 sec delay before showing screensaver
                 helper.revertToEnglish();
+                helper.resetKeyBoard();
                 helper.homeBtnClick();
             }, 1000 * 60 * 2); // 2 min idle time, return to screensaver mode
         });
@@ -39,6 +40,7 @@
                 showFullscreenAds();
             }, 5000); // 5 sec delay before showing screensaver
             helper.revertToEnglish();
+            helper.resetKeyBoard();
             helper.homeBtnClick();
         }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
     });
