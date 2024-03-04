@@ -47,6 +47,10 @@
             color: #6051e3;
         }
 
+        .softkeys__btn--shift:hover {
+            background-color: #4b94ce !important;
+        }
+
     </style>
 
     <body>

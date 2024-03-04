@@ -173,7 +173,7 @@ Helpers.prototype = {
     homeBtnClick: function() {
         $('.content-holder, .back-img-btn, .modal').hide();
         $('#home-container, #ImgMallLogo').show();
-        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-container, #btnpwdchange').removeClass('active btn-prestige-pwd');
         $('.nav-btn-home').addClass("active");
         $('#videocontainer').html('');
         $('.category-img-banner').attr('src', '');
