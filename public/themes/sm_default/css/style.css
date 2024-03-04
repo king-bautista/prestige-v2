@@ -3032,10 +3032,10 @@ ul#mapguide li:before {
     width: 3px;
 }
 
-ul#mapguide li:first-child:after {
+/* ul#mapguide li:first-child:after {
     content: "\2022";
-    color: #6051e3;
-}
+    color: #dee2e6;
+} */
 
 ul#mapguide li:after {
     content: "\2022";

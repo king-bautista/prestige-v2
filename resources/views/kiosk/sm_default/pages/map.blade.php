@@ -1602,13 +1602,19 @@
 			$(".map-minutes").html( mins + ' minute' + (mins > 1 ? 's' : ''));
 			$("#mapguide li").remove();
 
+			var count = 0;
 			$.each(data['guide'],function(){
 				if (this == "Turn Left" || this == "Turn Right" 
 				|| this == "Turn Left on Escalator" || this == "Turn Right on Escalator" 
 				|| this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
 				}
 				else {
-					$("#mapguide").append('<li>' + this + '</li>');
+					var guide_txt = this;
+					setTimeout(function() {
+						$("#mapguide li").removeClass('active');
+						$("#mapguide").append('<li class="active">' + guide_txt + '</li>');
+					}, count * 2000);
+					count++;
 				}
 			});
 
