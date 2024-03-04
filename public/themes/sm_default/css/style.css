@@ -406,12 +406,12 @@ body {
 }
 
 .carousel-content-container-per-food-category {
-    padding: 104.5px 133px 0px 153px;
+    padding: 134.5px 133px 0px 153px;
     margin-left: 0px;
 }
 
 .carousel-content-container-alphabetical {
-    padding: 124.5px 133px 0px 153px;
+    padding: 94.5px 133px 0px 153px;
     margin-left: 0px;
 }
 
@@ -421,7 +421,7 @@ body {
 }
 
 .carousel-content-container-show-cinema-6 {
-    padding: 189.5px 441.5px 0px 461.5px;
+    padding: 139.5px 441.5px 0px 461.5px;
     margin-left: 0px;
 }
 
@@ -432,19 +432,19 @@ body {
 }
 
 .owl-dots-tenant-list {
-    margin-top: 11.0px !important;
+    margin-top: -3.0px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
 
 .owl-dots-alphabetical {
-    margin-top: 10px !important;
+    margin-top: 40px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
 
 .owl-dots-cravings {
-    margin-top: 31.5px !important;
+    margin-top: 15.5px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
@@ -456,52 +456,52 @@ body {
 }
 
 .carousel-content-container-per-food-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-food-cravings {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-fashion-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-trends {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-electronics-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-latest {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-services-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-services {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-essentials-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-goodies {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
@@ -1314,7 +1314,7 @@ body {
 .slideshow-content-container {
     max-width: 100%;
     position: relative;
-    height: 790px;
+    height: 750px;
     margin: auto;
     overflow: hidden;
 }
@@ -3101,4 +3101,35 @@ ul#mapguide li:last-child:before {
 .search-prev{
     left: -4px !important;
     top: 404px !important;
+}
+
+.alpha-prev{
+    left: -4px !important;
+    top: 394px !important;
+}
+.alpha-next{
+    right: 15px !important;
+    top: 395px !important;
+}
+
+.supplemental-prev{
+    left: -4px !important;
+    top: 394px !important;
+}
+.supplemental-next{
+    right: 15px !important;
+    top: 395px !important;
+}
+
+.search-result-height{
+    padding-top: 104.5px !important;
+}
+
+.search-result-container{
+    height: 625px !important;
+}
+
+.you-might-want-to-try{
+    max-height: 130px;
+    overflow-x: hidden;
 }
