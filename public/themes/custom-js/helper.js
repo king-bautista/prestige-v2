@@ -318,6 +318,14 @@ Helpers.prototype = {
         this.mapBtnClick();
         $('.amenity-point').val(site_point);
         $('.amenity-show-location').click();
+    },
+
+    convertToProperCase: function(text) {
+        text = text.replace(/\w+/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+
+        return text;
     }
 
 };

@@ -1340,12 +1340,14 @@ body {
 }
 
 .promo-prev, .event-prev {
-    left: 0;
+    left: 26px;
+    top: 456px;
     border-radius: 3px 0 0 3px;
 }
 
 .promo-next, .event-next {
-    right: 0;
+    right: 66px;
+    top: 456px;
     border-radius: 3px 0 0 3px;
 }
 
@@ -3075,4 +3077,28 @@ ul#mapguide li:last-child:before {
 
 .minus-30{
     margin-top: -30px !important;
+}
+
+.cinema-iframe-size{
+    left: -2px !important;
+    width: 1090px !important;
+}
+
+#videocontainer{
+    height: 510px;
+}
+
+.search-keyboard-height{
+    position: absolute;
+    top: 228px;
+}
+
+.search-next{
+    right: 15px !important;
+    top: 404px !important;
+}
+
+.search-prev{
+    left: -4px !important;
+    top: 404px !important;
 }

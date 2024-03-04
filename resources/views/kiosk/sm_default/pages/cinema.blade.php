@@ -123,6 +123,7 @@
             $('#videocontainer').html(youtube_str);
             $('.now-showing-trailer').show();
             $('.now-showing-details').hide();
+            $(".html5-main-video").addClass("cinema-iframe-size");
         })
 
         var showing = JSON.parse(helper.decodeEntities(now_showing));
@@ -160,7 +161,7 @@
                 cinema_item += '<img class="cinema-img" src="{{ URL::to('themes/sm_default/images/sm-cinema-logo.png') }}" alt="...">';
                 cinema_item += '</div>';
                 cinema_item += '<div class="mt-2">';
-                cinema_item += '<div class="cinema-txt-1">'+cinema.brand_name+'</div>';
+                cinema_item += '<div class="cinema-txt-1">'+ helper.convertToProperCase(cinema.brand_name) +'</div>';
                 cinema_item += '<div class="cinema-txt-2">'+cinema.location+'</div>';
                 cinema_item += '</div>';
                 cinema_item += '</div>';                         
@@ -178,12 +179,12 @@
         });
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev search-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next search-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
@@ -383,6 +384,5 @@
             $('.cinema-details-sched-content').append(schedule_str);
         });        
     }
-
 </script>
 @endpush

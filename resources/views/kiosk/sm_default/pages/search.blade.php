@@ -9,7 +9,7 @@
                 <button class="btn search-box-button translateme" type="button" data-en="Search">Search</button>
                 <label class="notification translateme" data-en="Please type at least two (2) letters to search.">Please type at least two (2) letters to search.</label>
             </div>                    
-            <div class="softkeys softkeys-search-page mt-5" data-target="input[name='code']"></div>
+            <div class="softkeys softkeys-search-page mt-5 search-keyboard-height" data-target="input[name='code']"></div>
         </form>
     </div>
 </div>
@@ -241,12 +241,12 @@
         }); 
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev search-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next search-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
