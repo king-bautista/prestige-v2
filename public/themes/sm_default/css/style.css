@@ -3126,10 +3126,15 @@ ul#mapguide li:last-child:before {
 }
 
 .search-result-container{
-    height: 625px !important;
+    height: 637px !important;
 }
 
 .you-might-want-to-try{
     max-height: 130px;
-    overflow-x: hidden;
+    overflow: hidden;
+    margin-top: -10px;
+}
+
+.owl-dots-search-result{
+    margin-top: 44px !important;
 }
