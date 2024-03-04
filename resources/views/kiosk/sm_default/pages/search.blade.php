@@ -133,9 +133,9 @@
                     'delete',
                 ],
                 [
-                    [',',','],
+                    '&comma;',
                     'space',
-                    ['.','.'],
+                    '&period;',
                     'Search',
                 ]
             ]
@@ -202,7 +202,8 @@
     function showTenantSearch(search_results) {
         $('.search-results').html('');
         $('.you-might-want-to-try').html('');
-        $('.search-results').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-search-list"></div>');
+        $('.search-results').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-search-list search-result-dots"></div>');
+        
         $.each(search_results, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
@@ -313,6 +314,7 @@
             }
             
         });
+        $('.search-result-dots').find(".owl-dots").addClass('owl-dots-search-result');
 
     }
 
