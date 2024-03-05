@@ -137,5 +137,13 @@ class BrandViewModel extends Model
             return implode(', ', $tags);
         }
         return null;
-    } 
+    }
+    
+    public function getTagsAttribute()
+    {
+        if($this->brand_details['tags']) {
+            return $this->brand_details['tags'];
+        }
+        return null;
+    }
 }

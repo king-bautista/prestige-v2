@@ -154,6 +154,7 @@ class SupplementalController extends AppBaseController implements SupplementalCo
     {
         try {
             $supplementals = CategoryViewModel::whereNull('parent_id')->where('category_type', 2)->get();
+            // echo '<pre>';print_r($supplementals); echo '</pre>';
             return $this->response($supplementals, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -199,14 +200,22 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             $supplemental_management = CategoryViewModel::where('category_type', 2)->get();
             $reports = [];
             foreach ($supplemental_management as $supplemental) {
+                $parent = category::where('id', $supplemental->parent_id)->get();
+                $parent_name = (count($parent) > 0) ? $parent[0]['name'] : '';
+                $supplemental_category = category::where('id', $supplemental->supplemental_category_id)->get();
+                $supplemental_name = (count($supplemental_category) > 0) ? $supplemental_category[0]['name'] : '';
+                // echo $parent_name.'>>';
                 $reports[] = [
                     'id' => $supplemental->id,
                     'parent_id' => $supplemental->parent_id,
-                    'supplemental_category_id' => $supplemental->supplemental_category_id,
+                    'parent_name' => $parent_name,
+                    'regular_category_id' => $supplemental->supplemental_category_id,
+                    'regular_category_name' => $supplemental_name,
+                    'sequence' =>  $supplemental->sequence,
                     'name' => $supplemental->name,
                     'descriptions' => $supplemental->descriptions,
-                    'class_name' => $supplemental->classname,
-                    'category_type' => $supplemental->category_type,
+                    'sub_category_class' => ($supplemental->supplemental_category_id) ? '2' : '1',
+                    'class_name' => $supplemental->class_name,
                     'active' => $supplemental->active,
                     'created_at' => $supplemental->created_at,
                     'updated_at' => $supplemental->updated_at,
@@ -248,11 +257,14 @@ class SupplementalController extends AppBaseController implements SupplementalCo
             $reports[] = [
                 'id' => '',
                 'parent_id' => '',
-                'supplemental_category_id' => '',
+                'parent_name' => '',
+                'regular_category_id' => '',
+                'regular_category_name' => '',
+                'sequence' =>  '',
                 'name' => '',
                 'descriptions' => '',
+                'sub_category_class' => '',
                 'class_name' => '',
-                'category_type' => '',
                 'active' => '',
                 'created_at' => '',
                 'updated_at' => '',

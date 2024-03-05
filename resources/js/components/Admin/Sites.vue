@@ -184,10 +184,31 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label for="firstName" class="col-sm-3 col-form-label">Twitter</label>
+								<label for="firstName" class="col-sm-3 col-form-label">X</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" v-model="site.twitter"
-										placeholder="Twitter link">
+										placeholder="X link">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">TikTok</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="site.tiktok"
+										placeholder="TikTok link">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">YouTube</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="site.youtube"
+										placeholder="YouTube link">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Viber</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" v-model="site.viber"
+										placeholder="Viber link">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -331,6 +352,9 @@ export default {
 				facebook: '',
 				instagram: '',
 				twitter: '',
+				tiktok:'',
+				youtube:'',
+				viber:'',
 				operational_hours: [],
 				website: '',
 				active: false,
@@ -612,6 +636,9 @@ export default {
 			this.site.facebook = '';
 			this.site.instagram = '';
 			this.site.twitter = '';
+			this.site.tiktok = '';
+			this.site.youtube = '';
+			this.site.viber = '';
 			this.site.operational_hours = [];
 			this.site.website = '';
 			this.$refs.site_logo.value = null;
@@ -645,6 +672,9 @@ export default {
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
+			formData.append("tiktok", (this.site.tiktok) ? this.site.tiktok : '');
+			formData.append("youtube", (this.site.youtube) ? this.site.youtube : '');
+			formData.append("viber", (this.site.viber) ? this.site.viber : '');
 			formData.append("website", (this.site.website) ? this.site.website : '');
 			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
 			formData.append("map_type", (this.site.map_type) ? this.site.map_type : '');		
@@ -682,6 +712,9 @@ export default {
 					this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
 					this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
 					this.site.twitter = (site.details.twitter == 'null') ? '' : site.details.twitter;
+					this.site.tiktok = (site.details.tiktok == 'null') ? '' : site.details.tiktok;
+					this.site.youtube = (site.details.youtube == 'null') ? '' : site.details.youtube;
+					this.site.viber = (site.details.viber == 'null') ? '' : site.details.viber;
 					this.site.operational_hours = [];
 					this.site.website = (site.details.website == 'null') ? '' : site.details.website;
 					this.site.active = site.active;
@@ -756,6 +789,9 @@ export default {
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
 			formData.append("twitter", (this.site.twitter) ? this.site.twitter : '');
+			formData.append("tiktok", (this.site.tiktok) ? this.site.tiktok : '');
+			formData.append("youtube", (this.site.youtube) ? this.site.youtube : '');
+			formData.append("viber", (this.site.viber) ? this.site.viber : '');
 			formData.append("website", (this.site.website) ? this.site.website : '');
 			formData.append("site_code", (this.site.site_code) ? this.site.site_code : '');
 			formData.append("map_type", (this.site.map_type) ? this.site.map_type : '');						

@@ -9,13 +9,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Models\Brand;
 use App\Models\ContentManagement;
 use App\Models\ContentScreen;
 use App\Models\TransactionStatus;
 use App\Models\PlayList;
 use App\Models\Contract;
+use App\Models\ContractScreen;
 use App\Models\Category;
+use App\Models\Advertisement;
 use App\Models\AdvertisementMaterial;
+use App\Models\Site;
 use App\Models\SiteScreen;
 use App\Models\SiteScreenProduct;
 use App\Models\AdminViewModels\SiteViewModel;
@@ -130,21 +134,20 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function store(ContentRequest $request)
     {
-        try
-        {
-        $data = [
-            'advertisement_id' => $request->advertisement_id,
-            'status_id' => $request->status_id,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'active' => $request->active,
-        ];
+        try {
+            $data = [
+                'advertisement_id' => $request->advertisement_id,
+                'status_id' => $request->status_id,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'active' => $request->active,
+            ];
 
-        $content = ContentManagement::create($data);
-        $content->serial_number = 'CAD-' . Str::padLeft($content->id, 5, '0');
-        $content->save();
-        $content->saveScreens($request->site_screen_ids);
-        $this->generatePlayList($request->site_screen_ids);
+            $content = ContentManagement::create($data);
+            $content->serial_number = 'CAD-' . Str::padLeft($content->id, 5, '0');
+            $content->save();
+            $content->saveScreens($request->site_screen_ids);
+            $this->generatePlayList($request->site_screen_ids);
 
         return $this->response($content, 'Successfully Created!', 200);
         // return $this->response($this->check_variable, 'Successfully Created!', 200);
@@ -164,7 +167,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         // try
         // {
         $content = ContentManagement::find($request->id);
-//echo '<pre>'; print_r($request->site_screen_ids); echo '</pre>';
+        //echo '<pre>'; print_r($request->site_screen_ids); echo '</pre>';
         $data = [
             'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-' . Str::padLeft($content->id, 5, '0'),
             'advertisement_id' => $request->advertisement_id,
@@ -327,7 +330,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $loopCount = $this->getLoopCount($totalSitePartnerAds, $maxSitePartnerSlot);
 
         if ($loopCount >= 1) {
-            for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {
+            for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {        
                 for ($index = 0; $index < $totalNumberOfAds; $index++) {
                     $loop_number = $loop_index;
                     if (fmod($index, $moduloValue) == 0) {
@@ -808,23 +811,52 @@ class ContentManagementController extends AppBaseController implements ContentMa
     public function downloadCsvUploadAd()
     {
         try {
-            $upload_manage_ads =  ContentManagementViewModel::get();
+            $upload_manage_ads =  ContentManagement::leftjoin('advertisements as a', 'content_management.advertisement_id', '=', 'a.id')
+                ->leftjoin('advertisement_materials as am', 'a.id', '=', 'am.advertisement_id')
+                ->get();
+
             $reports = [];
             foreach ($upload_manage_ads as $upload) {
+                $brand = Brand::where('id', $upload->brand_id)->get();
+                $contract_screen = ContractScreen::where('contract_id', $upload->contract_id)->get();
+                $site_id = $contract_screen[0]['site_id'];
+                $site = Site::where('id', $site_id)->get();
+                $site_screen = SiteScreen::leftjoin('site_screen_products as ssp', 'site_screens.id', '=', 'ssp.site_screen_id')
+                    ->where('site_screens.site_id', $site_id)
+                    ->where('ssp.dimension', $upload->dimension)
+                    ->select('site_screens.id as screen_id','site_screens.name as screen_name', 'site_screens.screen_type as screen_type', 'ssp.id as ssp_id','ssp.description as ssp_description', 'site_screens.product_application as product_application')
+                    ->get();
+              
+                $ssp_id = (!empty($site_screen[0]['ssp_id'])) ? $site_screen[0]['ssp_id'] : '';
+                $ssp_description = (!empty($site_screen[0]['ssp_description'])) ? $site_screen[0]['ssp_description'] : '';
+                $screen_id = (!empty($site_screen[0]['screen_id'])) ? $site_screen[0]['screen_id'] : '';
+                $screen_name = (!empty($site_screen[0]['screen_name'])) ? $site_screen[0]['screen_name'] : '';
+                $screen_type = (!empty($site_screen[0]['screen_type'])) ? $site_screen[0]['screen_type'] : '';
                 $reports[] = [
-                    'id' => $upload->id,
-                    'serial_number' => $upload->serial_number,
-                    'material_thumbnails_path' => $upload->material_thumbnails_path,
-                    //'material_path' => $upload->,
-                    'dimension' => $upload->dimension,
-                    'ad_name' => $upload->ad_name,
-                    'company_id' => $upload->company_id,
-                    'company_name' => $upload->company_name,
+                    'id' => $upload->serial_number,
+                    'ssp_id' => $ssp_id,
+                    'ssp_description' => $ssp_description,
+                    'site_id' => $site_id,
+                    'site_name' => $site[0]['name'],
+                    'screen_id' => $screen_id,
+                    'screen_name' => $screen_name,
+                    'physical_configuration' => $screen_type,
+                    'product_application' => (count($site_screen) > 0) ? $site_screen[0]['product_application'] : '',
+                    'content_id' => $upload->id,
+                    'content_name' => $upload->name,
                     'brand_id' => $upload->brand_id,
-                    'brand_name' => $upload->brand_name,
-                    'air_dates' => $upload->air_dates,
-                    'transaction_status_id' => $upload->status_id,
-                    'transaction_status_name' => TransactionStatus::find($upload->status_id)['name'],
+                    'brand_name' => (count($brand) > 0) ? $brand[0]['name'] : '',
+                    'parent_category' => '',
+                    'category_name' => '',
+                    'tenant_id' => '',
+                    'ad_type' => '',
+                    'status_id' => $upload->status_id,
+                    'status_name' => TransactionStatus::find($upload->status_id)['name'],
+
+                    'date_approved' => '',
+                    'start_date' => '',
+                    'end_date' => '',
+                    'no_of_slots' => '',
                     'active' => $upload->active,
                     'created_at' => $upload->created_at,
                     'updated_at' => $upload->updated_at,
