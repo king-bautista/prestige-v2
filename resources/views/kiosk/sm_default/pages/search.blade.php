@@ -326,7 +326,7 @@
             want_to_try += '<div class="want-to-try">';
             want_to_try += '<div class="row">';
             want_to_try += '<div class="col-12 pl-170">';
-            want_to_try += '<span class="translateme" data-en="You might want to try : ">You might want to try : </span>';
+            want_to_try += '<span class="translateme" data-en="You might want to try">You might want to try</span> :';
             want_to_try += '</div>';
             want_to_try += '</div>';
             want_to_try += '</div>';
