@@ -40,7 +40,7 @@
                     </svg>
                     <b>
                         <span class="text-success mall-hours-title">
-                            <b class="mall-hours-title is-open"></b>
+                            <b class="mall-hours-title is-open translateme" data-en="Open"></b>
                         </span>
                         <span class="mall-hours-divider">|</span> <span class="mall-hours-title tenant-hours"></span>
                     </b>
@@ -318,10 +318,12 @@
         if(tenant.operational_hours.start_time) {
             $('.tenant-hours').html(tenant.operational_hours.start_time +'-'+tenant.operational_hours.end_time);
             $('.is-open').addClass(is_open).html((tenant.operational_hours.is_open) ? 'Open' : 'Closed');
+            $('.is-open').attr("data-en",(tenant.operational_hours.is_open) ? 'Open' : 'Closed')
         }
         else {
             $('.is-open').addClass(is_open).html((site_info.operational_hours.is_open) ? 'Open' : 'Closed');
             $('.tenant-hours').html(site_info.start_time +'-'+site_info.end_time);
+            $('.is-open').attr("data-en",(tenant.operational_hours.is_open) ? 'Open' : 'Closed')
         }
 
         // PRODUCT AND LOGO
