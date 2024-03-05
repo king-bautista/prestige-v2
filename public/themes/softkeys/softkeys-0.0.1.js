@@ -42,8 +42,9 @@
                                 break;
 
                             case 'shift' :
-                                character = '<span>shift</span>';
+                                character = '<span>#+=</span>';
                                 type = 'shift';
+                                styleClass = 'softkeys__btn--shift';
                                 break;
 
                             case 'return' :
@@ -57,7 +58,7 @@
                                 break;
 
                             case 'space' :
-                                character = '<span>space</span>';
+                                character = '<span>SPACE</span>';
                                 type = 'space';
                                 styleClass = 'softkeys__btn--space';
                                 break;
@@ -72,6 +73,24 @@
                                 character = '<span>delete</span>';
                                 type = 'delete';
                                 styleClass = 'softkeys__btn--delete';
+                                break;
+
+                            case '&apos;' :
+                                character = '<span>&apos;</span>';
+                                type = 'symbol';
+                                styleClass = 'softkeys__btn--hidden';
+                                break;
+                            case '&comma;' :
+                                console.log('test');
+                                character = '<span>&comma;</span>';
+                                type = 'symbol';
+                                styleClass = 'softkeys__btn--hidden';
+                                break;
+
+                            case '&period;' :
+                                character = '<span>&period;</span>';
+                                type = 'symbol';
+                                styleClass = 'softkeys__btn--hidden';
                                 break;
 
                             default :
@@ -133,8 +152,9 @@
 
                             } else if($(this).children('span').eq(0).html() === 'Search') {
 
-                            }else {
-                                character = $(this).children('span').eq(0).html();
+                            }
+                            else {
+                                character = $(this).children('span').eq(0).text();
                             }
                             break;
 
@@ -148,7 +168,8 @@
                             break;
                     }
 
-                    $(settings.target).focus().val(targetValue + character);
+                    var decoded = $('<div/>').html(targetValue + character).text();
+                    $(settings.target).focus().val(decoded);
                 });
             },
 

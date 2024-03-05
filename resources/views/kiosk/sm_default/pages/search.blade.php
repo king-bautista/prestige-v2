@@ -1,7 +1,7 @@
 <!-- title -->
 <div class="p-3 font-weight-bold nav-titles translateme" id="search-title" data-en="Search">Search</div>
 
-<div id="keyboard-section" class="row">
+<div id="keyboard-section" class="row minus-30">
     <div class="col-md-10 offset-md-1 mt-5 pt-5">
        <form class="row form text-center" id="form_search">
             <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
@@ -9,7 +9,7 @@
                 <button class="btn search-box-button translateme" type="button" data-en="Search">Search</button>
                 <label class="notification translateme" data-en="Please type at least two (2) letters to search.">Please type at least two (2) letters to search.</label>
             </div>                    
-            <div class="softkeys softkeys-search-page mt-5" data-target="input[name='code']"></div>
+            <div class="softkeys softkeys-search-page mt-5 search-keyboard-height" data-target="input[name='code']"></div>
         </form>
     </div>
 </div>
@@ -21,7 +21,10 @@
 </div>
 
 <div id="searchList">
-    <div class="slideshow-content-container search-results">
+    <div class="slideshow-content-container search-results search-result-container">
+    </div>
+    <div class="you-might-want-to-try">
+
     </div>
 </div>
 
@@ -116,7 +119,7 @@
                     ['J',';'],
                     ['K','\''],
                     ['L','&#34;'],
-                    ['&bsol;'],
+                    '&apos;',
                 ],
                 [
                     'shift',
@@ -130,9 +133,9 @@
                     'delete',
                 ],
                 [
-                    [','],
+                    '&comma;',
                     'space',
-                    ['.'],
+                    '&period;',
                     'Search',
                 ]
             ]
@@ -183,15 +186,28 @@
                 $('.notification').show();
             }
         });
+
+        $('.softkeys-search-page > .softkeys__btn--shift').on('click', function(){
+            if($(this).find('span').text() === '#+=') {
+                $(this).find('span').html('ABC');
+                $('.softkeys-search-page > .softkeys__btn--hidden').hide();
+            }
+            else {
+                $(this).find('span').html('#+=');
+                $('.softkeys-search-page > .softkeys__btn--hidden').show();
+            }
+        });
     });
 
     function showTenantSearch(search_results) {
         $('.search-results').html('');
-        $('.search-results').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-search-list"></div>');
+        $('.you-might-want-to-try').html('');
+        $('.search-results').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-search-list search-result-dots"></div>');
+        
         $.each(search_results, function(key,tenants) {
             var tenant_list_element = '';
             tenant_list_element = '<div class="item">';
-            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
+            tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4 search-result-height">';
             tenant_list_element += '<div class="row tenants-'+key+'">';
             tenant_list_element += '</div>';
             tenant_list_element += '</div>';
@@ -218,7 +234,7 @@
                 tenant_item += '<img class="img-shop-logo y-auto" src="'+store_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name">'+store_name+'</div>';
+                tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(store_name)+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+store_location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
                 tenant_item += '<span class="text-success">'+store_status+'</span>';
@@ -241,12 +257,12 @@
         }); 
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev search-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next search-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
@@ -298,6 +314,7 @@
             }
             
         });
+        $('.search-result-dots').find(".owl-dots").addClass('owl-dots-search-result');
 
     }
 
@@ -319,7 +336,7 @@
             want_to_try += '</div>';
             want_to_try += '</div>';
 
-            $('.search-results').append(want_to_try);
+            $('.you-might-want-to-try').append(want_to_try);
 
             $.each(subscriber, function(index,tenant) {     
                 want_to_item = '';   

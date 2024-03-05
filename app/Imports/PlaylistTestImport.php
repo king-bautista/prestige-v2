@@ -133,7 +133,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
 
         $maxSitePartnerAds = $totalSitePartnerAds > $maxSitePartnerSlot ? $maxSitePartnerSlot : $totalSitePartnerAds;
         // computation of total number of ads
-        $totalNumberOfAds = $totalSitePartnerAds + $totalParentCategoryAds;
+        $totalNumberOfAds = $maxSitePartnerAds + $totalParentCategoryAds;
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
         $moduloValue = round($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
@@ -395,7 +395,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'dimension'=> $dimension,
                 ];
                 $data = $exel_collection;
-                // array_push($exel_collection,$site_screen_id);
+                // array_push($exel_collection,$brand_id);
                 TemporaryPlayList::create($data);
             }
         }
@@ -468,9 +468,11 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
     }
 
     protected function getBrandId($brand_name){
-        
         if($brand_name != ""){
             $brand_ids = Brand::select("id")->where("name", "LIKE", "%".$brand_name."%")->limit(1)->get();
+            if($brand_ids->isEmpty()){
+                $brand_ids = Brand::select("id")->inRandomOrder()->take(1)->get();
+            }
             return $brand_ids;
         }
     }

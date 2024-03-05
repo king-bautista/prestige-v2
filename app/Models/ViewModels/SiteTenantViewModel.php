@@ -243,19 +243,19 @@ class SiteTenantViewModel extends Model
     {
         $new_schedule = [];
         $schedules = $this->getTenantDetails()->where('meta_key', 'schedules')->first();
-        
-        if($schedules) {
-            $json_data = json_decode($schedules->meta_value);
-            
-            if(count($json_data) > 1) {
-                foreach($json_data as $data) {
+        $schedules_json = ($schedules) ? json_decode($schedules->meta_value) : null;
+        $with_schedule = (isset($schedules_json[0]->schedules)) ? (($schedules_json[0]->schedules != '') ? true : false) : false;
+
+        if($with_schedule) {            
+            if(count($schedules_json) > 1) {
+                foreach($schedules_json as $data) {
                     $today_schedule = $this->getTodaySchedule($data);
                     if($today_schedule['is_open'] == 1)
                         return $today_schedule;
                 }
             }
             else {
-                return $this->getTodaySchedule($json_data);
+                return $this->getTodaySchedule($schedules_json);
             }            
         }
 
@@ -272,7 +272,7 @@ class SiteTenantViewModel extends Model
         $new_products = [];
         $product_ids = $this->getTenantProducts()->get()->pluck('brand_product_promo_id');
         if(count($product_ids) > 0) {
-            $products = BrandProductViewModel::whereIn('id', $product_ids)->where('type', '!=', 'promo')->get();
+            $products = BrandProductViewModel::whereIn('id', $product_ids)->get();
             foreach($products as $product) {
                 if($product->type == 'banner') {
                     $new_products['banners'][] = $product;

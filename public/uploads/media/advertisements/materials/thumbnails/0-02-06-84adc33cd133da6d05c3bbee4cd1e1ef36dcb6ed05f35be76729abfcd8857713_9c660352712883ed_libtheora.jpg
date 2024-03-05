@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PRESTIGE INTERACTIVE</title>
+        <link rel="shortcut icon" href="https://theme.prestigeinteractive.com.ph/images/prestige-favicon.png">
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="GjvgwDitG4RRGfyrWNvJP6qmvkmZgiT8eXhDpdlO">
+        <!-- Set Custom Theme UI -->
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/sm_default/css/bootstrap.min.css"> 
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/assets/owl.carousel.min.css">
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/assets/owl.theme.default.min.css">
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/softkeys/softkeys-0.0.1.css">
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/select2-js/select2.min.css">
+        <link rel="stylesheet" href="https://theme.prestigeinteractive.com.ph/themes/sm_default/css/style.css">
+    </head>
+    <body>
+        
+    <div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold">404</h1>
+        <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+        <p class="lead">
+            The page you’re looking for doesn’t exist.
+        </p>
+    </div>
+</div>
+
+    <script src="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/vendors/jquery.min.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/sm_default/js/popper.min.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/sm_default/js/bootstrap.min.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/owlcarousel/owl.carousel.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/softkeys/softkeys-0.0.1.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/jquery-ui/jquery-ui.min.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/custom-js/helper.js"></script>
+    <script src="https://theme.prestigeinteractive.com.ph/themes/select2-js/select2.min.js"></script>
+
+     <!-- To include script links -->
+        
+    </body>
+</html>

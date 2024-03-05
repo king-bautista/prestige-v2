@@ -106,6 +106,7 @@ Helpers.prototype = {
     },
 
     setTranslation: function() {
+        console.log(my_translations);
         var translations_by_language;
         if (content_language != 'english') {
             translations_by_language = my_translations.filter(option => option.language == content_language);
@@ -172,10 +173,10 @@ Helpers.prototype = {
     homeBtnClick: function() {
         $('.content-holder, .back-img-btn, .modal').hide();
         $('#home-container, #ImgMallLogo').show();
-        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-container, #btnpwdchange').removeClass('active btn-prestige-pwd');
         $('.nav-btn-home').addClass("active");
         $('#videocontainer').html('');
-        $('.category-img-banner').attr('src', '');
+        $('.category-img-banner').attr('src', '');        
 
         sub_categories = '';
         main_category = '';
@@ -194,6 +195,7 @@ Helpers.prototype = {
         $('#code').val('');
         $('#videocontainer').html('');
         $('#search-title').html('Search');
+        this.resetKeyBoard();
         current_location = 'searchbox';
     },
 
@@ -204,6 +206,7 @@ Helpers.prototype = {
         $('.nav-btn-map').addClass("active");
         $('#videocontainer').html('');
         $('#btnresetmap').click();
+        this.resetKeyBoard();
         current_location = 'map';
     },
 
@@ -231,8 +234,15 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
-        //// $('#Tab-Cinema-Tab').click();
         current_location = 'cinema';
+    },
+
+    aboutBtnClick: function() {
+        $('.content-holder, #ImgMallLogo, .modal').hide();
+        $('#DirectoryAboutPage, .back-img-btn').show();
+        $('.nav-btn-container').removeClass('active');
+        $('#videocontainer').html('');
+        current_location = 'about';
     },
 
     backToTenant: function() {
@@ -310,6 +320,24 @@ Helpers.prototype = {
         this.mapBtnClick();
         $('.amenity-point').val(site_point);
         $('.amenity-show-location').click();
+    },
+
+    convertToProperCase: function(text) {
+        text = text.replace(/(\w+)(?:'(\w+))?/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+
+        return text;
+    },
+
+    resetKeyBoard: function() {
+        if($('.softkeys-search-page > .softkeys__btn--shift').find('span').text() === 'ABC') {
+            $('.softkeys-search-page > .softkeys__btn--shift').click();
+        }
+
+        if($('.softkeys-map-page > .softkeys__btn--shift').find('span').text() === 'ABC') {
+            $('.softkeys-map-page > .softkeys__btn--shift').click();
+        }
     }
 
 };

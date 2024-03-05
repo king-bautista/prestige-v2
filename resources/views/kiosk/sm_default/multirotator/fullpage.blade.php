@@ -1,11 +1,14 @@
 <div style="width:0;height:0;position:absolute; top: 0; z-index: 9999; overflow: hidden;" id="screensaverwidget">
     <div class="multirotator-fullscreen-container"></div>
+    <img class="mySlides" src="{{ URL::to('themes/sm_default/images/touchheretostart.png') }}" style="display: block;">
+    <img class="mySlides" src="{{ URL::to('themes/sm_default/images/interactivedirectory.png') }}" style="display: none;">
 </div>
 
 @push('scripts')
 <script>
     var fullscreen_ads = "{{ $fullscreen_ads }}";
     var screensaver_handle = '';
+    var myIndex = 0;
 
     $(document).ready(function(){
         $('#screensaverwidget').on('click', function() {
@@ -14,6 +17,7 @@
 
         $(document).on('click',function(){
             $("#screensaverwidget").height('0').width('0');
+            $('.mySlides').hide();
             if(screensaver_handle) {
                 clearTimeout(screensaver_handle);	
                 screensaver_handle = null;
@@ -25,6 +29,7 @@
                     showFullscreenAds();
                 }, 5000); // 5 sec delay before showing screensaver
                 helper.revertToEnglish();
+                helper.resetKeyBoard();
                 helper.homeBtnClick();
             }, 1000 * 60 * 2); // 2 min idle time, return to screensaver mode
         });
@@ -35,9 +40,29 @@
                 showFullscreenAds();
             }, 5000); // 5 sec delay before showing screensaver
             helper.revertToEnglish();
+            helper.resetKeyBoard();
             helper.homeBtnClick();
         }, 2000 * 60 * 2); // 2 min idle time, return to screensaver mode
     });
+
+    function carouselPlaceHolder() {
+        var i;
+		var x = document.getElementsByClassName("mySlides");
+
+		for (i = 0; i < x.length; i++) {
+			x[i].style.display = "none";
+		}
+
+        myIndex++;
+
+		if (myIndex > x.length) {
+			myIndex = 1
+		};
+
+		x[myIndex-1].style.display = "block"; 
+
+        setTimeout(carouselPlaceHolder, 10000 , x[myIndex-1].currentTime = 0); // Change image every 5 seconds
+    }
 
     function showFullscreenAds() {
         var my_fullscreen_ads = JSON.parse(helper.decodeEntities(fullscreen_ads));
@@ -85,7 +110,7 @@
             touchDrag: false,
             animateOut: 'fadeOut',
         });
-
+        carouselPlaceHolder();
     }
 </script>
 @endpush

@@ -87,6 +87,16 @@
                 <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
                 <span class="social-media-text social-media-twitter"></span>
             </div>
+
+            <div class="mt-2 mb-2 social-media-tiktok-container">
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <span class="social-media-text social-media-tiktok"></span>
+            </div>
+
+            <div class="mt-2 mb-2 social-media-youtube-container">
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <span class="social-media-text social-media-youtube"></span>
+            </div>
         </div>
 
         <div class="call-to-action">
@@ -183,7 +193,7 @@
                         Object.keys(obj).forEach(key => {
                             if (key == 'schedules') {
                                 if (obj['schedules'].match(day)) {
-                                    tempSchedule.push(obj['start_time'] + " am - " + obj['end_time'] + " pm");
+                                    tempSchedule.push(obj['start_time'] + " am - " + timeConvert(obj['end_time']));
                                 }                               
                             }
                         });
@@ -224,6 +234,18 @@
 
     });
 
+    function timeConvert(time) {
+        // Check correct time format and split into components
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1); // Remove full string match value
+            time[5] = +time[0] < 12 ? ' am' : ' pm'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join(''); // return adjusted time or original string
+    }
+
     function showProducts(products) {
         if(products.banners) {
             var banner = '<img type="button" class="promo-banner-card" src="'+products.banners[0].image_url_path+'" />';
@@ -252,23 +274,48 @@
         }
     }
 
+    function dynamicHeight(){
+        var tenant_name_height = $(".name-div").height(), max_height = parseInt("288.5"), excess_height, new_height;
+
+        if(tenant_name_height >= max_height){
+            $(".is_subscriber").addClass('social-media-container');
+            $(".is_subscriber").removeClass('social-media-container-auto');
+            excess_height = tenant_name_height - max_height;
+            new_height = 120 - excess_height;
+            alert(new_height);
+            
+            $(".social-media-container").css("height", new_height + "px");
+
+        }
+        else{
+            $(".is_subscriber").removeClass('social-media-container');
+            $(".is_subscriber").addClass('social-media-container-auto');
+        }
+    }
+
     function showTenantDetails(tenant) {
+        console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
-        tenant_schedule = (tenant.tenant_details.schedules[0].schedules != undefined && tenant.tenant_details.schedules[0].schedules != '') ? tenant.tenant_details.schedules : '';
+        if(tenant.tenant_details) {
+            tenant_schedule = (tenant.tenant_details.schedules[0].schedules != undefined && tenant.tenant_details.schedules[0].schedules != '') ? tenant.tenant_details.schedules : '';
+        }
+
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
-        $('.tenant-store-page-name').html(tenant.brand_name);
+        $('.tenant-store-page-name').html(helper.convertToProperCase(tenant.brand_name));
         $('.tenant-store-page-floor').html(tenant.location);
 
         // STORE OR SITE HOURS
         $('.mall-hours-title').removeClass('text-success').removeClass('text-error')
-        var is_open = (tenant.operational_hours.is_open) ? 'text-success' : 'text-error';
-        $('.is-open').addClass(is_open).html((tenant.operational_hours.is_open) ? 'Open' : 'Close');
+        var is_open = (tenant.operational_hours.is_open) ? 'text-success' : 'text-danger';
+        $('.is-open').removeClass('text-success text-danger');
         if(tenant.operational_hours.start_time) {
             $('.tenant-hours').html(tenant.operational_hours.start_time +'-'+tenant.operational_hours.end_time);
+            $('.is-open').addClass(is_open).html((tenant.operational_hours.is_open) ? 'Open' : 'Closed');
         }
         else {
+            $('.is-open').addClass(is_open).html((site_info.operational_hours.is_open) ? 'Open' : 'Closed');
             $('.tenant-hours').html(site_info.start_time +'-'+site_info.end_time);
         }
 
@@ -298,22 +345,32 @@
         $('.social-media-fb-container').show();    
         $('.social-media-ig-container').show();    
         $('.social-media-twitter-container').show();    
+        $('.social-media-tiktok-container').show();
+            $('.social-media-youtube-container').show();
         if(!tenant.tenant_details) {
             $('.social-media-fb-container').hide();    
             $('.social-media-ig-container').hide();    
             $('.social-media-twitter-container').hide();
+            $('.social-media-tiktok-container').hide();
+            $('.social-media-youtube-container').hide();
         }
         else {
             $('.social-media-fb').html(tenant.tenant_details.facebook);
             $('.social-media-ig').html(tenant.tenant_details.instagram);
             $('.social-media-twitter').html(tenant.tenant_details.twitter);
+            $('.social-media-tiktok').html(tenant.tenant_details.tiktok);
+            $('.social-media-youtube').html(tenant.tenant_details.youtube);
             
             if(!tenant.tenant_details.facebook) 
                 $('.social-media-fb-container').hide();    
             if(!tenant.tenant_details.facebook)
                 $('.social-media-ig-container').hide();    
             if(!tenant.tenant_details.twitter)
-                $('.social-media-twitter-container').hide();            
+                $('.social-media-twitter-container').hide();  
+            if(!tenant.tenant_details.tiktok)
+                $('.social-media-tiktok-container').hide();  
+            if(!tenant.tenant_details.youtube)
+                $('.social-media-youtube-container').hide();            
         }
 
         $('#promos-container').hide();
@@ -339,26 +396,6 @@
 
         current_location = 'tenant';
         page_history.push(current_location);
-
-        // alert($(".name-div").height());
-        function dynamicHeight(){
-            var tenant_name_height = $(".name-div").height(), max_height = parseInt("288.5"), excess_height, new_height;
-
-            if(tenant_name_height >= max_height){
-                $(".is_subscriber").addClass('social-media-container');
-                $(".is_subscriber").removeClass('social-media-container-auto');
-                excess_height = tenant_name_height - max_height;
-                new_height = 120 - excess_height;
-                alert(new_height);
-                
-                $(".social-media-container").css("height", new_height + "px");
-
-            }
-            else{
-                $(".is_subscriber").removeClass('social-media-container');
-                $(".is_subscriber").addClass('social-media-container-auto');
-            }
-        }
 
         dynamicHeight();
     }

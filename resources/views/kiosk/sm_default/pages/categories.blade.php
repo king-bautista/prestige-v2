@@ -13,7 +13,7 @@
 
 <div class="content-holder" id="home-cat-contents">
     <!-- TITLE -->
-    <div class="p-3 font-weight-bold nav-titles translateme" data-en="Store List">Store List</div>
+    <div class="p-3 font-weight-bold nav-titles translateme nav-headers" data-en="Store List">Store List</div>
 
     <div class="tab-content" id="Categories-nav-tab-content">
         <div class="tab-pane show active" id="Tab-Category" role="tabpanel">
@@ -152,7 +152,7 @@
             subcategory_element += '<div class="cat-btn">';
             subcategory_element += '<img class="cat-btn-img" src="'+ category.kiosk_image_primary_path +'" />';
             subcategory_element += '<div class="cat-btn-align">';
-            subcategory_element += '<p class="cat-text translateme" data-en="'+ category.category_name +'">'+ category.category_name +'</p>';
+            subcategory_element += '<p class="cat-text translateme '+main_category+'_color" data-en="'+ category.category_name +'">'+ category.category_name +'</p>';
             subcategory_element += '</div>';
             subcategory_element += '</div>';
             subcategory_element += '</div>';
@@ -162,6 +162,7 @@
                 $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                 $('.category-banner-title').html(category.category_name);
                 $('.category-banner-title').attr('data-en', category.category_name);
+                $('.category-banner-title').addClass(main_category + "_color");
                 tenant_list = category.tenants;
                 // alert("i am here");
                 showTenantList();
@@ -198,12 +199,14 @@
                 tenant_list_element += '</div>';
                 $( ".owl-wrapper-tenant-list" ).append(tenant_list_element);
 
-            $.each(tenants, function(index,tenant) {
-                var tenant_item = '';
-                var store_status = 'Closed';
-                if(tenant.operational_hours.is_open) {
-                    store_status = 'Open';
-                }
+                $.each(tenants, function(index,tenant) {
+                    var tenant_item = '';
+                    var store_status = 'Closed';
+                    var store_status_class = 'text-danger';
+                    if(tenant.operational_hours.is_open) {
+                        store_status = 'Open';
+                        store_status_class = 'text-success';
+                    }
 
                     tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
                     tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
@@ -211,10 +214,10 @@
                     tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
                     tenant_item += '</div>';
                     tenant_item += '<div class="text-left tenant-store-details">';
-                    tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                    tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
                     tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                     tenant_item += '<div class="tenant-store-status">';
-                    tenant_item += '<span class="text-success">'+store_status+'</span>';
+                    tenant_item += '<span class="'+store_status_class+'">'+store_status+'</span>';
                     if(tenant.is_subscriber)
                         tenant_item += '<span class="featured_shop">Featured</span>';
                     tenant_item += '</div>';
@@ -225,6 +228,7 @@
                     $('.tenant-item-'+tenant.id).on('click', function() {
                         showTenantDetails(tenant);
                     });
+
                 });
             }); 
         }
@@ -233,12 +237,12 @@
         }
 
         var navigation_button = '';
-            navigation_button += '<a class="promo-prev">';
+            navigation_button += '<a class="promo-prev supplemental-prev">';
             navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
             navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
             navigation_button += '</div>';
             navigation_button += '</a>';
-            navigation_button += '<a class="promo-next">';
+            navigation_button += '<a class="promo-next supplemental-next">';
             navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
             navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
             navigation_button += '</div>';
@@ -328,7 +332,7 @@
                 tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+tenant.brand_name+'</div>';
+                tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
                 tenant_item += '<span class="text-success translateme" data-en="'+store_status+'">'+store_status+'</span>';
@@ -346,12 +350,12 @@
         }); 
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev alpha-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next alpha-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
@@ -450,12 +454,12 @@
         }); 
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev supplemental-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next supplemental-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
@@ -525,7 +529,7 @@
         filterLetterNavigator();
 
         $('.alphabet-box').html('');
-        $('.alphabet-box').append('<a class="link-alpha">#</a>');
+        $('.alphabet-box').append('<a class="link-alpha" onclick="moveTo(\''+String.fromCharCode(0)+'\')">#</a>');
         for (let i = 65; i <= 90; i++) {
 
             var class_name = (available_letters.includes(String.fromCharCode(i))) ? 'link-alpha' : 'link-alpha-disabled';

@@ -123,6 +123,7 @@
             $('#videocontainer').html(youtube_str);
             $('.now-showing-trailer').show();
             $('.now-showing-details').hide();
+            $(".html5-main-video").addClass("cinema-iframe-size");
         })
 
         var showing = JSON.parse(helper.decodeEntities(now_showing));
@@ -154,31 +155,36 @@
             $.each(cinemas, function(index,cinema) {
                 var cinema_item = '';
                 cinema_item += '<div class="col-md-12 mt-3 mx-auto cinemaCards">';
-                cinema_item += '<div class="card cinema-cards border-0">';
+                cinema_item += '<div class="card cinema-cards border-0 cinema-id-'+cinema.id+'">';
                 cinema_item += '<div class="d-flex flex-row pb-1 my-auto">';
                 cinema_item += '<div class="my-auto">';
                 cinema_item += '<img class="cinema-img" src="{{ URL::to('themes/sm_default/images/sm-cinema-logo.png') }}" alt="...">';
                 cinema_item += '</div>';
                 cinema_item += '<div class="mt-2">';
-                cinema_item += '<div class="cinema-txt-1">'+cinema.brand_name+'</div>';
+                cinema_item += '<div class="cinema-txt-1">'+ helper.convertToProperCase(cinema.brand_name) +'</div>';
                 cinema_item += '<div class="cinema-txt-2">'+cinema.location+'</div>';
                 cinema_item += '</div>';
                 cinema_item += '</div>';                         
                 cinema_item += '</div>';
                 cinema_item += '</div>';
-                $( ".cinema-"+key ).append(cinema_item);
-                // MAP FUNCTION HERE
 
+                $('.cinema-'+key).append(cinema_item);
+                $('.cinema-id-'+cinema.id).on('click', function() {
+                    // MAP FUNCTION HERE
+                    helper.mapBtnClick();
+                    $('#tenant-select').val(cinema.id);
+                    $('.direction-from').click();
+                });
             });
         });
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev search-prev">';
         navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next search-next">';
         navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
@@ -227,8 +233,7 @@
             }
             else {
                 $('.promo-next').show();
-            }
-            
+            }            
         });
 
     }
@@ -379,6 +384,5 @@
             $('.cinema-details-sched-content').append(schedule_str);
         });        
     }
-
 </script>
 @endpush

@@ -1602,13 +1602,19 @@
 			$(".map-minutes").html( mins + ' minute' + (mins > 1 ? 's' : ''));
 			$("#mapguide li").remove();
 
+			var count = 0;
 			$.each(data['guide'],function(){
 				if (this == "Turn Left" || this == "Turn Right" 
 				|| this == "Turn Left on Escalator" || this == "Turn Right on Escalator" 
 				|| this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
 				}
 				else {
-					$("#mapguide").append('<li>' + this + '</li>');
+					var guide_txt = this;
+					setTimeout(function() {
+						$("#mapguide li").removeClass('active');
+						$("#mapguide").append('<li class="active">' + guide_txt + '</li>');
+					}, count * 2000);
+					count++;
 				}
 			});
 
@@ -1621,6 +1627,7 @@
 			var initial_level = start_point[0]['building_level_id'];
 
 			$("#mapguide-destination").html(tenant_guide);
+			$("#directionDetails").show();
 
 			movements = [];
 			var line_points = {};
@@ -1731,10 +1738,10 @@
 
 
     $(document).ready(function() {
-        init();
-        loadFont();
-        animate();
-        loop();
+		init();
+		loadFont();
+		animate();
+		loop();
 
         $('#tenant-select').select2();
         $('#floor-select').select2();
@@ -1746,7 +1753,6 @@
 			$('#tenant-select').val('');
 
 			onWindowResize();
-			// RESET MAP
 			resetMap();
 		});
 
@@ -1929,7 +1935,7 @@
                     ['J',';'],
                     ['K','\''],
                     ['L','&#34;'],
-                    ['&bsol;'],
+                    '&apos;',
                 ],
                 [
                     'shift',
@@ -1943,9 +1949,9 @@
                     'delete',
                 ],
                 [
-                    [','],
+                    '&comma;',
                     'space',
-                    ['.'],
+                    '&period;',
                     'Search',
                 ]
             ]
@@ -1958,8 +1964,16 @@
             $('#selectInput').trigger('change');
         });
 
-
-		//inputDirection.select2('open');
+		$('.softkeys-map-page > .softkeys__btn--shift').on('click', function(){
+            if($(this).find('span').text() === '#+=') {
+                $(this).find('span').html('ABC');
+                $('.softkeys-map-page > .softkeys__btn--hidden').hide();
+            }
+            else {
+                $(this).find('span').html('#+=');
+                $('.softkeys-map-page > .softkeys__btn--hidden').show();
+            }
+        });
 
     });
 

@@ -17,6 +17,42 @@
         <link rel="stylesheet" href="{{ URL::to('themes/select2-js/select2.min.css') }}">
         <link rel="stylesheet" href="{{ URL::to('themes/sm_default/css/style.css') }}">
     </head>
+
+    <style>
+        .select2-dropdown {
+            border-top-right-radius: 15px !important;
+            border-top-left-radius: 15px !important;
+        }
+
+        .select2-results {
+            margin-top: 15px;
+        }
+
+        .select2-search--dropdown {
+            position: absolute;
+            width: 90%;
+            bottom: -55px;
+        }
+
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            border: transparent !important;
+        }
+
+        .select2-container--default .select2-search--dropdown .select2-search__field:focus {
+            outline: none !important;
+            font-size: 24px;
+        }
+
+        ul#mapguide li.active:after {
+            color: #6051e3;
+        }
+
+        .softkeys__btn--shift:hover {
+            background-color: #4b94ce !important;
+        }
+
+    </style>
+
     <body>
         
     @yield('content')

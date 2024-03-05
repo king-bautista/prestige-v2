@@ -23,7 +23,7 @@ body {
 } */
 
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 10px;
     height: 10px;
 }
 
@@ -73,7 +73,7 @@ body {
 
 .nav-titles {
     font-size: 30px;
-    margin-top: 0px;
+    margin-top: 30px;
     margin-left: -10px;
 }
 
@@ -406,12 +406,12 @@ body {
 }
 
 .carousel-content-container-per-food-category {
-    padding: 169.5px 133px 0px 153px;
+    padding: 134.5px 133px 0px 153px;
     margin-left: 0px;
 }
 
 .carousel-content-container-alphabetical {
-    padding: 124.5px 133px 0px 153px;
+    padding: 94.5px 133px 0px 153px;
     margin-left: 0px;
 }
 
@@ -421,7 +421,7 @@ body {
 }
 
 .carousel-content-container-show-cinema-6 {
-    padding: 189.5px 441.5px 0px 461.5px;
+    padding: 139.5px 441.5px 0px 461.5px;
     margin-left: 0px;
 }
 
@@ -432,19 +432,19 @@ body {
 }
 
 .owl-dots-tenant-list {
-    margin-top: 11.0px !important;
+    margin-top: -3.0px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
 
 .owl-dots-alphabetical {
-    margin-top: 56px !important;
+    margin-top: 40px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
 
 .owl-dots-cravings {
-    margin-top: 31.5px !important;
+    margin-top: 15.5px !important;
     margin-left: 10px !important;
     margin-right: -10px !important;
 }
@@ -456,52 +456,52 @@ body {
 }
 
 .carousel-content-container-per-food-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-food-cravings {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-fashion-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-trends {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-electronics-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-latest {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-services-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-services {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-essentials-alphabetical {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
 .carousel-content-container-per-goodies {
-    padding: 124.5px 133.5px 0px 153.5px;
+    padding: 94.5px 133.5px 0px 153.5px;
     margin-left: 0px;
 }
 
@@ -597,7 +597,7 @@ body {
 .help-img-btn {
     position: absolute;
     top: 880px;
-    right: -15px;
+    right: 0;
     z-index: 1051;
 }
 
@@ -610,7 +610,7 @@ body {
 .back-img-btn {
     position: absolute;
     top: 800px;
-    right: 0px;
+    right: 15px;
     z-index: 1009;
 }
 
@@ -650,6 +650,7 @@ body {
 .canvas-canvas {
     width: 1450px;
     height: 800px;
+    margin-top: -30px;
 }
 
 .btn-pwd {
@@ -796,7 +797,7 @@ body {
 }
 
 .carousel-content-container-cinema-adjustment {
-    padding: 204.6px 133px 0px 296px;
+    padding: 174.6px 133px 0px 296px;
 }
 
 .movie-img {
@@ -808,7 +809,7 @@ body {
 
 .carousel-content-container-cinema {
     vertical-align: middle;
-    padding: 204.6px 283px 0px 303px;
+    padding: 174.6px 283px 0px 303px;
     margin-left: 0px;
 }
 
@@ -920,7 +921,7 @@ body {
     overflow: auto;
     white-space: nowrap;
     height: auto;
-    max-height: 200px;
+    max-height: 120px;
     width: 1081px;
 }
 
@@ -1203,6 +1204,10 @@ body {
     padding: 9px 37px;
 }
 
+.share-btn-transalate {
+    padding: 9px 0 !important;
+}
+
 .ShareBtn-2 {
     opacity: 30% !important;
     background-color: #e2e2e2 !important;
@@ -1235,6 +1240,20 @@ body {
     margin: 3.5px 0px 0px 5px;
     font-size: 1em;
     line-height: normal;
+}
+
+.share-text-tanslate-jap {
+    font-size: 24px !important;
+    line-height: 23px;
+    width: 138px !important;
+    margin-top: -5px;
+}
+
+.share-text-tanslate {
+    font-size: 24px !important;
+    line-height: 23px;
+    width: 138px !important;
+    margin-top: 7px;
 }
 
 .BtnOrderNow {
@@ -1277,6 +1296,15 @@ body {
     transition: transform 0.6s ease-in-out;
 }
 
+.mySlides {
+    width: 100%; 
+    position: absolute; 
+    bottom: 0px; 
+    left: 0px; 
+    height: 158px; 
+    z-index: 9999; 
+}
+
 .carousel-content-container {
     vertical-align: middle;
     padding: 32px 133px 0px 153px !important;
@@ -1286,7 +1314,7 @@ body {
 .slideshow-content-container {
     max-width: 100%;
     position: relative;
-    height: 790px;
+    height: 750px;
     margin: auto;
     overflow: hidden;
 }
@@ -1312,12 +1340,14 @@ body {
 }
 
 .promo-prev, .event-prev {
-    left: 0;
+    left: 26px;
+    top: 456px;
     border-radius: 3px 0 0 3px;
 }
 
 .promo-next, .event-next {
-    right: 0;
+    right: 66px;
+    top: 456px;
     border-radius: 3px 0 0 3px;
 }
 
@@ -1440,12 +1470,13 @@ body {
 }
 
 .left-btn-carousel-per-food-alphabetical {
-    left: 50px;
-    top: -136px;
+    margin-top: -37px;
+    margin-left: 34.5px;
 }
 
 .right-btn-carousel-per-food-alphabetical {
-    right: 30px;
+    margin-top: -37px;
+    margin-right: 14px;
 }
 
 .left-btn-carousel-per-food-cravings {
@@ -2356,7 +2387,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     }
 
     .carousel-content-container-cinema {
-        padding: 340.6px 133px 0px 153px;
+        padding: 310.6px 133px 0px 153px;
     }
 
     .left-btn-carousel-cinema {
@@ -2569,9 +2600,9 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 }
 
 .owl-theme .owl-dots .owl-dot span {
-    width: 17.0px;
-    height: 17.5px;
-    margin: 0 15.5px;
+    width: 19px;
+    height: 19px;
+    margin: 17px;
     background: #d5ddff;
 }
 
@@ -2606,7 +2637,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     font-weight: bold;
     font-size: 18px;
     float: left;
-    margin: 0 510px 0 15px;
+    margin-left: 15px;
     border-width: 2px;
     color: #bc5b68;
     position: absolute;
@@ -2914,7 +2945,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 .ui-autocomplete.ui-front
 {
-    max-height: 80px;
+    max-height: 120px;
     overflow-y: auto !important; 
     overflow-x: hidden !important;
     border-radius: 10px;
@@ -2925,13 +2956,14 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     background-image: url(../images/DELETE.png);
     color: transparent;
     background-position: center;
-    /* background-size: contain; */
+    background-size: 80px 80px;
 }
 
 .softkeys__btn--delete:hover, .softkeys__btn--delete:focus {
-    background-image: url(../images/DELETE.png);
+    background-image: url(../images/DELETE-HOVER.png);
     color: transparent;
 }
+
 .empty-category{
     width: 735px !important;
     position: relative;
@@ -2942,7 +2974,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 .call-to-action{
     position: absolute;
     width: 390px;
-    bottom: 15px;
+    bottom: 17px;
 }
 .set-height-schedule{
     height: 328px;
@@ -2975,6 +3007,18 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     width: 76%;
 }
 
+ul#mapguide {
+    list-style: none;
+    padding: 10px;
+}
+
+ul#mapguide li {
+    position: relative;
+    margin: 0;
+    padding-bottom: 1em;
+    padding-left: 20px;
+}
+
 ul#mapguide li:first-child:before {
     top: 14px;
 }
@@ -2988,19 +3032,109 @@ ul#mapguide li:before {
     width: 3px;
 }
 
-ul#mapguide li:first-child:after {
+/* ul#mapguide li:first-child:after {
     content: "\2022";
-    color: #6051e3;
-}
+    color: #dee2e6;
+} */
 
 ul#mapguide li:after {
     content: "\2022";
     position: absolute;
     color: #dee2e6;
     left: -5px;
-    top: -38px;
+    top: -45px;
     font-size: 3.3em;
 }
+
+ul#mapguide li:last-child:before {
+    height: 20px;
+}
+
 .mt-08 {
     margin-top: .8rem !important;
+}
+
+.text-error {
+    color: red;
+}
+
+.Fashion_color{
+    color: #823D3B;
+}
+.Electronics_color{
+    color: #C18C2F;
+}
+.Services_color{
+    color: #6051E3;
+}
+.Novelties_color{
+    color: #6051E3;
+}
+
+.nav-headers{
+    margin-top: 30px;
+}
+
+.minus-30{
+    margin-top: -30px !important;
+}
+
+.cinema-iframe-size{
+    left: -2px !important;
+    width: 1090px !important;
+}
+
+#videocontainer{
+    height: 510px;
+}
+
+.search-keyboard-height{
+    position: absolute;
+    top: 228px;
+}
+
+.search-next{
+    right: 15px !important;
+    top: 404px !important;
+}
+
+.search-prev{
+    left: -4px !important;
+    top: 404px !important;
+}
+
+.alpha-prev{
+    left: -4px !important;
+    top: 394px !important;
+}
+.alpha-next{
+    right: 15px !important;
+    top: 395px !important;
+}
+
+.supplemental-prev{
+    left: -4px !important;
+    top: 394px !important;
+}
+.supplemental-next{
+    right: 15px !important;
+    top: 395px !important;
+}
+
+.search-result-height{
+    padding-top: 104.5px !important;
+}
+
+.search-result-container{
+    height: 637px !important;
+}
+
+.you-might-want-to-try{
+    max-height: 130px;
+    overflow: hidden;
+    margin-top: -10px;
+}
+
+.owl-dots-search-result{
+    margin-top: 44px !important;
 }

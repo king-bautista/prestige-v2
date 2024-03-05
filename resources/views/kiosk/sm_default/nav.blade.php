@@ -94,6 +94,19 @@
         content_language = $(this).data('language');
         helper.filterAssist();
         helper.setTranslation();
+
+        $('.ShareBtn').removeClass('share-btn-transalate');
+        $('.ShareText').removeClass('share-text-tanslate');
+        $('.ShareText').removeClass('share-text-tanslate-jap');        
+        if(content_language == 'korean' || content_language == 'chinese') {
+            $('.ShareBtn').addClass('share-btn-transalate');
+            $('.ShareText').addClass('share-text-tanslate');
+        }
+        if(content_language == 'japanese') {
+            $('.ShareBtn').addClass('share-btn-transalate');
+            $('.ShareText').addClass('share-text-tanslate-jap');
+        }
+
         $('.dropup button').html(txt);
     });
 
@@ -209,13 +222,9 @@
 
 	/* for logo button to view about page */
     $("#ImgMallLogo").on('click', function(){
-        $('#DirectoryAboutPage, #search_v4, #home_v4, #map_v4, #promos_v4, #cinema_v4').show();
-        $('#ImgMallLogo, #home-container, #home-cat-contents, #home-cat-contents, #map-container, #promos-container, #cinema-container, #search_v4s, #home_v4s, #map_v4s, #promos_v4s, #cinema_v4s, #tenant-store-content, #TenantPage').hide();
-        $('#home_txt').removeClass("nav-btn-active");
-        $('#search_txt').removeClass("nav-btn-active");
-        $('#map_txt').removeClass("nav-btn-active");
-        $('#promos_txt').removeClass("nav-btn-active");
-        $('#cinema_txt').removeClass("nav-btn-active");
+        helper.aboutBtnClick();
+        helper.filterAssist();
+        page_history.push(current_location);
     });
 
 	/* for home button */
