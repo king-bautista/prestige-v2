@@ -322,8 +322,10 @@
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
                 var store_status = 'Closed';
+                var store_status_class = 'text-danger';
                 if(tenant.operational_hours.is_open) {
                     store_status = 'Open';
+                    store_status_class = 'text-success';
                 }
 
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
@@ -335,7 +337,7 @@
                 tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success translateme" data-en="'+store_status+'">'+store_status+'</span>';
+                tenant_item += '<span class="text-success translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';
