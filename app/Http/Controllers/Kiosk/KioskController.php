@@ -61,7 +61,7 @@ class KioskController extends AppBaseController
             $events = $this->getEvents();
             $cinemas = $this->getCinemas();
             $now_showing = $this->getShowing();
-            $suggestions = $this->getSuggestionList();
+            return $suggestions = $this->getSuggestionList();
             $banner_ads = $this->getBannerAds();
             $fullscreen_ads = $this->getFullScreenAds();
             $assistant_message = $this->getAssistantMessage();
@@ -473,7 +473,9 @@ class KioskController extends AppBaseController
             ]);
         }
 
+        $site_ids = [0, $this->site->id];
         $amenities = Amenity::where('active', 1)
+            ->whereIn('site_id',  $site_ids)
             ->orderBy('name', 'ASC')
             ->get()->pluck('name');
 
