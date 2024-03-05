@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CompanyCategoryRequest;
 use App\Imports\IllustrationsImport;
 
+use App\Models\Site;
+use App\Models\Category;
+use App\Models\Company;
 use App\Models\CompanyCategory;
 use App\Models\AdminViewModels\CompanyCategoryViewModel;
 use App\Exports\Export;
@@ -48,7 +51,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 ->leftJoin('categories as c2', 'company_categories.sub_category_id', '=', 'c2.id')
                 ->leftJoin('sites', 'company_categories.site_id', '=', 'sites.id')
                 ->leftJoin('companies', 'company_categories.company_id', '=', 'companies.id')
-                ->select('company_categories.*', 'sites.name as site_name','companies.name as company_name')
+                ->select('company_categories.*', 'sites.name as site_name', 'companies.name as company_name')
 
                 // ->selectRaw('CONCAT(`content_management`.`start_date`,"-",`content_management`.`end_date`) AS air_dates')
                 ->when(is_null(request('order')), function ($query) {
@@ -56,7 +59,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 })
                 ->when(request('order'), function ($query) {
                     $column = $this->checkcolumn(request('order'));
-                    
+
                     switch ($column) {
                         case 'category_name':
                             $field = 'c1.name';
@@ -107,7 +110,7 @@ class IllustrationsController extends AppBaseController implements Illustrations
     }
 
     public function store(CompanyCategoryRequest $request)
-    { 
+    {
         try {
             $kiosk_image_primary_path = null;
             $kiosk_image_top_path = null;
@@ -225,18 +228,32 @@ class IllustrationsController extends AppBaseController implements Illustrations
     {
         try {
 
-            $illustration_management =  CompanyCategoryViewModel::get();
+            $illustration_management =  CompanyCategory::get();
             $reports = [];
             foreach ($illustration_management as $illustration) {
+                $company = company::where('id', $illustration->company_id)->get();
+                $site = site::where('id',$illustration->site_id)->get();
+                $category = category::where('id', $illustration->category_id)->get();
+                $sub_category = category::where('id', $illustration->sub_category_id)->get();
+                if(!empty($category[0]['parent_id'])){
+                    $category_parent = category::where('id', $category[0]['parent_id'])->get();
+                    $category_parent_name = ($category_parent > 0)?$category_parent[0]['name']: '';
+                }else{
+                    $category_parent_name = '';
+                }
+                
                 $reports[] = [
                     'id' => $illustration->id,
                     'company_id' => $illustration->company_id,
-                    'company_name' => $illustration->company_name,
+                    'company_name' => (count($company) > 0) ? $company[0]['name'] : '',
                     'category_id' => $illustration->category_id,
-                    'category_name' => $illustration->category_name,
+                    'category_name' => $category[0]['name'],
                     'sub_category_id' => $illustration->sub_category_id,
+                    'sub_category_name' => (count($sub_category) > 0) ? $sub_category[0]['name'] : '',
+                    'category_parent_id' => (count($category) > 0) ? $category[0]['parent_id'] : '',
+                    //'category_parent_name' => $category_parent_name,
                     'site_id' => $illustration->site_id,
-                    'site_name' => $illustration->site_name,
+                    'site_name' => (count($site) > 0) ? $site[0]['name'] : '',
                     'label' => $illustration->label,
                     'kiosk_image_primary' => $illustration->kiosk_image_primary_path,
                     'kiosk_image_top' => $illustration->kiosk_image_top_path,
@@ -289,6 +306,9 @@ class IllustrationsController extends AppBaseController implements Illustrations
                 'category_id' => '',
                 'category_name' => '',
                 'sub_category_id' => '',
+                'sub_category_name' => '',
+                'category_parent_id' => '',
+                'category_parent_name' => '',
                 'site_id' => '',
                 'site_name' => '',
                 'label' => '',

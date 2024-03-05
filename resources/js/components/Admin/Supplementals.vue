@@ -225,7 +225,7 @@ export default {
 	},
 
 	methods: {
-			Supplemental: function () {
+		GetParentSupplemental: function () {
 			axios.get('/admin/supplemental/get-parent')
 				.then(response => this.parent_supplementals = response.data.data);
 		},

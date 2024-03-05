@@ -12,17 +12,22 @@ use App\Http\Requests\AdvertisementRequest;
 use App\Imports\AdvertisementsImport;
 use App\Exports\Export;
 use Storage;
-
+use App\Models\Site;
+use App\Models\SiteScreen;
+use App\Models\SiteScreenProduct;
+use App\Models\ContentScreen;
+use App\Models\Company;
+use App\Models\Brand;
 use App\Models\Advertisement;
 use App\Models\AdvertisementMaterial;
 use App\Models\AdvertisementScreen;
+use App\Models\ContractScreen;
 use App\Models\AdminViewModels\AdvertisementViewModel;
 use App\Models\AdminViewModels\AdvertisementViewModelList;
 use App\Models\AdminViewModels\AdvertisementMaterialViewModel;
 //use App\Models\AdminViewModels\ContentMaterialViewModel;
 
 use App\Models\AdminViewModels\SiteScreenViewModel;
-use App\Models\ContractScreen;
 
 class AdvertisementController extends AppBaseController implements AdvertisementControllerInterface
 {
@@ -57,7 +62,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
                         ->whereRaw('advertisement_materials.id IN (select MAX(a2.id) from advertisement_materials as a2 join advertisements as u2 on u2.id = a2.advertisement_id group by u2.id)');
                 })
 
-                ->select('advertisements.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name', 'cnt.serial_number as contract_serial_number', 'cnt.name as contract_name', 'cnt.remarks as contract_remark' )
+                ->select('advertisements.*', 'advertisements.name as advertisement_name', 'brands.name as brand_name', 'companies.name as company_name', 'cnt.serial_number as contract_serial_number', 'cnt.name as contract_name', 'cnt.remarks as contract_remark')
                 ->selectRaw('CONCAT("' . $host . '/",`advertisement_materials`.`thumbnail_path`) AS material_thumbnails_path')
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('advertisements.name', 'ASC');
@@ -112,7 +117,7 @@ class AdvertisementController extends AppBaseController implements Advertisement
         try {
             $materials = json_decode($request->materials);
             $count = 0;
-            
+
             foreach ($materials as $index => $material) {
                 if ($material->src)
                     $count++;
@@ -294,23 +299,35 @@ class AdvertisementController extends AppBaseController implements Advertisement
     {
         try {
 
-            $create_contents = AdvertisementViewModel::get();
+            $create_contents = Advertisement::leftjoin('advertisement_materials as am', 'advertisements.id', '=', 'am.advertisement_id')->get();
             $reports = [];
             foreach ($create_contents as $create_content) {
+                $company = Company::where('id', $create_content->company_id)->get();
+                $brand = Brand::where('id', $create_content->brand_id)->get();
+                $contract_screen = ContractScreen::where('contract_id', $create_content->contract_id)->get();
+                $site_id = $contract_screen[0]['site_id'];
+            
+                $site_screen = SiteScreen::leftjoin('site_screen_products as ssp', 'site_screens.id', '=', 'ssp.site_screen_id')
+                    ->where('site_screens.site_id', $site_id)
+                    ->where('ssp.dimension', $create_content->dimension)
+                    ->get();
+
                 $reports[] = [
                     'id' => $create_content->serial_number,
-                    //'material_thumbnails_path' => $create_content->material_thumbnails_path,
                     'company_id' => $create_content->company_id,
-                    'company_name' => $create_content->company_name,
-                    'contract_id' => $create_content->contract_id,
-                    'contract_name' => $create_content->contract_details['name'],
+                    'company_name' => (count($company) > 0) ? $company[0]['name'] : '',
                     'brand_id' => $create_content->brand_id,
-                    'brand_name' => $create_content->brand_name,
+                    'brand_name' => (count($brand) > 0) ? $brand[0]['name'] : '',
                     'name' => $create_content->name,
+                    'description' => $create_content->name,
+                    'file_path' => $create_content->file_path,
+                    'file_type' => $create_content->file_type,
                     'display_duration' => $create_content->display_duration,
-                    'width' => '',
-                    'height' => '',
-                    'ssp' =>  $this->getSSP($create_content->contract_id),
+                    'width' => $create_content->width,
+                    'height' => $create_content->height,
+                    'ad_type' => (count($site_screen) > 0) ? $site_screen[0]['ad_type'] : '',
+                    'event_on_click' => '',
+                    'event_on_end' => '',
                     'active' => $create_content->active,
                     'created_at' => $create_content->created_at,
                     'updated_at' => $create_content->updated_at,
@@ -351,17 +368,20 @@ class AdvertisementController extends AppBaseController implements Advertisement
         try {
             $reports[] = [
                 'id' => '',
-                'material_thumbnails_path' => '',
-                'name' => '',
-                'serial_number' => '',
                 'company_id' => '',
                 'company_name' => '',
-                'contract_id' => '',
-                'contract_name' => '',
                 'brand_id' => '',
                 'brand_name' => '',
+                'name' => '',
+                'description' => '',
+                'file_path' => '',
+                'file_type' => '',
                 'display_duration' => '',
-                'ssp' =>  '',
+                'width' => '',
+                'height' => '',
+                'ad_type' => '',
+                'event_on_click' => '',
+                'event_on_end' => '',
                 'active' => '',
                 'created_at' => '',
                 'updated_at' => '',
