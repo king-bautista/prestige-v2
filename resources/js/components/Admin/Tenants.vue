@@ -88,7 +88,7 @@
 							<div class="form-group row">
 								<label for="firstName" class="col-sm-3 col-form-label">Tags</label>
 								<div class="col-sm-9">
-									<!-- <textarea class="form-control" placeholder="Tags" >{{ tenant.brand_id.tag_names }}</textarea> -->
+									<textarea class="form-control" placeholder="Tags" >{{ tenant.brand_id.tag_names }}</textarea>
 									<!-- <multiselect v-model="brand.supplementals" :options="supplementals" :multiple="true"
 										:close-on-select="true" placeholder="Select Supplementals" label="name"
 										track-by="name" @select="toggleSelected" @remove="toggleUnSelected">
