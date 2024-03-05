@@ -50,6 +50,8 @@
         if(my_promos.length == 0) {
             $('.promo-list').hide();
             $('.no-promos-found').show();
+            $('.promo-prev').hide();
+            $('.promo-next').hide();
             return false;
         }
 

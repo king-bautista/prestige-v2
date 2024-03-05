@@ -238,6 +238,12 @@
             $('.direction-from').click();
         });
 
+        $('.btn-direction-shop-pwd').on('click', function() {
+            helper.mapBtnClick();
+            $('#tenant-select').val(tenant_id);
+            $("#btnpwdchange").click();
+        });
+
     });
 
     function timeConvert(time) {

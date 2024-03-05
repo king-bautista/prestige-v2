@@ -195,6 +195,8 @@ Helpers.prototype = {
         $('#code').val('');
         $('#videocontainer').html('');
         $('#search-title').html('Search');
+        $("#code").css("border-color", "#6051e3");
+        $('.notification').hide();
         this.resetKeyBoard();
         current_location = 'searchbox';
     },
