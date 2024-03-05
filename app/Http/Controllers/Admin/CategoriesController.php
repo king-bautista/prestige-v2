@@ -263,16 +263,19 @@ class CategoriesController extends AppBaseController implements CategoriesContro
                 ->get();
             $reports = [];
             foreach ($category_management as $category) {
+                $parent = category::where('id',$category->parent_id)->get(); 
+                $parent_name = (count($parent) > 0)?$parent[0]['name']:'';
                 $reports[] = [
                     'id' => $category->id,
                     'parent_id' => $category->parent_id,
+                    'parent_name' => $parent_name,
                     'regular_category_id' => $category->supplemental_category_id,
+                    'regular_category_name' => '',
                     'sequence' =>  $category->sequence,
                     'name' => $category->name,
                     'descriptions' => $category->descriptions,
                     'sub_category_class' => ($category->supplemental_category_id) ? '2' : '1',
                     'class_name' => $category->class_name,
-                    'category_type' => $category->category_type,
                     'active' => $category->active,
                     'created_at' => $category->created_at,
                     'updated_at' => $category->updated_at,
@@ -313,18 +316,19 @@ class CategoriesController extends AppBaseController implements CategoriesContro
         try {
             $reports[] = [
                 'id' => '',
-                'parent_id' => '',
-                'regular_category_id' => '',
-                'sequence' =>  '',
-                'name' => '',
-                'descriptions' => '',
-                'sub_category_class' => '',
-                'class_name' => '',
-                'category_type' => '',
-                'active' => '',
-                'created_at' => '',
-                'updated_at' => '',
-                'deleted_at' => '',
+                    'parent_id' => '',
+                    'parent_name' => '',
+                    'regular_category_id' => '',
+                    'regular_category_name' => '',
+                    'sequence' =>  '',
+                    'name' => '',
+                    'descriptions' => '',
+                    'sub_category_class' => '',
+                    'class_name' => '',
+                    'active' => '',
+                    'created_at' => '',
+                    'updated_at' => '',
+                    'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
