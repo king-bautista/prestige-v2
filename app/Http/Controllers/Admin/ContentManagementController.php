@@ -149,16 +149,11 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $content->saveScreens($request->site_screen_ids);
             $this->generatePlayList($request->site_screen_ids);
 
-<<<<<<< HEAD
-            return $this->response($content, 'Successfully Created!', 200);
-        } catch (\Exception $e) {
-=======
         return $this->response($content, 'Successfully Created!', 200);
         // return $this->response($this->check_variable, 'Successfully Created!', 200);
         }
         catch (\Exception $e) 
         {
->>>>>>> 6dc9d6215d9827cce0e2cf06ef5e6088c1d8ea5a
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -335,7 +330,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $loopCount = $this->getLoopCount($totalSitePartnerAds, $maxSitePartnerSlot);
 
         if ($loopCount >= 1) {
-            for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {
+            for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {        
                 for ($index = 0; $index < $totalNumberOfAds; $index++) {
                     $loop_number = $loop_index;
                     if (fmod($index, $moduloValue) == 0) {
@@ -829,7 +824,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 $site_screen = SiteScreen::leftjoin('site_screen_products as ssp', 'site_screens.id', '=', 'ssp.site_screen_id')
                     ->where('site_screens.site_id', $site_id)
                     ->where('ssp.dimension', $upload->dimension)
-                    ->select('site_screens.id as screen_id','site_screens.name as screen_name', 'site_screens.screen_type as screen_type', 'ssp.id as ssp_id','ssp.description as ssp_description')
+                    ->select('site_screens.id as screen_id','site_screens.name as screen_name', 'site_screens.screen_type as screen_type', 'ssp.id as ssp_id','ssp.description as ssp_description', 'site_screens.product_application as product_application')
                     ->get();
               
                 $ssp_id = (!empty($site_screen[0]['ssp_id'])) ? $site_screen[0]['ssp_id'] : '';
@@ -854,7 +849,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     'category_name' => '',
                     'tenant_id' => '',
                     'ad_type' => '',
-
                     'status_id' => $upload->status_id,
                     'status_name' => TransactionStatus::find($upload->status_id)['name'],
 
