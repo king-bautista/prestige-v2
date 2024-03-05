@@ -107,16 +107,16 @@
         <div class="call-to-action">
             <div class="row storeNavigationContent">
                 <div class="col-12 mt-3">
-                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions">Get Directions</button>
                 </div>
 
                 <div class="col-12 mt-3">
-                    <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd">
+                    <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd translateme" data-en="Get Directions (PWD-friendly)">
                         Get Directions (PWD-friendly)
                     </button>
                 </div>
                 <div class="col-12 mt-3">
-                    <button class="btn w-100 btn-prestige-order-now" disabled="">Order Now</button>
+                    <button class="btn w-100 btn-prestige-order-now translateme" data-en="Order Now" disabled="">Order Now</button>
                 </div>
             </div>
         </div>

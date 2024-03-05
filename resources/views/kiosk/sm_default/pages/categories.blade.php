@@ -438,7 +438,7 @@
                 supplemental_item += '<div class="cat-btn-adjustment mx-auto supplemental-item-'+category.id+'">';
                 supplemental_item += '<img class="cat-btn-img" src="'+category.kiosk_image_primary_path+'" />';
                 supplemental_item += '<div class="cat-btn-align-2">';
-                supplemental_item += '<p class="cat-text translateme" data-en="'+ category.category_name +'">'+category.category_name+'</p>';
+                supplemental_item += '<p class="cat-text translateme '+main_category+'_color" data-en="'+ category.category_name +'">'+category.category_name+'</p>';
                 supplemental_item += '</div>';
                 supplemental_item += '</div>';
                 supplemental_item += '</div>';
@@ -447,6 +447,7 @@
                     $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                     $('.category-banner-title').html(category.category_name);
                     $('.category-banner-title').attr('data-en', category.category_name);
+                    $('.category-banner-title').addClass(main_category + "_color");
                     tenant_list = category.tenants;
                     showTenantList();
                 });
