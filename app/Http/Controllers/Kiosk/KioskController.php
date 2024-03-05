@@ -61,7 +61,7 @@ class KioskController extends AppBaseController
             $events = $this->getEvents();
             $cinemas = $this->getCinemas();
             $now_showing = $this->getShowing();
-            return $suggestions = $this->getSuggestionList();
+            $suggestions = $this->getSuggestionList();
             $banner_ads = $this->getBannerAds();
             $fullscreen_ads = $this->getFullScreenAds();
             $assistant_message = $this->getAssistantMessage();
