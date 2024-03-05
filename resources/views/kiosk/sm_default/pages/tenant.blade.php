@@ -189,7 +189,8 @@
         });
 
         $('.tenant-store-schedule').on('click', function() {            
-            var schedules = (tenant_schedule != '') ? tenant_schedule : JSON.parse(helper.decodeEntities(site_schedule));
+            var schedules = '';
+            schedules = (tenant_schedule != '') ? tenant_schedule : JSON.parse(helper.decodeEntities(site_schedule));
             let tempSchedule = [];
             const currentSchedule = schedules;
             if (currentSchedule) {
@@ -299,6 +300,7 @@
     }
 
     function showTenantDetails(tenant) {
+        tenant_schedule = '';
         console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
