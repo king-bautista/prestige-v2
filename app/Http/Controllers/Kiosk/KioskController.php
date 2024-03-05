@@ -312,6 +312,7 @@ class KioskController extends AppBaseController
         ->join('site_tenant_products', 'site_tenants.id', '=', 'site_tenant_products.site_tenant_id')
         ->join('brand_products_promos', 'site_tenant_products.brand_product_promo_id', '=', 'brand_products_promos.id')
         ->select('site_tenants.*', 'brand_products_promos.image_url', 'brand_products_promos.id as promo_id')
+        ->orderBy('brand_products_promos.updated_at')
         ->get()->toArray();
 
         // $products = SiteTenantViewModel::where('site_tenants.site_id', $this->site->id)        
