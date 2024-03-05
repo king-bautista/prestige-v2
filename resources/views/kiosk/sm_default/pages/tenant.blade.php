@@ -84,18 +84,23 @@
             </div>
 
             <div class="mt-2 mb-2 social-media-twitter-container">
-                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-x.png') }}"/>
                 <span class="social-media-text social-media-twitter"></span>
             </div>
 
             <div class="mt-2 mb-2 social-media-tiktok-container">
-                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-tiktok.png') }}"/>
                 <span class="social-media-text social-media-tiktok"></span>
             </div>
 
             <div class="mt-2 mb-2 social-media-youtube-container">
-                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-youtube.png') }}"/>
                 <span class="social-media-text social-media-youtube"></span>
+            </div>
+
+            <div class="mt-2 mb-2 social-media-viber-container">
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-viber.png') }}"/>
+                <span class="social-media-text social-media-viber"></span>
             </div>
         </div>
 
@@ -346,13 +351,15 @@
         $('.social-media-ig-container').show();    
         $('.social-media-twitter-container').show();    
         $('.social-media-tiktok-container').show();
-            $('.social-media-youtube-container').show();
+        $('.social-media-youtube-container').show();
+        $('.social-media-viber-container').show();
         if(!tenant.tenant_details) {
             $('.social-media-fb-container').hide();    
             $('.social-media-ig-container').hide();    
             $('.social-media-twitter-container').hide();
             $('.social-media-tiktok-container').hide();
             $('.social-media-youtube-container').hide();
+            $('.social-media-viber-container').hide();
         }
         else {
             $('.social-media-fb').html(tenant.tenant_details.facebook);
@@ -360,6 +367,7 @@
             $('.social-media-twitter').html(tenant.tenant_details.twitter);
             $('.social-media-tiktok').html(tenant.tenant_details.tiktok);
             $('.social-media-youtube').html(tenant.tenant_details.youtube);
+            $('.social-media-viber').html(tenant.tenant_details.viber);
             
             if(!tenant.tenant_details.facebook) 
                 $('.social-media-fb-container').hide();    
@@ -370,7 +378,9 @@
             if(!tenant.tenant_details.tiktok)
                 $('.social-media-tiktok-container').hide();  
             if(!tenant.tenant_details.youtube)
-                $('.social-media-youtube-container').hide();            
+                $('.social-media-youtube-container').hide();
+            if(!tenant.tenant_details.viber)
+                $('.social-media-viber-container').hide();  
         }
 
         $('#promos-container').hide();

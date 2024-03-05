@@ -1139,6 +1139,7 @@ body {
 
 .promo-featured-container {
     width: 1010px !important;
+    margin-top: -30px !important;
 }
 
 .promo-modal-content {
@@ -1307,7 +1308,7 @@ body {
 
 .carousel-content-container {
     vertical-align: middle;
-    padding: 32px 133px 0px 153px !important;
+    padding: 2px 133px 0px 153px !important;
     margin-left: 16px;
 }
 
@@ -2133,6 +2134,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     }
 
     .promo-featured-container {
+        margin-top: -30px;
         width: 650px !important;
     }
 
@@ -2165,7 +2167,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     .tenant-card-info-tab {
         width: 400px !important;
         height: 633px;
-        margin-top: 37.5px;
+        margin-top: 7.5px !important;
         margin-left: 15px;
     }
 
