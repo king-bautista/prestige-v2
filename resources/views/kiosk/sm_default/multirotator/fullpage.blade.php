@@ -1,6 +1,6 @@
 <div style="width:0;height:0;position:absolute; top: 0; z-index: 9999; overflow: hidden;" id="screensaverwidget">
     <div class="multirotator-fullscreen-container"></div>
-    <img class="mySlides" src="{{ URL::to('themes/sm_default/images/touchheretostart.png') }}" style="display: block;">
+    <img class="mySlides" src="{{ URL::to('themes/sm_default/images/touchheretostart.png') }}" style="display: none;">
     <img class="mySlides" src="{{ URL::to('themes/sm_default/images/interactivedirectory.png') }}" style="display: none;">
 </div>
 
