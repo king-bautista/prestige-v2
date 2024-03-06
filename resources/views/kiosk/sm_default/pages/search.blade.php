@@ -221,8 +221,10 @@
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
                 var store_status = 'Closed';
-                if(tenant.operational_hours) {
-                    store_status = (tenant.operational_hours.is_open) ? 'Open' : 'Closed';
+                var store_status_class = 'text-danger';
+                if(tenant.operational_hours.is_open) {
+                    store_status = 'Open';
+                    store_status_class = 'text-success';
                 }
 
                 store_status = (tenant.amenity_name) ? '' : store_status;
@@ -241,7 +243,7 @@
                 tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(store_name)+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+store_location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success">'+store_status+'</span>';
+                tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';
@@ -319,7 +321,7 @@
             
         });
         $('.search-result-dots').find(".owl-dots").addClass('owl-dots-search-result');
-
+        
     }
 
     function showSubscriber(subscriber) {
@@ -362,8 +364,8 @@
                 loop: false,
                 items: 4,
             });
-
         }
+        helper.setTranslation();
     }
 
     function onClickSuggest(tenant) {

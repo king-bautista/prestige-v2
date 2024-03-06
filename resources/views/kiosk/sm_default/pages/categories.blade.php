@@ -217,7 +217,7 @@
                     tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
                     tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                     tenant_item += '<div class="tenant-store-status">';
-                    tenant_item += '<span class="'+store_status_class+'">'+store_status+'</span>';
+                    tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
                     if(tenant.is_subscriber)
                         tenant_item += '<span class="featured_shop">Featured</span>';
                     tenant_item += '</div>';
@@ -337,7 +337,7 @@
                 tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
+                tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';

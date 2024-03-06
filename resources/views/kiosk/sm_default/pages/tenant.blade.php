@@ -418,6 +418,7 @@
         page_history.push(current_location);
 
         dynamicHeight();
+        helper.setTranslation();
     }
 </script>
 @endpush

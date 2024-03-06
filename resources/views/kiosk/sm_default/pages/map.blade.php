@@ -7,7 +7,7 @@
 
 <div id="directionDetails" class="txt-highlight-color bg-color bg-pattern" style="display:none;">
 	<div style="text-align: center;font-size: 20px;color:#32213E;">
-		<text style="color:#6051e3;"><div style="margin-top:27px;margin-right: 5px; font-weight: 600; display: inline-block; font-family: 'Henry Sans Regular';" class="translateme">Directions to:</div><span id="mapguide-destination" style="display: inline-block;"></span></text>
+		<text style="color:#6051e3;"><div style="margin-top:27px;margin-right: 5px; font-weight: 600; display: inline-block; font-family: 'Henry Sans Regular';" class="translateme" data-en="Directions to">Directions to</div>:<span id="mapguide-destination" style="display: inline-block;"></span></text>
 		<div style="padding-left: 10px;margin-top: 19px;color:#6051e3;">
 			<img src="{{ URL::to('themes/sm_default/images/man-walk.svg') }}" style="width:20px;">
 			<span style="font-weight: bold;">

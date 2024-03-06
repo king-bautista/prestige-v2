@@ -106,7 +106,6 @@ Helpers.prototype = {
     },
 
     setTranslation: function() {
-        console.log(my_translations);
         var translations_by_language;
         if (content_language != 'english') {
             translations_by_language = my_translations.filter(option => option.language == content_language);
@@ -114,10 +113,13 @@ Helpers.prototype = {
             translations_by_language = my_translations;
         }
 
+        console.log(translations_by_language);
+
         var obj = this;
 
         $(".translateme").each(function(){
-            let data_en = obj.encodeEntities($(this).attr('data-en'));
+            let data_en = obj.encodeEntities($(this).attr('data-en')).replace(/'/g, '&#39;');
+            console.log(data_en);
             var translated = translations_by_language.find(option => option.english == data_en);
 
             if (translated != null) {                         
@@ -198,6 +200,7 @@ Helpers.prototype = {
         $("#code").css("border-color", "#6051e3");
         $('.notification').hide();
         this.resetKeyBoard();
+        this.setTranslation();
         current_location = 'searchbox';
     },
 
