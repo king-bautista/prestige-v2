@@ -322,8 +322,10 @@
             $.each(tenants, function(index,tenant) {
                 var tenant_item = '';
                 var store_status = 'Closed';
+                var store_status_class = 'text-danger';
                 if(tenant.operational_hours.is_open) {
                     store_status = 'Open';
+                    store_status_class = 'text-success';
                 }
 
                 tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
@@ -335,7 +337,7 @@
                 tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
-                tenant_item += '<span class="text-success translateme" data-en="'+store_status+'">'+store_status+'</span>';
+                tenant_item += '<span class="text-success translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
                 if(tenant.is_subscriber)
                     tenant_item += '<span class="featured_shop">Featured</span>';
                 tenant_item += '</div>';
@@ -438,7 +440,7 @@
                 supplemental_item += '<div class="cat-btn-adjustment mx-auto supplemental-item-'+category.id+'">';
                 supplemental_item += '<img class="cat-btn-img" src="'+category.kiosk_image_primary_path+'" />';
                 supplemental_item += '<div class="cat-btn-align-2">';
-                supplemental_item += '<p class="cat-text translateme" data-en="'+ category.category_name +'">'+category.category_name+'</p>';
+                supplemental_item += '<p class="cat-text translateme '+main_category+'_color" data-en="'+ category.category_name +'">'+category.category_name+'</p>';
                 supplemental_item += '</div>';
                 supplemental_item += '</div>';
                 supplemental_item += '</div>';
@@ -447,6 +449,7 @@
                     $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                     $('.category-banner-title').html(category.category_name);
                     $('.category-banner-title').attr('data-en', category.category_name);
+                    $('.category-banner-title').addClass(main_category + "_color");
                     tenant_list = category.tenants;
                     showTenantList();
                 });

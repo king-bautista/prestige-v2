@@ -411,7 +411,7 @@ body {
 }
 
 .carousel-content-container-alphabetical {
-    padding: 94.5px 133px 0px 153px;
+    padding: 94.5px 149px 0px 149px;
     margin-left: 0px;
 }
 
@@ -450,7 +450,7 @@ body {
 }
 
 .owl-dots-promo, .owl-dots-event {
-    margin-top: -5.0px !important;
+    margin-top: -23.0px !important;
     margin-left: 10.0px !important;
     margin-right: -10.5px !important;
 }
@@ -1139,6 +1139,7 @@ body {
 
 .promo-featured-container {
     width: 1010px !important;
+    margin-top: -30px !important;
 }
 
 .promo-modal-content {
@@ -1307,7 +1308,7 @@ body {
 
 .carousel-content-container {
     vertical-align: middle;
-    padding: 32px 133px 0px 153px !important;
+    padding: 2px 133px 0px 153px !important;
     margin-left: 16px;
 }
 
@@ -1903,7 +1904,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     width: 1450px;
     height: 439.69px;
     object-fit: cover;
-    margin-left: -10px;
+    margin-left: -15px;
 }
 
 .img-about-logo-container {
@@ -2133,6 +2134,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     }
 
     .promo-featured-container {
+        margin-top: -30px;
         width: 650px !important;
     }
 
@@ -2165,7 +2167,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     .tenant-card-info-tab {
         width: 400px !important;
         height: 633px;
-        margin-top: 37.5px;
+        margin-top: 7.5px !important;
         margin-left: 15px;
     }
 
@@ -2500,7 +2502,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     }
 
     .img-about-background-container {
-        margin-left: -15px;
+        margin-left: -15px !important;
     }
 
     .img-about-logo-container {
@@ -2945,7 +2947,8 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 .ui-autocomplete.ui-front
 {
-    max-height: 120px;
+    max-height: 115px;
+    height: auto !important;
     overflow-y: auto !important; 
     overflow-x: hidden !important;
     border-radius: 10px;
@@ -3137,4 +3140,14 @@ ul#mapguide li:last-child:before {
 
 .owl-dots-search-result{
     margin-top: 44px !important;
+}
+
+.about-social-media-container{
+    max-height: 450px;
+    overflow-y: hidden;
+}
+
+.social-media-handles-container{
+    max-height: 230px;
+    overflow-y: auto;
 }

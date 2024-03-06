@@ -137,7 +137,6 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
         $moduloValue = round($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
-
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
         $maxParentCategoryCounter = 0;
@@ -395,12 +394,12 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'dimension'=> $dimension,
                 ];
                 $data = $exel_collection;
-                // array_push($exel_collection,$brand_id);
+                // array_push($exel_collection,$category_id);
                 TemporaryPlayList::create($data);
             }
         }
         
-        // $this->fields = $exel_collection;
+        // $this->fields = $data;
     }
 
     protected function getSiteId($site){

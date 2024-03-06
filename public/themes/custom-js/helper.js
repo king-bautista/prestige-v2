@@ -171,7 +171,7 @@ Helpers.prototype = {
     },
 
     homeBtnClick: function() {
-        $('.content-holder, .back-img-btn, .modal').hide();
+        $('.content-holder, .back-img-btn, .modal, .mySlides').hide();
         $('#home-container, #ImgMallLogo').show();
         $('.nav-btn-container, #btnpwdchange').removeClass('active btn-prestige-pwd');
         $('.nav-btn-home').addClass("active");
@@ -195,6 +195,8 @@ Helpers.prototype = {
         $('#code').val('');
         $('#videocontainer').html('');
         $('#search-title').html('Search');
+        $("#code").css("border-color", "#6051e3");
+        $('.notification').hide();
         this.resetKeyBoard();
         current_location = 'searchbox';
     },

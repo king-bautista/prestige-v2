@@ -67,21 +67,23 @@
             var newText = String(text).replace(
                     new RegExp(this.term, "gi"),
                     "<span class='prestige-text-color text-bold'>$&</span>");
-            var floor = item.floor_name === null?"": ", " + item.floor_name;
-            var bldg = item.building_name === null?"": ", " + item.building_name;
+            var floor = item.floor_name === null?"": " " + item.floor_name;
+            var bldg = item.building_name === null?"": " " + item.building_name;
+
+            var attrib = '';
             
-            if (item.building_name == 'Main Building'){
-                var attrib = floor;
-            }else{
-                var attrib = floor + bldg;
-            }
+            // if (item.building_name == 'Main Building'){
+            //     var attrib = floor;
+            // }else{
+            //     var attrib = floor + bldg;
+            // }
 
-            if(item.address !== null || item.address !== 'undefined' || item.address !== 'null') {
-                var attrib = ", " + item.address;
-            }
+            // if(item.address !== null || item.address !== 'undefined' || item.address !== 'null' || item.address !== '') {
+            //     var attrib = ", " + item.address;
+            // }
 
-            if(attrib === null || attrib === ', null' || attrib === ', undefined')
-                attrib = '';
+            // if(attrib === null || attrib === ', null' || attrib === ', undefined')
+            //     attrib = '';
 
             return $("<li></li>")
                 .data("item.autocomplete", item)
@@ -154,6 +156,7 @@
             var search_key = $('#code').val();
             tenant_searchList = '';
             if (search_key.length >= 2) {
+                $("#code").css("border-color", "#6051e3");
                 $('.notification').hide();
                 $.post( "/api/v1/search", { site_id: site_id, id: null, key_words: search_key } )
                 .done(function(responce) {
@@ -183,6 +186,7 @@
                 })
             }
             else {
+                $("#code").css("border-color", "#bc5b68");
                 $('.notification').show();
             }
         });
@@ -324,7 +328,7 @@
             want_to_try += '<div class="want-to-try">';
             want_to_try += '<div class="row">';
             want_to_try += '<div class="col-12 pl-170">';
-            want_to_try += '<span class="translateme" data-en="You might want to try : ">You might want to try : </span>';
+            want_to_try += '<span class="translateme" data-en="You might want to try">You might want to try</span> :';
             want_to_try += '</div>';
             want_to_try += '</div>';
             want_to_try += '</div>';

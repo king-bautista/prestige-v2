@@ -40,7 +40,7 @@
                     </svg>
                     <b>
                         <span class="text-success mall-hours-title">
-                            <b class="mall-hours-title is-open"></b>
+                            <b class="mall-hours-title is-open translateme" data-en="Open"></b>
                         </span>
                         <span class="mall-hours-divider">|</span> <span class="mall-hours-title tenant-hours"></span>
                     </b>
@@ -84,34 +84,39 @@
             </div>
 
             <div class="mt-2 mb-2 social-media-twitter-container">
-                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-x.png') }}"/>
                 <span class="social-media-text social-media-twitter"></span>
             </div>
 
             <div class="mt-2 mb-2 social-media-tiktok-container">
-                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-tiktok.png') }}"/>
                 <span class="social-media-text social-media-tiktok"></span>
             </div>
 
             <div class="mt-2 mb-2 social-media-youtube-container">
-                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-twitter.svg') }}"/>
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-youtube.png') }}"/>
                 <span class="social-media-text social-media-youtube"></span>
+            </div>
+
+            <div class="mt-2 mb-2 social-media-viber-container">
+                <img class="social-media-icons" src="{{ URL::to('themes/sm_default/images/social-media-viber.png') }}"/>
+                <span class="social-media-text social-media-viber"></span>
             </div>
         </div>
 
         <div class="call-to-action">
             <div class="row storeNavigationContent">
                 <div class="col-12 mt-3">
-                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop">Get Directions</button>
+                    <button class="btn btn-prestige-rounded btn-prestige-color w-100 btn-direction-shop translateme" data-en="Get Directions">Get Directions</button>
                 </div>
 
                 <div class="col-12 mt-3">
-                    <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd">
+                    <button class="btn btn-prestige-rounded btn-prestige-pwd w-100 btn-direction-shop-pwd translateme" data-en="Get Directions (PWD-friendly)">
                         Get Directions (PWD-friendly)
                     </button>
                 </div>
                 <div class="col-12 mt-3">
-                    <button class="btn w-100 btn-prestige-order-now" disabled="">Order Now</button>
+                    <button class="btn w-100 btn-prestige-order-now translateme" data-en="Order Now" disabled="">Order Now</button>
                 </div>
             </div>
         </div>
@@ -184,7 +189,8 @@
         });
 
         $('.tenant-store-schedule').on('click', function() {            
-            var schedules = (tenant_schedule != '') ? tenant_schedule : JSON.parse(helper.decodeEntities(site_schedule));
+            var schedules = '';
+            schedules = (tenant_schedule != '') ? tenant_schedule : JSON.parse(helper.decodeEntities(site_schedule));
             let tempSchedule = [];
             const currentSchedule = schedules;
             if (currentSchedule) {
@@ -230,6 +236,12 @@
             helper.mapBtnClick();
             $('#tenant-select').val(tenant_id);
             $('.direction-from').click();
+        });
+
+        $('.btn-direction-shop-pwd').on('click', function() {
+            helper.mapBtnClick();
+            $('#tenant-select').val(tenant_id);
+            $("#btnpwdchange").click();
         });
 
     });
@@ -294,6 +306,7 @@
     }
 
     function showTenantDetails(tenant) {
+        tenant_schedule = '';
         console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         tenant_id = tenant.id;
@@ -313,10 +326,12 @@
         if(tenant.operational_hours.start_time) {
             $('.tenant-hours').html(tenant.operational_hours.start_time +'-'+tenant.operational_hours.end_time);
             $('.is-open').addClass(is_open).html((tenant.operational_hours.is_open) ? 'Open' : 'Closed');
+            $('.is-open').attr("data-en",(tenant.operational_hours.is_open) ? 'Open' : 'Closed')
         }
         else {
             $('.is-open').addClass(is_open).html((site_info.operational_hours.is_open) ? 'Open' : 'Closed');
             $('.tenant-hours').html(site_info.start_time +'-'+site_info.end_time);
+            $('.is-open').attr("data-en",(tenant.operational_hours.is_open) ? 'Open' : 'Closed')
         }
 
         // PRODUCT AND LOGO
@@ -346,13 +361,15 @@
         $('.social-media-ig-container').show();    
         $('.social-media-twitter-container').show();    
         $('.social-media-tiktok-container').show();
-            $('.social-media-youtube-container').show();
+        $('.social-media-youtube-container').show();
+        $('.social-media-viber-container').show();
         if(!tenant.tenant_details) {
             $('.social-media-fb-container').hide();    
             $('.social-media-ig-container').hide();    
             $('.social-media-twitter-container').hide();
             $('.social-media-tiktok-container').hide();
             $('.social-media-youtube-container').hide();
+            $('.social-media-viber-container').hide();
         }
         else {
             $('.social-media-fb').html(tenant.tenant_details.facebook);
@@ -360,6 +377,7 @@
             $('.social-media-twitter').html(tenant.tenant_details.twitter);
             $('.social-media-tiktok').html(tenant.tenant_details.tiktok);
             $('.social-media-youtube').html(tenant.tenant_details.youtube);
+            $('.social-media-viber').html(tenant.tenant_details.viber);
             
             if(!tenant.tenant_details.facebook) 
                 $('.social-media-fb-container').hide();    
@@ -370,7 +388,9 @@
             if(!tenant.tenant_details.tiktok)
                 $('.social-media-tiktok-container').hide();  
             if(!tenant.tenant_details.youtube)
-                $('.social-media-youtube-container').hide();            
+                $('.social-media-youtube-container').hide();
+            if(!tenant.tenant_details.viber)
+                $('.social-media-viber-container').hide();  
         }
 
         $('#promos-container').hide();
