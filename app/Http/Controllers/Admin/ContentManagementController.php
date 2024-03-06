@@ -20,6 +20,7 @@ use App\Models\Category;
 use App\Models\Advertisement;
 use App\Models\AdvertisementMaterial;
 use App\Models\Site;
+use App\Models\SiteTenant;
 use App\Models\SiteScreen;
 use App\Models\SiteScreenProduct;
 use App\Models\AdminViewModels\SiteViewModel;
@@ -149,11 +150,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $content->saveScreens($request->site_screen_ids);
             $this->generatePlayList($request->site_screen_ids);
 
-        return $this->response($content, 'Successfully Created!', 200);
-        // return $this->response($this->check_variable, 'Successfully Created!', 200);
-        }
-        catch (\Exception $e) 
-        {
+            return $this->response($content, 'Successfully Created!', 200);
+            // return $this->response($this->check_variable, 'Successfully Created!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -287,13 +286,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
         return null;
     }
 
-    public function setPlayListSequence($screen_id, $site_id, $ad_type = "Banner Ad"){
-    // public function setPlayListSequence()
-    // {
+    public function setPlayListSequence($screen_id, $site_id, $ad_type = "Banner Ad")
+    {
+        // public function setPlayListSequence()
+        // {
 
-    //     $screen_id = 9;
-    //     $site_id = 3;
-    //     $ad_type = 'Full Screen Ad';
+        //     $screen_id = 9;
+        //     $site_id = 3;
+        //     $ad_type = 'Full Screen Ad';
 
         if (!$site_id) {
             $site_id = SiteScreen::find($screen_id)->site_id;
@@ -304,7 +304,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         $sitePartnersAds = $this->getPlaylistAds($site_partner_id, $screen_id, $ad_type, true);
         $parentCategoryAds = $this->getPlaylistAds($site_partner_id, $screen_id, $ad_type, false);
-        
+
         // counting number of site partner ads
         $totalSitePartnerAds = sizeof($sitePartnersAds);
         // counting number of parent category ads
@@ -330,7 +330,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $loopCount = $this->getLoopCount($totalSitePartnerAds, $maxSitePartnerSlot);
 
         if ($loopCount >= 1) {
-            for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {        
+            for ($loop_index = 0; $loop_index < $loopCount; $loop_index++) {
                 for ($index = 0; $index < $totalNumberOfAds; $index++) {
                     $loop_number = $loop_index;
                     if (fmod($index, $moduloValue) == 0) {
@@ -455,19 +455,18 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $category_id);
 
-        if($is_sitePartner){
+        if ($is_sitePartner) {
             $addData = $query->limit($limit)->offset($offset)->get();
             // $this->check_variable = $addData;
             $addData[0]->loop_number = $loop_number;
-        }
-        else{
+        } else {
             $category_offset = $this->category_counter[$index];
             $addData = $query->limit($limit)->offset($category_offset)->get();
             $this->category_counter[$index]++;
             $data_count = count($addData);
             // $this->check_variable = $data_count;
 
-            if($data_count == 0){
+            if ($data_count == 0) {
                 $offset++;
                 $index = fmod($offset, $category_ids->count());
                 $new_category_id = $category_ids[$index]->id;
@@ -476,10 +475,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $new_category_id);
                 $new_add = $query->limit($limit)->offset($category_offset)->get();
                 $addData_count = count($new_add);
-                if($addData_count == 1){
+                if ($addData_count == 1) {
                     $addData = $new_add;
                     // $addData->loop_number = $loop_number;
-                    foreach ($addData as $item){
+                    foreach ($addData as $item) {
                         $item["loop_number"] = $loop_number;
                     }
                     $this->category_counter[$index]++;
@@ -488,7 +487,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 // $this->check_variable = $data_count;
             }
             // $addData[0]->loop_number = $loop_number;
-            foreach ($addData as $item){
+            foreach ($addData as $item) {
                 $item["loop_number"] = $loop_number;
             }
 
@@ -710,26 +709,20 @@ class ContentManagementController extends AppBaseController implements ContentMa
     public function downloadCsvPlaylist()
     {
         try {
-            $playlist_manage_ads =  SiteScreenPlaylistViewModel::get();
+            $playlist_manage_ads =  PlaylistViewModel::get();
             $reports = [];
             foreach ($playlist_manage_ads as $playlist) {
+                $contract_id = $playlist['advertisement_details']['contract_id'];
+                $contract = Contract::find($contract_id);
                 $reports[] = [
-                    'id' => $playlist->id,
-                    'site_screen_location' => $playlist->site_screen_location,
-                    'serial_number' => $playlist->serial_number,
-                    'screen_type' => $playlist->screen_type,
-                    //'orientation' => $playlist->orientation,
-                    'site_id' => $playlist->site_id,
-                    'site_name' => $playlist->site_name,
-                    'site_code_name' => $playlist->site_code_name,
-                    // 'site_building_id' => $playlist->site_building_id,
-                    // 'site_building_name' => $playlist->building_name,
-                    // 'site_building_level_id' => $playlist->site_building_level_id,
-                    // 'site_building_level_name' => $playlist->floor_name,
-                    // 'screen_location' => $playlist->screen_location,
-                    // 'site_screen_location' => $playlist->site_screen_location,
-                    // 'dimensions' => $playlist->dimensions,
-                    //'playlist' => $playlist->playlist,
+                    'upload_ad_id' => $playlist['content_details']['serial_number'],
+                    'create_content_id' => $playlist['advertisement_details']['serial_number'],
+                    'create_content_' => $playlist['advertisement_details']['name'],
+                    'contract_id' => $contract['id'],
+                    'contract_name' => $contract['name'],
+                    'category_id' => $playlist['category_details']['category']['id'],
+                    'category_name' => $playlist['category_details']['category']['name'],
+                    'sequence_no' => $playlist->sequence,
                     'created_at' => $playlist->created_at,
                     'updated_at' => $playlist->updated_at,
                     'deleted_at' => $playlist->deleted_at,
@@ -817,21 +810,34 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $reports = [];
             foreach ($upload_manage_ads as $upload) {
+                $site_tenant_ids = SiteTenant::where('brand_id', $upload->brand_id)->get()->pluck('id');
                 $brand = Brand::where('id', $upload->brand_id)->get();
+                $category_id = $brand[0]['category_id'];
+                if ($category_id != 0) {
+                    $category = Category::where('id', $category_id)->get();
+                    $parent_id = $category[0]['parent_id'];
+                    $parent_category = $category[0]['name'];
+                    $category_name = (!empty($parent_id)) ? Category::where('id', $parent_id)->get()[0]['name'] : '';
+                } else {
+                    $parent_category = '';
+                    $category_name = '';
+                }
                 $contract_screen = ContractScreen::where('contract_id', $upload->contract_id)->get();
                 $site_id = $contract_screen[0]['site_id'];
                 $site = Site::where('id', $site_id)->get();
                 $site_screen = SiteScreen::leftjoin('site_screen_products as ssp', 'site_screens.id', '=', 'ssp.site_screen_id')
                     ->where('site_screens.site_id', $site_id)
                     ->where('ssp.dimension', $upload->dimension)
-                    ->select('site_screens.id as screen_id','site_screens.name as screen_name', 'site_screens.screen_type as screen_type', 'ssp.id as ssp_id','ssp.description as ssp_description', 'site_screens.product_application as product_application')
+                    ->select('site_screens.id as screen_id', 'site_screens.name as screen_name', 'site_screens.screen_type as screen_type', 'site_screens.product_application as product_application', 'ssp.id as ssp_id', 'ssp.description as ssp_description', 'ssp.ad_type as ssp_ad_type', 'ssp.slots as ssp_slots')
                     ->get();
-              
+
                 $ssp_id = (!empty($site_screen[0]['ssp_id'])) ? $site_screen[0]['ssp_id'] : '';
                 $ssp_description = (!empty($site_screen[0]['ssp_description'])) ? $site_screen[0]['ssp_description'] : '';
                 $screen_id = (!empty($site_screen[0]['screen_id'])) ? $site_screen[0]['screen_id'] : '';
                 $screen_name = (!empty($site_screen[0]['screen_name'])) ? $site_screen[0]['screen_name'] : '';
                 $screen_type = (!empty($site_screen[0]['screen_type'])) ? $site_screen[0]['screen_type'] : '';
+                $ssp_ad_type = (!empty($site_screen[0]['ssp_ad_type'])) ? $site_screen[0]['ssp_ad_type'] : '';
+                $ssp_slots = (!empty($site_screen[0]['ssp_slots'])) ? $site_screen[0]['ssp_slots'] : '';
                 $reports[] = [
                     'id' => $upload->serial_number,
                     'ssp_id' => $ssp_id,
@@ -845,18 +851,17 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     'content_id' => $upload->id,
                     'content_name' => $upload->name,
                     'brand_id' => $upload->brand_id,
-                    'brand_name' => (count($brand) > 0) ? $brand[0]['name'] : '',
-                    'parent_category' => '',
-                    'category_name' => '',
-                    'tenant_id' => '',
-                    'ad_type' => '',
+                    'brand_name' => $brand[0]['name'],
+                    'parent_category' => $parent_category,
+                    'category_name' => $category_name,
+                    'tenant_id' => $site_tenant_ids,
+                    'ad_type' => $ssp_ad_type,
                     'status_id' => $upload->status_id,
                     'status_name' => TransactionStatus::find($upload->status_id)['name'],
-
-                    'date_approved' => '',
-                    'start_date' => '',
-                    'end_date' => '',
-                    'no_of_slots' => '',
+                    'date_approved' => ($upload->status_id == 5) ? $upload->updated_at : '',
+                    'start_date' => $upload->start_date,
+                    'end_date' => $upload->end_date,
+                    'no_of_slots' => $ssp_slots,
                     'active' => $upload->active,
                     'created_at' => $upload->created_at,
                     'updated_at' => $upload->updated_at,
@@ -897,17 +902,28 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
             $reports[] = [
                 'id' => '',
-                'serial_number' => '',
-                'material_thumbnails_path' => '',
-                'dimension' => '',
-                'ad_name' => '',
-                'company_id' => '',
-                'company_name' => '',
+                'ssp_id' => '',
+                'ssp_description' => '',
+                'site_id' => '',
+                'site_name' => '',
+                'screen_id' => '',
+                'screen_name' => '',
+                'physical_configuration' => '',
+                'product_application' => '',
+                'content_id' => '',
+                'content_name' => '',
                 'brand_id' => '',
                 'brand_name' => '',
-                'air_dates' => '',
-                'transaction_status_id' => '',
-                'transaction_status_name' => '',
+                'parent_category' => '',
+                'category_name' => '',
+                'tenant_id' => '',
+                'ad_type' => '',
+                'status_id' => '',
+                'status_name' => '',
+                'date_approved' => '',
+                'start_date' => '',
+                'end_date' => '',
+                'no_of_slots' => '',
                 'active' => '',
                 'created_at' => '',
                 'updated_at' => '',
