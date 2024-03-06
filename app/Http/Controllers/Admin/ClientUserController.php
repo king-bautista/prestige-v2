@@ -13,8 +13,10 @@ use App\Helpers\PasswordHelper;
 use App\Exports\Export;
 use Storage;
 use Hash;
-
+use App\Models\Site;
+use App\Models\SiteScreen;
 use App\Models\User;
+use App\Models\Classification;
 use App\Models\AdminViewModels\UserViewModel;
 
 class ClientUserController extends AppBaseController implements ClientUserControllerInterface
@@ -40,13 +42,13 @@ class ClientUserController extends AppBaseController implements ClientUserContro
                 return $query->where('full_name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('email', 'LIKE', '%' . request('search') . '%');
             })
-            ->when(is_null(request('order')), function ($query) {
-                return $query->orderBy('full_name', 'ASC');
-            })
-            ->when(request('order'), function ($query) {
-                $column = $this->checkcolumn(request('order'));
-                return $query->orderBy($column, request('sort'));
-            })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('full_name', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    $column = $this->checkcolumn(request('order'));
+                    return $query->orderBy($column, request('sort'));
+                })
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($user, 'Successfully Retreived!', 200);
@@ -156,6 +158,13 @@ class ClientUserController extends AppBaseController implements ClientUserContro
             $client_user_management = UserViewModel::get();
             $reports = [];
             foreach ($client_user_management as $user) {
+
+                $classification = Classification::find($user->company['classification_id']);
+                $classification['name'];
+                //echo '>>'.$user->company['classification_id'];
+                $site_ids = $this->sites($user->getSiteBrand('site'), 'id');
+                
+
                 $full_name = explode(",", $user->full_name);
                 $reports[] = [
                     'id' => $user->id,
@@ -164,10 +173,16 @@ class ClientUserController extends AppBaseController implements ClientUserContro
                     'email' => $user->email,
                     'company_id' => $user->company['id'],
                     'company_name' => $user->company['name'],
-                    'role_id' => $this->roles($user->roles, 'id'),
-                    'role_name' => $this->roles($user->roles, 'name'),
-                    'login_attempt' => $user->login_attempt,
-                    'is_blocked' => $user->is_blocked,
+                    'classification_id' => $user->company['classification_id'],
+                    'classification_name' => $classification['name'],
+                    'brand_ids' => $this->brands($user->getSiteBrand('brand'), 'id'),
+                    'brand_names' => $this->brands($user->getSiteBrand('brand'), 'name'),
+                    'site_ids' => $site_ids,
+                    'site_names' => $this->sites($user->getSiteBrand('site'), 'name'),
+                    'screen_ids' => $this->screens($site_ids, 'id'),
+                    'screen_names' => $this->screens($site_ids, 'name'),
+                    'role_ids' => $this->roles($user->roles, 'id'),
+                    'role_names' => $this->roles($user->roles, 'name'),
                     'active' => $user->active,
                     'created_by' => $user->created_by,
                     'updated_by' => $user->updated_by,
@@ -210,21 +225,21 @@ class ClientUserController extends AppBaseController implements ClientUserContro
         try {
             $reports[] = [
                 'id' => '',
-                    'first_name' => '',
-                    'last_name' => '',
-                    'email' => '',
-                    'company_id' => '',
-                    'company_name' => '',
-                    'role_id' => '',
-                    'role_name' => '',
-                    'login_attempt' => '',
-                    'is_blocked' => '',
-                    'active' => '',
-                    'created_by' => '',
-                    'updated_by' => '',
-                    'created_at' => '',
-                    'updated_at' => '',
-                    'deleted_at' => '',
+                'first_name' => '',
+                'last_name' => '',
+                'email' => '',
+                'company_id' => '',
+                'company_name' => '',
+                'role_id' => '',
+                'role_name' => '',
+                'login_attempt' => '',
+                'is_blocked' => '',
+                'active' => '',
+                'created_by' => '',
+                'updated_by' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'deleted_at' => '',
             ];
 
             $directory = 'public/export/reports/';
@@ -260,18 +275,39 @@ class ClientUserController extends AppBaseController implements ClientUserContro
         $user_brand = [];
         if (count($brands) > 0) {
             foreach ($brands as $brand) {
-                $user_brand[] = ($field == 'id') ? (string) $brand->id." " : $brand->name;
+                $user_brand[] = ($field == 'id') ? (string) $brand->id . " " : $brand->name;
             }
             return implode(",", $user_brand);
         }
         return 0;
+    }
+
+    public function sites($sites, $field)
+    {
+        $siteIds[] = 0;
+        foreach ($sites as $contract) {
+            foreach ($contract->screens as $screen) {
+                $siteIds[$screen['site_id']] = $screen['site_id'];
+            }
+        }
+
+        foreach ($siteIds as $id) {
+            $site_ids[] = $id;
+        }
+
+        if ($field == 'id') {
+            return implode(",", $site_ids);
+        }
+        $sites_names = Site::whereIn('id', $site_ids)->get()->pluck('name')->toArray();
+
+        return (count($sites_names) > 0) ? implode(",", $sites_names) : '';
     }
     public function contracts($contracts, $field)
     {
         $user_contract = [];
         if (count($contracts) > 0) {
             foreach ($contracts as $contract) {
-                $user_contract[] = ($field == 'id') ? (string) $contract->id." " : $contract->name;
+                $user_contract[] = ($field == 'id') ? (string) $contract->id . " " : $contract->name;
             }
             return implode(",", $user_contract);
         }
@@ -284,6 +320,17 @@ class ClientUserController extends AppBaseController implements ClientUserContro
         foreach ($roles as $role) {
             $user_role[] = ($field == 'id') ? $role->id : $role->name;
         }
-        return implode(",",$user_role);
+        return implode(",", $user_role);
+    }
+
+    public function screens($site_ids, $field)
+    {
+        $ids = ($site_ids != '0') ? explode(",", $site_ids) : array();
+        if (count($ids) > 0) {
+            $sites = SiteScreen::whereIn('site_id', $ids)->get()->pluck($field)->toArray();
+            return implode(",", $sites);
+        } else {
+            return null;
+        }
     }
 }
