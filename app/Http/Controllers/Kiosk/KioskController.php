@@ -17,6 +17,7 @@ use App\Models\SiteBuilding;
 use App\Models\SiteMapZoom;
 use App\Models\Event;
 use App\Models\SiteMap;
+use App\Models\SiteFeedback;
 use App\Models\AdminViewModels\SiteViewModel;
 use App\Models\AdminViewModels\CinemaScheduleViewModel;
 use App\Models\AdminViewModels\PlayListViewModel;
@@ -1179,5 +1180,19 @@ class KioskController extends AppBaseController
 	
 		return $ReturnValue;
 	}
+
+    public function putFeedback(Request $request)
+    {
+        $site_screen_id = SiteScreen::where('is_default', 1)->where('active', 1)->where('site_id', $request->site_id)->first()->id;     
+        SiteFeedback::Create(
+            [
+               'site_id' => $request->site_id,
+               'site_screen_id' => $site_screen_id,
+               'helpful' => $request->helpful,
+               'reason' => $request->reason,
+               'reason_other' => $request->reason_other
+            ]
+        );
+    }
     
 }

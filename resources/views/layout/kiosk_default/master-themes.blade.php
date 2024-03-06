@@ -51,6 +51,60 @@
             background-color: #4b94ce !important;
         }
 
+        .thankyou {
+            display:none;
+        }
+
+        .feedback-search-modal-position {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .feedback-section {
+            width: 662px;
+            height: 300px;
+            padding: 35px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        .feedback-option {
+            position: relative;
+            height: 50px;
+        }
+
+        .label-2 {
+            font-family: 'Henry Sans Regular';
+            color: #2a2a2a;
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        input.nothelpfulcheck[type=radio] {
+            border: 0px;
+            width: 22px;
+            height: 22px;
+            margin: 5px 15px 0 0;
+            position: absolute;
+        }
+
+        .inputspan {
+            position: absolute;
+            top: 5px;
+            font-family: 'Henry Sans Regular';
+            font-size: 1em;
+            font-weight: bold;
+            margin-left: 35px;
+        }
+
+        .btn-submit-nothelpful {
+            padding: 8px 50px 8px 50px;
+            font-family: 'Henry Sans Regular';
+        }
+
     </style>
 
     <body>

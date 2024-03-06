@@ -202,12 +202,15 @@ Helpers.prototype = {
     },
 
     mapBtnClick: function() {
-        $('.content-holder, .modal, #mapkeyboardoverlay, #mapkeyboard').hide();
+        $('.content-holder, .modal, #mapkeyboardoverlay, #mapkeyboard, .thankyou, .softkeys-feedback').hide();
         $('#map-container, #ImgMallLogo, .back-img-btn').show();
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-map').addClass("active");
         $('#videocontainer').html('');
         $('#btnresetmap').click();
+        $('input[name="feedback_picked"]').prop('checked', false);
+        $('#feedback-textarea').prop('disabled', true);
+        $('#feedback-textarea').val('');
         this.resetKeyBoard();
         current_location = 'map';
     },
@@ -340,6 +343,17 @@ Helpers.prototype = {
         if($('.softkeys-map-page > .softkeys__btn--shift').find('span').text() === 'ABC') {
             $('.softkeys-map-page > .softkeys__btn--shift').click();
         }
+    },
+
+    helpfulFeedBack: function(params) {
+        $.post( "/api/v1/feedback", params)
+        .done(function(data) {
+            $('input[name="feedback_picked"]').prop('checked', false);
+            $('#feedback-textarea').prop('disabled', true);
+            $('#feedback-textarea').val('');
+            $('#feedback-search-modal, .softkeys-feedback').hide();     
+            $('.thankyou').show();
+        });
     }
 
 };

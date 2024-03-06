@@ -113,6 +113,47 @@
     </div>
 </div>
 
+<div id="feedback-search-modal" class="modal promo-modal-content">
+  <!-- Modal content -->
+  <div class="feedback-search-modal-position">                      
+		<div class="feedback-section">
+			<div class="row mb-2 ">
+				<div class="col-12 text-center">
+					<span class="label-2 translateme" data-en="How can we improve?">How can we improve?</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6 feedback-option text-left">
+					<input type="radio" name="feedback_picked" class="nothelpfulcheck" value="Incorrect info"/>
+					<span class="inputspan translateme" data-en="Incorrect info">Incorrect info</span>
+				</div>
+				<div class="col-6 feedback-option text-left">
+					<input type="radio" name="feedback_picked" class="nothelpfulcheck" value="Not what I'm looking for" />	
+					<span class="inputspan translateme" data-en="Not what I'm looking for">Not what I'm looking for</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6 feedback-option text-left">
+					<input type="radio" name="feedback_picked" class="nothelpfulcheck" value="Confusing direction" />
+					<span class="inputspan translateme" data-en="Confusing direction">Confusing direction</span>
+				</div>
+				<div class="col-6 feedback-option text-left">
+					<input type="radio" name="feedback_picked" id="nothelpful-opt-other" class="nothelpfulcheck" value="Others"/>
+					<textarea id="feedback-textarea" name="feedback" disabled="disabled" placeholder="Others" style="position: absolute; margin-left: 35px;"></textarea>
+				</div>
+			</div>
+			<div class="row p-2 mt-3">
+				<div class="col-12 text-center">
+					<button class="btn btn-prestige-rounded btn-prestige-color btn-submit-nothelpful translateme" data-en="Submit">Submit</button>
+				</div>
+			</div>
+		</div>     
+		<div class="text-center">
+			<div class="softkeys-feedback" data-target="textarea[name=feedback]" style="margin-top: 65px; display:none;"></div>
+		</div>
+	</div>  
+</div>
+
 <div style="position:absolute;top:0px;left:0px;width:100%;height:1076px;background-color: rgba(0, 0, 0, 0.7);display:none" id="mapkeyboardoverlay"></div>
 <div class="text-center" style="position:absolute;top:250px;left:0px;width:100%;height:620px;display:none" id="mapkeyboard">
 	<div style="position:relative">
@@ -1574,6 +1615,10 @@
 		spritePinTo.visible = false;
 		theball.visible = false;
 
+		// HIDE OVERLAY AND KEYBOARD
+		$("#mapkeyboardoverlay").hide();
+		$("#mapkeyboard").hide();
+
 		var selected_text = $('#tenant-select').find("option:selected").text();
 		$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Directions to '+selected_text);
 
@@ -1750,6 +1795,7 @@
 			$('#tenant-select').prop('disabled', false);
 			$('#floor-select').prop('disabled', false);
 			$('#btnpwdchange').prop('disabled', false);
+			$('#btnpwdchange').removeClass('btn-prestige-pwd');
 			$('#tenant-select').val('');
 
 			onWindowResize();
@@ -1823,10 +1869,6 @@
 			resetMap();
 			// KEYBOARD INPUT CLEAR
 			$('#selectInput').val('').change();
-
-			// HIDE OVERLAY AND KEYBOARD
-			$("#mapkeyboardoverlay").hide();
-			$("#mapkeyboard").hide();
 
 			// HIDE DIRECTION DETAILS
 			$("#toggle-down").addClass('hideArrow');
@@ -1957,6 +1999,57 @@
             ]
         });
 
+		$('.softkeys-feedback').softkeys({
+            target : $('.softkeys-feedback').data('target'),
+            layout : [
+                [
+                    '1','2','3','4','5','6','7','8','9','0',
+                ],
+                [
+                    ['Q','~'],
+                    ['W','!'],
+                    ['E','@'],
+                    ['R','#'],
+                    ['T','$'],
+                    ['Y','%'],
+                    ['U','^'],
+                    ['I','&'],
+                    ['O','*'],
+                    ['P','('],
+                    ['-',')'],
+                ],
+                [
+                    ['A','['],
+                    ['S',']'],
+                    ['D','-'],
+                    ['F','+'],
+                    ['G','='],
+                    ['H',':'],
+                    ['J',';'],
+                    ['K','\''],
+                    ['L','&#34;'],
+                    '&apos;',
+                ],
+                [
+                    'shift',
+                    ['Z','{'],
+                    ['X','}'],
+                    ['C','<'],
+                    ['V','>'],
+                    ['B','_'],
+                    ['N','?'],
+                    ['M','/'],
+                    'delete',
+                ],
+                [
+                    '&comma;',
+                    'space',
+                    '&period;',
+                    'Search',
+                ]
+            ]
+        });
+
 		$(".softkeys-map-page > .softkeys__btn").on('mousedown',function(){                
         }).on('click',function(){
             $('#selectInput').trigger('change');
@@ -1975,39 +2068,87 @@
             }
         });
 
+		$('.softkeys-feedback > .softkeys__btn--shift').on('click', function(){
+            if($(this).find('span').text() === '#+=') {
+                $(this).find('span').html('ABC');
+                $('.softkeys-feedback > .softkeys__btn--hidden').hide();
+            }
+            else {
+                $(this).find('span').html('#+=');
+                $('.softkeys-feedback > .softkeys__btn--hidden').show();
+            }
+        });
+
+		$('.direction-from').on('click', function(){
+			// CALL WAY FINDING
+			directionTo();
+		});
+
+		$('.amenity-show-location').on('click', function() {
+			var amenity_point = $('.amenity-point').val();
+			var point = map_points[amenity_point];
+
+			$("#floor-select").val(point.building_level_id).change();
+
+			spritePinTo.position.x = point.point_x;
+			spritePinTo.position.z = point.point_z;
+			spritePinTo.visible = true;
+			spritePinTo.userData = {'floor':point.building_level_id};
+
+			var coords = new THREE.Vector3(point.point_x, 6,point.point_z);
+			coords.x = point.point_x;
+			coords.y = point.point_y;
+			coords.z = point.point_z
+			scene.worldToLocal(coords);
+			controls.target = coords;
+			controls.update();
+
+			camera.position.y = 100;
+			camera.position.x = coords.x;
+			camera.position.z = coords.z;
+			camera.lookAt(spritePinTo.position);
+
+			$(".mapplus").click();
+		});
+
+		$('.btn-helpful').on('click', function() {
+			let payload = {
+				site_id: @php echo $site->id; @endphp,
+				helpful: 'Yes',
+				reason: null,
+				reason_other: null
+			}
+
+			helper.helpfulFeedBack(payload);
+		});
+
+		$('.btn-nothelpful').on('click', function() {
+			$('#feedback-search-modal').show();
+		});
+
+		$('.btn-submit-nothelpful').on('click', function() {
+			let payload = {
+				site_id: @php echo $site->id; @endphp,
+				helpful: 'No',
+				reason: $( 'input[name="feedback_picked"]:checked' ).val(),
+				reason_other: $('#feedback-textarea').val()
+			}
+
+			helper.helpfulFeedBack(payload);						
+		})
+
+		$('input[name="feedback_picked"]').change(function(){
+			var value = $( 'input[name="feedback_picked"]:checked' ).val();
+			if(value == 'Others') {				
+				$('#feedback-textarea').prop('disabled', false);
+				$('.softkeys-feedback').show();
+			}else {
+				$('#feedback-textarea').prop('disabled', true);
+				$('.softkeys-feedback').hide();
+			}
+		});
+
     });
 
-	$('.direction-from').on('click', function(){
-		// CALL WAY FINDING
-		directionTo();
-	});
-
-	$('.amenity-show-location').on('click', function() {
-		var amenity_point = $('.amenity-point').val();
-		var point = map_points[amenity_point];
-
-		$("#floor-select").val(point.building_level_id).change();
-
-		spritePinTo.position.x = point.point_x;
-		spritePinTo.position.z = point.point_z;
-		spritePinTo.visible = true;
-		spritePinTo.userData = {'floor':point.building_level_id};
-
-		var coords = new THREE.Vector3(point.point_x, 6,point.point_z);
-		coords.x = point.point_x;
-		coords.y = point.point_y;
-		coords.z = point.point_z
-		scene.worldToLocal(coords);
-		controls.target = coords;
-		controls.update();
-
-		camera.position.y = 100;
-		camera.position.x = coords.x;
-		camera.position.z = coords.z;
-		camera.lookAt(spritePinTo.position);
-
-		$(".mapplus").click();
-	});
-    
 </script>
 @endpush
