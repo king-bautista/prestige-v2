@@ -941,8 +941,9 @@ body {
 
 .movieImgView {
     border-radius: 18px;
-    width: auto;
-    height: auto;
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
 }
 
 .MovieMainTitle {

@@ -371,13 +371,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
             }
         }
 
-        $deletePlayLists = PlayList::leftJoin('site_screen_products', function ($join) {
-            $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-                ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-        })
-            ->where('play_lists.site_screen_id', '=', $screen_id)
-            ->where('site_screen_products.ad_type', $ad_type)
-            ->delete();
+        // $deletePlayLists = PlayList::leftJoin('site_screen_products', function ($join) {
+        //     $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+        //         ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+        // })
+        //     ->where('play_lists.site_screen_id', '=', $screen_id)
+        //     ->where('site_screen_products.ad_type', $ad_type)
+        //     ->delete();
 
         foreach ($arrayStore as $items) {
             foreach ($items as $item) {
@@ -431,7 +431,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $ads = PlayList::leftJoin('site_screen_products', function ($join) {
             $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                 ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-        })
+            })
+            ->leftJoin('content_management', function ($join) {
+                $join->on('content_id', '=', 'content_management.id');
+            })
             ->where('play_lists.site_screen_id', $screen_id)
             ->where('site_screen_products.ad_type', $ad_type)
             ->when($is_sitePartner, function ($query) use ($company_id) {
@@ -439,8 +442,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
             })
             ->when(!$is_sitePartner, function ($query) use ($company_id) {
                 return $query->where('company_id', '!=', $company_id)->where('loop_number', 0);
-                // return $query->where('company_id', '!=', $company_id)->groupBy('play_lists.content_id');
             })
+            ->where("start_date", "<=", date("Y-m-d"))
+            ->where("end_date", ">", date("Y-m-d"))
             ->get();
 
         return $ads;

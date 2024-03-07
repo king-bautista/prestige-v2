@@ -451,6 +451,7 @@
                     $('.category-banner-title').attr('data-en', category.category_name);
                     $('.category-banner-title').addClass(main_category + "_color");
                     tenant_list = category.tenants;
+                    console.log(main_category);
                     showTenantList();
                 });
             });
