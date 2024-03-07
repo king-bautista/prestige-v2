@@ -234,14 +234,16 @@
 
         $('.btn-direction-shop').on('click', function() {
             helper.mapBtnClick();
+            $("#ispwd").prop('checked', false);
             $('#tenant-select').val(tenant_id);
             $('.direction-from').click();
         });
 
         $('.btn-direction-shop-pwd').on('click', function() {
             helper.mapBtnClick();
-            $('#tenant-select').val(tenant_id);
             $("#btnpwdchange").click();
+            $('#tenant-select').val(tenant_id);
+            $('.direction-from').click();
         });
 
     });
