@@ -69,19 +69,23 @@
         </div>
     </div>
     <!-- categories navigation -->
-    <div class="cat-nav-tabs"> 
-        <span class="mr-4 nav-tab-title translateme" data-en="View stores by">View stores by: </span>
-        <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Category-Tab" data-toggle="pill" data-target="#Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true" data-en="Category">Category</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false" data-en="Alphabetical">Alphabetical</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Supplemental-tab" data-toggle="pill" data-target="#Tab-Supplemental" type="button" role="tab" aria-controls="Tab-Supplemental" aria-selected="false" data-en="Cravings">Cravings</button>
-            </li>
-        </ul>
+    <div class="row tab-container">
+        <div class="col-12">
+            <div class="cat-nav-tabs"> 
+                <span class="mr-4 nav-tab-title translateme" data-en="View stores by: ">View stores by: </span>
+                <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Category-Tab" data-toggle="pill" data-target="#Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true" data-en="Category">Category</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false" data-en="Alphabetical">Alphabetical</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Supplemental-tab" data-toggle="pill" data-target="#Tab-Supplemental" type="button" role="tab" aria-controls="Tab-Supplemental" aria-selected="false" data-en="Cravings">Cravings</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -166,6 +170,7 @@
                 tenant_list = category.tenants;
                 // alert("i am here");
                 showTenantList();
+                $("#container-per-cat").addClass("supplemental-container");
             });
         }); 
         $('#home_v4').show();
@@ -192,7 +197,7 @@
             $.each(tenant_list, function(key,tenants) {
                 var tenant_list_element = '';
                 tenant_list_element = '<div class="item">';
-                tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
+                tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4" id="container-per-cat">';
                 tenant_list_element += '<div class="row tenants-'+key+'">';
                 tenant_list_element += '</div>';
                 tenant_list_element += '</div>';
@@ -453,6 +458,7 @@
                     tenant_list = category.tenants;
                     console.log(main_category);
                     showTenantList();
+                    $("#container-per-cat").removeClass("supplemental-container");
                 });
             });
         }); 
