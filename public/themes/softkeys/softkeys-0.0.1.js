@@ -81,7 +81,6 @@
                                 styleClass = 'softkeys__btn--hidden';
                                 break;
                             case '&comma;' :
-                                console.log('test');
                                 character = '<span>&comma;</span>';
                                 type = 'symbol';
                                 styleClass = 'softkeys__btn--hidden';

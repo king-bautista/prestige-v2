@@ -152,7 +152,7 @@
             $('#code').trigger('keydown');
         });
 
-        $('.search-box-button, .softkeys__btn--search').on('click', function() {
+        $('.search-box-button, .softkeys__btn--search').on('touchend click', function() {
             var search_key = $('#code').val();
             tenant_searchList = '';
             if (search_key.length >= 2) {
