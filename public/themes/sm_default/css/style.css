@@ -406,7 +406,7 @@ body {
 }
 
 .carousel-content-container-per-food-category {
-    padding: 134.5px 133px 0px 153px;
+    padding: 125.5px 149px 0px 150.5px;
     margin-left: 0px;
 }
 
@@ -432,9 +432,9 @@ body {
 }
 
 .owl-dots-tenant-list {
-    margin-top: -3.0px !important;
+    margin-top: -6.0px !important;
     margin-left: 10px !important;
-    margin-right: -10px !important;
+    margin-right: 10px !important;
 }
 
 .owl-dots-alphabetical {
@@ -461,7 +461,7 @@ body {
 }
 
 .carousel-content-container-per-food-cravings {
-    padding: 94.5px 133.5px 0px 153.5px;
+    padding: 94.5px 149px 0px 150.5px;
     margin-left: 0px;
 }
 
@@ -575,7 +575,7 @@ body {
 .Category-Container-Banner {
     position: absolute; 
     top: 127px; 
-    left: 5px;
+    left: 1px;
     width: 1450px; 
     height: 72.34px;
 }
@@ -3118,11 +3118,11 @@ ul#mapguide li:last-child:before {
 
 .supplemental-prev{
     left: -4px !important;
-    top: 394px !important;
+    top: 378.6px !important;
 }
 .supplemental-next{
     right: 15px !important;
-    top: 395px !important;
+    top: 378.6px !important;
 }
 
 .search-result-height{
@@ -3151,4 +3151,8 @@ ul#mapguide li:last-child:before {
 .social-media-handles-container{
     max-height: 230px;
     overflow-y: auto;
+}
+
+.supplemental-container{
+    padding: 139.5px 149px 0px 150.5px !important;
 }
