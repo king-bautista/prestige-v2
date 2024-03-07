@@ -1,10 +1,12 @@
 <div>
     <div class="back-img-btn" type="button">
-        <img class="" src="{{ URL::to('themes/sm_default/images/Back.png') }}">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        <span class="translateme" data-en="Back">Back</span>
     </div>
 
 	<div class="help-img-btn" id="Help_btn" data-container="body" data-toggle="popover" data-placement="left" data-content="" type="button">
-	  	<img class="" src="{{ URL::to('themes/sm_default/images/Help.png') }}">
+        <i class="fa fa-question" aria-hidden="true"></i>
+        <span class="translateme" data-en="Help">Help</span>
 	</div>
 
     @if($site->details['multilanguage'] > 0)

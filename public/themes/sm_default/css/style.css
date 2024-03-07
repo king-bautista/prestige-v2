@@ -595,10 +595,31 @@ body {
 /*---- css for help when landscape ----*/
 
 .help-img-btn {
+    font-family: 'Henry Sans Regular';
     position: absolute;
     top: 880px;
     right: 0;
     z-index: 1051;
+    width: 86px;
+    height: 68px;
+    background-color: #0030ff;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    text-align: center;
+    color: #fff;
+}
+
+.help-img-btn i {
+    font-size: 35px;
+    margin-top: 7px;
+}
+
+.help-img-btn span{
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    width: 50px;
 }
 
 .popover {
@@ -608,10 +629,32 @@ body {
 
 /* css for back when landscape */
 .back-img-btn {
+    font-family: "Henry Sans Regular" !important;
     position: absolute;
     top: 800px;
     right: 15px;
     z-index: 1009;
+    border: solid #0030ff 3px;
+    border-radius: 50px;
+    width: 70px;
+    height: 70px;
+    color: #0030ff;
+    text-align: center;
+    background-color: #accaff;
+}
+
+.back-img-btn i{
+    font-size: 35px;
+    margin-top: 5px;
+    margin-left: -5px;
+}
+
+.back-img-btn span{
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    width: 50px;
 }
 
 /*---- css for language when landscape ----*/
@@ -2457,6 +2500,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     /*---- css for help when portrait ----*/
 
     .help-img-btn {
+        font-family: 'Henry Sans Regular';
         position: absolute;
         top: 1338px !important;
         right: 0px !important;
