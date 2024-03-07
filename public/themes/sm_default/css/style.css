@@ -325,9 +325,11 @@ body {
 }
 
 .cat-nav-tabs {
-    position: absolute;
-    left: 401.5px;
-    bottom: 152px;
+    /* position: absolute; */
+    /* left: 401.5px; */
+    /* bottom: 152px; */
+    position: relative;
+    bottom: 208px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3201,4 +3203,10 @@ ul#mapguide li:last-child:before {
 
 .supplemental-container{
     padding: 139.5px 149px 0px 150.5px !important;
+}
+
+.tab-container{
+    position: absolute;
+    width: 100%;
+    top: 1080px;
 }
