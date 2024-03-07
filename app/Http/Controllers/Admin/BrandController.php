@@ -12,11 +12,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
 
 use App\Http\Requests\BrandRequest;
 
-use App\Models\Brand;
-use App\Models\Category;
+use App\Models\Company;
 use App\Models\Tag;
-use App\Models\Supplemental;
-use App\Models\BrandProductPromos;
+use App\Models\Brand;
+
 use App\Models\CompanyBrands;
 use App\Models\AdminViewModels\BrandViewModel;
 use App\Models\AdminViewModels\BrandProductViewModel;
@@ -64,14 +63,14 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             $brands = BrandViewModel::when(request('search'), function ($query) {
                 return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%');
-                   // ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
-                    
+                // ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
+
             })
                 ->when(count($brand_ids) > 0, function ($query) use ($brand_ids) {
                     return $query->whereIn('brands.id', $brand_ids);
                 })
                 ->leftJoin('brand_supplementals as bs', 'brands.id', '=', 'bs.brand_id')
-                ->leftJoin('categories as c', 'bs.supplemental_id','=', 'c.id')
+                ->leftJoin('categories as c', 'bs.supplemental_id', '=', 'c.id')
                 ->select('brands.*', 'c.name as c_name', 'brands.name as b_name', DB::raw('group_concat(c.name) as supplementals'))
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('brands.name', 'ASC');
@@ -404,27 +403,39 @@ class BrandController extends AppBaseController implements BrandControllerInterf
     {
         try {
             $between = explode("_", $ids);
-            $brand_management =  BrandViewModel::skip($between[0])->take(1000)->get();
-
+            $brand_management =  BrandViewModel::skip($between[0])->take(100)->get();
 
             $reports = [];
             foreach ($brand_management as $brand) {
+                $company_brand = CompanyBrands::where("brand_id", $brand->id)->get();
+                $company_id = (count($company_brand) > 0) ? $company_brand[0]['company_id'] : 0;
+                if($company_id != 0){
+                    $company = Company::where("id", $company_id)->get(); 
+                    $company_name = (count($company)>0)?$company_name = $company[0]['name'] : '';
+                }else{
+                    $company_name = '';
+                } 
+               
                 $reports[] = [
                     'id' => $brand->id,
                     'category_id' => $brand->category_id,
                     'category_name' => $brand->brand_details['category_name'],
-                    //'category_parent_id' => $brand->brand_details['parent_category_id'],
-                    'category_parent_name' => 'test cpn',//$brand->brand_details['parent_category_name'],
-                   // 'supplemental_category_id' => $brand->supplemental_ids,
-                    //'supplemental_category_name' => $brand->supplemental_names,
+                    'sub_category_id' => $brand->brand_details['parent_category_id'],
+                    'sub_category_name' => $brand->brand_details['parent_category_name'],
+                    'supplemental_category_id' => $brand->supplemental_ids,
+                    'supplemental_category_name' => $brand->supplemental_names,
                     'name' => $brand->name,
                     'descriptions' => $brand->descriptions,
                     'logo' => ($brand->logo != "") ? URL::to("/" . $brand->logo) : " ",
+                    'company_id' => $company_id,
+                    'company_name' => $company_name,
+                    'brand_id' => $brand->id,
+                    'tag_ids' => $brand->tag_ids,
+                    'tags' => $brand->tag_names,
                     'active' => $brand->active,
-                    'created_at' => $brand->created_at, 
+                    'created_at' => $brand->created_at,
                     'updated_at' => $brand->updated_at,
                     'deleted_at' => $brand->deleted_at,
-                    'tags' => $brand->tag_names,
                 ];
             }
 
@@ -434,7 +445,7 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                 Storage::delete($file);
             }
 
-            $filename = "brand_management_".(substr($ids, 0, 1)+1).".csv";
+            $filename = "brand_management_" . (substr($ids, 0, 1) + 1) . ".csv";
             // Store on default disk
             Excel::store(new Export($reports), $directory . $filename);
 

@@ -470,7 +470,7 @@ export default {
 						arr.push(i);
 					}
 					const res = [];
-					const chunkSize = 2000;
+					const chunkSize = 1000;
 					for (let ii = 0; ii < arr.length; ii += chunkSize) {
 						const chunk = arr.slice(ii, ii + chunkSize);
 						res.push(chunk[0] + '_' + chunk[chunk.length - 1]);
