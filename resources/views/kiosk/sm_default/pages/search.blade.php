@@ -191,7 +191,7 @@
             }
         });
 
-        $('.softkeys-search-page > .softkeys__btn--shift').on('click', function(){
+        $('.softkeys-search-page > .softkeys__btn--shift').on( 'touchend click', function(){
             if($(this).find('span').text() === '#+=') {
                 $(this).find('span').html('ABC');
                 $('.softkeys-search-page > .softkeys__btn--hidden').hide();

@@ -2057,7 +2057,7 @@
             $('#selectInput').trigger('change');
         });
 
-		$('.softkeys-map-page > .softkeys__btn--shift').on('click', function(){
+		$('.softkeys-map-page > .softkeys__btn--shift').on( 'touchend click', function(){
             if($(this).find('span').text() === '#+=') {
                 $(this).find('span').html('ABC');
                 $('.softkeys-map-page > .softkeys__btn--hidden').hide();
@@ -2068,7 +2068,7 @@
             }
         });
 
-		$('.softkeys-feedback > .softkeys__btn--shift').on('click', function(){
+		$('.softkeys-feedback > .softkeys__btn--shift').on( 'touchend click', function(){
             if($(this).find('span').text() === '#+=') {
                 $(this).find('span').html('ABC');
                 $('.softkeys-feedback > .softkeys__btn--hidden').hide();
