@@ -373,7 +373,7 @@ body {
 }
 
 .tenantCardImgContent {
-    top: 42px; 
+    top: 29px; 
     position: relative; 
     left: 28px; 
     width: 550px !important; 
@@ -1143,20 +1143,20 @@ body {
     width: 946px;
     height: 253.4px;
     margin-left: 18px;
-    margin-top: 38px;
+    margin-bottom: 30px;
     border-radius: 20px;
 }
 
 .promo-row-container {
     overflow-y: scroll !important;
-    max-height: 580px !important; /*870 if no banner promo*/
+    max-height: 580px; /*870 if no banner promo*/
     max-width: 973px !important;
     margin-left: 16px !important;
 }
 
 .promo-col-container {
     text-align: center !important;
-    padding-top: 30px !important;
+    padding-bottom: 30px !important;
 }
 
 .store-page-client-content {
@@ -1174,20 +1174,21 @@ body {
 
 .tenant-card-info-tab {
     border: 1px solid #efefef;
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 10px;
     width: 421px;
     height: 633px;
     float: right;
     font-size: 1.3em;
-    margin-top: 37.5px;
-    margin-left: 6px;
+    margin-top: 7.5px;
+    margin-left: 1px;
     position:relative;
 }
 
 .promo-featured-container {
     width: 1010px !important;
-    margin-top: -30px !important;
+    /* margin-top: 30px !important; */
+    padding-right: 10px;
 }
 
 .promo-modal-content {
@@ -1918,7 +1919,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 /*---- about page ----*/
 .socmediconcontainer {
-    margin-top: 15px;
+    margin-bottom: 15px;
     margin-left: 38px;
     color: #0030ff;
     font-family: "Henry Sans Regular";
@@ -2203,7 +2204,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
     .promo-col-container {
         text-align: center !important;
-        padding-top: 30px !important;
+        padding-bottom: 30px !important;
     }
 
     .store-page-client-content {
@@ -2529,7 +2530,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     /*---- css for about page when portrait ----*/
 
     .socmediconcontainer {
-        margin-top: 15px;
+        margin-bottom: 15px;
         margin-left: 38px;
     }
 
@@ -2618,6 +2619,10 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     background-color: transparent;
     border: none;
     resize: none;
+}
+
+.text-mall-details:focus{
+    outline: none;
 }
 
 #home-container {
@@ -3110,6 +3115,10 @@ ul#mapguide li:last-child:before {
     color: red;
 }
 
+.Food_color{
+    color: #246c63;
+}
+
 .Fashion_color{
     color: #823D3B;
 }
@@ -3209,4 +3218,13 @@ ul#mapguide li:last-child:before {
     position: absolute;
     width: 100%;
     top: 1080px;
+}
+
+.per-category-prev{
+    left: 10px !important;
+    top: 439.6px !important;
+}
+.per-category-next{
+    right: 30px !important;
+    top: 439.6px !important;
 }

@@ -344,12 +344,18 @@
             if(tenant.products != null) {
                 showProducts(tenant.products);
                 $('#isSubscriber').show();
+                $('#isSubscriber').css("margin-top", "10px");
                 $('#nonSubscriber').hide();
+
+                if($(".store-banner-container").is(':empty')){
+                    $(".promo-row-container").css("max-height", "870px")
+                }
             }
             else {
                 $('.tenantCardImgContent').attr('src', tenant.brand_logo);
                 $('#isSubscriber').hide();
-                $('#nonSubscriber').show();            
+                $('#nonSubscriber').css("margin-top", "10px");      
+                $('#nonSubscriber').show();    
             }
         }
         else {
