@@ -535,7 +535,7 @@
     }
 
     function generateLetters() {
-
+        available_letters = [];
         filterLetterNavigator();
 
         $('.alphabet-box').html('');
