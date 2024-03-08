@@ -292,7 +292,7 @@ class SitePointTenantViewModel extends Model
             }
 
             $promos = BrandProductViewModel::whereIn('id', $product_ids)
-            ->where('type', 'promos')
+            ->where('type', 'promo')
             ->whereDate('date_from', '<=', $current_date)
             ->whereDate('date_to', '>=', $current_date)
             ->get();
