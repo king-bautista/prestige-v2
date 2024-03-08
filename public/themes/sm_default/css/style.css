@@ -687,9 +687,9 @@ body {
 /* css for map canvas */
 .map-canvas {
     margin-top: 20px;
-    margin-left: -10px;
-    width: 1450px;
-    height: 780px;
+    margin-left: -15px;
+    width: 1455px;
+    height: 770px;
     position: absolute;
     background-color: white;
 }
