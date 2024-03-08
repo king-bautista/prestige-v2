@@ -84,7 +84,8 @@
                         <img src="{{ URL::to('themes/sm_default/images/no-internet.png') }}" style="width: 508px;" />
                     </div>
                 </div>
- 
+                <div class="now-showing-trailer cinema-cover">
+                </div>
             </div>
         </div>
     </div>
@@ -308,12 +309,12 @@
         });
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev cinema-prev">';
         navigation_button += '<div class="left-btn-carousel">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next cinema-next">';
         navigation_button += '<div class="right-btn-carousel">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
