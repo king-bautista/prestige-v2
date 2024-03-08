@@ -281,6 +281,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         ->when(!$is_sitePartner, function($query) use ($company_id){
             return $query->where('company_id', '!=' ,$company_id)->where('loop_number', 1);
         })
+        ->where('end_date', '>', date("Y-m-d"))
         ->get();
 
         return $ads;
