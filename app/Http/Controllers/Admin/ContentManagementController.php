@@ -445,6 +445,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             })
             ->where("start_date", "<=", date("Y-m-d"))
             ->where("end_date", ">", date("Y-m-d"))
+            ->orderBy("content_managent.updated_at","desc")
             ->get();
 
         return $ads;
