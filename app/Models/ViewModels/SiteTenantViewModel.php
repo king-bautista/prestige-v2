@@ -296,8 +296,6 @@ class SiteTenantViewModel extends Model
                 $new_products['product_list'][] = $promo;
             }
 
-
-
             return $new_products;
         }
         return null;

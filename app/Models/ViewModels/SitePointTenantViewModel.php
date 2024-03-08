@@ -278,7 +278,9 @@ class SitePointTenantViewModel extends Model
         $new_products = [];
         $product_ids = $this->getTenantProducts()->get()->pluck('brand_product_promo_id');
         if(count($product_ids) > 0) {
-            $products = BrandProductViewModel::whereIn('id', $product_ids)->where('type', '!=', 'promo')->get();
+            $products = BrandProductViewModel::whereIn('id', $product_ids)
+            ->whereIn('type', ['banner', 'product'])
+            ->get();
             foreach($products as $product) {
                 if($product->type == 'banner') {
                     $new_products['banners'][] = $product;
@@ -287,6 +289,17 @@ class SitePointTenantViewModel extends Model
                     $new_products['product_list'][] = $product;
                 }
             }
+
+            $promos = BrandProductViewModel::whereIn('id', $product_ids)
+            ->where('type', 'promos')
+            ->whereDate('date_from', '<=', $current_date)
+            ->whereDate('date_to', '>=', $current_date)
+            ->get();
+
+            foreach($promos as $promo) {
+                $new_products['product_list'][] = $promo;
+            }
+            
             return $new_products;
         }
         return null;
