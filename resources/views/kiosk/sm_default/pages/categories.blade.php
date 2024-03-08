@@ -551,12 +551,12 @@
     function filterLetterNavigator() {
         let letter_container = [];
         
-
         $(".tenant-store-name").each(function(){
-            let tenant_name = $(this).html().charAt(0);            
+            let tenant_name = $(this).html().charAt(0);
             if (tenant_name.match(/^\d/)) {
                 letter_container.push("#");
-            }else{
+            }
+            else{
                 letter_container.push(tenant_name);
             };
         });
