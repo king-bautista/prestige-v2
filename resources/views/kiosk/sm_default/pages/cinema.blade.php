@@ -118,8 +118,10 @@
         });
 
         $('.watch-trailer').on('click', function() {
-            var link = $(this).data('src').replace("watch?v=", "embed/");
-            var youtube_str = '<iframe class="embed-responsive-item" width="420" height="315" src="'+link+'?autoplay=1&loop=0&controls=0&showinfo=0&fs=0&disablekb=1&" id="video" allowscriptaccess="always" allow="autoplay;"></iframe>';
+            var youtube_str = '';
+            var link = '';
+            link = $(this).attr("data-src").replace("watch?v=", "embed/");
+            youtube_str = '<iframe class="embed-responsive-item" width="420" height="315" src="'+link+'?autoplay=1&loop=0&controls=0&showinfo=0&fs=0&disablekb=1&" id="video" allowscriptaccess="always" allow="autoplay;"></iframe>';
             $('#videocontainer').html(youtube_str);
             $('.now-showing-trailer').show();
             $('.now-showing-details').hide();

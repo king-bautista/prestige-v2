@@ -535,11 +535,10 @@
     }
 
     function generateLetters() {
-
+        available_letters = [];
         filterLetterNavigator();
 
         $('.alphabet-box').html('');
-        $('.alphabet-box').append('<a class="link-alpha" onclick="moveTo(\''+String.fromCharCode(0)+'\')">#</a>');
         for (let i = 65; i <= 90; i++) {
 
             var class_name = (available_letters.includes(String.fromCharCode(i))) ? 'link-alpha' : 'link-alpha-disabled';
@@ -551,9 +550,10 @@
 
     function filterLetterNavigator() {
         let letter_container = [];
+        
 
         $(".tenant-store-name").each(function(){
-            let tenant_name = $(this).html().charAt(0);
+            let tenant_name = $(this).html().charAt(0);            
             if (tenant_name.match(/^\d/)) {
                 letter_container.push("#");
             }else{
