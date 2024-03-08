@@ -275,6 +275,7 @@ class SitePointTenantViewModel extends Model
 
     public function getProductsAttribute() 
     {
+        $current_date = date('Y-m-d');
         $new_products = [];
         $product_ids = $this->getTenantProducts()->get()->pluck('brand_product_promo_id');
         if(count($product_ids) > 0) {
@@ -299,7 +300,7 @@ class SitePointTenantViewModel extends Model
             foreach($promos as $promo) {
                 $new_products['product_list'][] = $promo;
             }
-            
+
             return $new_products;
         }
         return null;
