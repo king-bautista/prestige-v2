@@ -1879,8 +1879,8 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 .nav-event-button-align-custom {
     top: 22px !important;
     left: 87px !important;
-    font-size: 22px !important;
-    line-height: 18px !important;
+    font-size: 17px !important;
+    line-height: 17px !important;
 }
 
 .nav-cinema-button-align {
@@ -3244,4 +3244,9 @@ ul#mapguide li:last-child:before {
 .cinema-prev{
     top: 349px !important;
     left: 10px !important;
+}
+
+.back-filipino{
+    font-size: 11pt;
+    line-height: 2;
 }

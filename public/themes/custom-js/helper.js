@@ -145,9 +145,11 @@ Helpers.prototype = {
 
         if(content_language == 'filipino') {
             $('#events_txt').addClass('nav-event-button-align-custom');
+            $('#back-size').addClass('back-filipino');
         }
         else {
             $('#events_txt').removeClass('nav-event-button-align-custom');
+            $('#back-size').removeClass('back-filipino');
         }
         
     },
