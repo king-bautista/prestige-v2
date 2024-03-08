@@ -505,6 +505,8 @@ class KioskController extends AppBaseController
 
             $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
 
+            SitePointTenantViewModel::setSiteId($request->site_id);
+
             $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
             ->where(function ($query) {
                 $query->where('site_points.tenant_id', '>', 0)

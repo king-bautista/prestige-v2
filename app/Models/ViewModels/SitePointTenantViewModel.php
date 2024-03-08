@@ -43,6 +43,8 @@ class SitePointTenantViewModel extends Model
      */
     protected $primaryKey = 'id';
 
+    static $site_id = null;
+
     /**
      * Append additiona info to the return data
      *
@@ -67,6 +69,10 @@ class SitePointTenantViewModel extends Model
         'location',
         'icon_path',
     ];
+
+    static function setSiteId($id) {
+        self::$site_id = $id;
+    }
 
     public function getBrandDetails()
     {   
@@ -243,23 +249,23 @@ class SitePointTenantViewModel extends Model
     {
         $new_schedule = [];
         $schedules = $this->getTenantDetails()->where('meta_key', 'schedules')->first();
-        
-        if($schedules) {
-            $json_data = json_decode($schedules->meta_value);
-            
-            if(count($json_data) > 1) {
-                foreach($json_data as $data) {
+        $schedules_json = ($schedules) ? json_decode($schedules->meta_value) : null;
+        $with_schedule = (isset($schedules_json[0]->schedules)) ? (($schedules_json[0]->schedules != '') ? true : false) : false;
+
+        if($with_schedule) {            
+            if(count($schedules_json) > 1) {
+                foreach($schedules_json as $data) {
                     $today_schedule = $this->getTodaySchedule($data);
                     if($today_schedule['is_open'] == 1)
                         return $today_schedule;
                 }
             }
             else {
-                return $this->getTodaySchedule($json_data);
+                return $this->getTodaySchedule($schedules_json);
             }            
         }
 
-        $site_id = $this->site_id;
+        $site_id = self::$site_id;
         $site = SiteViewModel::find($site_id);
         if(isset($site->operational_hours))
             return $site->operational_hours;
