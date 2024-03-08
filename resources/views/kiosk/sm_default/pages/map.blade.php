@@ -56,7 +56,15 @@
                     <select id="tenant-select" class="form-control" style="width: 423px;">
                         <option value="0" class="translateme" data-en="Input Destination">Input Destination</option>
                         @foreach ($all_tenants as $tenant)
-                            <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}</option>
+							@if(in_array($tenant['brand_name'], $duplicate_tenants))
+								@if($tenant['building_name'] == 'Main Building')
+		                            <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}, {{ $tenant['floor_name'] }}</option>
+								@else
+									<option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}, {{ $tenant['floor_name'] }}, {{ $tenant['building_name'] }}</option>
+								@endif
+							@else
+	                            <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}</option>
+							@endif
                         @endforeach
                     </select>
                 </div>

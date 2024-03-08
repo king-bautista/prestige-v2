@@ -68,6 +68,7 @@ class KioskController extends AppBaseController
             $assistant_message = $this->getAssistantMessage();
             $translations = $this->getTranslation();
             $all_tenants = $this->getTenants();
+            $duplicate_tenants = $this->getDuplicates($all_tenants);
 
             // MAP PAGE DATA
             $site_config = $this->getSiteConfig();
@@ -123,6 +124,7 @@ class KioskController extends AppBaseController
                 'assistant_message', 
                 'translations', 
                 'all_tenants', 
+                'duplicate_tenants',
                 'site_config', 
                 'building_count',
                 'site_floors',
@@ -1195,6 +1197,15 @@ class KioskController extends AppBaseController
                'reason_other' => $request->reason_other
             ]
         );
+    }
+
+    private function getDuplicates($tenants) {
+        $tenant_list = [];
+        foreach($tenants as $index => $tenant) {
+            $tenant_list[] = $tenant['brand_name'];
+        }
+
+        return array_unique( array_diff_assoc( $tenant_list, array_unique( $tenant_list ) ) );
     }
     
 }
