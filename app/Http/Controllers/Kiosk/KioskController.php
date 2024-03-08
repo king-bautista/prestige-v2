@@ -67,7 +67,7 @@ class KioskController extends AppBaseController
             $fullscreen_ads = $this->getFullScreenAds();
             $assistant_message = $this->getAssistantMessage();
             $translations = $this->getTranslation();
-            return $all_tenants = $this->getTenants();
+            $all_tenants = $this->getTenants();
 
             // MAP PAGE DATA
             $site_config = $this->getSiteConfig();
