@@ -260,14 +260,13 @@
 
     function init() {
         var container = document.getElementById('canvas');
-
         var w = container.offsetWidth;
 		var h = container.offsetHeight;
 
-		w = w > 0 ? w : 1450; 
+		w = w > 0 ? w : 1455; 
 		h = h > 0 ? h : 800;
 
-		var w = 1450;
+		var w = 1455;
 		var h = 800;
 
         /**setup camera*/
@@ -466,6 +465,7 @@
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.outputEncoding = THREE.sRGBEncoding;
         renderer.setSize(w,h);
+		// renderer.css("outline", "none");
 		container.appendChild(renderer.domElement);
 
         // Build the controls.

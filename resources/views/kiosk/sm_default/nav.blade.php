@@ -1,7 +1,7 @@
 <div>
     <div class="back-img-btn" type="button">
         <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        <span class="translateme" data-en="Back">Back</span>
+        <span class="translateme" id="back-size" data-en="Back">Back</span>
     </div>
 
 	<div class="help-img-btn" id="Help_btn" data-container="body" data-toggle="popover" data-placement="left" data-content="" type="button">
