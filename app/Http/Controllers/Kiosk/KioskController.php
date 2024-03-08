@@ -497,8 +497,8 @@ class KioskController extends AppBaseController
     }
 
     public function search(Request $request) {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::find($request->site_id);
             $site_map_ids = SiteMap::where('site_id', $request->site_id)
             ->where('map_type', $site->details['map_type'])
@@ -570,14 +570,14 @@ class KioskController extends AppBaseController
                 'tenants' => $tenants,
                 'suggest_subscribers' => $suggest_subscribers,
             ];
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // } 
     }
 
     public function getBannerAds() {

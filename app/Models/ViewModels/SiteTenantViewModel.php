@@ -270,7 +270,6 @@ class SiteTenantViewModel extends Model
     public function getProductsAttribute() 
     {
         $current_date = date('Y-m-d');
-
         $new_products = [];
         $product_ids = $this->getTenantProducts()->get()->pluck('brand_product_promo_id');
         if(count($product_ids) > 0) {
@@ -287,7 +286,7 @@ class SiteTenantViewModel extends Model
             }
 
             $promos = BrandProductViewModel::whereIn('id', $product_ids)
-            ->where('type', 'promos')
+            ->where('type', 'promo')
             ->whereDate('date_from', '<=', $current_date)
             ->whereDate('date_to', '>=', $current_date)
             ->get();
@@ -295,8 +294,6 @@ class SiteTenantViewModel extends Model
             foreach($promos as $promo) {
                 $new_products['product_list'][] = $promo;
             }
-
-
 
             return $new_products;
         }
