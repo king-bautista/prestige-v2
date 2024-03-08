@@ -211,7 +211,11 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
         $current_map = SiteMapViewModel::find($id);
         $amenities = Amenity::get();
         $site_details = SiteViewModel::find($current_map->site_id);
-        $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)->get();
+        $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)
+        ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+        ->select('site_tenants.*')
+        ->orderBy('brands.name')
+        ->get();
         $site_maps = SiteMapViewModel::where('site_id', $current_map->site_id)->where('map_type', $current_map->map_type)->get();
         $map_points_liks = $this->getMapPointsLinks($site_maps);
 

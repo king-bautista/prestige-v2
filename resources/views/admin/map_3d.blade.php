@@ -163,7 +163,7 @@
               <select class="frm_info custom-select" id="tenant_id" name="tenant_id">
                 <option value="">Select Tenant</option>
                 @foreach ($site_tenants as $tenant)
-                <option value="{{$tenant->id}}">{{$tenant->brand_name}}</option>
+                <option value="{{$tenant->id}}">{{$tenant->brand_name}} - {{$tenant->id}}</option>
                 @endforeach
               </select>
             </div>
@@ -1374,7 +1374,7 @@
 				$('#tenant_id').empty();
 				$('#tenant_id').append('<option value="">Select Tenant</option>');
 				$.each(data.data, function(key,val) {             
-					$('#tenant_id').append('<option value="'+val.id+'">'+val.brand_name+'</option>');
+					$('#tenant_id').append('<option value="'+val.id+'">'+val.brand_name+' - '+val.id+'</option>');
 				});
 			});
 
