@@ -539,6 +539,7 @@
         filterLetterNavigator();
 
         $('.alphabet-box').html('');
+        $('.alphabet-box').append('<a class="link-alpha" onclick="moveTo(0)">#</a>');
         for (let i = 65; i <= 90; i++) {
 
             var class_name = (available_letters.includes(String.fromCharCode(i))) ? 'link-alpha' : 'link-alpha-disabled';
@@ -550,13 +551,12 @@
 
     function filterLetterNavigator() {
         let letter_container = [];
-        
+
         $(".tenant-store-name").each(function(){
             let tenant_name = $(this).html().charAt(0);
             if (tenant_name.match(/^\d/)) {
                 letter_container.push("#");
-            }
-            else{
+            }else{
                 letter_container.push(tenant_name);
             };
         });
@@ -586,7 +586,12 @@
             if($(this).html().startsWith(letter, 0)){
                 $(this).addClass('letter-selected');
             };
-            if ($(this).html().match(/^\d/) && letter=="#") {
+
+            if($(this).html().startsWith('@', 0) && letter== 0){
+                $(this).addClass('letter-selected');
+            };
+
+            if ($(this).html().match(/^\d/) && letter==0) {
                 $(this).addClass('letter-selected');
             };
         });
@@ -594,9 +599,13 @@
         // ADD ACTIVE CLASS
         $(".alphabet-box .link-alpha").each(function(){
             if($(this).html().startsWith(letter, 0)){
-                console.log($(this).html());
                 $(this).addClass('active');
             };
+
+            if($(this).html().startsWith('#', 0) && letter==0){
+                $(this).addClass('active');
+            };
+
         });
 
         $('.alpha-tenants').parent("div").find(".owl-dots button").each(function(key){
