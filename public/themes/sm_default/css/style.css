@@ -905,7 +905,7 @@ body {
 .CinemaDetailsModalContent {
     width: 1450px !important;
     left: 0px !important;
-    margin-left: 5px !important;
+    margin-left: 0.5px !important;
     position: absolute !important;
     top: 0px !important;
     background-color: rgba(0, 0, 0, 0.7) !important;

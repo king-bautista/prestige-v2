@@ -282,6 +282,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             return $query->where('company_id', '!=' ,$company_id)->where('loop_number', 1);
         })
         ->where('end_date', '>', date("Y-m-d"))
+        ->orderBy("")
         ->get();
 
         return $ads;
