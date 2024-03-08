@@ -308,33 +308,23 @@
     }
 
     function showTenantDetails(tenant) {
-        tenant_schedule = '';
-        console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
+        var tenant_operational_hours = (tenant.operational_hours.start_time) ? tenant.operational_hours : site_info;
+        var is_open = (tenant_operational_hours.is_open) ? 'text-success' : 'text-danger';
+
+        tenant_schedule = '';
         tenant_id = tenant.id;
-        if(tenant.tenant_details) {
-            tenant_schedule = (tenant.tenant_details.schedules[0].schedules != undefined && tenant.tenant_details.schedules[0].schedules != '') ? tenant.tenant_details.schedules : '';
-        }
+        tenant_schedule = (tenant.tenant_details) ? (tenant.tenant_details.schedules[0].schedules != undefined && tenant.tenant_details.schedules[0].schedules != '') ? tenant.tenant_details.schedules : '' : '';
 
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
         $('.tenant-store-page-name').html(helper.convertToProperCase(tenant.brand_name));
         $('.tenant-store-page-floor').html(tenant.location);
-
         // STORE OR SITE HOURS
-        $('.mall-hours-title').removeClass('text-success').removeClass('text-error')
-        var is_open = (tenant.operational_hours.is_open) ? 'text-success' : 'text-danger';
+        $('.mall-hours-title').removeClass('text-success text-error');
         $('.is-open').removeClass('text-success text-danger');
-        if(tenant.operational_hours.start_time) {
-            $('.tenant-hours').html(tenant.operational_hours.start_time +'-'+tenant.operational_hours.end_time);
-            $('.is-open').addClass(is_open).html((tenant.operational_hours.is_open) ? 'Open' : 'Closed');
-            $('.is-open').attr("data-en",(tenant.operational_hours.is_open) ? 'Open' : 'Closed')
-        }
-        else {
-            $('.is-open').addClass(is_open).html((site_info.operational_hours.is_open) ? 'Open' : 'Closed');
-            $('.tenant-hours').html(site_info.start_time +'-'+site_info.end_time);
-            $('.is-open').attr("data-en",(tenant.operational_hours.is_open) ? 'Open' : 'Closed')
-        }
+        $('.tenant-hours').html(tenant_operational_hours.start_time +'-'+tenant_operational_hours.end_time);
+        $('.is-open').attr("data-en",(tenant_operational_hours.is_open) ? 'Open' : 'Closed').addClass(is_open).html((tenant_operational_hours.is_open) ? 'Open' : 'Closed');
 
         // PRODUCT AND LOGO
         if(tenant.is_subscriber) {

@@ -113,13 +113,11 @@ Helpers.prototype = {
             translations_by_language = my_translations;
         }
 
-        console.log(translations_by_language);
-
         var obj = this;
 
         $(".translateme").each(function(){
             let data_en = obj.encodeEntities($(this).attr('data-en')).replace(/'/g, '&#39;');
-            console.log(data_en);
+
             var translated = translations_by_language.find(option => option.english == data_en);
 
             if (translated != null) {                         
