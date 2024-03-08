@@ -24,6 +24,8 @@ class TemporaryPlayList extends Model
         'sequence',
         'dimension',
         'loop_number',
+        'start_date',
+        'end_date',
     ];
 
     /**
