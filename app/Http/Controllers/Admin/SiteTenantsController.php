@@ -256,7 +256,11 @@ class SiteTenantsController extends AppBaseController implements SiteTenantsCont
     public function getTenantPerFloor($id)
     {
         try {
-            $site_tenants = SiteTenantViewModel::where('site_building_level_id', $id)->get();
+            $site_tenants = SiteTenantViewModel::where('site_building_level_id', $id)
+            ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
+            ->select('site_tenants.*')
+            ->orderBy('brands.name')
+            ->get();
             return $this->response($site_tenants, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
