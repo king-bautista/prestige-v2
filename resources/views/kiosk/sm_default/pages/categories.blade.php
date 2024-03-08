@@ -72,7 +72,7 @@
     <div class="row tab-container">
         <div class="col-12">
             <div class="cat-nav-tabs"> 
-                <span class="mr-4 nav-tab-title translateme" data-en="View stores by: ">View stores by: </span>
+                <span class="mr-4 nav-tab-title translateme" data-en="View stores by:">View stores by: </span>
                 <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Category-Tab" data-toggle="pill" data-target="#Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true" data-en="Category">Category</button>
