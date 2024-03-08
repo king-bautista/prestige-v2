@@ -408,7 +408,7 @@ body {
 }
 
 .carousel-content-container-per-food-category {
-    padding: 125.5px 149px 0px 150.5px;
+    padding: 125.5px 148.5px 0px 149.5px;
     margin-left: 0px;
 }
 
@@ -3211,7 +3211,7 @@ ul#mapguide li:last-child:before {
 }
 
 .supplemental-container{
-    padding: 139.5px 149px 0px 150.5px !important;
+    padding: 139.5px 148.5px 0px 149.5px !important;
 }
 
 .tab-container{
@@ -3227,4 +3227,21 @@ ul#mapguide li:last-child:before {
 .per-category-next{
     right: 30px !important;
     top: 439.6px !important;
+}
+
+.cinema-cover{
+    height: 512px;
+    width: 1082px;
+    position: absolute;
+    z-index: 2;
+}
+
+.cinema-next{
+    top: 349px !important;
+    right: 51px !important;
+}
+
+.cinema-prev{
+    top: 349px !important;
+    left: 10px !important;
 }
