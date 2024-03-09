@@ -48,7 +48,7 @@
         }
 
         .softkeys__btn--shift:hover {
-            background-color: #4b94ce !important;
+            background-color: #98dad0 !important;
         }
 
         .thankyou {
@@ -103,6 +103,12 @@
         .btn-submit-nothelpful {
             padding: 8px 50px 8px 50px;
             font-family: 'Henry Sans Regular';
+        }
+
+        .softkeys--alt .softkeys__btn[data-type=shift] {
+            background-color: #fff !important;
+            border-color: #4b94ce;
+            color: #6051e3;
         }
 
     </style>
