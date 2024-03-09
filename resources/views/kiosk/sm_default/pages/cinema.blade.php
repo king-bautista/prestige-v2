@@ -381,6 +381,7 @@
             schedule_str += '<div class="mt-08 mb-1 mx-4 SmCinemaSched">';
             schedule_str += ''+key+'';
             $.each(schedules, function(index,schedule) {
+                alert(schedule);
                 schedule_str += '<div class="text-center">'+schedule+'</div>';
             });
             schedule_str += '</div>';
