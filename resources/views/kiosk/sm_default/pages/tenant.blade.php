@@ -323,7 +323,8 @@
         // STORE OR SITE HOURS
         $('.mall-hours-title').removeClass('text-success text-error');
         $('.is-open').removeClass('text-success text-danger');
-        $('.tenant-hours').html(tenant_operational_hours.start_time +'-'+tenant_operational_hours.end_time);
+        alert(tenant.operational_hours.start_time);
+        $('.tenant-hours').html(tenant_operational_hours.start_time +' - '+tenant_operational_hours.end_time);
         $('.is-open').attr("data-en",(tenant_operational_hours.is_open) ? 'Open' : 'Closed').addClass(is_open).html((tenant_operational_hours.is_open) ? 'Open' : 'Closed');
 
         // PRODUCT AND LOGO
