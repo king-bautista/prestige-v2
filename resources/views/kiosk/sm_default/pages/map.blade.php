@@ -1609,6 +1609,29 @@
 		}
 	}
 
+	var text_guide = [];
+	function testGuide() {		
+		$("#mapguide li").remove();
+
+		var count = 0;
+
+		$.each(text_guide, function(){
+			if (this == "Turn Left" || this == "Turn Right" 
+			|| this == "Turn Left on Escalator" || this == "Turn Right on Escalator" 
+			|| this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
+			}
+			else {
+				var guide_txt = this;
+				setTimeout(function() {
+					$("#mapguide li").removeClass('active');
+					$("#mapguide").append('<li class="active">' + guide_txt + '</li>');
+				}, count * 2000);
+				count++;
+			}
+		});
+
+	}
+
 	function directionTo() {
 		runner.visible = false;
 		runner2.visible = false;
@@ -1653,23 +1676,10 @@
 			$(".map-distance").html(data['distance'].toFixed(0)  + 'm distance');
 			$(".map-steps").html( steps + ' steps');
 			$(".map-minutes").html( mins + ' minute' + (mins > 1 ? 's' : ''));
-			$("#mapguide li").remove();
-
-			var count = 0;
-			$.each(data['guide'],function(){
-				if (this == "Turn Left" || this == "Turn Right" 
-				|| this == "Turn Left on Escalator" || this == "Turn Right on Escalator" 
-				|| this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
-				}
-				else {
-					var guide_txt = this;
-					setTimeout(function() {
-						$("#mapguide li").removeClass('active');
-						$("#mapguide").append('<li class="active">' + guide_txt + '</li>');
-					}, count * 2000);
-					count++;
-				}
-			});
+			
+			text_guide = [];
+			text_guide = data['guide'];
+			testGuide();			
 
 			level_end_points = data['level_end_points'];
 			var destination_wayfind = data['destination'];
@@ -1932,6 +1942,8 @@
 				theball.position.y = movementstmp[0].y;
 				theball.position.z = movementstmp[0].z;
 				movements = movementstmp;
+
+				testGuide();
 			}
 			// KEYBOARD CLOSE
 			// $("#mapkeyboarclose").click();

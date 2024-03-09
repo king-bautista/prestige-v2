@@ -341,7 +341,7 @@
                 }
             }
             else {
-                $('.tenantCardImgContent').attr('src', tenant.brand_logo);
+                $('.tenantCardImgContent').attr('src', "{{ URL::to('themes/sm_default/images/stick-around.png') }}");
                 $('#isSubscriber').hide();
                 $('#nonSubscriber').css("margin-top", "10px");      
                 $('#nonSubscriber').show();    
