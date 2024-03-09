@@ -160,35 +160,34 @@
                 $('.notification').hide();
                 $.post( "/api/v1/search", { site_id: site_id, id: null, key_words: search_key } )
                 .done(function(responce) {
-                    if(responce.tenants.length > 0) {
 
+                    $('#search-title').html('Search Results');
+                    $('#search-title').attr("data-en",'Search Results');
+                    $('#search_str').html(search_key);
+                    $('.search-for').show();
+
+                    current_location = 'searchresult';
+                    page_history.push(current_location);
+
+                    if(responce.tenants.length > 0) {
                         showTenantSearch(responce.tenants);
                         showSubscriber(responce.suggest_subscribers)
-                        $('#search-title').html('Search Results');
-                        $('#search_str').html(search_key);
-                        $('.search-for').show();
                         $('#keyboard-section').hide();
                         $('#searchList').show();
-                        current_location = 'searchresult';
-                        page_history.push(current_location);
-
                     }
                     else {
-                        $('#search_str').html(search_key);
-                        $('#search-title').html('Search Results');
-                        $('.search-for').show();
                         $('#searchNone').show();
                         $('#keyboard-section').hide();
                         $('#searchList').hide();
-                        current_location = 'searchnoresult';
-                        page_history.push(current_location);
                     }
+                    helper.setTranslation();
                 })
             }
             else {
                 $("#code").css("border-color", "#bc5b68");
                 $('.notification').show();
             }
+
         });
 
         $('.softkeys-search-page > .softkeys__btn--shift').on( 'touchend click', function(){
@@ -365,7 +364,6 @@
                 items: 4,
             });
         }
-        helper.setTranslation();
     }
 
     function onClickSuggest(tenant) {
