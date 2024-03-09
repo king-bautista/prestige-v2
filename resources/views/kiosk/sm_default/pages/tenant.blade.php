@@ -303,6 +303,8 @@
         else{
             $(".is_subscriber").removeClass('social-media-container');
             $(".is_subscriber").addClass('social-media-container-auto');
+            $(".is_subscriber").scrollTop(0);
+            
         }
     }
 

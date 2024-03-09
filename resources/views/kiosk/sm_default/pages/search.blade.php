@@ -147,9 +147,11 @@
         }).on('mouseup',function(){
             $('#code').trigger('keydown');
             $('.notification').hide();
+            $('.ui-menu').scrollTop(0);
         }).on('touchend',function(){
             $('.notification').hide();
             $('#code').trigger('keydown');
+            $('.ui-menu').scrollTop(0);
         });
 
         $('.search-box-button, .softkeys__btn--search').on('touchend click', function() {

@@ -214,6 +214,7 @@ Helpers.prototype = {
         $('#videocontainer').html('');
         $('#btnresetmap').click();
         $('input[name="feedback_picked"]').prop('checked', false);
+        $("#ispwd").prop('checked', false);
         $('#feedback-textarea').prop('disabled', true);
         $('#feedback-textarea').val('');
         $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
@@ -257,6 +258,7 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('#videocontainer').html('');
         $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
+        $('.social-media-handles-container').scrollTop(0);
         current_location = 'about';
     },
 
