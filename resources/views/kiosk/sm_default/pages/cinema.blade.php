@@ -137,7 +137,6 @@
             else{
                 $("#Tab-Cinema-Tab").click();
             }
-            // alert("beng");
         });
     });
 
@@ -266,7 +265,6 @@
                 var carousel_count = parseInt(my_showing.length), last_carousel;
                 last_carousel = carousel_count - 1;
                 var col_class = 'col-sm-4';
-
                 if(key == last_carousel){
                     if(showings.length == 1){
                         col_class = 'col-sm-12';

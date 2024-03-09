@@ -1,11 +1,13 @@
 <div>
     <div class="back-img-btn" type="button">
-        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        <!-- <i class="fa fa-chevron-left" aria-hidden="true"></i> -->
+        <img src="{{ URL::to('themes/sm_default/images/back-chevron.png') }}" class="back-btn-img" />
         <span class="translateme" id="back-size" data-en="Back">Back</span>
     </div>
 
 	<div class="help-img-btn" id="Help_btn" data-container="body" data-toggle="popover" data-placement="left" data-content="" type="button">
-        <i class="fa fa-question" aria-hidden="true"></i>
+        <!-- <i class="fa fa-question" aria-hidden="true"></i> -->
+        <img src="{{ URL::to('themes/sm_default/images/question-mark.png') }}" class="help-btn-img"/>
         <span class="translateme" data-en="Help">Help</span>
 	</div>
 

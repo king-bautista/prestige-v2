@@ -296,7 +296,6 @@
             $(".is_subscriber").removeClass('social-media-container-auto');
             excess_height = tenant_name_height - max_height;
             new_height = 120 - excess_height;
-            alert(new_height);
             
             $(".social-media-container").css("height", new_height + "px");
 
@@ -323,7 +322,6 @@
         // STORE OR SITE HOURS
         $('.mall-hours-title').removeClass('text-success text-error');
         $('.is-open').removeClass('text-success text-danger');
-        alert(tenant.operational_hours.start_time);
         $('.tenant-hours').html(tenant_operational_hours.start_time +' - '+tenant_operational_hours.end_time);
         $('.is-open').attr("data-en",(tenant_operational_hours.is_open) ? 'Open' : 'Closed').addClass(is_open).html((tenant_operational_hours.is_open) ? 'Open' : 'Closed');
 

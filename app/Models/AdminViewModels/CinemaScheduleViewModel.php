@@ -77,7 +77,11 @@ class CinemaScheduleViewModel extends Model
         ->get();
 
         foreach($cinema_schedules as $index => $schedule) {
-            $new_cinema_schedules[$schedule->screen_name][] = Carbon::parse($schedule->show_time)->format('h:i A');
+            $total_run_time = Carbon::now()->addMinutes($schedule->runtime);
+            $showTime = Carbon::parse($schedule->show_time);
+            $end_time = $showTime->copy()->addMinutes($schedule->runtime);
+
+            $new_cinema_schedules[$schedule->screen_name][] = $showTime->format('h:i A') . " - " . $end_time->format('h:i A');
         }
 
         return $new_cinema_schedules;

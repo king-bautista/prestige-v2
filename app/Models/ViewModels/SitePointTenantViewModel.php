@@ -215,8 +215,8 @@ class SitePointTenantViewModel extends Model
                 if(strpos("Schedule, ".$data->schedules, $current_day)) {
                     $new_schedule = [
                         'is_open' => (strtotime($data->start_time) <= time() && strtotime($data->end_time) >= time()) ? 1 : 0,
-                        'start_time' => date("h:ia",strtotime($data->start_time)),
-                        'end_time' => date("h:ia",strtotime($data->end_time)),
+                        'start_time' => date("h:i a",strtotime($data->start_time)),
+                        'end_time' => date("h:i a",strtotime($data->end_time)),
                     ];
                     return $new_schedule;
                 }

@@ -66,8 +66,8 @@ class SiteViewModel extends Model
         if($json_data) {
             return [
                 'is_open' => (strtotime($json_data->start_time) <= time() && strtotime($json_data->end_time) >= time()) ? 1 : 0,
-                'start_time' => date("h:ia",strtotime($json_data->start_time)),
-                'end_time' => date("h:ia",strtotime($json_data->end_time)),
+                'start_time' => date("h:i a",strtotime($json_data->start_time)),
+                'end_time' => date("h:i a",strtotime($json_data->end_time)),
             ];
         }
     }

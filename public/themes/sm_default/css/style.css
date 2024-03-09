@@ -620,10 +620,11 @@ body {
 
 .help-img-btn span{
     position: absolute;
-    bottom: 5px;
-    left: 50%;
+    bottom: 2px;
+    left: 43%;
     transform: translate(-50%);
     width: 50px;
+    font-size: 11pt;
 }
 
 .popover {
@@ -659,6 +660,7 @@ body {
     left: 50%;
     transform: translate(-50%);
     width: 50px;
+    font-size: 10px;
 }
 
 /*---- css for language when landscape ----*/
@@ -903,7 +905,7 @@ body {
 }
 
 .CinemaDetailsModalContent {
-    width: 1450px !important;
+    width: 1451px !important;
     left: 0px !important;
     margin-left: 0.5px !important;
     position: absolute !important;
@@ -3249,4 +3251,16 @@ ul#mapguide li:last-child:before {
 .back-filipino{
     font-size: 11pt;
     line-height: 2;
+}
+
+.help-btn-img{
+    width: 39px;
+    margin-top: 4px;
+    margin-right: 10px;
+}
+
+.back-btn-img{
+    width: 27.5px;
+    margin-top: 10px;
+    margin-right: 3px;
 }
