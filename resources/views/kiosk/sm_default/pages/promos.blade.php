@@ -74,7 +74,8 @@
                 promo_item += '<div class="card border-0 bg-transparent img-promo-card">';
                 promo_item += '<img type="button" class="promo-img promo_img_'+ promo.promo_id +'" src="'+ promo.image_url +'">';
                 promo_item += '<div class="d-block">';
-                promo_item += '<p class="promo-store tenants_tenant_store_'+ promo.promo_id +'">'+ helper.convertToProperCase(promo.brand_name) +'</p>';
+                // promo_item += '<p class="promo-store tenants_tenant_store_'+ promo.promo_id +'">'+ helper.convertToProperCase(promo.brand_name) +'</p>';
+                promo_item += '<p class="promo-store tenants_tenant_store_'+ promo.promo_id +'">'+ promo.brand_name +'</p>';
                 promo_item += '<p class="promo-floor">'+ promo.location +'</p>';
                 promo_item += '</div>';
                 promo_item += '</div>';
