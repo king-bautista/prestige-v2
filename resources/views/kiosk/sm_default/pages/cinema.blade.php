@@ -163,7 +163,8 @@
                 cinema_item += '<img class="cinema-img" src="{{ URL::to('themes/sm_default/images/sm-cinema-logo.png') }}" alt="...">';
                 cinema_item += '</div>';
                 cinema_item += '<div class="mt-2">';
-                cinema_item += '<div class="cinema-txt-1">'+ helper.convertToProperCase(cinema.brand_name) +'</div>';
+                // cinema_item += '<div class="cinema-txt-1">'+ helper.convertToProperCase(cinema.brand_name) +'</div>';
+                cinema_item += '<div class="cinema-txt-1">'+ cinema.brand_name +'</div>';
                 cinema_item += '<div class="cinema-txt-2">'+cinema.location+'</div>';
                 cinema_item += '</div>';
                 cinema_item += '</div>';                         
