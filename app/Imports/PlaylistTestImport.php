@@ -5,7 +5,7 @@ namespace App\Imports;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithValidation;
-
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +25,7 @@ use App\Models\AdminViewModels\SiteViewModel;
 
 class PlaylistTestImport implements ToCollection, WithHeadingRow
 {
-    public $fields, $category_counter = [];
+    public $fields, $category_counter = [], $maxParentCategoryCounter = 0;
     // public $site_id, $site_screen_id, $categories, $parent_categories, $company_id, $dimension, $test;
     /**
     * @param Collection $collection
@@ -139,7 +139,6 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         $moduloValue = round($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
-        $maxParentCategoryCounter = 0;
         $sitePartnerCounter = 0;
         $sequenceCounter = 1;
         $this->category_counter = $this->makeCounterVariables($site_id);
@@ -168,18 +167,19 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                             $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : $maxSitePartnerCounter = 0;
                         }
                         else{
-                            if($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds){
-                                $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
+                            if($totalParentCategoryAds !== 0 && $this->maxParentCategoryCounter !== $totalParentCategoryAds){
+                                $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                                 array_push($arrayStore, $addParentCategory);
-                                $maxParentCategoryCounter++;
+                                $this->maxParentCategoryCounter++;
                             }
                         }
                         $sitePartnerCounter++;
                     }else{
-                        if($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds){
-                            $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
+                        // if($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds){
+                        if($totalParentCategoryAds !== 0){
+                            $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                             array_push($arrayStore, $addParentCategory);
-                            $maxParentCategoryCounter++;
+                            $this->maxParentCategoryCounter++;
                         }
                         else{
                             if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
@@ -192,7 +192,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 }
                 // $this->fields = $arrayStore;
                 $maxSitePartnerCounter = 0;
-                $maxParentCategoryCounter = 0;
+                $this->maxParentCategoryCounter = 0;
                 $this->category_counter = $this->makeCounterVariables($site_id);
             }
         }
@@ -282,7 +282,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             return $query->where('company_id', '!=' ,$company_id)->where('loop_number', 1);
         })
         ->where('end_date', '>', date("Y-m-d"))
-        ->orderBy("")
+        ->orderBy("temporary_play_lists.updated_at", "DESC")
         ->get();
 
         return $ads;
@@ -308,17 +308,18 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             $data_count = count($addData);
 
             while($data_count == 0){
-                $offset++;
-                $index = fmod($offset, $category_ids->count());
+                $this->maxParentCategoryCounter++;
+                $index = fmod($this->maxParentCategoryCounter, $category_ids->count());
                 $new_category_id = $category_ids[$index]->id;
                 $category_offset = $this->category_counter[$index];
 
-                $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $new_category_id);
+                $query = $this->getAdsPerCategory($company_id, $site_screen_id, $category_offset, $limit, $is_sitePartner, $ad_type, $new_category_id);
                 $addData_count = count($query->limit($limit)->offset($category_offset)->get());
                 if($addData_count == 1){
                     $addData = $query->limit($limit)->offset($category_offset)->get();
                     $addData[0]->loop_number = $loop_number;
                     $this->category_counter[$index]++;
+                    // $this->maxParentCategoryCounter++;
                 }
                 $data_count = $addData_count;
             }
@@ -353,7 +354,8 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 return $query->where('company_id', '!=',$company_id)->where('main_category_id', $category_id);
             })
             ->where('temporary_play_lists.site_screen_id', $site_screen_id)  
-            ->where('site_screen_products.ad_type', $ad_type);
+            ->where('site_screen_products.ad_type', $ad_type)
+            ->orderBy('temporary_play_lists.date_approved', "ASC");
 
             return $ad_per_category;
     }
@@ -394,14 +396,17 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'advertisement_id'=> $item['id'],
                     'sequence'=> 0,
                     'dimension'=> $dimension,
+                    'start_date'=> Carbon::parse($item["start_date"])->format('Y-m-d'),
+                    'end_date'=> Carbon::parse($item["end_date"])->format('Y-m-d'),
+                    // 'date_approved' => Carbon::parse($item["date_approved"])->format('Y-m-d H:i:s'),       
+                    'date_approved' => Carbon::createFromFormat('d/m/Y H:i', $item["date_approved"])->format('Y-m-d H:i:s'),                
                 ];
                 $data = $exel_collection;
-                // array_push($exel_collection,$category_id);
+                // array_push($exel_collection,$parent_category_id);
                 TemporaryPlayList::create($data);
             }
         }
-        
-        // $this->fields = $data;
+        $this->fields = $data;
     }
 
     protected function getSiteId($site){
@@ -439,7 +444,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         }else if($parent_category_id == "Appliances"){
             return $parent_category_id = "Appliance Stores";
         }else if($parent_category_id == "Department Stores & Supermarket"){
-            return $parent_category_id = "Department Stores and Supermarkets";
+            return $parent_category_id = "Department Stores & Supermarkets";
         }else if($parent_category_id == "Business, Supplies, & Service Centers"){
             return $parent_category_id = "Business, Supplies & Service Centers";
         }

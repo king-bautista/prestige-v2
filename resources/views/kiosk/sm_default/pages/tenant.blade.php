@@ -317,7 +317,8 @@
 
         // TENANT DETAILS
         $('.tenant-store-page-logo').attr("src", tenant.brand_logo);
-        $('.tenant-store-page-name').html(helper.convertToProperCase(tenant.brand_name));
+        // $('.tenant-store-page-name').html(helper.convertToProperCase(tenant.brand_name));
+        $('.tenant-store-page-name').html(tenant.brand_name);
         $('.tenant-store-page-floor').html(tenant.location);
         // STORE OR SITE HOURS
         $('.mall-hours-title').removeClass('text-success text-error');

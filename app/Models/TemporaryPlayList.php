@@ -26,6 +26,7 @@ class TemporaryPlayList extends Model
         'loop_number',
         'start_date',
         'end_date',
+        'date_approved',
     ];
 
     /**
