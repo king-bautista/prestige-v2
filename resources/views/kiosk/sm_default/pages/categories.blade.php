@@ -170,6 +170,9 @@
                 tenant_list = category.tenants;
                 // alert("i am here");
                 showTenantList();
+                current_location = 'tenantcategory_show-tenants-'+category.id;
+                page_history.push(current_location);
+
                 $("#container-per-cat").addClass("supplemental-container");
             });
         }); 
@@ -187,7 +190,7 @@
         page_history.push(current_location);
     }
 
-    function showTenantList() {
+    function showTenantList(sub_category) {
         $('.sub-category-tenants').html('');
         $('.sub-category-tenants').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-list"></div>');
 
@@ -305,11 +308,8 @@
             $('#home_v4s').hide();
             $('.TenantPage').show();
             $('.CatTabCategories').hide();
-            helper.setTranslation();
-            current_location = 'tenantcategory';
-            page_history.push(current_location);
-
             $(".owl-wrapper-tenant-list").find(".owl-dots").addClass('owl-dots-tenant-list');
+            helper.setTranslation();
     }
 
     function showAlphabetical() {
@@ -458,8 +458,10 @@
                     $('.category-banner-title').attr('data-en', category.category_name);
                     $('.category-banner-title').addClass(main_category + "_color");
                     tenant_list = category.tenants;
-                    console.log(main_category);
                     showTenantList();
+                    current_location = 'supplemental_supplemental-item-'+category.id;
+                    page_history.push(current_location);
+
                     $("#container-per-cat").removeClass("supplemental-container");
                 });
             });

@@ -137,7 +137,9 @@
             $("#home_btn").click();
         }
         else {
-            switch(page_history[index]) {
+            var history = page_history[index].split("_");
+
+            switch(history[0]) {
                 case 'searchbox':
                     helper.searchBtnClick();
                     break;
@@ -157,10 +159,10 @@
                     helper.backToTenant();
                     break;
                 case 'tenantcategory':
-                    helper.backToTenantCategory();
+                    helper.backToTenantCategory(history[1]);
                     break;
                 case 'supplemental':
-                    helper.backToSupplemental();
+                    helper.backToSupplemental(history[1]);
                     break;
                 case 'alphabet':
                     helper.backToAlphabet();
@@ -176,6 +178,9 @@
                     break;
                 case 'cinemaschedule':
                     helper.backToCinemaschedule();
+                    break;
+                case 'nowshowing':
+                    helper.backToNowShowing();
                     break;
             }
         }
@@ -271,7 +276,6 @@
         helper.cinemaBtnClick();
         helper.filterAssist();
         showCinemas();
-        page_history.push(current_location);
         console.log(page_history);
     });
 	
