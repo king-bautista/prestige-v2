@@ -84,11 +84,11 @@
 
             var attrib = '';
             
-            if (item.building_name == 'Main Building'){
-                attrib = floor;
-            }else{
-                attrib = floor + bldg;
-            }
+            // if (item.building_name == 'Main Building'){
+            //     attrib = floor;
+            // }else{
+            //     attrib = floor + bldg;
+            // }
 
             // if(item.address !== null || item.address !== 'undefined' || item.address !== 'null' || item.address !== '') {
             //     var attrib = ", " + item.address;
