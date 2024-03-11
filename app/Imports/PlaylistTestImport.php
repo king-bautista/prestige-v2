@@ -150,7 +150,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         if($loopCount >= 1 ){
             for($loop_index = 0; $loop_index < $loopCount; $loop_index++){
                 for ($index = 0; $index < $totalNumberOfAds; $index++){
-                    $loop_number = $loop_index + 1;
+                    $loop_number = $loop_index;
                     if(fmod($index, $moduloValue) == 0){
                         if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
                             if($sitePartnerCounter > $maxSitePartnerSlot){
@@ -279,7 +279,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             return $query->where('company_id', '=' , $company_id)->groupBy('temporary_play_lists.content_id');
         })
         ->when(!$is_sitePartner, function($query) use ($company_id){
-            return $query->where('company_id', '!=' ,$company_id)->where('loop_number', 1);
+            return $query->where('company_id', '!=' ,$company_id)->where('loop_number', 0);
         })
         ->where('end_date', '>', date("Y-m-d"))
         ->orderBy("temporary_play_lists.updated_at", "DESC")
