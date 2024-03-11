@@ -123,8 +123,9 @@
 
 <div id="feedback-search-modal" class="modal promo-modal-content">
   <!-- Modal content -->
-  <div class="feedback-search-modal-position">                      
+  <div class="feedback-search-modal-position">       
 		<div class="feedback-section">
+			<span class="feed-close text-white">X</span>               
 			<div class="row mb-2 ">
 				<div class="col-12 text-center">
 					<span class="label-2 translateme" data-en="How can we improve?">How can we improve?</span>
@@ -2138,7 +2139,7 @@
 				reason: null,
 				reason_other: null
 			}
-
+			$(this).addClass('btn-violet-color');
 			helper.helpfulFeedBack(payload);
 		});
 
@@ -2154,7 +2155,8 @@
 				reason_other: $('#feedback-textarea').val()
 			}
 
-			helper.helpfulFeedBack(payload);						
+			$('.btn-nothelpful').addClass('btn-violet-color');
+			helper.helpfulFeedBack(payload);		
 		})
 
 		$('input[name="feedback_picked"]').change(function(){
@@ -2166,6 +2168,13 @@
 				$('#feedback-textarea').prop('disabled', true);
 				$('.softkeys-feedback').hide();
 			}
+		});
+
+		$('.feed-close').on('click', function() {
+			$('input[name="feedback_picked"]').prop('checked', false);
+            $('#feedback-textarea').prop('disabled', true);
+            $('#feedback-textarea').val('');
+			$('#feedback-search-modal, .softkeys-feedback').hide(); 
 		});
 
     });

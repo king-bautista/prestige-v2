@@ -209,7 +209,7 @@ Helpers.prototype = {
     mapBtnClick: function() {
         $('.content-holder, .modal, #mapkeyboardoverlay, #mapkeyboard, .thankyou, .softkeys-feedback').hide();
         $('#map-container, #ImgMallLogo, .back-img-btn').show();
-        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-container, .category-banner-title, .btn-helpful, .btn-nothelpful').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color btn-violet-color');
         $('.nav-btn-map').addClass("active");
         $('#videocontainer').html('');
         $('#btnresetmap').click();
@@ -217,7 +217,6 @@ Helpers.prototype = {
         $("#ispwd").prop('checked', false);
         $('#feedback-textarea').prop('disabled', true);
         $('#feedback-textarea').val('');
-        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
         this.resetKeyBoard();
         current_location = 'map';
     },
