@@ -182,6 +182,9 @@
                 case 'nowshowing':
                     helper.backToNowShowing();
                     break;
+                case 'about':
+                    helper.aboutBtnClick();
+                    break;
             }
         }
 
