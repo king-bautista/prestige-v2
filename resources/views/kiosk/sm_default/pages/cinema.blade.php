@@ -134,9 +134,6 @@
             if(showing.length > 0){
                 $("#Tab-Schedule-tab").click();
             }
-            else{
-                $("#Tab-Cinema-Tab").click();
-            }
         });
     });
 
@@ -239,6 +236,9 @@
             }            
         });
 
+        current_location = 'cinemaschedule';
+        page_history.push(current_location);
+
     }
 
     function showNowShowing() {
@@ -246,6 +246,9 @@
         if(my_showing.length == 0) {
             $('#CinemaTabSchedule').hide();
             $('#CinemaTabDefault').show();
+
+            current_location = 'nowshowing';
+            page_history.push(current_location);
             return false;
         }
 
@@ -366,12 +369,12 @@
             else {
                 $('.promo-next').show();
                 $('.owl-dots').hide();
-            }
-            
+            }            
         });
 
-        current_location = 'cinemaschedule';
+        current_location = 'nowshowing';
         page_history.push(current_location);
+
     }
 
     function generateSchedules(cinemas) {

@@ -111,6 +111,22 @@
             color: #6051e3;
         }
 
+        .btn-violet-color {
+            background-color: #6051e3;
+            color: #fff !important;
+        }
+
+        .feed-close {
+            position: absolute;
+            top: -45px;
+            right: 351px;
+            font-size: 2em;
+            color: #ffffff;
+            text-shadow: none;
+            opacity: 1;
+            font-family: Henry Sans Regular !important;
+        }
+
     </style>
 
     <body>

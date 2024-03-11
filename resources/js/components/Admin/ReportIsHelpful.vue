@@ -22,7 +22,6 @@
                                     :dataFields="responceDataFields"
                                     :dataUrl="responceDataUrl"
                                     :primaryKey="responcePrimaryKey"
-                                    :showHeader=false
                                     :rowPerPage=100
                                     ref="responseDataTable">
                                 </Table>
@@ -30,7 +29,6 @@
                                     :dataFields="otherDataFields"
                                     :dataUrl="otherDataUrl"
                                     :primaryKey="otherPrimaryKey"
-                                    :showHeader=false
                                     :rowPerPage=100
                                     ref="otherDataTable">
                                 </Table>
