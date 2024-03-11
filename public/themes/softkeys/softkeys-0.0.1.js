@@ -181,9 +181,7 @@
                         clearInterval(delTimer);
                     });
 
-                });
-
-                
+                });                
             },
 
             toggleCase = function(obj) {
