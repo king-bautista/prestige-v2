@@ -2175,6 +2175,10 @@
             $('#feedback-textarea').prop('disabled', true);
             $('#feedback-textarea').val('');
 			$('#feedback-search-modal, .softkeys-feedback').hide(); 
+
+			if($('.softkeys-feedback > .softkeys__btn--shift').find('span').text() === 'ABC') {
+				$('.softkeys-feedback > .softkeys__btn--shift').click();
+			}
 		});
 
     });

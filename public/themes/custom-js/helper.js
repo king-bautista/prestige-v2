@@ -373,6 +373,10 @@ Helpers.prototype = {
         if($('.softkeys-map-page > .softkeys__btn--shift').find('span').text() === 'ABC') {
             $('.softkeys-map-page > .softkeys__btn--shift').click();
         }
+
+        if($('.softkeys-feedback > .softkeys__btn--shift').find('span').text() === 'ABC') {
+            $('.softkeys-feedback > .softkeys__btn--shift').click();
+        }
     },
 
     helpfulFeedBack: function(params) {
