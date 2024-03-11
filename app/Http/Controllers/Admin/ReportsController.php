@@ -95,13 +95,33 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         if ($request->site_id)
             $site_id = $request->site_id;
 
-        $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
+        $logs_total_count = LogsViewModel::when($site_id, function ($query) use ($site_id) {
             return $query->where('site_id', $site_id);
         })
             ->whereNotNull('site_tenant_id')
             ->selectRaw('logs.*, count(*) as tenant_count')
             ->groupBy('main_category_id')
-            ->orderBy('tenant_count', 'DESC')
+            ->get();
+
+        $total_main_category = $logs_total_count->sum('tenant_count');
+
+        $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
+            return $query->where('site_id', $site_id);
+        })
+            ->whereNotNull('site_tenant_id')
+            ->selectRaw('logs.*, (select name from categories where id = logs.main_category_id) category_parent_name, count(*) as tenant_count, count(*)/' . $total_main_category . ' * 100 as percentage_share')
+            ->groupBy('main_category_id')
+            ->when(request('search'), function ($query) {
+                return $query->having('category_parent_name', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('percentage_share', 'LIKE', '%' . request('search') . '%');
+            })
+            ->when(is_null(request('order')), function ($query) {
+                return $query->orderBy('tenant_count', 'DESC');
+            })
+            ->when(request('order'), function ($query) {
+                return $query->orderBy(request('order'), request('sort'));
+            })
             ->get();
 
         $total = $logs->sum('tenant_count');
@@ -163,17 +183,33 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             })
                 ->whereNotNull('brand_id')
                 ->when(count($category_totals) > 0, function ($query) use ($category_totals, $overall_total) {
-                    return $query->selectRaw('logs.*, count(*) as tenant_count, 
+                    return $query->selectRaw('logs.*, 
+                    (select logo from brands where id = logs.brand_id) AS brand_logo,
+                    (select name from brands where id = logs.brand_id) AS brand_name,
+                    (select name from categories where id = logs.main_category_id) AS main_category_name,
+                count(*) AS tenant_count, 
                 (CASE WHEN parent_category_id = 1 THEN ROUND((count(*)/' . $category_totals[1] . ')*100, 2)
                 WHEN parent_category_id = 2 THEN ROUND((count(*)/' . $category_totals[2] . ')*100, 2)
                 WHEN parent_category_id = 3 THEN ROUND((count(*)/' . $category_totals[3] . ')*100, 2)
                 WHEN parent_category_id = 4 THEN ROUND((count(*)/' . $category_totals[4] . ')*100, 2)
                 WHEN parent_category_id = 5 THEN ROUND((count(*)/' . $category_totals[5] . ')*100, 2)
                 ELSE 0 END) AS category_percentage, 
-                ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
+                ROUND((count(*)/' . $overall_total . ')*100, 2) AS tenant_percentage');
                 })
                 ->groupBy('brand_id')
-                ->orderBy('tenant_count', 'DESC')
+                ->when(request('search'), function ($query) {
+                    return $query->having('brand_logo', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('brand_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('main_category_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('category_percentage', 'LIKE', '%' . request('search') . '%');
+                })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('tenant_count', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
@@ -199,10 +235,19 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
-                ->selectRaw('logs.*, count(*) as tenant_count')
+                ->selectRaw('logs.*, count(*) as tenant_count, key_words as word')
                 ->whereNotNull('key_words')
                 ->groupBy('key_words')
-                ->orderBy('tenant_count', 'DESC')
+                ->when(request('search'), function ($query) {
+                    return $query->having('word', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%');
+                })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('tenant_count', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
@@ -240,24 +285,42 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             }
 
             $overall_total = $totals->sum('tenant_count');
-
+            //(select count(*) from logs where brand_id = logs.brand_id and advertisement_id IS_NOT_NULL) AS banner_count,
             LogsViewModel::setSiteId($site_id);
             $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
                 ->whereNotNull('brand_id')
                 ->when(count($category_totals) > 0, function ($query) use ($category_totals, $overall_total) {
-                    return $query->selectRaw('logs.*, count(*) as tenant_count, 
-                (CASE WHEN parent_category_id = 1 THEN ROUND((count(*)/' . $category_totals[1] . ')*100, 2)
-                WHEN parent_category_id = 2 THEN ROUND((count(*)/' . $category_totals[2] . ')*100, 2)
-                WHEN parent_category_id = 3 THEN ROUND((count(*)/' . $category_totals[3] . ')*100, 2)
-                WHEN parent_category_id = 4 THEN ROUND((count(*)/' . $category_totals[4] . ')*100, 2)
-                WHEN parent_category_id = 5 THEN ROUND((count(*)/' . $category_totals[5] . ')*100, 2)
-                ELSE 0 END) AS category_percentage, 
-                ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
+                    return $query->selectRaw('logs.*, 
+                    (select logo from brands where id = logs.brand_id) AS brand_logo,
+                    (select name from brands where id = logs.brand_id) AS brand_name,
+                    (select name from categories where id = logs.category_id) AS category_name,
+                    (select count(*) from brands where id = logs.category_id) AS search_count,
+                    count(*) as tenant_count, 
+                    (CASE WHEN parent_category_id = 1 THEN ROUND((count(*)/' . $category_totals[1] . ')*100, 2)
+                    WHEN parent_category_id = 2 THEN ROUND((count(*)/' . $category_totals[2] . ')*100, 2)
+                    WHEN parent_category_id = 3 THEN ROUND((count(*)/' . $category_totals[3] . ')*100, 2)
+                    WHEN parent_category_id = 4 THEN ROUND((count(*)/' . $category_totals[4] . ')*100, 2)
+                    WHEN parent_category_id = 5 THEN ROUND((count(*)/' . $category_totals[5] . ')*100, 2)
+                    ELSE 0 END) AS category_percentage, 
+                    ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
                 })
+                ->selectRaw('(select count(*) from brands as b where b.id = logs.brand_id and logs.advertisement_id IS_NOT_NULL) AS banner_count')
                 ->groupBy('brand_id')
-                ->orderBy('tenant_count', 'DESC')
+                ->when(request('search'), function ($query) {
+                    return $query->having('brand_logo', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('brand_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('category_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('category_percentage', 'LIKE', '%' . request('search') . '%');
+                })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('tenant_count', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
@@ -324,7 +387,13 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 ->get()->count();
 
             $logs = LogsMonthlyUsageViewModel::whereYear('created_at', $current_year)
-                ->selectRaw('logs.*, count(*) as total_count, ROUND((count(*)/' . $total_count . '), 2) as total_average')
+                ->selectRaw('logs.*, (select s.name from sites s where s.id = logs.site_id) as site_name,count(*) as total_count, ROUND((count(*)/' . $total_count . '), 2) as total_average')
+                 ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('site_name', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->groupBy(DB::raw('YEAR(created_at)'))
                 ->get();
 
@@ -735,9 +804,21 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         try {
             $total_count = SiteFeedback::get()->count();
 
-            $is_helpful = SiteFeedback::selectRaw('helpful, count(*) as count, ROUND((count(*)/' . $total_count . ')*100, 2) as percentage')
+            $is_helpful = SiteFeedback::when(request('search'), function ($query) {
+                return $query->having('helpful', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('count', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('percentage', 'LIKE', '%' . request('search') . '%');
+            })
+
+                ->selectRaw('helpful, count(*) as count, ROUND((count(*)/' . $total_count . ')*100, 2) as percentage')
                 ->groupBy('helpful')
-                ->orderBy('count', 'DESC')
+                //->orderBy('count', 'DESC')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('count', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->get();
 
             return $this->response($is_helpful, 'Successfully Retreived!', 200);
@@ -755,10 +836,20 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         try {
             $total_count = SiteFeedback::where('helpful', 'No')->get()->count();
 
-            $is_helpful = SiteFeedback::selectRaw('reason, count(*) as count, ROUND((count(*)/' . $total_count . ')*100, 2) as percentage')
+            $is_helpful = SiteFeedback::when(request('search'), function ($query) {
+                return $query->having('reason', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('count', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('percentage', 'LIKE', '%' . request('search') . '%');
+            })
+                ->selectRaw('reason, count(*) as count, ROUND((count(*)/' . $total_count . ')*100, 2) as percentage')
                 ->where('helpful', 'No')
                 ->groupBy('reason')
-                ->orderBy('count', 'DESC')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('count', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->get();
 
             return $this->response($is_helpful, 'Successfully Retreived!', 200);
@@ -774,7 +865,18 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     public function getOtherResponse()
     {
         try {
-            $is_helpful = SiteFeedback::whereNotNull('reason_other')->get();
+            $is_helpful = SiteFeedback::when(request('search'), function ($query) {
+                return $query->having('updated_at', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
+            })
+                ->whereNotNull('reason_other')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('updated_at', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->get();
             return $this->response($is_helpful, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
@@ -846,14 +948,14 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     public function getUptimeHistory(Request $request)
     {
         try {
-            $site_id = ''; 
+            $site_id = '';
             $filters = json_decode($request->filters);
             if ($filters)
                 $site_id = $filters->site_id;
             if ($request->site_id)
                 $site_id = $request->site_id;
-         
-            $screens_uptime = SiteScreenUptime::when($site_id, function ($query) use ($site_id) { 
+
+            $screens_uptime = SiteScreenUptime::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_screens.site_id', $site_id)
                     // ->where(function ($query) {
                     //     $query->where('name', 'LIKE', '%' . request('search') . '%')
@@ -861,7 +963,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     // });
                     ->when(request('search'), function ($query) {
                         return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
-    
+
                             ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
                             ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
                             ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
@@ -871,29 +973,28 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                             ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
                     });
             })
-            ->when(empty($site_id), function ($query) { 
-                return $query->where('site_screen_uptimes.id','>', 0)
-                ->when(request('search'), function ($query) {
-                    return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                ->when(empty($site_id), function ($query) {
+                    return $query->where('site_screen_uptimes.id', '>', 0)
+                        ->when(request('search'), function ($query) {
+                            return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
 
-                        ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                        ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
-                        ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
-                        ->orWhere('site_screen_uptimes.opening_hour', 'LIKE', '%' . request('search') . '%')
-                        ->orWhere('site_screen_uptimes.closing_hour', 'LIKE', '%' . request('search') . '%')
-                        ->orWhere('site_screen_uptimes.hours_up', 'LIKE', '%' . request('search') . '%')
-                        ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
-                });
-            })
-                
+                                ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.opening_hour', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.closing_hour', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.hours_up', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
+                        });
+                })
+
                 ->select('site_screen_uptimes.*', 'site_screens.name')
                 ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id')
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('site_screens.name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
-                    $column = $this->checkcolumn(request('order'));
-                    return $query->orderBy($column, request('sort'));
+                    return $query->orderBy(request('order'), request('sort'));
                 })
                 ->latest()
                 ->get();
@@ -982,12 +1083,27 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             })
                 ->get()->count();
 
-            $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
-                return $query->where('site_id', $site_id);
+            $logs = LogsViewModel::when(request('search'), function ($query) {
+                return $query->having('screen_name', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('screen_location', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('total_average', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('screen_count', 'LIKE', '%' . request('search') . '%');
             })
-                ->selectRaw('logs.*, count(*) as screen_count, ROUND((count(*)/' . $total . '), 2)*100 as total_average')
+                ->when($site_id, function ($query) use ($site_id) {
+                    return $query->where('logs.site_id', $site_id);
+                })
+                ->leftJoin('site_screens as ss', 'logs.site_screen_id', '=', 'ss.id')
+                ->leftJoin('site_buildings as sb', 'ss.site_building_id', '=', 'sb.id')
+                ->leftJoin('site_building_levels as sbl', 'ss.site_building_level_id', '=', 'sbl.id')
+                ->leftJoin('sites as s', 'ss.site_id', '=', 's.id')
+                ->selectRaw('logs.*, (select name FROM site_screens ss where ss.id = logs.site_screen_id) as screen_name, CONCAT(sb.name,", ",sbl.name," (",s.name,")") as screen_location, count(*) as screen_count, ROUND((count(*)/' . $total . '), 2)*100 as total_average')
                 ->groupBy('site_screen_id')
-                ->orderBy('screen_count', 'DESC')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('screen_count', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->get();
 
             return $this->response($logs, 'Successfully Retreived!', 200);
