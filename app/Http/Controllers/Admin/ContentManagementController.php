@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\PlaylistTestExport;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\Interfaces\ContentManagementControllerInterface;
@@ -31,9 +32,10 @@ use App\Models\AdminViewModels\PlayListViewModel;
 use App\Imports\PlaylistImport;
 use App\Imports\PlaylistTestImport;
 use App\Exports\PlaylistExport;
-
 use App\Http\Requests\ContentRequest;
 use App\Exports\Export;
+
+use PHPUnit\Util\ExcludeList;
 use Storage;
 
 class ContentManagementController extends AppBaseController implements ContentManagementControllerInterface
@@ -371,13 +373,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
             }
         }
 
-        $deletePlayLists = PlayList::leftJoin('site_screen_products', function ($join) {
-            $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-                ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-        })
-            ->where('play_lists.site_screen_id', '=', $screen_id)
-            ->where('site_screen_products.ad_type', $ad_type)
-            ->delete();
+        // $deletePlayLists = PlayList::leftJoin('site_screen_products', function ($join) {
+        //     $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+        //         ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+        // })
+        //     ->where('play_lists.site_screen_id', '=', $screen_id)
+        //     ->where('site_screen_products.ad_type', $ad_type)
+        //     ->delete();
 
         foreach ($arrayStore as $items) {
             foreach ($items as $item) {
@@ -431,7 +433,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $ads = PlayList::leftJoin('site_screen_products', function ($join) {
             $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                 ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-        })
+            })
+            ->leftJoin('content_management', function ($join) {
+                $join->on('content_id', '=', 'content_management.id');
+            })
             ->where('play_lists.site_screen_id', $screen_id)
             ->where('site_screen_products.ad_type', $ad_type)
             ->when($is_sitePartner, function ($query) use ($company_id) {
@@ -439,8 +444,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
             })
             ->when(!$is_sitePartner, function ($query) use ($company_id) {
                 return $query->where('company_id', '!=', $company_id)->where('loop_number', 0);
-                // return $query->where('company_id', '!=', $company_id)->groupBy('play_lists.content_id');
             })
+            ->where("start_date", "<=", date("Y-m-d"))
+            ->where("end_date", ">", date("Y-m-d"))
+            ->orderBy("content_managent.updated_at","desc")
             ->get();
 
         return $ads;
@@ -758,6 +765,40 @@ class ContentManagementController extends AppBaseController implements ContentMa
     }
 
     public function downloadCsvPlaylistTemplate()
+    {
+        // $filename = "playlist-playlist-ads-sequence.csv";
+        // $data = Excel::download(new PlaylistTestExport, $filename);
+        // return $this->response($filename, 'Successfully Retreived!', 200);
+        try {
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            $filename = "playlist-playlist-ads-sequence.csv";
+            // Store on default disk
+            Excel::store(new PlaylistTestExport, $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadPlayListSequence()
     {
         try {
             $reports[] = [

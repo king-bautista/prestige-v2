@@ -12,49 +12,49 @@
             </div>
 
             <div class="social-media-handles-container">
-                @if($site->details['facebook'])
+                @if(isset($site->details['facebook']))
                 <div class="socmediconcontainer">
                     <img src="{{ URL::to('themes/sm_default/images/about-facebook.svg') }}" class="socmedicon mr-2" /> 
                     {{ $site->details['facebook'] }}
                 </div>
                 @endif
 
-                @if($site->details['twitter'])
+                @if(isset($site->details['twitter']))
                 <div class="socmediconcontainer">
                     <img src="{{ URL::to('themes/sm_default/images/about-twitter.png') }}" class="socmedicon mr-2" /> 
                     {{ $site->details['twitter'] }}
                 </div>
                 @endif
 
-                @if($site->details['instagram'])
+                @if(isset($site->details['instagram']))
                 <div class="socmediconcontainer">
                     <img src="{{ URL::to('themes/sm_default/images/about-instagram.svg') }}" class="socmedicon mr-2" /> 
                     {{ $site->details['instagram'] }}
                 </div>
                 @endif
 
-                @if($site->details['tiktok'])
+                @if(isset($site->details['tiktok']))
                 <div class="socmediconcontainer">
                     <img src="{{ URL::to('themes/sm_default/images/about-tiktok.png') }}" class="socmedicon mr-2" /> 
                     {{ $site->details['tiktok'] }}
                 </div>
                 @endif
 
-                @if($site->details['youtube'])
+                @if(isset($site->details['youtube']))
                 <div class="socmediconcontainer">
                     <img src="{{ URL::to('themes/sm_default/images/about-youtube.png') }}" class="socmedicon mr-2" /> 
                     {{ $site->details['youtube'] }}
                 </div>
                 @endif
 
-                @if($site->details['viber'])
+                @if(isset($site->details['viber']))
                 <div class="socmediconcontainer">
                     <img src="{{ URL::to('themes/sm_default/images/about-viber.png') }}" class="socmedicon mr-2" /> 
                     {{ $site->details['viber'] }}
                 </div>
                 @endif
 
-                @if($site->details['website'])
+                @if(isset($site->details['website']))
                 <div class="socmediconcontainer">
                     <img src="{{ URL::to('themes/sm_default/images/about-website.svg') }}" class="socmedicon mr-2" /> 
                     {{ $site->details['website'] }}

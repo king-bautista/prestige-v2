@@ -147,12 +147,14 @@
         }).on('mouseup',function(){
             $('#code').trigger('keydown');
             $('.notification').hide();
+            $('.ui-menu').scrollTop(0);
         }).on('touchend',function(){
             $('.notification').hide();
             $('#code').trigger('keydown');
+            $('.ui-menu').scrollTop(0);
         });
 
-        $('.search-box-button, .softkeys__btn--search').on('click', function() {
+        $('.search-box-button, .softkeys__btn--search').on('touchend click', function() {
             var search_key = $('#code').val();
             tenant_searchList = '';
             if (search_key.length >= 2) {
@@ -160,38 +162,37 @@
                 $('.notification').hide();
                 $.post( "/api/v1/search", { site_id: site_id, id: null, key_words: search_key } )
                 .done(function(responce) {
-                    if(responce.tenants.length > 0) {
 
+                    $('#search-title').html('Search Results');
+                    $('#search-title').attr("data-en",'Search Results');
+                    $('#search_str').html(search_key);
+                    $('.search-for').show();
+
+                    current_location = 'searchresult';
+                    page_history.push(current_location);
+
+                    if(responce.tenants.length > 0) {
                         showTenantSearch(responce.tenants);
                         showSubscriber(responce.suggest_subscribers)
-                        $('#search-title').html('Search Results');
-                        $('#search_str').html(search_key);
-                        $('.search-for').show();
                         $('#keyboard-section').hide();
                         $('#searchList').show();
-                        current_location = 'searchresult';
-                        page_history.push(current_location);
-
                     }
                     else {
-                        $('#search_str').html(search_key);
-                        $('#search-title').html('Search Results');
-                        $('.search-for').show();
                         $('#searchNone').show();
                         $('#keyboard-section').hide();
                         $('#searchList').hide();
-                        current_location = 'searchnoresult';
-                        page_history.push(current_location);
                     }
+                    helper.setTranslation();
                 })
             }
             else {
                 $("#code").css("border-color", "#bc5b68");
                 $('.notification').show();
             }
+
         });
 
-        $('.softkeys-search-page > .softkeys__btn--shift').on('click', function(){
+        $('.softkeys-search-page > .softkeys__btn--shift').on( 'touchend click', function(){
             if($(this).find('span').text() === '#+=') {
                 $(this).find('span').html('ABC');
                 $('.softkeys-search-page > .softkeys__btn--hidden').hide();
@@ -240,7 +241,8 @@
                 tenant_item += '<img class="img-shop-logo y-auto" src="'+store_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(store_name)+'</div>';
+                // tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(store_name)+'</div>';
+                tenant_item += '<div class="tenant-store-name">'+store_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+store_location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
                 tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
@@ -365,7 +367,6 @@
                 items: 4,
             });
         }
-        helper.setTranslation();
     }
 
     function onClickSuggest(tenant) {

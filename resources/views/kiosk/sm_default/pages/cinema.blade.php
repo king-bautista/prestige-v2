@@ -84,7 +84,8 @@
                         <img src="{{ URL::to('themes/sm_default/images/no-internet.png') }}" style="width: 508px;" />
                     </div>
                 </div>
- 
+                <div class="now-showing-trailer cinema-cover">
+                </div>
             </div>
         </div>
     </div>
@@ -118,8 +119,10 @@
         });
 
         $('.watch-trailer').on('click', function() {
-            var link = $(this).data('src').replace("watch?v=", "embed/");
-            var youtube_str = '<iframe class="embed-responsive-item" width="420" height="315" src="'+link+'?autoplay=1&loop=0&controls=0&showinfo=0&fs=0&disablekb=1&" id="video" allowscriptaccess="always" allow="autoplay;"></iframe>';
+            var youtube_str = '';
+            var link = '';
+            link = $(this).attr("data-src").replace("watch?v=", "embed/");
+            youtube_str = '<iframe class="embed-responsive-item" width="420" height="315" src="'+link+'?autoplay=1&loop=0&controls=0&showinfo=0&fs=0&disablekb=1&" id="video" allowscriptaccess="always" allow="autoplay;"></iframe>';
             $('#videocontainer').html(youtube_str);
             $('.now-showing-trailer').show();
             $('.now-showing-details').hide();
@@ -131,10 +134,6 @@
             if(showing.length > 0){
                 $("#Tab-Schedule-tab").click();
             }
-            else{
-                $("#Tab-Cinema-Tab").click();
-            }
-            // alert("beng");
         });
     });
 
@@ -161,7 +160,8 @@
                 cinema_item += '<img class="cinema-img" src="{{ URL::to('themes/sm_default/images/sm-cinema-logo.png') }}" alt="...">';
                 cinema_item += '</div>';
                 cinema_item += '<div class="mt-2">';
-                cinema_item += '<div class="cinema-txt-1">'+ helper.convertToProperCase(cinema.brand_name) +'</div>';
+                // cinema_item += '<div class="cinema-txt-1">'+ helper.convertToProperCase(cinema.brand_name) +'</div>';
+                cinema_item += '<div class="cinema-txt-1">'+ cinema.brand_name +'</div>';
                 cinema_item += '<div class="cinema-txt-2">'+cinema.location+'</div>';
                 cinema_item += '</div>';
                 cinema_item += '</div>';                         
@@ -236,6 +236,9 @@
             }            
         });
 
+        current_location = 'cinemaschedule';
+        page_history.push(current_location);
+
     }
 
     function showNowShowing() {
@@ -243,6 +246,9 @@
         if(my_showing.length == 0) {
             $('#CinemaTabSchedule').hide();
             $('#CinemaTabDefault').show();
+
+            current_location = 'nowshowing';
+            page_history.push(current_location);
             return false;
         }
 
@@ -263,7 +269,6 @@
                 var carousel_count = parseInt(my_showing.length), last_carousel;
                 last_carousel = carousel_count - 1;
                 var col_class = 'col-sm-4';
-
                 if(key == last_carousel){
                     if(showings.length == 1){
                         col_class = 'col-sm-12';
@@ -306,12 +311,12 @@
         });
 
         var navigation_button = '';
-        navigation_button += '<a class="promo-prev">';
+        navigation_button += '<a class="promo-prev cinema-prev">';
         navigation_button += '<div class="left-btn-carousel">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
         navigation_button += '</div>';
         navigation_button += '</a>';
-        navigation_button += '<a class="promo-next">';
+        navigation_button += '<a class="promo-next cinema-next">';
         navigation_button += '<div class="right-btn-carousel">';
         navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
         navigation_button += '</div>';
@@ -364,12 +369,12 @@
             else {
                 $('.promo-next').show();
                 $('.owl-dots').hide();
-            }
-            
+            }            
         });
 
-        current_location = 'cinemaschedule';
+        current_location = 'nowshowing';
         page_history.push(current_location);
+
     }
 
     function generateSchedules(cinemas) {

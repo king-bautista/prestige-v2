@@ -427,6 +427,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/upload-ad/download-csv', 'Admin\ContentManagementController@downloadCsvUploadAd')->name('admin.upload-ad.download-csv');
     Route::get('/admin/upload-ad/download-csv-template', 'Admin\ContentManagementController@downloadCsvUploadAdTemplate')->name('admin.upload-ad.download-csv-template');
     Route::get('/admin/upload-ad/setPlayListSequence', 'Admin\ContentManagementController@setPlayListSequence')->name('admin.upload-ad.setPlayListSequence');
+    Route::get('/admin/play-list/download-playlists-sequence', 'Admin\ContentManagementController@downloadCsvPlaylistTemplate')->name('admin.play-list.download-playlists-sequence');
     /*
     |--------------------------------------------------------------------------
     | Genre Routes

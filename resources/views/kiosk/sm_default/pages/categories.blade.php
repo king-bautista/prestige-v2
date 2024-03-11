@@ -69,19 +69,23 @@
         </div>
     </div>
     <!-- categories navigation -->
-    <div class="cat-nav-tabs"> 
-        <span class="mr-4 nav-tab-title translateme" data-en="View stores by">View stores by: </span>
-        <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Category-Tab" data-toggle="pill" data-target="#Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true" data-en="Category">Category</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false" data-en="Alphabetical">Alphabetical</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Supplemental-tab" data-toggle="pill" data-target="#Tab-Supplemental" type="button" role="tab" aria-controls="Tab-Supplemental" aria-selected="false" data-en="Cravings">Cravings</button>
-            </li>
-        </ul>
+    <div class="row tab-container">
+        <div class="col-12">
+            <div class="cat-nav-tabs"> 
+                <span class="mr-4 nav-tab-title translateme" data-en="View stores by:">View stores by: </span>
+                <ul class="nav nav-pills bg-white nav-tab-pills-container" id="Categories-nav-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active nav-tab-pills-btn translateme" id="Tab-Category-Tab" data-toggle="pill" data-target="#Tab-Category" type="button" role="tab" aria-controls="Tab-Category" aria-selected="true" data-en="Category">Category</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Alphabetical-tab" data-toggle="pill" data-target="#Tab-Alphabetical" type="button" role="tab" aria-controls="Tab-Alphabetical" aria-selected="false" data-en="Alphabetical">Alphabetical</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-tab-pills-btn translateme" id="Tab-Supplemental-tab" data-toggle="pill" data-target="#Tab-Supplemental" type="button" role="tab" aria-controls="Tab-Supplemental" aria-selected="false" data-en="Cravings">Cravings</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -166,6 +170,10 @@
                 tenant_list = category.tenants;
                 // alert("i am here");
                 showTenantList();
+                current_location = 'tenantcategory_show-tenants-'+category.id;
+                page_history.push(current_location);
+
+                $("#container-per-cat").addClass("supplemental-container");
             });
         }); 
         $('#home_v4').show();
@@ -182,7 +190,7 @@
         page_history.push(current_location);
     }
 
-    function showTenantList() {
+    function showTenantList(sub_category) {
         $('.sub-category-tenants').html('');
         $('.sub-category-tenants').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-list"></div>');
 
@@ -192,7 +200,7 @@
             $.each(tenant_list, function(key,tenants) {
                 var tenant_list_element = '';
                 tenant_list_element = '<div class="item">';
-                tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4">';
+                tenant_list_element += '<div class="carousel-content-container-per-food-category mb-4" id="container-per-cat">';
                 tenant_list_element += '<div class="row tenants-'+key+'">';
                 tenant_list_element += '</div>';
                 tenant_list_element += '</div>';
@@ -214,7 +222,8 @@
                     tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
                     tenant_item += '</div>';
                     tenant_item += '<div class="text-left tenant-store-details">';
-                    tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
+                    // tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
+                    tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
                     tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                     tenant_item += '<div class="tenant-store-status">';
                     tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
@@ -237,12 +246,12 @@
         }
 
         var navigation_button = '';
-            navigation_button += '<a class="promo-prev supplemental-prev">';
+            navigation_button += '<a class="promo-prev per-category-prev">';
             navigation_button += '<div class="left-btn-carousel left-btn-carousel-per-food-alphabetical">';
             navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Left.png') }}">';
             navigation_button += '</div>';
             navigation_button += '</a>';
-            navigation_button += '<a class="promo-next supplemental-next">';
+            navigation_button += '<a class="promo-next per-category-next">';
             navigation_button += '<div class="right-btn-carousel right-btn-carousel-per-food-alphabetical">';
             navigation_button += '<img src="{{ URL::to('themes/sm_default/images/Right.png') }}">';
             navigation_button += '</div>';
@@ -299,11 +308,8 @@
             $('#home_v4s').hide();
             $('.TenantPage').show();
             $('.CatTabCategories').hide();
-            helper.setTranslation();
-            current_location = 'tenantcategory';
-            page_history.push(current_location);
-
             $(".owl-wrapper-tenant-list").find(".owl-dots").addClass('owl-dots-tenant-list');
+            helper.setTranslation();
     }
 
     function showAlphabetical() {
@@ -334,7 +340,8 @@
                 tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
-                tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
+                // tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
+                tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+tenant.brand_name+'</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
                 tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
@@ -452,6 +459,10 @@
                     $('.category-banner-title').addClass(main_category + "_color");
                     tenant_list = category.tenants;
                     showTenantList();
+                    current_location = 'supplemental_supplemental-item-'+category.id;
+                    page_history.push(current_location);
+
+                    $("#container-per-cat").removeClass("supplemental-container");
                 });
             });
         }); 
@@ -528,11 +539,11 @@
     }
 
     function generateLetters() {
-
+        available_letters = [];
         filterLetterNavigator();
 
         $('.alphabet-box').html('');
-        $('.alphabet-box').append('<a class="link-alpha" onclick="moveTo(\''+String.fromCharCode(0)+'\')">#</a>');
+        $('.alphabet-box').append('<a class="link-alpha" onclick="moveTo(0)">#</a>');
         for (let i = 65; i <= 90; i++) {
 
             var class_name = (available_letters.includes(String.fromCharCode(i))) ? 'link-alpha' : 'link-alpha-disabled';
@@ -579,7 +590,12 @@
             if($(this).html().startsWith(letter, 0)){
                 $(this).addClass('letter-selected');
             };
-            if ($(this).html().match(/^\d/) && letter=="#") {
+
+            if($(this).html().startsWith('@', 0) && letter== 0){
+                $(this).addClass('letter-selected');
+            };
+
+            if ($(this).html().match(/^\d/) && letter==0) {
                 $(this).addClass('letter-selected');
             };
         });
@@ -587,9 +603,13 @@
         // ADD ACTIVE CLASS
         $(".alphabet-box .link-alpha").each(function(){
             if($(this).html().startsWith(letter, 0)){
-                console.log($(this).html());
                 $(this).addClass('active');
             };
+
+            if($(this).html().startsWith('#', 0) && letter==0){
+                $(this).addClass('active');
+            };
+
         });
 
         $('.alpha-tenants').parent("div").find(".owl-dots button").each(function(key){

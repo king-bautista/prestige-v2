@@ -1,10 +1,14 @@
 <div>
     <div class="back-img-btn" type="button">
-        <img class="" src="{{ URL::to('themes/sm_default/images/Back.png') }}">
+        <!-- <i class="fa fa-chevron-left" aria-hidden="true"></i> -->
+        <img src="{{ URL::to('themes/sm_default/images/blue-chevron.png') }}" class="back-btn-img" />
+        <span class="translateme" id="back-size" data-en="Back">Back</span>
     </div>
 
 	<div class="help-img-btn" id="Help_btn" data-container="body" data-toggle="popover" data-placement="left" data-content="" type="button">
-	  	<img class="" src="{{ URL::to('themes/sm_default/images/Help.png') }}">
+        <!-- <i class="fa fa-question" aria-hidden="true"></i> -->
+        <img src="{{ URL::to('themes/sm_default/images/white-question-mark.png') }}" class="help-btn-img"/>
+        <span class="translateme" data-en="Help">Help</span>
 	</div>
 
     @if($site->details['multilanguage'] > 0)
@@ -133,7 +137,9 @@
             $("#home_btn").click();
         }
         else {
-            switch(page_history[index]) {
+            var history = page_history[index].split("_");
+
+            switch(history[0]) {
                 case 'searchbox':
                     helper.searchBtnClick();
                     break;
@@ -153,10 +159,10 @@
                     helper.backToTenant();
                     break;
                 case 'tenantcategory':
-                    helper.backToTenantCategory();
+                    helper.backToTenantCategory(history[1]);
                     break;
                 case 'supplemental':
-                    helper.backToSupplemental();
+                    helper.backToSupplemental(history[1]);
                     break;
                 case 'alphabet':
                     helper.backToAlphabet();
@@ -172,6 +178,12 @@
                     break;
                 case 'cinemaschedule':
                     helper.backToCinemaschedule();
+                    break;
+                case 'nowshowing':
+                    helper.backToNowShowing();
+                    break;
+                case 'about':
+                    helper.aboutBtnClick();
                     break;
             }
         }
@@ -267,7 +279,6 @@
         helper.cinemaBtnClick();
         helper.filterAssist();
         showCinemas();
-        page_history.push(current_location);
         console.log(page_history);
     });
 	

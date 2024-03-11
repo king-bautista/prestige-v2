@@ -209,8 +209,8 @@ class SiteTenantViewModel extends Model
                 if(strpos("Schedule, ".$data->schedules, $current_day)) {
                     $new_schedule = [
                         'is_open' => (strtotime($data->start_time) <= time() && strtotime($data->end_time) >= time()) ? 1 : 0,
-                        'start_time' => date("h:ia",strtotime($data->start_time)),
-                        'end_time' => date("h:ia",strtotime($data->end_time)),
+                        'start_time' => date("h:i a",strtotime($data->start_time)),
+                        'end_time' => date("h:i a",strtotime($data->end_time)),
                     ];
                     return $new_schedule;
                 }
@@ -270,13 +270,11 @@ class SiteTenantViewModel extends Model
     public function getProductsAttribute() 
     {
         $current_date = date('Y-m-d');
-
         $new_products = [];
         $product_ids = $this->getTenantProducts()->get()->pluck('brand_product_promo_id');
         if(count($product_ids) > 0) {
             $products = BrandProductViewModel::whereIn('id', $product_ids)
-            ->whereDate('date_from', '<=', $current_date)
-            ->whereDate('date_to', '>=', $current_date)
+            ->whereIn('type', ['banner', 'product'])
             ->get();
             foreach($products as $product) {
                 if($product->type == 'banner') {
@@ -286,6 +284,17 @@ class SiteTenantViewModel extends Model
                     $new_products['product_list'][] = $product;
                 }
             }
+
+            $promos = BrandProductViewModel::whereIn('id', $product_ids)
+            ->where('type', 'promo')
+            ->whereDate('date_from', '<=', $current_date)
+            ->whereDate('date_to', '>=', $current_date)
+            ->get();
+
+            foreach($promos as $promo) {
+                $new_products['product_list'][] = $promo;
+            }
+
             return $new_products;
         }
         return null;

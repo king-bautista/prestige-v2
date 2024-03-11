@@ -74,7 +74,10 @@
                 promo_item += '<div class="card border-0 bg-transparent img-promo-card">';
                 promo_item += '<img type="button" class="promo-img promo_img_'+ promo.promo_id +'" src="'+ promo.image_url +'">';
                 promo_item += '<div class="d-block">';
-                promo_item += '<p class="promo-store tenants_tenant_store_'+ promo.promo_id +'">'+ helper.convertToProperCase(promo.brand_name) +'</p>';
+                // promo_item += '<p class="promo-store tenants_tenant_store_'+ promo.promo_id +'">'+ helper.convertToProperCase(promo.brand_name) +'</p>';
+                promo_item += '<div class="promo-brand-name-limit">';
+                promo_item += '<p class="promo-store tenants_tenant_store_'+ promo.promo_id +'">'+ promo.brand_name +'</p>';
+                promo_item += '</div>';
                 promo_item += '<p class="promo-floor">'+ promo.location +'</p>';
                 promo_item += '</div>';
                 promo_item += '</div>';
@@ -122,9 +125,11 @@
             var first = ( !e.item.index)
             if( first ){
                 $('.promo-prev').hide();
+                $(".owl-dots-promo").show();
             }
             else {
                 $('.promo-prev').show();
+                $(".owl-dots-promo").show();
             }
 
             var total = e.relatedTarget.items().length - 1;
@@ -140,6 +145,14 @@
 
         $(".promo-list").find(".owl-dots").addClass('owl-dots-promo');
 
+        var promo_name_height = $(".promo-brand-name-limit").height(), max_height = parseInt("82"), excess_height, new_height;
+
+        if(promo_name_height >= max_height){
+            $('.owl-dots-promo').css("margin-top","-59px")
+        }
+        else{
+            $('.owl-dots-promo').css("margin-top","-23px")
+        }
     }
 </script>
 @endpush

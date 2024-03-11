@@ -43,6 +43,8 @@ class SitePointTenantViewModel extends Model
      */
     protected $primaryKey = 'id';
 
+    static $site_id = null;
+
     /**
      * Append additiona info to the return data
      *
@@ -67,6 +69,10 @@ class SitePointTenantViewModel extends Model
         'location',
         'icon_path',
     ];
+
+    static function setSiteId($id) {
+        self::$site_id = $id;
+    }
 
     public function getBrandDetails()
     {   
@@ -209,8 +215,8 @@ class SitePointTenantViewModel extends Model
                 if(strpos("Schedule, ".$data->schedules, $current_day)) {
                     $new_schedule = [
                         'is_open' => (strtotime($data->start_time) <= time() && strtotime($data->end_time) >= time()) ? 1 : 0,
-                        'start_time' => date("h:ia",strtotime($data->start_time)),
-                        'end_time' => date("h:ia",strtotime($data->end_time)),
+                        'start_time' => date("h:i a",strtotime($data->start_time)),
+                        'end_time' => date("h:i a",strtotime($data->end_time)),
                     ];
                     return $new_schedule;
                 }
@@ -243,23 +249,23 @@ class SitePointTenantViewModel extends Model
     {
         $new_schedule = [];
         $schedules = $this->getTenantDetails()->where('meta_key', 'schedules')->first();
-        
-        if($schedules) {
-            $json_data = json_decode($schedules->meta_value);
-            
-            if(count($json_data) > 1) {
-                foreach($json_data as $data) {
+        $schedules_json = ($schedules) ? json_decode($schedules->meta_value) : null;
+        $with_schedule = (isset($schedules_json[0]->schedules)) ? (($schedules_json[0]->schedules != '') ? true : false) : false;
+
+        if($with_schedule) {            
+            if(count($schedules_json) > 1) {
+                foreach($schedules_json as $data) {
                     $today_schedule = $this->getTodaySchedule($data);
                     if($today_schedule['is_open'] == 1)
                         return $today_schedule;
                 }
             }
             else {
-                return $this->getTodaySchedule($json_data);
+                return $this->getTodaySchedule($schedules_json);
             }            
         }
 
-        $site_id = $this->site_id;
+        $site_id = self::$site_id;
         $site = SiteViewModel::find($site_id);
         if(isset($site->operational_hours))
             return $site->operational_hours;
@@ -269,10 +275,13 @@ class SitePointTenantViewModel extends Model
 
     public function getProductsAttribute() 
     {
+        $current_date = date('Y-m-d');
         $new_products = [];
         $product_ids = $this->getTenantProducts()->get()->pluck('brand_product_promo_id');
         if(count($product_ids) > 0) {
-            $products = BrandProductViewModel::whereIn('id', $product_ids)->where('type', '!=', 'promo')->get();
+            $products = BrandProductViewModel::whereIn('id', $product_ids)
+            ->whereIn('type', ['banner', 'product'])
+            ->get();
             foreach($products as $product) {
                 if($product->type == 'banner') {
                     $new_products['banners'][] = $product;
@@ -281,6 +290,17 @@ class SitePointTenantViewModel extends Model
                     $new_products['product_list'][] = $product;
                 }
             }
+
+            $promos = BrandProductViewModel::whereIn('id', $product_ids)
+            ->where('type', 'promo')
+            ->whereDate('date_from', '<=', $current_date)
+            ->whereDate('date_to', '>=', $current_date)
+            ->get();
+
+            foreach($promos as $promo) {
+                $new_products['product_list'][] = $promo;
+            }
+
             return $new_products;
         }
         return null;

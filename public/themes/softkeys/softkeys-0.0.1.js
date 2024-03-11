@@ -1,5 +1,5 @@
 (function ($) {
-
+    var delTimer = 0;
     $.fn.softkeys = function(options) {
 
         var settings = $.extend({
@@ -81,7 +81,6 @@
                                 styleClass = 'softkeys__btn--hidden';
                                 break;
                             case '&comma;' :
-                                console.log('test');
                                 character = '<span>&comma;</span>';
                                 type = 'symbol';
                                 styleClass = 'softkeys__btn--hidden';
@@ -170,7 +169,19 @@
 
                     var decoded = $('<div/>').html(targetValue + character).text();
                     $(settings.target).focus().val(decoded);
-                });
+
+                    $('.softkeys__btn--delete').off('mousedown').on('mousedown', function(){
+                        var targetValue = $(settings.target).val();
+    
+                        delTimer = setInterval(() => {
+                            targetValue = targetValue.substr(0, targetValue.length - 1);
+                            $(settings.target).focus().val(targetValue);
+                        }, 300);
+                    }).off('mouseup').on('mouseup',function(){
+                        clearInterval(delTimer);
+                    });
+
+                });                
             },
 
             toggleCase = function(obj) {

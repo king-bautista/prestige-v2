@@ -189,7 +189,7 @@
 					</div>
 					<div class="modal-footer justify-content-between">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<!-- <button type="button" class="btn btn-primary" @click="storeBatchTest">Save changes</button> -->
+						<button type="button" class="btn btn-primary" @click="downloadPlayListSequence">Export as csv</button>
 					</div>
 				</div>
 			</div>
@@ -385,6 +385,18 @@ export default {
 		downloadTemplate: function () {
 			$('.fa-download').removeClass('fa-download').addClass("fa-spinner fa-spin");
 			axios.get('/admin/play-list/download-csv-template')
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+					$('.fa-spinner').removeClass('fa-spinner fa-spin').addClass("fa-download");
+				})
+		},
+		downloadPlayListSequence: function () {
+			$('.fa-download').removeClass('fa-download').addClass("fa-spinner fa-spin");
+			axios.get('/admin/play-list/download-playlists-sequence')
 				.then(response => {
 					const link = document.createElement('a');
 					link.href = response.data.data.filepath;

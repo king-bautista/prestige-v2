@@ -48,7 +48,7 @@
         }
 
         .softkeys__btn--shift:hover {
-            background-color: #4b94ce !important;
+            background-color: #98dad0 !important;
         }
 
         .thankyou {
@@ -103,6 +103,28 @@
         .btn-submit-nothelpful {
             padding: 8px 50px 8px 50px;
             font-family: 'Henry Sans Regular';
+        }
+
+        .softkeys--alt .softkeys__btn[data-type=shift] {
+            background-color: #fff !important;
+            border-color: #4b94ce;
+            color: #6051e3;
+        }
+
+        .btn-violet-color {
+            background-color: #6051e3;
+            color: #fff !important;
+        }
+
+        .feed-close {
+            position: absolute;
+            top: -45px;
+            right: 351px;
+            font-size: 2em;
+            color: #ffffff;
+            text-shadow: none;
+            opacity: 1;
+            font-family: Henry Sans Regular !important;
         }
 
     </style>

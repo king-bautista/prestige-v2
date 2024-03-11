@@ -56,7 +56,15 @@
                     <select id="tenant-select" class="form-control" style="width: 423px;">
                         <option value="0" class="translateme" data-en="Input Destination">Input Destination</option>
                         @foreach ($all_tenants as $tenant)
-                            <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}</option>
+							@if(in_array($tenant['brand_name'], $duplicate_tenants))
+								@if($tenant['building_name'] == 'Main Building')
+		                            <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}, {{ $tenant['floor_name'] }}</option>
+								@else
+									<option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}, {{ $tenant['floor_name'] }}, {{ $tenant['building_name'] }}</option>
+								@endif
+							@else
+	                            <option value="{{ $tenant['id'] }}">{{ $tenant['brand_name'] }}</option>
+							@endif
                         @endforeach
                     </select>
                 </div>
@@ -115,8 +123,9 @@
 
 <div id="feedback-search-modal" class="modal promo-modal-content">
   <!-- Modal content -->
-  <div class="feedback-search-modal-position">                      
+  <div class="feedback-search-modal-position">       
 		<div class="feedback-section">
+			<span class="feed-close text-white">X</span>               
 			<div class="row mb-2 ">
 				<div class="col-12 text-center">
 					<span class="label-2 translateme" data-en="How can we improve?">How can we improve?</span>
@@ -260,14 +269,13 @@
 
     function init() {
         var container = document.getElementById('canvas');
-
         var w = container.offsetWidth;
 		var h = container.offsetHeight;
 
-		w = w > 0 ? w : 1450; 
+		w = w > 0 ? w : 1455; 
 		h = h > 0 ? h : 800;
 
-		var w = 1450;
+		var w = 1455;
 		var h = 800;
 
         /**setup camera*/
@@ -466,6 +474,7 @@
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.outputEncoding = THREE.sRGBEncoding;
         renderer.setSize(w,h);
+		// renderer.css("outline", "none");
 		container.appendChild(renderer.domElement);
 
         // Build the controls.
@@ -1601,6 +1610,29 @@
 		}
 	}
 
+	var text_guide = [];
+	function testGuide() {		
+		$("#mapguide li").remove();
+
+		var count = 0;
+
+		$.each(text_guide, function(){
+			if (this == "Turn Left" || this == "Turn Right" 
+			|| this == "Turn Left on Escalator" || this == "Turn Right on Escalator" 
+			|| this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
+			}
+			else {
+				var guide_txt = this;
+				setTimeout(function() {
+					$("#mapguide li").removeClass('active');
+					$("#mapguide").append('<li class="active">' + guide_txt + '</li>');
+				}, count * 2000);
+				count++;
+			}
+		});
+
+	}
+
 	function directionTo() {
 		runner.visible = false;
 		runner2.visible = false;
@@ -1645,23 +1677,10 @@
 			$(".map-distance").html(data['distance'].toFixed(0)  + 'm distance');
 			$(".map-steps").html( steps + ' steps');
 			$(".map-minutes").html( mins + ' minute' + (mins > 1 ? 's' : ''));
-			$("#mapguide li").remove();
-
-			var count = 0;
-			$.each(data['guide'],function(){
-				if (this == "Turn Left" || this == "Turn Right" 
-				|| this == "Turn Left on Escalator" || this == "Turn Right on Escalator" 
-				|| this == "Turn Left on Elevator" || this == "Turn Right on Elevator") {
-				}
-				else {
-					var guide_txt = this;
-					setTimeout(function() {
-						$("#mapguide li").removeClass('active');
-						$("#mapguide").append('<li class="active">' + guide_txt + '</li>');
-					}, count * 2000);
-					count++;
-				}
-			});
+			
+			text_guide = [];
+			text_guide = data['guide'];
+			testGuide();			
 
 			level_end_points = data['level_end_points'];
 			var destination_wayfind = data['destination'];
@@ -1924,6 +1943,8 @@
 				theball.position.y = movementstmp[0].y;
 				theball.position.z = movementstmp[0].z;
 				movements = movementstmp;
+
+				testGuide();
 			}
 			// KEYBOARD CLOSE
 			// $("#mapkeyboarclose").click();
@@ -2057,7 +2078,7 @@
             $('#selectInput').trigger('change');
         });
 
-		$('.softkeys-map-page > .softkeys__btn--shift').on('click', function(){
+		$('.softkeys-map-page > .softkeys__btn--shift').on( 'touchend click', function(){
             if($(this).find('span').text() === '#+=') {
                 $(this).find('span').html('ABC');
                 $('.softkeys-map-page > .softkeys__btn--hidden').hide();
@@ -2068,7 +2089,7 @@
             }
         });
 
-		$('.softkeys-feedback > .softkeys__btn--shift').on('click', function(){
+		$('.softkeys-feedback > .softkeys__btn--shift').on( 'touchend click', function(){
             if($(this).find('span').text() === '#+=') {
                 $(this).find('span').html('ABC');
                 $('.softkeys-feedback > .softkeys__btn--hidden').hide();
@@ -2118,7 +2139,7 @@
 				reason: null,
 				reason_other: null
 			}
-
+			$(this).addClass('btn-violet-color');
 			helper.helpfulFeedBack(payload);
 		});
 
@@ -2134,7 +2155,8 @@
 				reason_other: $('#feedback-textarea').val()
 			}
 
-			helper.helpfulFeedBack(payload);						
+			$('.btn-nothelpful').addClass('btn-violet-color');
+			helper.helpfulFeedBack(payload);		
 		})
 
 		$('input[name="feedback_picked"]').change(function(){
@@ -2145,6 +2167,17 @@
 			}else {
 				$('#feedback-textarea').prop('disabled', true);
 				$('.softkeys-feedback').hide();
+			}
+		});
+
+		$('.feed-close').on('click', function() {
+			$('input[name="feedback_picked"]').prop('checked', false);
+            $('#feedback-textarea').prop('disabled', true);
+            $('#feedback-textarea').val('');
+			$('#feedback-search-modal, .softkeys-feedback').hide(); 
+
+			if($('.softkeys-feedback > .softkeys__btn--shift').find('span').text() === 'ABC') {
+				$('.softkeys-feedback > .softkeys__btn--shift').click();
 			}
 		});
 

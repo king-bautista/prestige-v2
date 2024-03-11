@@ -113,13 +113,11 @@ Helpers.prototype = {
             translations_by_language = my_translations;
         }
 
-        console.log(translations_by_language);
-
         var obj = this;
 
         $(".translateme").each(function(){
             let data_en = obj.encodeEntities($(this).attr('data-en')).replace(/'/g, '&#39;');
-            console.log(data_en);
+
             var translated = translations_by_language.find(option => option.english == data_en);
 
             if (translated != null) {                         
@@ -147,9 +145,11 @@ Helpers.prototype = {
 
         if(content_language == 'filipino') {
             $('#events_txt').addClass('nav-event-button-align-custom');
+            $('#back-size').addClass('back-filipino');
         }
         else {
             $('#events_txt').removeClass('nav-event-button-align-custom');
+            $('#back-size').removeClass('back-filipino');
         }
         
     },
@@ -178,7 +178,8 @@ Helpers.prototype = {
         $('.nav-btn-container, #btnpwdchange').removeClass('active btn-prestige-pwd');
         $('.nav-btn-home').addClass("active");
         $('#videocontainer').html('');
-        $('.category-img-banner').attr('src', '');        
+        $('.category-img-banner').attr('src', '');  
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");      
 
         sub_categories = '';
         main_category = '';
@@ -199,6 +200,7 @@ Helpers.prototype = {
         $('#search-title').html('Search');
         $("#code").css("border-color", "#6051e3");
         $('.notification').hide();
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
         this.resetKeyBoard();
         this.setTranslation();
         current_location = 'searchbox';
@@ -207,11 +209,12 @@ Helpers.prototype = {
     mapBtnClick: function() {
         $('.content-holder, .modal, #mapkeyboardoverlay, #mapkeyboard, .thankyou, .softkeys-feedback').hide();
         $('#map-container, #ImgMallLogo, .back-img-btn').show();
-        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-container, .category-banner-title, .btn-helpful, .btn-nothelpful').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color btn-violet-color');
         $('.nav-btn-map').addClass("active");
         $('#videocontainer').html('');
         $('#btnresetmap').click();
         $('input[name="feedback_picked"]').prop('checked', false);
+        $("#ispwd").prop('checked', false);
         $('#feedback-textarea').prop('disabled', true);
         $('#feedback-textarea').val('');
         this.resetKeyBoard();
@@ -224,6 +227,7 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-promo').addClass("active");
         $('#videocontainer').html('');
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
         current_location = 'promo';
     },
 
@@ -233,16 +237,16 @@ Helpers.prototype = {
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-event').addClass("active");
         $('#videocontainer').html('');
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
         current_location = 'events';
     },
     
     cinemaBtnClick: function() {
         $('.content-holder, .modal').hide();
         $('#cinema-container, #ImgMallLogo, .back-img-btn').show();
-        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-container, .category-banner-title').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
-        current_location = 'cinema';
     },
 
     aboutBtnClick: function() {
@@ -250,6 +254,8 @@ Helpers.prototype = {
         $('#DirectoryAboutPage, .back-img-btn').show();
         $('.nav-btn-container').removeClass('active');
         $('#videocontainer').html('');
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
+        $('.social-media-handles-container').scrollTop(0);
         current_location = 'about';
     },
 
@@ -257,30 +263,38 @@ Helpers.prototype = {
         $('.content-holder, .modal').hide();
         $('#tenant-store-content, #ImgMallLogo, .back-img-btn').show();
         $('.nav-btn-container').removeClass('active');
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
     },
 
-    backToTenantCategory: function() {
-        $('.content-holder, .CatTabCategories, .modal').hide();
-        $('#home-cat-contents, #ImgMallLogo, .TenantPage').show();
-        $('.nav-btn-container').removeClass('active');
+    backToTenantCategory: function(subcategory) {
+        $('.content-holder, .modal').hide();
+        $('#home-cat-contents, #ImgMallLogo').show();
+        $('.nav-btn-container, .category-banner-title').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color');
         $('#Tab-Category-Tab').click();
+        if(subcategory) {
+            $('.'+subcategory).click();
+            page_history.splice(-1);
+        }
         page_history.splice(-1);
     },
 
-    backToSupplemental: function() {
+    backToSupplemental: function(subcategory) {
         $('.content-holder, .modal').hide();
-        $('#home-cat-contents, #ImgMallLogo, .TenantPage').show();
-        $('.nav-btn-container').removeClass('active');
-        if($('.TenantPage').is(":visible")) {
-            $('.TenantPage').hide();
-            $('.CatTabCategories').show();    
-        }        
+        $('#home-cat-contents, #ImgMallLogo').show();
+        $('.nav-btn-container, .category-banner-title').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color');
+        $('#Tab-Supplemental-tab').click();
+        if(subcategory) {
+            $('.'+subcategory).click();
+            page_history.splice(-1);
+        } 
+        page_history.splice(-1);    
     },
 
     backToAlphabet: function() {
         $('.content-holder, .modal').hide();
         $('#home-cat-contents, #ImgMallLogo').show();
         $('.nav-btn-container').removeClass('active');
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
         if($('.TenantPage').is(":visible")) {
             $('.CatTabCategories').hide();
             $('.TenantPage').show();
@@ -297,6 +311,7 @@ Helpers.prototype = {
         $('#home-cat-contents, .TenantPage, #ImgMallLogo').show();
         $('.nav-btn-container').removeClass('active');
         $('#Tab-Category-Tab').click();
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
         page_history.splice(-1);
     },
 
@@ -305,6 +320,7 @@ Helpers.prototype = {
         $('#search-container, .search-for, #searchList').show();
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-search').addClass("active");
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
     },
 
     backToSearchnoresult: function() {
@@ -312,15 +328,26 @@ Helpers.prototype = {
         $('#search-container, .search-for, #searchNone').show();
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-search').addClass("active");
+        $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
     },
 
     backToCinemaschedule: function() {
         $('.content-holder, .modal').hide();
         $('#cinema-container, #ImgMallLogo').show();
-        $('.nav-btn-container').removeClass('active');
+        $('.nav-btn-container, .category-banner-title').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
-        // $('#Tab-Schedule-tab').click();
+        $('#Tab-Cinema-Tab').click();
+        page_history.splice(-1);
+    },
+
+    backToNowShowing: function() {
+        $('.content-holder, .modal').hide();
+        $('#cinema-container, #ImgMallLogo').show();
+        $('.nav-btn-container, .category-banner-title').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color');
+        $('.nav-btn-cinema').addClass("active");
+        $('#videocontainer').html('');
+        $('#Tab-Schedule-tab').click();
         page_history.splice(-1);
     },
 
@@ -345,6 +372,10 @@ Helpers.prototype = {
 
         if($('.softkeys-map-page > .softkeys__btn--shift').find('span').text() === 'ABC') {
             $('.softkeys-map-page > .softkeys__btn--shift').click();
+        }
+
+        if($('.softkeys-feedback > .softkeys__btn--shift').find('span').text() === 'ABC') {
+            $('.softkeys-feedback > .softkeys__btn--shift').click();
         }
     },
 

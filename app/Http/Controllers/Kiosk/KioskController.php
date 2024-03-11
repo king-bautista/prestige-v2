@@ -68,6 +68,7 @@ class KioskController extends AppBaseController
             $assistant_message = $this->getAssistantMessage();
             $translations = $this->getTranslation();
             $all_tenants = $this->getTenants();
+            $duplicate_tenants = $this->getDuplicates($all_tenants);
 
             // MAP PAGE DATA
             $site_config = $this->getSiteConfig();
@@ -123,6 +124,7 @@ class KioskController extends AppBaseController
                 'assistant_message', 
                 'translations', 
                 'all_tenants', 
+                'duplicate_tenants',
                 'site_config', 
                 'building_count',
                 'site_floors',
@@ -495,8 +497,8 @@ class KioskController extends AppBaseController
     }
 
     public function search(Request $request) {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::find($request->site_id);
             $site_map_ids = SiteMap::where('site_id', $request->site_id)
             ->where('map_type', $site->details['map_type'])
@@ -504,6 +506,8 @@ class KioskController extends AppBaseController
             ->pluck('id');
 
             $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
+
+            SitePointTenantViewModel::setSiteId($request->site_id);
 
             $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
             ->where(function ($query) {
@@ -566,14 +570,14 @@ class KioskController extends AppBaseController
                 'tenants' => $tenants,
                 'suggest_subscribers' => $suggest_subscribers,
             ];
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // } 
     }
 
     public function getBannerAds() {
@@ -1193,6 +1197,15 @@ class KioskController extends AppBaseController
                'reason_other' => $request->reason_other
             ]
         );
+    }
+
+    private function getDuplicates($tenants) {
+        $tenant_list = [];
+        foreach($tenants as $index => $tenant) {
+            $tenant_list[] = $tenant['brand_name'];
+        }
+
+        return array_unique( array_diff_assoc( $tenant_list, array_unique( $tenant_list ) ) );
     }
     
 }

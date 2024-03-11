@@ -325,9 +325,11 @@ body {
 }
 
 .cat-nav-tabs {
-    position: absolute;
-    left: 401.5px;
-    bottom: 152px;
+    /* position: absolute; */
+    /* left: 401.5px; */
+    /* bottom: 152px; */
+    position: relative;
+    bottom: 208px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -371,7 +373,7 @@ body {
 }
 
 .tenantCardImgContent {
-    top: 42px; 
+    top: 29px; 
     position: relative; 
     left: 28px; 
     width: 550px !important; 
@@ -406,7 +408,7 @@ body {
 }
 
 .carousel-content-container-per-food-category {
-    padding: 134.5px 133px 0px 153px;
+    padding: 125.5px 148.5px 0px 149.5px;
     margin-left: 0px;
 }
 
@@ -432,9 +434,9 @@ body {
 }
 
 .owl-dots-tenant-list {
-    margin-top: -3.0px !important;
+    margin-top: -6.0px !important;
     margin-left: 10px !important;
-    margin-right: -10px !important;
+    margin-right: 10px !important;
 }
 
 .owl-dots-alphabetical {
@@ -450,7 +452,7 @@ body {
 }
 
 .owl-dots-promo, .owl-dots-event {
-    margin-top: -23.0px !important;
+    margin-top: -23.0px;
     margin-left: 10.0px !important;
     margin-right: -10.5px !important;
 }
@@ -461,7 +463,7 @@ body {
 }
 
 .carousel-content-container-per-food-cravings {
-    padding: 94.5px 133.5px 0px 153.5px;
+    padding: 94.5px 149px 0px 150.5px;
     margin-left: 0px;
 }
 
@@ -575,7 +577,7 @@ body {
 .Category-Container-Banner {
     position: absolute; 
     top: 127px; 
-    left: 5px;
+    left: 1px;
     width: 1450px; 
     height: 72.34px;
 }
@@ -595,10 +597,34 @@ body {
 /*---- css for help when landscape ----*/
 
 .help-img-btn {
+    font-family: 'Henry Sans Regular';
     position: absolute;
     top: 880px;
     right: 0;
     z-index: 1051;
+    width: 86px;
+    height: 68px;
+    background-color: #0030ff;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    text-align: center;
+    color: #fff;
+}
+
+
+.help-img-btn i {
+    font-size: 35px;
+    margin-top: 7px;
+}
+
+
+.help-img-btn span{
+    position: absolute;
+    bottom: 2px;
+    left: 43%;
+    transform: translate(-50%);
+    width: 50px;
+    font-size: 11pt;
 }
 
 .popover {
@@ -608,10 +634,33 @@ body {
 
 /* css for back when landscape */
 .back-img-btn {
+    font-family: "Henry Sans Regular" !important;
     position: absolute;
     top: 800px;
     right: 15px;
     z-index: 1009;
+    border: solid #0030ff 3px;
+    border-radius: 50px;
+    width: 70px;
+    height: 70px;
+    color: #0030ff;
+    text-align: center;
+    background-color: #accaff;
+}
+
+.back-img-btn i{
+    font-size: 35px;
+    margin-top: 5px;
+    margin-left: -5px;
+}
+
+.back-img-btn span{
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    width: 50px;
+    font-size: 10pt;
 }
 
 /*---- css for language when landscape ----*/
@@ -640,9 +689,9 @@ body {
 /* css for map canvas */
 .map-canvas {
     margin-top: 20px;
-    margin-left: -10px;
-    width: 1450px;
-    height: 780px;
+    margin-left: -14px;
+    width: 1455px;
+    height: 770px;
     position: absolute;
     background-color: white;
 }
@@ -856,9 +905,9 @@ body {
 }
 
 .CinemaDetailsModalContent {
-    width: 1450px !important;
+    width: 1451px !important;
     left: 0px !important;
-    margin-left: 5px !important;
+    margin-left: .985px !important;
     position: absolute !important;
     top: 0px !important;
     background-color: rgba(0, 0, 0, 0.7) !important;
@@ -921,7 +970,7 @@ body {
     overflow: auto;
     white-space: nowrap;
     height: auto;
-    max-height: 120px;
+    max-height: 105px;
     width: 1081px;
 }
 
@@ -941,8 +990,9 @@ body {
 
 .movieImgView {
     border-radius: 18px;
-    width: auto;
-    height: auto;
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
 }
 
 .MovieMainTitle {
@@ -1066,8 +1116,8 @@ body {
 
 .promo-img {
     max-height: 100%;
-    width: 279.44px !important;
-    height: 279.44px !important;
+    width: 290px !important;
+    height: 290px !important;
     object-fit: cover;
     border-radius: 15px !important;
 }
@@ -1095,20 +1145,20 @@ body {
     width: 946px;
     height: 253.4px;
     margin-left: 18px;
-    margin-top: 38px;
+    margin-bottom: 30px;
     border-radius: 20px;
 }
 
 .promo-row-container {
     overflow-y: scroll !important;
-    max-height: 580px !important; /*870 if no banner promo*/
+    max-height: 580px; /*870 if no banner promo*/
     max-width: 973px !important;
     margin-left: 16px !important;
 }
 
 .promo-col-container {
     text-align: center !important;
-    padding-top: 30px !important;
+    padding-bottom: 30px !important;
 }
 
 .store-page-client-content {
@@ -1126,26 +1176,27 @@ body {
 
 .tenant-card-info-tab {
     border: 1px solid #efefef;
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 10px;
     width: 421px;
     height: 633px;
     float: right;
     font-size: 1.3em;
-    margin-top: 37.5px;
-    margin-left: 6px;
+    margin-top: 7.5px;
+    margin-left: 1px;
     position:relative;
 }
 
 .promo-featured-container {
     width: 1010px !important;
-    margin-top: -30px !important;
+    /* margin-top: 30px !important; */
+    padding-right: 10px;
 }
 
 .promo-modal-content {
-    width: 1450px !important;
+    width: 1451px !important;
     left: 0px !important;
-    margin-left: 5px !important;
+    margin-left: 0.985px !important;
     position: absolute !important;
     top: 0px !important;
     background-color: rgba(0, 0, 0, 0.7) !important;
@@ -1830,8 +1881,8 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 .nav-event-button-align-custom {
     top: 22px !important;
     left: 87px !important;
-    font-size: 22px !important;
-    line-height: 18px !important;
+    font-size: 17px !important;
+    line-height: 17px !important;
 }
 
 .nav-cinema-button-align {
@@ -1870,7 +1921,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
 /*---- about page ----*/
 .socmediconcontainer {
-    margin-top: 15px;
+    margin-bottom: 15px;
     margin-left: 38px;
     color: #0030ff;
     font-family: "Henry Sans Regular";
@@ -2155,7 +2206,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
 
     .promo-col-container {
         text-align: center !important;
-        padding-top: 30px !important;
+        padding-bottom: 30px !important;
     }
 
     .store-page-client-content {
@@ -2432,7 +2483,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     /*---- css for map when portrait ---- */
     .map-canvas {
         margin-top: 20px;
-        margin-left: -15px !important;
+        margin-left: -14px !important;
         width: 1450px;
         height: 1005px;
     }
@@ -2456,6 +2507,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     /*---- css for help when portrait ----*/
 
     .help-img-btn {
+        font-family: 'Henry Sans Regular';
         position: absolute;
         top: 1338px !important;
         right: 0px !important;
@@ -2480,7 +2532,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     /*---- css for about page when portrait ----*/
 
     .socmediconcontainer {
-        margin-top: 15px;
+        margin-bottom: 15px;
         margin-left: 38px;
     }
 
@@ -2569,6 +2621,10 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     background-color: transparent;
     border: none;
     resize: none;
+}
+
+.text-mall-details:focus{
+    outline: none;
 }
 
 #home-container {
@@ -2850,7 +2906,7 @@ a.link-alpha:link, a.link-alpha:visited, a.link-alpha:hover {
     text-align: center;
     font-weight: 600;
     top: 718px;
-    right: 0;
+    right: 15px;
     background: #0030ff;
     border-radius: 7px;
     color: #fff;
@@ -3061,6 +3117,10 @@ ul#mapguide li:last-child:before {
     color: red;
 }
 
+.Food_color{
+    color: #246c63;
+}
+
 .Fashion_color{
     color: #823D3B;
 }
@@ -3117,11 +3177,11 @@ ul#mapguide li:last-child:before {
 
 .supplemental-prev{
     left: -4px !important;
-    top: 394px !important;
+    top: 378.6px !important;
 }
 .supplemental-next{
     right: 15px !important;
-    top: 395px !important;
+    top: 378.6px !important;
 }
 
 .search-result-height{
@@ -3150,4 +3210,66 @@ ul#mapguide li:last-child:before {
 .social-media-handles-container{
     max-height: 230px;
     overflow-y: auto;
+}
+
+.supplemental-container{
+    padding: 139.5px 148.5px 0px 149.5px !important;
+}
+
+.tab-container{
+    position: absolute;
+    width: 100%;
+    top: 1080px;
+}
+
+.per-category-prev{
+    left: 10px !important;
+    top: 439.6px !important;
+}
+.per-category-next{
+    right: 30px !important;
+    top: 439.6px !important;
+}
+
+.cinema-cover{
+    height: 512px;
+    width: 1082px;
+    position: absolute;
+    z-index: 2;
+}
+
+.cinema-next{
+    top: 349px !important;
+    right: 51px !important;
+}
+
+.cinema-prev{
+    top: 349px !important;
+    left: 10px !important;
+}
+
+.back-filipino{
+    font-size: 11pt;
+    line-height: 2;
+}
+
+.help-btn-img{
+    width: 60px;
+    margin-top: 0px;
+    margin-right: 10px;
+}
+
+.back-btn-img{
+    width: 27.5px;
+    margin-top: 10px;
+    margin-right: 3px;
+}
+
+.promo-brand-name-limit{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    width: 290px;
 }
