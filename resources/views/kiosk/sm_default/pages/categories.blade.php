@@ -223,7 +223,10 @@
                     tenant_item += '</div>';
                     tenant_item += '<div class="text-left tenant-store-details">';
                     // tenant_item += '<div class="tenant-store-name">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
+                    tenant_item += '<div class="tenant-store-ellipsis">';
                     tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                    tenant_item += '</div>';
+
                     tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                     tenant_item += '<div class="tenant-store-status">';
                     tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
@@ -341,7 +344,10 @@
                 tenant_item += '</div>';
                 tenant_item += '<div class="text-left tenant-store-details">';
                 // tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+helper.convertToProperCase(tenant.brand_name)+'</div>';
-                tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+tenant.brand_name+'</div>';
+                // tenant_item += '<div class="tenant-store-name" parent-index="'+key+'">'+tenant.brand_name+'</div>';
+                tenant_item += '<div class="tenant-store-ellipsis">';
+                tenant_item += '<div class="tenant-store-name">'+tenant.brand_name+'</div>';
+                tenant_item += '</div>';
                 tenant_item += '<div class="tenant-store-floor">'+tenant.location+'</div>';
                 tenant_item += '<div class="tenant-store-status">';
                 tenant_item += '<span class="translateme '+store_status_class+'" data-en="'+store_status+'">'+store_status+'</span>';
