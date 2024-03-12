@@ -170,14 +170,14 @@
                     var decoded = $('<div/>').html(targetValue + character).text();
                     $(settings.target).focus().val(decoded);
 
-                    $('.softkeys__btn--delete').off('mousedown').on('mousedown', function(){
+                    $('.softkeys__btn--delete').off('mousedown touchstart').on('mousedown touchstart', function(){
                         var targetValue = $(settings.target).val();
     
                         delTimer = setInterval(() => {
                             targetValue = targetValue.substr(0, targetValue.length - 1);
                             $(settings.target).focus().val(targetValue);
                         }, 300);
-                    }).off('mouseup').on('mouseup',function(){
+                    }).off('mouseup touchend').on('mouseup touchend',function(){
                         clearInterval(delTimer);
                     });
 
