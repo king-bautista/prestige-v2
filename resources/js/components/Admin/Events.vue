@@ -41,7 +41,8 @@
 								<label for="firstName" class="col-sm-4 col-form-label">Site <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-8">
-									<select class="custom-select" v-model="event.site_id">
+									<select class="custom-select" v-model="event.site_id"
+									@change="getBannerWidthHeight($event.target.value)">
 										<option value="">Select Site</option>
 										<option v-for="site in site_list" :value="site.id"> {{ site.name }}</option>
 									</select>
@@ -260,6 +261,10 @@ export default {
 		getSites: function () {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
+		},
+		getBannerWidthHeight: function (id) {
+			// axios.get('/admin/event/get-banner-width-height/admin/site/get-buildings/' + id)
+			// 	.then(response => this.buildings = response.data.data);
 		},
 		bannerChange: function (e) { 
 			const file = e.target.files[0];
