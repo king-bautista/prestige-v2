@@ -163,7 +163,7 @@
 	</div>  
 </div>
 
-<div style="position:absolute;top:0px;left:0px;width:100%;height:1076px;background-color: rgba(0, 0, 0, 0.7);display:none" id="mapkeyboardoverlay"></div>
+<div style="position:absolute;top:0px;left:0px;width:100%;height:1080px;background-color: rgba(0, 0, 0, 0.7);display:none" id="mapkeyboardoverlay"></div>
 <div class="text-center" style="position:absolute;top:250px;left:0px;width:100%;height:620px;display:none" id="mapkeyboard">
 	<div style="position:relative">
 		<span class="close text-white btn-close-map" id="mapkeyboarclose">&times;</span>
