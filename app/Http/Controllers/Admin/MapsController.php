@@ -209,7 +209,7 @@ class MapsController extends AppBaseController implements MapsControllerInterfac
     public function getMapDetails($id)
     {
         $current_map = SiteMapViewModel::find($id);
-        $amenities = Amenity::get();
+        $amenities = Amenity::where('active', 1)->get();
         $site_details = SiteViewModel::find($current_map->site_id);
         $site_tenants = SiteTenantViewModel::where('site_building_level_id', $current_map->site_building_level_id)
         ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')

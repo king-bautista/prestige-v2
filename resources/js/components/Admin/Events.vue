@@ -38,6 +38,17 @@
 					<div class="modal-body">
 						<div class="card-body">
 							<div class="form-group row">
+								<label for="firstName" class="col-sm-4 col-form-label">Site <span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-8">
+									<select class="custom-select" v-model="event.site_id"
+									@change="getBannerWidthHeight($event.target.value)">
+										<option value="">Select Site</option>
+										<option v-for="site in site_list" :value="site.id"> {{ site.name }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="firstName" class="col-sm-4 col-form-label">Banner <span
 										class="font-italic text-danger"> *</span></label>
 								<div class="col-sm-5">
@@ -47,16 +58,6 @@
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="image_url" :src="image_url" class="img-thumbnail" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="firstName" class="col-sm-4 col-form-label">Site <span
-										class="font-italic text-danger"> *</span></label>
-								<div class="col-sm-8">
-									<select class="custom-select" v-model="event.site_id">
-										<option value="">Select Site</option>
-										<option v-for="site in site_list" :value="site.id"> {{ site.name }}</option>
-									</select>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -160,6 +161,8 @@ export default {
 			event: {
 				id: '',
 				site_id: null,
+				banner_width: 0,
+				banner_height: 0,
 				event_name: '',
 				location: '',
 				event_date: '',
@@ -258,6 +261,10 @@ export default {
 		getSites: function () {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
+		},
+		getBannerWidthHeight: function (id) {
+			// axios.get('/admin/event/get-banner-width-height/admin/site/get-buildings/' + id)
+			// 	.then(response => this.buildings = response.data.data);
 		},
 		bannerChange: function (e) { 
 			const file = e.target.files[0];

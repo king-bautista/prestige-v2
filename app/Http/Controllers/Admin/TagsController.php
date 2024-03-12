@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Http\Requests\TagRequest;
 use App\Models\Tag;
+use App\Models\BrandTag;
 use App\Imports\TagsImport;
 use App\Exports\Export;
 use Storage;
@@ -109,6 +110,8 @@ class TagsController extends AppBaseController implements TagsControllerInterfac
         try {
             $tag = Tag::find($id);
             $tag->delete();
+            BrandTag::where('tag_id', $id)->delete();
+
             return $this->response($tag, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
             return response([
