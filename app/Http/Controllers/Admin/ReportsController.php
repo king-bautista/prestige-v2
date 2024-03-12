@@ -306,7 +306,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     ELSE 0 END) AS category_percentage, 
                     ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
                 })
-                ->selectRaw('(select count(*) from brands as b where b.id = logs.brand_id and logs.advertisement_id IS_NOT_NULL) AS banner_count')
+                //->selectRaw('(select count(*) from brands as b where b.id = logs.brand_id and logs.advertisement_id IS_NOT_NULL) AS banner_count')
                 ->groupBy('brand_id')
                 ->when(request('search'), function ($query) {
                     return $query->having('brand_logo', 'LIKE', '%' . request('search') . '%')

@@ -42,7 +42,6 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                     ->orWhere('sites.descriptions', 'LIKE', '%' . request('search') . '%')
                     ->orWhereRaw('CONCAT(`smsc`.`meta_value`) LIKE \'%' . request('search') . '%\'')
                     ->orWhereRaw('CONCAT(`smm`.`meta_value`) LIKE \'%' . request('search') . '%\'');
-                    
             })
                 ->leftJoin('sites_meta as smsc', function ($join) {
                     $join->on('sites.id', '=', 'smsc.site_id')
@@ -62,15 +61,15 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                         case 'short_code':
                             $field = 'short_code';
                             break;
-                            case 'multilanguage':
-                                $field = 'multilanguage';
-                                break;    
+                        case 'multilanguage':
+                            $field = 'multilanguage';
+                            break;
                         default:
                             $field = $column;
                     }
                     return $query->orderBy($column, request('sort'));
                 })
-                
+
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($sites, 'Successfully Retreived!', 200);
@@ -158,6 +157,14 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'map_type' => $request->map_type,
                 'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
                 'site_theme' => $request->site_theme,
+                'product_banner_width' => ($request->product_banner_width) ? $request->product_banner_width : null,
+                'product_banner_height' => ($request->product_banner_height) ? $request->product_banner_height : null,
+                'product_width' => ($request->product_width) ? $request->product_width : null,
+                'product_height' => ($request->product_height) ? $request->product_height : null,
+                'promo_width' => ($request->promo_width) ? $request->promo_width : null,
+                'promo_height' => ($request->promo_height) ? $request->promo_height : null,
+                'event_width' => ($request->event_width) ? $request->event_width : null,
+                'event_height' => ($request->event_height) ? $request->event_height : null,
             ];
 
             $site = Site::create($data);
@@ -239,6 +246,14 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'multilanguage' => $this->checkBolean($request->multilanguage),
                 'schedules' => ($request->operational_hours) ? $request->operational_hours : null,
                 'site_theme' => $request->site_theme,
+                'product_banner_width' => ($request->product_banner_width) ? $request->product_banner_width : null,
+                'product_banner_height' => ($request->product_banner_height) ? $request->product_banner_height : null,
+                'product_width' => ($request->product_width) ? $request->product_width : null,
+                'product_height' => ($request->product_height) ? $request->product_height : null,
+                'promo_width' => ($request->promo_width) ? $request->promo_width : null,
+                'promo_height' => ($request->promo_height) ? $request->promo_height : null,
+                'event_width' => ($request->event_width) ? $request->event_width : null,
+                'event_height' => ($request->event_height) ? $request->event_height : null,
             ];
 
             $site->update($data);
@@ -315,6 +330,14 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                     'site_banner' => ($site->site_banner != "") ? URL::to("/" . $site->site_banner) : " ",
                     'site_background' => ($site->site_background != "") ? URL::to("/" . $site->site_background) : " ",
                     'site_background_portrait' => ($site->site_background_portrait != "") ? URL::to("/" . $site->site_background_portrait) : " ",
+                    'product_banner_width' => $site->details['product_banner_width'],
+                    'product_banner_height' => $site->details['product_banner_height'],
+                    'product_width' => $site->details['product_height'],
+                    'product_height' => $site->details['product_height'],
+                    'promo_width' => $site->details['promo_width'],
+                    'promo_height' => $site->details['promo_height'],
+                    'event_width' => $site->details['event_width'],
+                    'event_height' => $site->details['event_height'],
                     'company_id' => $site->details['company_id'],
                     'company_name' => ($site->details['company_id']) ? Company::find($site->details['company_id'])->name : '',
                     'multilanguage' => $site->details['multilanguage'],
@@ -380,6 +403,14 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'site_banner' => '',
                 'site_background' => '',
                 'site_background_portrait' => '',
+                'product_banner_width' => '',
+                'product_banner_height' => '',
+                'product_width' => '',
+                'product_height' => '',
+                'promo_width' => '',
+                'promo_height' => '',
+                'event_width' => '',
+                'event_height' => '',
                 'company_id' => '',
                 'company_name' => '',
                 'multilanguage' => '',
@@ -444,23 +475,23 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
         }
     }
 
-    public function getThemesFolder() {
+    public function getThemesFolder()
+    {
         try {
             $foler_names = [];
             $i = 0;
 
-            $dir = resource_path().'/views/kiosk/';
+            $dir = resource_path() . '/views/kiosk/';
             $dirList = scandir($dir);
 
             foreach ($dirList as $key => $value) {
                 if (strpos($value, '.') !== false) {
-                }
-                else {
+                } else {
                     $foler_names[$i] = $value;
                     $i++;
                 }
             }
-            
+
             return $this->response($foler_names, 'Successfully Uploaded!', 200);
         } catch (\Exception $e) {
             return response([
@@ -469,8 +500,6 @@ class SiteController extends AppBaseController implements SiteControllerInterfac
                 'status_code' => 422,
             ], 422);
         }
-
-        
     }
     // public function getOperationalHour($operational_hours){
     //     $time =[];
