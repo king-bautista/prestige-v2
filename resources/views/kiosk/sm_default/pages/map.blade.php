@@ -1823,6 +1823,8 @@
 		});
 
         $("#floor-select").on('change',function(){
+
+            $('.select2-dropdown').removeClass('select2-dropdown--below').addClass('select2-dropdown--above')
             switchFloor($(this).val());
         });
 
@@ -1903,9 +1905,7 @@
 			inputDirection = $(this);
 			
 			//force dropup
-			$('.select2-dropdown--below').attr('id','fix');
-            $('#fix').removeClass('select2-dropdown--below');
-            $('#fix').addClass('select2-dropdown--above');
+			$('.select2-dropdown').removeClass('select2-dropdown--below').addClass('select2-dropdown--above')
 			$("#mapkeyboardoverlay").show();
 			$("#mapkeyboard").show();
 		});
