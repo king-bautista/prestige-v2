@@ -384,7 +384,7 @@ export default {
 				.then(response => {
 					toastr.success(response.data.message);
 					this.$refs.dataTable.fetchData();
-					window.location.reload()
+					window.location.reload();
 					$('#product-form').modal('hide');
 				})
 		},
