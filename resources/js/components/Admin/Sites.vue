@@ -105,7 +105,63 @@
 								<div class="col-sm-3 text-center">
 									<img v-if="site_background" :src="site_background_portrait" class="img-thumbnail" />
 								</div>
-							</div>							
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Product Banner<span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<div class="row mb-3 mx-0">
+										<div class="col-6 d-flex">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.product_banner_width"
+											placeholder="Width">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.product_banner_height"
+											placeholder="Height">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Product<span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<div class="row mb-3 mx-0">
+										<div class="col-6 d-flex">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.product_width"
+											placeholder="Width">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.product_height"
+											placeholder="Height">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Promo<span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<div class="row mb-3 mx-0">
+										<div class="col-6 d-flex">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.promo_width"
+											placeholder="Width">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.promo_height"
+											placeholder="Height">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="firstName" class="col-sm-3 col-form-label">Event<span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-9">
+									<div class="row mb-3 mx-0">
+										<div class="col-6 d-flex">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.event_width"
+											placeholder="Width">
+											<input type="text" class="form-control ml-1 mr-2" maxlength="4" style="width: 70px" v-model="site.event_height"
+											placeholder="Height">
+										</div>
+									</div>
+								</div>
+							</div>
 							<div class="form-group row">
 								<label for="lastName" class="col-sm-3 col-form-label">Map Type <span
 										class="font-italic text-danger"> *</span></label>
@@ -346,6 +402,15 @@ export default {
 				site_banner: '',
 				site_background: '',
 				site_background_portrait: '',
+				product_banner_width: '',
+				product_banner_height: '',
+				product_width:'',
+				product_height:'',
+				promo_width:'',
+				promo_height:'',
+				event_width:'',
+				event_height:'',
+
 				company_id: null,
 				map_type: '',
 				site_theme: '',
@@ -647,6 +712,14 @@ export default {
 			this.site.site_banner = '';
 			this.site.site_background = '';
 			this.site.site_background_portrait = '';
+			this.site.product_banner_width = '';
+			this.site.product_banner_height = '';
+			this.site.product_width = '';
+			this.site.product_height = '';
+			this.site.promo_width = '';
+			this.site.promo_height = '';
+			this.site.event_width = '';
+			this.site.event_height = '';
 			this.site_logo = '';
 			this.site_banner = '';
 			this.site_background = '';
@@ -668,6 +741,14 @@ export default {
 			formData.append("site_banner_hidden", this.site.site_banner);
 			formData.append("site_background_hidden", this.site.site_background);
 			formData.append("site_background_portrait_hidden", this.site.site_background_portrait);
+			formData.append("product_banner_width", (this.site.product_banner_width) ? this.site.product_banner_width : '');
+			formData.append("product_banner_height", (this.site.product_banner_height) ? this.site.product_banner_height : '');
+			formData.append("product_width", (this.site.product_width) ? this.site.product_width : '');
+			formData.append("product_height", (this.site.product_height) ? this.site.product_height : '');
+			formData.append("promo_width", (this.site.promo_width) ? this.site.promo_width : '');
+			formData.append("promo_height", (this.site.promo_height) ? this.site.promo_height : '');
+			formData.append("event_width", (this.site.event_width) ? this.site.event_width : '');
+			formData.append("event_height", (this.site.event_height) ? this.site.event_height : '');
 			formData.append("company_id", (this.site.company_id) ? this.site.company_id : '');
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
@@ -708,6 +789,14 @@ export default {
 					this.site.site_banner = site.site_banner;
 					this.site.site_background = site.site_background;
 					this.site.site_background_portrait = site.site_background_portrait;
+					this.site.product_banner_width = (site.details.product_banner_width == 'null') ? '' : site.details.product_banner_width;
+					this.site.product_banner_height = (site.details.product_banner_height == 'null') ? '' : site.details.product_banner_height;
+					this.site.product_width = (site.details.product_width == 'null') ? '' : site.details.product_width;
+					this.site.product_height = (site.details.product_height == 'null') ? '' : site.details.product_height;
+					this.site.promo_width = (site.details.promo_width == 'null') ? '' : site.details.promo_width;
+					this.site.promo_height = (site.details.promo_height == 'null') ? '' : site.details.promo_height;
+					this.site.event_width = (site.details.event_width == 'null') ? '' : site.details.event_width;
+					this.site.event_height = (site.details.event_height == 'null') ? '' : site.details.event_height;
 					this.site.company_id = (site.details.company_id == 'null') ? '' : site.details.company_id;
 					this.site.facebook = (site.details.facebook == 'null') ? '' : site.details.facebook;
 					this.site.instagram = (site.details.instagram == 'null') ? '' : site.details.instagram;
@@ -785,6 +874,14 @@ export default {
 			formData.append("site_banner_hidden", this.site_banner);
 			formData.append("site_background_hidden", this.site_background);
 			formData.append("site_background_portrait_hidden", this.site_background_portrait);
+			formData.append("product_banner_width", (this.site.product_banner_width) ? this.site.product_banner_width : '');
+			formData.append("product_banner_height", (this.site.product_banner_height) ? this.site.product_banner_height : '');
+			formData.append("product_width", (this.site.product_width) ? this.site.product_width : '');
+			formData.append("product_height", (this.site.product_height) ? this.site.product_height : '');
+			formData.append("promo_width", (this.site.promo_width) ? this.site.promo_width : '');
+			formData.append("promo_height", (this.site.promo_height) ? this.site.promo_height : '');
+			formData.append("event_width", (this.site.event_width) ? this.site.event_width : '');
+			formData.append("event_height", (this.site.event_height) ? this.site.event_height : '');
 			formData.append("company_id", (this.site.company_id) ? this.site.company_id : '');
 			formData.append("facebook", (this.site.facebook) ? this.site.facebook : '');
 			formData.append("instagram", (this.site.instagram) ? this.site.instagram : '');
