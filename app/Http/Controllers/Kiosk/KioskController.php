@@ -79,7 +79,7 @@ class KioskController extends AppBaseController
 
             $site_maps = $this->getSiteMaps();
 
-            return $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
+            $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
             $map_points = json_encode($map_points_tenants_links['map_points']);
             $map_tenants = json_encode($map_points_tenants_links['map_tenants']);
             $kiosk_zoom = $this->getMapZoom($site_maps, $site_config->view_angle);
@@ -460,6 +460,7 @@ class KioskController extends AppBaseController
 
         $tags = Tag::whereIn('tags.id',  $brand_tags)
             ->whereNotIn('name',  $brand_names)
+            ->where('active', 1)
             ->select('tags.name')
             ->orderBy('tags.name', 'ASC')
             ->get()
@@ -507,6 +508,10 @@ class KioskController extends AppBaseController
 
             $keyword = preg_replace('!\s+!', ' ', $request->key_words);   
 
+            // GET ACTIVE AMENITIES
+            $amenities_ids = Amenity::where('active', 1)->get()->pluck('id')->toArray();
+            array_push($amenities_ids, 0);
+
             SitePointTenantViewModel::setSiteId($request->site_id);
 
             $tenants = SitePointTenantViewModel::whereIn('site_map_id', $site_map_ids)
@@ -527,6 +532,7 @@ class KioskController extends AppBaseController
                 ->orWhere('amenities.name', 'like', $keyword.'%')
                 ->orWhere('amenities.name', 'like', '%'.$keyword);
             })
+            ->whereIn('site_points.point_type', $amenities_ids)
             ->leftJoin('site_tenants', 'site_points.tenant_id', '=', 'site_tenants.id')
             ->leftJoin('site_tenant_metas', function($join) {
                 $join->on('site_tenants.id', '=', 'site_tenant_metas.site_tenant_id')
@@ -729,7 +735,7 @@ class KioskController extends AppBaseController
         $points_tmp = SitePointViewModel::whereIn('site_map_id', $map_ids)
         ->whereIn('site_points.point_type', $amenities_ids)
         ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-        ->select('site_points.*', 'site_maps.site_building_level_idy as building_level_id')
+        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id')
         ->get();
 
         $points = [];
