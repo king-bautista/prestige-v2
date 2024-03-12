@@ -44,7 +44,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
      * 			COMPANIES MANAGEMENT	 	*
      ****************************************/
 
-    public $category_counter = [], $check_variable;
+    public $category_counter = [], $check_variable, $maxParentCategoryCounter = 0;
     public function __construct()
     {
         $this->module_id = 44;
@@ -165,8 +165,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function update(ContentRequest $request)
     {
-        // try
-        // {
+        try
+        {
         $content = ContentManagement::find($request->id);
         //echo '<pre>'; print_r($request->site_screen_ids); echo '</pre>';
         $data = [
@@ -183,15 +183,15 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $this->generatePlayList($request->site_screen_ids);
 
         return $this->response($content, 'Successfully Modified!', 200);
-        // }
-        // catch (\Exception $e) 
-        // {
-        //     return response([
-        //         'message' => $e->getMessage(),
-        //         'status' => false,
-        //         'status_code' => 422,
-        //     ], 422);
-        // }
+        }
+        catch (\Exception $e) 
+        {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
     }
 
     public function delete($id)
@@ -199,6 +199,23 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
             $content = ContentManagement::find($id);
             $content->delete();
+            $screen_ids = ContentScreen::select('site_screen_id')->where("content_id", $id)->get();
+            ContentScreen::where("content_id", $id)->delete();
+            PlayList::where("content_id", $id)->delete();
+            $this->generatePlayList($screen_ids);
+
+
+            // $resequnce = ContentScreen::select('content_screens.site_id', 'play_lists.site_screen_id')
+            //     ->leftJoin('play_lists', 'play_lists.content_id', '=', 'content_screens.content_id')
+            //     ->where('play_lists.content_id', $id)
+            //     ->groupBy('play_lists.site_screen_id')
+            //     ->get();
+
+            // foreach ($resequnce as $item){
+            //     $this->setPlayListSequence($item->site_screen_id, $item->site_id, "Full Screen Ad");
+            //     $this->setPlayListSequence($item->site_screen_id, $item->site_id, "Banner Ad");
+            // }
+
             return $this->response($content, 'Successfully Deleted!', 200);
         } catch (\Exception $e) {
             return response([
@@ -254,7 +271,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $playlist = $this->getAdvertisementMaterial($content_ids, $screen_id->id);
 
             if (PlayList::insert($playlist)) {
-                //  $this->setSequence($screen_id->id, $screen_id->site_id, count($playlist));
+                // $this->setSequence($screen_id->id, $screen_id->site_id, count($playlist));
                 $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Full Screen Ad");
                 $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Banner Ad");
             }
@@ -318,11 +335,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $totalNumberOfAds = $maxSitePartnerAds + $totalParentCategoryAds;
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds);
-        $moduloValue = round($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
+        $moduloValue = ceil($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
         // $this->check_variable = $moduloValue;
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
-        $maxParentCategoryCounter = 0;
         $sitePartnerCounter = 0;
         $sequenceCounter = 1;
         $this->category_counter = $this->makeCounterVariables($site_id);
@@ -346,18 +362,19 @@ class ContentManagementController extends AppBaseController implements ContentMa
                             array_push($arrayStore, $addSitePartner);
                             $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : $maxSitePartnerCounter = 0;
                         } else {
-                            if ($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds) {
-                                $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
+                            // if ($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds) {
+                            if ($totalParentCategoryAds !== 0) {
+                                $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                                 array_push($arrayStore, $addParentCategory);
-                                $maxParentCategoryCounter++;
+                                $this->maxParentCategoryCounter++;
                             }
                         }
                         $sitePartnerCounter++;
                     } else {
-                        if ($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds) {
-                            $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
+                        if ($totalParentCategoryAds !== 0 && $this->maxParentCategoryCounter !== $totalParentCategoryAds) {
+                            $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                             array_push($arrayStore, $addParentCategory);
-                            $maxParentCategoryCounter++;
+                            $this->maxParentCategoryCounter++;
                         } else {
                             if ($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
                                 $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
@@ -368,18 +385,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     }
                 }
                 $maxSitePartnerCounter = 0;
-                $maxParentCategoryCounter = 0;
+                $this->maxParentCategoryCounter = 0;
                 $this->category_counter = $this->makeCounterVariables($site_id);
             }
         }
-
-        // $deletePlayLists = PlayList::leftJoin('site_screen_products', function ($join) {
-        //     $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-        //         ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-        // })
-        //     ->where('play_lists.site_screen_id', '=', $screen_id)
-        //     ->where('site_screen_products.ad_type', $ad_type)
-        //     ->delete();
 
         foreach ($arrayStore as $items) {
             foreach ($items as $item) {
@@ -390,19 +399,32 @@ class ContentManagementController extends AppBaseController implements ContentMa
             }
         }
 
+        $deletePlayLists = PlayList::leftJoin('site_screen_products', function ($join) {
+            $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+            })
+            ->where('play_lists.site_screen_id', '=', $screen_id)
+            ->where('site_screen_products.ad_type', $ad_type)
+            ->where('sequence', 0)
+            ->delete();
+
         return $arrayStore;
         // return $this->check_variable;
     }
 
     protected function getLoopCount($total_site_partner, $maxSitePartnerSlot)
     {
-        if (fmod($total_site_partner, $maxSitePartnerSlot) == 0) {
-            return $total_site_partner / $maxSitePartnerSlot;
-        } else {
-            if ($total_site_partner % 2 == 0) {
-                return $total_site_partner / 2;
+        if($total_site_partner < $maxSitePartnerSlot){
+            return 1;
+        }else{
+            if (fmod($total_site_partner, $maxSitePartnerSlot) == 0) {
+                return $total_site_partner / $maxSitePartnerSlot;
             } else {
-                return $total_site_partner;
+                if ($total_site_partner % 2 == 0) {
+                    return $total_site_partner / 2;
+                } else {
+                    return $total_site_partner;
+                }
             }
         }
     }
@@ -445,9 +467,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ->when(!$is_sitePartner, function ($query) use ($company_id) {
                 return $query->where('company_id', '!=', $company_id)->where('loop_number', 0);
             })
-            ->where("start_date", "<=", date("Y-m-d"))
             ->where("end_date", ">", date("Y-m-d"))
-            ->orderBy("content_managent.updated_at","desc")
+            ->orderBy("content_management.updated_at","desc")
             ->get();
 
         return $ads;
@@ -464,7 +485,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         if ($is_sitePartner) {
             $addData = $query->limit($limit)->offset($offset)->get();
-            // $this->check_variable = $addData;
             $addData[0]->loop_number = $loop_number;
         } else {
             $category_offset = $this->category_counter[$index];
@@ -473,9 +493,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $data_count = count($addData);
             // $this->check_variable = $data_count;
 
-            if ($data_count == 0) {
-                $offset++;
-                $index = fmod($offset, $category_ids->count());
+            while ($data_count == 0) {
+                $this->maxParentCategoryCounter++;
+                $index = fmod($this->maxParentCategoryCounter, $category_ids->count());
                 $new_category_id = $category_ids[$index]->id;
                 $category_offset = $this->category_counter[$index];
 
@@ -484,21 +504,16 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 $addData_count = count($new_add);
                 if ($addData_count == 1) {
                     $addData = $new_add;
-                    // $addData->loop_number = $loop_number;
                     foreach ($addData as $item) {
                         $item["loop_number"] = $loop_number;
                     }
                     $this->category_counter[$index]++;
                 }
                 $data_count = $addData_count;
-                // $this->check_variable = $data_count;
             }
-            // $addData[0]->loop_number = $loop_number;
             foreach ($addData as $item) {
                 $item["loop_number"] = $loop_number;
             }
-
-            // $this->check_variable = $addData["loop_number"];
         }
         return $addData;
     }

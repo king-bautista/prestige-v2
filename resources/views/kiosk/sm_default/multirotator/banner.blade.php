@@ -2,7 +2,7 @@
 <div class="multirotator_landscape_container"></div>
 
 <!-- image and video for portrait directory -->
-<div class="multirotator_portrait_container"></div>
+<!-- <div class="multirotator_portrait_container"></div> -->
 
 @push('scripts')
 <script>
@@ -20,8 +20,8 @@
 
         var my_banner_ads = JSON.parse(helper.decodeEntities(banner_ads));
         
-        $('.multirotator_landscape_container, .multirotator_portrait_container').html('');
-        $('.multirotator_landscape_container, .multirotator_portrait_container').html('<div class="owl-carousel owl-wrapper-banner-ads"></div>');
+        $('.multirotator_landscape_container').html('');
+        $('.multirotator_landscape_container').html('<div class="owl-carousel owl-wrapper-banner-ads"></div>');
         $.each(my_banner_ads, function(key,banner_ad) {
             var banner_element = '';
             banner_element += '<div class="item" data-display_duration="'+banner_ad.display_duration*1000+'">';
@@ -68,6 +68,7 @@
             autoplayHoverPause:false,
             mouseDrag: false,
             touchDrag: false,
+            animateOut: 'fadeOut',
         });
 
     }

@@ -79,7 +79,7 @@ class KioskController extends AppBaseController
 
             $site_maps = $this->getSiteMaps();
 
-            $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
+            return $map_points_tenants_links = $this->getMapPointsTenantLinks($site_maps, $all_tenants);
             $map_points = json_encode($map_points_tenants_links['map_points']);
             $map_tenants = json_encode($map_points_tenants_links['map_tenants']);
             $kiosk_zoom = $this->getMapZoom($site_maps, $site_config->view_angle);
@@ -722,10 +722,14 @@ class KioskController extends AppBaseController
 
     public function getMapPointsTenantLinks($site_maps, $tenant_list) {
         $map_ids = $site_maps->pluck('id');
+        
+        $amenities_ids = Amenity::where('active', 1)->get()->pluck('id')->toArray();
+        array_push($amenities_ids, 0);
        
         $points_tmp = SitePointViewModel::whereIn('site_map_id', $map_ids)
+        ->whereIn('site_points.point_type', $amenities_ids)
         ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
-        ->select('site_points.*', 'site_maps.site_building_level_id as building_level_id')
+        ->select('site_points.*', 'site_maps.site_building_level_idy as building_level_id')
         ->get();
 
         $points = [];

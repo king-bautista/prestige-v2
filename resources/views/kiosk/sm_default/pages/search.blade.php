@@ -50,7 +50,17 @@
 
         $('#code').autocomplete({
             minLength: 1,
-            source: suggestion_list,
+            source: function(request, response) {
+                var filteredArray = $.map(suggestion_list, function(item) {
+                    if( item.value.toLowerCase().startsWith(request.term.toLowerCase())){
+                        return item;
+                    }
+                    else{
+                        return null;
+                    }
+                });
+                response(filteredArray);
+            },
             select: function(event, ui) {
                 if(ui.item.id)
                 {
@@ -65,17 +75,19 @@
             let text = helper.decodeEntities(item.value);
 
             var newText = String(text).replace(
-                    new RegExp(this.term, "gi"),
+                    new RegExp("\\b" + $.ui.autocomplete.escapeRegex(this.term), "i"),
+                    //new RegExp("\\b" +this.term, "gi"),
                     "<span class='prestige-text-color text-bold'>$&</span>");
+
             var floor = item.floor_name === null?"": " " + item.floor_name;
             var bldg = item.building_name === null?"": " " + item.building_name;
 
             var attrib = '';
             
             // if (item.building_name == 'Main Building'){
-            //     var attrib = floor;
+            //     attrib = floor;
             // }else{
-            //     var attrib = floor + bldg;
+            //     attrib = floor + bldg;
             // }
 
             // if(item.address !== null || item.address !== 'undefined' || item.address !== 'null' || item.address !== '') {
