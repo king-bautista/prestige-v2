@@ -202,7 +202,7 @@
 	var bldg_label = {};
 	var boundaries = {};
 	var spritePinFrom, spritePinTo, spriteUp;
-	var viewAngle = @php echo $site_config->tilt_angle; @endphp; //60 CHANGE TILT
+	var viewAngle = @php echo ($site_config->tilt_angle) ? $site_config->tilt_angle : 45; @endphp; //60 CHANGE TILT
     var site_config = @php echo $site_config; @endphp;
 
     //custom
@@ -1503,6 +1503,7 @@
         //fit to default zoom
         //zoom to default zoom
         var zoom_level =  0.4;
+
         if(default_zoom.hasOwnProperty($("#floor-select").val()))
         {
             zoom_level = default_zoom[$("#floor-select").val()];
@@ -1512,7 +1513,7 @@
     }
 
     //SET ZOOM when switching floors
-	function fitCameraToScreen(fitOffset = 1, moveTop = 0) {
+	function fitCameraToScreen(fitOffset = 1, moveTop = 0, moveLeft = 0) {
         if(boundaries.hasOwnProperty($("#floor-select").val()))
 		{  
             const box = new THREE.Box3();
@@ -1558,7 +1559,7 @@
             // CREATE THIS ON DATABASE
             var kiosk_center = @php echo $kiosk_center; @endphp;
             center.y = (center.y+parseFloat(kiosk_center[floor].center_y)); //UP DOWN
-            center.x = (center.x+parseFloat(kiosk_center[floor].center_x)); //LEFT RIGHT
+            center.x = (center.x+parseFloat(kiosk_center[floor].center_x))+moveLeft; //LEFT RIGHT
             center.z = (center.z+parseFloat(kiosk_center[floor].center_z)); //LEFT RIGHT
             
             const direction = controls.target.clone()
@@ -1871,7 +1872,7 @@
 					}
 				});
 
-				fitCameraToScreen(zoom_level);		
+				fitCameraToScreen(zoom_level, 0, -5);		
 				
 				controls.maxPolarAngle = 0 * Math.PI / 180;
 				controls.minPolarAngle = 0 * Math.PI / 180;
