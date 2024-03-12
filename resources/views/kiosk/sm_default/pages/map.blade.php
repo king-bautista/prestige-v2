@@ -1433,6 +1433,28 @@
 				
 				//show map pointer
 				spritePinTo.visible = true;		
+
+				var point = map_points[distanation_point];
+
+				spritePinTo.position.x = point.point_x;
+				spritePinTo.position.z = point.point_z;
+				spritePinTo.visible = true;
+				spritePinTo.userData = {'floor':point.building_level_id};
+
+				var coords = new THREE.Vector3(point.point_x, 6,point.point_z);
+				coords.x = point.point_x;
+				coords.y = point.point_y;
+				coords.z = point.point_z
+				scene.worldToLocal(coords);
+				controls.target = coords;
+				controls.update();
+
+				camera.position.y = 350;
+				camera.position.x = coords.x;
+				camera.position.z = coords.z;
+				camera.lookAt(spritePinTo.position);
+				
+				controls.zoomIn(4);
 		
 			}
 		}
@@ -1935,6 +1957,7 @@
 				$(".maprepeat").hide();
 				$("#floor-select").val(spritePinFrom.userData['floor']).change();
 
+				spritePinTo.visible = false;
 				controls.minAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180 ;
 				controls.maxAzimuthAngle = KIOSK_VIEW_ANGLE * Math.PI / 180;
 				
@@ -2134,6 +2157,7 @@
 		});
 
 		$('.btn-helpful').on('click', function() {
+			$('.btn-nothelpful, .btn-helpful').removeClass('btn-violet-color');
 			let payload = {
 				site_id: @php echo $site->id; @endphp,
 				helpful: 'Yes',
@@ -2145,6 +2169,7 @@
 		});
 
 		$('.btn-nothelpful').on('click', function() {
+			$('.btn-nothelpful, .btn-helpful').removeClass('btn-violet-color');
 			$('#feedback-search-modal').show();
 		});
 

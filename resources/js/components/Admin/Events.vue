@@ -54,7 +54,7 @@
 								<div class="col-sm-5">
 									<input type="file" id="img_banner" accept="image/*" ref="image_url"
 										@change="bannerChange">
-									<footer class="blockquote-footer">image max size is 700 x 700 pixels</footer>
+									<footer class="blockquote-footer">image max size is {{ event.banner_width }} x {{ event.banner_height }} pixels</footer>
 								</div>
 								<div class="col-sm-3 text-center">
 									<img v-if="image_url" :src="image_url" class="img-thumbnail" />
@@ -258,14 +258,52 @@ export default {
 	},
 
 	methods: {
+
+		getBannerWidthHeight: function (id) { 
+			this.event.banner_width = 0;
+			this.event.banner_height = 0;
+			axios.get('/admin/site/' + id)
+				.then(response => {
+					var site = response.data.data;
+					this.event.banner_width = site.details.event_width;
+					this.event.banner_height = site.details.event_height; 
+					$('#img_banner').val('');
+						this.image_url = '';
+						this.event.image_url = '';
+				});
+		},
 		getSites: function () {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
 		},
-		getBannerWidthHeight: function (id) {
-			// axios.get('/admin/event/get-banner-width-height/admin/site/get-buildings/' + id)
-			// 	.then(response => this.buildings = response.data.data);
-		},
+		// bannerChange: function (e) { 
+		// 	const file = e.target.files[0];
+		// 	if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+		// 		this.image_url = URL.createObjectURL(file);
+		// 		var _URL = window.URL || window.webkitURL;
+		// 		const img = new Image();
+		// 		img.src = _URL.createObjectURL(file);
+		// 		img.file = file;
+		// 		var obj = this;
+		// 		img.onload = function () {
+		// 			this.image_width = this.width;
+		// 			this.image_height = this.height;
+		// 			if (this.image_width == 700 && this.image_height == 700) { 
+		// 				obj.event.image_url = this.file;
+		// 			} else {
+		// 				$('#img_banner').val('');
+		// 				obj.image_url = '';
+		// 				obj.event.image_url = '';
+		// 				toastr.error("Invalid Image Size! Must be maximum width: 700 and maximum height: 700. Current width: " + this.image_width + " and height: " + this.image_height);
+		// 			};
+		// 		}
+		// 	} else {
+		// 		$('#img_banner').val('');
+		// 		this.image_url = '';
+		// 		this.event.image_url = '';
+		// 		toastr.error("The image must be a file type: bmp,jpeg,png.");
+		// 	}
+		// },
 		bannerChange: function (e) { 
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
@@ -276,15 +314,16 @@ export default {
 				img.file = file;
 				var obj = this;
 				img.onload = function () {
-					this.image_width = this.width;
-					this.image_height = this.height;
-					if (this.image_width == 700 && this.image_height == 700) { 
+					this.image_width = this.width; 
+					this.image_height = this.height; 
+					if (this.image_width == obj.event.banner_width && this.image_height == obj.event.banner_height) { 
 						obj.event.image_url = this.file;
 					} else {
 						$('#img_banner').val('');
 						obj.image_url = '';
 						obj.event.image_url = '';
-						toastr.error("Invalid Image Size! Must be maximum width: 700 and maximum height: 700. Current width: " + this.image_width + " and height: " + this.image_height);
+						var error = (obj.event.banner_height == 0)? 'Please select site name.': "Invalid Image Size! Must be maximum width: "+obj.event.banner_width+" and maximum height: "+obj.event.banner_height+". Current width: " + this.image_width + " and height: " + this.image_height;
+						toastr.error(error);
 					};
 				}
 			} else {
@@ -299,6 +338,8 @@ export default {
 			this.add_record = true;
 			this.edit_record = false;
 			this.event.site_id = '';
+			this.event.banner_width = 0;
+			this.event.banner_height = 0;
 			this.event.event_name = '';
 			this.event.location = '';
 			this.event.event_date = '';
@@ -340,6 +381,15 @@ export default {
 					var event = response.data.data;
 					this.event.id = id;
 					this.event.site_id = event.site_id;
+
+					var event = response.data.data;
+					axios.get('/admin/site/' + event.site_id)
+					.then(response => {
+						var site = response.data.data;
+						this.event.banner_width = site.details.event_width;
+						this.event.banner_height = site.details.event_height;
+					});
+
 					this.event.event_name = event.event_name;
 					this.event.location = event.location;
 					this.event.event_date = event.event_date;
