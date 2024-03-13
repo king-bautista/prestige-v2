@@ -190,6 +190,7 @@ export default {
 				name: "Name",
 				category_name: "Category Name",
 				supplemental_names: "Supplementals",
+				tag_names: "Tags",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -383,7 +384,7 @@ export default {
 					this.brand.name = brand.name;
 					this.brand.descriptions = brand.descriptions;
 					this.brand.supplementals = brand.brand_details.supplementals;
-					this.brand.tags = brand.tags;
+					this.brand.tags = brand.brand_details.tags;
 					this.brand.active = brand.active;
 					this.add_record = false;
 					this.edit_record = true;
