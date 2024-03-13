@@ -153,8 +153,8 @@ class ProductsController extends AppBaseController implements ProductsController
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'type' => $request->type,
-                'date_from' => $request->date_from,
-                'date_to' => $request->date_to,
+                'date_from' => ($request->date_from == '0000-00-00') ? NULL : $request->date_from,
+                'date_to' => ($request->date_to == '0000-00-00') ? NULL : $request->date_to,
                 'thumbnail' => str_replace('\\', '/', $thumbnails_path),
                 'image_url' => str_replace('\\', '/', $image_url_path),
                 'active' => 1
@@ -220,8 +220,8 @@ class ProductsController extends AppBaseController implements ProductsController
                 'name' => $request->name,
                 'descriptions' => $request->descriptions,
                 'type' => $request->type,
-                'date_from' => ($request->date_from) ? $request->date_from : null,
-                'date_to' => ($request->date_to) ? $request->date_to : null,
+                'date_from' => ($request->date_from == '0000-00-00') ? NULL : $request->date_from,
+                'date_to' => ($request->date_to == '0000-00-00') ? NULL : $request->date_to,
                 'thumbnail' => ($thumbnails_path) ? str_replace('\\', '/', $thumbnails_path) : $product->thumbnail,
                 'image_url' => ($image_url_path) ? str_replace('\\', '/', $image_url_path) : $product->image_url,
                 'active' => $this->checkBolean($request->active)
