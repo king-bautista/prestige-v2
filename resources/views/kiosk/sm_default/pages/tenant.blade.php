@@ -340,7 +340,10 @@
                 $('#nonSubscriber').hide();
 
                 if($(".store-banner-container").is(':empty')){
-                    $(".promo-row-container").css("max-height", "845px")
+                    $(".promo-row-container").css("max-height", "845px");
+                }
+                else{
+                    $(".promo-row-container").css("max-height", "580px");
                 }
             }
             else {

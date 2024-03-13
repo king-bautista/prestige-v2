@@ -275,6 +275,7 @@ class SiteTenantViewModel extends Model
         if(count($product_ids) > 0) {
             $products = BrandProductViewModel::whereIn('id', $product_ids)
             ->whereIn('type', ['banner', 'product'])
+            ->where('active', 1)
             ->get();
             foreach($products as $product) {
                 if($product->type == 'banner') {
@@ -286,6 +287,7 @@ class SiteTenantViewModel extends Model
             }
 
             $promos = BrandProductViewModel::whereIn('id', $product_ids)
+            ->where('active', 1)
             ->where('type', 'promo')
             ->whereDate('date_from', '<=', $current_date)
             ->whereDate('date_to', '>=', $current_date)
