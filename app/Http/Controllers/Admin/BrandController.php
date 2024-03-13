@@ -59,36 +59,32 @@ class BrandController extends AppBaseController implements BrandControllerInterf
                     $brand_ids = CompanyBrands::where('company_id', $company_id)->get()->pluck('brand_id');
                 }
             }
-
-            $brands = BrandViewModel::when(request('search'), function ($query) {
-                return $query->where('brands.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('brands.descriptions', 'LIKE', '%' . request('search') . '%');
-                // ->orWhere('group_concat(c.name)', 'LIKE', '%' . request('search') . '%');
-
+            $host = $request->getSchemeAndHttpHost();
+            $brands = Brand::when(request('search'), function ($query) {
+                return $query->having('name', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('category_name', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('supplemental_names', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('tag_names', 'LIKE', '%' . request('search') . '%')
+                    ;
             })
                 ->when(count($brand_ids) > 0, function ($query) use ($brand_ids) {
                     return $query->whereIn('brands.id', $brand_ids);
                 })
-                ->leftJoin('brand_supplementals as bs', 'brands.id', '=', 'bs.brand_id')
-                ->leftJoin('categories as c', 'bs.supplemental_id', '=', 'c.id')
-                ->select('brands.*', 'c.name as c_name', 'brands.name as b_name', DB::raw('group_concat(c.name) as supplementals'))
+                ->select('brands.id')
+                ->selectRaw('brands.id as brand_id, 
+                brands.name as name,
+                CONCAT("' . $host . '/",`logo`) as logo_image_path, 
+                (select c.name from categories as c where brands.category_id = c.id ) as category_name,
+                (select group_concat(c.name) as name from categories c left join brand_supplementals bs on bs.supplemental_id = c.id where bs.brand_id = brands.id) as supplemental_names,
+                (select group_concat(t.name) as name from tags t left join brand_tags bt on bt.tag_id = t.id where bt.brand_id = brands.id) as tag_names,
+                brands.active as active, brands.updated_at as updated_at')
                 ->when(is_null(request('order')), function ($query) {
-                    return $query->orderBy('brands.name', 'ASC');
+                    return $query->orderBy('name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
-                    $column = $this->checkcolumn(request('order'));
-                    if ($column == 'category_name') {
-                        $field = 'c.name';
-                    } else if ($column == 'supplemental_names') {
-                        $field = 'supplementals';
-                    } else if ($column == 'name') {
-                        $field = 'brands.name';
-                    } else {
-                        $field = $column;
-                    }
-                    return $query->orderBy($field, request('sort'));
+                    return $query->orderBy(request('order'), request('sort'));
                 })
-                ->groupBy('brands.id')
+                ->groupBy('brand_id')
                 ->latest()
                 ->paginate(request('perPage'));
             return $this->responsePaginate($brands, 'Successfully Retreived!', 200);
@@ -409,13 +405,13 @@ class BrandController extends AppBaseController implements BrandControllerInterf
             foreach ($brand_management as $brand) {
                 $company_brand = CompanyBrands::where("brand_id", $brand->id)->get();
                 $company_id = (count($company_brand) > 0) ? $company_brand[0]['company_id'] : 0;
-                if($company_id != 0){
-                    $company = Company::where("id", $company_id)->get(); 
-                    $company_name = (count($company)>0)?$company_name = $company[0]['name'] : '';
-                }else{
+                if ($company_id != 0) {
+                    $company = Company::where("id", $company_id)->get();
+                    $company_name = (count($company) > 0) ? $company_name = $company[0]['name'] : '';
+                } else {
                     $company_name = '';
-                } 
-               
+                }
+
                 $reports[] = [
                     'id' => $brand->id,
                     'category_id' => $brand->category_id,
