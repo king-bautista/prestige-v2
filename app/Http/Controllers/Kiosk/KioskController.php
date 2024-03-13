@@ -568,13 +568,18 @@ class KioskController extends AppBaseController
             ->leftJoin('brands', 'site_tenants.brand_id', '=', 'brands.id')
             ->select('site_tenants.*')
             ->distinct()
+            ->inRandomOrder()
             ->get()->toArray();
+
+            shuffle($suggest_subscribers);
+            $suggest_subscribers = array_chunk($suggest_subscribers, 5);
+            $number = mt_rand(1, (count($suggest_subscribers)));
 
             $tenants = array_chunk($tenants->toArray(), 12);                
 
             return [
                 'tenants' => $tenants,
-                'suggest_subscribers' => $suggest_subscribers,
+                'suggest_subscribers' => $suggest_subscribers[$number-1],
             ];
         // }
         // catch (\Exception $e)
