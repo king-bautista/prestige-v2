@@ -376,7 +376,7 @@
                 margin: 0,
                 nav: false,
                 loop: false,
-                items: 4,
+                items: 5,
             });
         }
     }
