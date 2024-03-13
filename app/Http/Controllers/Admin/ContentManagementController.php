@@ -624,7 +624,8 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
             //$play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
             $play_list = SiteScreen::when(request('search'), function ($query) {
-                return $query->having('product_application', 'LIKE', '%' . request('search') . '%')
+                return $query->having('site_screen_location', 'LIKE', '%' . request('search') . '%')
+                ->orHaving('product_application', 'LIKE', '%' . request('search') . '%')
                     ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
                     ->orHaving('product_application', 'LIKE', '%' . request('search') . '%');
             })
