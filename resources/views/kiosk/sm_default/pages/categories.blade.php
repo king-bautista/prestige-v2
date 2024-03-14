@@ -154,7 +154,7 @@
             $('.category-title').attr('data-en', main_category);
             $('.nav-btn-container').removeClass('active');
 
-            $( ".cat-row-card" ).append('<img src="{{ URL::to('themes/sm_default/images/stick-around.png') }}" style="width: 75%; margin: auto;">');
+            $( ".cat-row-card" ).append('<img src="{{ URL::to('themes/sm_default/images/stick-around.png') }}" style="width: 735px; margin: auto;">');
             $( ".cat-row-card" ).addClass('text-center');
 
             helper.setTranslation();                
@@ -339,6 +339,18 @@
     }
 
     function showAlphabetical() {
+        if(alphabetical == null || alphabetical == undefined) {
+            $('.alpha-tenants').html('');
+            $('.alpha-tenants').append('<div class="row col-12 text-center" style="margin-left: -36px;"><img src="{{ URL::to('themes/sm_default/images/stick-around.png') }}" style="width: 735px; margin: auto; margin-top: 82px;"></div>');
+
+            generateLetters();
+            helper.setTranslation();
+            current_location = 'alphabet';
+            page_history.push(current_location);
+
+            return false;
+        }
+
         $('.alpha-tenants').html('');
         $('.alpha-tenants').html('<div class="owl-carousel owl-theme owl-wrapper-alpha-tenant-list"></div>');
         $.each(alphabetical, function(key,tenants) {
@@ -456,6 +468,18 @@
     }
 
     function showSupplementals() {
+        if(supplementals == null || supplementals == undefined || supplementals.length == 0) {
+            $('.supplemental-list').html('');
+            $('.supplemental-list').append('<div class="row col-12 text-center" style="margin-left: -36px;"><img src="{{ URL::to('themes/sm_default/images/stick-around.png') }}" style="width: 735px; margin: auto; margin-top: 82px;"></div>');
+
+            generateLetters();
+            helper.setTranslation();
+            current_location = 'supplemental';
+            page_history.push(current_location);
+
+            return false;
+        }
+
         $('.supplemental-list').html('');
         $('.supplemental-list').html('<div class="owl-carousel owl-theme owl-wrapper-supplemental"></div>');
         $.each(supplementals, function(key,supplemental) {
