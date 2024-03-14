@@ -137,6 +137,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
         $moduloValue = ceil($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
+        // $moduloValue = 2;
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
         $sitePartnerCounter = 0;
@@ -405,7 +406,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'date_approved' => Carbon::createFromFormat('d/m/Y H:i', $item["date_approved"])->format('Y-m-d H:i:s'),                
                 ];
                 $data = $exel_collection;
-                // array_push($exel_collection,$parent_category_id);
+                // array_push($exel_collection,$company_id);
 
                 if($slots > 1){
                     for($index = 0; $index < $slots; $index++){
@@ -416,7 +417,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 }
             }
         }
-        $this->fields = $slots;
+        $this->fields = $exel_collection;
     }
 
     protected function getSiteId($site){
