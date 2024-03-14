@@ -372,6 +372,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
     }
 
     protected function processData($data){
+        $slots = "";
         $exel_collection = [];
         $date_today = date("m/d/Y");
         foreach ($data as $item){
@@ -385,6 +386,8 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 $brand_id = $this->getBrandId($item['brand_name']);
                 $site_screen_id = $this->getSiteScreenId($site_id[0]->id);
                 $content_id = $this->getContentId($item['content_id']);
+                $slots = $item["no_of_slots"];
+
                 $exel_collection = [
                     'content_id'=> $content_id,
                     'site_screen_id'=> $site_screen_id[0]->id,
@@ -403,10 +406,17 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 ];
                 $data = $exel_collection;
                 // array_push($exel_collection,$parent_category_id);
-                TemporaryPlayList::create($data);
+
+                if($slots > 1){
+                    for($index = 0; $index < $slots; $index++){
+                        TemporaryPlayList::create($data);
+                    }
+                }else{
+                    TemporaryPlayList::create($data);
+                }
             }
         }
-        $this->fields = $data;
+        $this->fields = $slots;
     }
 
     protected function getSiteId($site){
