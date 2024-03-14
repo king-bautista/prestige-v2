@@ -127,12 +127,13 @@
             $('.main-'+category.id).on('click', function() {
                 main_category_id = category.category_id;
                 main_category = category.category_name;
-                sub_categories = category.sub_categories;
-                alphabetical = category.alphabetical;
-                supplementals = category.supplemental.sub_categories;
+                sub_categories = (category.sub_categories.length > 0) ? category.sub_categories : null;
+                alphabetical = (category.alphabetical.length > 0 ) ? category.alphabetical : null;
+                supplementals = (category.supplemental) ? category.supplemental.sub_categories : null;
                 if(category.supplemental) {
                     $('#Tab-Supplemental-tab').html(category.supplemental.name);
                     $('#Tab-Supplemental-tab').attr('data-en', category.supplemental.name);
+                    $('#Tab-Supplemental-tab').show();
                 }
                 else {
                     $('#Tab-Supplemental-tab').hide();
@@ -144,6 +145,32 @@
     }
 
     function showSubCategories() {
+        
+        if(sub_categories == null || sub_categories == undefined) {
+            $('.category-img-banner').attr('src', '');
+            $('.sub-category-tenants').html('');
+            $('.cat-row-card').html('');
+            $('.category-title').html(main_category);
+            $('.category-title').attr('data-en', main_category);
+            $('.nav-btn-container').removeClass('active');
+
+            $( ".cat-row-card" ).append('<img src="{{ URL::to('themes/sm_default/images/stick-around.png') }}" style="width: 75%; margin: auto;">');
+            $( ".cat-row-card" ).addClass('text-center');
+
+            helper.setTranslation();                
+            current_location = 'subcategory';
+            page_history.push(current_location);
+
+            $('#home-cat-contents').show();
+            $('.CatTabCategories').show();
+            $('#home-container').hide();
+            $('.TenantPage').hide();
+            $('.back-img-btn').show();
+
+            return false;
+        }
+        
+        $( ".cat-row-card" ).removeClass('text-center');
         $('.category-img-banner').attr('src', '');
         $('.sub-category-tenants').html('');
         $('.cat-row-card').html('');
@@ -176,8 +203,6 @@
                 $("#container-per-cat").addClass("supplemental-container");
             });
         }); 
-        $('#home_v4').show();
-        $('#home_v4s').hide();
         $('#home-cat-contents').show();
         $('.CatTabCategories').show();
         $('#home-container').hide();
@@ -307,8 +332,6 @@
                 
             });
 
-            $('#home_v4').show();
-            $('#home_v4s').hide();
             $('.TenantPage').show();
             $('.CatTabCategories').hide();
             $(".owl-wrapper-tenant-list").find(".owl-dots").addClass('owl-dots-tenant-list');
@@ -423,8 +446,6 @@
             
         });
 
-        $('#home_v4').show();
-        $('#home_v4s').hide();
         generateLetters();
         helper.setTranslation();
         current_location = 'alphabet';
@@ -532,8 +553,6 @@
             
         });
 
-        $('#home_v4').show();
-        $('#home_v4s').hide();
         $('.TenantPage').hide();
         $('.CatTabCategories').show();
         helper.setTranslation();
