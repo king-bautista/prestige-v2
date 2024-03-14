@@ -624,10 +624,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
             //$play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
             $play_list = SiteScreen::when(request('search'), function ($query) {
-                return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('sites.name', 'LIKE', '%' . request('search') . '%')
-                    //->orWhereRaw()
-                    ->orWhereRaw('CONCAT(`sites_meta`.`meta_value`,\' - \',`site_screens`.`name`,\', \',`site_buildings`.`name`,\', \',`site_building_levels`.`name`,\' (\',`site_screen_products`.`ad_type`,\' / \',`site_screen_products`.`dimension`,\')\') LIKE \'%' . request('search') . '%\'');
+                return $query->having('site_screen_location', 'LIKE', '%' . request('search') . '%')
+                ->orHaving('product_application', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('product_application', 'LIKE', '%' . request('search') . '%');
             })
                 ->leftJoin('sites', 'site_screens.site_id', '=', 'sites.id')
                 ->leftJoin('site_buildings', 'site_screens.site_building_id', '=', 'site_buildings.id')
@@ -637,26 +637,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     $join->on('sites.id', '=', 'sites_meta.site_id')
                         ->where('sites_meta.meta_key', '=', 'site_code');
                 })
-                ->select('site_screens.*', 'sites.name as site_name')
-                ->selectRaw("CONCAT(sites_meta.meta_value,' - ',sites.name,site_buildings.name,site_building_levels.name,' (',site_screens.product_application,'/',site_screens.orientation,')') AS site_screen_location")
-
+                ->select('site_screens.id')
+                ->selectRaw("CONCAT(sites_meta.meta_value,' - ',sites.name,site_buildings.name,site_building_levels.name,' (',site_screens.product_application,'/',site_screens.orientation,')') AS site_screen_location, sites.name as site_name, site_screens.product_application as product_application, site_screens.active as active")
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('site_screens.name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
-                    $column = $this->checkcolumn(request('order'));
-
-                    switch ($column) {
-                        case 'site_screen_location':
-                            $field = 'site_screen_location';
-                            break;
-                        case 'site_name':
-                            $field = 'site_name';
-                            break;
-                        default:
-                            $field = $column;
-                    }
-                    return $query->orderBy($field, request('sort'));
+                    return $query->orderBy(request('order'), request('sort'));
                 })
                 ->paginate(request('perPage'));
 
