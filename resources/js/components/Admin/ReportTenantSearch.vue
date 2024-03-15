@@ -7,6 +7,7 @@
 					<div class="col-md-12">
 						<div class="card">
 							<div class="card-body">
+								<div :style="{ 'font-size': 20 + 'px' }">{{ site_name }}</div>	
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :otherButtons="otherButtons"
 									:primaryKey="primaryKey" v-on:reportModal="reportModal" v-on:downloadCsv="downloadCsv"
 									ref="dataTable">
@@ -35,10 +36,24 @@
 						<form>
 							<div class="form-group col-md-12">
 								<label>Site: <span class="text-danger">*</span></label>
-								<select class="custom-select" v-model="filter.site_id">
+								<select class="custom-select" v-model="filter.site_id" @change="getSiteName">
 									<option value="">Select Site</option>
 									<option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
 								</select>
+							</div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.start_date" placeholder="YYYY/MM/DD" :config="options"
+										id="date_from" autocomplete="off"></date-picker>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">End Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.end_date" placeholder="YYYY/MM/DD" :config="options"
+										id="date_to" autocomplete="off"></date-picker>
+								</div>
 							</div>
 						</form>
 					</div>
@@ -54,6 +69,9 @@
 </template>
 <script>
 import Table from '../Helpers/Table';
+import datePicker from 'vue-bootstrap-datetimepicker';
+// Import date picker css
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 
 export default {
 	name: "Reports",
@@ -61,8 +79,16 @@ export default {
 		return {
 			filter: {
 				site_id: '',
+				start_date: '',
+				end_data:'',
 			},
+			site_name: 'All',
+			site_name_temp: 'All',
 			sites: [],
+			options: {
+				format: 'YYYY/MM/DD',
+				useCurrent: false,
+			},
 			dataFields: {
 				brand_logo: {
 					name: "Brand Logo",
@@ -100,6 +126,10 @@ export default {
 	},
 
 	methods: {
+		getSiteName: function(event) {
+				var option_text = event.target[event.target.selectedIndex].text; 
+				this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
+			},
 		getSites: function () {
 			axios.get('/admin/site/get-all')
 				.then(response => this.sites = response.data.data);
@@ -113,6 +143,8 @@ export default {
 		filterReport: function () {
 			this.$refs.dataTable.filters = this.filter;
 			this.$refs.dataTable.fetchData();
+			var filter = this.filter; 
+			this.site_name = (filter.site_id == "")? 'All': this.site_name_temp;
 			$('#filterModal').modal('hide');
 		},
 
@@ -129,7 +161,8 @@ export default {
 	},
 
 	components: {
-		Table
+		Table,
+		datePicker
 	}
 };
 </script> 

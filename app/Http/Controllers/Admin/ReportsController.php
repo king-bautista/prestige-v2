@@ -98,9 +98,11 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         $logs_total_count = LogsViewModel::when($site_id, function ($query) use ($site_id) {
             return $query->where('site_id', $site_id);
         })
+            ->whereNotNull('category_id')
+            ->whereNotNull('parent_category_id')
+            ->whereNotNull('main_category_id')
             ->whereNotNull('site_tenant_id')
             ->selectRaw('logs.*, count(*) as tenant_count')
-            ->groupBy('main_category_id')
             ->get();
 
         $total_main_category = $logs_total_count->sum('tenant_count');
@@ -108,6 +110,9 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
             return $query->where('site_id', $site_id);
         })
+            ->whereNotNull('category_id')
+            ->whereNotNull('parent_category_id')
+            ->whereNotNull('main_category_id')
             ->whereNotNull('site_tenant_id')
             ->selectRaw('logs.*, (select name from categories where id = logs.main_category_id) category_parent_name, count(*) as tenant_count, count(*)/' . $total_main_category . ' * 100 as percentage_share')
             ->groupBy('main_category_id')
@@ -163,8 +168,13 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 $site_id = $filters->site_id;
             if ($request->site_id)
                 $site_id = $request->site_id;
-
-            $totals = Log::when($site_id, function ($query) use ($site_id) {
+            
+            
+                echo $request->start_date;
+                echo '---';
+                echo $request->start_date;
+            
+                $totals = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
                 ->selectRaw('logs.main_category_id, count(*) as tenant_count')
@@ -388,7 +398,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
 
             $logs = LogsMonthlyUsageViewModel::whereYear('created_at', $current_year)
                 ->selectRaw('logs.*, (select s.name from sites s where s.id = logs.site_id) as site_name,count(*) as total_count, ROUND((count(*)/' . $total_count . '), 2) as total_average')
-                 ->when(is_null(request('order')), function ($query) {
+                ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('site_name', 'DESC');
                 })
                 ->when(request('order'), function ($query) {
