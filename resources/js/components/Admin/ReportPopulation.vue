@@ -7,6 +7,7 @@
 	          <div class="col-md-12">
 	          	<div class="card">
 	    			<div class="card-body">
+						<div :style="{ 'font-size': 20 + 'px' }">{{ site_name }}</div>
 						<div class="row">
 							<div class="col-md-6">
 								<Table 
@@ -56,7 +57,7 @@
 		          <form>
 		              <div class="form-group col-md-12">
                             <label>Site: <span class="text-danger">*</span></label>
-                            <select class="custom-select" v-model="filter.site_id">
+                            <select class="custom-select" v-model="filter.site_id" @change="getSiteName">
                                 <option value="">Select Site</option>
                                 <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
                             </select>
@@ -83,6 +84,8 @@
                 filter: {
                     site_id: '',
                 },
+				site_name: 'All',
+				site_name_temp: 'All',
                 sites: [],
             	dataFields: {
             		category_parent_name: "Category", 
@@ -115,6 +118,10 @@
         },
 
         methods: {
+			getSiteName: function(event) {
+				var option_text = event.target[event.target.selectedIndex].text; 
+				this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
+			},
             getSites: function() {
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
@@ -133,7 +140,8 @@
 			},
 
 			filterChart: function() {
-				var filter = this.filter;
+				var filter = this.filter; 
+				this.site_name = (filter.site_id == "")? 'All': this.site_name_temp;
 				$(function() {
 					$.get( "/admin/reports/merchant-population/list", filter, function( data ) {
 						let labels = [];
@@ -188,8 +196,7 @@
 			},
 
             downloadCsv: function() {
-				console.log(this.filter);
-              axios.get('/admin/reports/merchant-population/download-csv', {params: {filters: this.filter}})
+		      axios.get('/admin/reports/merchant-population/download-csv', {params: {filters: this.filter}})
               .then(response => {
                 const link = document.createElement('a');
                 link.href = response.data.data.filepath;

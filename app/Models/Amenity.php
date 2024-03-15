@@ -56,7 +56,29 @@ class Amenity extends Model
     public $appends = [
         'icon_path',
         'site_name',
+        'tags',
     ];
+
+    public function saveTags($tags)
+    {
+        BrandTag::where('amenity_id', $this->id)->delete();
+        if($tags) {
+            $tag_ids =  explode(',',$tags);
+            foreach ($tag_ids as $index => $data) {
+                BrandTag::updateOrCreate(
+                    [
+                        'tag_id' => $data,
+                        'amenity_id' => $this->id,
+                    ],
+                );
+            }
+        }
+    }
+
+    public function getTags()
+    {   
+        return $this->hasMany('App\Models\BrandTag', 'amenity_id', 'id');
+    }
 
     public function getIconPathAttribute()
     {
@@ -72,4 +94,10 @@ class Amenity extends Model
             return $name;
         return null;
     }
+
+    public function getTagsAttribute()
+    {
+        $ids = $this->getTags()->pluck('tag_id');
+        return Tag::whereIn('id', $ids)->get();
+    }  
 }

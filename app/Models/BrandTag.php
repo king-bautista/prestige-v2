@@ -12,8 +12,10 @@ class BrandTag extends Model
      * @var array
      */
     protected $fillable = [
+        'tag_id',
         'brand_id', 
-        'tag_id'
+        'tenant_id', 
+        'amenity_id', 
     ];
 
     /**
