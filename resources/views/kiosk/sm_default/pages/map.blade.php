@@ -1679,6 +1679,10 @@
 		var selected_text = $('#tenant-select').find("option:selected").text();
 		$('#'+$('.select2-selection__rendered').attr('id')+'.select2-selection__rendered').text('Directions to '+selected_text);
 
+		$('#tenant-select').prop('disabled', true);
+		$('#floor-select').prop('disabled', true);
+		$('#btnpwdchange').prop('disabled', true);
+
 		$.each(floors,function(index){
 			linePathGroup[index].remove(...linePathGroup[index].children);
 		});
@@ -1691,9 +1695,6 @@
 
 		$.post( "/api/v1/get-routes", { from: KIOSK_ID, to: $('#tenant-select').val(), pwd: ($("#ispwd").is(':checked') ? 1: 0), type: 'kiosk', site_id:@php echo $site->id; @endphp} )
 		.done(function(data) {
-			$('#tenant-select').prop('disabled', true);
-			$('#floor-select').prop('disabled', true);
-			$('#btnpwdchange').prop('disabled', true);
 			$('#btnGuide').show();
 
 			// ADD DISABLED COLOR FOR PWD HERE
