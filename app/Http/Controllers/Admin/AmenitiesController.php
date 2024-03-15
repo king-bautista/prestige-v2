@@ -107,6 +107,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             ];
 
             $amenities = Amenity::create($data);
+            $amenities->saveTags($request->tags);
 
             return $this->response($amenities, 'Successfully Created!', 200);
         }
@@ -141,6 +142,7 @@ class AmenitiesController extends AppBaseController implements AmenitiesControll
             ];
 
             $amenities->update($data);
+            $amenities->saveTags($request->tags);
 
             return $this->response($amenities, 'Successfully Modified!', 200);
         }
