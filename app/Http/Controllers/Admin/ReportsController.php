@@ -122,7 +122,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     ->orHaving('percentage_share', 'LIKE', '%' . request('search') . '%');
             })
             ->when(is_null(request('order')), function ($query) {
-                return $query->orderBy('tenant_count', 'DESC');
+                return $query->orderBy('category_parent_name', 'DESC');
             })
             ->when(request('order'), function ($query) {
                 return $query->orderBy(request('order'), request('sort'));
