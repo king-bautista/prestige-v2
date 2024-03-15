@@ -331,6 +331,11 @@ export default {
 					else {
 						this.icon = this.amenity.icon;
 					}
+
+					amenity.tags.forEach((value) => {
+						this.tags_ids.push(value.id);
+					});
+
 					this.$refs.icon.value = null;
 					this.add_record = false;
 					this.edit_record = true;
