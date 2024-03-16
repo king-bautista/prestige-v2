@@ -263,6 +263,7 @@ body {
 .cat-row-card {
     margin-left: -29px !important;
     width: 704px;
+    margin-top: 46px !important;
 }
 
 .cat-btn-img {
@@ -3290,7 +3291,7 @@ ul#mapguide li:last-child:before {
 
 .less-than-3{
     position: absolute;
-    top: -31px;
-    justify-content: center;
     width: 100%;
+    top: 1px;
+    justify-content: center;
 }
