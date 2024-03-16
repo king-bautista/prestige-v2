@@ -133,7 +133,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
 
         $maxSitePartnerAds = $totalSitePartnerAds > $maxSitePartnerSlot ? $maxSitePartnerSlot : $totalSitePartnerAds;
         // computation of total number of ads
-        $totalNumberOfAds = $maxSitePartnerAds + $totalParentCategoryAds;
+        $totalNumberOfAds = $totalSitePartnerAds + $totalParentCategoryAds;
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
         $moduloValue = ceil($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
@@ -152,7 +152,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             for($loop_index = 0; $loop_index < $loopCount; $loop_index++){
                 for ($index = 0; $index < $totalNumberOfAds; $index++){
                     $loop_number = $loop_index;
-                    if(fmod($index, $moduloValue) == 0){
+                    if(fmod($index, $moduloValue) != 0){
                         if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
                             if($sitePartnerCounter > $maxSitePartnerSlot){
                                 // $this->fields = $sitePartnerCounter;
