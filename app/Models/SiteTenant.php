@@ -85,7 +85,7 @@ class SiteTenant extends Model
 
     public function saveTags($tags)
     {
-        return BrandTag::where('tenant_id', $this->id)->delete();
+        BrandTag::where('tenant_id', $this->id)->delete();
         if($tags) {
             $tag_ids =  explode(',',$tags);
             foreach ($tag_ids as $index => $data) {

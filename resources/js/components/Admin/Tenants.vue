@@ -90,7 +90,7 @@
 								<div class="col-sm-9">
 									<multiselect v-model="tenant.tags" :options="tags" :multiple="true"
 										:close-on-select="true" placeholder="Select Tags" label="name" track-by="name"
-										@select="toggleSelectedTags" @remove="toggleUnSelectedTags">
+										@select="toggleTenantTags" @remove="untoggleTenantTags">
 									</multiselect>
 								</div>
 							</div>
@@ -425,7 +425,7 @@ export default {
 			buildings: [],
 			floors: [],
 			companies: [],
-			tags_ids: [],
+			tenant_tags_ids: [],
 			tags: [],
 			dataFields: {
 				serial_number: "ID",
@@ -529,15 +529,17 @@ export default {
 				.then(response => this.tags = response.data.data);
 		},
 
-		toggleSelectedTags: function (value, id) {
-			this.tags_ids.push(value.id);
+		toggleTenantTags: function (value, id) {
+			this.tenant_tags_ids.push(value.id);
 		},
 
-		toggleUnSelectedTags: function (value, id) {
-			const index = this.tags_ids.indexOf(value.id);
+		untoggleTenantTags: function (value, id) {
+			const index = this.tenant_tags_ids.indexOf(value.id);
 			if (index > -1) { // only splice array when item is found
-				this.tags_ids.splice(index, 1); // 2nd parameter means remove one item only
+				this.tenant_tags_ids.splice(index, 1); // 2nd parameter means remove one item only
 			}
+
+			console.log(this.tenant_tags_ids);
 		},
 
 		subscriberLogoChange: function (e) {
@@ -690,7 +692,7 @@ export default {
 			formData.append("youtube", (this.tenant.youtube) ? this.tenant.youtube : '');
 			formData.append("viber", (this.tenant.viber) ? this.tenant.viber : '');
 			formData.append("website", (this.tenant.website) ? this.tenant.website : '');
-			formData.append("tags", this.tags_ids);
+			formData.append("tags", this.tenant_tags_ids);
 
 			axios.post('/admin/site/tenant/store', formData, {
 				headers: {
@@ -709,9 +711,10 @@ export default {
 				.then(response => {
 					this.tenant.operational_hours = [];
 					schedules = [];
+					this.tenant_tags_ids = [];
 
 					var tenant = response.data.data;
-					console.log(tenant);
+
 					this.tenant.id = tenant.id;
 					this.tenant.brand_id = tenant.brand_details;
 					this.tenant.site_id = tenant.site_id;
@@ -747,7 +750,7 @@ export default {
 					}
 
 					tenant.tags.forEach((value) => {
-						this.tags_ids.push(value.id);
+						this.tenant_tags_ids.push(value.id);
 					});
 
 					this.subscriber_logo = '';
@@ -760,6 +763,7 @@ export default {
 		},
 
 		updateTenant: function () {
+		console.log(this.tenant_tags_ids);
 			let formData = new FormData();
 			formData.append("id", this.tenant.id);
 			formData.append("brand_id", JSON.stringify(this.tenant.brand_id));
@@ -784,7 +788,7 @@ export default {
 			formData.append("youtube", (this.tenant.youtube) ? this.tenant.youtube : '');
 			formData.append("viber", (this.tenant.viber) ? this.tenant.viber : '');
 			formData.append("website", (this.tenant.website) ? this.tenant.website : '');
-			formData.append("tags", this.tags_ids);
+			formData.append("tags", this.tenant_tags_ids);
 			axios.post('/admin/site/tenant/update', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
