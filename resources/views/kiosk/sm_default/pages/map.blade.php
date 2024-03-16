@@ -1847,9 +1847,12 @@
 			resetMap();
 		});
 
-        $("#floor-select").on('change',function(){
+		$("#floor-select").on('select2:open',function(){
+			//force dropup
+			$('.select2-dropdown').removeClass('select2-dropdown--below').addClass('select2-dropdown--above')
+		});
 
-            $('.select2-dropdown').removeClass('select2-dropdown--below').addClass('select2-dropdown--above')
+		$("#floor-select").on('change',function(){			
             switchFloor($(this).val());
         });
 

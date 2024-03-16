@@ -320,6 +320,7 @@ export default {
 			axios.get('/admin/amenity/' + id)
 				.then(response => {
 					var amenity = response.data.data;
+					this.tags_ids = [];
 					this.amenity.id = id;
 					this.amenity.name = amenity.name;
 					this.amenity.site_id = amenity.site_id;
@@ -331,6 +332,11 @@ export default {
 					else {
 						this.icon = this.amenity.icon;
 					}
+
+					amenity.tags.forEach((value) => {
+						this.tags_ids.push(value.id);
+					});
+
 					this.$refs.icon.value = null;
 					this.add_record = false;
 					this.edit_record = true;

@@ -26,6 +26,7 @@ use App\Models\AdminViewModels\SiteViewModel;
 class PlaylistTestImport implements ToCollection, WithHeadingRow
 {
     public $fields, $category_counter = [], $maxParentCategoryCounter = 0;
+    public $main_categories = '';
     // public $site_id, $site_screen_id, $categories, $parent_categories, $company_id, $dimension, $test;
     /**
     * @param Collection $collection
@@ -130,11 +131,13 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         $maxSitePartnerSlot = 4;
 
         // $this->fields = $totalSitePartnerAds;
-
         $maxSitePartnerAds = $totalSitePartnerAds > $maxSitePartnerSlot ? $maxSitePartnerSlot : $totalSitePartnerAds;
+
         // computation of total number of ads
         $totalNumberOfAds = $maxSitePartnerAds + $totalParentCategoryAds;
+
         // getting the denominator for modulo
+        //dd($maxSitePartnerAds);
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
         $moduloValue = ceil($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
         // $moduloValue = 2;
@@ -144,54 +147,64 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         $sequenceCounter = 1;
         $this->category_counter = $this->makeCounterVariables($site_id);
         
-        
         // $loopCount = sizeof(array_chunk($sitePartnersAds->toArray(), $maxSitePartnerSlot));
 
         $loopCount = $this->getLoopCount($totalSitePartnerAds, $maxSitePartnerSlot);
-        if($loopCount >= 1 ){
-            for($loop_index = 0; $loop_index < $loopCount; $loop_index++){
+
+        if($loopCount >= 1 ) {
+            for($loop_index = 0; $loop_index < $loopCount; $loop_index++) {
                 for ($index = 0; $index < $totalNumberOfAds; $index++){
                     $loop_number = $loop_index;
-                    if(fmod($index, $moduloValue) == 0){
-                        if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
-                            if($sitePartnerCounter > $maxSitePartnerSlot){
-                                // $this->fields = $sitePartnerCounter;
-                                $sitePartnerCounter == $totalSitePartnerAds ? $sitePartnerCounter = 0 : ""; 
-                                $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
-                                
-                                // $this->fields = $sitePartnerCounter;
+                    if(intval(fmod($index, $moduloValue)) != 0) {
+                        try {
+                            if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
+                                if($sitePartnerCounter > $maxSitePartnerSlot){
+                                    // $this->fields = $sitePartnerCounter;
+                                    $sitePartnerCounter == $totalSitePartnerAds ? $sitePartnerCounter = 0 : ""; 
+                                    $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);                                    
+                                }
+                                else {
+                                    $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
+                                }
+                                array_push($arrayStore, $addSitePartner);
+                                $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : $maxSitePartnerCounter = 0;
                             }
                             else{
-                                $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
+                                // if($totalParentCategoryAds !== 0 && $this->maxParentCategoryCounter !== $totalParentCategoryAds){
+                                if($totalParentCategoryAds !== 0){
+                                    $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
+                                    array_push($arrayStore, $addParentCategory);
+                                    $this->maxParentCategoryCounter = $this->maxParentCategoryCounter+1;
+                                }
                             }
-                            array_push($arrayStore, $addSitePartner);
-                            $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : $maxSitePartnerCounter = 0;
+                        } catch (\Exception $e) {
+                            
+                            continue;
                         }
-                        else{
+                        $sitePartnerCounter++;
+                    }
+                    else{
+                        try {
                             // if($totalParentCategoryAds !== 0 && $this->maxParentCategoryCounter !== $totalParentCategoryAds){
                             if($totalParentCategoryAds !== 0){
                                 $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                                 array_push($arrayStore, $addParentCategory);
-                                $this->maxParentCategoryCounter++;
+                                $this->maxParentCategoryCounter = $this->maxParentCategoryCounter+1;
                             }
-                        }
-                        $sitePartnerCounter++;
-                    }else{
-                        // if($totalParentCategoryAds !== 0 && $this->maxParentCategoryCounter !== $totalParentCategoryAds){
-                        if($totalParentCategoryAds !== 0){
-                            $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
-                            array_push($arrayStore, $addParentCategory);
-                            $this->maxParentCategoryCounter++;
-                        }
-                        else{
-                            if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
-                                $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
-                                array_push($arrayStore, $addSitePartner);
-                                $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : '';
+                            else{
+                                if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot){
+                                    $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
+                                    array_push($arrayStore, $addSitePartner);
+                                    $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : '';
+                                }
                             }
+                        } catch (\Exception $e) {
+                            
+                            continue;
                         }
                     }
                 }
+
                 // $this->fields = $arrayStore;
                 $maxSitePartnerCounter = 0;
                 $this->maxParentCategoryCounter = 0;
@@ -199,8 +212,9 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             }
         }
 
-        foreach($arrayStore as $items){
-            foreach($items as $item){
+        $play_list_array = [];
+        foreach($arrayStore as $items) {
+            foreach($items as $item) {
                 // $this->fields = $item->content_id;
                 $exel_collection = [
                     'content_id'=> $item->content_id,
@@ -214,14 +228,16 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'sequence'=> $item->sequence,
                     'dimension'=> $item->dimension,
                     'loop_number'=> $item->loop_number,
+                    'sequence' => $sequenceCounter,
                 ];
-                $data = $exel_collection;
-                $newplay_list_data = TemporaryPlayList::create($data);
-                TemporaryPlayList::where('id', $newplay_list_data->id)->update(['sequence' => $sequenceCounter]);
+                $play_list_array[] = $exel_collection;
+                // $newplay_list_data = TemporaryPlayList::create($data);
+                // TemporaryPlayList::where('id', $newplay_list_data->id)->update(['sequence' => $sequenceCounter]);
                 $sequenceCounter++;
             }
-
         }
+
+        TemporaryPlayList::insert($play_list_array);
 
         TemporaryPlayList::leftJoin('site_screen_products', function($join)
         {
@@ -250,8 +266,10 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
     }
 
     protected function makeCounterVariables($site_id){
-        $categories = $this->getMainCategories($site_id);
-        $category_counter = $this->convertToArray($categories);
+        $this->main_categories = $this->getMainCategories($site_id);
+        $categories = $this->main_categories;
+        $category_counter = $categories->pluck('name');
+        // $category_counter = $this->convertToArray($categories);
 
         foreach($category_counter as $index => $counter){
             $category_counter[$index] = 0;
@@ -260,56 +278,60 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         return $category_counter;
     }
 
-    protected function convertToArray($object){
-        $category_array = [];
-        foreach($object as $item){
-            array_push($category_array, $item['name']);
-        }
-        return $category_array;
-    }
+    // protected function convertToArray($object){
+    //     $category_array = [];
+    //     foreach($object as $item){
+    //         array_push($category_array, $item['name']);
+    //     }
+    //     return $category_array;
+    // }
 
     protected function getPlaylistAds($company_id, $screen_id, $ad_type, $is_sitePartner){
-        $ads = TemporaryPlayList::leftJoin('site_screen_products', function($join)
-                {
-                    $join->on('temporary_play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-                        ->whereRaw('temporary_play_lists.dimension = site_screen_products.dimension');
-                }) 
-        ->where('temporary_play_lists.site_screen_id', $screen_id)  
+
+        $ads = TemporaryPlayList::where('temporary_play_lists.site_screen_id', $screen_id)  
         ->where('site_screen_products.ad_type', $ad_type)
-        ->when($is_sitePartner, function($query) use ($company_id){
+        ->when($is_sitePartner, function($query) use ($company_id) {
             return $query->where('company_id', '=' , $company_id)->groupBy('temporary_play_lists.content_id');
         })
-        ->when(!$is_sitePartner, function($query) use ($company_id){
+        ->when(!$is_sitePartner, function($query) use ($company_id) {
             return $query->where('company_id', '!=' ,$company_id)->where('loop_number', 0);
         })
-        ->where('end_date', '>', date("Y-m-d"))
+        ->where('end_date', '>', date("Y-m-d"))        
+        ->leftJoin('site_screen_products', function($join) {
+            $join->on('temporary_play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                 ->whereRaw('temporary_play_lists.dimension = site_screen_products.dimension');
+        })        
         ->orderBy("temporary_play_lists.updated_at", "DESC")
         ->get();
 
         return $ads;
     }
 
-    protected function insertAd($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $site_id, $loop_number){
-        $category_ids = $this->getMainCategories($site_id);
-        $index = fmod($offset, $category_ids->count());
+    protected function insertAd($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $site_id, $loop_number) {
+
+        $category_ids = $this->main_categories;
+        $index = intval(fmod($offset, $category_ids->count()));
         $category_id = $category_ids[$index]->id;
         $addData = [];
 
         $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $category_id);
-
         if($is_sitePartner){
+
             $addData = $query->limit($limit)->offset($offset)->get();
             $addData[0]->loop_number = $loop_number;
         }
         else{
+
             $category_offset = $this->category_counter[$index];
             $addData = $query->limit($limit)->offset($category_offset)->get();
-            $this->category_counter[$index]++;
+            $counter_index = $this->category_counter[$index];
+            $this->category_counter[$index] = $counter_index+1;
 
             $data_count = count($addData);
 
             while($data_count == 0){
-                $this->maxParentCategoryCounter++;
+                
+                $this->maxParentCategoryCounter = $this->maxParentCategoryCounter+1;
                 $index = fmod($this->maxParentCategoryCounter, $category_ids->count());
                 $new_category_id = $category_ids[$index]->id;
                 $category_offset = $this->category_counter[$index];
@@ -319,46 +341,52 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 if($addData_count == 1){
                     $addData = $query->limit($limit)->offset($category_offset)->get();
                     $addData[0]->loop_number = $loop_number;
-                    $this->category_counter[$index]++;
-                    // $this->maxParentCategoryCounter++;
+                    $this->category_counter[$index] = $counter_index+1;
                 }
                 $data_count = $addData_count;
             }
+
             $addData[0]->loop_number = $loop_number;
         }
+
         return $addData;
     }
 
     protected function getMainCategories($site_id){
+
         $catgory_ids = Category::select('categories.id', 'categories.name')
             ->leftjoin('company_categories', 'company_categories.category_id', 'categories.id')
             ->where('company_categories.site_id', $site_id)
+            ->where('company_categories.active', 1)
+            ->where('categories.active', 1)
             ->whereNull('categories.parent_id')
             ->whereNull('categories.supplemental_category_id')
             ->groupBy('company_categories.category_id')
             ->get();
         
         return $catgory_ids;
+
     }
 
     protected function getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $category_id){
-        $ad_per_category = TemporaryPlayList::select('temporary_play_lists.company_id', 'temporary_play_lists.main_category_id','temporary_play_lists.content_id', 'temporary_play_lists.site_screen_id', 'temporary_play_lists.brand_id','temporary_play_lists.category_id','temporary_play_lists.parent_category_id','temporary_play_lists.advertisement_id','temporary_play_lists.sequence','temporary_play_lists.dimension', 'temporary_play_lists.loop_number')
-            ->leftJoin('site_screen_products', function($join)
-                    {
-                        $join->on('temporary_play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-                            ->whereRaw('temporary_play_lists.dimension = site_screen_products.dimension');
-                    }) 
-            ->when($is_sitePartner, function($query) use ($company_id){
-                return $query->where('company_id', '=', $company_id);
-            })
-            ->when(!$is_sitePartner, function($query) use ($company_id, $category_id){
-                return $query->where('company_id', '!=',$company_id)->where('main_category_id', $category_id);
-            })
-            ->where('temporary_play_lists.site_screen_id', $site_screen_id)  
-            ->where('site_screen_products.ad_type', $ad_type)
-            ->orderBy('temporary_play_lists.date_approved', "ASC");
 
-            return $ad_per_category;
+        $ad_per_category = TemporaryPlayList::select('temporary_play_lists.company_id', 'temporary_play_lists.main_category_id','temporary_play_lists.content_id', 'temporary_play_lists.site_screen_id', 'temporary_play_lists.brand_id','temporary_play_lists.category_id','temporary_play_lists.parent_category_id','temporary_play_lists.advertisement_id','temporary_play_lists.sequence','temporary_play_lists.dimension', 'temporary_play_lists.loop_number')
+        ->leftJoin('site_screen_products', function($join) {
+            $join->on('temporary_play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                 ->whereRaw('temporary_play_lists.dimension = site_screen_products.dimension');
+        }) 
+        ->when($is_sitePartner, function($query) use ($company_id){
+            return $query->where('company_id', '=', $company_id);
+        })
+        ->when(!$is_sitePartner, function($query) use ($company_id, $category_id){
+            return $query->where('company_id', '!=',$company_id)->where('main_category_id', $category_id);
+        })
+        ->where('temporary_play_lists.site_screen_id', $site_screen_id)  
+        ->where('site_screen_products.ad_type', $ad_type)
+        ->orderBy('temporary_play_lists.date_approved', "ASC");
+
+        return $ad_per_category;
+
     }
 
     protected function getLargerNumber($tspa, $tpca){
@@ -372,13 +400,18 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         }
     }
 
-    protected function processData($data){
+    protected function processData($data) {
+
         $slots = "";
         $exel_collection = [];
+        $new_collection = [];
         $date_today = date("m/d/Y");
-        foreach ($data as $item){
+        //dd($data);
+
+        foreach ($data as $item) {
             // $this->fields = $item['start_date'];
             if($date_today >= $item['start_date'] && $date_today <= $item['end_date']){
+
                 $site_id = $this->getSiteId($item['site']);
                 $category_id = $this->getCategoryId($item['category_name']);
                 $parent_category_id = $this->getParentCategory($item['parent_category']);
@@ -405,19 +438,30 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     // 'date_approved' => Carbon::parse($item["date_approved"])->format('Y-m-d H:i:s'),       
                     'date_approved' => Carbon::createFromFormat('d/m/Y H:i', $item["date_approved"])->format('Y-m-d H:i:s'),                
                 ];
-                $data = $exel_collection;
-                // array_push($exel_collection,$company_id);
 
-                if($slots > 1){
-                    for($index = 0; $index < $slots; $index++){
-                        TemporaryPlayList::create($data);
+                if($slots > 1) {
+                    for($index = 0; $index < $slots; $index++) {
+                        $new_collection[] = $exel_collection;
                     }
-                }else{
-                    TemporaryPlayList::create($data);
                 }
+                else {
+                    $new_collection[] = $exel_collection;
+                }
+                // array_push($exel_collection,$parent_category_id);
+
+                // if($slots > 1){
+                //     for($index = 0; $index < $slots; $index++){
+                //         TemporaryPlayList::create($data);
+                //     }
+                // }else{
+                //     TemporaryPlayList::create($data);
+                // }
             }
         }
-        $this->fields = $exel_collection;
+
+        if(count($new_collection) > 0) 
+            TemporaryPlayList::insert($new_collection);
+        
     }
 
     protected function getSiteId($site){
