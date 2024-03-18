@@ -68,7 +68,7 @@
             autoplayHoverPause:false,
             mouseDrag: false,
             touchDrag: false,
-            animateOut: 'fadeOut',
+            animateOut: 'fadeOut'
         });
 
     }
