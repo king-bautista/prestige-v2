@@ -499,7 +499,8 @@ class KioskController extends AppBaseController
             ]);
         }
 
-        return json_encode($collection->sortBy('value')->values()->all());
+        $collection = $collection->sortBy('orderby', SORT_NATURAL);
+        return json_encode($collection->values()->all());
     }
 
     public function search(Request $request) {

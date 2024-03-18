@@ -69,8 +69,8 @@
             $.each(events, function(index,event) {
                 var event_item = '';
                 event_item += '<div class="col-sm-4">';
-                event_item += '<div class="card border-0 bg-transparent img-promo-card">';
-                event_item += '<img type="button" class="promo-img promo_img_'+ event.id +'" src="'+ event.image_url_path +'">';
+                event_item += '<div class="card border-0 bg-transparent img-promo-card promo_img_'+ event.id +'">';
+                event_item += '<img type="button" class="promo-img" src="'+ event.image_url_path +'">';
                 event_item += '<div class="d-block">';
                 event_item += '<p class="promo-store tenants_tenant_store_'+ event.id +'">'+ event.event_name +'</p>';
                 event_item += '<p class="promo-floor">'+ event.event_date +'</p>';
