@@ -87,12 +87,7 @@
         if(current_location == 'home')
             $('.back-img-btn').hide();
 
-        my_assistant_message = JSON.parse(helper.decodeEntities(assistant_message));        
         my_translations = JSON.parse(helper.decodeEntities(translations));
-
-
-        current_assistant_messages = my_assistant_message.filter(option => option.location == 'cinemaschedule' && option.content_language == content_language);
-        console.log(current_assistant_messages);
         $('[data-toggle="popover"]').popover();   
     });
 
@@ -119,6 +114,10 @@
 
     /* script for random content of popover */
     $('[data-toggle="popover"]').on("click", function () {
+
+        my_assistant_message = JSON.parse(helper.decodeEntities(assistant_message));     
+        current_assistant_messages = my_assistant_message.filter(option => option.location == current_location && option.content_language == content_language);
+
         var contentIndex = Math.floor(Math.random() * current_assistant_messages.length);
         var newMessage = helper.decodeEntities(current_assistant_messages[contentIndex].content);
         // Set the 'data-content' attribute for the popover
@@ -191,49 +190,7 @@
             }
         }
 
-        console.log(page_history);
-
     });
-    
-
-	// // for navigation positioning if remove another nav
-    // var NavContentPositioning = $("#NavContentContainer > div").length;
-	// if(NavContentPositioning == 1){
-	// 	$("#NavContentContainer").removeClass("nav-content-container");
-	// 	$("#NavContentContainer").addClass("nav-content-container-4");
-	// }
-
-	// else if(NavContentPositioning == 2){
-	// 	$("#NavContentContainer").removeClass("nav-content-container");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-1");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-2");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
-	// 	$("#NavContentContainer").addClass("nav-content-container-3");
-	// }
-
-	// else if(NavContentPositioning == 3){
-	// 	$("#NavContentContainer").removeClass("nav-content-container");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-1");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-3");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
-	// 	$("#NavContentContainer").addClass("nav-content-container-2");
-	// }
-
-	// else if(NavContentPositioning == 4){
-	// 	$("#NavContentContainer").removeClass("nav-content-container");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-2");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-3");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
-	// 	$("#NavContentContainer").addClass("nav-content-container-1");
-	// }
-
-	// else {
-	// 	$("#NavContentContainer").removeClass("nav-content-container-1");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-2");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-3");
-	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
-	// 	$("#NavContentContainer").addClass("nav-content-container");
-	// }
 
 	/* for logo button to view about page */
     $("#ImgMallLogo").on('click', function(){
