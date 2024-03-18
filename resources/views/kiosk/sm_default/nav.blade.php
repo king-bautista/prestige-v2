@@ -193,44 +193,44 @@
     });
     
 
-	// for navigation positioning if remove another nav
-    var NavContentPositioning = $("#NavContentContainer > div").length;
-	if(NavContentPositioning == 1){
-		$("#NavContentContainer").removeClass("nav-content-container");
-		$("#NavContentContainer").addClass("nav-content-container-4");
-	}
+	// // for navigation positioning if remove another nav
+    // var NavContentPositioning = $("#NavContentContainer > div").length;
+	// if(NavContentPositioning == 1){
+	// 	$("#NavContentContainer").removeClass("nav-content-container");
+	// 	$("#NavContentContainer").addClass("nav-content-container-4");
+	// }
 
-	else if(NavContentPositioning == 2){
-		$("#NavContentContainer").removeClass("nav-content-container");
-		$("#NavContentContainer").removeClass("nav-content-container-1");
-		$("#NavContentContainer").removeClass("nav-content-container-2");
-		$("#NavContentContainer").removeClass("nav-content-container-4");
-		$("#NavContentContainer").addClass("nav-content-container-3");
-	}
+	// else if(NavContentPositioning == 2){
+	// 	$("#NavContentContainer").removeClass("nav-content-container");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-1");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-2");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
+	// 	$("#NavContentContainer").addClass("nav-content-container-3");
+	// }
 
-	else if(NavContentPositioning == 3){
-		$("#NavContentContainer").removeClass("nav-content-container");
-		$("#NavContentContainer").removeClass("nav-content-container-1");
-		$("#NavContentContainer").removeClass("nav-content-container-3");
-		$("#NavContentContainer").removeClass("nav-content-container-4");
-		$("#NavContentContainer").addClass("nav-content-container-2");
-	}
+	// else if(NavContentPositioning == 3){
+	// 	$("#NavContentContainer").removeClass("nav-content-container");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-1");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-3");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
+	// 	$("#NavContentContainer").addClass("nav-content-container-2");
+	// }
 
-	else if(NavContentPositioning == 4){
-		$("#NavContentContainer").removeClass("nav-content-container");
-		$("#NavContentContainer").removeClass("nav-content-container-2");
-		$("#NavContentContainer").removeClass("nav-content-container-3");
-		$("#NavContentContainer").removeClass("nav-content-container-4");
-		$("#NavContentContainer").addClass("nav-content-container-1");
-	}
+	// else if(NavContentPositioning == 4){
+	// 	$("#NavContentContainer").removeClass("nav-content-container");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-2");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-3");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
+	// 	$("#NavContentContainer").addClass("nav-content-container-1");
+	// }
 
-	else {
-		$("#NavContentContainer").removeClass("nav-content-container-1");
-		$("#NavContentContainer").removeClass("nav-content-container-2");
-		$("#NavContentContainer").removeClass("nav-content-container-3");
-		$("#NavContentContainer").removeClass("nav-content-container-4");
-		$("#NavContentContainer").addClass("nav-content-container");
-	}
+	// else {
+	// 	$("#NavContentContainer").removeClass("nav-content-container-1");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-2");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-3");
+	// 	$("#NavContentContainer").removeClass("nav-content-container-4");
+	// 	$("#NavContentContainer").addClass("nav-content-container");
+	// }
 
 	/* for logo button to view about page */
     $("#ImgMallLogo").on('click', function(){
