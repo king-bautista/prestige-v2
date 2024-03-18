@@ -3288,6 +3288,7 @@ ul#mapguide li:last-child:before {
     width: 230px;
 }
 
-.owl-item {
+.slideshow-content-container > .owl-carousel > .owl-stage-outer > .owl-stage .owl-item {
     min-width: 1521px !important;   
 }
+
