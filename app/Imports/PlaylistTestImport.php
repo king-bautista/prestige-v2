@@ -140,7 +140,8 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         //dd($maxSitePartnerAds);
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
         $moduloValue = ceil($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
-        // $moduloValue = 2;
+        $is_site_parter = $this->getInsertCondition($totalSitePartnerAds, $totalParentCategoryAds);
+        $condition = "";
         $arrayStore = [];
         $maxSitePartnerCounter = 0;
         $sitePartnerCounter = 0;
@@ -155,7 +156,15 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             for($loop_index = 0; $loop_index < $loopCount; $loop_index++) {
                 for ($index = 0; $index < $totalNumberOfAds; $index++){
                     $loop_number = $loop_index;
-                    if(intval(fmod($index, $moduloValue)) != 0) {
+
+                    if ($is_site_parter == true){
+                        $condition = intval(fmod($index, $moduloValue)) != 0;
+                    }
+                    else{
+                        $condition = intval(fmod($index, $moduloValue)) == 0;
+                    }
+
+                    if($condition) {
                         try {
                             if($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
                                 if($sitePartnerCounter > $maxSitePartnerSlot){
@@ -252,15 +261,30 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         return $arrayStore;
     }
 
+    protected function getInsertCondition($site_partner, $parent_category){
+        if($site_partner > $parent_category){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }   
+
     protected function getLoopCount($total_site_partner, $maxSitePartnerSlot){
-        if(fmod($total_site_partner,$maxSitePartnerSlot) == 0){
-            return $total_site_partner / $maxSitePartnerSlot;
-        }else{
-            if($total_site_partner %2 == 0){
-                return $total_site_partner /2;
-            }
-            else{
-                return $total_site_partner;
+        if($total_site_partner < $maxSitePartnerSlot){
+            $loop_count = 1;
+            return $loop_count;
+        }
+        else{
+            if(fmod($total_site_partner,$maxSitePartnerSlot) == 0){
+                return $total_site_partner / $maxSitePartnerSlot;
+            }else{
+                if($total_site_partner %2 == 0){
+                    return $total_site_partner /2;
+                }
+                else{
+                    return $total_site_partner;
+                }
             }
         }
     }
@@ -316,7 +340,6 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
 
         $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $category_id);
         if($is_sitePartner){
-
             $addData = $query->limit($limit)->offset($offset)->get();
             $addData[0]->loop_number = $loop_number;
         }
@@ -324,8 +347,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
 
             $category_offset = $this->category_counter[$index];
             $addData = $query->limit($limit)->offset($category_offset)->get();
-            $counter_index = $this->category_counter[$index];
-            $this->category_counter[$index] = $counter_index+1;
+            $this->category_counter[$index] = $this->category_counter[$index] +1;
 
             $data_count = count($addData);
 
@@ -341,7 +363,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 if($addData_count == 1){
                     $addData = $query->limit($limit)->offset($category_offset)->get();
                     $addData[0]->loop_number = $loop_number;
-                    $this->category_counter[$index] = $counter_index+1;
+                    $this->category_counter[$index] = $this->category_counter[$index] +1;
                 }
                 $data_count = $addData_count;
             }

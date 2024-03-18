@@ -62,12 +62,13 @@ body {
     width: 335px;
     height: 60px;
     object-fit: cover;
+    margin-right: 40px;
 }
 
 .logo-adjustment {
     position: absolute;
-    top: 38px;
-    left: 1315px !important;
+    top: 17.5px;
+    left: 1358.5px !important;
     width: 100px;
     height: 100px;
     padding: 0px;
@@ -77,8 +78,8 @@ body {
 
 .nav-titles {
     font-size: 30px;
-    margin-top: 30px;
-    margin-left: -10px;
+    margin-top: 8px;
+    margin-left: -5px;
 }
 
 .title-page {
@@ -262,6 +263,7 @@ body {
 .cat-row-card {
     margin-left: -29px !important;
     width: 704px;
+    margin-top: 46px !important;
 }
 
 .cat-btn-img {
@@ -427,7 +429,7 @@ body {
 }
 
 .carousel-content-container-show-cinema-6 {
-    padding: 139.5px 441.5px 0px 461.5px;
+    padding: 160.5px 441.5px 0px 461.5px;
     margin-left: 0px;
 }
 
@@ -745,7 +747,7 @@ body {
 .cinema-page-title {
     position: absolute;
     top: 182px;
-    left: 617.3px;
+    left: 618.8px;
     font-size: 2em;
     font-family: "Henry Sans Regular" !important;
 }
@@ -3286,6 +3288,13 @@ ul#mapguide li:last-child:before {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     width: 230px;
+}
+
+.less-than-3{
+    position: absolute;
+    width: 100%;
+    top: 1px;
+    justify-content: center;
 }
 
 .owl-item {
