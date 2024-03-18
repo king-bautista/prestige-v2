@@ -401,7 +401,7 @@
         $('#home-container').hide();
         $('#home-cat-contents').hide();
         $('#search-container').hide();
-        $('#tenant-store-content').show();
+        $('#tenant-store-content, .back-img-btn').show();
 
         var contentPosition = $("#bigcontainer > div").length;
         if(contentPosition == 1){
