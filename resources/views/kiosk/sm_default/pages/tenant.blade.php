@@ -309,8 +309,9 @@
     }
 
     function showTenantDetails(tenant) {
+        console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
-        var tenant_operational_hours = (tenant.operational_hours.start_time) ? tenant.operational_hours : site_info;
+        var tenant_operational_hours = (tenant.operational_hours == null || tenant.operational_hours == undefined) ? site_info : tenant.operational_hours;
         var is_open = (tenant_operational_hours.is_open) ? 'text-success' : 'text-danger';
 
         tenant_schedule = '';

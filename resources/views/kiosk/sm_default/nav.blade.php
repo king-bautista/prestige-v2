@@ -89,7 +89,10 @@
 
         my_assistant_message = JSON.parse(helper.decodeEntities(assistant_message));        
         my_translations = JSON.parse(helper.decodeEntities(translations));
-        current_assistant_messages = my_assistant_message.filter(option => option.location == current_location && option.content_language == content_language);
+
+
+        current_assistant_messages = my_assistant_message.filter(option => option.location == 'cinemaschedule' && option.content_language == content_language);
+        console.log(current_assistant_messages);
         $('[data-toggle="popover"]').popover();   
     });
 

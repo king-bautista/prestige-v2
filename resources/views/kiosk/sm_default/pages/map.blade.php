@@ -193,8 +193,6 @@
 	import { LineMaterial } from "{{ URL::to('themes/three.js/examples/jsm/lines/LineMaterial.js') }}";
 	import { LineGeometry } from "{{ URL::to('themes/three.js/examples/jsm/lines/LineGeometry.js') }}";
 
-	import {DragControls} from "{{ URL::to('themes/three.js/examples/jsm/controls/DragControls.js') }}";
-
     var camera, cameraTarget, scene, renderer, controls;
 	var rotationPoint;
 	var texts = {}, font;
