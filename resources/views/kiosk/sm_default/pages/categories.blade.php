@@ -177,6 +177,7 @@
         $('.category-title').html(main_category);
         $('.category-title').attr('data-en', main_category);
         $('.nav-btn-container').removeClass('active');
+
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
             subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
@@ -188,7 +189,6 @@
             subcategory_element += '</div>';
             subcategory_element += '</div>';
             $( ".cat-row-card" ).append(subcategory_element);
-
             $('.show-tenants-'+category.id).on('click', function() {
                 $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                 $('.category-banner-title').html(category.category_name);
