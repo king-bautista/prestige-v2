@@ -180,6 +180,7 @@ Helpers.prototype = {
         $('#videocontainer').html('');
         $('.category-img-banner').attr('src', '');  
         $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");      
+        $('.directory-container-content').removeClass('white-bg');
 
         sub_categories = '';
         main_category = '';
@@ -201,6 +202,7 @@ Helpers.prototype = {
         $("#code").css("border-color", "#6051e3");
         $('.notification').hide();
         $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
+        $('.directory-container-content').removeClass('white-bg');
         this.resetKeyBoard();
         this.setTranslation();
         current_location = 'searchbox';
@@ -210,6 +212,7 @@ Helpers.prototype = {
         $('.content-holder, .modal, #mapkeyboardoverlay, #mapkeyboard, .thankyou, .softkeys-feedback').hide();
         $('#map-container, #ImgMallLogo, .back-img-btn').show();
         $('.nav-btn-container, .category-banner-title, .btn-helpful, .btn-nothelpful').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color btn-violet-color');
+        $('.directory-container-content').removeClass('white-bg');
         $('.nav-btn-map').addClass("active");
         $('#videocontainer').html('');
         $('#btnresetmap').click();
@@ -228,6 +231,7 @@ Helpers.prototype = {
         $('.nav-btn-promo').addClass("active");
         $('#videocontainer').html('');
         $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
+        $('.directory-container-content').removeClass('white-bg');
         current_location = 'promo';
     },
 
@@ -238,6 +242,7 @@ Helpers.prototype = {
         $('.nav-btn-event').addClass("active");
         $('#videocontainer').html('');
         $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
+        $('.directory-container-content').removeClass('white-bg');
         current_location = 'events';
     },
     
@@ -245,6 +250,7 @@ Helpers.prototype = {
         $('.content-holder, .modal').hide();
         $('#cinema-container, #ImgMallLogo, .back-img-btn').show();
         $('.nav-btn-container, .category-banner-title').removeClass('active Food_color Fashion_color Electronics_color Services_color Novelties_color');
+        $('.directory-container-content').removeClass('white-bg');
         $('.nav-btn-cinema').addClass("active");
         $('#videocontainer').html('');
     },
@@ -256,6 +262,7 @@ Helpers.prototype = {
         $('#videocontainer').html('');
         $('.category-banner-title').removeClass("Food_color Fashion_color Electronics_color Services_color Novelties_color");
         $('.social-media-handles-container').scrollTop(0);
+        $('.directory-container-content').addClass('white-bg');
         current_location = 'about';
     },
 
