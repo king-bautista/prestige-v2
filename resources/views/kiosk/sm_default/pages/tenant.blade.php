@@ -309,7 +309,6 @@
     }
 
     function showTenantDetails(tenant) {
-        console.log(tenant);
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         var tenant_operational_hours = (tenant.operational_hours == null || tenant.operational_hours == undefined) ? site_info : tenant.operational_hours;
         var is_open = (tenant_operational_hours.is_open) ? 'text-success' : 'text-danger';
@@ -416,7 +415,7 @@
         helper.updateViewCount(tenant.id, tenant.view_count);        
         helper.setTenantCountDetails(tenant.id);
         // SAVE LOGS
-        helper.saveLogs(tenant, 'Categories');
+        helper.saveLogs(tenant, page);
 
         current_location = 'tenant';
         page_history.push(current_location);

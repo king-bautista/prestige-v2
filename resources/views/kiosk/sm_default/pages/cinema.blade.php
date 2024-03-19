@@ -171,6 +171,7 @@
                 $('.cinema-'+key).append(cinema_item);
                 $('.cinema-id-'+cinema.id).on('click', function() {
                     // MAP FUNCTION HERE
+                    page = 'Cinema';
                     helper.mapBtnClick();
                     $('#tenant-select').val(cinema.id);
                     $('.direction-from').click();

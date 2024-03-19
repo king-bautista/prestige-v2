@@ -53,6 +53,7 @@ Helpers.prototype = {
     },
 
     saveLogs: function(params, page = '') {
+        console.log(params);
         params['page'] = page;
         $.post( "/api/v1/save-logs", params ,function(response) {
             console.log(response);

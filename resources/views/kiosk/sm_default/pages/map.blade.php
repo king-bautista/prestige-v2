@@ -1455,7 +1455,8 @@
 				camera.lookAt(spritePinTo.position);
 				
 				controls.zoomIn(4);
-		
+
+				helper.saveLogs(map_tenants[$('#tenant-select').val()], page);		
 			}
 		}
 

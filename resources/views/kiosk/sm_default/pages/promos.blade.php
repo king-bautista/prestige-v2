@@ -90,6 +90,7 @@
                 });
 
                 $('.tenants_tenant_store_'+promo.promo_id).on('click', function() {
+                    page = 'Promos';
                     showTenantDetails(promo);
                 });
             });
