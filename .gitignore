@@ -3,7 +3,7 @@
 /public/hot
 #/public/uploads/map
 #/public/uploads/media
-#/public/uploads
+/public/uploads
 /public/storage
 /storage/*.key
 /vendor
