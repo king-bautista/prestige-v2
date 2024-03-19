@@ -161,22 +161,29 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
             $category_totals = [];
 
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
-            
-            
-                echo $request->start_date;
-                echo '---';
-                echo $request->start_date;
-            
-                $totals = Log::when($site_id, function ($query) use ($site_id) {
+                $start_date = '';
+                $end_date = '';
+            }
+
+            $totals = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
                 ->selectRaw('logs.main_category_id, count(*) as tenant_count')
                 ->whereNotNull('brand_id')
                 ->groupBy('main_category_id')
@@ -191,6 +198,9 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
                 ->whereNotNull('brand_id')
                 ->when(count($category_totals) > 0, function ($query) use ($category_totals, $overall_total) {
                     return $query->selectRaw('logs.*, 
@@ -215,7 +225,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                         ->orHaving('category_percentage', 'LIKE', '%' . request('search') . '%');
                 })
                 ->when(is_null(request('order')), function ($query) {
-                    return $query->orderBy('tenant_count', 'DESC');
+                    return $query->orderBy('brand_name', 'ASC');
                 })
                 ->when(request('order'), function ($query) {
                     return $query->orderBy(request('order'), request('sort'));
@@ -236,20 +246,41 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
-                $site_id = $request->site_id;
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+            }
 
-            $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
+            if ($request->site_id) {
+                $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
+
+            $logs_total_count = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
-                ->selectRaw('logs.*, count(*) as tenant_count, key_words as word')
+                ->whereNotNull('key_words')
+                ->selectRaw('logs.*, count(*) as tenant_count')
+                ->get();
+
+            $total_keyword = $logs_total_count->sum('tenant_count');
+
+            $logs = Log::when($site_id, function ($query) use ($site_id) {
+                return $query->where('site_id', $site_id);
+            })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
+                ->selectRaw('logs.*, count(*) as tenant_count,  concat(round(count(*)/' . $total_keyword . ' * 100,2),"%") as percentage_share, key_words as key_word')
                 ->whereNotNull('key_words')
                 ->groupBy('key_words')
                 ->when(request('search'), function ($query) {
-                    return $query->having('word', 'LIKE', '%' . request('search') . '%')
+                    return $query->having('key_word', 'LIKE', '%' . request('search') . '%')
                         ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%');
                 })
                 ->when(is_null(request('order')), function ($query) {
@@ -259,6 +290,9 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     return $query->orderBy(request('order'), request('sort'));
                 })
                 ->paginate(request('perPage'));
+
+            // $total = $logs->sum('tenant_count');
+
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
@@ -274,17 +308,29 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
             $category_totals = [];
 
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
 
             $totals = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
                 ->selectRaw('logs.parent_category_id, count(*) as tenant_count')
                 ->whereNotNull('brand_id')
                 ->groupBy('parent_category_id')
@@ -295,11 +341,13 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             }
 
             $overall_total = $totals->sum('tenant_count');
-            //(select count(*) from logs where brand_id = logs.brand_id and advertisement_id IS_NOT_NULL) AS banner_count,
             LogsViewModel::setSiteId($site_id);
             $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
                 ->whereNotNull('brand_id')
                 ->when(count($category_totals) > 0, function ($query) use ($category_totals, $overall_total) {
                     return $query->selectRaw('logs.*, 
@@ -308,6 +356,8 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     (select name from categories where id = logs.category_id) AS category_name,
                     (select count(*) from brands where id = logs.category_id) AS search_count,
                     count(*) as tenant_count, 
+                    (select count(*) from logs where advertisement_id is not null) AS banner_count,
+                    (count(*) + (select count(*) from brands where id = logs.category_id) + (select count(*) from brands where id = logs.brand_id and advertisement_id is not null)) AS total_count,
                     (CASE WHEN parent_category_id = 1 THEN ROUND((count(*)/' . $category_totals[1] . ')*100, 2)
                     WHEN parent_category_id = 2 THEN ROUND((count(*)/' . $category_totals[2] . ')*100, 2)
                     WHEN parent_category_id = 3 THEN ROUND((count(*)/' . $category_totals[3] . ')*100, 2)
@@ -316,14 +366,17 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     ELSE 0 END) AS category_percentage, 
                     ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
                 })
-                //->selectRaw('(select count(*) from brands as b where b.id = logs.brand_id and logs.advertisement_id IS_NOT_NULL) AS banner_count')
                 ->groupBy('brand_id')
                 ->when(request('search'), function ($query) {
                     return $query->having('brand_logo', 'LIKE', '%' . request('search') . '%')
                         ->orHaving('brand_name', 'LIKE', '%' . request('search') . '%')
                         ->orHaving('category_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('search_count', 'LIKE', '%' . request('search') . '%')
                         ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%')
-                        ->orHaving('category_percentage', 'LIKE', '%' . request('search') . '%');
+                        ->orHaving('banner_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('total_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('category_percentage', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('tenant_percentage', 'LIKE', '%' . request('search') . '%');
                 })
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('tenant_count', 'DESC');
@@ -361,9 +414,28 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 return $query->where('site_id', $site_id);
             })
                 ->whereYear('created_at', $current_year)
-                ->selectRaw('logs.*, page, count(*) as total_count')
+                ->selectRaw('logs.*, page, count(*) as total_count,
+                (select count(*) from logs where MONTH(created_at) = 1  and YEAR(created_at) = '.$current_year.') AS jan_count,
+                (select count(*) from logs where MONTH(created_at) = 2  and YEAR(created_at) = '.$current_year.') AS feb_count,
+                (select count(*) from logs where MONTH(created_at) = 3  and YEAR(created_at) = '.$current_year.') AS mar_count,
+                (select count(*) from logs where MONTH(created_at) = 4  and YEAR(created_at) = '.$current_year.') AS apr_count,
+                (select count(*) from logs where MONTH(created_at) = 5  and YEAR(created_at) = '.$current_year.') AS may_count,
+                (select count(*) from logs where MONTH(created_at) = 6  and YEAR(created_at) = '.$current_year.') AS jun_count,
+                (select count(*) from logs where MONTH(created_at) = 7  and YEAR(created_at) = '.$current_year.') AS jul_count,
+                (select count(*) from logs where MONTH(created_at) = 8  and YEAR(created_at) = '.$current_year.') AS aug_count,
+                (select count(*) from logs where MONTH(created_at) = 9  and YEAR(created_at) = '.$current_year.') AS sep_count,
+                (select count(*) from logs where MONTH(created_at) = 10  and YEAR(created_at) = '.$current_year.') AS oct_count,
+                (select count(*) from logs where MONTH(created_at) = 11  and YEAR(created_at) = '.$current_year.') AS nov_count,
+                (select count(*) from logs where MONTH(created_at) = 12  and YEAR(created_at) = '.$current_year.') AS dec_count
+                ')
+            
                 ->groupBy('page')
-                ->orderBy('page', 'ASC')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('page', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->get();
 
             return $this->response($logs, 'Successfully Retreived!', 200);
@@ -454,24 +526,43 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
             $category_totals = [];
 
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $site_name = $filters->site_name . "_";
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+                $filters->site_name;
+                $start = ($start_date == "") ? "" : "_" . $start_date;
+                $end = ($end_date == "") ? "" : "_" . $end_date . "_";
+                $filename = $site_name . $start . $end . "top-tenant-search.csv";
+            } else {
+                $filename = "top-tenant-search.csv";
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
 
             $totals = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
-                ->selectRaw('logs.parent_category_id, count(*) as tenant_count')
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
+                ->selectRaw('logs.main_category_id, count(*) as tenant_count')
                 ->whereNotNull('brand_id')
-                ->groupBy('parent_category_id')
+                ->groupBy('main_category_id')
                 ->get();
 
             foreach ($totals as $index => $total) {
-                $category_totals[$total->parent_category_id] = $total->tenant_count;
+                $category_totals[$total->main_category_id] = $total->tenant_count;
             }
 
             $overall_total = $totals->sum('tenant_count');
@@ -479,29 +570,58 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
                 ->whereNotNull('brand_id')
                 ->when(count($category_totals) > 0, function ($query) use ($category_totals, $overall_total) {
-                    return $query->selectRaw('logs.*, count(*) as tenant_count, 
+                    return $query->selectRaw('logs.*, 
+                    (select logo from brands where id = logs.brand_id) AS brand_logo,
+                    (select name from brands where id = logs.brand_id) AS brand_name,
+                    (select name from categories where id = logs.main_category_id) AS main_category_name,
+                count(*) AS tenant_count, 
                 (CASE WHEN parent_category_id = 1 THEN ROUND((count(*)/' . $category_totals[1] . ')*100, 2)
                 WHEN parent_category_id = 2 THEN ROUND((count(*)/' . $category_totals[2] . ')*100, 2)
                 WHEN parent_category_id = 3 THEN ROUND((count(*)/' . $category_totals[3] . ')*100, 2)
                 WHEN parent_category_id = 4 THEN ROUND((count(*)/' . $category_totals[4] . ')*100, 2)
                 WHEN parent_category_id = 5 THEN ROUND((count(*)/' . $category_totals[5] . ')*100, 2)
                 ELSE 0 END) AS category_percentage, 
-                ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
+                ROUND((count(*)/' . $overall_total . ')*100, 2) AS tenant_percentage');
                 })
                 ->groupBy('brand_id')
-                ->orderBy('tenant_count', 'DESC')
+                ->when(request('search'), function ($query) {
+                    return $query->having('brand_logo', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('brand_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('main_category_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('category_percentage', 'LIKE', '%' . request('search') . '%');
+                })
+                // ->when(is_null(request('order')), function ($query) {
+                //     return $query->orderBy('brand_name', 'ASC');
+                // })
+                // ->when(request('order'), function ($query) {
+                //     return $query->orderBy(request('order'), request('sort'));
+                // })
                 ->get();
 
-            $tenants = [];
-            foreach ($logs as $index => $log) {
+            if (count($logs) > 0) {
+                $tenants = [];
+                foreach ($logs as $index => $log) {
+                    $tenants[] = [
+                        'brand_name' => $log->brand_name,
+                        'main_category_name' => $log->main_category_name,
+                        'tenant_count' => $log->tenant_count,
+                        'category_percentage' => $log->category_percentage,
+                        'tenant_percentage' => $log->tenant_percentage
+                    ];
+                }
+            } else {
                 $tenants[] = [
-                    'brand_name' => $log->brand_name,
-                    'main_category_name' => $log->main_category_name,
-                    'tenant_count' => $log->tenant_count,
-                    'category_percentage' => $log->category_percentage,
-                    'tenant_percentage' => $log->tenant_percentage
+                    'brand_name' => '',
+                    'main_category_name' => '',
+                    'tenant_count' => '',
+                    'category_percentage' => '',
+                    'tenant_percentage' => ''
                 ];
             }
 
@@ -511,7 +631,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 Storage::delete($file);
             }
 
-            $filename = "top-tenant-search.csv";
             // Store on default disk
             Excel::store(new Export($tenants), $directory . $filename);
 
@@ -537,26 +656,72 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
-                $site_id = $request->site_id;
+                $site_name = $filters->site_name . "_";
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+                $filters->site_name;
+                $start = ($start_date == "") ? "" : "_" . $start_date;
+                $end = ($end_date == "") ? "" : "_" . $end_date . "_";
+                $filename = $site_name . $start . $end . "top-search-keywords.csv";
+            } else {
+                $filename = "top-search-keywords.csv";
+            }
 
-            $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
+            if ($request->site_id) {
+                $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
+
+            $logs_total_count = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
-                ->selectRaw('logs.*, count(*) as tenant_count')
                 ->whereNotNull('key_words')
-                ->groupBy('key_words')
-                ->orderBy('tenant_count', 'DESC')
+                ->selectRaw('logs.*, count(*) as tenant_count')
                 ->get();
 
-            $search_keywords = [];
-            foreach ($logs as $index => $log) {
+            $total_keyword = $logs_total_count->sum('tenant_count');
+
+            $logs = Log::when($site_id, function ($query) use ($site_id) {
+                return $query->where('site_id', $site_id);
+            })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
+                ->selectRaw('logs.*, count(*) as tenant_count,  concat(round(count(*)/' . $total_keyword . ' * 100,2),"%") as percentage_share, key_words as key_word')
+                ->whereNotNull('key_words')
+                ->groupBy('key_words')
+                ->when(request('search'), function ($query) {
+                    return $query->having('key_word', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('tenant_count', 'LIKE', '%' . request('search') . '%');
+                })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('tenant_count', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->get();
+
+            if (count($logs) > 0) {
+                $search_keywords = [];
+                foreach ($logs as $index => $log) {
+                    $search_keywords[] = [
+                        'word' => $log->key_word,
+                        'percentage' => $log->percentage_share,
+                        'tenant_count' => $log->tenant_count
+                    ];
+                }
+            } else {
                 $search_keywords[] = [
-                    'word' => $log->key_words,
-                    'tenant_count' => $log->tenant_count
+                    'word' => '',
+                    'percentage' => '',
+                    'tenant_count' => ''
                 ];
             }
 
@@ -566,7 +731,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 Storage::delete($file);
             }
 
-            $filename = "top-search-keywords.csv";
+
             // Store on default disk
             Excel::store(new Export($search_keywords), $directory . $filename);
 
@@ -592,17 +757,36 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
             $category_totals = [];
 
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $site_name = $filters->site_name . "_";
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+                $filters->site_name;
+                $start = ($start_date == "") ? "" : "_" . $start_date;
+                $end = ($end_date == "") ? "" : "_" . $end_date . "_";
+                $filename = $site_name . $start . $end . "top-tenant-search.csv";
+            } else {
+                $filename = "merchant-usage.csv";
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
 
             $totals = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
                 ->selectRaw('logs.parent_category_id, count(*) as tenant_count')
                 ->whereNotNull('brand_id')
                 ->groupBy('parent_category_id')
@@ -618,32 +802,57 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
                 ->whereNotNull('brand_id')
                 ->when(count($category_totals) > 0, function ($query) use ($category_totals, $overall_total) {
-                    return $query->selectRaw('logs.*, count(*) as tenant_count, 
-                (CASE WHEN parent_category_id = 1 THEN ROUND((count(*)/' . $category_totals[1] . ')*100, 2)
-                WHEN parent_category_id = 2 THEN ROUND((count(*)/' . $category_totals[2] . ')*100, 2)
-                WHEN parent_category_id = 3 THEN ROUND((count(*)/' . $category_totals[3] . ')*100, 2)
-                WHEN parent_category_id = 4 THEN ROUND((count(*)/' . $category_totals[4] . ')*100, 2)
-                WHEN parent_category_id = 5 THEN ROUND((count(*)/' . $category_totals[5] . ')*100, 2)
-                ELSE 0 END) AS category_percentage, 
-                ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
+                    return $query->selectRaw('logs.*, 
+                    (select logo from brands where id = logs.brand_id) AS brand_logo,
+                    (select name from brands where id = logs.brand_id) AS brand_name,
+                    (select name from categories where id = logs.category_id) AS category_name,
+                    (select count(*) from brands where id = logs.category_id) AS search_count,
+                    count(*) as tenant_count, 
+                    (select count(*) from logs where advertisement_id is not null) AS banner_count,
+                    (count(*) + (select count(*) from brands where id = logs.category_id) + (select count(*) from brands where id = logs.brand_id and advertisement_id is not null)) AS total_count,
+                    (CASE WHEN parent_category_id = 1 THEN ROUND((count(*)/' . $category_totals[1] . ')*100, 2)
+                    WHEN parent_category_id = 2 THEN ROUND((count(*)/' . $category_totals[2] . ')*100, 2)
+                    WHEN parent_category_id = 3 THEN ROUND((count(*)/' . $category_totals[3] . ')*100, 2)
+                    WHEN parent_category_id = 4 THEN ROUND((count(*)/' . $category_totals[4] . ')*100, 2)
+                    WHEN parent_category_id = 5 THEN ROUND((count(*)/' . $category_totals[5] . ')*100, 2)
+                    ELSE 0 END) AS category_percentage, 
+                    ROUND((count(*)/' . $overall_total . ')*100, 2) as tenant_percentage');
                 })
                 ->groupBy('brand_id')
-                ->orderBy('tenant_count', 'DESC')
+                ->when(count($category_totals) > 0, function ($query) use ($category_totals, $overall_total) {
+                    return $query->orderBy('tenant_count', 'DESC');   
+                })
                 ->get();
 
-            $search_keywords = [];
-            foreach ($logs as $index => $log) {
+            if (count($logs) > 0) {    
+                $search_keywords = [];
+                foreach ($logs as $index => $log) {
+                    $search_keywords[] = [
+                        'brand_name' => $log->brand_name,
+                        'category_name' => $log->category_name,
+                        'search_count' => $log->search_count,
+                        'tenant_count' => $log->tenant_count,
+                        'banner_count' => ($log->banner_count != '') ? $log->banner_count :'0', 
+                        'total_count' => $log->total_count,
+                        'category_percentage' => $log->category_percentage,
+                        'tenant_percentage' => $log->tenant_percentage,
+                    ];
+                }
+            }   else{
                 $search_keywords[] = [
-                    'brand_name' => $log->brand_name,
-                    'category_name' => $log->category_name,
-                    'search_count' => $log->search_count,
-                    'tenant_count' => $log->tenant_count,
-                    'banner_count' => $log->banner_count,
-                    'total_count' => $log->total_count,
-                    'category_percentage' => $log->category_percentage,
-                    'tenant_percentage' => $log->tenant_percentage
+                    'brand_name' => '',
+                    'category_name' => '',
+                    'search_count' => '',
+                    'tenant_count' => '',
+                    'banner_count' => '', 
+                    'total_count' => '',
+                    'category_percentage' => '',
+                    'tenant_percentage' => '',
                 ];
             }
 
@@ -653,7 +862,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 Storage::delete($file);
             }
 
-            $filename = "merchant-usage.csv";
             // Store on default disk
             Excel::store(new Export($search_keywords), $directory . $filename);
 

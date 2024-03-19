@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row mt-2" v-if="showHeader">
-            <div class="col-md-3 d-flex align-items-center mb-2">
+            <div class="col-md-3 d-flex align-items-center mb-2" v-if="meta.total > 0">
                 Show
                 <select v-model="perPage" @change="fetchData"
                     class="custom-select custom-select-sm form-control form-control-sm"
@@ -15,6 +15,7 @@
                 </select>
                 entries
             </div>
+            <div class="col-md-3 d-flex align-items-center mb-2" v-else></div>
             <div class="col-md-5 mb-2" style="text-align: right;">
                 <div v-if="otherButtons" class="other-button">
                     <div v-for="(action, index) in otherButtons" v-show="condition(action, meta.permissions)">

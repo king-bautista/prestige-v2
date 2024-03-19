@@ -7,6 +7,8 @@
 	          <div class="col-md-12">
 	          	<div class="card">
 	    			<div class="card-body">
+						<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ site_name }}</div>
+								<div :style="{ 'font-size': 16 + 'px' }">{{ date_range }}</div>
 						<Table 
 						:dataFields="dataFields"
 						:dataUrl="dataUrl"
@@ -44,6 +46,20 @@
                                 <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
                             </select>
 		              </div>
+					  <div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.start_date" placeholder="YYYY/MM/DD" :config="options"
+										id="date_from" autocomplete="off"></date-picker>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">End Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.end_date" placeholder="YYYY/MM/DD" :config="options"
+										id="date_to" autocomplete="off"></date-picker>
+								</div>
+							</div>
 		          </form>
 		      </div>
 		      <div class="modal-footer justify-content-between">
@@ -58,6 +74,9 @@
 </template>
 <script> 
 	import Table from '../Helpers/Table';
+	import datePicker from 'vue-bootstrap-datetimepicker';
+	// Import date picker css
+	import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 
 	export default {
         name: "Reports",
@@ -65,10 +84,23 @@
             return {
                 filter: {
                     site_id: '',
+					site_name: '',
+					start_date: '',
+					end_date:'',
                 },
+				site_name: 'All',
+				site_name_temp: 'All',
+				date_range: '',
+				from: '',
+				to:'',
                 sites: [],
+				options: {
+				format: 'YYYY/MM/DD',
+				useCurrent: false,
+			},
             	dataFields: {
-            		key_words: "Word", 
+            		key_word: "Word", 
+					percentage_share: "Pecentage",
                     tenant_count: "Total",
             	},
             	primaryKey: "id",
@@ -97,6 +129,10 @@
         },
 
         methods: {
+			getSiteName: function(event) {
+				var option_text = event.target[event.target.selectedIndex].text; 
+				this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
+			},
             getSites: function() {
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
@@ -104,10 +140,15 @@
 
 			reportModal: function() {
                 this.filter.site_id = '';
+				this.filter.start_date ='';
+				this.filter.end_date ='';
               	$('#filterModal').modal('show');
             },
 
 			filterReport: function() {
+				this.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
+				this.date_range = (this.filter.start_date == "" || this.filter.end_date == "" || this.filter.start_date == null || this.filter.end_date == null)? '' :'From: '+ this.filter.start_date +' To: '+ this.filter.end_date;
+				this.filter.site_name = this.site_name; 
 				this.$refs.dataTable.filters = this.filter;
 				this.$refs.dataTable.fetchData();
 				$('#filterModal').modal('hide');
@@ -126,7 +167,8 @@
         },
 
         components: {
-        	Table
+        	Table,
+			datePicker
  	   }
     };
 </script> 

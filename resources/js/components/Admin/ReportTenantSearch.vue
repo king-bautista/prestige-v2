@@ -7,7 +7,8 @@
 					<div class="col-md-12">
 						<div class="card">
 							<div class="card-body">
-								<div :style="{ 'font-size': 20 + 'px' }">{{ site_name }}</div>	
+								<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ site_name }}</div>
+								<div :style="{ 'font-size': 16 + 'px' }">{{ date_range }}</div>	
 								<Table :dataFields="dataFields" :dataUrl="dataUrl" :otherButtons="otherButtons"
 									:primaryKey="primaryKey" v-on:reportModal="reportModal" v-on:downloadCsv="downloadCsv"
 									ref="dataTable">
@@ -79,11 +80,15 @@ export default {
 		return {
 			filter: {
 				site_id: '',
+				site_name: '',
 				start_date: '',
-				end_data:'',
+				end_date:'',
 			},
 			site_name: 'All',
 			site_name_temp: 'All',
+			date_range: '',
+			from: '',
+			to:'',
 			sites: [],
 			options: {
 				format: 'YYYY/MM/DD',
@@ -123,9 +128,20 @@ export default {
 
 	created() {
 		this.getSites();
+		//this.getDateToday();
 	},
 
 	methods: {
+		// getDateToday: function(){
+		// 	var date = new Date();
+		// 	var year = date.toLocaleString("default", { year: "numeric" });
+		// 	var month = date.toLocaleString("default", { month: "2-digit" });
+		// 	var day = date.toLocaleString("default", { day: "2-digit" });
+		// 	var formattedDate = year + "/" + month + "/" + day;
+		// 	// this.filter.start_date = '';//formattedDate;
+		// 	// this.filter.end_date = '';//formattedDate;x
+		// }
+		//,
 		getSiteName: function(event) {
 				var option_text = event.target[event.target.selectedIndex].text; 
 				this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
@@ -135,17 +151,21 @@ export default {
 				.then(response => this.sites = response.data.data);
 		},
 
-		reportModal: function () {
+		reportModal: function () { 
 			this.filter.site_id = '';
+			this.filter.start_date ='';
+			this.filter.end_date ='';
 			$('#filterModal').modal('show');
 		},
 
-		filterReport: function () {
+		filterReport: function () { 
+			this.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
+			this.date_range = (this.filter.start_date == "" || this.filter.end_date == "" || this.filter.start_date == null || this.filter.end_date == null)? '' :'From: '+ this.filter.start_date +' To: '+ this.filter.end_date;
+			this.filter.site_name = this.site_name; 
 			this.$refs.dataTable.filters = this.filter;
 			this.$refs.dataTable.fetchData();
 			var filter = this.filter; 
-			this.site_name = (filter.site_id == "")? 'All': this.site_name_temp;
-			$('#filterModal').modal('hide');
+			$('#filterModal').modal('hide'); 
 		},
 
 		downloadCsv: function () {
