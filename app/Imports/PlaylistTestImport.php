@@ -146,6 +146,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         $maxSitePartnerCounter = 0;
         $sitePartnerCounter = 0;
         $sequenceCounter = 1;
+        $array_order = '';
         $this->category_counter = $this->makeCounterVariables($site_id);
         
         // $loopCount = sizeof(array_chunk($sitePartnersAds->toArray(), $maxSitePartnerSlot));
@@ -245,6 +246,13 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 $sequenceCounter++;
             }
         }
+
+        // if ($totalParentCategoryAds < $totalSitePartnerAds){
+        //     $array_order = array_reverse($play_list_array);
+        // }
+        // else{
+        //     $array_order = $play_list_array;
+        // }
 
         TemporaryPlayList::insert($play_list_array);
 

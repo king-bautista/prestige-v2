@@ -263,6 +263,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Full Screen Ad");
                 $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Banner Ad");
             }
+
+            PlayList::leftJoin('site_screen_products', function ($join) {
+                $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
+                    ->whereRaw('play_lists.dimension = site_screen_products.dimension');
+                })
+                ->where('play_lists.site_screen_id', '=', $screen_id->id)
+                ->where('sequence', 0)
+                ->delete();
         }
 
         // return true;
@@ -325,6 +333,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $maxSitePartnerCounter = 0;
         $sitePartnerCounter = 0;
         $sequenceCounter = 1;
+        $array_order = '';
         $this->category_counter = $this->makeCounterVariables($site_id);
 
 
@@ -413,15 +422,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 $sequenceCounter++;
             }
         }
+
+        // if ($totalParentCategoryAds > $totalSitePartnerAds){
+        //     $array_order = array_reverse($play_lists_array);
+        // }
+        // else{
+        //     $array_order = $play_lists_array;
+        // }
         PlayList::insert($play_lists_array);
-        PlayList::leftJoin('site_screen_products', function ($join) {
-            $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
-                ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-            })
-            ->where('play_lists.site_screen_id', '=', $screen_id)
-            ->where('site_screen_products.ad_type', $ad_type)
-            ->where('sequence', 0)
-            ->delete();
 
         return $arrayStore;
         // return $this->check_variable;
