@@ -169,7 +169,7 @@
         $('.search-box-button, .softkeys__btn--search').on('touchend click', function() {
             var search_key = $('#code').val();
             tenant_searchList = '';
-            if (search_key.length >= 2) {
+            if (search_key.trim().length >= 2) {
                 $("#code").css("border-color", "#6051e3");
                 $('.notification').hide();
                 $.post( "/api/v1/search", { site_id: site_id, id: null, key_words: search_key } )

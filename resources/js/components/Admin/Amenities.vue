@@ -65,6 +65,15 @@
 									</select>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Tags</label>
+								<div class="col-sm-8">
+									<multiselect v-model="amenity.tags" :options="tags" :multiple="true"
+										:close-on-select="true" placeholder="Select Tags" label="name" track-by="name"
+										@select="toggleSelectedTags" @remove="toggleUnSelectedTags">
+									</multiselect>
+								</div>
+							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="active" class="col-sm-4 col-form-label">Active</label>
 								<div class="col-sm-8">
@@ -126,6 +135,7 @@
 </template>
 <script>
 import Table from '../Helpers/Table';
+import Multiselect from 'vue-multiselect';
 
 export default {
 	name: "Users",
@@ -136,11 +146,14 @@ export default {
 				name: '',
 				icon:'',
 				site_id: '',
+				tags: [],
 				active: false,
 			},
 			parent_links: [],
 			icon: '',
 			site_list: [],
+			tags_ids: [],
+			tags: [],
 			add_record: true,
 			edit_record: false,
 			image_width: 0,
@@ -217,13 +230,21 @@ export default {
 
 	created() {
 		this.getSites();
+		this.getTags();
 	},
 
 	methods: {
+
 		getSites: function () {
 			axios.get('/admin/site/get-all')
 				.then(response => this.site_list = response.data.data);
 		},
+
+		getTags: function () {
+			axios.get('/admin/brand/get-tags')
+				.then(response => this.tags = response.data.data);
+		},
+
 		IconChange: function (e) {
 			const file = e.target.files[0];
 			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
@@ -258,9 +279,21 @@ export default {
 			this.edit_record = false;
 			this.amenity.name = '';
 			this.amenity.site_id = '';
+			this.amenity.tags = [];
 			this.amenity.icon = '';
 			this.amenity.active = false;
 			$('#amenities-form').modal('show');
+		},
+
+		toggleSelectedTags: function (value, id) {
+			this.tags_ids.push(value.id);
+		},
+
+		toggleUnSelectedTags: function (value, id) {
+			const index = this.tags_ids.indexOf(value.id);
+			if (index > -1) { // only splice array when item is found
+				this.tags_ids.splice(index, 1); // 2nd parameter means remove one item only
+			}
 		},
 
 		storeAmenities: function () {
@@ -269,6 +302,7 @@ export default {
 			formData.append("site_id", this.amenity.site_id);
 			formData.append("icon", this.amenity.icon);
 			formData.append("icon_hidden", this.amenity.icon); 
+			formData.append("tags", this.tags_ids);
 
 			axios.post('/admin/amenity/store', formData, {
 				headers: {
@@ -286,9 +320,11 @@ export default {
 			axios.get('/admin/amenity/' + id)
 				.then(response => {
 					var amenity = response.data.data;
+					this.tags_ids = [];
 					this.amenity.id = id;
 					this.amenity.name = amenity.name;
 					this.amenity.site_id = amenity.site_id;
+					this.amenity.tags = amenity.tags;
 					this.amenity.active = amenity.active;
 					if (amenity.icon) {
 						this.icon = amenity.icon_path;
@@ -296,6 +332,11 @@ export default {
 					else {
 						this.icon = this.amenity.icon;
 					}
+
+					amenity.tags.forEach((value) => {
+						this.tags_ids.push(value.id);
+					});
+
 					this.$refs.icon.value = null;
 					this.add_record = false;
 					this.edit_record = true;
@@ -311,6 +352,7 @@ export default {
 			formData.append("icon", this.amenity.icon); 
 			formData.append("icon_hidden", this.icon); 
 			formData.append("active", this.amenity.active);
+			formData.append("tags", this.tags_ids);
 
 			axios.post('/admin/amenity/update', formData, {
 				headers: {
@@ -376,7 +418,8 @@ export default {
 	},
 
 	components: {
-		Table
+		Table,
+		Multiselect
 	}
 };
 </script> 

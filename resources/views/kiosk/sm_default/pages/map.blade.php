@@ -193,8 +193,6 @@
 	import { LineMaterial } from "{{ URL::to('themes/three.js/examples/jsm/lines/LineMaterial.js') }}";
 	import { LineGeometry } from "{{ URL::to('themes/three.js/examples/jsm/lines/LineGeometry.js') }}";
 
-	import {DragControls} from "{{ URL::to('themes/three.js/examples/jsm/controls/DragControls.js') }}";
-
     var camera, cameraTarget, scene, renderer, controls;
 	var rotationPoint;
 	var texts = {}, font;
@@ -1847,9 +1845,12 @@
 			resetMap();
 		});
 
-        $("#floor-select").on('change',function(){
+		$("#floor-select").on('select2:open',function(){
+			//force dropup
+			$('.select2-dropdown').removeClass('select2-dropdown--below').addClass('select2-dropdown--above')
+		});
 
-            $('.select2-dropdown').removeClass('select2-dropdown--below').addClass('select2-dropdown--above')
+		$("#floor-select").on('change',function(){			
             switchFloor($(this).val());
         });
 

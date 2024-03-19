@@ -177,6 +177,7 @@
         $('.category-title').html(main_category);
         $('.category-title').attr('data-en', main_category);
         $('.nav-btn-container').removeClass('active');
+
         $.each(sub_categories, function(key,category) {
             var subcategory_element = '';
             subcategory_element = '<div class="col-sm-6 mt-3 show-tenants-'+category.id+'">';
@@ -188,7 +189,6 @@
             subcategory_element += '</div>';
             subcategory_element += '</div>';
             $( ".cat-row-card" ).append(subcategory_element);
-
             $('.show-tenants-'+category.id).on('click', function() {
                 $('.category-img-banner').attr('src', category.kiosk_image_top_path);
                 $('.category-banner-title').html(category.category_name);
@@ -241,7 +241,7 @@
                         store_status_class = 'text-success';
                     }
 
-                    tenant_item = '<div class="col-xl-4 col-lg-6 col-md-4 mt-3">';
+                    tenant_item = '<div class="col-xl-4 col-lg-4 col-md-4 mt-3">';
                     tenant_item += '<div class="tenant-store-card-container bg-white text-center box-shadowed tenant-item-'+tenant.id+'">';
                     tenant_item += '<div class="tenant-store-contents">';
                     tenant_item += '<img class="img-shop-logo y-auto" src="'+tenant.brand_logo+'"/>';
@@ -413,8 +413,8 @@
 
         $('.alpha-tenants').append(navigation_button);
 
-        owl_tenant = $('.owl-wrapper-alpha-tenant-list');
-        owl_tenant.on("initialized.owl.carousel", function(e) {
+        owl_tenant_alpha = $('.owl-wrapper-alpha-tenant-list');
+        owl_tenant_alpha.on("initialized.owl.carousel", function(e) {
             if(e.item.count == 1) {
                 $('.promo-prev').hide();
                 $('.promo-next').hide();
@@ -431,14 +431,14 @@
         });
 
         $('.promo-next').click(function() {
-            owl_tenant.trigger('next.owl.carousel');
+            owl_tenant_alpha.trigger('next.owl.carousel');
         })
 
         $('.promo-prev').click(function() {
-            owl_tenant.trigger('prev.owl.carousel');
+            owl_tenant_alpha.trigger('prev.owl.carousel');
         })
 
-        owl_tenant.on('changed.owl.carousel', function(e) {
+        owl_tenant_alpha.on('changed.owl.carousel', function(e) {
             var first = ( !e.item.index)
             if( first ){
                 $('.promo-prev').hide();
@@ -532,8 +532,8 @@
 
         $('.supplemental-list').append(navigation_button);
 
-        owl_tenant = $('.owl-wrapper-supplemental');
-        owl_tenant.on("initialized.owl.carousel", function(e) {
+        owl_tenant_supplemental = $('.owl-wrapper-supplemental');
+        owl_tenant_supplemental.on("initialized.owl.carousel", function(e) {
             if(e.item.count == 1) {
                 $('.promo-prev').hide();
                 $('.promo-next').hide();
@@ -550,14 +550,14 @@
         });
 
         $('.promo-next').click(function() {
-            owl_tenant.trigger('next.owl.carousel');
+            owl_tenant_supplemental.trigger('next.owl.carousel');
         })
 
         $('.promo-prev').click(function() {
-            owl_tenant.trigger('prev.owl.carousel');
+            owl_tenant_supplemental.trigger('prev.owl.carousel');
         })
 
-        owl_tenant.on('changed.owl.carousel', function(e) {
+        owl_tenant_supplemental.on('changed.owl.carousel', function(e) {
             var first = ( !e.item.index)
             if( first ){
                 $('.promo-prev').hide();

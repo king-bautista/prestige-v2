@@ -453,7 +453,28 @@ class KioskController extends AppBaseController
             }
         }
 
+        $site_ids = [0, $this->site->id];
+        $amenities = Amenity::where('active', 1)
+            ->whereIn('site_id',  $site_ids)
+            ->orderBy('name', 'ASC')
+            ->get();
+
+        $amenities_ids = $amenities;
+
+        foreach ($amenities->pluck('name') as $key => $value) {
+            $collection->push([
+                'id' => null,
+                'value' => addslashes($value),
+                'floor_name' => null,
+                'building_name' => null,
+                'orderby' => addslashes($value),
+            ]);
+        }
+
+        $amenities_ids = $amenities_ids->pluck('id');
+
         $brand_tags = BrandTag::whereIn('brand_tags.brand_id', $brand_ids)
+            ->orWhereIn('brand_tags.amenity_id', $amenities_ids)
             ->select('brand_tags.tag_id')
             ->get()
             ->pluck('tag_id');
@@ -478,28 +499,13 @@ class KioskController extends AppBaseController
             ]);
         }
 
-        $site_ids = [0, $this->site->id];
-        $amenities = Amenity::where('active', 1)
-            ->whereIn('site_id',  $site_ids)
-            ->orderBy('name', 'ASC')
-            ->get()->pluck('name');
-
-        foreach ($amenities as $key => $value) {
-            $collection->push([
-                'id' => null,
-                'value' => addslashes($value),
-                'floor_name' => null,
-                'building_name' => null,
-                'orderby' => addslashes($value),
-            ]);
-        }
-
-        return json_encode($collection->sortBy('value')->values()->all());
+        $collection = $collection->sortBy('orderby', SORT_NATURAL);
+        return json_encode($collection->values()->all());
     }
 
     public function search(Request $request) {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::find($request->site_id);
             $site_map_ids = SiteMap::where('site_id', $request->site_id)
             ->where('map_type', $site->details['map_type'])
@@ -529,6 +535,8 @@ class KioskController extends AppBaseController
                 ->orWhere('supp.name', 'like', '%'.$keyword)
                 ->orWhere('tags.name', 'like', $keyword.'%')
                 ->orWhere('tags.name', 'like', '%'.$keyword)
+                ->orWhere('ame_tags.name', 'like', $keyword.'%')
+                ->orWhere('ame_tags.name', 'like', '%'.$keyword)
                 ->orWhere('amenities.name', 'like', $keyword.'%')
                 ->orWhere('amenities.name', 'like', '%'.$keyword);
             })
@@ -545,6 +553,8 @@ class KioskController extends AppBaseController
             ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
             ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
             ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
+            ->leftJoin('brand_tags as amenity_tags', 'amenities.id', '=', 'amenity_tags.amenity_id')
+            ->leftJoin('tags as ame_tags', 'amenity_tags.tag_id', '=', 'ame_tags.id')
             ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
             ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address', 
@@ -573,22 +583,25 @@ class KioskController extends AppBaseController
 
             shuffle($suggest_subscribers);
             $suggest_subscribers = array_chunk($suggest_subscribers, 5);
-            $number = mt_rand(1, (count($suggest_subscribers)));
+            if(count($suggest_subscribers) > 1) {
+                $number = mt_rand(1, (count($suggest_subscribers)));
+                $suggest_subscribers = $suggest_subscribers[$number-1];
+            }
 
             $tenants = array_chunk($tenants->toArray(), 12);                
 
             return [
                 'tenants' => $tenants,
-                'suggest_subscribers' => $suggest_subscribers[$number-1],
+                'suggest_subscribers' => $suggest_subscribers,
             ];
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // } 
     }
 
     public function getBannerAds() {

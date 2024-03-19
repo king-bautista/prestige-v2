@@ -191,7 +191,7 @@ Helpers.prototype = {
     },
 
     searchBtnClick: function() {
-        $('.content-holder, .back-img-btn, .modal, .search-for, #searchNone, #searchList').hide();
+        $('.content-holder, .modal, .search-for, #searchNone, #searchList').hide();
         $('#search-container, #ImgMallLogo, #keyboard-section, .back-img-btn').show();
         $('.nav-btn-container').removeClass('active');
         $('.nav-btn-search').addClass("active");
