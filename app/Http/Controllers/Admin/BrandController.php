@@ -204,7 +204,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
             $data = [
                 'category_id' => $request->category_id,
-                'name' => strtoupper($request->name),
+                //'name' =>   addslashes(strtoupper($request->name)),
+                'name' =>  $request->name,
                 'descriptions' => ($request->descriptions) ? $request->descriptions : null,
                 'logo' => str_replace('\\', '/', $logo_path),
                 'thumbnail' => str_replace('\\', '/', $thumbnails_path),
@@ -270,7 +271,8 @@ class BrandController extends AppBaseController implements BrandControllerInterf
 
             $data = [
                 'category_id' => $request->category_id,
-                'name' => strtoupper($request->name),
+               // 'name' => addslashes(strtoupper($request->name)),
+               'name' => $request->name,
                 'descriptions' => ($request->descriptions) ? $request->descriptions : null,
                 'logo' => ($logo_path) ? str_replace('\\', '/', $logo_path) : $brand->logo,
                 'thumbnail' => ($thumbnails_path) ? str_replace('\\', '/', $thumbnails_path) : $brand->thumbnail,
