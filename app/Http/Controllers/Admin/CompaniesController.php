@@ -85,6 +85,8 @@ class CompaniesController extends AppBaseController implements CompaniesControll
             $this->setCompanySession($id);
 
             $company = CompanyViewModel::find($id);
+            $get_name = preg_replace('/\^/','/',  $company->name);
+            $company->name = preg_replace('/\*/','\\', $get_name);
             return $this->response($company, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
