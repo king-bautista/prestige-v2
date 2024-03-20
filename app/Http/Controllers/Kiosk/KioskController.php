@@ -588,11 +588,14 @@ class KioskController extends AppBaseController
                 $suggest_subscribers = $suggest_subscribers[$number-1];
             }
 
+            $results_count = $tenants->count();
             $tenants = array_chunk($tenants->toArray(), 12);                
 
             return [
                 'tenants' => $tenants,
                 'suggest_subscribers' => $suggest_subscribers,
+                'key_word' => $keyword,
+                'results_count' => $results_count
             ];
         // }
         // catch (\Exception $e)

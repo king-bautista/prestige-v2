@@ -183,6 +183,15 @@
                     current_location = 'searchresult';
                     page_history.push(current_location);
 
+                    var search_log = {
+                        site_id: {{ $site->id }}, 
+                        site_screen_id: {{ $site_config->site_screen_id }},
+                        key_words: search_key,
+                        results: responce.results_count
+                    };
+
+                    helper.saveLogs(search_log, 'Search');
+
                     if(responce.tenants.length > 0) {
                         showTenantSearch(responce.tenants);
                         showSubscriber(responce.suggest_subscribers)
