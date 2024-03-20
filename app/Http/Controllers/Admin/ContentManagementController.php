@@ -263,7 +263,16 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Full Screen Ad");
                 $this->setPlayListSequence($screen_id->id, $screen_id->site_id, "Banner Ad");
             }
+        }
 
+        $this->deleteUnsequencedItem($screen_ids);
+
+        // return true;
+        // return $this->check_variable;
+    }
+
+    protected function deleteUnsequencedItem($screen_ids){
+        foreach($screen_ids as $screen_id){
             PlayList::leftJoin('site_screen_products', function ($join) {
                 $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                     ->whereRaw('play_lists.dimension = site_screen_products.dimension');
@@ -272,9 +281,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 ->where('sequence', 0)
                 ->delete();
         }
-
-        // return true;
-        // return $this->check_variable;
     }
 
     public function getAdvertisementMaterial($content_ids, $screen_id)
@@ -312,7 +318,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
         $sitePartnersAds = $this->getPlaylistAds($site_partner_id, $screen_id, $ad_type, true);
         $parentCategoryAds = $this->getPlaylistAds($site_partner_id, $screen_id, $ad_type, false);
-
+        // dd($parentCategoryAds);
         // counting number of site partner ads
         $totalSitePartnerAds = sizeof($sitePartnersAds);
         // counting number of parent category ads
@@ -524,7 +530,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
             $this->category_counter[$index] = $this->category_counter[$index] + 1;
             $data_count = count($addData);
             // $this->check_variable = $data_count;
-
             while ($data_count == 0) {
                 $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
                 $index = fmod($this->maxParentCategoryCounter, $category_ids->count());
@@ -538,6 +543,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     $addData = $new_add;
                     foreach ($addData as $item) {
                         $item["loop_number"] = $loop_number;
+                        // if($item["advertisement_id"] == 109){
+                        //     dd("im hereee");
+                        // }
                     }
                     $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
                 }
@@ -545,6 +553,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
             }
             foreach ($addData as $item) {
                 $item["loop_number"] = $loop_number;
+                // if($item["advertisement_id"] == '108'){
+                //     dd("im hereee");
+                // }
             }
         }
         return $addData;
