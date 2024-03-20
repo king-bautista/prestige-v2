@@ -1455,7 +1455,13 @@
 				camera.lookAt(spritePinTo.position);
 				
 				controls.zoomIn(4);
-		
+
+				if(!from_tenant) {
+					helper.saveLogs(map_tenants[$('#tenant-select').val()], page);		
+				}
+				else {
+					from_tenant = false;
+				}
 			}
 		}
 

@@ -217,6 +217,7 @@
     });
 
     function showTenantSearch(search_results) {
+        page = 'Search';
         $('.search-results').html('');
         $('.you-might-want-to-try').html('');
         $('.search-results').html('<div class="owl-carousel owl-theme owl-wrapper-tenant-search-list search-result-dots"></div>');
@@ -361,7 +362,7 @@
             $.each(subscriber, function(index,tenant) {     
                 want_to_item = '';   
                 want_to_item += '<div class="item">';            
-                want_to_item += '<img class="shop-logo tenant-store tenant-try-'+tenant.id+'" src="'+tenant.tenant_details.subscriber_logo+'">';
+                want_to_item += '<img class="shop-logo tenant-store tenant-try-'+tenant.id+'" src="'+tenant.subscriber_logo+'">';
                 want_to_item += '</div>';
 
                 $('.subscriber-holder').append(want_to_item);

@@ -197,6 +197,7 @@
     $("#ImgMallLogo").on('click', function(){
         helper.aboutBtnClick();
         helper.filterAssist();
+        helper.saveLogs({site_id: {{ $site->id }}, site_screen_id: {{ $site_config->site_screen_id }} }, 'About Us');
         page_history.push(current_location);
     });
 
@@ -204,6 +205,7 @@
     $("#home_btn").on('click', function(){
         helper.homeBtnClick();
         helper.filterAssist();
+        helper.saveLogs({site_id: {{ $site->id }}, site_screen_id: {{ $site_config->site_screen_id }} }, 'Home');
     });
 
     /* for search button */
@@ -211,13 +213,16 @@
         helper.searchBtnClick();
         helper.filterAssist();
         page_history.push(current_location);
+        helper.saveLogs({site_id: {{ $site->id }}, site_screen_id: {{ $site_config->site_screen_id }} }, 'Search');
     });
 
     /* for map button */
     $("#map_btn").on('click', function(){
+        page = 'Map';
         helper.mapBtnClick();
         helper.filterAssist();
         page_history.push(current_location);
+        helper.saveLogs({site_id: {{ $site->id }}, site_screen_id: {{ $site_config->site_screen_id }} }, 'Map');
     });
 
     /* for promos button */
@@ -226,6 +231,7 @@
         helper.filterAssist();
         showPromos();
         page_history.push(current_location);
+        helper.saveLogs({site_id: {{ $site->id }}, site_screen_id: {{ $site_config->site_screen_id }} }, 'Promos');
     });
 
     $("#events_btn").on('click', function(){        
@@ -233,6 +239,7 @@
         helper.filterAssist();
         showEvents();
         page_history.push(current_location);
+        helper.saveLogs({site_id: {{ $site->id }}, site_screen_id: {{ $site_config->site_screen_id }} }, 'Events');
     });
 
     /* for cinema button */
@@ -240,7 +247,7 @@
         helper.cinemaBtnClick();
         helper.filterAssist();
         showCinemas();
-        console.log(page_history);
+        helper.saveLogs({site_id: {{ $site->id }}, site_screen_id: {{ $site_config->site_screen_id }} }, 'Cinema');
     });
 	
 </script>
