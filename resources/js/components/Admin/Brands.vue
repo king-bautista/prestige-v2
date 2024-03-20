@@ -418,7 +418,7 @@ export default {
 		updateBrand: function () {
 			let formData = new FormData();
 			formData.append("id", this.brand.id);
-			formData.append("name", this.encodeEntities(this.brand.name));
+			formData.append("name", this.brand.name);
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
 			formData.append("logo", this.brand.logo);
