@@ -190,7 +190,7 @@ export default {
 				name: "Name",
 				category_name: "Category Name",
 				supplemental_names: "Supplementals",
-				tag_names: "Tags",
+				//tag_names: "Tags",
 				active: {
 					name: "Status",
 					type: "Boolean",
@@ -353,6 +353,9 @@ export default {
 
 		storeBrand: function () {
 			let formData = new FormData();
+			console.log(this.encodeEntities(this.brand.name));
+			console.log(this.decodeEntities(this.brand.name));
+			console.log(this.encodeEntities(this.brand.name));
 			formData.append("name", this.brand.name);
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
@@ -376,12 +379,14 @@ export default {
 		},
 
 		editBrand: function (id) {
+			//var obj = this;
+			//alert(this.decodeEntities("/!@#$%^&amp;AMP;*/()_+{}|:&quot;&amp;LT;&amp;GT;?JORDANP/"));
 			axios.get('/admin/brand/' + id)
 				.then(response => {
-					var brand = response.data.data;
+					var brand = response.data.data;// alert(this.decodeEntities(brand.name));
 					this.brand.id = id;
 					this.brand.category_id = brand.category_id;
-					this.brand.name = brand.name;
+					this.brand.name = this.decodeEntities(brand.name);
 					this.brand.descriptions = brand.descriptions;
 					this.brand.supplementals = brand.brand_details.supplementals;
 					this.brand.tags = brand.brand_details.tags;
@@ -413,7 +418,7 @@ export default {
 		updateBrand: function () {
 			let formData = new FormData();
 			formData.append("id", this.brand.id);
-			formData.append("name", this.brand.name);
+			formData.append("name", this.encodeEntities(this.brand.name));
 			formData.append("category_id", this.brand.category_id);
 			formData.append("descriptions", this.brand.descriptions);
 			formData.append("logo", this.brand.logo);
@@ -507,7 +512,16 @@ export default {
 					 });
 
 			}, 9000 * i)
-		}
+		},
+		decodeEntities: function(encodedString) {
+			var textArea = document.createElement('textarea');
+			textArea.innerHTML = encodedString;
+			return textArea.value;
+		},
+
+		encodeEntities: function(string) {
+			return $('<div>').text(string).html();
+		},
 	},
 
 	components: {
