@@ -168,7 +168,8 @@ export default {
 			$('#filterModal').modal('hide'); 
 		},
 
-		downloadCsv: function () {
+		downloadCsv: function () {	
+			this.filter.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
 			axios.get('/admin/reports/top-tenant-search/download-csv', { params: { filters: this.filter } })
 				.then(response => {
 					const link = document.createElement('a');

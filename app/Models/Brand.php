@@ -79,5 +79,14 @@ class Brand extends Model
             }
         }
     }
-
+    //mutators automatic adjust ex. create automatic modifiying
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
+    //accesor for viewing
+    public function getNameAttribute($name)
+    {
+        return $name;
+    }
 }

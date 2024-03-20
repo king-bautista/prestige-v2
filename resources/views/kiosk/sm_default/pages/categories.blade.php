@@ -92,6 +92,7 @@
 @push('scripts')
 <script>
     var categories = "{{ $categories }}";
+    var category = '';
     var sub_categories = '';
     var main_category_id = '';
     var main_category = '';
@@ -100,6 +101,7 @@
     var tenant_list = '';
     var navigation_letters = ['#'];
     var available_letters = '';
+    var page = '';
 
     $(document).ready(function() {
         $('#Tab-Category-Tab').on('click', function() {
@@ -125,6 +127,7 @@
             category_element += '</div>';
             $( "#categories-container" ).append(category_element);
             $('.main-'+category.id).on('click', function() {
+                category = category;
                 main_category_id = category.category_id;
                 main_category = category.category_name;
                 sub_categories = (category.sub_categories.length > 0) ? category.sub_categories : null;
@@ -145,7 +148,8 @@
     }
 
     function showSubCategories() {
-        
+        page = 'Categories';
+
         if(sub_categories == null || sub_categories == undefined) {
             $('.category-img-banner').attr('src', '');
             $('.sub-category-tenants').html('');
@@ -339,6 +343,8 @@
     }
 
     function showAlphabetical() {
+        page = 'Alphabetical';
+
         if(alphabetical == null || alphabetical == undefined) {
             $('.alpha-tenants').html('');
             $('.alpha-tenants').append('<div class="row col-12 text-center" style="margin-left: -36px;"><img src="{{ URL::to('themes/sm_default/images/stick-around.png') }}" style="width: 735px; margin: auto; margin-top: 82px;"></div>');
@@ -468,6 +474,8 @@
     }
 
     function showSupplementals() {
+        page = 'Supplementals';
+
         if(supplementals == null || supplementals == undefined || supplementals.length == 0) {
             $('.supplemental-list').html('');
             $('.supplemental-list').append('<div class="row col-12 text-center" style="margin-left: -36px;"><img src="{{ URL::to('themes/sm_default/images/stick-around.png') }}" style="width: 735px; margin: auto; margin-top: 82px;"></div>');

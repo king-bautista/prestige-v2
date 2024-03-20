@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 use App\Models\SiteScreenUptime;
 use App\Models\SiteScreenUptimeTemp;
-use App\Models\ViewModels\SiteViewModel;
+use App\Models\AdminViewModels\SiteViewModel;
 
 class UpTimeController extends AppBaseController implements UpTimeControllerInterface
 {
