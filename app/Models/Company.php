@@ -65,4 +65,16 @@ class Company extends Model
             }
         }
     }
+    
+    public function setNameAttribute($name)
+    {
+        $set_name =  preg_replace('/\//','^', $name);
+        $this->attributes['name'] = preg_replace('/\\\\/', '*', $set_name); 
+    }
+    
+    public function getNameAttribute($name)
+    {
+        $get_name = preg_replace('/\^/','/', $name);
+        return preg_replace('/\*/','\\', $get_name);
+    }
 }

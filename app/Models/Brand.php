@@ -79,14 +79,16 @@ class Brand extends Model
             }
         }
     }
-    //mutators automatic adjust ex. create automatic modifiying
-    public function setNameAttribute($value)
+
+    public function setNameAttribute($name)
     {
-        $this->attributes['name'] = strtolower($value);
+        $set_name =  preg_replace('/\//','^', $name);
+        $this->attributes['name'] = preg_replace('/\\\\/', '*', $set_name); 
     }
-    //accesor for viewing
+    
     public function getNameAttribute($name)
     {
-        return $name;
+        $get_name = preg_replace('/\^/','/', $name);
+        return preg_replace('/\*/','\\', $get_name);
     }
 }
