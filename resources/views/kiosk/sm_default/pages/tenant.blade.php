@@ -173,6 +173,7 @@
     var tenant_id = '';
     var tenant_schedule = '';
     var days = {'Mon':"Monday",'Tue':"Tuesday",'Wed':"Wednesday",'Thu':"Thursday",'Fri':"Friday",'Sat':"Saturday",'Sun':"Sunday"};
+    var from_tenant = false;
 
     $(document).ready(function () {
         var modalTenant = $("#imgPromoModalTenant");
@@ -233,6 +234,7 @@
         });
 
         $('.btn-direction-shop').on('click', function() {
+            from_tenant = true;
             helper.mapBtnClick();
             $("#ispwd").prop('checked', false);
             $('#tenant-select').val(tenant_id);
@@ -240,6 +242,7 @@
         });
 
         $('.btn-direction-shop-pwd').on('click', function() {
+            from_tenant = true;
             helper.mapBtnClick();
             $("#btnpwdchange").click();
             $('#tenant-select').val(tenant_id);
@@ -308,7 +311,7 @@
         }
     }
 
-    function showTenantDetails(tenant) {
+    function showTenantDetails(tenant, from_ads) {
         var site_info = JSON.parse(helper.decodeEntities(operational_hours));
         var tenant_operational_hours = (tenant.operational_hours == null || tenant.operational_hours == undefined) ? site_info : tenant.operational_hours;
         var is_open = (tenant_operational_hours.is_open) ? 'text-success' : 'text-danger';
@@ -415,7 +418,8 @@
         helper.updateViewCount(tenant.id, tenant.view_count);        
         helper.setTenantCountDetails(tenant.id);
         // SAVE LOGS
-        helper.saveLogs(tenant, page);
+        if(!from_ads)
+            helper.saveLogs(tenant, page);
 
         current_location = 'tenant';
         page_history.push(current_location);

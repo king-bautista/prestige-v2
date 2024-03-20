@@ -1456,7 +1456,12 @@
 				
 				controls.zoomIn(4);
 
-				helper.saveLogs(map_tenants[$('#tenant-select').val()], page);		
+				if(!from_tenant) {
+					helper.saveLogs(map_tenants[$('#tenant-select').val()], page);		
+				}
+				else {
+					from_tenant = false;
+				}
 			}
 		}
 
