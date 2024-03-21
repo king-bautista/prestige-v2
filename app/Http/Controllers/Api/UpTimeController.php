@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 use App\Models\SiteScreenUptime;
 use App\Models\SiteScreenUptimeTemp;
+use App\Models\PLayListLogs;
 use App\Models\AdminViewModels\SiteViewModel;
 
 class UpTimeController extends AppBaseController implements UpTimeControllerInterface
@@ -66,5 +67,31 @@ class UpTimeController extends AppBaseController implements UpTimeControllerInte
             if($screen_uptime)
                 SiteScreenUptimeTemp::on('mysql_server')->where('up_time_date', $yesterday)->where('site_screen_id', $site_screen_id)->delete();
         }
+    }
+
+    public function saveAdsCount(Request $request) {
+        $date_now = Carbon::now()->format('Y-m-d');
+        $ad_ids = [];
+        foreach($request->display_count as $ad) {
+            if($ad) 
+                $ad_ids[] = $ad;
+        }
+
+        $ad_ids = array_count_values($ad_ids);        
+        $ad_logs = [];
+
+        foreach($ad_ids as $id => $count) {
+            PLayListLogs::updateOrCreate(
+                [
+                    'site_screen_id' => $request->site_screen_id, 
+                    'advertisement_id' => $id, 
+                    'log_date' => $date_now
+                ],
+                [
+                    'log_count' => $count,
+                ]                
+            );
+        }
+
     }
 }

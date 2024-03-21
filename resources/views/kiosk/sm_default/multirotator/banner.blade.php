@@ -8,23 +8,30 @@
 <script>
     var helper = new Helpers();
     var banner_ads = "{{ $banner_ads }}";
+    var display_count = [];
 
     setTimeout(helper.removeLoader, 20000);
     setInterval(screenUpTime, 2000*60);
+    setInterval(adsUpCount, 2000*60);
 
     function screenUpTime() {
         helper.screenUpTime('{{ $site_config->site_screen_id }}');
     }
 
+    function adsUpCount() {
+        helper.adsUpCount('{{ $site_config->site_screen_id }}', display_count);
+    }
+
     function showBannerAds() {
 
         var my_banner_ads = JSON.parse(helper.decodeEntities(banner_ads));
+        console.log(my_banner_ads);
         
         $('.multirotator_landscape_container').html('');
         $('.multirotator_landscape_container').html('<div class="owl-carousel owl-wrapper-banner-ads"></div>');
         $.each(my_banner_ads, function(key,banner_ad) {
             var banner_element = '';
-            banner_element += '<div class="item" data-display_duration="'+banner_ad.display_duration*1000+'">';
+            banner_element += '<div class="item" data-display_duration="'+banner_ad.display_duration*1000+'" data-advertisement_id="'+banner_ad.advertisement_id+'">';
             if(banner_ad.file_type == 'video') {
                 banner_element += '<span>';
                 banner_element += '<video autoplay="true" class="multirotator_landscape banner-add banner-add-'+key+'" muted playsinline loop>';
@@ -55,6 +62,8 @@
         owl_banner.on('changed.owl.carousel', function(e) {
             var current = e.item.index;
             var display_duration = $(e.target).find(".owl-item").eq(current).find(".item").data('display_duration');
+            var advertisement_id = $(e.target).find(".owl-item").eq(current).find(".item").data('advertisement_id');
+            display_count.push(advertisement_id);
             if(display_duration != undefined) {
                 owl_banner.trigger('play.owl.autoplay',[display_duration]);
             }

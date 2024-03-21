@@ -165,6 +165,12 @@ Helpers.prototype = {
         }); 
     },
 
+    adsUpCount: function(screen_id, display_count) {
+        $.post( "/api/v1/ads-count-update", { site_screen_id: screen_id, display_count: display_count } , function( data ) {
+            console.log(data);
+        }); 
+    },
+
     revertToEnglish: function() {
         var txt= 'ENGLISH';
         content_language = 'english';

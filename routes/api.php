@@ -51,6 +51,7 @@ Route::group(['prefix' => 'v1'], function ()
     |--------------------------------------------------------------------------
     */
     Route::post('/screen-uptime', 'Api\UpTimeController@storeUpTime')->name('api.screen-uptime');
+    Route::post('/ads-count-update', 'Api\UpTimeController@saveAdsCount')->name('api.ads-count-update');
 
     // Route::get('/assistant-message', 'Kiosk\MainController@getAssistantMessage')->name('kiosk.assistant-message');
     // Route::get('/site', 'Kiosk\MainController@getSite')->name('kiosk.site');
