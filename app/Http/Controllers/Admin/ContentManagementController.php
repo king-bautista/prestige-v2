@@ -420,21 +420,40 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     "parent_category_id" => $item->parent_category_id,
                     "main_category_id" => $item->main_category_id,
                     "advertisement_id" => $item->advertisement_id,
-                    "sequence" => $sequenceCounter,
+                    // "sequence" => $sequenceCounter,
                     "dimension" => $item->dimension,
                     "loop_number" => $item->loop_number
                 ];
                 $play_lists_array[] = $array_collection;
-                $sequenceCounter++;
+                // $sequenceCounter++;
             }
         }
 
-        // if ($totalParentCategoryAds > $totalSitePartnerAds){
-        //     $array_order = array_reverse($play_lists_array);
-        // }
-        // else{
-        //     $array_order = $play_lists_array;
-        // }
+        if ($is_site_parter == true){
+            $playlist_count = intval(count($play_lists_array));
+            $current_element = '';
+            for ($playlist_index = 0; $playlist_index < $playlist_count; $playlist_index++){
+                if(intval(fmod($playlist_index, $moduloValue)) == 0){
+                    if(empty($current_element)){
+                        $current_element = $play_lists_array[$playlist_index];
+                        unset($play_lists_array[$playlist_index]);
+                    }
+                    else{
+                        $old_element = $current_element;
+                        $current_element = $play_lists_array[$playlist_index];
+                        $play_lists_array[$playlist_index] = $old_element;
+                        $play_lists_array[$playlist_index] ['sequence'] = $playlist_index;
+                    }
+                }
+                else{
+                    $play_lists_array[$playlist_index] ['sequence'] = $playlist_index;
+                }
+                if($playlist_index == $playlist_count-1){
+                    array_push($play_lists_array, $current_element);
+                }
+            }
+        }
+        
         PlayList::insert($play_lists_array);
 
         return $arrayStore;
