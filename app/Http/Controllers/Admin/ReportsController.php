@@ -547,22 +547,25 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 $end_date = '';
             }
 
-            $logs = PLayListLogs::when($site_id, function ($query) use ($site_id) {
+            $logs = PLayListLogs::
+            when($site_id, function ($query) use ($site_id) {
                 return $query->where('ss.site_id', $site_id);
             })
                 ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
+                ->leftJoin('advertisements as a', 'play_list_logs.advertisement_id', '=', 'a.id')
                 ->selectRaw('play_list_logs. *, 
-            ss.id as site_screen_id, 
-            ss.name as site_screen_name, 
-            ss.site_id as site_id, 
-            (select a.name from advertisements a where a.id = play_list_logs.advertisement_id) as advertisement_name')
+                ss.name as site_screen_name, 
+                ss.site_id as site_id,
+                a.name as advertisement_name
+                ')
                 ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
                     return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
                 })
                 ->when(request('search'), function ($query) {
-                    return $query->having('', 'LIKE', '%' . request('search') . '%')
-                        ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
-                        ->orHaving('advetisement_name', 'LIKE', '%' . request('search') . '%');
+                    return $query->having('site_screen_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('advertisement_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_date', 'LIKE', '%' . request('search') . '%');
                 })
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('updated_at', 'ASC');
@@ -613,15 +616,22 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $logs = PLayListLogs::when($site_id, function ($query) use ($site_id) {
                 return $query->where('ss.site_id', $site_id);
             })
-                ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
-                ->selectRaw('play_list_logs. *, 
-            ss.id as site_screen_id, 
+            ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
+            ->leftJoin('advertisements as a', 'play_list_logs.advertisement_id', '=', 'a.id')
+            ->selectRaw('play_list_logs. *, 
             ss.name as site_screen_name, 
-            ss.site_id as site_id, 
-            (select a.name from advertisements a where a.id = play_list_logs.advertisement_id) as advertisement_name')
-                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
-                    return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
-                })
+            ss.site_id as site_id,
+            a.name as advertisement_name
+            ')
+            ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+            })
+            ->when(request('search'), function ($query) {
+                return $query->having('site_screen_name', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('advertisement_name', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('log_count', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('log_date', 'LIKE', '%' . request('search') . '%');
+            })
                 // ->when(request('search'), function ($query) {
                 //     return $query->having('', 'LIKE', '%' . request('search') . '%')
                 //         ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
