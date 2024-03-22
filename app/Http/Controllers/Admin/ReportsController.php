@@ -547,10 +547,9 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 $end_date = '';
             }
 
-            $logs = PLayListLogs::
-            when($site_id, function ($query) use ($site_id) {
-                return $query->where('ss.site_id', $site_id);
-            })
+            $logs = PLayListLogs::when($site_id, function ($query) use ($site_id) {
+                    return $query->where('ss.site_id', $site_id);
+                })
                 ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
                 ->leftJoin('advertisements as a', 'play_list_logs.advertisement_id', '=', 'a.id')
                 ->selectRaw('play_list_logs. *, 
@@ -616,22 +615,22 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $logs = PLayListLogs::when($site_id, function ($query) use ($site_id) {
                 return $query->where('ss.site_id', $site_id);
             })
-            ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
-            ->leftJoin('advertisements as a', 'play_list_logs.advertisement_id', '=', 'a.id')
-            ->selectRaw('play_list_logs. *, 
+                ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
+                ->leftJoin('advertisements as a', 'play_list_logs.advertisement_id', '=', 'a.id')
+                ->selectRaw('play_list_logs. *, 
             ss.name as site_screen_name, 
             ss.site_id as site_id,
             a.name as advertisement_name
             ')
-            ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
-                return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
-            })
-            ->when(request('search'), function ($query) {
-                return $query->having('site_screen_name', 'LIKE', '%' . request('search') . '%')
-                    ->orHaving('advertisement_name', 'LIKE', '%' . request('search') . '%')
-                    ->orHaving('log_count', 'LIKE', '%' . request('search') . '%')
-                    ->orHaving('log_date', 'LIKE', '%' . request('search') . '%');
-            })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('site_screen_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('advertisement_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_date', 'LIKE', '%' . request('search') . '%');
+                })
                 // ->when(request('search'), function ($query) {
                 //     return $query->having('', 'LIKE', '%' . request('search') . '%')
                 //         ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
@@ -1396,13 +1395,36 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         }
     }
 
-    public function getOtherResponse()
+    public function getOtherResponse(Request $request)
     {
         try {
-            $is_helpful = SiteFeedback::when(request('search'), function ($query) {
-                return $query->having('updated_at', 'LIKE', '%' . request('search') . '%')
-                    ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
+            $oreason_site_id = '';
+            $oreason_start_date = '';
+            $oreason_end_date = '';
+
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $oreason_site_id = $filters->oreason_site_id;
+                $oreason_start_date = str_replace('/', '-', $filters->oreason_start_date);
+                $oreason_end_date = str_replace('/', '-', $filters->oreason_end_date);
+            }
+
+            if ($request->oreason_site_id) {
+                $oreason_site_id = $request->oreason_site_id;
+                $oreason_start_date = '';
+                $oreason_end_date = '';
+            }
+
+            $is_helpful = SiteFeedback::when($oreason_site_id, function ($query) use ($oreason_site_id) {
+                return $query->where('site_id', $oreason_site_id);
             })
+                ->when(($oreason_start_date != '' && $oreason_end_date != ''), function ($query) use ($oreason_start_date, $oreason_end_date) {
+                    return $query->whereBetween('updated_at', [$oreason_start_date . ' 00:00:00', $oreason_end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('updated_at   ', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
+                })
                 ->whereNotNull('reason_other')
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('updated_at', 'ASC');
@@ -1535,7 +1557,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 $reason_site_name = $filters->reason_site_name . "_";
                 $reason_start_date = str_replace('/', '-', $filters->reason_start_date);
                 $reason_end_date = str_replace('/', '-', $filters->reason_end_date);
-                $filters->reason_site_name;
                 $reason_start = ($reason_start_date == "") ? "" : "_" . $reason_start_date;
                 $reason_end = ($reason_end_date == "") ? "" : "_" . $reason_end_date . "_";
                 $filename = $reason_site_name . $reason_start . $reason_end . "reason_is_helpful.csv";
@@ -1604,6 +1625,91 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
 
             // Store on default disk
             Excel::store(new Export($is_helpful), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadOtherResponse(Request $request)
+    {
+        try {
+            $oreason_site_id = '';
+            $oreason_start_date = '';
+            $oreason_end_date = '';
+            
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $oreason_site_id = $filters->oreason_site_id;
+                $oreason_site_name = $filters->oreason_site_name . "_";
+                $oreason_start_date = str_replace('/', '-', $filters->oreason_start_date);
+                $oreason_end_date = str_replace('/', '-', $filters->oreason_end_date);
+                $oreason_start = ($oreason_start_date == "") ? "" : "_" . $oreason_start_date;
+                $oreason_end = ($oreason_end_date == "") ? "" : "_" . $oreason_end_date . "_";
+                $filename = $oreason_site_name . $oreason_start . $oreason_end . "other_reason_is_helpful.csv";
+            } else {
+                $filename = "other_reason_is_helpful.csvis_helpful.csv";
+            }
+
+            if ($request->oreason_site_id) {
+                $oreason_site_id = $request->reason_site_id;
+                $oreason_start_date = '';
+                $oreason_end_date = '';
+            }
+            $logs = SiteFeedback::when($oreason_site_id, function ($query) use ($oreason_site_id) {
+                return $query->where('site_id', $oreason_site_id);
+            })
+                ->when(($oreason_start_date != '' && $oreason_end_date != ''), function ($query) use ($oreason_start_date, $oreason_end_date) {
+                    return $query->whereBetween('updated_at', [$oreason_start_date . ' 00:00:00', $oreason_end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('updated_at', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
+                })
+                ->whereNotNull('reason_other')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('updated_at', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->get();
+
+            if (count($logs) > 0) {
+                $other_reason = [];
+                foreach ($logs as $log) {
+                    $other_reason[] = [
+                        'updated_at' => ($log['updated_at'] != '') ? $log['updated_at'] : '0000-00-00 00:00:00',
+                        'reason_other' => ($log['reason_other'] != '') ? $log['reason_other'] : '',
+                    ];
+                }
+            } else {
+                $other_reason[] = [
+                    'updated_at' => '',
+                    'reason_other' => '',
+                ];
+            }
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            // Store on default disk
+            Excel::store(new Export($other_reason), $directory . $filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/' . $filename,
