@@ -265,6 +265,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     $play_list_array[$playlist_index] ['sequence'] = $playlist_index;
                 }
                 if($playlist_index == $playlist_count-1){
+                    $current_element ['sequence'] = $playlist_index+1;
                     array_push($play_list_array, $current_element);
                 }
             }
