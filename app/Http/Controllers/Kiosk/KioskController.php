@@ -435,7 +435,7 @@ class KioskController extends AppBaseController
                     'floor_name' => $value->floor_name,
                     'building_name' => $value->building_name,
                     'address' => $value->address,
-                    'orderby' => $value->brand_name. ", " . $value->floor_name . ", " . $value->address,
+                    'orderby' => strtoupper($value->brand_name. ", " . $value->floor_name . ", " . $value->address),
                     'tenant' => $value,
                 ]);
 
@@ -448,7 +448,7 @@ class KioskController extends AppBaseController
                     'floor_name' => null,
                     'building_name' => null,
                     'address' => null,
-                    'orderby' => $value->name,
+                    'orderby' => strtoupper($value->name),
                 ]);
             }
         }
@@ -467,7 +467,7 @@ class KioskController extends AppBaseController
                 'value' => addslashes($value),
                 'floor_name' => null,
                 'building_name' => null,
-                'orderby' => addslashes($value),
+                'orderby' => strtoupper($value),
             ]);
         }
 
@@ -495,17 +495,17 @@ class KioskController extends AppBaseController
                 'value' => addslashes($value),
                 'floor_name' => null,
                 'building_name' => null,
-                'orderby' => addslashes($value),
+                'orderby' => strtoupper(addslashes($value)),
             ]);
         }
 
-        $collection = $collection->sortBy('orderby', SORT_NATURAL);
-        return json_encode($collection->values()->all());
+        $collection = $collection->sortBy('orderby', SORT_REGULAR)->values()->all();        
+        return json_encode($collection);
     }
 
     public function search(Request $request) {
-        // try
-        // {
+        try
+        {
             $site = SiteViewModel::find($request->site_id);
             $site_map_ids = SiteMap::where('site_id', $request->site_id)
             ->where('map_type', $site->details['map_type'])
@@ -601,14 +601,14 @@ class KioskController extends AppBaseController
                 'key_word' => $keyword,
                 'results_count' => $results_count
             ];
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response([
-        //         'message' => 'No Tenants to display!',
-        //         'status_code' => 200,
-        //     ], 200);
-        // } 
+        }
+        catch (\Exception $e)
+        {
+            return response([
+                'message' => 'No Tenants to display!',
+                'status_code' => 200,
+            ], 200);
+        } 
     }
 
     public function getBannerAds() {
@@ -663,7 +663,6 @@ class KioskController extends AppBaseController
             $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                     ->whereRaw('play_lists.dimension = site_screen_products.dimension');
         })            
-        ->select('play_lists.*')
         ->select('play_lists.*')
         ->orderBy('play_lists.sequence', 'ASC')
         ->get()

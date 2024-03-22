@@ -215,20 +215,6 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                         }
                     }
                 }
-
-                if($is_site_parter == true){
-                    $first_record = array_shift($arrayStore);
-                    array_push($arrayStore, $first_record);
-                    foreach($arrayStore as $new_items){
-                        foreach($new_items as $reverse_item){
-                            array_push($arrayStore_reverse, $reverse_item);
-                        }
-                    }
-                }else{
-                    $arrayStore_reverse = $arrayStore;
-                }
-                // array_push($arrayStore_reverse, $arrayStore);
-                $arrayStore = [];
                 $maxSitePartnerCounter = 0;
                 $this->maxParentCategoryCounter = 0;
                 $this->category_counter = $this->makeCounterVariables($site_id);
@@ -237,8 +223,9 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
 
         $play_list_array = [];
 
-        if($is_site_parter == true){
-            foreach($arrayStore_reverse as $item) {
+        foreach($arrayStore as $items) {
+            foreach($items as $item) {
+                // $this->fields = $item->content_id;
                 $exel_collection = [
                     'content_id'=> $item->content_id,
                     'site_screen_id'=> $item->site_screen_id,
@@ -251,36 +238,39 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'sequence'=> $item->sequence,
                     'dimension'=> $item->dimension,
                     'loop_number'=> $item->loop_number,
-                    'sequence' => $sequenceCounter,
+                    // 'sequence' => $sequenceCounter,
                 ];
                 $play_list_array[] = $exel_collection;
-                $sequenceCounter++;
+                // $sequenceCounter++;
             }
-        }else{
-            foreach($arrayStore_reverse as $items) {
-                foreach($items as $item) {
-                    // $this->fields = $item->content_id;
-                    $exel_collection = [
-                        'content_id'=> $item->content_id,
-                        'site_screen_id'=> $item->site_screen_id,
-                        'company_id'=> $item->company_id,
-                        'brand_id'=> $item->brand_id,
-                        'category_id'=> $item->category_id,
-                        'parent_category_id'=> $item->parent_category_id,
-                        'main_category_id'=> $item->main_category_id,
-                        'advertisement_id'=> $item->advertisement_id,
-                        'sequence'=> $item->sequence,
-                        'dimension'=> $item->dimension,
-                        'loop_number'=> $item->loop_number,
-                        'sequence' => $sequenceCounter,
-                    ];
-                    $play_list_array[] = $exel_collection;
-                    $sequenceCounter++;
+        }
+
+        if ($is_site_parter == true){
+            $playlist_count = intval(count($play_list_array));
+            $current_element = '';
+            for ($playlist_index = 0; $playlist_index < $playlist_count; $playlist_index++){
+                if(intval(fmod($playlist_index, $moduloValue)) == 0){
+                    if(empty($current_element)){
+                        $current_element = $play_list_array[$playlist_index];
+                        unset($play_list_array[$playlist_index]);
+                    }
+                    else{
+                        $old_element = $current_element;
+                        $current_element = $play_list_array[$playlist_index];
+                        $play_list_array[$playlist_index] = $old_element;
+                        $play_list_array[$playlist_index] ['sequence'] = $playlist_index;
+                    }
+                }
+                else{
+                    $play_list_array[$playlist_index] ['sequence'] = $playlist_index;
+                }
+                if($playlist_index == $playlist_count-1){
+                    $current_element ['sequence'] = $playlist_index+1;
+                    array_push($play_list_array, $current_element);
                 }
             }
         }
         
-
         TemporaryPlayList::insert($play_list_array);
 
         TemporaryPlayList::leftJoin('site_screen_products', function($join)
@@ -398,6 +388,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 if($addData_count == 1){
                     $addData = $query->limit($limit)->offset($category_offset)->get();
                     $addData[0]->loop_number = $loop_number;
+                    $this->maxParentCategoryCounter = $this->maxParentCategoryCounter+1;
                     $this->category_counter[$index] = $this->category_counter[$index] +1;
                 }
                 $data_count = $addData_count;
