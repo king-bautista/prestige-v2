@@ -58,6 +58,7 @@ Vue.component('admin-report_yearly_usage', require('./components/Admin/ReportYea
 Vue.component('admin-report_is_helpful', require('./components/Admin/ReportIsHelpful.vue').default);
 Vue.component('admin-report_uptime_history', require('./components/Admin/ReportUptimeHistory.vue').default);
 Vue.component('admin-report_kiosk_usage', require('./components/Admin/ReportKioskUsage.vue').default);
+Vue.component('admin-reports_play_list', require('./components/Admin/ReportPlayList.vue').default);
 
 Vue.component('admin-dashboard_population', require('./components/Admin/DashboardMerchantPopulation.vue').default);
 Vue.component('admin-dashboard_tenant_search', require('./components/Admin/DashboardTopTenantSearch.vue').default);

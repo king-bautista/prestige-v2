@@ -32,10 +32,15 @@
                                     :rowPerPage=100
                                     ref="responseDataTable">
                                 </Table>
+								<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ oreason_site_name }}</div>
+								<div :style="{ 'font-size': 16 + 'px' }">{{ oreason_date_range }}</div>
 								<Table 
-                                    :dataFields="otherDataFields"
-                                    :dataUrl="otherDataUrl"
-                                    :primaryKey="otherPrimaryKey"
+								    :dataFields="oreasonDataFields"
+                                    :dataUrl="oreasonDataUrl"
+									:otherButtons="oreasonOtherButtons"
+                                    :primaryKey="oreasonPrimaryKey"
+									v-on:oreasonReportModal="oreasonReportModal"
+                                    v-on:oreasonDownloadCsv="oreasonDownloadCsv"
                                     :rowPerPage=100
                                     ref="otherDataTable">
                                 </Table>
@@ -118,10 +123,10 @@
 		      <div class="modal-body">
 		          <form>
 		              <div class="form-group col-md-12">
-                            <label>Site: <span class="text-danger">*</span></label>
+                            <label>Reason Site: <span class="text-danger">*</span></label>
                             <select class="custom-select" v-model="filter.reason_site_id" @change="getReasonSiteName">
-                                <option value="">Select Site</option>
-                                <option v-for="site in sites" :value="reason_site.id"> {{ reason_site.name }}</option>
+                                <option value="">Select Reason Site</option>
+                                <option v-for="reason_site in reason_sites" :value="reason_site.id"> {{ reason_site.name }}</option>
                             </select>
 		              </div>
 					  <div class="form-group row">
@@ -148,6 +153,47 @@
 		  </div>
 		</div>
 
+		<div class="modal fade" id="oreasonFilterModal" tabindex="-1" role="dialog" aria-labelledby="oreasonFilterModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		      <div class="modal-content">
+		      <div class="modal-header">
+		          <h5 class="modal-title" id="oreasonFilterModalLabel">Filter By</h5>
+		          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		          </button>
+		      </div>
+		      <div class="modal-body">
+		          <form>
+		              <div class="form-group col-md-12">
+                            <label>Other Reason Site: <span class="text-danger">*</span></label>
+                            <select class="custom-select" v-model="filter.oreason_site_id" @change="getOreasonSiteName">
+                                <option value="">Select Other Reason Site</option>
+                                <option v-for="oreason_site in oreason_sites" :value="oreason_site.id"> {{ oreason_site.name }}</option>
+                            </select>
+		              </div>
+					  <div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.oreason_start_date" placeholder="YYYY/MM/DD" :config="options"
+										id="oreason_date_from" autocomplete="off"></date-picker>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">End Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.oreason_end_date" placeholder="YYYY/MM/DD" :config="options"
+										id="oreason_date_to" autocomplete="off"></date-picker>
+								</div>
+							</div>
+		          </form>
+		      </div>
+		      <div class="modal-footer justify-content-between">
+		          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		          <button type="button" class="btn btn-primary" @click="oreasonFilterReport">Filter</button>
+		      </div>
+		      </div>
+		  </div>
+		</div>
     </div>
 </template>
 <script> 
@@ -166,6 +212,9 @@
 					reason_site_id: '',
 					reason_start_date: '',
 					reason_end_date:'',
+					oreason_site_id: '',
+					oreason_start_date: '',
+					oreason_end_date:'',
 					
                 },
 				site_name: 'All',
@@ -178,13 +227,7 @@
 					format: 'YYYY/MM/DD',
 					useCurrent: false,
 				},
-				reason_site_name: 'All',
-				reason_site_name_temp: 'All',
-				reason_date_range: '',
-				reason_from: '',
-				reason_to:'',
-				reason_sites: [],
-            	dataFields: {
+				dataFields: {
             		helpful: "Response", 
             		count: "Count", 
                     percentage: "% Percentage Share"
@@ -207,6 +250,13 @@
 						method: 'add'
 					},
 				},
+/////////////////				
+				reason_site_name: 'All',
+				reason_site_name_temp: 'All',
+				reason_date_range: '',
+				reason_from: '',
+				reason_to:'',
+				reason_sites: [],
                 
 				reasonDataFields: {
             		reason: "Reasons for 'No'", 
@@ -231,7 +281,7 @@
 						method: 'add'
 					},
 				},
-
+//////////////////
 				
 				
 				otherDataFields: {
@@ -245,6 +295,7 @@
 
         created(){
             this.getSites();
+			this.getReasonSites();
         },
 
         methods: {
@@ -252,6 +303,7 @@
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
             },
+			//////////////
 			getSiteName: function(event) {
 					var option_text = event.target[event.target.selectedIndex].text; 
 					this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
@@ -264,7 +316,7 @@
             },
 
 			filterReport: function() { 
-				this.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp; alert(this.site_name);
+				this.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp; 
 				this.date_range = (this.filter.start_date == "" || this.filter.end_date == "" || this.filter.start_date == null || this.filter.end_date == null)? '' :'From: '+ this.filter.start_date +' To: '+ this.filter.end_date;
 				this.filter.site_name = this.site_name; 
 				this.$refs.dataTable.filters = this.filter;
@@ -272,6 +324,59 @@
 				var filter = this.filter; 
 				$('#filterModal').modal('hide'); 
 			},
+
+            downloadCsv: function() {
+              this.filter.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
+				axios.get('/admin/reports/is-helpful/download-csv', { params: { filters: this.filter } })
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+            },
+			
+			//////////////
+			getReasonSites: function() {
+                axios.get('/admin/site/get-all')
+                .then(response => this.reason_sites = response.data.data);
+            },
+			getReasonSiteName: function(event) {
+					var option_text = event.target[event.target.selectedIndex].text; 
+					this.reason_site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
+			},
+            reasonReportModal: function() {
+                this.filter.reason_site_id = '';
+				this.filter.reason_start_date ='';
+				this.filter.reason_end_date ='';
+				$('#reasonFilterModal').modal('show');
+            },
+
+			reasonFilterReport: function() { 
+				this.reason_site_name = (this.filter.reason_site_id == "")? 'All': this.reason_site_name_temp; alert(this.reason_site_name);
+				this.reason_date_range = (this.filter.reason_start_date == "" || this.filter.reason_end_date == "" || this.filter.reason_start_date == null || this.filter.reason_end_date == null)? '' :'From: '+ this.filter.reason_start_date +' To: '+ this.filter.reason_end_date;
+				this.filter.reason_site_name = this.reason_site_name; 
+				this.$refs.responseDataTable.filters = this.filter;
+				this.$refs.responseDataTable.fetchData();
+				var filter = this.filter; 
+				$('#reasonFilterModal').modal('hide'); 
+			},
+			
+            reasonDownloadCsv: function() {
+              this.filter.reason_site_name = (this.filter.reason_site_id == "")? 'All': this.reason_site_name_temp;
+				axios.get('/admin/reports/is-helpful/response/download-csv', { params: { filters: this.filter } })
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+            },
+
+
+///////////////////
 
 			filterChart: function() {
 				var filter = this.filter;
@@ -340,18 +445,6 @@
 					});
 				});
 			},
-
-            downloadCsv: function() {
-              this.filter.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
-				axios.get('/admin/reports/is-helpful/download-csv', { params: { filters: this.filter } })
-				.then(response => {
-					const link = document.createElement('a');
-					link.href = response.data.data.filepath;
-					link.setAttribute('download', response.data.data.filename); //or any other extension
-					document.body.appendChild(link);
-					link.click();
-				})
-            },
         },
 
 		mounted() {
