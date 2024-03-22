@@ -132,16 +132,6 @@ export default {
 	},
 
 	methods: {
-		// getDateToday: function(){
-		// 	var date = new Date();
-		// 	var year = date.toLocaleString("default", { year: "numeric" });
-		// 	var month = date.toLocaleString("default", { month: "2-digit" });
-		// 	var day = date.toLocaleString("default", { day: "2-digit" });
-		// 	var formattedDate = year + "/" + month + "/" + day;
-		// 	// this.filter.start_date = '';//formattedDate;
-		// 	// this.filter.end_date = '';//formattedDate;x
-		// }
-		//,
 		getSiteName: function(event) {
 				var option_text = event.target[event.target.selectedIndex].text; 
 				this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;

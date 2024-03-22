@@ -9,6 +9,8 @@
 	    			<div class="card-body">
 						<div class="row">
 							<div class="col-md-6">
+								<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ site_name }}</div>
+								<div :style="{ 'font-size': 16 + 'px' }">{{ date_range }}</div>
 								<Table 
                                     :dataFields="dataFields"
                                     :dataUrl="dataUrl"
@@ -18,10 +20,15 @@
                                     v-on:downloadCsv="downloadCsv"
                                     ref="dataTable">
 								</Table>
+								<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ reason_site_name }}</div>
+								<div :style="{ 'font-size': 16 + 'px' }">{{ reason_date_range }}</div>
                                 <Table 
-                                    :dataFields="responceDataFields"
-                                    :dataUrl="responceDataUrl"
-                                    :primaryKey="responcePrimaryKey"
+                                    :dataFields="reasonDataFields"
+                                    :dataUrl="reasonDataUrl"
+									:otherButtons="reasonOtherButtons"
+                                    :primaryKey="reasonPrimaryKey"
+									v-on:reasonReportModal="reasonReportModal"
+                                    v-on:reasonDownloadCsv="reasonDownloadCsv"
                                     :rowPerPage=100
                                     ref="responseDataTable">
                                 </Table>
@@ -70,11 +77,25 @@
 		          <form>
 		              <div class="form-group col-md-12">
                             <label>Site: <span class="text-danger">*</span></label>
-                            <select class="custom-select" v-model="filter.site_id">
+                            <select class="custom-select" v-model="filter.site_id" @change="getSiteName">
                                 <option value="">Select Site</option>
                                 <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
                             </select>
 		              </div>
+					  <div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.start_date" placeholder="YYYY/MM/DD" :config="options"
+										id="date_from" autocomplete="off"></date-picker>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">End Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.end_date" placeholder="YYYY/MM/DD" :config="options"
+										id="date_to" autocomplete="off"></date-picker>
+								</div>
+							</div>
 		          </form>
 		      </div>
 		      <div class="modal-footer justify-content-between">
@@ -85,19 +106,84 @@
 		  </div>
 		</div>
 
+		<div class="modal fade" id="reasonFilterModal" tabindex="-1" role="dialog" aria-labelledby="reasonFilterModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		      <div class="modal-content">
+		      <div class="modal-header">
+		          <h5 class="modal-title" id="reasonFilterModalLabel">Filter By</h5>
+		          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		          </button>
+		      </div>
+		      <div class="modal-body">
+		          <form>
+		              <div class="form-group col-md-12">
+                            <label>Site: <span class="text-danger">*</span></label>
+                            <select class="custom-select" v-model="filter.reason_site_id" @change="getReasonSiteName">
+                                <option value="">Select Site</option>
+                                <option v-for="site in sites" :value="reason_site.id"> {{ reason_site.name }}</option>
+                            </select>
+		              </div>
+					  <div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">Start Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.reason_start_date" placeholder="YYYY/MM/DD" :config="options"
+										id="reason_date_from" autocomplete="off"></date-picker>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="userName" class="col-sm-4 col-form-label">End Date</label>
+								<div class="col-sm-8">
+									<date-picker v-model="filter.reason_end_date" placeholder="YYYY/MM/DD" :config="options"
+										id="reason_date_to" autocomplete="off"></date-picker>
+								</div>
+							</div>
+		          </form>
+		      </div>
+		      <div class="modal-footer justify-content-between">
+		          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		          <button type="button" class="btn btn-primary" @click="reasonFilterReport">Filter</button>
+		      </div>
+		      </div>
+		  </div>
+		</div>
+
     </div>
 </template>
 <script> 
 	import Table from '../Helpers/Table';
-
+	import datePicker from 'vue-bootstrap-datetimepicker';
+	// Import date picker css
+	import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 	export default {
         name: "Reports",
         data() {
             return {
                 filter: {
                     site_id: '',
+					start_date: '',
+					end_date:'',
+					reason_site_id: '',
+					reason_start_date: '',
+					reason_end_date:'',
+					
                 },
-                sites: [],
+				site_name: 'All',
+				site_name_temp: 'All',
+				date_range: '',
+				from: '',
+				to:'',
+				sites: [],
+				options: {
+					format: 'YYYY/MM/DD',
+					useCurrent: false,
+				},
+				reason_site_name: 'All',
+				reason_site_name_temp: 'All',
+				reason_date_range: '',
+				reason_from: '',
+				reason_to:'',
+				reason_sites: [],
             	dataFields: {
             		helpful: "Response", 
             		count: "Count", 
@@ -106,6 +192,13 @@
             	primaryKey: "id",
             	dataUrl: "/admin/reports/is-helpful/list",
 				otherButtons: {
+					addNew: {
+					title: 'Filter',
+					v_on: 'reportModal',
+					icon: '<i class="fa fa-filter" aria-hidden="true"></i> Filter',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+					},
 					download: {
 						title: 'Download',
 						v_on: 'downloadCsv',
@@ -114,13 +207,33 @@
 						method: 'add'
 					},
 				},
-                responceDataFields: {
+                
+				reasonDataFields: {
             		reason: "Reasons for 'No'", 
             		count: "Count", 
                     percentage: "% Percentage Share"
             	},
-            	responcePrimaryKey: "id",
-            	responceDataUrl: "/admin/reports/is-helpful/response",
+            	reasonPrimaryKey: "id",
+            	reasonDataUrl: "/admin/reports/is-helpful/response",
+				reasonOtherButtons: {
+					addNew: {
+					title: 'Filter',
+					v_on: 'reasonReportModal',
+					icon: '<i class="fa fa-filter" aria-hidden="true"></i> Filter',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+					},
+					download: {
+						title: 'Download',
+						v_on: 'reasonDownloadCsv',
+						icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+				},
+
+				
+				
 				otherDataFields: {
             		updated_at: "Date", 
             		reason_other: "List of Other reasons", 
@@ -135,21 +248,29 @@
         },
 
         methods: {
-            getSites: function() {
+			getSites: function() {
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
             },
-
-			reportModal: function() {
+			getSiteName: function(event) {
+					var option_text = event.target[event.target.selectedIndex].text; 
+					this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
+			},
+            reportModal: function() {
                 this.filter.site_id = '';
-              	$('#filterModal').modal('show');
+				this.filter.start_date ='';
+				this.filter.end_date ='';
+				$('#filterModal').modal('show');
             },
 
-			filterReport: function() {
+			filterReport: function() { 
+				this.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp; alert(this.site_name);
+				this.date_range = (this.filter.start_date == "" || this.filter.end_date == "" || this.filter.start_date == null || this.filter.end_date == null)? '' :'From: '+ this.filter.start_date +' To: '+ this.filter.end_date;
+				this.filter.site_name = this.site_name; 
 				this.$refs.dataTable.filters = this.filter;
 				this.$refs.dataTable.fetchData();
-				this.filterChart();
-				$('#filterModal').modal('hide');
+				var filter = this.filter; 
+				$('#filterModal').modal('hide'); 
 			},
 
 			filterChart: function() {
@@ -221,14 +342,15 @@
 			},
 
             downloadCsv: function() {
-              axios.get('/admin/reports/is-helpful/download-csv', {params: {filters: this.filter}})
-              .then(response => {
-                const link = document.createElement('a');
-                link.href = response.data.data.filepath;
-                link.setAttribute('download', response.data.data.filename); //or any other extension
-                document.body.appendChild(link);
-                link.click();
-              })
+              this.filter.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
+				axios.get('/admin/reports/is-helpful/download-csv', { params: { filters: this.filter } })
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
             },
         },
 
@@ -237,7 +359,8 @@
         },
 
         components: {
-        	Table
+        	Table,
+			datePicker
  	   }
     };
 </script> 
