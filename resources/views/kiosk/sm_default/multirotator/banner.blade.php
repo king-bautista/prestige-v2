@@ -25,7 +25,6 @@
     function showBannerAds() {
 
         var my_banner_ads = JSON.parse(helper.decodeEntities(banner_ads));
-        console.log(my_banner_ads);
         
         $('.multirotator_landscape_container').html('');
         $('.multirotator_landscape_container').html('<div class="owl-carousel owl-wrapper-banner-ads"></div>');
