@@ -1422,7 +1422,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     return $query->whereBetween('updated_at', [$oreason_start_date . ' 00:00:00', $oreason_end_date . ' 23:59:59']);
                 })
                 ->when(request('search'), function ($query) {
-                    return $query->having('updated_at   ', 'LIKE', '%' . request('search') . '%')
+                    return $query->having('updated_at', 'LIKE', '%' . request('search') . '%')
                         ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
                 })
                 ->whereNotNull('reason_other')
