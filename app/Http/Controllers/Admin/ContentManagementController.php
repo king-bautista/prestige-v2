@@ -449,6 +449,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     $play_lists_array[$playlist_index] ['sequence'] = $playlist_index;
                 }
                 if($playlist_index == $playlist_count-1){
+                    $current_element ['sequence'] = $playlist_index+1;
                     array_push($play_lists_array, $current_element);
                 }
             }
