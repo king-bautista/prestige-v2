@@ -7,6 +7,7 @@
             <div class="input-group mb-5 mt-5" style="width: 70%; margin: auto;"> 
                 <input type="text" id="code" name="code" class="form-control input-mg search-box">
                 <button class="btn search-box-button translateme" type="button" data-en="Search">Search</button>
+                <button class="btn search-loader" style="font-size: 24px; color: #0030ff; display:none;" type="button"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></button>
                 <label class="notification translateme" data-en="Please type at least two (2) letters to search.">Please type at least two (2) letters to search.</label>
             </div>                    
             <div class="softkeys softkeys-search-page mt-5 search-keyboard-height" data-target="input[name='code']"></div>
@@ -166,8 +167,10 @@
             $('.ui-menu').scrollTop(0);
         });
 
-        $('.search-box-button, .softkeys__btn--search').on('touchend click', function() {
+        $('.search-box-button, .softkeys__btn--search').on('touchend click', function() {            
+
             var search_key = $('#code').val();
+            $('.search-loader').show();
             tenant_searchList = '';
             if (search_key.trim().length >= 2) {
                 $("#code").css("border-color", "#6051e3");
@@ -179,6 +182,7 @@
                     $('#search-title').attr("data-en",'Search Results');
                     $('#search_str').html(search_key);
                     $('.search-for').show();
+                    $('.search-loader').hide();
 
                     current_location = 'searchresult';
                     page_history.push(current_location);

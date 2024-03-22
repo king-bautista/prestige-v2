@@ -369,14 +369,14 @@ class ContentManagementController extends AppBaseController implements ContentMa
                                     $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
                                 }
                                 array_push($arrayStore, $addSitePartner);
-                                $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : $maxSitePartnerCounter = 0;
+                                $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter = $maxSitePartnerCounter +1 : $maxSitePartnerCounter = 0;
                             } else {
                                 // if ($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds) {
                                 if ($totalParentCategoryAds !== 0) {
                                     // dd($this->maxParentCategoryCounter);
                                     $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                                     array_push($arrayStore, $addParentCategory);
-                                    $this->maxParentCategoryCounter++;
+                                    $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
                                 }
                             }
                         } catch (\Exception $e) {
@@ -389,12 +389,12 @@ class ContentManagementController extends AppBaseController implements ContentMa
                             if ($totalParentCategoryAds !== 0) {
                                 $addParentCategory = $this->insertAd($site_partner_id, $screen_id, $this->maxParentCategoryCounter, 1, false, $ad_type, $site_id, $loop_number);
                                 array_push($arrayStore, $addParentCategory);
-                                $this->maxParentCategoryCounter++;
+                                $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
                             } else {
                                 if ($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
                                     $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
                                     array_push($arrayStore, $addSitePartner);
-                                    $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter++ : '';
+                                    $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter = $maxSitePartnerCounter +1 : '';
                                 }
                             }
                         } catch (\Exception $e) {
@@ -532,10 +532,10 @@ class ContentManagementController extends AppBaseController implements ContentMa
             // $this->check_variable = $data_count;
             while ($data_count == 0) {
                 $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
-                $index = fmod($this->maxParentCategoryCounter, $category_ids->count());
+                $index = intval(fmod($this->maxParentCategoryCounter, $category_ids->count()));
                 $new_category_id = $category_ids[$index]->id;
                 $category_offset = $this->category_counter[$index];
-
+                // dd($category_offset);
                 $query = $this->getAdsPerCategory($company_id, $site_screen_id, $offset, $limit, $is_sitePartner, $ad_type, $new_category_id);
                 $new_add = $query->limit($limit)->offset($category_offset)->get();
                 $addData_count = count($new_add);
@@ -543,17 +543,15 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     $addData = $new_add;
                     foreach ($addData as $item) {
                         $item["loop_number"] = $loop_number;
-                        // if($item["advertisement_id"] == 109){
-                        //     dd("im hereee");
-                        // }
                     }
                     $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
+                    $this->category_counter[$index] = $this->category_counter[$index] + 1;
                 }
                 $data_count = $addData_count;
             }
             foreach ($addData as $item) {
                 $item["loop_number"] = $loop_number;
-                // if($item["advertisement_id"] == '108'){
+                // if($item["advertisement_id"] == '109'){
                 //     dd("im hereee");
                 // }
             }
@@ -569,6 +567,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ->whereNull('categories.parent_id')
             ->whereNull('categories.supplemental_category_id')
             ->groupBy('company_categories.category_id')
+            ->limit(5)
             ->get();
 
         return $catgory_ids;

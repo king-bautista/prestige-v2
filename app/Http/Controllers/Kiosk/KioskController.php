@@ -537,6 +537,8 @@ class KioskController extends AppBaseController
                 ->orWhere('tags.name', 'like', '%'.$keyword)
                 ->orWhere('ame_tags.name', 'like', $keyword.'%')
                 ->orWhere('ame_tags.name', 'like', '%'.$keyword)
+                ->orWhere('tent_tags.name', 'like', $keyword.'%')
+                ->orWhere('tent_tags.name', 'like', '%'.$keyword)
                 ->orWhere('amenities.name', 'like', $keyword.'%')
                 ->orWhere('amenities.name', 'like', '%'.$keyword);
             })
@@ -552,9 +554,11 @@ class KioskController extends AppBaseController
             ->leftJoin('categories as supp', 'brand_supplementals.supplemental_id', '=', 'supp.id')
             ->leftJoin('brand_tags', 'brands.id', '=', 'brand_tags.brand_id')
             ->leftJoin('tags', 'brand_tags.tag_id', '=', 'tags.id')
-            ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')
+            ->leftJoin('amenities', 'site_points.point_type', '=', 'amenities.id')            
             ->leftJoin('brand_tags as amenity_tags', 'amenities.id', '=', 'amenity_tags.amenity_id')
             ->leftJoin('tags as ame_tags', 'amenity_tags.tag_id', '=', 'ame_tags.id')
+            ->leftJoin('brand_tags as tenant_tags', 'site_tenants.id', '=', 'tenant_tags.amenity_id')
+            ->leftJoin('tags as tent_tags', 'tenant_tags.tag_id', '=', 'tent_tags.id')
             ->leftJoin('site_maps', 'site_points.site_map_id', '=', 'site_maps.id')
             ->leftJoin('site_building_levels', 'site_maps.site_building_level_id', '=', 'site_building_levels.id')
             ->select('site_tenants.*', 'brands.category_id as brand_category_id', 'site_tenant_metas.meta_value as address', 
@@ -562,7 +566,7 @@ class KioskController extends AppBaseController
             ->distinct()
             ->orderBy('brands.name', 'ASC')
             ->orderBy('site_tenants.site_building_level_id', 'ASC')
-            ->orderBy('address', 'ASC')
+            ->orderBy('addresst', 'ASC')
             ->get();
 
             $suggest_cat = [];
