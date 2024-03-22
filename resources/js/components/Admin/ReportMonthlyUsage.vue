@@ -9,6 +9,7 @@
 	    			<div class="card-body">
 						<div class="row">
 							<div class="col-md-12">
+								<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ site_name }}</div>
 								<Table 
 								:dataFields="dataFields"
 								:dataUrl="dataUrl"
@@ -58,7 +59,7 @@
 		          <form>
 		              <div class="form-group col-md-12">
                             <label>Site: <span class="text-danger">*</span></label>
-                            <select class="custom-select" v-model="filter.site_id">
+                            <select class="custom-select" v-model="filter.site_id" @change="getSiteName">
                                 <option value="">Select Site</option>
                                 <option v-for="site in sites" :value="site.id"> {{ site.name }}</option>
                             </select>
@@ -84,10 +85,13 @@
             return {
                 filter: {
                     site_id: '',
+					site_name: '',
                 },
+				site_name: 'All',
+			    site_name_temp: 'All',
                 sites: [],
             	dataFields: {
-            		page: "Merchant Usage", 
+            		page: "Page", 
             		jan_count: "Jan", 
             		feb_count: "Feb", 
             		mar_count: "Mar", 
@@ -129,6 +133,10 @@
         },
 
         methods: {
+			getSiteName: function(event) {
+				var option_text = event.target[event.target.selectedIndex].text; 
+				this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
+			},
             getSites: function() {
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
@@ -140,6 +148,8 @@
             },
 
 			filterReport: function() {
+				this.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
+				this.filter.site_name = this.site_name;
 				this.$refs.dataTable.filters = this.filter;
 				this.$refs.dataTable.fetchData();
 				this.filterChart();
@@ -222,6 +232,7 @@
 			},
 
             downloadCsv: function() {
+			  this.filter.site_name = (this.filter.site_id == "")? 'All': this.site_name_temp;
               axios.get('/admin/reports/monthly-usage/download-csv', {params: {filters: this.filter}})
               .then(response => {
                 const link = document.createElement('a');
