@@ -17,6 +17,7 @@ use App\Models\ViewModels\SiteFeedbackViewModel;
 use App\Models\ViewModels\SiteScreenUptimeViewModel;
 use App\Models\Log;
 use App\Models\SiteScreenUptime;
+use App\Models\PLayListLogs;
 
 // use App\Exports\MerchantPopulationExport;
 // use App\Exports\TopTenantExport;
@@ -28,6 +29,7 @@ use App\Models\SiteScreenUptime;
 // use App\Exports\UptimeHistoryExport;
 // use App\Exports\KioskUsageExport;
 use App\Exports\Export;
+use App\Models\PlayList;
 use Storage;
 
 class ReportsController extends AppBaseController implements ReportsControllerInterface
@@ -84,6 +86,11 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     public function kioskUsage()
     {
         return view('admin.report_kiosk_usage');
+    }
+
+    public function playList()
+    {
+        return view('admin.report_play_list');
     }
 
     public function getPercentage($request)
@@ -510,6 +517,161 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 ->get();
 
             return $this->response($logs, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getPlayList(Request $request)
+    {
+        try {
+            $site_id = '';
+            $start_date = '';
+            $end_date = '';
+            $category_totals = [];
+
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $site_id = $filters->site_id;
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+            }
+
+            if ($request->site_id) {
+                $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
+
+            $logs = PLayListLogs::when($site_id, function ($query) use ($site_id) {
+                return $query->where('ss.site_id', $site_id);
+            })
+                ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
+                ->selectRaw('play_list_logs. *, 
+            ss.id as site_screen_id, 
+            ss.name as site_screen_name, 
+            ss.site_id as site_id, 
+            (select a.name from advertisements a where a.id = play_list_logs.advertisement_id) as advertisement_name')
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('advetisement_name', 'LIKE', '%' . request('search') . '%');
+                })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('updated_at', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->paginate(request('perPage'));
+
+            return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvPlayList(Request $request)
+    {
+        try {
+            $site_id = '';
+            $start_date = '';
+            $end_date = '';
+            $category_totals = [];
+
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $site_id = $filters->site_id;
+                $site_name = $filters->site_name . "_";
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+                $filters->site_name;
+                $start = ($start_date == "") ? "" : "_" . $start_date;
+                $end = ($end_date == "") ? "" : "_" . $end_date . "_";
+                $filename = $site_name . $start . $end . "play-list.csv";
+            } else {
+                $filename = "play-list.csv";
+            }
+
+            if ($request->site_id) {
+                $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
+
+            $logs = PLayListLogs::when($site_id, function ($query) use ($site_id) {
+                return $query->where('ss.site_id', $site_id);
+            })
+                ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
+                ->selectRaw('play_list_logs. *, 
+            ss.id as site_screen_id, 
+            ss.name as site_screen_name, 
+            ss.site_id as site_id, 
+            (select a.name from advertisements a where a.id = play_list_logs.advertisement_id) as advertisement_name')
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
+                // ->when(request('search'), function ($query) {
+                //     return $query->having('', 'LIKE', '%' . request('search') . '%')
+                //         ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
+                //         ->orHaving('advetisement_name', 'LIKE', '%' . request('search') . '%');
+                // })
+                // ->when(is_null(request('order')), function ($query) {
+                //     return $query->orderBy('updated_at', 'ASC');
+                // })
+                // ->when(request('order'), function ($query) {
+                //     return $query->orderBy(request('order'), request('sort'));
+                // })
+                ->get();
+
+            if (count($logs) > 0) {
+                $playlists = [];
+                foreach ($logs as $index => $log) {
+                    $playlists[] = [
+                        'site_screen_name' => $log->site_screen_name,
+                        'advertisement_name' => $log->advertisement_name,
+                        'log_count' => $log->log_count,
+                        'log_date' => $log->log_date
+                    ];
+                }
+            } else {
+                $playlists[] = [
+                    'site_screen_name' => '',
+                    'advertisement_name' => '',
+                    'log_count' => '',
+                    'log_date' => ''
+                ];
+            }
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            // Store on default disk
+            Excel::store(new Export($playlists), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -1098,6 +1260,8 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         }
     }
 
+
+
     public function getIsHelpful(Request $request)
     {
         try {
@@ -1118,6 +1282,7 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 $start_date = '';
                 $end_date = '';
             }
+
             $total_count = SiteFeedback::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
             })
@@ -1159,16 +1324,47 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         }
     }
 
-    public function getResponseNo()
+    public function getResponseNo(Request $request)
     {
         try {
-            $total_count = SiteFeedback::where('helpful', 'No')->get()->count();
+            $reason_site_id = '';
+            $reason_start_date = '';
+            $reason_end_date = '';
 
-            $is_helpful = SiteFeedback::when(request('search'), function ($query) {
-                return $query->having('reason', 'LIKE', '%' . request('search') . '%')
-                    ->orHaving('count', 'LIKE', '%' . request('search') . '%')
-                    ->orHaving('percentage', 'LIKE', '%' . request('search') . '%');
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $reason_site_id = $filters->reason_site_id;
+                $reason_start_date = str_replace('/', '-', $filters->reason_start_date);
+                $reason_end_date = str_replace('/', '-', $filters->reason_end_date);
+            }
+
+            if ($request->reason_site_id) {
+                $reason_site_id = $request->reason_site_id;
+                $reason_start_date = '';
+                $reason_end_date = '';
+            }
+
+            $total_count = SiteFeedback::when($reason_site_id, function ($query) use ($reason_site_id) {
+                return $query->where('site_id', $reason_site_id);
             })
+                ->when(($reason_start_date != '' && $reason_end_date != ''), function ($query) use ($reason_start_date, $reason_end_date) {
+                    return $query->whereBetween('updated_at', [$reason_start_date . ' 00:00:00', $reason_end_date . ' 23:59:59']);
+                })
+
+                ->where('helpful', 'No')
+                ->get()->count();
+
+            $is_helpful = SiteFeedback::when($reason_site_id, function ($query) use ($reason_site_id) {
+                return $query->where('site_id', $reason_site_id);
+            })
+                ->when(($reason_start_date != '' && $reason_end_date != ''), function ($query) use ($reason_start_date, $reason_end_date) {
+                    return $query->whereBetween('updated_at', [$reason_start_date . ' 00:00:00', $reason_end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('reason', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('percentage', 'LIKE', '%' . request('search') . '%');
+                })
                 ->selectRaw('reason, count(*) as count, ROUND((count(*)/' . $total_count . ')*100, 2) as percentage')
                 ->where('helpful', 'No')
                 ->groupBy('reason')
@@ -1271,8 +1467,8 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     return $query->orderBy(request('order'), request('sort'));
                 })
                 ->get();
-            
-            if (count($logs) > 0) {    
+
+            if (count($logs) > 0) {
                 $is_helpful = [];
                 foreach ($logs as $log) {
                     $is_helpful[] = [
@@ -1287,7 +1483,109 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     'count' => '',
                     'percentage' => ''
                 ];
-            }    
+            }
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            // Store on default disk
+            Excel::store(new Export($is_helpful), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadResponseNo(Request $request)
+    {
+        try {
+            $reason_site_id = '';
+            $reason_start_date = '';
+            $reason_end_date = '';
+            //$category_totals = [];
+
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $reason_site_id = $filters->reason_site_id;
+                $reason_site_name = $filters->reason_site_name . "_";
+                $reason_start_date = str_replace('/', '-', $filters->reason_start_date);
+                $reason_end_date = str_replace('/', '-', $filters->reason_end_date);
+                $filters->reason_site_name;
+                $reason_start = ($reason_start_date == "") ? "" : "_" . $reason_start_date;
+                $reason_end = ($reason_end_date == "") ? "" : "_" . $reason_end_date . "_";
+                $filename = $reason_site_name . $reason_start . $reason_end . "reason_is_helpful.csv";
+            } else {
+                $filename = "reason_is_helpful.csvis_helpful.csv";
+            }
+
+            if ($request->reason_site_id) {
+                $reason_site_id = $request->reason_site_id;
+                $reason_start_date = '';
+                $reason_end_date = '';
+            }
+            $total_count = SiteFeedback::when($reason_site_id, function ($query) use ($reason_site_id) {
+                return $query->where('site_id', $reason_site_id);
+            })
+                ->when(($reason_start_date != '' && $reason_end_date != ''), function ($query) use ($reason_start_date, $reason_end_date) {
+                    return $query->whereBetween('updated_at', [$reason_start_date . ' 00:00:00', $reason_end_date . ' 23:59:59']);
+                })
+
+                ->where('helpful', 'No')
+                ->get()->count();
+
+            $logs = SiteFeedback::when($reason_site_id, function ($query) use ($reason_site_id) {
+                return $query->where('site_id', $reason_site_id);
+            })
+                ->when(($reason_start_date != '' && $reason_end_date != ''), function ($query) use ($reason_start_date, $reason_end_date) {
+                    return $query->whereBetween('updated_at', [$reason_start_date . ' 00:00:00', $reason_end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('reason', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('percentage', 'LIKE', '%' . request('search') . '%');
+                })
+                ->selectRaw('reason, count(*) as count, ROUND((count(*)/' . $total_count . ')*100, 2) as percentage')
+                ->where('helpful', 'No')
+                ->groupBy('reason')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('count', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->get();
+
+            if (count($logs) > 0) {
+                $is_helpful = [];
+                foreach ($logs as $log) {
+                    $is_helpful[] = [
+                        'reason' => ($log['reason'] != '') ? $log['reason'] : '',
+                        'count' => ($log['count'] != '') ? $log['count'] : '0',
+                        'percentage' => ($log['percentage'] != '') ? $log['percentage'] : '0',
+                    ];
+                }
+            } else {
+                $is_helpful[] = [
+                    'reason' => '',
+                    'count' => '',
+                    'percentage' => ''
+                ];
+            }
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
             foreach ($files as $file) {
