@@ -25,12 +25,10 @@ class CompanyCategoryRequest extends FormRequest
     {
         return [
             "category_id" => "required",
-            "site_id" => "required",
+            // "site_id" => "required",
             "kiosk_image_primary_hidden" => "required", 
             //"kiosk_image_top_hidden" => "required_with:sub_category_id",
-            
-            
-            //"kiosk_image_top" => "required_if:category_id,!=,null",
+           //"kiosk_image_top" => "required_if:category_id,!=,null",
           //  "kiosk_image_top" => "required_with:category_id|nullable", //The kiosk image top field is required when category id is present.
         ];
     }
