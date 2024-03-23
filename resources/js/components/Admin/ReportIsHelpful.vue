@@ -255,8 +255,7 @@
 				reason_from: '',
 				reason_to:'',
 				reason_sites: [],
-                
-				reasonDataFields: {
+ 				reasonDataFields: {
             		reason: "Reasons for 'No'", 
             		count: "Count", 
                     percentage: "% Percentage Share"
