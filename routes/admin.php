@@ -505,6 +505,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/admin/reports/play-list', 'Admin\ReportsController@playList')->name('admin.reports.play-list');
     Route::get('/admin/reports/play-list/list', 'Admin\ReportsController@getPlayList')->where('id', '[0-9]+')->name('admin.reports.play-list.list');
     Route::get('/admin/reports/play-list/download-csv', 'Admin\ReportsController@downloadCsvPlayList')->where('id', '[0-9]+')->name('admin.reports.play-list.download-csv');
+    Route::get('/admin/reports/functional-usage', 'Admin\ReportsController@functionalUsage')->name('admin.reports.functional-usage');
+    Route::get('/admin/reports/functional-usage/list', 'Admin\ReportsController@getFunctionalUsage')->where('id', '[0-9]+')->name('admin.reports.functional-usage.list');
+    Route::get('/admin/reports/function-usage/download-csv', 'Admin\ReportsController@downloadCsvFunctionalUsage')->where('id', '[0-9]+')->name('admin.reports.functional-usage.download-csv');
 
     /*
     |--------------------------------------------------------------------------

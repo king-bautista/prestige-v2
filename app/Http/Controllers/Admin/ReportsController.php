@@ -92,6 +92,10 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         return view('admin.report_play_list');
     }
+    public function functionalUsage()
+    {
+        return view('admin.report_functional_usage');
+    }
 
     public function getPercentage($request)
     {
@@ -582,6 +586,88 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 ->paginate(request('perPage'));
 
             return $this->responsePaginate($logs, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function getFunctionalUsage(Request $request)
+    {
+        try {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if ($filters)
+                $site_id = $filters->site_id;
+            if ($request->site_id)
+                $site_id = $request->site_id;
+
+            $current_year = date("Y");
+
+            LogsMonthlyUsageViewModel::setSiteId($site_id, $current_year);
+
+            $logs = Log::when($site_id, function ($query) use ($site_id) {
+                return $query->where('site_id', $site_id);
+            })
+                ->whereYear('created_at', $current_year)
+                ->selectRaw('logs.*, page as p, count(*) as total_count,
+                (select count(*) from logs as la where MONTH(la.created_at) = 1  and YEAR(la.created_at) = ' . $current_year . ' and la.page = p) AS jan_count,
+                (select count(*) from logs as lb  where MONTH(lb.created_at) = 2  and YEAR(lb.created_at) = ' . $current_year . ' and lb.page = p) AS feb_count,
+                (select count(*) from logs as lc  where MONTH(lc.created_at) = 3  and YEAR(lc.created_at) = ' . $current_year . ' and lc.page = p) AS mar_count,
+                (select count(*) from logs as ld  where MONTH(ld.created_at) = 4  and YEAR(ld.created_at) = ' . $current_year . ' and ld.page = p) AS apr_count,
+                (select count(*) from logs as le  where MONTH(le.created_at) = 5  and YEAR(le.created_at) = ' . $current_year . ' and le.page = p) AS may_count,
+                (select count(*) from logs as lf  where MONTH(lf.created_at) = 6  and YEAR(lf.created_at) = ' . $current_year . ' and lf.page = p) AS jun_count,
+                (select count(*) from logs as lg  where MONTH(lg.created_at) = 7  and YEAR(lg.created_at) = ' . $current_year . ' and lg.page = p) AS jul_count,
+                (select count(*) from logs as lh  where MONTH(lh.created_at) = 8  and YEAR(lh.created_at) = ' . $current_year . ' and lh.page = p) AS aug_count,
+                (select count(*) from logs as li  where MONTH(li.created_at) = 9  and YEAR(li.created_at) = ' . $current_year . ' and li.page = p) AS sep_count,
+                (select count(*) from logs as lj  where MONTH(lj.created_at) = 10  and YEAR(lj.created_at) = ' . $current_year . ' and lj.page = p) AS oct_count,
+                (select count(*) from logs as lk  where MONTH(lk.created_at) = 11  and YEAR(lk.created_at) = ' . $current_year . ' and lk.page = p) AS nov_count,
+                (select count(*) from logs as ll  where MONTH(ll.created_at) = 12  and YEAR(ll.created_at) = ' . $current_year . ' and ll.page = p) AS dec_count,
+                ((
+                (select count(*) from logs as la where MONTH(la.created_at) = 1  and YEAR(la.created_at) = ' . $current_year . ' and la.page = p) + 
+                (select count(*) from logs as lb  where MONTH(lb.created_at) = 2  and YEAR(lb.created_at) = ' . $current_year . ' and lb.page = p) +
+                (select count(*) from logs as lc  where MONTH(lc.created_at) = 3  and YEAR(lc.created_at) = ' . $current_year . ' and lc.page = p) +
+                (select count(*) from logs as ld  where MONTH(ld.created_at) = 4  and YEAR(ld.created_at) = ' . $current_year . ' and ld.page = p) +
+                (select count(*) from logs as le  where MONTH(le.created_at) = 5  and YEAR(le.created_at) = ' . $current_year . ' and le.page = p) +
+                (select count(*) from logs as lf  where MONTH(lf.created_at) = 6  and YEAR(lf.created_at) = ' . $current_year . ' and lf.page = p) +
+                (select count(*) from logs as lg  where MONTH(lg.created_at) = 7  and YEAR(lg.created_at) = ' . $current_year . ' and lg.page = p) +
+                (select count(*) from logs as lh  where MONTH(lh.created_at) = 8  and YEAR(lh.created_at) = ' . $current_year . ' and lh.page = p) +
+                (select count(*) from logs as li  where MONTH(li.created_at) = 9  and YEAR(li.created_at) = ' . $current_year . ' and li.page = p) +
+                (select count(*) from logs as lj  where MONTH(lj.created_at) = 10  and YEAR(lj.created_at) = ' . $current_year . ' and lj.page = p) +
+                (select count(*) from logs as lk  where MONTH(lk.created_at) = 11  and YEAR(lk.created_at) = ' . $current_year . ' and lk.page = p) +
+                (select count(*) from logs as ll  where MONTH(ll.created_at) = 11  and YEAR(ll.created_at) = ' . $current_year . ' and ll.page = p) 
+                ) * 0.1) as ave_count')
+                ->groupBy('page')
+                ->when(request('search'), function ($query) {
+                    return $query->having('p', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('total_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('jan_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('feb_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('mar_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('apr_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('may_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('jun_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('jul_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('aug_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('sep_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('oct_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('nov_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('dec_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('total_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('ave_count', 'LIKE', '%' . request('search') . '%');
+                })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('logs.page', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->get();
+
+            return $this->response($logs, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -1980,14 +2066,28 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
+            $category_totals = [];
+
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
 
             $total = Log::when($site_id, function ($query) use ($site_id) {
-                return $query->where('site_id', $site_id);
+                return $query->where('logs.site_id', $site_id);
+            })
+            ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
             })
                 ->get()->count();
 
@@ -1999,6 +2099,9 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             })
                 ->when($site_id, function ($query) use ($site_id) {
                     return $query->where('logs.site_id', $site_id);
+                })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
                 })
                 ->leftJoin('site_screens as ss', 'logs.site_screen_id', '=', 'ss.id')
                 ->leftJoin('site_buildings as sb', 'ss.site_building_id', '=', 'sb.id')
@@ -2028,11 +2131,29 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
+            $category_totals = [];
+
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $site_name = $filters->site_name . "_";
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+                $filters->site_name;
+                $start = ($start_date == "") ? "" : "_" . $start_date;
+                $end = ($end_date == "") ? "" : "_" . $end_date . "_";
+                $filename = $site_name . $start . $end . "kiosk-usage.csv";
+            } else {
+                $filename = "kiosk-usage.csv";
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
 
             $total = Log::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
@@ -2041,6 +2162,9 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
 
             $logs = LogsViewModel::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_id', $site_id);
+            })
+            ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                return $query->whereBetween('updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
             })
                 ->selectRaw('logs.*, count(*) as screen_count, ROUND((count(*)/' . $total . '), 2)*100 as total_average')
                 ->groupBy('site_screen_id')
@@ -2062,10 +2186,132 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             foreach ($files as $file) {
                 Storage::delete($file);
             }
-
-            $filename = "kiosk-usage.csv";
+          
             // Store on default disk
             Excel::store(new Export($kiosk_usage), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
+    public function downloadCsvFunctionalUsage(Request $request)
+    {
+        try {
+            $site_id = '';
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $site_id = $filters->site_id;
+                $site_name = $filters->site_name . "_";
+                $filename = $site_name . "monthly-usage.csv";
+            } else {
+                $filename = "monthly-usage.csv";
+            }
+
+            if ($request->site_id) {
+                $site_id = $request->site_id;
+            }
+
+            $current_year = date("Y");
+
+            LogsMonthlyUsageViewModel::setSiteId($site_id, $current_year);
+
+            $logs = Log::when($site_id, function ($query) use ($site_id) {
+                return $query->where('site_id', $site_id);
+            })
+                ->whereYear('created_at', $current_year)
+                ->selectRaw('logs.*, page as p, count(*) as total_count,
+                (select count(*) from logs as la where MONTH(la.created_at) = 1  and YEAR(la.created_at) = ' . $current_year . ' and la.page = p) AS jan_count,
+                (select count(*) from logs as lb  where MONTH(lb.created_at) = 2  and YEAR(lb.created_at) = ' . $current_year . ' and lb.page = p) AS feb_count,
+                (select count(*) from logs as lc  where MONTH(lc.created_at) = 3  and YEAR(lc.created_at) = ' . $current_year . ' and lc.page = p) AS mar_count,
+                (select count(*) from logs as ld  where MONTH(ld.created_at) = 4  and YEAR(ld.created_at) = ' . $current_year . ' and ld.page = p) AS apr_count,
+                (select count(*) from logs as le  where MONTH(le.created_at) = 5  and YEAR(le.created_at) = ' . $current_year . ' and le.page = p) AS may_count,
+                (select count(*) from logs as lf  where MONTH(lf.created_at) = 6  and YEAR(lf.created_at) = ' . $current_year . ' and lf.page = p) AS jun_count,
+                (select count(*) from logs as lg  where MONTH(lg.created_at) = 7  and YEAR(lg.created_at) = ' . $current_year . ' and lg.page = p) AS jul_count,
+                (select count(*) from logs as lh  where MONTH(lh.created_at) = 8  and YEAR(lh.created_at) = ' . $current_year . ' and lh.page = p) AS aug_count,
+                (select count(*) from logs as li  where MONTH(li.created_at) = 9  and YEAR(li.created_at) = ' . $current_year . ' and li.page = p) AS sep_count,
+                (select count(*) from logs as lj  where MONTH(lj.created_at) = 10  and YEAR(lj.created_at) = ' . $current_year . ' and lj.page = p) AS oct_count,
+                (select count(*) from logs as lk  where MONTH(lk.created_at) = 11  and YEAR(lk.created_at) = ' . $current_year . ' and lk.page = p) AS nov_count,
+                (select count(*) from logs as ll  where MONTH(ll.created_at) = 12  and YEAR(ll.created_at) = ' . $current_year . ' and ll.page = p) AS dec_count,
+                ((
+                (select count(*) from logs as la where MONTH(la.created_at) = 1  and YEAR(la.created_at) = ' . $current_year . ' and la.page = p) + 
+                (select count(*) from logs as lb  where MONTH(lb.created_at) = 2  and YEAR(lb.created_at) = ' . $current_year . ' and lb.page = p) +
+                (select count(*) from logs as lc  where MONTH(lc.created_at) = 3  and YEAR(lc.created_at) = ' . $current_year . ' and lc.page = p) +
+                (select count(*) from logs as ld  where MONTH(ld.created_at) = 4  and YEAR(ld.created_at) = ' . $current_year . ' and ld.page = p) +
+                (select count(*) from logs as le  where MONTH(le.created_at) = 5  and YEAR(le.created_at) = ' . $current_year . ' and le.page = p) +
+                (select count(*) from logs as lf  where MONTH(lf.created_at) = 6  and YEAR(lf.created_at) = ' . $current_year . ' and lf.page = p) +
+                (select count(*) from logs as lg  where MONTH(lg.created_at) = 7  and YEAR(lg.created_at) = ' . $current_year . ' and lg.page = p) +
+                (select count(*) from logs as lh  where MONTH(lh.created_at) = 8  and YEAR(lh.created_at) = ' . $current_year . ' and lh.page = p) +
+                (select count(*) from logs as li  where MONTH(li.created_at) = 9  and YEAR(li.created_at) = ' . $current_year . ' and li.page = p) +
+                (select count(*) from logs as lj  where MONTH(lj.created_at) = 10  and YEAR(lj.created_at) = ' . $current_year . ' and lj.page = p) +
+                (select count(*) from logs as lk  where MONTH(lk.created_at) = 11  and YEAR(lk.created_at) = ' . $current_year . ' and lk.page = p) +
+                (select count(*) from logs as ll  where MONTH(ll.created_at) = 11  and YEAR(ll.created_at) = ' . $current_year . ' and ll.page = p) 
+                ) * 0.1) as ave_count')
+                ->groupBy('page')
+                ->groupBy('page')
+                ->get();
+
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+            if (count($logs) > 0) {
+                $monthly_usage = [];
+                foreach ($logs as $index => $log) {
+                    $monthly_usage[] = [
+                        'page' => $log->page,
+                        'jan_count' => ($log->jan_count != '') ? $log->banner_count : '0',
+                        'feb_count' => ($log->feb_count != '') ? $log->feb_count : '0',
+                        'mar_count' => ($log->mar_count != '') ? $log->mar_count : ' 0',
+                        'apr_count' => ($log->apr_count != '') ? $log->apr_count : ' 0',
+                        'may_count' => ($log->may_count != '') ? $log->may_count : ' 0',
+                        'jun_count' => ($log->jun_count != '') ? $log->jun_count : ' 0',
+                        'jul_count' => ($log->jul_count != '') ? $log->jul_count : ' 0',
+                        'aug_count' => ($log->aug_count != '') ? $log->aug_count : ' 0',
+                        'sep_count' => ($log->sep_count != '') ? $log->sep_count : ' 0',
+                        'oct_count' => ($log->oct_count != '') ? $log->oct_count : ' 0',
+                        'nov_count' => ($log->nov_count != '') ? $log->nov_count : ' 0',
+                        'dec_count' => ($log->dec_count != '') ? $log->dec_count : ' 0',
+                        'total_count' => ($log->total_count != '') ? $log->total_count : ' 0',
+                        'ave_count' => ($log->ave_count != '') ? $log->ave_count     : '0',
+                    ];
+                }
+            } else {
+                $monthly_usage[] = [
+                    'page' => '',
+                    'jan_count' => '',
+                    'feb_count' => '',
+                    'mar_count' => '',
+                    'apr_count' => '',
+                    'may_count' => '',
+                    'jun_count' => '',
+                    'jul_count' => '',
+                    'aug_count' => '',
+                    'sep_count' => '',
+                    'oct_count' => '',
+                    'nov_count' => '',
+                    'dec_count' => '',
+                    'total_count' => '',
+                    'ave_count' => ''
+                ];
+            }
+
+            // Store on default disk
+            Excel::store(new Export($monthly_usage), $directory . $filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/' . $filename,
