@@ -238,10 +238,10 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'sequence'=> $item->sequence,
                     'dimension'=> $item->dimension,
                     'loop_number'=> $item->loop_number,
-                    // 'sequence' => $sequenceCounter,
+                    'sequence' => $sequenceCounter,
                 ];
                 $play_list_array[] = $exel_collection;
-                // $sequenceCounter++;
+                $sequenceCounter++;
             }
         }
 
