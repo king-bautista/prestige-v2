@@ -420,12 +420,12 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     "parent_category_id" => $item->parent_category_id,
                     "main_category_id" => $item->main_category_id,
                     "advertisement_id" => $item->advertisement_id,
-                    // "sequence" => $sequenceCounter,
+                    "sequence" => $sequenceCounter,
                     "dimension" => $item->dimension,
                     "loop_number" => $item->loop_number
                 ];
                 $play_lists_array[] = $array_collection;
-                // $sequenceCounter++;
+                $sequenceCounter++;
             }
         }
 
@@ -564,16 +564,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     foreach ($addData as $item) {
                         $item["loop_number"] = $loop_number;
                     }
-                    $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
+                    // $this->maxParentCategoryCounter = $this->maxParentCategoryCounter + 1;
                     $this->category_counter[$index] = $this->category_counter[$index] + 1;
                 }
                 $data_count = $addData_count;
             }
             foreach ($addData as $item) {
                 $item["loop_number"] = $loop_number;
-                // if($item["advertisement_id"] == '109'){
-                //     dd("im hereee");
-                // }
             }
         }
         return $addData;

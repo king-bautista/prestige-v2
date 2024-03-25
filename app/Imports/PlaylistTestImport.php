@@ -238,10 +238,10 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                     'sequence'=> $item->sequence,
                     'dimension'=> $item->dimension,
                     'loop_number'=> $item->loop_number,
-                    // 'sequence' => $sequenceCounter,
+                    'sequence' => $sequenceCounter,
                 ];
                 $play_list_array[] = $exel_collection;
-                // $sequenceCounter++;
+                $sequenceCounter++;
             }
         }
 
@@ -350,7 +350,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
             $join->on('temporary_play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                  ->whereRaw('temporary_play_lists.dimension = site_screen_products.dimension');
         })        
-        ->orderBy("temporary_play_lists.updated_at", "DESC")
+        ->orderBy("temporary_play_lists.updated_at", "ASC")
         ->get();
 
         return $ads;
@@ -388,10 +388,12 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
                 if($addData_count == 1){
                     $addData = $query->limit($limit)->offset($category_offset)->get();
                     $addData[0]->loop_number = $loop_number;
-                    $this->maxParentCategoryCounter = $this->maxParentCategoryCounter+1;
+                    // $this->maxParentCategoryCounter = $this->maxParentCategoryCounter+1;
                     $this->category_counter[$index] = $this->category_counter[$index] +1;
                 }
                 $data_count = $addData_count;
+                // $this->category_counter[$index] = $this->category_counter[$index] +1;
+                // $this->maxParentCategoryCounter = $this->maxParentCategoryCounter+1;
             }
 
             $addData[0]->loop_number = $loop_number;
