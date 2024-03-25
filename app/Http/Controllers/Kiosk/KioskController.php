@@ -601,7 +601,7 @@ class KioskController extends AppBaseController
             ->distinct()
             ->orderBy('brands.name', 'ASC')
             ->orderBy('site_tenants.site_building_level_id', 'ASC')
-            ->orderBy('addresst', 'ASC')
+            ->orderBy('address', 'ASC')
             ->get();
 
             $suggest_cat = [];
