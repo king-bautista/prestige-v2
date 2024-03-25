@@ -139,7 +139,7 @@ class PlaylistTestImport implements ToCollection, WithHeadingRow
         // getting the denominator for modulo
         //dd($maxSitePartnerAds);
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds); 
-        $moduloValue = ceil($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
+        $moduloValue = round($totalNumberOfAds/$denominator); // this will set the interval for insertion of site partner ads
         $is_site_parter = $this->getInsertCondition($totalSitePartnerAds, $totalParentCategoryAds);
         $condition = "";
         $arrayStore = [];

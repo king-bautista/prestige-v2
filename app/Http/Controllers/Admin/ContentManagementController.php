@@ -330,7 +330,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $totalNumberOfAds = $maxSitePartnerAds + $totalParentCategoryAds;
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds);
-        $moduloValue = ceil($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
+        $moduloValue = round($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
         $is_site_parter = $this->getInsertCondition($totalSitePartnerAds, $totalParentCategoryAds);
         $condition = "";
         $arrayStore = [];
