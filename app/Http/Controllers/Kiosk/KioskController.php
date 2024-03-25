@@ -163,6 +163,14 @@ class KioskController extends AppBaseController
         ->where('active', 1)
         ->whereNull('sub_category_id')
         ->get();
+
+        // IF SITE CATEGORY IS EMPTY GET COMPANY CATEGORIES
+        if(count($categories) == 0) {            
+            $categories = SiteCategoryViewModel::where('company_id', $this->site->company_id)
+            ->where('active', 1)
+            ->whereNull('sub_category_id')
+            ->get();
+        }
         
         if($categories) {
             foreach($categories as $index => $category) {
@@ -189,6 +197,17 @@ class KioskController extends AppBaseController
             ->leftJoin('categories', 'company_categories.sub_category_id', '=', 'categories.id')
             ->orderBy('categories.name')
             ->get();
+
+            // IF SITE CATEGORY IS EMPTY GET COMPANY CATEGORIES
+            if(count($categories) == 0) {     
+                $categories = SiteCategoryViewModel::where('company_id', $this->site->company_id)
+                ->where('company_categories.active', 1)
+                ->where('company_categories.category_id', $category_id)
+                ->whereNotNull('company_categories.sub_category_id')
+                ->leftJoin('categories', 'company_categories.sub_category_id', '=', 'categories.id')
+                ->orderBy('categories.name')
+                ->get();       
+            }
         }
         else {
             $categories = SiteCategoryViewModel::where('company_categories.site_id', $this->site->id)
@@ -203,6 +222,22 @@ class KioskController extends AppBaseController
             ->distinct()
             ->orderBy('categories.name')
             ->get();
+
+            // IF SITE CATEGORY IS EMPTY GET COMPANY CATEGORIES
+            if(count($categories) == 0) {     
+                $categories = SiteCategoryViewModel::where('company_categories.company_id', $this->site->company_id)
+                ->where('company_categories.category_id', $category_id)
+                ->where('site_tenants.active', 1)
+                ->whereNotNull('company_categories.sub_category_id')
+                ->join('brands', 'company_categories.sub_category_id', '=', 'brands.category_id')
+                ->join('site_tenants', 'brands.id', '=', 'site_tenants.brand_id')
+                ->join('site_points', 'site_tenants.id', '=', 'site_points.tenant_id')
+                ->leftJoin('categories', 'company_categories.sub_category_id', '=', 'categories.id')
+                ->select('company_categories.*')
+                ->distinct()
+                ->orderBy('categories.name')
+                ->get();     
+            }
         }
 
         foreach($categories as $index => $category) {
@@ -504,8 +539,8 @@ class KioskController extends AppBaseController
     }
 
     public function search(Request $request) {
-        try
-        {
+        // try
+        // {
             $site = SiteViewModel::find($request->site_id);
             $site_map_ids = SiteMap::where('site_id', $request->site_id)
             ->where('map_type', $site->details['map_type'])
@@ -566,7 +601,7 @@ class KioskController extends AppBaseController
             ->distinct()
             ->orderBy('brands.name', 'ASC')
             ->orderBy('site_tenants.site_building_level_id', 'ASC')
-            ->orderBy('addresst', 'ASC')
+            ->orderBy('address', 'ASC')
             ->get();
 
             $suggest_cat = [];
@@ -601,14 +636,14 @@ class KioskController extends AppBaseController
                 'key_word' => $keyword,
                 'results_count' => $results_count
             ];
-        }
-        catch (\Exception $e)
-        {
-            return response([
-                'message' => 'No Tenants to display!',
-                'status_code' => 200,
-            ], 200);
-        } 
+        // }
+        // catch (\Exception $e)
+        // {
+        //     return response([
+        //         'message' => 'No Tenants to display!',
+        //         'status_code' => 200,
+        //     ], 200);
+        // } 
     }
 
     public function getBannerAds() {

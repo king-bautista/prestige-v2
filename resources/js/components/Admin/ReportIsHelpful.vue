@@ -215,7 +215,6 @@
 					oreason_site_id: '',
 					oreason_start_date: '',
 					oreason_end_date:'',
-					
                 },
 				site_name: 'All',
 				site_name_temp: 'All',
@@ -250,15 +249,13 @@
 						method: 'add'
 					},
 				},
-/////////////////				
 				reason_site_name: 'All',
 				reason_site_name_temp: 'All',
 				reason_date_range: '',
 				reason_from: '',
 				reason_to:'',
 				reason_sites: [],
-                
-				reasonDataFields: {
+ 				reasonDataFields: {
             		reason: "Reasons for 'No'", 
             		count: "Count", 
                     percentage: "% Percentage Share"
@@ -281,21 +278,48 @@
 						method: 'add'
 					},
 				},
-//////////////////
-				
-				
-				otherDataFields: {
+				oreason_site_name: 'All',
+				oreason_site_name_temp: 'All',
+				oreason_date_range: '',
+				oreason_from: '',
+				oreason_to:'',
+				oreason_sites: [],
+				oreasonDataFields: {
             		updated_at: "Date", 
-            		reason_other: "List of Other reasons", 
+            	    reason_other: "List of Other reasons", 
             	},
-            	otherPrimaryKey: "id",
-            	otherDataUrl: "/admin/reports/is-helpful/other-response",
+            	oreasonPrimaryKey: "id",
+            	oreasonDataUrl: "/admin/reports/is-helpful/other-response",
+				oreasonOtherButtons: {
+					addNew: {
+					title: 'Filter',
+					v_on: 'oreasonReportModal',
+					icon: '<i class="fa fa-filter" aria-hidden="true"></i> Filter',
+					class: 'btn btn-primary btn-sm',
+					method: 'add'
+					},
+					download: {
+						title: 'Download',
+						v_on: 'oreasonDownloadCsv',
+						icon: '<i class="fa fa-download" aria-hidden="true"></i> Download CSV',
+						class: 'btn btn-primary btn-sm',
+						method: 'add'
+					},
+				},
+				
+				// otherDataFields: {
+            	// 	updated_at: "Date", 
+            	// 	reason_other: "List of Other reasons", 
+            	// },
+            	// otherPrimaryKey: "id",
+            	// otherDataUrl: "/admin/reports/is-helpful/other-response",
             };
         },
 
         created(){
             this.getSites();
 			this.getReasonSites();
+			this.getOreasonSites();
         },
 
         methods: {
@@ -303,11 +327,12 @@
                 axios.get('/admin/site/get-all')
                 .then(response => this.sites = response.data.data);
             },
-			//////////////
+			
 			getSiteName: function(event) {
 					var option_text = event.target[event.target.selectedIndex].text; 
 					this.site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
 			},
+
             reportModal: function() {
                 this.filter.site_id = '';
 				this.filter.start_date ='';
@@ -337,7 +362,6 @@
 				})
             },
 			
-			//////////////
 			getReasonSites: function() {
                 axios.get('/admin/site/get-all')
                 .then(response => this.reason_sites = response.data.data);
@@ -354,7 +378,7 @@
             },
 
 			reasonFilterReport: function() { 
-				this.reason_site_name = (this.filter.reason_site_id == "")? 'All': this.reason_site_name_temp; alert(this.reason_site_name);
+				this.reason_site_name = (this.filter.reason_site_id == "")? 'All': this.reason_site_name_temp; 
 				this.reason_date_range = (this.filter.reason_start_date == "" || this.filter.reason_end_date == "" || this.filter.reason_start_date == null || this.filter.reason_end_date == null)? '' :'From: '+ this.filter.reason_start_date +' To: '+ this.filter.reason_end_date;
 				this.filter.reason_site_name = this.reason_site_name; 
 				this.$refs.responseDataTable.filters = this.filter;
@@ -374,9 +398,43 @@
 					link.click();
 				})
             },
+			
+			getOreasonSites: function() {
+                axios.get('/admin/site/get-all')
+                .then(response => this.oreason_sites = response.data.data);
+            },
+			getOreasonSiteName: function(event) {
+					var option_text = event.target[event.target.selectedIndex].text; 
+					this.oreason_site_name_temp = (option_text == 'Select Site' || !option_text)?'All':option_text;
+			},
+            oreasonReportModal: function() {
+                this.filter.oreason_site_id = '';
+				this.filter.oreason_start_date ='';
+				this.filter.oreason_end_date ='';
+				$('#oreasonFilterModal').modal('show');
+            },
 
-
-///////////////////
+			oreasonFilterReport: function() { 
+				this.oreason_site_name = (this.filter.oreason_site_id == "")? 'All': this.oreason_site_name_temp; 
+				this.oreason_date_range = (this.filter.oreason_start_date == "" || this.filter.oreason_end_date == "" || this.filter.oreason_start_date == null || this.filter.oreason_end_date == null)? '' :'From: '+ this.filter.oreason_start_date +' To: '+ this.filter.oreason_end_date;
+				this.filter.oreason_site_name = this.oreason_site_name; 
+				this.$refs.otherDataTable.filters = this.filter;
+				this.$refs.otherDataTable.fetchData();
+				var filter = this.filter; 
+				$('#oreasonFilterModal').modal('hide'); 
+			},
+			
+            oreasonDownloadCsv: function() {
+              this.filter.oreason_site_name = (this.filter.oreason_site_id == "")? 'All': this.oreason_site_name_temp;
+				axios.get('/admin/reports/is-helpful/other-response/download-csv', { params: { filters: this.filter } })
+				.then(response => {
+					const link = document.createElement('a');
+					link.href = response.data.data.filepath;
+					link.setAttribute('download', response.data.data.filename); //or any other extension
+					document.body.appendChild(link);
+					link.click();
+				})
+            },
 
 			filterChart: function() {
 				var filter = this.filter;

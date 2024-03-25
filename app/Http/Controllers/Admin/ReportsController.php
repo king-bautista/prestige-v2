@@ -503,16 +503,23 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $total_count = Log::whereYear('created_at', $current_year)
                 ->selectRaw('count(*) as total_count')
                 ->groupBy(DB::raw('YEAR(created_at)'))
+                ->groupBy('site_id')
                 ->get()->count();
 
             $logs = LogsMonthlyUsageViewModel::whereYear('created_at', $current_year)
                 ->selectRaw('logs.*, (select s.name from sites s where s.id = logs.site_id) as site_name,count(*) as total_count, ROUND((count(*)/' . $total_count . '), 2) as total_average')
+                ->when(request('search'), function ($query) {
+                    return $query->having('site_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('total_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('total_average', 'LIKE', '%' . request('search') . '%');
+                })
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('site_name', 'DESC');
                 })
                 ->when(request('order'), function ($query) {
                     return $query->orderBy(request('order'), request('sort'));
                 })
+                ->groupBy('site_id')
                 ->groupBy(DB::raw('YEAR(created_at)'))
                 ->get();
 
@@ -551,18 +558,20 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 return $query->where('ss.site_id', $site_id);
             })
                 ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
+                ->leftJoin('advertisements as a', 'play_list_logs.advertisement_id', '=', 'a.id')
                 ->selectRaw('play_list_logs. *, 
-            ss.id as site_screen_id, 
-            ss.name as site_screen_name, 
-            ss.site_id as site_id, 
-            (select a.name from advertisements a where a.id = play_list_logs.advertisement_id) as advertisement_name')
+                ss.name as site_screen_name, 
+                ss.site_id as site_id,
+                a.name as advertisement_name
+                ')
                 ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
                     return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
                 })
                 ->when(request('search'), function ($query) {
-                    return $query->having('', 'LIKE', '%' . request('search') . '%')
-                        ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
-                        ->orHaving('advetisement_name', 'LIKE', '%' . request('search') . '%');
+                    return $query->having('site_screen_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('advertisement_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_date', 'LIKE', '%' . request('search') . '%');
                 })
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('updated_at', 'ASC');
@@ -614,13 +623,20 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 return $query->where('ss.site_id', $site_id);
             })
                 ->leftJoin('site_screens as ss', 'play_list_logs.site_screen_id', '=', 'ss.id')
+                ->leftJoin('advertisements as a', 'play_list_logs.advertisement_id', '=', 'a.id')
                 ->selectRaw('play_list_logs. *, 
-            ss.id as site_screen_id, 
             ss.name as site_screen_name, 
-            ss.site_id as site_id, 
-            (select a.name from advertisements a where a.id = play_list_logs.advertisement_id) as advertisement_name')
+            ss.site_id as site_id,
+            a.name as advertisement_name
+            ')
                 ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
                     return $query->whereBetween('play_list_logs.updated_at', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('site_screen_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('advertisement_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('log_date', 'LIKE', '%' . request('search') . '%');
                 })
                 // ->when(request('search'), function ($query) {
                 //     return $query->having('', 'LIKE', '%' . request('search') . '%')
@@ -1216,22 +1232,43 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $total_count = Log::whereYear('created_at', $current_year)
                 ->selectRaw('count(*) as total_count')
                 ->groupBy(DB::raw('YEAR(created_at)'))
+                ->groupBy('site_id')
                 ->get()->count();
 
             $logs = LogsMonthlyUsageViewModel::whereYear('created_at', $current_year)
-                ->selectRaw('logs.*, count(*) as total_count, ROUND((count(*)/' . $total_count . '), 2) as total_average')
+                ->selectRaw('logs.*, (select s.name from sites s where s.id = logs.site_id) as site_name,count(*) as total_count, ROUND((count(*)/' . $total_count . '), 2) as total_average')
+                ->when(request('search'), function ($query) {
+                    return $query->having('site_name', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('total_count', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('total_average', 'LIKE', '%' . request('search') . '%');
+                })
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('site_name', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->groupBy('site_id')
                 ->groupBy(DB::raw('YEAR(created_at)'))
                 ->get();
 
-            $yearly_usage = [];
-            foreach ($logs as $index => $log) {
+            if (count($logs) > 0) {
+                $playlists = [];
+                $yearly_usage = [];
+                foreach ($logs as $index => $log) {
+                    $yearly_usage[] = [
+                        'site_name' => $log->site_name,
+                        'total_count' => ($log->total_count != '') ? $log->total_count : 0,
+                        'total_average' => ($log->total_average != '') ? $log->total_average : 0
+                    ];
+                }
+            } else {
                 $yearly_usage[] = [
-                    'site_name' => $log->site_name,
-                    'total_count' => $log->total_count,
-                    'total_average' => $log->total_average
+                    'site_name' => '',
+                    'total_count' => '',
+                    'total_average' => ''
                 ];
             }
-
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
             foreach ($files as $file) {
@@ -1268,7 +1305,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
             $site_id = '';
             $start_date = '';
             $end_date = '';
-            //$category_totals = [];
 
             $filters = json_decode($request->filters);
             if ($filters) {
@@ -1386,13 +1422,36 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         }
     }
 
-    public function getOtherResponse()
+    public function getOtherResponse(Request $request)
     {
         try {
-            $is_helpful = SiteFeedback::when(request('search'), function ($query) {
-                return $query->having('updated_at', 'LIKE', '%' . request('search') . '%')
-                    ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
+            $oreason_site_id = '';
+            $oreason_start_date = '';
+            $oreason_end_date = '';
+
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $oreason_site_id = $filters->oreason_site_id;
+                $oreason_start_date = str_replace('/', '-', $filters->oreason_start_date);
+                $oreason_end_date = str_replace('/', '-', $filters->oreason_end_date);
+            }
+
+            if ($request->oreason_site_id) {
+                $oreason_site_id = $request->oreason_site_id;
+                $oreason_start_date = '';
+                $oreason_end_date = '';
+            }
+
+            $is_helpful = SiteFeedback::when($oreason_site_id, function ($query) use ($oreason_site_id) {
+                return $query->where('site_id', $oreason_site_id);
             })
+                ->when(($oreason_start_date != '' && $oreason_end_date != ''), function ($query) use ($oreason_start_date, $oreason_end_date) {
+                    return $query->whereBetween('updated_at', [$oreason_start_date . ' 00:00:00', $oreason_end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('updated_at', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
+                })
                 ->whereNotNull('reason_other')
                 ->when(is_null(request('order')), function ($query) {
                     return $query->orderBy('updated_at', 'ASC');
@@ -1525,7 +1584,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                 $reason_site_name = $filters->reason_site_name . "_";
                 $reason_start_date = str_replace('/', '-', $filters->reason_start_date);
                 $reason_end_date = str_replace('/', '-', $filters->reason_end_date);
-                $filters->reason_site_name;
                 $reason_start = ($reason_start_date == "") ? "" : "_" . $reason_start_date;
                 $reason_end = ($reason_end_date == "") ? "" : "_" . $reason_end_date . "_";
                 $filename = $reason_site_name . $reason_start . $reason_end . "reason_is_helpful.csv";
@@ -1613,6 +1671,91 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
         }
     }
 
+    public function downloadOtherResponse(Request $request)
+    {
+        try {
+            $oreason_site_id = '';
+            $oreason_start_date = '';
+            $oreason_end_date = '';
+
+            $filters = json_decode($request->filters);
+            if ($filters) {
+                $oreason_site_id = $filters->oreason_site_id;
+                $oreason_site_name = $filters->oreason_site_name . "_";
+                $oreason_start_date = str_replace('/', '-', $filters->oreason_start_date);
+                $oreason_end_date = str_replace('/', '-', $filters->oreason_end_date);
+                $oreason_start = ($oreason_start_date == "") ? "" : "_" . $oreason_start_date;
+                $oreason_end = ($oreason_end_date == "") ? "" : "_" . $oreason_end_date . "_";
+                $filename = $oreason_site_name . $oreason_start . $oreason_end . "other_reason_is_helpful.csv";
+            } else {
+                $filename = "other_reason_is_helpful.csvis_helpful.csv";
+            }
+
+            if ($request->oreason_site_id) {
+                $oreason_site_id = $request->reason_site_id;
+                $oreason_start_date = '';
+                $oreason_end_date = '';
+            }
+            $logs = SiteFeedback::when($oreason_site_id, function ($query) use ($oreason_site_id) {
+                return $query->where('site_id', $oreason_site_id);
+            })
+                ->when(($oreason_start_date != '' && $oreason_end_date != ''), function ($query) use ($oreason_start_date, $oreason_end_date) {
+                    return $query->whereBetween('updated_at', [$oreason_start_date . ' 00:00:00', $oreason_end_date . ' 23:59:59']);
+                })
+                ->when(request('search'), function ($query) {
+                    return $query->having('updated_at', 'LIKE', '%' . request('search') . '%')
+                        ->orHaving('reason_other', 'LIKE', '%' . request('search') . '%');
+                })
+                ->whereNotNull('reason_other')
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('updated_at', 'ASC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
+                ->get();
+
+            if (count($logs) > 0) {
+                $other_reason = [];
+                foreach ($logs as $log) {
+                    $other_reason[] = [
+                        'updated_at' => ($log['updated_at'] != '') ? $log['updated_at'] : '0000-00-00 00:00:00',
+                        'reason_other' => ($log['reason_other'] != '') ? $log['reason_other'] : '',
+                    ];
+                }
+            } else {
+                $other_reason[] = [
+                    'updated_at' => '',
+                    'reason_other' => '',
+                ];
+            }
+            $directory = 'public/export/reports/';
+            $files = Storage::files($directory);
+            foreach ($files as $file) {
+                Storage::delete($file);
+            }
+
+            // Store on default disk
+            Excel::store(new Export($other_reason), $directory . $filename);
+
+            $data = [
+                'filepath' => '/storage/export/reports/' . $filename,
+                'filename' => $filename
+            ];
+
+            if (Storage::exists($directory . $filename))
+                return $this->response($data, 'Successfully Retreived!', 200);
+
+            return $this->response(false, 'Successfully Retreived!', 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e->getMessage(),
+                'status' => false,
+                'status_code' => 422,
+            ], 422);
+        }
+    }
+
     public function screenUptime(Request $request)
     {
         try {
@@ -1631,21 +1774,29 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
+            $category_totals = [];
+
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
+
+            $last_date = SiteScreenUptime::orderBy('up_time_date', 'DESC')->first();
 
             $screens_uptime = SiteScreenUptime::when($site_id, function ($query) use ($site_id) {
                 return $query->where('site_screens.site_id', $site_id)
-                    // ->where(function ($query) {
-                    //     $query->where('name', 'LIKE', '%' . request('search') . '%')
-                    //         ->orWhere('descriptions', 'LIKE', '%' . request('search') . '%');
-                    // });
                     ->when(request('search'), function ($query) {
                         return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
-
                             ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
                             ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
                             ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
@@ -1659,7 +1810,6 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                     return $query->where('site_screen_uptimes.id', '>', 0)
                         ->when(request('search'), function ($query) {
                             return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
-
                                 ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
                                 ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
                                 ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
@@ -1669,19 +1819,26 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
                                 ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
                         });
                 })
-
-                ->select('site_screen_uptimes.*', 'site_screens.name')
+                
+                ->when(($end_date == ''), function ($query) use ($last_date) { 
+                    $start_date = date('Y-m-d', strtotime($last_date->up_time_date.' - 30 days'));
+                    return $query->whereBetween('up_time_date', [$start_date, $last_date->up_time_date]);
+                })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('up_time_date', [$start_date, $end_date]);
+                })
+                //->select('site_screen_uptimes.*', 'site_screens.name',('select name from site as s where s.id = site_screens.site_id as site_name') )
+                ->selectRaw('site_screen_uptimes.*, site_screens.name, (select name from sites as s where s.id = site_screens.site_id) as site_name')
                 ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id')
                 ->when(is_null(request('order')), function ($query) {
-                    return $query->orderBy('site_screens.name', 'ASC');
+                    return $query->orderBy('up_time_date', 'DESC');
                 })
                 ->when(request('order'), function ($query) {
                     return $query->orderBy(request('order'), request('sort'));
                 })
-                ->latest()
-                ->get();
+                ->paginate(request('perPage'));
 
-            return $this->response($screens_uptime, 'Successfully Retreived!', 200);
+            return $this->responsePaginate($screens_uptime, 'Successfully Retreived!', 200);
         } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
@@ -1695,32 +1852,101 @@ class ReportsController extends AppBaseController implements ReportsControllerIn
     {
         try {
             $site_id = '';
+            $start_date = '';
+            $end_date = '';
+            $category_totals = [];
+
             $filters = json_decode($request->filters);
-            if ($filters)
+            if ($filters) {
                 $site_id = $filters->site_id;
-            if ($request->site_id)
+                $site_name = $filters->site_name . "_";
+                $start_date = str_replace('/', '-', $filters->start_date);
+                $end_date = str_replace('/', '-', $filters->end_date);
+                $filters->site_name;
+                $start = ($start_date == "") ? "" : "_" . $start_date;
+                $end = ($end_date == "") ? "" : "_" . $end_date . "_";
+                $filename = $site_name . $start . $end . "uptime-history.csv";
+            } else {
+                $filename = "uptime-history.csv";
+            }
+
+            if ($request->site_id) {
                 $site_id = $request->site_id;
+                $start_date = '';
+                $end_date = '';
+            }
+
+            $last_date = SiteScreenUptime::orderBy('up_time_date', 'DESC')->first();
 
             $logs = SiteScreenUptime::when($site_id, function ($query) use ($site_id) {
-                return $query->where('site_screens.site_id', $site_id);
+                return $query->where('site_screens.site_id', $site_id)
+                    ->when(request('search'), function ($query) {
+                        return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.opening_hour', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.closing_hour', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.hours_up', 'LIKE', '%' . request('search') . '%')
+                            ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
+                    });
             })
-                ->select('site_screen_uptimes.*', 'site_screens.name')
+                ->when(empty($site_id), function ($query) {
+                    return $query->where('site_screen_uptimes.id', '>', 0)
+                        ->when(request('search'), function ($query) {
+                            return $query->where('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screens.name', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.up_time_date', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.total_hours', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.opening_hour', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.closing_hour', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.hours_up', 'LIKE', '%' . request('search') . '%')
+                                ->orWhere('site_screen_uptimes.percentage_uptime', 'LIKE', '%' . request('search') . '%');
+                        });
+                })
+                
+                ->when(($end_date == ''), function ($query) use ($last_date) { 
+                    $start_date = date('Y-m-d', strtotime($last_date->up_time_date.' - 30 days'));
+                    return $query->whereBetween('up_time_date', [$start_date, $last_date->up_time_date]);
+                })
+                ->when(($start_date != '' && $end_date != ''), function ($query) use ($start_date, $end_date) {
+                    return $query->whereBetween('up_time_date', [$start_date, $end_date]);
+                })
+                //->select('site_screen_uptimes.*', 'site_screens.name',('select name from site as s where s.id = site_screens.site_id as site_name') )
+                ->selectRaw('site_screen_uptimes.*, site_screens.name, (select name from sites as s where s.id = site_screens.site_id) as site_name')
                 ->join('site_screens', 'site_screen_uptimes.site_screen_id', '=', 'site_screens.id')
-                ->latest()
+                ->when(is_null(request('order')), function ($query) {
+                    return $query->orderBy('up_time_date', 'DESC');
+                })
+                ->when(request('order'), function ($query) {
+                    return $query->orderBy(request('order'), request('sort'));
+                })
                 ->get();
 
-            $uptime_history = [];
-            foreach ($logs as $index => $log) {
+            if (count($logs) > 0) {    
+                $uptime_history = [];
+                foreach ($logs as $index => $log) {
+                    $uptime_history[] = [
+                        'name' => $log->name,
+                        'up_time_date' => $log->up_time_date,
+                        'total_hours' => $log->total_hours,
+                        'opening_hour' => $log->opening_hour,
+                        'closing_hour' => $log->closing_hour,
+                        'hours_up' => $log->hours_up,
+                        'percentage_uptime' => $log->percentage_uptime,
+                    ];
+                }
+            } else {
                 $uptime_history[] = [
-                    'name' => $log->name,
-                    'up_time_date' => $log->up_time_date,
-                    'total_hours' => $log->total_hours,
-                    'opening_hour' => $log->opening_hour,
-                    'closing_hour' => $log->closing_hour,
-                    'hours_up' => $log->hours_up,
-                    'percentage_uptime' => $log->percentage_uptime,
+                    'name' => '',
+                    'up_time_date' => '',
+                    'total_hours' => '',
+                    'opening_hour' => '',
+                    'closing_hour' => '',
+                    'hours_up' => '',
+                    'percentage_uptime' => '',
                 ];
-            }
+            }    
 
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);

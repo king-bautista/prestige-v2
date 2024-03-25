@@ -344,14 +344,14 @@ export default {
 					this.image_width = this.width;
 					this.image_height = this.height;
 
-					if (this.image_width == obj.getPrimaryPixel()['width'] && this.image_height == obj.getPrimaryPixel()['height']) {
+					//if (this.image_width == obj.getPrimaryPixel()['width'] && this.image_height == obj.getPrimaryPixel()['height']) {
 						obj.illustration.kiosk_image_primary = this.file;
-					} else {
-						$('#img_kiosk_primary').val('');
-						obj.kiosk_image_primary = '';
-						obj.illustration.kiosk_image_primary = '';
-						toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
-					};
+					// } else {
+					// 	$('#img_kiosk_primary').val('');
+					// 	obj.kiosk_image_primary = '';
+					// 	obj.illustration.kiosk_image_primary = '';
+					// 	toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
+					// };
 				}
 			} else {
 				$('#img_kiosk_primary').val('');
@@ -376,14 +376,14 @@ export default {
 				img.onload = function () {
 					this.image_width = this.width;
 					this.image_height = this.height;
-					if (this.image_width == obj.getTopPixel()['width'] && this.image_height == obj.getTopPixel()['height']) {
+					//if (this.image_width == obj.getTopPixel()['width'] && this.image_height == obj.getTopPixel()['height']) {
 						obj.illustration.kiosk_image_top = this.file;
-					} else {
-						$('#img_kiosk_top').val('');
-						obj.kiosk_image_top = '';
-						obj.illustration.kiosk_image_top = '';
-						toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
-					};
+					// } else {
+					// 	$('#img_kiosk_top').val('');
+					// 	obj.kiosk_image_top = '';
+					// 	obj.illustration.kiosk_image_top = '';
+					// 	toastr.error("Invalid Image Size! Must be width: " + obj.getPrimaryPixel()['width'] + " and height: " + obj.getPrimaryPixel()['height'] + " Current width: " + this.image_width + " and height: " + this.image_height);
+					// };
 				}
 			} else {
 				$('#img_kiosk_top').val('');
