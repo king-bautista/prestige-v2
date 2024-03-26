@@ -828,8 +828,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
     public function downloadCsvPlaylistTemplate()
     {
         try {
-
-            $faqs = FAQ::get();
+           
             $reports = [];
             foreach ($faqs as $faq) {
                 $reports[] = [
