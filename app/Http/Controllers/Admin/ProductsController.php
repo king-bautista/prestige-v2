@@ -148,6 +148,43 @@ class ProductsController extends AppBaseController implements ProductsController
                 }
             }
 
+            $banner_promo_image_url = $request->file('banner_promo_image_url');
+            $banner_promo_image_url_path = '';
+            $banner_promo_thumbnails_path = '';
+            if ($banner_promo_image_url) {
+                $banner_promo_originalname = $banner_promo_image_url->getClientOriginalName();
+                $banner_promo_mime_type = explode("/", $banner_promo_image_url->getClientMimeType());
+                $banner_promo_file_type = $banner_promo_mime_type[0];
+                $banner_promo_image_url_path = $banner_promo_image_url->move('uploads/media/brand/products/', str_replace(' ', '-', $banner_promo_originalname));
+
+                $banner_promo_image_size = getimagesize($banner_promo_image_url_path);
+                $banner_promo_required_size = 150;
+                $banner_promo_new_width = 0;
+                $banner_promo_new_height = 0;
+
+                if ($banner_promo_file_type == 'image') {
+                    $banner_promo_width = $banner_promo_image_size[0];
+                    $banner_promo_height = $banner_promo_image_size[1];
+
+                    $banner_promo_aspect_ratio = $banner_promo_width / $banner_promo_height;
+                    if ($banner_promo_aspect_ratio >= 1.0) {
+                        $banner_promo_new_width = $banner_promo_required_size;
+                        $banner_promo_new_height = $banner_promo_required_size / $banner_promo_aspect_ratio;
+                    } else {
+                        $banner_promo_new_width = $banner_promo_required_size * $banner_promo_aspect_ratio;
+                        $banner_promo_new_height = $banner_promo_required_size;
+                    }
+
+                    $banner_promo_thumbnails_path = public_path('uploads/media/brand/products/thumbnails/');
+                    $banner_promo_img = Image::make($banner_promo_image_url_path);
+                    $banner_promo_img->resize($banner_promo_new_width, $banner_promo_new_height, function ($banner_promo_constraint) {
+                        $banner_promo_constraint->aspectRatio();
+                    })->save($banner_promo_thumbnails_path . str_replace(' ', '-', $banner_promo_originalname));
+
+                    $banner_promo_thumbnails_path = 'uploads/media/brand/products/thumbnails/' . str_replace(' ', '-', $banner_promo_originalname);
+                }
+            }
+
             $data = [
                 'brand_id' => $brand_id,
                 'name' => $request->name,
@@ -157,6 +194,8 @@ class ProductsController extends AppBaseController implements ProductsController
                 'date_to' => ($request->date_to == '0000-00-00') ? NULL : $request->date_to,
                 'thumbnail' => str_replace('\\', '/', $thumbnails_path),
                 'image_url' => str_replace('\\', '/', $image_url_path),
+                'banner_promo_thumbnail' => str_replace('\\', '/', $banner_promo_thumbnails_path),
+                'banner_promo_image_url' => str_replace('\\', '/', $banner_promo_image_url_path),
                 'active' => 1
             ];
 

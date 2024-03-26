@@ -88,6 +88,18 @@
 								<div class="col-sm-3 text-center">
 									<img v-if="image_url" :src="image_url" class="img-thumbnail" />
 								</div>
+							</div> 
+							<div class="form-group row" v-if="product.type == 'banner'">
+								<label for="firstName" class="col-sm-4 col-form-label">Promo Image<span
+										class="font-italic text-danger"> *</span></label>
+								<div class="col-sm-5">
+									<input type="file" accept="image/*" id="banner_promo_img_url" ref="banner_promo_image_url"
+										@change="banner_promo_image_urlChange">
+									<footer class="blockquote-footer">image max size is {{ this.banner_promo_type_width }} x {{ this.banner_promo_type_height }} pixels</footer>
+								</div>
+								<div class="col-sm-3 text-center">
+									<img v-if="banner_promo_image_url" :src="banner_promo_image_url" class="img-thumbnail" />
+								</div>
 							</div>
 							<div class="form-group row" v-show="edit_record">
 								<label for="isActive" class="col-sm-4 col-form-label">Active</label>
@@ -163,6 +175,7 @@ export default {
 				descriptions: '',
 				type: '',
 				image_url: '',
+				banner_promo_image_url: '',
 				date_from: '',
 				date_to: '',
 			},
@@ -171,12 +184,17 @@ export default {
 				useCurrent: false,
 			},
 			image_url: '',
+			banner_promo_image_url: '',
 			add_record: true,
 			edit_record: false,
 			image_width: 0,
 			image_height: 0,
 			type_width: '700',
 			type_height: '700',
+			banner_promo_image_width: 0,
+			banner_promo_image_height: 0,
+			banner_promo_type_width: '700',
+			banner_promo_type_height: '700',
 			dataFields: {
 				thumbnail_path: {
 					name: "Thumbnail",
@@ -257,12 +275,17 @@ export default {
 			$('#img_url').val('');
 			this.image_url = '';
 			this.product.image_url = '';
+			$('#banner_prommo_img_url').val('');
+			this.banner_prommo_image_url = '';
+			this.product.banner_prommo_image_url = '';
 		},
 		typeChange: function () {
 			this.clearImage();
 			if(this.product.type == 'banner'){
 				this.type_width = '900';
 				this.type_height = '246';
+				this.banner_promo_type_width = '700';
+				this.banner_promo_type_height = '700';
 			}else{
 				this.type_width = '700';
 				this.type_height = '700';
@@ -296,6 +319,34 @@ export default {
 			}
 		},
 
+		banner_promo_image_urlChange: function (e) {
+			const file = e.target.files[0];
+			if (file.type == 'image/jpeg' || file.type == 'image/bmp' || file.type == 'image/png') {
+				this.banner_promo_image_url = URL.createObjectURL(file);
+				var _URL = window.URL || window.webkitURL;
+				const banner_promo_img = new Image();
+				banner_promo_img.src = _URL.createObjectURL(file);
+				banner_promo_img.file = file;
+				var obj = this;
+				banner_promo_img.onload = function () {
+					this.banner_promo_image_width = this.width;
+					this.banner_promo_image_height = this.height;
+					
+					if (this.banner_promo_image_width == obj.banner_promo_type_width && this.banner_promo_image_height == obj.banner_promo_type_height) {
+						obj.product.banner_promo_image_url = this.file;
+					} else {
+						$('#banner_promo_img_url').val('');
+						obj.banner_promo_image_url = '';
+						obj.product.banner_promo_image_url = '';
+						toastr.error("Invalid Banner Promo Image Size! Must be width: " + obj.banner_promo_type_width + " and height: " + obj.banner_promo_type_height + ". Current width: " + this.banner_promo_image_width + " and height: " + this.banner_promo_image_height);
+					};
+				}
+			} else {
+				this.clearImage();
+				toastr.error("The image must be a file type: bmp,jpeg,png.");
+			}
+		},
+
 		AddNewProduct: function () {
 			this.add_record = true;
 			this.edit_record = false;
@@ -306,6 +357,8 @@ export default {
 			this.product.date_to = '';
 			this.product.thumbnail = '';
 			this.product.image_url = '';
+			this.product.banner_promo_thumbnail = '';
+			this.product.banner_promo_image_url = '';
 			this.product.active = false;
 			this.$refs.image_url.value = null;
 			this.thumbnail = '';
@@ -321,6 +374,8 @@ export default {
 			formData.append("type", this.product.type);
 			formData.append("image_url", this.product.image_url);
 			formData.append("image_url_hidden", this.product.image_url);
+			formData.append("banner_promo_image_url", this.product.banner_promo_image_url);
+			formData.append("banner_promo_image_url_hidden", this.product.banner_promo_image_url);
 			formData.append("date_from", this.product.date_from);
 			formData.append("date_to", this.product.date_to);
 
@@ -340,7 +395,7 @@ export default {
 		editProduct: function (id) {
 			axios.get('/admin/brand/product/' + id)
 				.then(response => {
-					var product = response.data.data;
+					var product = response.data.data; 
 					this.product.id = id;
 					this.product.name = product.name;
 					this.product.descriptions = product.descriptions;
@@ -348,6 +403,7 @@ export default {
 					this.product.date_from = product.date_from;
 					this.product.date_to = product.date_to;
 					this.product.image_url = product.image_url;
+					this.product.banner_promo_image_url = product.banner_promo_image_url;
 					this.product.active = product.active;
 					this.add_record = false;
 					this.edit_record = true;
@@ -359,6 +415,14 @@ export default {
 						this.image_url = this.product.image_url;
 					}
 					this.$refs.image_url.value = null;
+
+					if (product.banner_promo_image_url) {
+						this.banner_promo_image_url = product.banner_promo_image_url_path;
+					}
+					else {
+						this.banner_promo_image_url = this.product.banner_promo_image_url;
+					}
+					this.$refs.banner_promo_image_url.value = null;
 
 					$('#product-form').modal('show');
 				});
@@ -372,6 +436,8 @@ export default {
 			formData.append("type", this.product.type);
 			formData.append("image_url", this.product.image_url);
 			formData.append("image_url_hidden", this.image_url);
+			formData.append("banner_promo_image_url", this.product.image_url);
+			formData.append("banner_promo_image_url_hidden", this.image_url);
 			formData.append("date_from", this.product.date_from);
 			formData.append("date_to", this.product.date_to);
 			formData.append("active", this.product.active);

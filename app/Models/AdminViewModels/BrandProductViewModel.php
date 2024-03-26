@@ -42,6 +42,8 @@ class BrandProductViewModel extends Model
 	public $appends = [
         'thumbnail_path',
         'image_url_path',
+        'banner_promo_thumbnail_path',
+        'banner_promo_image_url_path',
         'brand_name',
     ]; 
 
@@ -60,7 +62,21 @@ class BrandProductViewModel extends Model
         if($this->image_url)
             return asset($this->image_url);
         return null;
+    }
+    
+    public function getBannerPromoThumbnailPathAttribute()
+    {
+        if($this->banner_promo_thumbnail)
+            return asset($this->banner_promo_thumbnail);
+        return null;
     }  
+
+    public function getBannerPromoImageUrlPathAttribute()
+    {
+        if($this->banner_promo_image_url)
+            return asset($this->banner_promo_image_url);
+        return null;
+    }
 
     public function getBrandNameAttribute() 
     {     

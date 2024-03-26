@@ -21,6 +21,8 @@ class BrandProductPromos extends Model
         'type',
         'thumbnail',
         'image_url',
+        'banner_promo_thumbnail',
+        'banner_promo_image_url',
         'date_from',
         'date_to',
         'sequence',
