@@ -830,7 +830,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
         try {
            
             $reports = [];
-            foreach ($faqs as $faq) {
                 $reports[] = [
                     'upload_ad_id' => '',
                     'create_content_id' => '',
@@ -844,8 +843,6 @@ class ContentManagementController extends AppBaseController implements ContentMa
                     'updated_at' => '',
                     'deleted_at' => '',
                 ];
-            }
-
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
             foreach ($files as $file) {
