@@ -165,27 +165,24 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
     public function update(ContentRequest $request)
     {
-        try
-        {
-        $content = ContentManagement::find($request->id);
-        //echo '<pre>'; print_r($request->site_screen_ids); echo '</pre>';
-        $data = [
-            'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-' . Str::padLeft($content->id, 5, '0'),
-            'advertisement_id' => $request->advertisement_id,
-            'status_id' => $request->status_id,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'active' => $request->active,
-        ];
+        try {
+            $content = ContentManagement::find($request->id);
+            //echo '<pre>'; print_r($request->site_screen_ids); echo '</pre>';
+            $data = [
+                'serial_number' => ($content->serial_number) ? $content->serial_number : 'CAD-' . Str::padLeft($content->id, 5, '0'),
+                'advertisement_id' => $request->advertisement_id,
+                'status_id' => $request->status_id,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'active' => $request->active,
+            ];
 
-        $content->update($data);
-        $content->saveScreens($request->site_screen_ids);
-        $this->generatePlayList($request->site_screen_ids);
+            $content->update($data);
+            $content->saveScreens($request->site_screen_ids);
+            $this->generatePlayList($request->site_screen_ids);
 
-        return $this->response($content, 'Successfully Modified!', 200);
-        }
-        catch (\Exception $e) 
-        {
+            return $this->response($content, 'Successfully Modified!', 200);
+        } catch (\Exception $e) {
             return response([
                 'message' => $e->getMessage(),
                 'status' => false,
@@ -271,12 +268,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
         // return $this->check_variable;
     }
 
-    protected function deleteUnsequencedItem($screen_ids){
-        foreach($screen_ids as $screen_id){
+    protected function deleteUnsequencedItem($screen_ids)
+    {
+        foreach ($screen_ids as $screen_id) {
             PlayList::leftJoin('site_screen_products', function ($join) {
                 $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                     ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-                })
+            })
                 ->where('play_lists.site_screen_id', '=', $screen_id->id)
                 ->where('sequence', 0)
                 ->delete();
@@ -330,7 +328,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $totalNumberOfAds = $maxSitePartnerAds + $totalParentCategoryAds;
         // getting the denominator for modulo
         $denominator = $this->getLargerNumber($maxSitePartnerAds, $totalParentCategoryAds);
-        $moduloValue = round($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
+        $moduloValue = ceil($totalNumberOfAds / $denominator); // this will set the interval for insertion of site partner ads
         $is_site_parter = $this->getInsertCondition($totalSitePartnerAds, $totalParentCategoryAds);
         $condition = "";
         $arrayStore = [];
@@ -351,10 +349,9 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 for ($index = 0; $index < $totalNumberOfAds; $index++) {
                     $loop_number = $loop_index;
 
-                    if ($is_site_parter == true){
+                    if ($is_site_parter == true) {
                         $condition = intval(fmod($index, $moduloValue)) != 0;
-                    }
-                    else{
+                    } else {
                         $condition = intval(fmod($index, $moduloValue)) == 0;
                     }
 
@@ -369,7 +366,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                                     $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
                                 }
                                 array_push($arrayStore, $addSitePartner);
-                                $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter = $maxSitePartnerCounter +1 : $maxSitePartnerCounter = 0;
+                                $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter = $maxSitePartnerCounter + 1 : $maxSitePartnerCounter = 0;
                             } else {
                                 // if ($totalParentCategoryAds !== 0 && $maxParentCategoryCounter !== $totalParentCategoryAds) {
                                 if ($totalParentCategoryAds !== 0) {
@@ -380,7 +377,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                                 }
                             }
                         } catch (\Exception $e) {
-                                
+
                             continue;
                         }
                         $sitePartnerCounter++;
@@ -394,11 +391,11 @@ class ContentManagementController extends AppBaseController implements ContentMa
                                 if ($totalSitePartnerAds !== 0 && $maxSitePartnerCounter !== $maxSitePartnerSlot) {
                                     $addSitePartner = $this->insertAd($site_partner_id, $screen_id, $sitePartnerCounter, 1, true, $ad_type, $site_id, $loop_number);
                                     array_push($arrayStore, $addSitePartner);
-                                    $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter = $maxSitePartnerCounter +1 : '';
+                                    $maxSitePartnerCounter < $totalSitePartnerAds ? $maxSitePartnerCounter = $maxSitePartnerCounter + 1 : '';
                                 }
                             }
                         } catch (\Exception $e) {
-                                
+
                             continue;
                         }
                     }
@@ -429,52 +426,50 @@ class ContentManagementController extends AppBaseController implements ContentMa
             }
         }
 
-        if ($is_site_parter == true){
+        if ($is_site_parter == true) {
             $playlist_count = intval(count($play_lists_array));
             $current_element = '';
-            for ($playlist_index = 0; $playlist_index < $playlist_count; $playlist_index++){
-                if(intval(fmod($playlist_index, $moduloValue)) == 0){
-                    if(empty($current_element)){
+            for ($playlist_index = 0; $playlist_index < $playlist_count; $playlist_index++) {
+                if (intval(fmod($playlist_index, $moduloValue)) == 0) {
+                    if (empty($current_element)) {
                         $current_element = $play_lists_array[$playlist_index];
                         unset($play_lists_array[$playlist_index]);
-                    }
-                    else{
+                    } else {
                         $old_element = $current_element;
                         $current_element = $play_lists_array[$playlist_index];
                         $play_lists_array[$playlist_index] = $old_element;
-                        $play_lists_array[$playlist_index] ['sequence'] = $playlist_index;
+                        $play_lists_array[$playlist_index]['sequence'] = $playlist_index;
                     }
+                } else {
+                    $play_lists_array[$playlist_index]['sequence'] = $playlist_index;
                 }
-                else{
-                    $play_lists_array[$playlist_index] ['sequence'] = $playlist_index;
-                }
-                if($playlist_index == $playlist_count-1){
-                    $current_element ['sequence'] = $playlist_index+1;
+                if ($playlist_index == $playlist_count - 1) {
+                    $current_element['sequence'] = $playlist_index + 1;
                     array_push($play_lists_array, $current_element);
                 }
             }
         }
-        
+
         PlayList::insert($play_lists_array);
 
         return $arrayStore;
         // return $this->check_variable;
     }
 
-    protected function getInsertCondition($site_partner, $parent_category){
-        if($site_partner > $parent_category){
+    protected function getInsertCondition($site_partner, $parent_category)
+    {
+        if ($site_partner > $parent_category) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
-    }   
+    }
 
     protected function getLoopCount($total_site_partner, $maxSitePartnerSlot)
     {
-        if($total_site_partner < $maxSitePartnerSlot){
+        if ($total_site_partner < $maxSitePartnerSlot) {
             return 1;
-        }else{
+        } else {
             if (fmod($total_site_partner, $maxSitePartnerSlot) == 0) {
                 return $total_site_partner / $maxSitePartnerSlot;
             } else {
@@ -514,7 +509,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
         $ads = PlayList::leftJoin('site_screen_products', function ($join) {
             $join->on('play_lists.site_screen_id', '=', 'site_screen_products.site_screen_id')
                 ->whereRaw('play_lists.dimension = site_screen_products.dimension');
-            })
+        })
             ->leftJoin('content_management', function ($join) {
                 $join->on('content_id', '=', 'content_management.id');
             })
@@ -527,7 +522,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
                 return $query->where('company_id', '!=', $company_id)->where('loop_number', 0);
             })
             ->where("end_date", ">", date("Y-m-d"))
-            ->orderBy("content_management.updated_at","desc")
+            ->orderBy("content_management.updated_at", "desc")
             ->get();
 
         return $ads;
@@ -684,7 +679,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
             //$play_list = SiteScreenPlaylistViewModel::when(request('search'), function ($query) {
             $play_list = SiteScreen::when(request('search'), function ($query) {
                 return $query->having('site_screen_location', 'LIKE', '%' . request('search') . '%')
-                ->orHaving('product_application', 'LIKE', '%' . request('search') . '%')
+                    ->orHaving('product_application', 'LIKE', '%' . request('search') . '%')
                     ->orHaving('site_name', 'LIKE', '%' . request('search') . '%')
                     ->orHaving('product_application', 'LIKE', '%' . request('search') . '%');
             })
@@ -754,17 +749,17 @@ class ContentManagementController extends AppBaseController implements ContentMa
     public function batchUploadTest(Request $request)
     {
         // try {
-            // $beng = Excel::import(new PlaylistTestImport, $request->file('file'));
-            $import = new PlaylistTestImport;
+        // $beng = Excel::import(new PlaylistTestImport, $request->file('file'));
+        $import = new PlaylistTestImport;
 
-            Excel::import($import, $request->file('file'));
-            // return $this->response(true, 'Successfully Uploaded!', 200);
-            return $this->response([
-                'play_lists' => $import->fields,
-                // true, 
-                // 'Successfully Uploaded!', 
-                // 200
-            ]);
+        Excel::import($import, $request->file('file'));
+        // return $this->response(true, 'Successfully Uploaded!', 200);
+        return $this->response([
+            'play_lists' => $import->fields,
+            // true, 
+            // 'Successfully Uploaded!', 
+            // 200
+        ]);
         // } catch (\Exception $e) {
         //     return response([
         //         'message' => $e->getMessage(),
@@ -824,25 +819,13 @@ class ContentManagementController extends AppBaseController implements ContentMa
             ], 422);
         }
     }
-   
-    public function downloadCsvPlaylistTemplate()
+
+    public function downloadPlayListSequence()
     {
+        // $filename = "playlist-playlist-ads-sequence.csv";
+        // $data = Excel::download(new PlaylistTestExport, $filename);
+        // return $this->response($filename, 'Successfully Retreived!', 200);
         try {
-           
-            $reports = [];
-                $reports[] = [
-                    'upload_ad_id' => '',
-                    'create_content_id' => '',
-                    'create_content_' => '',
-                    'contract_id' => '',
-                    'contract_name' => '',
-                    'category_id' => '',
-                    'category_name' => '',
-                    'sequence_no' => '',
-                    'created_at' => '',
-                    'updated_at' => '',
-                    'deleted_at' => '',
-                ];
             $directory = 'public/export/reports/';
             $files = Storage::files($directory);
             foreach ($files as $file) {
@@ -851,7 +834,7 @@ class ContentManagementController extends AppBaseController implements ContentMa
 
             $filename = "playlist-playlist-ads-sequence.csv";
             // Store on default disk
-            Excel::store(new Export($reports), $directory . $filename);
+            Excel::store(new PlaylistTestExport, $directory . $filename);
 
             $data = [
                 'filepath' => '/storage/export/reports/' . $filename,
@@ -871,17 +854,18 @@ class ContentManagementController extends AppBaseController implements ContentMa
         }
     }
 
-    public function downloadPlayListSequence()
+    public function downloadCsvPlaylistTemplate()
     {
         try {
             $reports[] = [
-                'id' => '',
-                'site_screen_location' => '',
-                'serial_number' => '',
-                'screen_type' => '',
-                'site_id' => '',
-                'site_name' => '',
-                'site_code_name' => '',
+                'upload_ad_id' => '',
+                'create_content_id' => '',
+                'create_content_' => '',
+                'contract_id' => '',
+                'contract_name' => '',
+                'category_id' => '',
+                'category_name' => '',
+                'sequence_no' => '',
                 'created_at' => '',
                 'updated_at' => '',
                 'deleted_at' => '',
