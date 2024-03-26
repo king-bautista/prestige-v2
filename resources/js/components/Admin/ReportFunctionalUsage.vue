@@ -9,20 +9,6 @@
 	    			<div class="card-body">
 						<div class="row">
 							<div class="col-md-12">
-								<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ site_name }}</div>
-								<Table 
-								:dataFields="dataFields"
-								:dataUrl="dataUrl"
-								:otherButtons="otherButtons"
-								:primaryKey="primaryKey"
-								v-on:reportModal="reportModal"
-								v-on:downloadCsv="downloadCsv"
-								ref="dataTable">
-								</Table>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-md-12">
@@ -36,7 +22,21 @@
 								</div>
 							</div>
 						</div>
-		          	</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div :style="{ 'font-size': 20 + 'px'}">Site(s): {{ site_name }}</div>
+								<Table 
+								:dataFields="dataFields"
+								:dataUrl="dataUrl"
+								:otherButtons="otherButtons"
+								:primaryKey="primaryKey"
+								v-on:reportModal="reportModal"
+								v-on:downloadCsv="downloadCsv"
+								ref="dataTable">
+								</Table>
+							</div>
+						</div>
+					</div>
 		        </div>
 	          </div>
 	        </div>
